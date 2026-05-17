@@ -129,6 +129,13 @@ test('homepage use-case cards link to matching user intent pages', () => {
   assert.doesNotMatch(html, /href="use-cases\/workplace-noise-inspection\.html"[\s\S]*?<h3>Rental Dispute &amp; Legal Evidence Aid<\/h3>/);
 });
 
+test('new use-case pages include a primary app CTA', () => {
+  ['bar-street-disturbance.html', 'rental-dispute-evidence.html'].forEach((file) => {
+    const html = fs.readFileSync(path.join(__dirname, '..', 'use-cases', file), 'utf8');
+    assert.match(html, /<a class="button primary" href="\.\.\/app\.html">Start documenting noise<\/a>/);
+  });
+});
+
 test('Chinese landing page mirrors the full homepage structure', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'zh', 'index.html'), 'utf8');
   ['核心功能', '适用场景', '噪声参考', '免费版', '高级版', '隐私保护'].forEach((text) => {
