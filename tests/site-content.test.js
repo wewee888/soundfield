@@ -33,13 +33,13 @@ test('homepage copy uses global noise evidence positioning with safer legal word
 });
 
 test('multilingual homepage copy covers launch translation set', () => {
-  ['en', 'es', 'fr', 'de', 'ja', 'ko'].forEach((code) => {
+  ['en', 'zh', 'es', 'fr', 'de', 'ja', 'ko'].forEach((code) => {
     const copy = site.localizedCopy[code];
     assert.ok(copy, `${code} localized copy exists`);
     assert.ok(copy.slogan.length > 10, `${code} slogan is present`);
     assert.equal(copy.features.length, 4, `${code} has four feature labels`);
     assert.match(copy.buttons.startMonitoring, /.+/);
-    assert.match(copy.disclaimer, /local|lokal|端末|기기|localmente|localement/i);
+    assert.match(copy.disclaimer, /local|lokal|本地|端末|기기|localmente|localement/i);
   });
 });
 
@@ -62,13 +62,15 @@ test('changelog records latest public product updates', () => {
 test('language routing prefers saved choice, then system language, then English', () => {
   assert.equal(i18n.pickLocale({ savedLocale: 'ja', navigatorLanguages: ['de-DE'] }), 'ja');
   assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['fr-CA', 'en-US'] }), 'fr');
-  assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['zh-CN'] }), 'en');
+  assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['zh-CN'] }), 'zh');
+  assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['zh-TW'] }), 'zh');
   assert.equal(i18n.localePath('ko'), 'ko/index.html');
+  assert.equal(i18n.localePath('zh-CN'), 'zh/index.html');
 });
 
 test('global language directories cover launch locales', () => {
   const localeCodes = site.supportedLanguages.map((locale) => locale.code);
-  ['en', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'].forEach((code) => {
+  ['en', 'zh', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'].forEach((code) => {
     assert.ok(localeCodes.includes(code), `${code} locale exists`);
     assert.ok(fs.existsSync(path.join(__dirname, '..', code, 'index.html')), `${code}/index.html exists`);
   });
@@ -109,12 +111,14 @@ test('homepage renders launch copy, scenarios, reference limits, and plan cards'
   assert.match(html, /Free Version/);
   assert.match(html, /Pro Premium Version/);
   assert.match(html, /data-language-select/);
+  assert.match(html, /<option value="zh">中文<\/option>/);
+  assert.match(html, /href="zh\/index\.html">中文/);
   assert.match(html, /Latest Updates/);
   assert.doesNotMatch(html, /Cloud data backup|Official evidence template|Excessive noise can be used for official complaint/i);
 });
 
 test('primary locale pages render their localized launch slogans', () => {
-  ['en', 'es', 'fr', 'de', 'ja', 'ko'].forEach((code) => {
+  ['en', 'zh', 'es', 'fr', 'de', 'ja', 'ko'].forEach((code) => {
     const html = fs.readFileSync(path.join(__dirname, '..', code, 'index.html'), 'utf8');
     assert.match(html, new RegExp(site.localizedCopy[code].slogan.replace(/[|]/g, '\\|')));
   });

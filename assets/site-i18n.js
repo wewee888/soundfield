@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const supportedLocales = ['en', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'];
+  const supportedLocales = ['en', 'zh', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'];
   const storageKey = 'soundtest_locale';
 
   function normalizeLocale(value) {

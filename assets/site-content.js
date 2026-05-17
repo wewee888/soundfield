@@ -45,6 +45,7 @@
 
   const supportedLanguages = [
     { code: 'en', name: 'English', title: 'Free Online Noise Evidence Recorder', cta: 'Open web app' },
+    { code: 'zh', name: '中文', title: '免费在线噪音取证记录工具', cta: '打开网页工具' },
     { code: 'es', name: 'Español', title: 'Grabador web de ruido para reclamaciones', cta: 'Abrir herramienta' },
     { code: 'fr', name: 'Français', title: 'Outil web pour documenter les nuisances sonores', cta: 'Ouvrir l’outil' },
     { code: 'de', name: 'Deutsch', title: 'Web-Tool zur Dokumentation von Lärm', cta: 'Tool öffnen' },
@@ -108,6 +109,14 @@
       scenarios: 'Neighbor & Apartment Noise / Construction Noise / Bar & Street Disturbance / Rental Dispute & Legal Evidence Aid',
       buttons: { startMonitoring: 'Start Monitoring', stopRecording: 'Stop Recording', exportReport: 'Export Report', switchLanguage: 'Switch Language' },
       disclaimer: 'Disclaimer: For civilian reference only, not professional metering equipment. All data is processed locally, and no private recording data is uploaded by the static web tool.',
+    },
+    zh: {
+      slogan: '免费在线噪音取证记录工具｜无需安装 App',
+      subtitle: '测量分贝、记录声音、保存时间与位置，用于噪音投诉资料整理。',
+      features: ['实时分贝测量', '音频与波形记录', '自动时间与位置标记', '证据报告导出'],
+      scenarios: '邻里与公寓噪音 / 装修施工噪音 / 酒吧商铺与街道扰民 / 租房纠纷与证据辅助',
+      buttons: { startMonitoring: '开始监测', stopRecording: '停止录制', exportReport: '导出报告', switchLanguage: '切换语言' },
+      disclaimer: '免责声明：仅供民用参考和现场记录，不是专业计量设备。数据在本地处理，不会由静态网页工具上传私人录音数据。',
     },
     es: {
       slogan: 'Grabador de Evidencia de Ruido Online Gratuito | Sin Instalar App',
