@@ -24,6 +24,24 @@ http://localhost:8080/soundfield.html  # 直接打开声级记录工具
 
 也可以直接双击 `soundfield.html`，但麦克风、摄像头、定位等权限在 `file://` 下可能不可用。正式调试请使用 `localhost` 或 HTTPS。
 
+## Lemon Squeezy 收款与会员（已接入）
+
+项目已预留 Cloudflare Pages Functions 会员接口：
+
+- `POST /api/membership/create-checkout`：创建 Lemon Checkout
+- `POST /api/membership/lookup`：按购买邮箱校验会员状态
+- `GET /api/membership/config`：返回收款配置是否生效（不暴露密钥）
+
+在 Cloudflare Pages 项目里配置以下环境变量后即可启用真实收款：
+
+- `LEMON_SQUEEZY_API_KEY`：Lemon API Key（`lsk_live_*` 或 `lsk_test_*`）
+- `LEMON_STORE_ID`：Lemon Store ID
+- `LEMON_VARIANT_PRO`：Pro 订阅 Variant ID
+- `LEMON_VARIANT_TEAM`：Team 订阅 Variant ID
+- `LEMON_VARIANT_LIFETIME`：买断版 Variant ID
+- `LEMON_REDIRECT_URL`（可选）：支付成功回跳地址，不填默认回到 `soundfield.html`
+- `LEMON_SQUEEZY_MODE`（可选）：`live` / `test`，不填会按 Key 前缀推断
+
 ## 当前发布状态
 
 当前版本适合做 **阶段 1 Web/PWA 公开测试版**：部署到 HTTPS 域名后，可让小范围用户验证实时监测、证据照片、录音录像、地点标注、PDF/CSV 导出和 Pro/Team 权益兴趣。

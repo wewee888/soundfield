@@ -47,23 +47,59 @@
     return normalized;
   }
 
-  function initLanguageSwitcher() {
-    const select = document.querySelector('[data-language-select]');
-    const current = document.querySelector('[data-language-current]');
-    const link = document.querySelector('[data-language-link]');
-    if (!select) return;
+  function buildNavLanguageSwitcher() {
+    const nav = document.querySelector('.site-nav');
+    if (!nav) return null;
+    let utility = nav.querySelector('.nav-utility');
+    if (!utility) {
+      utility = document.createElement('div');
+      utility.className = 'nav-utility';
+      nav.appendChild(utility);
+    }
+    let select = utility.querySelector('[data-language-select]');
+    if (!select) {
+      select = document.createElement('select');
+      select.className = 'nav-language';
+      select.setAttribute('aria-label', 'Switch language');
+      select.setAttribute('data-language-select', '');
+      for (const locale of supportedLocales) {
+        const option = document.createElement('option');
+        option.value = locale;
+        option.textContent = locale.toUpperCase();
+        select.appendChild(option);
+      }
+      utility.prepend(select);
+    }
+    return select;
+  }
 
+  function bindSwitchers(locale) {
+    const selects = document.querySelectorAll('[data-language-select]');
+    const currentList = document.querySelectorAll('[data-language-current]');
+    const linkList = document.querySelectorAll('[data-language-link]');
+    for (const select of selects) {
+      if (select.value !== locale) select.value = locale;
+      if (select.dataset.boundLocale === 'true') continue;
+      select.dataset.boundLocale = 'true';
+      select.addEventListener('change', () => {
+        const nextLocale = saveLocale(select.value);
+        if (!nextLocale) return;
+        window.location.href = localePath(nextLocale);
+      });
+    }
+    for (const current of currentList) {
+      current.textContent = locale.toUpperCase();
+    }
+    for (const link of linkList) {
+      link.setAttribute('href', localePath(locale));
+    }
+  }
+
+  function initLanguageSwitcher() {
+    buildNavLanguageSwitcher();
     const navigatorLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
     const locale = pickLocale({ savedLocale: readSavedLocale(), navigatorLanguages });
-    select.value = locale;
-    if (current) current.textContent = locale.toUpperCase();
-    if (link) link.setAttribute('href', localePath(locale));
-
-    select.addEventListener('change', () => {
-      const nextLocale = saveLocale(select.value);
-      if (!nextLocale) return;
-      window.location.href = localePath(nextLocale);
-    });
+    bindSwitchers(locale);
   }
 
   window.SoundtestI18n = {

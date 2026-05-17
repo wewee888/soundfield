@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="assets/site.css">
   <link rel="manifest" href="manifest.webmanifest">
   <script src="assets/site-i18n.js" defer></script>
+  <script src="assets/site-auth.js" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -42,15 +43,18 @@
 <body>
   <main class="site-shell">
     <nav class="site-nav" aria-label="Primary">
-      <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>SOUNDTEST.PRO</span></a>
-      <div class="nav-links">
-        <a href="app.html">Open App</a>
-        <a href="standards.html">Standards</a>
-        <a href="accuracy.html">Accuracy</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="samples.html">Samples</a>
-        <a href="changelog.html">Updates</a>
-        <a href="download.html">Install</a>
+      <div class="site-nav-main">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>SOUNDTEST.PRO</span></a>
+        <div class="nav-links">
+          <a href="app.html">Open App</a>
+          <a href="standards.html">Standards</a>
+          <a href="accuracy.html">Accuracy</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="samples.html">Samples</a>
+          <a href="changelog.html">Updates</a>
+          <a href="download.html">Install</a>
+          <a href="auth.html">Account</a>
+        </div>
       </div>
     </nav>
 
@@ -112,24 +116,8 @@
 
     <section class="section">
       <div class="eyebrow">Global languages</div>
-      <h2>Language follows your system, or your saved choice.</h2>
-      <p class="lead">SOUNDTEST.PRO recommends a language from your browser settings first. If you choose another language, that choice is saved locally on this device.</p>
-      <div class="language-panel" aria-label="Language preference">
-        <label for="languageSelect">Switch Language</label>
-        <select id="languageSelect" data-language-select>
-          <option value="en">English</option>
-          <option value="zh">中文</option>
-          <option value="es">Español</option>
-          <option value="fr">Français</option>
-          <option value="de">Deutsch</option>
-          <option value="ja">日本語</option>
-          <option value="ko">한국어</option>
-          <option value="vi">Tiếng Việt</option>
-          <option value="th">ไทย</option>
-        </select>
-        <a class="button" data-language-link href="en/index.html">Open recommended language</a>
-        <span class="muted">Current: <strong data-language-current>EN</strong></span>
-      </div>
+      <h2>Language and account controls are in the top navigation.</h2>
+      <p class="lead">SOUNDTEST.PRO now follows international navigation patterns: language selector and account entry stay persistent in the nav bar for quick access on every page.</p>
       <div class="tag-list" aria-label="Language switcher">
         <a class="tag" href="en/index.html">English</a>
         <a class="tag" href="zh/index.html">中文</a>

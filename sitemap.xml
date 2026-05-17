@@ -11,6 +11,7 @@
   <url><loc>https://soundtest.pro/vi/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://soundtest.pro/th/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://soundtest.pro/app.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://soundtest.pro/auth.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://soundtest.pro/standards.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://soundtest.pro/privacy.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://soundtest.pro/accuracy.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>

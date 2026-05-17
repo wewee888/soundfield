@@ -114,8 +114,9 @@ test('homepage renders launch copy, scenarios, reference limits, and plan cards'
   assert.match(html, /Daytime Reference/);
   assert.match(html, /Free Version/);
   assert.match(html, /Pro Premium Version/);
-  assert.match(html, /data-language-select/);
-  assert.match(html, /<option value="zh">中文<\/option>/);
+  assert.match(html, /assets\/site-i18n\.js/);
+  assert.match(html, /assets\/site-auth\.js/);
+  assert.match(html, /href="auth\.html">Account<\/a>/);
   assert.match(html, /href="zh\/index\.html">中文/);
   assert.match(html, /Latest Updates/);
   assert.doesNotMatch(html, /Chinese positioning|Beta Metrics|Launch Metrics|Cloud data backup|Official evidence template|Excessive noise can be used for official complaint/i);
@@ -196,6 +197,72 @@ test('core tool page exposes SOUNDTEST.PRO as public app name', () => {
   assert.match(html, /<meta name="apple-mobile-web-app-title" content="SOUNDTEST\.PRO">/);
   assert.match(html, /<title>SOUNDTEST\.PRO/);
   assert.doesNotMatch(html, />\s*soundtest\.pro\s*</);
+});
+
+test('core tool retries microphone startup with basic constraints', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundfield.html'), 'utf8');
+  assert.match(html, /async function requestMicrophoneStream\(\)/);
+  assert.match(html, /async function ensureAudioContextReady\(\)/);
+  assert.match(html, /getUserMedia\(professionalConstraints\)/);
+  assert.match(html, /NotAllowedError','NotFoundError','NotReadableError','SecurityError','AbortError/);
+  assert.match(html, /getUserMedia\(\{audio:true\}\)/);
+  assert.match(html, /await ensureAudioContextReady\(\);\s*micStream=await requestMicrophoneStream\(\)/);
+  assert.match(html, /mediaErrorDetail\(e\)/);
+  assert.match(html, /SOUNDTEST\.PRO 会自动改用基础麦克风模式重试/);
+});
+
+test('watermark camera UI does not reference block-scoped isVideo outside scope', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundfield.html'), 'utf8');
+  assert.match(html, /const isVideo=\(watermarkCameraMode\|\|evidenceMode\)==='video';\s*const primary=document\.getElementById\('watermarkPrimaryBtn'\)/);
+  assert.match(html, /if\(snapshotBtn\)snapshotBtn\.style\.display=isVideo&&isRec\?'inline-flex':'none';/);
+});
+
+test('core app language options stay synchronized with the website locales', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundfield.html'), 'utf8');
+  ['en-US', 'zh-CN', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'].forEach((locale) => {
+    assert.match(html, new RegExp(`<option value="${locale}">`), `${locale} option exists in the app selector`);
+  });
+  assert.match(html, /SUPPORTED_APP_LANGUAGES/);
+  assert.match(html, /supportedLanguageFromPrimary/);
+  assert.match(html, /SITE_LANG_KEY='soundtest_locale'/);
+  assert.match(html, /localStorage\.getItem\(SITE_LANG_KEY\)/);
+  ['es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'].forEach((locale) => {
+    assert.match(html, new RegExp(`${locale}:englishLocale\\('${locale}'`), `${locale} uses full English fallback locale`);
+  });
+  assert.match(html, /const base=I18N\[appLanguage\]\|\|\{\}/);
+  assert.match(html, /const useEnglish=appLanguage!=='zh-CN'/);
+  assert.doesNotMatch(html, /appLanguage==='en-US'/);
+  assert.doesNotMatch(html, /appLanguage!=='en-US'/);
+});
+
+test('core tool wires Lemon checkout and membership lookup UI', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundfield.html'), 'utf8');
+  assert.match(html, /memberEmailInput/);
+  assert.match(html, /lookupMembership\(\)/);
+  assert.match(html, /beginCheckout\('pro'\)/);
+  assert.match(html, /beginCheckout\('team'\)/);
+  assert.match(html, /beginCheckout\('lifetime'\)/);
+  assert.match(html, /MEMBERSHIP_API_BASE='\/api\/membership'/);
+  assert.match(html, /fetch\(`\$\{MEMBERSHIP_API_BASE\}\/create-checkout`/);
+  assert.match(html, /fetch\(`\$\{MEMBERSHIP_API_BASE\}\/lookup`/);
+});
+
+test('Cloudflare membership API endpoints exist', () => {
+  [
+    'functions/api/membership/config.js',
+    'functions/api/membership/create-checkout.js',
+    'functions/api/membership/lookup.js',
+  ].forEach((file) => {
+    assert.ok(fs.existsSync(path.join(__dirname, '..', file)), `${file} exists`);
+  });
+});
+
+test('account page provides register and login forms', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'auth.html'), 'utf8');
+  assert.match(html, /data-auth-shell/);
+  assert.match(html, /data-auth-form="login"/);
+  assert.match(html, /data-auth-form="register"/);
+  assert.match(html, /assets\/site-auth\.js/);
 });
 
 test('sitemap and robots expose all public SEO entry points', () => {

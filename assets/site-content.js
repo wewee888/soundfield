@@ -32,6 +32,7 @@
   const routes = [
     { href: 'index.html', label: 'Home', zh: '首页' },
     { href: 'app.html', label: 'Open App', zh: '打开工具' },
+    { href: 'auth.html', label: 'Account', zh: '账户' },
     { href: 'privacy.html', label: 'Privacy', zh: '隐私' },
     { href: 'accuracy.html', label: 'Accuracy', zh: '精度说明' },
     { href: 'standards.html', label: 'Standards', zh: '噪声参考' },
