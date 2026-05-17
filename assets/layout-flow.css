@@ -1,0 +1,68 @@
+/*
+  SOUNDTEST.PRO layout-flow overrides.
+  Purpose: keep the app readable on desktop and mobile by letting content define
+  page height instead of compressing every panel into one fixed viewport.
+*/
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  justify-content: center;
+  overscroll-behavior-y: auto;
+}
+
+.shell {
+  max-width: 1180px;
+  min-height: 100dvh;
+  height: auto;
+  overflow: visible;
+}
+
+.panels {
+  overflow: visible;
+}
+
+.panel {
+  position: static;
+  overflow: visible;
+}
+
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  backdrop-filter: blur(16px);
+}
+
+@media (min-width: 768px) {
+  body {
+    justify-content: flex-start;
+  }
+
+  .shell {
+    grid-template-rows: auto auto;
+    max-height: none;
+    min-height: calc(100dvh - 24px);
+  }
+
+  .hero {
+    align-self: start;
+    height: auto;
+    overflow: visible;
+    position: sticky;
+    top: 12px;
+  }
+
+  .panels {
+    height: auto;
+    overflow: visible;
+  }
+
+  .panel,
+  #p-m.active {
+    overflow: visible;
+  }
+}

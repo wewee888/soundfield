@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://soundtest.pro/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://soundtest.pro/en/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://soundtest.pro/es/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/fr/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/de/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/ja/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/ko/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/vi/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://soundtest.pro/th/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://soundtest.pro/app.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://soundtest.pro/standards.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/privacy.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://soundtest.pro/accuracy.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://soundtest.pro/samples.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://soundtest.pro/download.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://soundtest.pro/monetization.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://soundtest.pro/compliance.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://soundtest.pro/changelog.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://soundtest.pro/use-cases/neighbor-noise-evidence.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/use-cases/construction-noise-monitoring.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/use-cases/property-noise-complaint-report.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://soundtest.pro/use-cases/workplace-noise-inspection.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>
