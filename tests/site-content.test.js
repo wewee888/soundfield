@@ -45,8 +45,11 @@ test('multilingual homepage copy covers launch translation set', () => {
 
 test('site routes include the planned public pages', () => {
   const hrefs = site.routes.map((route) => route.href);
-  ['index.html', 'app.html', 'privacy.html', 'accuracy.html', 'standards.html', 'samples.html', 'download.html', 'monetization.html', 'compliance.html', 'launch-metrics.html', 'changelog.html'].forEach((href) => {
+  ['index.html', 'app.html', 'privacy.html', 'accuracy.html', 'standards.html', 'samples.html', 'download.html', 'compliance.html', 'changelog.html'].forEach((href) => {
     assert.ok(hrefs.includes(href), `${href} route exists`);
+  });
+  ['monetization.html', 'launch-metrics.html'].forEach((href) => {
+    assert.ok(!hrefs.includes(href), `${href} is not a public navigation route`);
   });
 });
 
@@ -105,6 +108,7 @@ test('monetization model covers global web-first revenue without cloud overclaim
 test('homepage renders launch copy, scenarios, reference limits, and plan cards', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   assert.match(html, /Free Online Noise Evidence Recorder \| No App Required/);
+  assert.match(html, /<a class="button primary" href="app\.html">Start Monitoring<\/a>/);
   assert.match(html, /Perfect For:/);
   assert.match(html, /Neighbor &amp; Apartment Noise/);
   assert.match(html, /Daytime Reference/);
@@ -114,7 +118,24 @@ test('homepage renders launch copy, scenarios, reference limits, and plan cards'
   assert.match(html, /<option value="zh">中文<\/option>/);
   assert.match(html, /href="zh\/index\.html">中文/);
   assert.match(html, /Latest Updates/);
-  assert.doesNotMatch(html, /Cloud data backup|Official evidence template|Excessive noise can be used for official complaint/i);
+  assert.doesNotMatch(html, /Chinese positioning|Beta Metrics|Launch Metrics|Cloud data backup|Official evidence template|Excessive noise can be used for official complaint/i);
+});
+
+test('homepage use-case cards link to matching user intent pages', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.match(html, /href="use-cases\/bar-street-disturbance\.html"[\s\S]*?<h3>Bar, Shop &amp; Street Disturbance<\/h3>/);
+  assert.match(html, /href="use-cases\/rental-dispute-evidence\.html"[\s\S]*?<h3>Rental Dispute &amp; Legal Evidence Aid<\/h3>/);
+  assert.doesNotMatch(html, /href="use-cases\/property-noise-complaint-report\.html"[\s\S]*?<h3>Bar, Shop &amp; Street Disturbance<\/h3>/);
+  assert.doesNotMatch(html, /href="use-cases\/workplace-noise-inspection\.html"[\s\S]*?<h3>Rental Dispute &amp; Legal Evidence Aid<\/h3>/);
+});
+
+test('Chinese landing page mirrors the full homepage structure', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'zh', 'index.html'), 'utf8');
+  ['核心功能', '适用场景', '噪声参考', '免费版', '高级版', '隐私保护'].forEach((text) => {
+    assert.match(html, new RegExp(text));
+  });
+  assert.match(html, /href="\.\.\/app\.html">开始监测<\/a>/);
+  assert.doesNotMatch(html, /Beta Metrics|Launch Metrics|monetization/i);
 });
 
 test('primary locale pages render their localized launch slogans', () => {
@@ -180,6 +201,9 @@ test('sitemap and robots expose all public SEO entry points', () => {
   for (const locale of site.supportedLanguages) {
     assert.match(sitemap, new RegExp(`<loc>https://soundtest\\.pro/${locale.code}/</loc>`));
   }
+  ['monetization.html', 'launch-metrics.html'].forEach((internalPath) => {
+    assert.doesNotMatch(sitemap, new RegExp(internalPath));
+  });
 });
 
 test('public route files exist for the static website', () => {

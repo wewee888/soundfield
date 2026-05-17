@@ -16,11 +16,12 @@
   <url><loc>https://soundtest.pro/accuracy.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://soundtest.pro/samples.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://soundtest.pro/download.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://soundtest.pro/monetization.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://soundtest.pro/compliance.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://soundtest.pro/changelog.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://soundtest.pro/use-cases/neighbor-noise-evidence.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://soundtest.pro/use-cases/construction-noise-monitoring.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/use-cases/bar-street-disturbance.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://soundtest.pro/use-cases/rental-dispute-evidence.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://soundtest.pro/use-cases/property-noise-complaint-report.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://soundtest.pro/use-cases/workplace-noise-inspection.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

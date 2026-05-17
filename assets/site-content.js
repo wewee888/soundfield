@@ -37,10 +37,8 @@
     { href: 'standards.html', label: 'Standards', zh: '噪声参考' },
     { href: 'samples.html', label: 'Samples', zh: '报告样例' },
     { href: 'download.html', label: 'Install', zh: '安装' },
-    { href: 'monetization.html', label: 'Pricing', zh: '变现' },
     { href: 'compliance.html', label: 'Compliance', zh: '合规' },
     { href: 'changelog.html', label: 'Updates', zh: '更新记录' },
-    { href: 'launch-metrics.html', label: 'Launch Metrics', zh: '上线指标' },
   ];
 
   const supportedLanguages = [
@@ -219,6 +217,26 @@
       audience: 'Property managers, community committees, and resident service teams',
       promise: 'Turn site visits into structured records with measurement points, incident notes, PDF reports, and CSV exports.',
       disclaimer: 'SOUNDTEST.PRO is not a certified sound level meter; it organizes field documentation before professional review.',
+    },
+    {
+      slug: 'bar-street-disturbance',
+      href: 'use-cases/bar-street-disturbance.html',
+      title: 'Bar, Shop & Street Disturbance',
+      zhTitle: '酒吧商铺与街道扰民',
+      keyword: 'bar street noise complaint',
+      audience: 'Residents, shop neighbors, renters, and mediation teams',
+      promise: 'Document repeated late-night or street-level disturbance patterns with time, place, audio, photos, and reports.',
+      disclaimer: 'SOUNDTEST.PRO is not a certified sound level meter; local rules and complaint procedures vary.',
+    },
+    {
+      slug: 'rental-dispute-evidence',
+      href: 'use-cases/rental-dispute-evidence.html',
+      title: 'Rental Dispute & Legal Evidence Aid',
+      zhTitle: '租房纠纷与证据辅助',
+      keyword: 'rental dispute noise evidence',
+      audience: 'Tenants, landlords, housing advisers, and legal support teams',
+      promise: 'Organize noise records before speaking with a landlord, property manager, local authority, or legal adviser.',
+      disclaimer: 'SOUNDTEST.PRO is not a certified sound level meter; it organizes field documentation only and legal or regulatory claims require qualified review.',
     },
     {
       slug: 'workplace-noise-inspection',
