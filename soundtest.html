@@ -192,7 +192,12 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
 .alert.show{display:flex;min-height:34px;margin-bottom:6px;opacity:1;visibility:visible;transform:translateY(0)}
 .aw{background:var(--amber-d);color:var(--amber);border-color:rgba(255,181,32,.35)}
 .ad{background:var(--red-d);color:var(--red);border-color:rgba(255,63,80,.35);animation:fa 1.1s infinite}
+.as{background:rgba(255,98,118,.18);color:#ff6276;border-color:rgba(255,98,118,.5);animation:sus-pulse 2s ease-in-out infinite}
 @keyframes fa{0%,100%{background:var(--red-d)}50%{background:rgba(255,63,80,.2)}}
+@keyframes sus-pulse{0%,100%{background:rgba(255,98,118,.18)}50%{background:rgba(255,98,118,.28)}}
+.pro-feature-badge{display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.06em;background:linear-gradient(135deg,var(--accent),#7c9bff);color:#04101a;vertical-align:middle;margin-left:6px}
+.day-badge{background:rgba(255,200,50,.15);color:#ffc832;border:1px solid rgba(255,200,50,.4);padding:0px 6px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;vertical-align:middle;margin-left:6px}
+.night-badge{background:rgba(80,130,255,.15);color:#80a8ff;border:1px solid rgba(80,130,255,.4);padding:0px 6px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;vertical-align:middle;margin-left:6px}
 .cap-card{
   display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;
   padding:9px 11px;border-radius:var(--rs);border:.5px solid var(--bdr);
@@ -1369,6 +1374,67 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       </div>
       <div class="settings-drawer-row">
         <div>
+          <div class="settings-drawer-label">
+            自动切换阈值
+            <span id="dayNightBadge" class="day-badge" style="display:none">白天</span>
+          </div>
+          <div class="settings-drawer-desc">白天 55 dB / 夜间 45 dB 自动切换（7:00–22:00 为白天）</div>
+        </div>
+        <div class="tog off" id="dayNightTog" onclick="togDayNightThreshold()" role="switch" aria-checked="false" tabindex="0"></div>
+      </div>
+      <div class="settings-drawer-row" id="dayNightOpts" style="display:none">
+        <div>
+          <div class="settings-drawer-label">当前阈值</div>
+          <div class="settings-drawer-desc" id="dayNightStatus">—</div>
+        </div>
+      </div>
+      <div class="settings-drawer-row">
+        <div>
+          <div class="settings-drawer-label">持续超标告警</div>
+          <div class="settings-drawer-desc">持续超标设定秒数后才触发告警</div>
+        </div>
+        <div class="tog off" id="sustainedAlertTog" onclick="togSustainedAlert()" role="switch" aria-checked="false" tabindex="0"></div>
+      </div>
+      <div class="settings-drawer-row" id="sustainedAlertOpts" style="display:none">
+        <div>
+          <div class="settings-drawer-label">持续超标秒数</div>
+          <div class="settings-drawer-desc">持续超过阈值多少秒后告警</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="range" id="susAlertsR" min="5" max="120" value="30" step="5" oninput="setSustainedAlertSec()" style="width:80px">
+          <span class="settings-drawer-value" id="susAlertsV">30s</span>
+        </div>
+      </div>
+      <div class="settings-drawer-row">
+        <div>
+          <div class="settings-drawer-label">
+            <span id="autoRecLockIcon" style="margin-right:5px;opacity:0.6">🔒</span>超标自动录音
+            <span id="autoRecProBadge" class="pro-feature-badge" style="display:none">PRO</span>
+          </div>
+          <div class="settings-drawer-desc">超标持续数秒后自动开始录音</div>
+        </div>
+        <div class="tog off" id="autoRecTog" onclick="togAutoRec()" role="switch" aria-checked="false" tabindex="0"></div>
+      </div>
+      <div class="settings-drawer-row" id="autoRecOpts" style="display:none">
+        <div>
+          <div class="settings-drawer-label">超标持续秒数</div>
+          <div class="settings-drawer-desc">超标持续多久后开始录音</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="range" id="autoRecMinSR" min="1" max="30" value="3" step="1" oninput="setAutoRecMinSec()" style="width:80px">
+          <span class="settings-drawer-value" id="autoRecMinSV">3s</span>
+        </div>
+        <div>
+          <div class="settings-drawer-label">超标停止后录制秒数</div>
+          <div class="settings-drawer-desc">超标结束后继续录制多少秒</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="range" id="autoRecAfterStopSR" min="3" max="60" value="10" step="1" oninput="setAutoRecAfterStopSec()" style="width:80px">
+          <span class="settings-drawer-value" id="autoRecAfterStopSV">10s</span>
+        </div>
+      </div>
+      <div class="settings-drawer-row">
+        <div>
           <div class="settings-drawer-label">地点识别</div>
           <div class="settings-drawer-desc">定位后识别小区、道路</div>
         </div>
@@ -2003,6 +2069,43 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
         <div class="sctrl"><div class="tog on" id="alertTog" onclick="togAlert()" role="switch" aria-checked="true" tabindex="0"></div></div>
       </div>
       <div class="srow">
+        <div>
+          <div class="slabel">
+            自动切换阈值
+            <span id="dayNightBadge2" class="day-badge" style="display:none">白天</span>
+          </div>
+          <div class="sdesc">白天 55 dB / 夜间 45 dB 自动切换（7:00–22:00 为白天）</div>
+        </div>
+        <div class="sctrl"><div class="tog off" id="dayNightTog2" onclick="togDayNightThreshold2()" role="switch" aria-checked="false" tabindex="0"></div></div>
+      </div>
+      <div class="srow" id="dayNightOpts2" style="display:none">
+        <div><div class="slabel">当前阈值</div><div class="sdesc" id="dayNightStatus2">—</div></div>
+      </div>
+      <div class="srow">
+        <div><div class="slabel">持续超标告警</div><div class="sdesc">超标持续设定秒数后才触发告警（区别于瞬时超标告警）</div></div>
+        <div class="sctrl"><div class="tog off" id="sustainedAlertTog" onclick="togSustainedAlert()" role="switch" aria-checked="false" tabindex="0"></div></div>
+      </div>
+      <div class="srow" id="sustainedAlertOpts2" style="display:none">
+        <div><div class="slabel">持续超标秒数</div><div class="sdesc">持续超过阈值多少秒后告警</div></div>
+        <div class="sctrl"><input type="range" id="susAlertsR2" min="5" max="120" value="30" step="5" oninput="setSustainedAlertSec2()"><span class="sval" id="susAlertsV2">30s</span></div>
+      </div>
+      <div class="srow">
+        <div>
+          <div class="slabel">
+            <span id="autoRecLockIcon2" style="margin-right:5px;opacity:0.6">🔒</span>超标自动录音
+            <span id="autoRecProBadge2" class="pro-feature-badge" style="display:none">PRO</span>
+          </div>
+          <div class="sdesc">超标持续数秒后自动开始录音，停止后继续录制一段时间。Pro 专属功能。</div>
+        </div>
+        <div class="sctrl"><div class="tog off" id="autoRecTog2" onclick="togAutoRec2()" role="switch" aria-checked="false" tabindex="0"></div></div>
+      </div>
+      <div class="srow" id="autoRecOpts2" style="display:none">
+        <div><div class="slabel">超标持续秒数</div><div class="sdesc">超标持续多久后开始录音</div></div>
+        <div class="sctrl"><input type="range" id="autoRecMinSR2" min="1" max="30" value="3" step="1" oninput="setAutoRecMinSec2()"><span class="sval" id="autoRecMinSV2">3s</span></div>
+        <div><div class="slabel">停止后录制秒数</div><div class="sdesc">超标结束后继续录制多少秒</div></div>
+        <div class="sctrl"><input type="range" id="autoRecAfterStopSR2" min="3" max="60" value="10" step="1" oninput="setAutoRecAfterStopSec2()"><span class="sval" id="autoRecAfterStopSV2">10s</span></div>
+      </div>
+      <div class="srow">
         <div><div class="slabel">地点识别</div><div class="sdesc">定位后识别小区、道路或附近地点；会把坐标发送给地图服务。</div></div>
         <div class="sctrl"><div class="tog on" id="placeTog" onclick="togPlaceLookup()" role="switch" aria-checked="true" tabindex="0"></div></div>
       </div>
@@ -2284,6 +2387,8 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="assets/utils.js"></script>
+<script src="assets/i18n-data.js"></script>
 <script src="assets/lang-flags.js"></script>
 <script src="assets/pro-meter.js"></script>
 <script src="assets/evidence-utils.js"></script>
@@ -2347,6 +2452,11 @@ let watermarkCameraOpen=false,watermarkCameraMode='video';
 let locWatchId=null,locRefineTmr=null;
 let calibrationPresetKey=DEFAULT_CALIBRATION_PRESET;
 let calOffset=DEFAULT_CAL_OFFSET_DB,micGainDb=18,alertTh=DEFAULT_ALERT_THRESHOLD_DB,alertsOn=true,smoothing=3,curViz='w';
+let autoRecOnThreshold=false,autoRecMinSeconds=3,autoRecAfterStopSeconds=10,autoRecAboveSince=0,autoRecTimeout=null,autoRecCooldownUntil=0;
+let sustainedAlertOn=false,sustainedAlertMinSeconds=30,sustainedAlertAboveSince=0,sustainedAlertFired=false;
+let autoDayNightThreshold=false,autoDayNightMode=false,dayThresholdDb=55,nightThresholdDb=45;
+const AUTO_REC_EVENTS_KEY='sf_auto_rec_events_v1';
+let autoRecEvents=[],autoRecCurrentEvent=null;
 let weighting='A',timeWeight='F';
 let floatTBuf,floatFBuf,inputGainNode;
 let capHideTmr;
@@ -2426,8 +2536,16 @@ const fmtDb=v=>(isNaN(v)||v<=0)?'--':Math.round(v)+'';
 const fmtTime=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
 const weightLabel=()=>`dB${weighting}`;
 const timeLabel=()=>timeWeight==='S'?t('time.slow','慢响应'):t('time.fast','快响应');
-const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const esc=window.__sfUtils?window.__sfUtils.escHtml:s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const legalDisclaimer=()=>t('reportFields.footer',appLanguage!=='zh-CN'?'For field documentation only. Verify formal measurements with a certified sound level meter.':'环境记录与证据辅助，正式检测请以经检定声级计复核为准。');
+const supportedLanguageFromPrimary=window.__sfUtils?window.__sfUtils.supportedLanguageFromPrimary:function(value){
+  const primary=String(value||'').trim().toLowerCase().split(/[-_]/)[0];
+  return [{primary:'en',value:'en-US'},{primary:'zh',value:'zh-CN'},{primary:'es',value:'es-ES'},{primary:'fr',value:'fr-FR'},{primary:'de',value:'de-DE'},{primary:'ja',value:'ja-JP'},{primary:'ko',value:'ko-KR'},{primary:'vi',value:'vi-VN'},{primary:'th',value:'th-TH'}].find(language=>language.primary===primary)?.value||'';
+};
+const normalizeAppLanguage=window.__sfUtils?window.__sfUtils.normalizeAppLanguage:function(value){
+  if(I18N[value])return value;
+  return supportedLanguageFromPrimary(value);
+};
 const PDF_FONT_SAFE_MODE='helvetica-ascii-v1';
 const PDF_DATE_LOCALE='en-US';
 const PDF_REPORT_TEXT={
@@ -2481,16 +2599,9 @@ const SITE_LANG_KEY='soundtest_locale';
 let appLanguage='zh-CN';
 let displayDb=null;
 let dbAnimRaf=null;
-const SUPPORTED_APP_LANGUAGES=[
+const SUPPORTED_APP_LANGUAGES=window.__sfSupportedAppLanguages||[
   {value:'en-US',primary:'en',flag:'🇺🇸',label:'English'},
   {value:'zh-CN',primary:'zh',flag:'🇨🇳',label:'中文'},
-  {value:'es',primary:'es',flag:'🇪🇸',label:'Español'},
-  {value:'fr',primary:'fr',flag:'🇫🇷',label:'Français'},
-  {value:'de',primary:'de',flag:'🇩🇪',label:'Deutsch'},
-  {value:'ja',primary:'ja',flag:'🇯🇵',label:'日本語'},
-  {value:'ko',primary:'ko',flag:'🇰🇷',label:'한국어'},
-  {value:'vi',primary:'vi',flag:'🇻🇳',label:'Tiếng Việt'},
-  {value:'th',primary:'th',flag:'🇹🇭',label:'ไทย'},
 ];
 function appLangPickerOptions(){
   return SUPPORTED_APP_LANGUAGES.map((meta)=>({
@@ -2524,124 +2635,9 @@ function renderAppLangPickers(){
     });
   });
 }
-const I18N={
-  'zh-CN':{
-    locale:'zh-CN',
-    title:'SOUNDTEST.PRO · 声学证据与环境噪声记录',
-    metaDescription:'SOUNDTEST.PRO 是面向居民投诉、物业协同、施工巡检和企业环境管理的专业噪声记录工具，支持实时分贝、地点标注、声学证据照片、录音录像和 PDF/CSV 报告导出。',
-    storeListing:'SOUNDTEST.PRO 是一款面向居民投诉、物业协同、施工巡检、企业环境管理和个人专业测评的噪声记录工具。适合邻里噪音取证、装修施工噪音记录、物业投诉处理、办公室与工厂噪声巡检、学校/医院/酒店等安静环境管理，以及看房、家电、车内噪音和设备评测。应用支持实时分贝、dBA/dBZ、Fast/Slow、LAeq、地点标注、声学证据照片、录音录像、PDF/CSV 报告导出和用户校准。环境记录与证据辅助，正式检测请以经检定声级计复核为准。',
-    levels:{quiet:'安静',moderate:'适中',loud:'嘈杂',danger:'危险'},
-    time:{fast:'快响应',slow:'慢响应'},
-    camera:{preview:'预览模式',photo:'拍照模式',video:'录像模式',pending:'声级待测',placePending:'位置待获取'},
-    modes:{
-      cardLabel:'证据模式',
-      audio:{label:'录音模式',short:'录音',tagline:'低耗电，保存声音证据',title:'录音模式',desc:'用于长时间记录噪声，耗电最低；点击主按钮后会先启动监测并保存录音。',primary:'开始录音',stop:'停止录音并保存'},
-      video:{label:'录像模式',short:'录像',tagline:'画面 + 麦克风同步保存',title:'取证录像',desc:'用于保存现场画面、麦克风声音和烧录水印；摄像头预览打开后，可在预览卡片下方直接关闭。',primary:'开始取证录像',stop:'停止并保存'},
-      photo:{label:'照片模式',short:'照片',tagline:'生成带分贝和地址照片',title:'照片模式',desc:'用于快速生成带分贝、GPS、地址和设备信息的证据照片。',primary:'拍照取证',stop:'拍照取证'},
-      locationAction:'获取/刷新地址',
-      recordsAction:'查看记录',
-      cameraCloseHint:'摄像头打开后，可在这里直接关闭预览。',
-      closeCamera:'关闭摄像头',
-      watermarkTitle:'取证相机',
-      watermarkSubtitle:'保存视频已烧录声级、时间、地址和 GPS',
-      back:'返回',
-      closeCameraShort:'关摄像头',
-      snapshotShort:'拍照',
-      refreshAddress:'刷新地址',
-      recordsShort:'记录',
-      monitoringOn:'监测中',
-      monitoringOff:'未监测',
-      recordingOn:'录制中',
-      recordingOff:'未录制',
-      calibrationPrefix:'设备/校准',
-    },
-    reportTemplates:{
-      complaint:{title:'Noise Complaint Evidence Report',label:'投诉沟通',purpose:'For resident communication, property feedback, and preliminary complaint records.'},
-      property:{title:'Property Noise Coordination Report',label:'物业协同',purpose:'For property management coordination and site follow-up.'},
-      inspection:{title:'Workplace Noise Inspection Report',label:'企业巡检',purpose:'For routine environmental inspection and internal records.'},
-      legal:{title:'Acoustic Evidence Aid Report',label:'律师沟通辅助',purpose:'For evidence organization and legal communication aid, not formal metrology.'},
-      neighbor:{title:'Neighbor Noise Evidence Report',label:'邻里扰民',purpose:'For documenting repeated neighbor noise, night disturbance, impact sounds, and mediation materials.',guidance:'建议记录发生时段、持续时间、楼栋/楼层/房间、手动噪声标记和 L10/L90 对比。'},
-      renovation:{title:'Renovation Construction Noise Report',label:'装修施工',purpose:'For documenting renovation or construction noise, site communication, and property follow-up.',guidance:'建议在施工开始、峰值阶段和停止后各记录一段，保留施工位置、时间段和峰值事件。'},
-      elevator:{title:'Elevator Machine Room Low-Frequency Report',label:'电梯机房',purpose:'For elevator machine room, shaft, pump, and low-frequency equipment noise review.',guidance:'建议使用 C/Z 计权和 1/3 倍频程，重点观察 31.5-200 Hz 低频段。'},
-      ktv:{title:'Retail or KTV Disturbance Report',label:'商铺/KTV',purpose:'For retail, KTV, bar, restaurant, and entertainment venue disturbance documentation.',guidance:'建议夜间多段记录，保留室内测点、窗户状态、L5/L10 峰值和连续背景声。'},
-      hvac:{title:'Outdoor AC Unit Noise Report',label:'空调外机',purpose:'For HVAC outdoor unit, fan, compressor, and tonal noise documentation.',guidance:'建议记录开机、稳定运行和停机前后，结合频谱判断低频或高频啸叫。'},
-      boundary:{title:'Factory Boundary Noise Report',label:'厂界噪声',purpose:'For preliminary factory boundary or workplace environmental noise documentation.',guidance:'建议记录测点、边界方向、时间段、气象/门窗状态，并保留非认证测量声明。'},
-    },
-    reportFields:{details:'Session Details',template:'Template',organization:'Organization',purpose:'Purpose',recorded:'Recorded',duration:'Duration',place:'Place',gps:'GPS',weighting:'Weighting',calibration:'Calibration',avg:'Avg',peak:'Peak',min:'Min',media:'Media',note:'Note',trend:'Trend',reference:'Reference',footer:'环境记录与证据辅助，正式检测请以经检定声级计复核为准。'},
-    summary:{subtitle:'PROFESSIONAL ACOUSTIC FIELD REPORT',avgLine:'平均声级 · {level} · 环境记录摘要',peak:'最高',min:'最低',duration:'时长',trend:'声级趋势',metadata:'证据元数据',calibration:'校准偏移：{offset} dB · 麦克风增益：{gain} dB',footer:'说明：环境记录与证据辅助，正式检测请以经检定声级计复核为准。'},
-    ui:{
-      ready:'就绪',monitoring:'监测中',recording:'录制中',localMeter:'本地专业声级计',permissionHint:'点击下方“开始监测”按钮后，浏览器会请求麦克风权限。',upgradeTitle:'升级 Pro：免广告并解锁高级证据能力',upgradeDesc:'去广告、批量 PDF、证据模板、校准档案、长时录制和云备份预留。',viewBenefits:'查看权益',manageBenefits:'管理权益',start:'开始监测',stop:'停止监测',peak:'峰值',min:'最小',duration:'时长',avg:'平均',quiet:'安静',moderate:'中等',loud:'嘈杂',wave:'波形',spectrum:'频谱',trend:'趋势',reference:'声级参考',quickScene:'一键场景',quickSceneHint:'点击标签一键填入备注并匹配报告模板',upgradePro:'升级 Pro',dataProcessedLocally:'本地处理数据',evidenceLibrary:'尽调库',recordStatus:'录制状态',notRecording:'未录制',startVideo:'开始录像（含麦克风）',cameraPreview:'摄像头预览',cameraOpen:'点击打开摄像头',cameraOpenSub:'用于预览、拍照取证和录像画面',photoEvidence:'拍照取证',video:'录像',preview:'预览',photoMode:'拍照模式',videoMode:'录像模式',cameraHint:'声学取证相机：可先打开摄像头预览，开始监测后拍照会叠加分贝、GPS 和地点信息。',openPhoto:'打开声学证据照片',gps:'GPS 位置',noLocation:'尚未获取',placeNotStarted:'地点识别未开始',savePlace:'保存地点',rerunPlace:'重新识别',shareTitle:'推荐 SOUNDTEST.PRO 给需要噪声证据的人',shareDesc:'分享应用入口或当前报告摘要；默认不分享精确坐标，保护用户隐私。',share:'推荐分享',recordTools:'记录工具',recordToolsDesc:'从这里开始录制、导出全部记录，或清空本机证据数据。没有记录时也可以直接跳转到监测页。',startRecord:'开始录制',exportCsv:'导出 CSV',exportPdf:'导出 PDF',clearRecords:'清空记录',noRecords:'暂无录音记录',sessions:'会话',mean:'均值',mapTools:'地图工具',mapToolsDesc:'地图基于已保存记录的 GPS 坐标绘制；可导出图片，或把最新记录打开到外部地图。',refreshMap:'刷新地图',exportMap:'导出地图图片',openLatestLocation:'打开最新位置',backMonitor:'返回监测',noiseMap:'噪音分布地图',geoSessions:'带坐标的会话',noGeoRecords:'尚无带 GPS 的记录。',settings:'测量设置',languageLabel:'语言 / Language',languageDesc:'默认跟随系统，也可以手动切换官网支持的 9 种语言。',frequencyWeighting:'频率计权',frequencyDesc:'A 计权贴近人耳感知，法规常用 dBA',timeWeighting:'时间计权',timeDesc:'快响应用于瞬态，慢响应用于稳态',fastShort:'快',slowShort:'慢',advancedCalibration:'高级校准',advancedDesc:'不同手机麦克风灵敏度、频响和系统音频处理差异很大。普通用户不建议自行调整；随意调整后，证据解释价值会下降，报告也必须保留校准参数。',enterAdvanced:'点击进入此设置',alertThreshold:'告警阈值',alertDesc:'超过此分贝值触发警告',enableAlert:'启用告警',placeLookup:'地点识别',placeLookupDesc:'定位后识别小区、道路或附近地点；会把坐标发送给地图服务。',smoothing:'波形平滑',about:'说明',accuracy:'精度',accuracyDesc:'环境记录与证据辅助，正式检测请以经检定声级计复核为准。',version:'版本',privacy:'隐私与合规',feedback:'用户反馈与报错',subscription:'订阅权益',reportTemplate:'报告模板',templateType:'模板类型',templateDesc:'根据使用场景调整 PDF 标题、用途说明和报告语气。',organization:'组织/项目名',organizationDesc:'会显示在 PDF 报告中，可填写小区、公司、项目或客户名。',storeAssets:'应用商店素材',copyStore:'复制上架简介',data:'数据',monitor:'监测',records:'记录',map:'地图'},
-    placeholders:{note:'添加备注（如：施工现场旁、夜间路边）',place:'手动填写小区/地点名',search:'搜索备注、坐标...',feedback:'请描述你遇到的问题、手机型号/浏览器、复现步骤，或希望增加的功能。',organization:'可选'},
-    messages:{languageSaved:'语言已切换为中文。',copyStoreEmpty:'暂无可复制的上架简介。',storeCopied:'应用商店简介已复制。',clipboardUnsupported:'当前浏览器不支持剪贴板复制，请手动选中文字。',summaryDownloaded:'本次监测摘要图已生成并下载。',pdfMissing:'PDF 组件未加载完成，请检查网络后重试。',noRecords:'暂无记录。'},
-    media:{audio:'录音',video:'视频',none:'无媒体'},
-    reference:[['0-49 dB','安静','图书馆、卧室'],['50-69 dB','适中','办公室、交谈'],['70-84 dB','嘈杂','交通、街道'],['85+ dB','危险','存在听力损伤风险']],
-  },
-  'en-US':{
-    locale:'en-US',
-    title:'SOUNDTEST.PRO · Field Noise Evidence Recorder',
-    metaDescription:'SOUNDTEST.PRO helps document environmental noise with live dB readings, location tags, evidence photos, video, and PDF/CSV reports.',
-    storeListing:'SOUNDTEST.PRO is a field-ready noise documentation tool for neighbor noise, renovation and construction work, property complaints, workplace inspections, quiet-space management, and equipment reviews. Capture live dB readings, dBA/dBC/dBZ weighting, Fast/Slow response, LAeq, location labels, evidence photos, audio/video, PDF/CSV reports, and calibration notes. For environmental documentation and evidence support only; formal measurements should be verified with a certified sound level meter.',
-    levels:{quiet:'Quiet',moderate:'Moderate',loud:'Loud',danger:'Hazardous'},
-    time:{fast:'Fast response',slow:'Slow response'},
-    camera:{preview:'Preview',photo:'Photo',video:'Video',pending:'Waiting for reading',placePending:'Location needed'},
-    modes:{
-      cardLabel:'Evidence mode',
-      audio:{label:'Audio',short:'Audio',tagline:'Low-power audio log',title:'Audio mode',desc:'Best for long sessions. Uses the mic only and keeps power use low.',primary:'Start audio',stop:'Stop & save'},
-      video:{label:'Video',short:'Video',tagline:'Video + microphone',title:'Evidence video',desc:'Capture the scene, microphone audio, and burned-in evidence watermark in the full-screen camera.',primary:'Start evidence video',stop:'Stop & save'},
-      photo:{label:'Photo',short:'Photo',tagline:'dB-stamped photo',title:'Photo mode',desc:'Capture a photo with dB, GPS, address, and calibration details.',primary:'Capture photo',stop:'Capture photo'},
-      locationAction:'Update address',
-      recordsAction:'Records',
-      cameraCloseHint:'Close the camera here when you are done.',
-      closeCamera:'Close camera',
-      watermarkTitle:'Evidence Camera',
-      watermarkSubtitle:'Saved video includes dB, time, address, and GPS',
-      back:'Back',
-      closeCameraShort:'Close camera',
-      snapshotShort:'Photo',
-      refreshAddress:'Address',
-      recordsShort:'Records',
-      monitoringOn:'Monitoring',
-      monitoringOff:'Idle',
-      recordingOn:'Recording',
-      recordingOff:'Not recording',
-      calibrationPrefix:'Device & calibration',
-    },
-    reportTemplates:{
-      complaint:{title:'Noise Complaint Evidence Report',label:'Complaint',purpose:'For tenant communication, property management follow-up, and early complaint records.'},
-      property:{title:'Property Noise Coordination Report',label:'Property coordination',purpose:'For property management coordination and on-site follow-up.'},
-      inspection:{title:'Workplace Noise Inspection Report',label:'Inspection',purpose:'For routine environmental checks and internal records.'},
-      legal:{title:'Acoustic Evidence Aid Report',label:'Legal review aid',purpose:'For organizing evidence before legal review. Not a certified measurement.'},
-      neighbor:{title:'Neighbor Noise Evidence Report',label:'Neighbor noise',purpose:'For repeated neighbor noise, night disturbance, impact sounds, and mediation materials.',guidance:'Record time windows, duration, building/floor/room, manual event marks, and L10/L90 contrast.'},
-      renovation:{title:'Renovation Construction Noise Report',label:'Renovation',purpose:'For renovation or construction noise and property follow-up.',guidance:'Capture start, peak, and quiet-after periods with location and peak events.'},
-      elevator:{title:'Elevator Machine Room Low-Frequency Report',label:'Elevator room',purpose:'For elevator, shaft, pump, and low-frequency equipment noise review.',guidance:'Use C/Z weighting and one-third octave view; focus on 31.5-200 Hz.'},
-      ktv:{title:'Retail or KTV Disturbance Report',label:'Retail/KTV',purpose:'For entertainment venue disturbance documentation.',guidance:'Record night segments, indoor point, window state, L5/L10 peaks, and continuous background.'},
-      hvac:{title:'Outdoor AC Unit Noise Report',label:'Outdoor AC',purpose:'For HVAC outdoor unit, fan, compressor, and tonal noise documentation.',guidance:'Record startup, stable running, and shutdown; use spectrum to identify tonal noise.'},
-      boundary:{title:'Factory Boundary Noise Report',label:'Factory boundary',purpose:'For preliminary factory boundary or workplace environmental noise documentation.',guidance:'Record point, boundary direction, time window, weather/window state, and the non-certified disclaimer.'},
-    },
-    reportFields:{details:'Session details',template:'Template',organization:'Organization',purpose:'Purpose',recorded:'Recorded',duration:'Duration',place:'Place',gps:'GPS',weighting:'Weighting',calibration:'Calibration',avg:'Avg',peak:'Peak',min:'Min',media:'Media',note:'Note',trend:'Trend',reference:'Reference',footer:'For field documentation only. Verify formal measurements with a certified sound level meter.'},
-    summary:{subtitle:'ACOUSTIC FIELD REPORT',avgLine:'Average sound level · {level} · Field summary',peak:'Peak',min:'Min',duration:'Duration',trend:'Sound level trend',metadata:'Evidence metadata',calibration:'Calibration offset: {offset} dB · mic gain: {gain} dB',footer:'Note: For field documentation only. Verify formal measurements with a certified sound level meter.'},
-    ui:{
-      ready:'Ready',monitoring:'Monitoring',recording:'Recording',localMeter:'Field noise meter',permissionHint:'Tap Start monitoring to allow microphone access.',upgradeTitle:'Upgrade to Pro for ad-free evidence tools',upgradeDesc:'No ads, batch PDFs, evidence templates, calibration profiles, longer recordings, and cloud backup when available.',viewBenefits:'View plan',manageBenefits:'Manage plan',start:'Start monitoring',stop:'Stop monitoring',peak:'Peak',min:'Min',duration:'Duration',avg:'Average',quiet:'Quiet',moderate:'Moderate',loud:'Loud',wave:'Waveform',spectrum:'Spectrum',trend:'Trend',reference:'Sound reference',quickScene:'Quick scene tags',quickSceneHint:'Tap a tag to pre-fill notes and match the report template.',upgradePro:'Upgrade Pro',dataProcessedLocally:'Data processed locally',evidenceLibrary:'Evidence Library',recordStatus:'Recording status',notRecording:'Not recording',startVideo:'Start video',cameraPreview:'Camera preview',cameraOpen:'Open camera',cameraOpenSub:'For evidence photos and video',photoEvidence:'Evidence photo',video:'Video',preview:'Preview',photoMode:'Photo mode',videoMode:'Video mode',cameraHint:'Open the camera, then capture a dB-stamped evidence photo while monitoring.',openPhoto:'Open photo',gps:'GPS location',noLocation:'Not available',placeNotStarted:'Place not identified',savePlace:'Save place',rerunPlace:'Look up again',shareTitle:'Share SOUNDTEST.PRO with someone who needs noise evidence',shareDesc:'Share the app or a report summary. Exact coordinates stay private by default.',share:'Share',recordTools:'Record tools',recordToolsDesc:'Start recording, export records, or clear local evidence data. If there are no records, jump back to monitoring.',startRecord:'Start recording',exportCsv:'Export CSV',exportPdf:'Export PDF',clearRecords:'Clear records',noRecords:'No recordings yet',sessions:'Sessions',mean:'Mean',mapTools:'Map tools',mapToolsDesc:'Built from saved GPS records. Export an image or open the latest point in your map app.',refreshMap:'Refresh map',exportMap:'Export map image',openLatestLocation:'Open latest point',backMonitor:'Back to monitor',noiseMap:'Noise map',geoSessions:'Geotagged sessions',noGeoRecords:'No GPS-tagged records yet.',settings:'Measurement settings',languageLabel:'Language / 语言',languageDesc:'Use your system language, or choose any of the 9 website languages.',frequencyWeighting:'Frequency weighting',frequencyDesc:'A-weighting approximates human hearing and is commonly used in regulations.',timeWeighting:'Time weighting',timeDesc:'Fast catches peaks. Slow smooths steady noise.',fastShort:'Fast',slowShort:'Slow',advancedCalibration:'Advanced calibration',advancedDesc:'Phone mics, frequency response, and system processing vary widely. Adjust only when you have a reference meter; reports keep calibration details for context.',enterAdvanced:'Open advanced',alertThreshold:'Alert threshold',alertDesc:'Warn when sound exceeds this level.',enableAlert:'Enable alerts',placeLookup:'Place lookup',placeLookupDesc:'Identify nearby places after GPS is available. Coordinates may be sent to the selected map provider.',smoothing:'Waveform smoothing',about:'Notes',accuracy:'Accuracy',accuracyDesc:'For field documentation only. Verify formal measurements with a certified sound level meter.',version:'Version',privacy:'Privacy & compliance',feedback:'Feedback & bug report',subscription:'Plans & benefits',reportTemplate:'Report templates',templateType:'Template type',templateDesc:'Choose the PDF title, purpose, and tone for this use case.',organization:'Organization / project',organizationDesc:'Shown in PDF reports. Add a building, company, project, or client name.',storeAssets:'App Store copy',copyStore:'Copy listing',data:'Data',monitor:'Monitor',records:'Records',map:'Map'},
-    placeholders:{note:'Add a note, such as near construction or late-night traffic',place:'Enter a place name',search:'Search notes or coordinates...',feedback:'Describe the issue, device/browser, steps to reproduce, or feature request.',organization:'Optional'},
-    messages:{languageSaved:'Language preference saved.',copyStoreEmpty:'No store listing is available.',storeCopied:'Store listing copied.',clipboardUnsupported:'Clipboard access is unavailable. Select and copy the text manually.',summaryDownloaded:'Summary image downloaded.',pdfMissing:'PDF tools are still loading. Check your connection and try again.',noRecords:'No records yet.'},
-    media:{audio:'Audio',video:'Video',none:'No media'},
-    reference:[['0-49 dB','Quiet','Library, bedroom'],['50-69 dB','Moderate','Office, conversation'],['70-84 dB','Loud','Traffic, street'],['85+ dB','Hazardous','Risk of hearing damage']],
-  }
-};
-const englishLocale=(locale,languageSaved)=>({
-  ...I18N['en-US'],
-  locale,
-  messages:{...I18N['en-US'].messages,languageSaved},
-});
-Object.assign(I18N,{
-  es:englishLocale('es','Idioma guardado.'),
-  fr:englishLocale('fr','Langue enregistrée.'),
-  de:englishLocale('de','Sprache gespeichert.'),
-  ja:englishLocale('ja','言語設定を保存しました。'),
-  ko:englishLocale('ko','언어 설정이 저장되었습니다.'),
-  vi:englishLocale('vi','Đã lưu ngôn ngữ.'),
-  th:englishLocale('th','บันทึกภาษาแล้ว'),
-});
+// I18N translations moved to assets/i18n-data.js
+const I18N=window.__sfI18N||{};
+// Locales es/th/vi/ko/ja/de/fr derived in assets/i18n-data.js
 function supportedLanguageFromPrimary(value){
   const primary=String(value||'').trim().toLowerCase().split(/[-_]/)[0];
   return SUPPORTED_APP_LANGUAGES.find(language=>language.primary===primary)?.value||'';
@@ -3294,6 +3290,22 @@ function planConfig(plan=currentPlan){
   return PLAN_CONFIG[plan]||PLAN_CONFIG.free;
 }
 
+function isProActive(){
+  return membershipState.active&&['pro','team','lifetime'].includes(membershipState.plan);
+}
+
+function syncAutoRecProBadge(){
+  const pro=isProActive();
+  const lock=document.getElementById('autoRecLockIcon');
+  const lock2=document.getElementById('autoRecLockIcon2');
+  const badge=document.getElementById('autoRecProBadge');
+  const badge2=document.getElementById('autoRecProBadge2');
+  if(lock)lock.style.display=pro?'none':'inline';
+  if(lock2)lock2.style.display=pro?'none':'inline';
+  if(badge)badge.style.display=pro?'inline':'none';
+  if(badge2)badge2.style.display=pro?'inline':'none';
+}
+
 function normalizeMembership(input={}){
   const email=(input.email||'').trim();
   const plan=['free','pro','team','lifetime'].includes(input.plan)?input.plan:'free';
@@ -3410,6 +3422,7 @@ async function lookupMembership(){
 function logoutMembership(){
   membershipState=normalizeMembership();
   saveMembershipState();
+  syncAutoRecProBadge();
   applyMembershipToPlan();
   renderPlanStatus();
   renderMembershipPanel();
@@ -4077,15 +4090,17 @@ async function requestStartupPermissions(){
   dismissPermissionGuide();
 }
 
-function saveState(){
+const _debouncedSave=(window.__sfUtils&&window.__sfUtils.debounce||((fn)=>fn))(function(){
   try{
     localStorage.setItem(LS_KEY,JSON.stringify({
       calibrationPresetKey,calOffset,micGainDb,alertTh,alertsOn,smoothing,curViz,weighting,timeWeight,evidenceMode,placeLookupOn,longRunPowerSaver,longMonitorPlan,googleMapsKey,amapKey,baiduKey,currentPlan,calibrationHistory,reportTemplate,organizationName,
+      autoRecOnThreshold,autoRecMinSeconds,autoRecAfterStopSeconds,sustainedAlertOn,sustainedAlertMinSeconds,autoDayNightMode,dayThresholdDb,nightThresholdDb,
       calibrationBaseline:CALIBRATION_BASELINE,
       records:DB.records.map(r=>({...r,url:undefined,time:r.time instanceof Date?r.time.toISOString():r.time}))
     }));
   }catch(e){toast('本地存储空间不足，记录可能无法保存。','warn');}
-}
+}),500);
+const saveState=()=>_debouncedSave();
 
 function loadState(){
   try{
@@ -4093,6 +4108,9 @@ function loadState(){
     const s=JSON.parse(raw);
     calibrationPresetKey=CALIBRATION_PRESETS[s.calibrationPresetKey]?s.calibrationPresetKey:detectCalibrationPresetKey();
     calOffset=s.calOffset??getCalibrationPreset(calibrationPresetKey).offset;micGainDb=s.micGainDb??18;alertTh=s.alertTh??DEFAULT_ALERT_THRESHOLD_DB;alertsOn=s.alertsOn!==false;smoothing=s.smoothing??3;curViz=['w','f','o','t'].includes(s.curViz)?s.curViz:'w';
+    autoRecOnThreshold=s.autoRecOnThreshold??false;autoRecMinSeconds=s.autoRecMinSeconds??3;autoRecAfterStopSeconds=s.autoRecAfterStopSeconds??10;
+    sustainedAlertOn=s.sustainedAlertOn??false;sustainedAlertMinSeconds=s.sustainedAlertMinSeconds??30;
+    autoDayNightMode=s.autoDayNightMode??false;dayThresholdDb=s.dayThresholdDb??55;nightThresholdDb=s.nightThresholdDb??45;
     if(s.calibrationBaseline!==CALIBRATION_BASELINE&&typeof s.calOffset!=='number')calOffset=getCalibrationPreset(calibrationPresetKey).offset;
     weighting=['A','C','Z'].includes(s.weighting)?s.weighting:'A';timeWeight=s.timeWeight==='S'?'S':'F';
     evidenceMode=['audio','video','photo'].includes(s.evidenceMode)?s.evidenceMode:'audio';
@@ -4111,6 +4129,21 @@ function loadState(){
     document.getElementById('smR').value=smoothing;document.getElementById('smV').textContent=smoothing;
     document.getElementById('alertTog').classList.toggle('on',alertsOn);
     document.getElementById('alertTog').setAttribute('aria-checked',alertsOn);
+    document.getElementById('sustainedAlertTog').classList.toggle('on',sustainedAlertOn);
+    document.getElementById('sustainedAlertTog').setAttribute('aria-checked',sustainedAlertOn);
+    const susOpts=document.getElementById('sustainedAlertOpts');if(susOpts)susOpts.style.display=sustainedAlertOn?'flex':'none';
+    document.getElementById('susAlertsR').value=sustainedAlertMinSeconds;document.getElementById('susAlertsV').textContent=sustainedAlertMinSeconds+'s';
+    const susOpts2=document.getElementById('sustainedAlertOpts2');if(susOpts2)susOpts2.style.display=sustainedAlertOn?'flex':'none';
+    document.getElementById('susAlertsR2').value=sustainedAlertMinSeconds;document.getElementById('susAlertsV2').textContent=sustainedAlertMinSeconds+'s';
+    document.getElementById('autoRecTog').classList.toggle('on',autoRecOnThreshold);
+    document.getElementById('autoRecTog').setAttribute('aria-checked',autoRecOnThreshold);
+    const autoOpts=document.getElementById('autoRecOpts');if(autoOpts)autoOpts.style.display=autoRecOnThreshold?'flex':'none';
+    document.getElementById('autoRecMinSR').value=autoRecMinSeconds;document.getElementById('autoRecMinSV').textContent=autoRecMinSeconds+'s';
+    document.getElementById('autoRecAfterStopSR').value=autoRecAfterStopSeconds;document.getElementById('autoRecAfterStopSV').textContent=autoRecAfterStopSeconds+'s';
+    const t2=document.getElementById('autoRecTog2');if(t2){t2.classList.toggle('on',autoRecOnThreshold);t2.setAttribute('aria-checked',autoRecOnThreshold);}
+    const autoOpts2=document.getElementById('autoRecOpts2');if(autoOpts2)autoOpts2.style.display=autoRecOnThreshold?'flex':'none';
+    document.getElementById('autoRecMinSR2').value=autoRecMinSeconds;document.getElementById('autoRecMinSV2').textContent=autoRecMinSeconds+'s';
+    document.getElementById('autoRecAfterStopSR2').value=autoRecAfterStopSeconds;document.getElementById('autoRecAfterStopSV2').textContent=autoRecAfterStopSeconds+'s';
     document.getElementById('placeTog').classList.toggle('on',placeLookupOn);
     document.getElementById('placeTog').setAttribute('aria-checked',placeLookupOn);
     syncPowerSaverToggle();
@@ -4125,6 +4158,11 @@ function loadState(){
     if(presetSelect)presetSelect.value=calibrationPresetKey;
     syncSeg('weightSeg','data-weight',weighting);syncSeg('timeSeg','data-time',timeWeight);
     setViz(curViz);syncEvidenceModeUi();updateWeightUi();renderPlanStatus();renderCalibrationPresetInfo();renderCalibrationHistory();
+    document.getElementById('dayNightTog').classList.toggle('on',autoDayNightMode);document.getElementById('dayNightTog').setAttribute('aria-checked',autoDayNightMode);
+    const dnOpts=document.getElementById('dayNightOpts');if(dnOpts)dnOpts.style.display=autoDayNightMode?'flex':'none';
+    document.getElementById('dayNightTog2').classList.toggle('on',autoDayNightMode);document.getElementById('dayNightTog2').setAttribute('aria-checked',autoDayNightMode);
+    const dnOpts2=document.getElementById('dayNightOpts2');if(dnOpts2)dnOpts2.style.display=autoDayNightMode?'flex':'none';
+    if(autoDayNightMode)syncDayNightBadge();
   }catch(e){toast('历史数据读取失败，已使用空记录启动。','warn');}
 }
 
@@ -4569,13 +4607,16 @@ function setViz(v){
 }
 
 /* ── Canvas fit ── */
+const _canvasDims=new Map();
 function fitW(id){
   const c=document.getElementById(id);if(!c)return c;
+  const cached=_canvasDims.get(id);
+  if(cached&&c.width===cached.w&&c.height===cached.h)return c;
   const rect=c.getBoundingClientRect();
   const pw=Math.floor(rect.width);
   const ph=Math.floor(rect.height)||Number(c.getAttribute('height'))||88;
-  if(pw>0&&c.width!==pw)c.width=pw;
-  if(ph>0&&c.height!==ph)c.height=ph;
+  if(pw>0&&c.width!==pw){c.width=pw;_canvasDims.set(id,{w:pw,h:ph});}
+  else if(ph>0&&c.height!==ph){c.height=ph;_canvasDims.set(id,{w:c.width,h:ph});}
   return c;
 }
 
@@ -4889,6 +4930,8 @@ function tick(){
   const throttle=thermalThrottleState(now);
   handleThermalState(throttle);
   lastAnalysisAt=now;
+  // ── Day/night auto threshold ──
+  if(autoDayNightMode&&tickN%20===0){applyDayNightThreshold();}
   const dt=lastTick?(now-lastTick)/1000:1/60;
   lastTick=now;
   analyser.getByteTimeDomainData(wBuf);fftAn.getByteFrequencyData(fBuf);
@@ -4926,12 +4969,63 @@ function tick(){
     lastVisualAt=now;
   }
   const ab=document.getElementById('alertBox');
-  if(alertsOn&&inst>=alertTh&&inst>0){
+  const isAbove=inst>=alertTh&&inst>0;
+  const nowTs=Date.now();
+
+  // ── Sustained alert ──
+  if(sustainedAlertOn&&isAbove){
+    if(!sustainedAlertAboveSince) sustainedAlertAboveSince=nowTs;
+    const susSec=(nowTs-sustainedAlertAboveSince)/1000;
+    if(susSec>=sustainedAlertMinSeconds&&!sustainedAlertFired){
+      sustainedAlertFired=true;
+      ab.className='alert show as';
+      document.getElementById('alertMsg').textContent=appLanguage!=='zh-CN'
+        ?`Sustained ${Math.round(susSec)}s above ${alertTh} dB — ${Math.round(inst)} ${weightLabel()}`
+        :`持续超标 ${Math.round(susSec)} 秒，当前 ${Math.round(inst)} ${weightLabel()}，超过阈值 ${alertTh} dB`;
+    }
+  }else{
+    sustainedAlertAboveSince=0;
+    sustainedAlertFired=false;
+    if(!alertsOn||!isAbove){
+      ab.className='alert';
+    }
+  }
+
+  // ── Instant alert (only when sustained alert is off) ──
+  if(alertsOn&&!sustainedAlertOn&&isAbove){
     ab.className=`alert show ${inst>=85?'ad':'aw'}`;
     document.getElementById('alertMsg').textContent=appLanguage!=='zh-CN'
       ?`Now ${Math.round(inst)} ${weightLabel()} · ${lv.l} · above ${alertTh} dB`
       :`当前 ${Math.round(inst)} ${weightLabel()}，${lv.l}，已超过阈值 ${alertTh} dB`;
-  }else{ab.className='alert';}
+  }
+
+  // ── Auto-record on threshold exceed ──
+  if(autoRecOnThreshold){
+    if(isAbove){
+      if(!autoRecAboveSince) autoRecAboveSince=nowTs;
+      const aboveSec=(nowTs-autoRecAboveSince)/1000;
+      // Trigger auto-record if: not recording, above threshold long enough, no cooldown
+      if(!isRec&&aboveSec>=autoRecMinSeconds&&nowTs>autoRecCooldownUntil){
+        autoRecAboveSince=nowTs; // reset so it doesn't retrigger immediately
+        toggleRec(); // async, don't await
+      }
+      // Cancel any pending auto-stop when level is still above threshold
+      if(isRec&&autoRecTimeout){
+        clearTimeout(autoRecTimeout);
+        autoRecTimeout=null;
+      }
+    }else{
+      autoRecAboveSince=0;
+      // Level dropped below threshold while recording — set auto-stop timer
+      if(isRec&&!autoRecTimeout){
+        autoRecTimeout=setTimeout(()=>{
+          autoRecTimeout=null;
+          if(isRec) toggleRec(); // stop recording
+          autoRecCooldownUntil=Date.now()+30000; // 30s cooldown after auto-stop
+        },autoRecAfterStopSeconds*1000);
+      }
+    }
+  }
   if(longMonitorPlan.autoStopMinutes>0&&sessStart&&Date.now()-sessStart.getTime()>=longMonitorPlan.autoStopMinutes*60*1000){
     longMonitorPlan.autoStopMinutes=0;
     toast(appLanguage!=='zh-CN'?'Long monitoring task reached the auto-stop time.':'长时监测任务已到自动停止时间。','info',6200);
@@ -5863,6 +5957,81 @@ function applyProMeterCalibration(){setCalibrationPreset(calibrationPresetKey,{s
 function setMicGain(){micGainDb=+document.getElementById('micR').value;document.getElementById('micV').textContent=micGainDb+' dB';updateMicGain();saveState();}
 function setTh(){alertTh=+document.getElementById('thR').value;document.getElementById('thV').textContent=alertTh+' dB';saveState();}
 function togAlert(){alertsOn=!alertsOn;const t=document.getElementById('alertTog');t.classList.toggle('on',alertsOn);t.setAttribute('aria-checked',alertsOn);saveState();}
+function togSustainedAlert(){sustainedAlertOn=!sustainedAlertOn;const t=document.getElementById('sustainedAlertTog');t.classList.toggle('on',sustainedAlertOn);t.setAttribute('aria-checked',sustainedAlertOn);const opts=document.getElementById('sustainedAlertOpts');if(opts)opts.style.display=sustainedAlertOn?'flex':'none';const opts2=document.getElementById('sustainedAlertOpts2');if(opts2)opts2.style.display=sustainedAlertOn?'flex':'none';saveState();}
+function setSustainedAlertSec(){sustainedAlertMinSeconds=+document.getElementById('susAlertsR').value;document.getElementById('susAlertsV').textContent=sustainedAlertMinSeconds+'s';document.getElementById('susAlertsR2').value=sustainedAlertMinSeconds;document.getElementById('susAlertsV2').textContent=sustainedAlertMinSeconds+'s';saveState();}
+function setSustainedAlertSec2(){sustainedAlertMinSeconds=+document.getElementById('susAlertsR2').value;document.getElementById('susAlertsV2').textContent=sustainedAlertMinSeconds+'s';document.getElementById('susAlertsR').value=sustainedAlertMinSeconds;document.getElementById('susAlertsV').textContent=sustainedAlertMinSeconds+'s';saveState();}
+function isDayPeriod(){
+  const h=new Date().getHours();
+  return h>=7&&h<22;
+}
+function applyDayNightThreshold(){
+  if(!autoDayNightMode)return;
+  const isDay=isDayPeriod();
+  const newTh=isDay?dayThresholdDb:nightThresholdDb;
+  if(newTh!==alertTh){
+    alertTh=newTh;
+    const thR=document.getElementById('thR');if(thR){thR.value=alertTh;}
+    const thV=document.getElementById('thV');if(thV){thV.textContent=alertTh+' dB';}
+    syncDayNightBadge();
+    saveState();
+  }
+}
+function syncDayNightBadge(){
+  const isDay=isDayPeriod();
+  const db1=document.getElementById('dayNightBadge');
+  const db2=document.getElementById('dayNightBadge2');
+  const st1=document.getElementById('dayNightStatus');
+  const st2=document.getElementById('dayNightStatus2');
+  if(db1){db1.textContent=isDay?'白天':'夜间';db1.className=isDay?'day-badge':'night-badge';}
+  if(db2){db2.textContent=isDay?'白天':'夜间';db2.className=isDay?'day-badge':'night-badge';}
+  if(st1)st1.textContent=isDay?`白天模式，当前 ${dayThresholdDb} dB`:`夜间模式，当前 ${nightThresholdDb} dB`;
+  if(st2)st2.textContent=isDay?`白天模式，当前 ${dayThresholdDb} dB`:`夜间模式，当前 ${nightThresholdDb} dB`;
+}
+function togDayNightThreshold(){
+  autoDayNightMode=!autoDayNightMode;
+  const t=document.getElementById('dayNightTog');
+  t.classList.toggle('on',autoDayNightMode);t.setAttribute('aria-checked',autoDayNightMode);
+  const opts=document.getElementById('dayNightOpts');
+  if(opts)opts.style.display=autoDayNightMode?'flex':'none';
+  const t2=document.getElementById('dayNightTog2');
+  if(t2){t2.classList.toggle('on',autoDayNightMode);t2.setAttribute('aria-checked',autoDayNightMode);}
+  const opts2=document.getElementById('dayNightOpts2');
+  if(opts2)opts2.style.display=autoDayNightMode?'flex':'none';
+  if(autoDayNightMode){applyDayNightThreshold();}saveState();
+}
+function togDayNightThreshold2(){
+  autoDayNightMode=!autoDayNightMode;
+  const t=document.getElementById('dayNightTog2');
+  t.classList.toggle('on',autoDayNightMode);t.setAttribute('aria-checked',autoDayNightMode);
+  const opts=document.getElementById('dayNightOpts2');
+  if(opts)opts.style.display=autoDayNightMode?'flex':'none';
+  const t2=document.getElementById('dayNightTog');
+  if(t2){t2.classList.toggle('on',autoDayNightMode);t2.setAttribute('aria-checked',autoDayNightMode);}
+  const opts2=document.getElementById('dayNightOpts');
+  if(opts2)opts2.style.display=autoDayNightMode?'flex':'none';
+  if(autoDayNightMode){applyDayNightThreshold();}saveState();
+}
+function togAutoRec(){
+  if(!isProActive()){
+    toast(appLanguage!=='zh-CN'?'Auto-record is a Pro feature. Upgrade to unlock it.':'超标自动录音是 Pro 专属功能，升级后解锁。','warn',5000);
+    showSubscriptionPlans();
+    return;
+  }
+  autoRecOnThreshold=!autoRecOnThreshold;
+  const t=document.getElementById('autoRecTog');
+  t.classList.toggle('on',autoRecOnThreshold);
+  t.setAttribute('aria-checked',autoRecOnThreshold);
+  const opts=document.getElementById('autoRecOpts');if(opts)opts.style.display=autoRecOnThreshold?'flex':'none';
+  const opts2=document.getElementById('autoRecOpts2');if(opts2)opts2.style.display=autoRecOnThreshold?'flex':'none';
+  const t2=document.getElementById('autoRecTog2');if(t2){t2.classList.toggle('on',autoRecOnThreshold);t2.setAttribute('aria-checked',autoRecOnThreshold);}
+  saveState();
+  trackEvent(autoRecOnThreshold?'auto_rec_enabled':'auto_rec_disabled',{plan:membershipState.plan});
+}
+function togAutoRec2(){togAutoRec();}
+function setAutoRecMinSec(){autoRecMinSeconds=+document.getElementById('autoRecMinSR').value;document.getElementById('autoRecMinSV').textContent=autoRecMinSeconds+'s';document.getElementById('autoRecMinSR2').value=autoRecMinSeconds;document.getElementById('autoRecMinSV2').textContent=autoRecMinSeconds+'s';saveState();}
+function setAutoRecMinSec2(){autoRecMinSeconds=+document.getElementById('autoRecMinSR2').value;document.getElementById('autoRecMinSV2').textContent=autoRecMinSeconds+'s';document.getElementById('autoRecMinSR').value=autoRecMinSeconds;document.getElementById('autoRecMinSV').textContent=autoRecMinSeconds+'s';saveState();}
+function setAutoRecAfterStopSec(){autoRecAfterStopSeconds=+document.getElementById('autoRecAfterStopSR').value;document.getElementById('autoRecAfterStopSV').textContent=autoRecAfterStopSeconds+'s';document.getElementById('autoRecAfterStopSR2').value=autoRecAfterStopSeconds;document.getElementById('autoRecAfterStopSV2').textContent=autoRecAfterStopSeconds+'s';saveState();}
+function setAutoRecAfterStopSec2(){autoRecAfterStopSeconds=+document.getElementById('autoRecAfterStopSR2').value;document.getElementById('autoRecAfterStopSV2').textContent=autoRecAfterStopSeconds+'s';document.getElementById('autoRecAfterStopSR').value=autoRecAfterStopSeconds;document.getElementById('autoRecAfterStopSV').textContent=autoRecAfterStopSeconds+'s';saveState();}
 function setSm(){smoothing=+document.getElementById('smR').value;document.getElementById('smV').textContent=smoothing;if(analyser)analyser.smoothingTimeConstant=analyserSmooth(smoothing);saveState();}
 function togPlaceLookup(){placeLookupOn=!placeLookupOn;const t=document.getElementById('placeTog');t.classList.toggle('on',placeLookupOn);t.setAttribute('aria-checked',placeLookupOn);if(!placeLookupOn)setPlaceText(null,'off');saveState();}
 function syncPowerSaverToggle(){const t=document.getElementById('powerSaverTog');if(!t)return;t.classList.toggle('on',longRunPowerSaver);t.setAttribute('aria-checked',longRunPowerSaver);}
@@ -6403,6 +6572,7 @@ initSettingsDrawerTabs();
 loadCommercialMetrics();
 loadMembershipState();
 applyMembershipToPlan();
+syncAutoRecProBadge();
 applyPlatformProfile();
 applyAdminMode();
 if(!localStorage.getItem(LS_KEY))setCalibrationPreset(detectCalibrationPresetKey(),{save:false,notify:false});

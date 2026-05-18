@@ -36,6 +36,10 @@
   };
 
   function primaryFromValue(value) {
+    // Delegate to shared utils.js if available
+    if (window.__sfUtils && window.__sfUtils.supportedLanguageFromPrimary) {
+      return window.__sfUtils.supportedLanguageFromPrimary(value)?.primary || 'en';
+    }
     if (!value) return 'en';
     return String(value).trim().toLowerCase().split(/[-_]/)[0];
   }

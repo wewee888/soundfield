@@ -83,6 +83,8 @@
   }
 
   function escapeHtml(value) {
+    // Delegated to shared utils.js to avoid duplication
+    if (window.__sfUtils && window.__sfUtils.escHtml) return window.__sfUtils.escHtml(value);
     return String(value || '').replace(/[&<>"']/g, (char) => ({
       '&': '&amp;',
       '<': '&lt;',
