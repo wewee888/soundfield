@@ -2,7 +2,7 @@
   "name": "SOUNDTEST.PRO Noise Evidence",
   "short_name": "SOUNDTEST.PRO",
   "description": "Professional noise recording app for resident complaints, property coordination, construction inspection, workplace noise management, acoustic evidence photos, video, and PDF/CSV reports.",
-  "start_url": "./soundfield.html",
+  "start_url": "./soundtest.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
