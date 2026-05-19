@@ -48,6 +48,21 @@ body {
     min-height: calc(100dvh - 24px);
   }
 
+  .bottom-shell {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: end;
+  }
+
+  .geo-dock {
+    grid-column: 1;
+  }
+
+  .bottom-nav {
+    grid-column: 1 / -1;
+  }
+
   .hero {
     align-self: start;
     height: auto;

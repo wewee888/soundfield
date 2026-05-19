@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Install SOUNDTEST.PRO as a PWA or use the browser version for local noise documentation, evidence photos, recordings, and reports.">
   <title>Install SOUNDTEST.PRO · Web, PWA, and Future App Options</title>
+  <link rel="canonical" href="https://soundtest.pro/download.html">
   <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/lang-flags.js" defer></script>
   <script src="assets/site-i18n.js" defer></script>
   <script src="assets/site-auth.js" defer></script>
+  <script src="assets/site-experience.js" defer></script>
 </head>
 <body>
   <main class="site-shell">
@@ -24,31 +27,42 @@
       </div>
     </nav>
 
-    <section class="page-header">
-      <div class="eyebrow">Distribution</div>
-      <h1>Start with the web app. Install as PWA when your browser supports it.</h1>
-      <p class="lead">SOUNDTEST.PRO is intentionally launching as a website first. The browser version validates demand before native app store billing, accounts, cloud backup, and background recording claims.</p>
+    <section class="hero">
+      <div class="hero-stack reveal">
+        <span class="eyebrow">Distribution</span>
+        <h1 class="hero-headline">Start with the <em>web app</em>. Install as PWA when your browser supports it.</h1>
+        <p class="hero-lead">SOUNDTEST.PRO works instantly in any modern browser — no installation required. For the best experience, use Chrome, Edge, or Safari on HTTPS. PWA installation adds a Home Screen icon and full-screen mode on supported devices.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="soundtest.html">Open web app</a>
+          <a class="button" href="privacy.html">Privacy first</a>
+          <a class="button ghost" href="changelog.html">View updates</a>
+        </div>
+      </div>
     </section>
 
     <section class="section grid">
-      <div class="card">
-        <h3>Web/PWA beta</h3>
+      <div class="card reveal">
+        <div class="card-badge">Available now</div>
+        <h3>Web / PWA beta</h3>
         <p>Use directly from HTTPS. Add to Home Screen on iOS or install from Chrome/Edge when available.</p>
-        <a class="button primary" href="soundfield.html">Open web app</a>
+        <a class="button primary" href="soundtest.html" style="margin-top:14px">Open web app</a>
       </div>
-      <div class="card">
+      <div class="card reveal">
+        <div class="card-badge" style="color:var(--accent-2)">On the roadmap</div>
         <h3>Future desktop offline</h3>
         <p>Planned as a local-first one-time purchase for offline monitoring, local export, calibration profiles, and no ads.</p>
       </div>
-      <div class="card">
-        <h3>Future iOS/Android</h3>
+      <div class="card reveal">
+        <div class="card-badge" style="color:var(--accent-3)">Later</div>
+        <h3>Future iOS / Android</h3>
         <p>Native app store releases require platform billing, permission review material, native save flows, and real-device validation.</p>
       </div>
     </section>
 
     <section class="section grid two">
-      <div class="card">
-        <h2>Browser requirements</h2>
+      <div class="card reveal">
+        <div class="card-badge">Browser support</div>
+        <h2>What your browser needs</h2>
         <ul class="check-list">
           <li>Secure context: HTTPS, localhost, or 127.0.0.1.</li>
           <li>Microphone permission for live sound analysis.</li>
@@ -57,7 +71,7 @@
           <li>IndexedDB for media persistence after refresh when supported.</li>
         </ul>
       </div>
-      <div class="notice">PWA install support does not mean App Store readiness. Background recording, native file save, subscriptions, privacy labels, and review assets remain separate release work.</div>
+      <div class="notice reveal">PWA install support does not mean App Store readiness. Background recording, native file save, subscriptions, privacy labels, and review assets remain separate release work.</div>
     </section>
   </main>
 </body>

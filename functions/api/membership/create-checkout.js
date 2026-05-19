@@ -30,7 +30,7 @@ async function lemonCreateCheckout({env,origin,plan,email,source='soundtest-pro-
     return {error:'billing_not_configured'};
   }
 
-  const redirectUrl=String(env.LEMON_REDIRECT_URL||`${origin}/soundfield.html?membership=success`);
+  const redirectUrl=String(env.LEMON_REDIRECT_URL||`${origin}/soundtest.html?membership=success`);
   const payload={
     data:{
       type:'checkouts',

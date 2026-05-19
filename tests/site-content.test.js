@@ -62,6 +62,18 @@ test('changelog records latest public product updates', () => {
   assert.match(latest, /storage/i);
 });
 
+test('locale flag images are stored locally for Cloudflare deploy', () => {
+  const flagsDir = path.join(__dirname, '..', 'assets', 'flags');
+  ['us', 'cn', 'es', 'fr', 'de', 'jp', 'kr', 'vn', 'th'].forEach((iso) => {
+    const file = path.join(flagsDir, `${iso}.png`);
+    assert.ok(fs.existsSync(file), `${iso}.png exists`);
+    assert.ok(fs.statSync(file).size > 80, `${iso}.png is non-empty`);
+  });
+  const langFlags = fs.readFileSync(path.join(__dirname, '..', 'assets', 'lang-flags.js'), 'utf8');
+  assert.match(langFlags, /flags\//);
+  assert.doesNotMatch(langFlags, /flagcdn\.com/);
+});
+
 test('language routing prefers saved choice, then system language, then English', () => {
   assert.equal(i18n.pickLocale({ savedLocale: 'ja', navigatorLanguages: ['de-DE'] }), 'ja');
   assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['fr-CA', 'en-US'] }), 'fr');
@@ -192,7 +204,7 @@ test('public brand name displays as SOUNDTEST.PRO across website shell and manif
 });
 
 test('core tool page exposes SOUNDTEST.PRO as public app name', () => {
-  const html = fs.readFileSync(path.join(__dirname, '..', 'soundfield.html'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
   assert.match(html, /<meta name="application-name" content="SOUNDTEST\.PRO">/);
   assert.match(html, /<meta name="apple-mobile-web-app-title" content="SOUNDTEST\.PRO">/);
   assert.match(html, /<title>SOUNDTEST\.PRO/);
@@ -200,7 +212,7 @@ test('core tool page exposes SOUNDTEST.PRO as public app name', () => {
 });
 
 test('core tool retries microphone startup with basic constraints', () => {
-  const html = fs.readFileSync(path.join(__dirname, '..', 'soundfield.html'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
   assert.match(html, /async function requestMicrophoneStream\(\)/);
   assert.match(html, /async function ensureAudioContextReady\(\)/);
   assert.match(html, /getUserMedia\(professionalConstraints\)/);
@@ -212,13 +224,13 @@ test('core tool retries microphone startup with basic constraints', () => {
 });
 
 test('watermark camera UI does not reference block-scoped isVideo outside scope', () => {
-  const html = fs.readFileSync(path.join(__dirname, '..', 'soundfield.html'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
   assert.match(html, /const isVideo=\(watermarkCameraMode\|\|evidenceMode\)==='video';\s*const primary=document\.getElementById\('watermarkPrimaryBtn'\)/);
   assert.match(html, /if\(snapshotBtn\)snapshotBtn\.style\.display=isVideo&&isRec\?'inline-flex':'none';/);
 });
 
 test('core app language options stay synchronized with the website locales', () => {
-  const html = fs.readFileSync(path.join(__dirname, '..', 'soundfield.html'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
   ['en-US', 'zh-CN', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'].forEach((locale) => {
     assert.match(html, new RegExp(`<option value="${locale}">`), `${locale} option exists in the app selector`);
   });
@@ -236,7 +248,7 @@ test('core app language options stay synchronized with the website locales', () 
 });
 
 test('core tool wires Lemon checkout and membership lookup UI', () => {
-  const html = fs.readFileSync(path.join(__dirname, '..', 'soundfield.html'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
   assert.match(html, /memberEmailInput/);
   assert.match(html, /lookupMembership\(\)/);
   assert.match(html, /beginCheckout\('pro'\)/);

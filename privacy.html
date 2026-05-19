@@ -5,34 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SOUNDTEST.PRO privacy model: local microphone analysis, optional camera/location access, local browser storage, and user-controlled exports.">
   <title>Privacy · SOUNDTEST.PRO</title>
+  <link rel="canonical" href="https://soundtest.pro/privacy.html">
   <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/lang-flags.js" defer></script>
   <script src="assets/site-i18n.js" defer></script>
   <script src="assets/site-auth.js" defer></script>
+  <script src="assets/site-experience.js" defer></script>
 </head>
 <body>
   <main class="site-shell">
     <nav class="site-nav" aria-label="Primary">
       <div class="site-nav-main">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>SOUNDTEST.PRO</span></a>
-        <div class="nav-links"><a href="app.html">Open App</a><a href="accuracy.html">Accuracy</a><a href="samples.html">Samples</a><a href="auth.html">Account</a></div>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="app.html">Open App</a>
+          <a href="accuracy.html">Accuracy</a>
+          <a href="samples.html">Samples</a>
+          <a href="auth.html">Account</a>
+        </div>
       </div>
     </nav>
-    <section class="page-header">
-      <div class="eyebrow">Trust center</div>
-      <h1>Local-first privacy for sensitive noise records.</h1>
-      <p class="lead">Noise evidence can include voices, people, private spaces, and precise locations. SOUNDTEST.PRO keeps the Stage 1 web beta local unless users explicitly export or save files.</p>
+
+    <section class="hero">
+      <div class="hero-stack reveal">
+        <span class="eyebrow">Trust center · Local-first</span>
+        <h1 class="hero-headline"><em>Local-first</em> privacy for sensitive noise records.</h1>
+        <p class="hero-lead">Noise evidence can include voices, people, private spaces, and precise locations. SOUNDTEST.PRO keeps the Stage 1 web beta on your device unless you explicitly export or save files.</p>
+      </div>
     </section>
+
     <section class="section grid">
-      <div class="card"><h3>Microphone</h3><p>Used for live sound analysis in the browser. Audio is saved only after the user starts audio or video recording.</p></div>
-      <div class="card"><h3>Camera</h3><p>Used only for preview, acoustic evidence photos, or watermarked video. The user controls when media is generated.</p></div>
-      <div class="card"><h3>Location</h3><p>Used for GPS, map links, place labels, and report metadata. Reverse geocoding may send coordinates to the selected map provider.</p></div>
-      <div class="card"><h3>Local storage</h3><p>Settings and record metadata use localStorage. Media clips use IndexedDB when supported. Browser cleanup may remove local data.</p></div>
-      <div class="card"><h3>Exports</h3><p>PDF, CSV, JSON manifest, images, audio, and video are created only when the user chooses to export or save them.</p></div>
-      <div class="card"><h3>No cloud in beta</h3><p>The Stage 1 web beta has no account sync, cloud backup, team sharing, or server-side evidence retention.</p></div>
+      <div class="card reveal"><div class="card-badge">Microphone</div><h3>Live, on-device analysis</h3><p>The microphone stream is processed in the browser for live dB analysis. Audio is saved only after you start audio or video recording.</p></div>
+      <div class="card reveal"><div class="card-badge">Camera</div><h3>Optional capture only</h3><p>Used only for preview, acoustic evidence photos, or watermarked video. You control when media is generated.</p></div>
+      <div class="card reveal"><div class="card-badge">Location</div><h3>You choose the granularity</h3><p>Used for GPS, map links, place labels, and report metadata. Reverse geocoding may send coordinates to the selected map provider.</p></div>
+      <div class="card reveal"><div class="card-badge">Storage</div><h3>localStorage + IndexedDB</h3><p>Settings and metadata use localStorage. Media clips use IndexedDB when supported. Browser cleanup may remove local data.</p></div>
+      <div class="card reveal"><div class="card-badge">Exports</div><h3>Only when you say so</h3><p>PDF, CSV, JSON manifest, images, audio, and video files are created only when you choose to export or save them.</p></div>
+      <div class="card reveal"><div class="card-badge">Beta scope</div><h3>No cloud in beta</h3><p>Stage 1 has no account sync, cloud backup, team sharing, or server-side evidence retention.</p></div>
     </section>
+
     <section class="section grid two">
-      <div class="card"><h2>User responsibilities</h2><ul class="check-list"><li>Follow local audio/video recording consent laws.</li><li>Avoid sharing faces, private spaces, exact residential locations, or sensitive details without permission.</li><li>Save important media promptly because browser storage can be cleared.</li></ul></div>
-      <div class="notice">Future account or cloud versions must add account deletion, cloud deletion, retention controls, regional compliance, and encrypted storage policies before paid global launch.</div>
+      <div class="card reveal">
+        <div class="card-badge">User responsibilities</div>
+        <h2>Stay safe and respectful while recording.</h2>
+        <ul class="check-list">
+          <li>Follow local audio/video recording consent laws.</li>
+          <li>Avoid sharing faces, private spaces, exact residential locations, or sensitive details without permission.</li>
+          <li>Save important media promptly because browser storage can be cleared.</li>
+        </ul>
+      </div>
+      <div class="notice reveal">Future account or cloud versions must add account deletion, cloud deletion, retention controls, regional compliance, and encrypted storage policies before paid global launch.</div>
     </section>
   </main>
 </body>

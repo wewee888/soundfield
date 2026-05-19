@@ -274,22 +274,27 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
    BOTTOM NAV
    ═══════════════════════════════ */
 .bottom-nav{
-  flex-shrink:0;display:flex;
-  border-top:.5px solid var(--bdr2);
-  background:var(--surf);
+  flex-shrink:0;display:flex;gap:4px;
+  border-radius:24px;margin:0 12px 10px;
+  border:.5px solid rgba(255,255,255,.08);
+  background:linear-gradient(180deg,rgba(18,24,38,.85),rgba(10,14,24,.85));
   position:sticky;bottom:0;z-index:10;
-  padding-bottom:var(--safe-b);
-  backdrop-filter:blur(16px);
+  padding:6px 6px calc(6px + var(--safe-b));
+  backdrop-filter:blur(28px) saturate(180%);
+  box-shadow:0 24px 60px rgba(0,0,0,.45),inset 0 1px 1px rgba(255,255,255,.1);
 }
 .nav-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
-  padding:8px 0 10px;border:none;background:transparent;
-  color:var(--tx3);font-family:var(--sans);font-size:10px;font-weight:500;
-  cursor:pointer;transition:color .18s;position:relative;
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  padding:8px 0;border-radius:18px;border:none;background:transparent;
+  color:var(--tx3);font-family:var(--sans);font-size:10px;font-weight:600;
+  cursor:pointer;transition:all .3s cubic-bezier(0.25,0.8,0.25,1);position:relative;
 }
-.nav-btn svg{width:20px;height:20px;stroke:currentColor;transition:stroke .18s}
-.nav-btn.active{color:var(--accent)}
-.nav-btn.active svg{stroke:var(--accent)}
+.nav-btn svg{width:22px;height:22px;stroke:currentColor;transition:all .3s cubic-bezier(0.25,0.8,0.25,1)}
+.nav-btn:hover{background:rgba(255,255,255,.04);color:var(--tx2)}
+.nav-btn:hover svg{transform:translateY(-2px)}
+.nav-btn:active{transform:scale(.94)}
+.nav-btn.active{color:var(--accent)!important;background:rgba(42,255,212,.1)!important;font-weight:700!important}
+.nav-btn.active svg{stroke:var(--accent);filter:drop-shadow(0 0 12px rgba(42,255,212,.4));transform:translateY(-2px)}
 .nav-dot{position:absolute;top:6px;right:calc(50% - 14px);width:5px;height:5px;border-radius:50%;background:var(--red);display:none}
 .nav-dot.on{display:block}
 
@@ -2386,13 +2391,13 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="assets/utils.js"></script>
-<script src="assets/i18n-data.js"></script>
-<script src="assets/lang-flags.js"></script>
-<script src="assets/pro-meter.js"></script>
-<script src="assets/evidence-utils.js"></script>
-<script src="assets/storage-utils.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" data-cfasync="false" async></script>
+<script src="assets/utils.js" data-cfasync="false"></script>
+<script src="assets/i18n-data.js" data-cfasync="false"></script>
+<script src="assets/lang-flags.js" data-cfasync="false"></script>
+<script src="assets/pro-meter.js" data-cfasync="false"></script>
+<script src="assets/evidence-utils.js" data-cfasync="false"></script>
+<script src="assets/storage-utils.js" data-cfasync="false"></script>
 <script>
 /* ══ STATE ══ */
 const LS_KEY='sf_v5';
@@ -2638,14 +2643,6 @@ function renderAppLangPickers(){
 // I18N translations moved to assets/i18n-data.js
 const I18N=window.__sfI18N||{};
 // Locales es/th/vi/ko/ja/de/fr derived in assets/i18n-data.js
-function supportedLanguageFromPrimary(value){
-  const primary=String(value||'').trim().toLowerCase().split(/[-_]/)[0];
-  return SUPPORTED_APP_LANGUAGES.find(language=>language.primary===primary)?.value||'';
-}
-function normalizeAppLanguage(value){
-  if(I18N[value])return value;
-  return supportedLanguageFromPrimary(value);
-}
 function i18n(){return I18N[appLanguage]||I18N['en-US'];}
 function pathValue(source,path){
   return path.split('.').reduce((acc,key)=>acc&&acc[key],source);
@@ -4090,7 +4087,7 @@ async function requestStartupPermissions(){
   dismissPermissionGuide();
 }
 
-const _debouncedSave=(window.__sfUtils&&window.__sfUtils.debounce||((fn)=>fn))(function(){
+const _saveStateImpl=function(){
   try{
     localStorage.setItem(LS_KEY,JSON.stringify({
       calibrationPresetKey,calOffset,micGainDb,alertTh,alertsOn,smoothing,curViz,weighting,timeWeight,evidenceMode,placeLookupOn,longRunPowerSaver,longMonitorPlan,googleMapsKey,amapKey,baiduKey,currentPlan,calibrationHistory,reportTemplate,organizationName,
@@ -4099,7 +4096,10 @@ const _debouncedSave=(window.__sfUtils&&window.__sfUtils.debounce||((fn)=>fn))(f
       records:DB.records.map(r=>({...r,url:undefined,time:r.time instanceof Date?r.time.toISOString():r.time}))
     }));
   }catch(e){toast('本地存储空间不足，记录可能无法保存。','warn');}
-}),500);
+};
+const _debouncedSave=(window.__sfUtils&&window.__sfUtils.debounce)
+  ?window.__sfUtils.debounce(_saveStateImpl,500)
+  :_saveStateImpl;
 const saveState=()=>_debouncedSave();
 
 function loadState(){
