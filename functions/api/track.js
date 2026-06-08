@@ -32,17 +32,18 @@ export async function onRequestPost(context) {
 
   if (env.ab_test) {
     try {
-      // Atomically read-modify-write each counter with cacheTtl:0 to bypass edge cache
+      // Atomically read-modify-write each counter with minimum-allowed cacheTtl (30s)
+      // to reduce edge cache staleness. KV's minimum cacheTtl is 30s.
       const ctaKey = `clicks:${variant}:${cta}`;
-      const cur = parseInt((await env.ab_test.get(ctaKey, { cacheTtl: 0 })) || '0', 10);
+      const cur = parseInt((await env.ab_test.get(ctaKey, { cacheTtl: 30 })) || '0', 10);
       await env.ab_test.put(ctaKey, String(cur + 1));
 
       const totalKey = `clicks:${variant}:_total`;
-      const total = parseInt((await env.ab_test.get(totalKey, { cacheTtl: 0 })) || '0', 10);
+      const total = parseInt((await env.ab_test.get(totalKey, { cacheTtl: 30 })) || '0', 10);
       await env.ab_test.put(totalKey, String(total + 1));
 
       const lifeKey = 'lifetime:total';
-      const life = parseInt((await env.ab_test.get(lifeKey, { cacheTtl: 0 })) || '0', 10);
+      const life = parseInt((await env.ab_test.get(lifeKey, { cacheTtl: 30 })) || '0', 10);
       await env.ab_test.put(lifeKey, String(life + 1));
     } catch (e) {
       console.error('KV write failed', e);

@@ -28,12 +28,12 @@ export async function onRequestGet(context) {
     });
   }
   try {
-    result.lifetime_total = parseInt((await env.ab_test.get('lifetime:total', { cacheTtl: 0 })) || '0', 10);
+    result.lifetime_total = parseInt((await env.ab_test.get('lifetime:total', { cacheTtl: 30 })) || '0', 10);
     for (const v of VARIANTS) {
-      const total = parseInt((await env.ab_test.get(`clicks:${v}:_total`, { cacheTtl: 0 })) || '0', 10);
+      const total = parseInt((await env.ab_test.get(`clicks:${v}:_total`, { cacheTtl: 30 })) || '0', 10);
       const ctas = {};
       for (const c of CTAS) {
-        const n = parseInt((await env.ab_test.get(`clicks:${v}:${c}`, { cacheTtl: 0 })) || '0', 10);
+        const n = parseInt((await env.ab_test.get(`clicks:${v}:${c}`, { cacheTtl: 30 })) || '0', 10);
         if (n > 0) ctas[c] = n;
       }
       result.variants[v] = { total, ctas };
