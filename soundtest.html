@@ -12,6 +12,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="PWA_READY" content="true">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
+<link rel="apple-touch-icon" sizes="192x192" href="assets/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="assets/icon-512.png">
 <title>SOUNDTEST.PRO · 声学证据与环境噪声记录</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2326,9 +2331,11 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
         <div class="policy-pill"><strong>测试版边界</strong>阶段 1 Web/PWA 只验证本地记录闭环；Pro、Team 和 Lifetime Offline 仍是权益原型或咨询入口，不收真实费用。</div>
         <div class="policy-pill"><strong>儿童与敏感场景</strong>不面向儿童主动收集数据；学校、医院、住宅投诉等场景应避免公开分享精确位置和人物画面。</div>
         <div class="policy-pill"><strong>服务条款边界</strong>本工具用于环境记录、趋势分析和证据整理，正式检测应以经检定声级计复核为准。</div>
+        <div class="policy-pill"><strong>退款政策</strong>Pro / Team / Lifetime Offline 各档权益的退款条件、申请流程与处理时效请见 <a href="refund.html" target="_blank" rel="noopener">refund.html</a>，账单咨询 <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>。</div>
       </div>
       <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
         <button class="btn b-cyan" onclick="downloadPolicyPack()">下载政策草案</button>
+        <a class="btn b-cyan" href="refund.html" target="_blank" rel="noopener" style="text-decoration:none">退款政策</a>
       </div>
     </div>
     <div class="card admin-only layout-settings-admin" id="storeListingCard" data-settings-section="admin">
