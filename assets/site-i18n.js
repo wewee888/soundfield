@@ -152,6 +152,12 @@
   function initLanguageSwitcher() {
     const locale = detectPageLocale();
     saveLocale(locale);
+    const path = window.location.pathname;
+    const onRoot = path === '/' || /^\/(?:index\.html?)?$/i.test(path);
+    if (onRoot && locale !== 'en') {
+      window.location.replace(localePath(locale));
+      return;
+    }
     buildNavLanguageSwitcher(locale);
     enhanceFooterFlags();
   }
