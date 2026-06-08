@@ -1,6 +1,7 @@
 // Cloudflare Pages Function: /api/track
 // Receives CTA click events from A/B test variants
 // Persists to KV (counters) + logs to console
+// All KV reads use cacheTtl:0 to avoid stale-edge reads
 
 const VARIANTS = ['A', 'B', 'C'];
 const CTAS = [
@@ -29,19 +30,19 @@ export async function onRequestPost(context) {
   }
   const ts = Number(payload.ts) || Date.now();
 
-  // Persist to KV (best-effort, do not fail the click if KV is down)
   if (env.ab_test) {
     try {
-      const key = `clicks:${variant}:${cta}`;
-      const cur = parseInt((await env.ab_test.get(key)) || '0', 10);
-      await env.ab_test.put(key, String(cur + 1));
-      // Total clicks per variant
+      // Atomically read-modify-write each counter with cacheTtl:0 to bypass edge cache
+      const ctaKey = `clicks:${variant}:${cta}`;
+      const cur = parseInt((await env.ab_test.get(ctaKey, { cacheTtl: 0 })) || '0', 10);
+      await env.ab_test.put(ctaKey, String(cur + 1));
+
       const totalKey = `clicks:${variant}:_total`;
-      const total = parseInt((await env.ab_test.get(totalKey)) || '0', 10);
+      const total = parseInt((await env.ab_test.get(totalKey, { cacheTtl: 0 })) || '0', 10);
       await env.ab_test.put(totalKey, String(total + 1));
-      // Lifetime counter
+
       const lifeKey = 'lifetime:total';
-      const life = parseInt((await env.ab_test.get(lifeKey)) || '0', 10);
+      const life = parseInt((await env.ab_test.get(lifeKey, { cacheTtl: 0 })) || '0', 10);
       await env.ab_test.put(lifeKey, String(life + 1));
     } catch (e) {
       console.error('KV write failed', e);

@@ -1,5 +1,6 @@
 // Cloudflare Pages Function: /api/stats
 // Returns aggregated A/B test click counts for the stats dashboard
+// All reads use cacheTtl:0 to bypass KV edge cache
 
 const VARIANTS = ['A', 'B', 'C'];
 const CTAS = [
@@ -27,12 +28,12 @@ export async function onRequestGet(context) {
     });
   }
   try {
-    result.lifetime_total = parseInt((await env.ab_test.get('lifetime:total')) || '0', 10);
+    result.lifetime_total = parseInt((await env.ab_test.get('lifetime:total', { cacheTtl: 0 })) || '0', 10);
     for (const v of VARIANTS) {
-      const total = parseInt((await env.ab_test.get(`clicks:${v}:_total`)) || '0', 10);
+      const total = parseInt((await env.ab_test.get(`clicks:${v}:_total`, { cacheTtl: 0 })) || '0', 10);
       const ctas = {};
       for (const c of CTAS) {
-        const n = parseInt((await env.ab_test.get(`clicks:${v}:${c}`)) || '0', 10);
+        const n = parseInt((await env.ab_test.get(`clicks:${v}:${c}`, { cacheTtl: 0 })) || '0', 10);
         if (n > 0) ctas[c] = n;
       }
       result.variants[v] = { total, ctas };
