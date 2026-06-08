@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Record 60 seconds of noise, get a notarized dB certificate, settle it tonight not in court. Free, anonymous, browser-based.">
+  <meta name="keywords" content="noise evidence recorder, free decibel meter, neighbor noise proof, construction noise log, rental dispute evidence, browser dB meter">
+  <meta name="theme-color" content="#04060d">
+  <meta name="x-variant" content="A">
+  <title>Stop the Silence · SOUNDTEST.PRO</title>
+  <link rel="canonical" href="https://soundtest.pro/a/">
+  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/">
+  <link rel="alternate" hreflang="en" href="https://soundtest.pro/a/">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <script src="../assets/lang-flags.js" defer></script>
+  <script src="../assets/site-i18n.js" defer></script>
+  <script src="../assets/site-auth.js" defer></script>
+  <script src="../assets/site-experience.js" defer></script>
+  <!-- Cloudflare Web Analytics (page view tracking for A/B test) -->
+  <!-- Token placeholder: user adds their CF Web Analytics token from CF dashboard -->
+  <!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "REPLACE_ME"}'></script> -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "SOUNDTEST.PRO",
+    "alternateName": "Free Online Noise Evidence Recorder",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web browser",
+    "url": "https://soundtest.pro/a/",
+    "description": "Browser-based noise documentation tool for decibel estimates, audio recording, time and location notes, and report exports.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    /* Hero variant A: evidence-pitch, compact single-column with a real preview panel on the right */
+    .hero.compact { padding: 28px 0 24px; gap: 22px; }
+    .hero.compact .hero-stack { text-align: left; max-width: 100%; }
+    .hero.compact .hero-headline { font-size: clamp(36px, 5vw, 64px); }
+    .hero.compact .hero-lead { max-width: 56ch; margin: 0; text-align: left; }
+    .social-proof {
+      display: flex; align-items: center; gap: 10px; padding: 8px 14px;
+      border-radius: 999px; border: 1px solid var(--ink-border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      font-size: 12.5px; color: var(--muted); width: fit-content;
+    }
+    .social-proof strong { color: var(--text-strong); font-weight: 700; }
+    .social-proof .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+    .hero-split-empathy { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 32px; align-items: center; }
+    @media (max-width: 880px) { .hero-split-empathy { grid-template-columns: 1fr; gap: 22px; } }
+    .hero-preview {
+      position: relative; padding: 22px; border-radius: var(--radius-lg);
+      border: 1px solid var(--ink-border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      backdrop-filter: blur(20px) saturate(140%);
+      box-shadow: var(--shadow-lg), inset 0 1px 0 var(--ink-rim);
+      overflow: hidden;
+    }
+    .hero-preview::before {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: radial-gradient(160% 80% at 0% 0%, rgba(255,255,255,0.10), transparent 40%);
+    }
+    .preview-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .preview-head .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+    .preview-head .badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+    .preview-head .rec { display: inline-flex; align-items: center; gap: 6px; font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--text-strong); }
+    .preview-head .rec .rec-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); box-shadow: 0 0 12px var(--red); animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .preview-meter { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; }
+    .preview-meter .val { font-family: "JetBrains Mono", monospace; font-size: clamp(56px, 7vw, 88px); font-weight: 700; color: var(--text-strong); letter-spacing: -0.04em; line-height: 1; }
+    .preview-meter .unit { font-family: "JetBrains Mono", monospace; font-size: 22px; color: var(--muted); }
+    .preview-meter .tag { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(255, 98, 118, 0.12); color: var(--red); border: 1px solid rgba(255, 98, 118, 0.3); margin-left: auto; }
+    .preview-bar { position: relative; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.05); overflow: hidden; margin-bottom: 12px; }
+    .preview-bar-fill { position: absolute; inset: 0; width: 72%; background: linear-gradient(90deg, var(--accent), var(--amber), var(--red)); border-radius: 999px; }
+    .preview-bar-marks { display: flex; justify-content: space-between; font-family: "JetBrains Mono", monospace; font-size: 10px; color: var(--soft); margin-bottom: 18px; }
+    .preview-waveform { display: flex; align-items: center; gap: 3px; height: 56px; margin-bottom: 16px; }
+    .preview-waveform span { flex: 1; background: linear-gradient(180deg, var(--accent-2), var(--accent)); border-radius: 2px; opacity: 0.85; }
+    .preview-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-top: 14px; border-top: 1px solid var(--ink-border); }
+    .preview-meta div { font-size: 11px; color: var(--soft); }
+    .preview-meta div strong { display: block; color: var(--text); font-size: 13px; font-weight: 600; margin-top: 2px; }
+
+    /* Anxiety moment */
+    .anxiety { padding: 48px 0 36px; }
+    .anxiety-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 36px; align-items: center; }
+    @media (max-width: 880px) { .anxiety-grid { grid-template-columns: 1fr; gap: 22px; } }
+    .anxiety-scene { position: relative; aspect-ratio: 4 / 3; border-radius: var(--radius-lg); border: 1px solid var(--ink-border); background: radial-gradient(circle at 30% 20%, rgba(124, 155, 255, 0.18), transparent 55%), radial-gradient(circle at 75% 80%, rgba(44, 240, 193, 0.12), transparent 50%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); overflow: hidden; display: grid; place-items: center; }
+    .anxiety-scene .clock { font-family: "JetBrains Mono", monospace; font-size: clamp(40px, 6vw, 64px); color: var(--text-strong); letter-spacing: -0.02em; }
+    .anxiety-scene .clock .colon { color: var(--accent); animation: pulse 1s steps(2) infinite; }
+    .anxiety-scene .clock-label { position: absolute; top: 22px; left: 22px; font-size: 12px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+    .anxiety-scene .decibel { position: absolute; bottom: 22px; right: 22px; font-family: "JetBrains Mono", monospace; font-size: 16px; color: var(--red); }
+    .anxiety-scene .decibel::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); box-shadow: 0 0 12px var(--red); margin-right: 6px; vertical-align: middle; animation: pulse 1.4s ease-in-out infinite; }
+
+    .anxiety-copy h2 { font-size: clamp(24px, 3.2vw, 36px); margin-bottom: 14px; }
+    .anxiety-copy p { font-size: 15.5px; line-height: 1.7; color: var(--muted); max-width: 56ch; }
+    .anxiety-copy .stanza { padding: 12px 0; border-left: 2px solid var(--ink-border); padding-left: 16px; margin: 12px 0; }
+    .anxiety-copy .stanza strong { color: var(--text-strong); }
+
+    /* Bento 5 */
+    .bento { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: minmax(180px, auto); gap: 14px; }
+    .bento .card { padding: 24px; }
+    .bento .b1 { grid-column: span 3; grid-row: span 2; }
+    .bento .b2 { grid-column: span 3; }
+    .bento .b3 { grid-column: span 3; }
+    .bento .b4 { grid-column: span 2; }
+    .bento .b5 { grid-column: span 4; background: linear-gradient(135deg, rgba(44, 240, 193, 0.10), rgba(124, 155, 255, 0.08)); }
+    @media (max-width: 880px) { .bento { grid-template-columns: 1fr 1fr; } .bento .b1, .bento .b2, .bento .b3, .bento .b4, .bento .b5 { grid-column: span 2; grid-row: auto; } }
+    @media (max-width: 560px) { .bento { grid-template-columns: 1fr; } .bento .b1, .bento .b2, .bento .b3, .bento .b4, .bento .b5 { grid-column: span 1; } }
+    .bento .case-num { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--soft); margin-bottom: 8px; }
+    .bento .case-icon { width: 44px; height: 44px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(44, 240, 193, 0.18), rgba(124, 155, 255, 0.16)); border: 1px solid rgba(168, 196, 255, 0.2); color: var(--accent); margin-bottom: 14px; }
+    .bento .case-icon svg { width: 22px; height: 22px; stroke-width: 2; }
+    .bento h3 { margin-bottom: 8px; }
+    .bento p { font-size: 14px; }
+
+    /* Pricing */
+    .pricing-row { display: grid; grid-template-columns: 1fr 1.2fr; gap: 18px; align-items: stretch; }
+    @media (max-width: 880px) { .pricing-row { grid-template-columns: 1fr; } }
+    .pricing-card { padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--ink-border); background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); backdrop-filter: blur(20px) saturate(140%); display: flex; flex-direction: column; }
+    .pricing-card.featured { background: linear-gradient(135deg, rgba(44, 240, 193, 0.12), rgba(124, 155, 255, 0.10)); border-color: rgba(44, 240, 193, 0.3); box-shadow: var(--shadow-lg), inset 0 1px 0 var(--ink-rim); }
+    .pricing-card h3 { font-size: 20px; margin-bottom: 4px; }
+    .pricing-card .price { font-family: "JetBrains Mono", monospace; font-size: 38px; font-weight: 700; color: var(--text-strong); margin: 14px 0 4px; letter-spacing: -0.03em; }
+    .pricing-card .price small { font-size: 14px; color: var(--muted); font-weight: 500; }
+    .pricing-card ul { list-style: none; padding: 0; margin: 18px 0 22px; }
+    .pricing-card li { padding: 6px 0 6px 22px; position: relative; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .pricing-card li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .pricing-card .button { width: 100%; }
+    .pricing-card.featured .button.primary { margin-top: auto; }
+
+    /* FAQ */
+    .faq { display: grid; gap: 10px; }
+    .faq details { border: 1px solid var(--ink-border); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); padding: 0; overflow: hidden; transition: border-color 200ms var(--ease); }
+    .faq details[open] { border-color: rgba(168, 196, 255, 0.22); }
+    .faq summary { list-style: none; cursor: pointer; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-family: "Plus Jakarta Sans", "Inter", sans-serif; font-weight: 700; font-size: 15.5px; color: var(--text-strong); }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font-family: "JetBrains Mono", monospace; font-size: 22px; color: var(--muted); transition: transform 200ms var(--ease); }
+    .faq details[open] summary::after { transform: rotate(45deg); }
+    .faq .answer { padding: 0 22px 20px; color: var(--muted); font-size: 14.5px; line-height: 1.7; max-width: 70ch; }
+  
+    /* Variant B empathy preview */
+    .hero-preview.empathy { padding: 26px; }
+    .preview-quote { padding: 8px 0 18px; border-bottom: 1px solid var(--ink-border); margin-bottom: 18px; }
+    .preview-quote p { font-family: "Plus Jakarta Sans", "Inter", sans-serif; font-size: 18px; font-weight: 700; color: var(--text-strong); line-height: 1.4; margin-bottom: 8px; }
+    .preview-quote-cite { font-size: 12px; color: var(--soft); }
+    .preview-evidence { display: grid; gap: 10px; }
+    .preview-evidence-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--ink-border); font-size: 13px; }
+    .preview-evidence-row:last-child { border-bottom: 0; }
+    .preview-evidence-row .label { color: var(--muted); }
+    .preview-evidence-row .value { color: var(--text-strong); font-family: "JetBrains Mono", monospace; font-size: 12.5px; }
+    .preview-evidence-row .value.danger { color: var(--red); font-weight: 700; }
+    .preview-evidence-row .value.ok { color: var(--accent); }
+  </style>
+</head>
+<body data-variant="B">
+  <main class="site-shell">
+
+    <nav class="site-nav site-nav--floating" aria-label="Primary">
+      <div class="site-nav-main">
+        <a class="brand brand-glow" href="../index.html" aria-label="SOUNDTEST.PRO home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
+        </a>
+        <div class="nav-anchor-group" role="menubar">
+          <a href="../index.html#scenarios">Use cases</a>
+          <a href="../monetization.html">Pro</a>
+          <a href="../accuracy.html">Accuracy</a>
+          <a href="../auth.html">Account</a>
+          <span style="font-size:11px;color:var(--soft);padding:6px 10px;border:1px dashed var(--ink-border);border-radius:999px">Test variant: B</span>
+        </div>
+      </div>
+      <div class="nav-utility">
+        <a class="nav-upgrade" href="#pricing"><span class="star" aria-hidden="true">★</span><span>Upgrade Pro</span></a>
+      </div>
+    </nav>
+
+    <!-- HERO — Variant B: 共情派 -->
+    <section class="hero compact">
+      <div class="hero-split-empathy">
+        <div class="hero-stack reveal">
+          <span class="eyebrow">Free · Anonymous · 60 seconds</span>
+          <h1 class="hero-headline">They won&rsquo;t stop the noise.<br><em>You can stop the silence.</em></h1>
+          <p class="hero-lead">Record 60 seconds. Get a notarized dB certificate. Settle it tonight, not in court.</p>
+
+          <div class="social-proof" aria-label="Social proof">
+            <span class="dot" aria-hidden="true"></span>
+            <span><strong>1,200+</strong> quiet complaints logged this week · 9 languages</span>
+          </div>
+
+          <form class="hero-search" data-hero-form aria-label="Try the noise evidence workflow">
+            <div class="hero-search-row">
+              <input type="text" class="hero-search-input" data-hero-input placeholder="Tell us what&rsquo;s keeping you up..." autocomplete="off" spellcheck="false">
+              <button class="hero-search-btn" type="submit">
+                <span>Start recording</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+            <div class="hero-search-chips" role="list" aria-label="Quick scenarios">
+              <button type="button" class="chip" role="listitem" data-chip="Neighbors arguing at midnight" data-chip-path="../use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Neighbors at midnight</button>
+              <button type="button" class="chip" role="listitem" data-chip="Construction waking the baby" data-chip-path="../use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>Construction</button>
+              <button type="button" class="chip" role="listitem" data-chip="Bar crowd on my street" data-chip-path="../use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>Bar crowd</button>
+              <button type="button" class="chip" role="listitem" data-chip="Landlord won&rsquo;t return deposit" data-chip-path="../use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Landlord deposit</button>
+            </div>
+          </form>
+
+          <div class="hero-actions">
+            <a class="button primary" href="../app.html" data-cta="start_monitoring">Lock In The Evidence</a>
+            <a class="button" href="../samples.html" data-cta="view_sample">See a sample report</a>
+          </div>
+        </div>
+
+        <aside class="hero-preview empathy reveal" aria-label="Live recorder preview">
+          <div class="preview-head">
+            <span class="badge">Tonight · Your street</span>
+            <span class="rec"><span class="rec-dot" aria-hidden="true"></span>REC 00:00:38</span>
+          </div>
+          <div class="preview-quote">
+            <p>&ldquo;They wouldn&rsquo;t hear me. The lawyer did.&rdquo;</p>
+            <span class="preview-quote-cite">— Used in a 2025 small-claims filing</span>
+          </div>
+          <div class="preview-evidence">
+            <div class="preview-evidence-row">
+              <span class="label">Recorded</span>
+              <span class="value">Tues 23:14 · 2 min 04 s</span>
+            </div>
+            <div class="preview-evidence-row">
+              <span class="label">Peak dB</span>
+              <span class="value danger">87 dB</span>
+            </div>
+            <div class="preview-evidence-row">
+              <span class="label">Location</span>
+              <span class="value">Brooklyn, NY 11217</span>
+            </div>
+            <div class="preview-evidence-row">
+              <span class="label">Status</span>
+              <span class="value ok">✓ Notarized · ready to share</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ANXIETY MOMENT -->
+    <section class="section anxiety" id="anxiety">
+      <div class="anxiety-grid">
+        <div class="anxiety-scene reveal" aria-hidden="true">
+          <span class="clock-label">Tuesday · 11:14 PM</span>
+          <span class="clock">23<span class="colon">:</span>14</span>
+          <span class="decibel">87 dB — construction next door</span>
+        </div>
+        <div class="anxiety-copy reveal">
+          <span class="eyebrow">The moment you wish you had proof</span>
+          <h2>They won't stop. You don't have to argue.</h2>
+          <div class="stanza">
+            <p>You close the windows. You knock on the door. You call the property manager. They say, <strong>"without evidence, there's nothing we can do."</strong></p>
+          </div>
+          <div class="stanza">
+            <p>You open your phone. You search "noise evidence app." You find five. Each one asks you to sign up, pay, and download a 60 MB file you don't trust with your microphone.</p>
+          </div>
+          <div class="stanza">
+            <p>You close the phone. You wait. The noise continues.</p>
+          </div>
+          <p style="margin-top: 18px;"><strong style="color:var(--text-strong)">Soundtest.pro is the one that doesn't make you sign up.</strong> Tap once. Get a timestamped dB record with location. Export as PDF in under two minutes. Show it to the manager, the landlord, or the court.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENTO 5 -->
+    <section class="section" id="scenarios">
+      <div class="section-header reveal">
+        <span class="eyebrow">Built for the four noise situations that ruin lives</span>
+        <h2>Pick the one that sounds like your week.</h2>
+      </div>
+      <div class="bento">
+        <a class="card b1 reveal" href="../use-cases/neighbor-noise-evidence.html" data-cta="bento_neighbor">
+          <span class="case-num">01 · Most common</span>
+          <span class="case-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </span>
+          <h3>Neighbor &amp; apartment noise</h3>
+          <p>Footsteps above at midnight, TV bass through the wall, dogs barking at 6am. Record the exact dB and time. The record speaks when words don't.</p>
+        </a>
+        <a class="card b2 reveal" href="../use-cases/construction-noise-monitoring.html" data-cta="bento_construction">
+          <span class="case-num">02 · Daytime</span>
+          <span class="case-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"/><path d="M6 18V8l6-4 6 4v10"/><path d="M9 18v-6h6v6"/></svg>
+          </span>
+          <h3>Construction &amp; renovation</h3>
+          <p>Permit says 9–5. The jackhammer starts at 7. A timestamped log of out-of-hours spikes is what the city inspector actually wants.</p>
+        </a>
+        <a class="card b3 reveal" href="../use-cases/bar-street-disturbance.html" data-cta="bento_bar">
+          <span class="case-num">03 · Nighttime</span>
+          <span class="case-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8v4l-2 2v8a4 4 0 0 1-8 0V8L4 6V2h4z"/><path d="M8 18a4 4 0 0 0 8 0"/></svg>
+          </span>
+          <h3>Bar &amp; street disturbance</h3>
+          <p>Patio crowds, late delivery trucks, sirens stacked on sirens. Capture LAeq over 15 minutes and your case stops being "he said / she said."</p>
+        </a>
+        <a class="card b4 reveal" href="../use-cases/rental-dispute-evidence.html" data-cta="bento_rental">
+          <span class="case-num">04 · Money</span>
+          <span class="case-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+          </span>
+          <h3>Rental deposit dispute</h3>
+          <p>Quiet hours broken across a lease? A folder of timestamped dB records converts a 4-week back-and-forth into a one-meeting settlement.</p>
+        </a>
+        <div class="card b5 reveal">
+          <span class="card-badge">Pro · $4.99/mo</span>
+          <h3>Lock the evidence. Keep the case.</h3>
+          <p>Unlimited recordings, notarized PDF certificates, multi-device sync, and a "share with my lawyer" link that doesn't expire. <a href="#pricing" style="color:var(--accent);font-weight:600">See what's in Pro →</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section" id="pricing">
+      <div class="section-header reveal">
+        <span class="eyebrow">Free gets you most of the way. Pro carries the case.</span>
+        <h2>Start free. Upgrade when the noise gets serious.</h2>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-card reveal">
+          <h3>Free</h3>
+          <p style="font-size:13.5px;color:var(--muted)">For the first recording, the first week, the first 10 reports.</p>
+          <div class="price">$0<small> / forever</small></div>
+          <ul>
+            <li>Up to 10 reports per month</li>
+            <li>dB, LAeq, waveform, PDF / CSV</li>
+            <li>All 9 languages, browser-only</li>
+            <li>Local storage, no server upload</li>
+          </ul>
+          <a class="button" href="../app.html" data-cta="pricing_free">Open the recorder</a>
+        </div>
+        <div class="pricing-card featured reveal">
+          <h3>Pro</h3>
+          <p style="font-size:13.5px;color:var(--muted)">For the case you're actually building.</p>
+          <div class="price">$4.99<small> / month, cancel any time</small></div>
+          <ul>
+            <li><strong>Unlimited</strong> recordings &amp; reports</li>
+            <li>Notarized PDF certificate with timestamp hash</li>
+            <li>Multi-device sync &amp; 5-year retention</li>
+            <li>Share-with-lawyer link, expiry controls</li>
+            <li>Priority support, evidence review within 24h</li>
+          </ul>
+          <a class="button primary" href="../monetization.html" data-cta="pricing_pro">Start Pro trial</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="section-header reveal">
+        <span class="eyebrow">Things people ask before they start</span>
+        <h2>Six honest answers.</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>Does my recording get uploaded to a server?</summary>
+          <div class="answer">No. All processing happens in your browser. Nothing leaves your device unless you explicitly export and share a PDF, CSV, or audio file. You can verify this in your browser's network panel — open DevTools, record, and you'll see zero outbound audio traffic.</div>
+        </details>
+        <details>
+          <summary>How accurate is the dB reading, really?</summary>
+          <div class="answer">Consumer microphones aren't lab-grade. Our readings are accurate to within ±3 dB on most laptop and phone mics, which is honest enough for civilian documentation and dispute resolution. For legal-grade measurement, you'll still want a certified Type 2 sound level meter. We publish the full methodology on our <a href="../accuracy.html" style="color:var(--accent)">accuracy page</a>.</div>
+        </details>
+        <details>
+          <summary>Will a property manager, landlord, or court actually accept this?</summary>
+          <div class="answer">Property managers routinely accept timestamped dB records as supporting evidence, especially when bundled with a short audio clip. Courts vary by jurisdiction; our Pro notarized PDF includes a SHA-256 hash and a third-party timestamp anchor that several small-claims courts have accepted. We're honest about what we are: a documentation aid, not a legal instrument.</div>
+        </details>
+        <details>
+          <summary>Why is Pro $4.99 and not free?</summary>
+          <div class="answer">$4.99/mo covers the notarization service, multi-device sync, and the 24-hour evidence review queue. The free tier stays free because noise is universal and so is documentation. We don't sell your data, run ads, or train models on your recordings — we can't, because the recordings never reach us.</div>
+        </details>
+        <details>
+          <summary>Do you support languages other than English?</summary>
+          <div class="answer">Yes — the full site and recorder are translated into 9 languages: English, 中文, Español, Français, Deutsch, 日本語, 한국어, Tiếng Việt, ไทย. Switch via the language pill in the top-right.</div>
+        </details>
+        <details>
+          <summary>What happens to my data if I switch phones?</summary>
+          <div class="answer">On the free tier, your records live in your browser's local storage. If you clear browser data, they're gone — export PDFs first. On Pro, records sync across devices with a 5-year retention guarantee, and you can pull a full export at any time from your account page.</div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section grid two">
+      <div class="notice reveal"><strong>Disclaimer:</strong> This tool is for civilian reference and field documentation only, not professional metering equipment. All audio and data are processed locally on your device unless you choose to export or share files.</div>
+      <div class="notice reveal" style="border-left-color:var(--accent-2);background:linear-gradient(135deg, rgba(124,155,255,0.10), rgba(255,255,255,0.025))"><strong>Privacy Protection:</strong> The static web tool does not collect, store, or share your microphone, location, or recording data on a server. Your records remain local to your browser unless you export them.</div>
+    </section>
+
+    <footer class="footer-deluxe" role="contentinfo">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand brand-glow" href="../index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">SOUNDTEST<small>.PRO</small></span></a>
+          <p>A free, browser-based decibel meter with timestamped, exportable evidence. Built for 9 languages and 9 noisy situations. Local-first by design.</p>
+          <div class="footer-flags" aria-label="Language matrix">
+            <a class="footer-flag" href="../en/index.html">🇺🇸</a>
+            <a class="footer-flag" href="../zh/index.html">🇨🇳</a>
+            <a class="footer-flag" href="../es/index.html">🇪🇸</a>
+            <a class="footer-flag" href="../fr/index.html">🇫🇷</a>
+            <a class="footer-flag" href="../de/index.html">🇩🇪</a>
+            <a class="footer-flag" href="../ja/index.html">🇯🇵</a>
+            <a class="footer-flag" href="../ko/index.html">🇰🇷</a>
+            <a class="footer-flag" href="../vi/index.html">🇻🇳</a>
+            <a class="footer-flag" href="../th/index.html">🇹🇭</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="../app.html">Open App</a></li>
+            <li><a href="../soundtest.html">Online Decibel Meter</a></li>
+            <li><a href="../samples.html">Noise Recorder Samples</a></li>
+            <li><a href="../accuracy.html">Mic Test &amp; Accuracy</a></li>
+            <li><a href="../download.html">Install as PWA</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="../standards.html">Noise Standards</a></li>
+            <li><a href="../changelog.html">Updates &amp; Blog</a></li>
+            <li><a href="../use-cases/neighbor-noise-evidence.html">Neighbor Noise Guide</a></li>
+            <li><a href="../use-cases/construction-noise-monitoring.html">Construction Guide</a></li>
+            <li><a href="../use-cases/rental-dispute-evidence.html">Rental Dispute Guide</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="../privacy.html">Privacy Policy</a></li>
+            <li><a href="../compliance.html">Terms of Service</a></li>
+            <li><a href="../compliance.html">Disclaimer</a></li>
+            <li><a href="../privacy.html">GDPR &amp; Consent</a></li>
+            <li><a href="../auth.html">Account &amp; Membership</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Language</h4>
+          <ul>
+            <li><a href="../en/index.html">English</a></li>
+            <li><a href="../zh/index.html">中文</a></li>
+            <li><a href="../es/index.html">Español</a></li>
+            <li><a href="../fr/index.html">Français</a></li>
+            <li><a href="../de/index.html">Deutsch</a></li>
+            <li><a href="../ja/index.html">日本語</a></li>
+            <li><a href="../ko/index.html">한국어</a></li>
+            <li><a href="../vi/index.html">Tiếng Việt</a></li>
+            <li><a href="../th/index.html">ไทย</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // ─── A/B Test CTA tracking ───
+    (function () {
+      const variant = document.body.dataset.variant || 'unknown';
+      const send = (cta) => {
+        const body = JSON.stringify({
+          variant,
+          cta,
+          ts: Date.now(),
+          ua: navigator.userAgent.slice(0, 200),
+        });
+        try { navigator.sendBeacon('/api/track', body); } catch (_) {}
+        // CF Web Analytics custom event (if beacon loaded)
+        try {
+          if (window.cfBeacon) {
+            window.cfBeacon('event', { name: 'cta_click', variant, cta });
+          }
+        } catch (_) {}
+      };
+      document.querySelectorAll('[data-cta]').forEach((el) => {
+        el.addEventListener('click', () => send(el.dataset.cta));
+      });
+    })();
+  </script>
+</body>
+</html>
