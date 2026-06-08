@@ -208,7 +208,7 @@
                 <strong>Daytime Reference (6:00–22:00)</strong>
                 <span>Quiet residential context, conversation, daytime activity.</span>
               </div>
-              <span class="meter">≤ 60 dB</span>
+              <span class="meter">≤ 55 dB</span>
             </div>
             <div class="dashboard-row">
               <span class="icon-orb moon" aria-hidden="true">☾</span>
@@ -216,7 +216,7 @@
                 <strong>Nighttime Reference (22:00–6:00)</strong>
                 <span>Sleep, recovery, and quiet-hour expectations.</span>
               </div>
-              <span class="meter">≤ 55 dB</span>
+              <span class="meter">≤ 45 dB</span>
             </div>
             <div class="dashboard-row">
               <span class="icon-orb sun" aria-hidden="true">⚠</span>
@@ -415,4 +415,11 @@
     </footer>
   </main>
 </body>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration failed:', err));
+    });
+  }
+</script>
 </html>

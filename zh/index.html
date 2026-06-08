@@ -197,7 +197,7 @@
           <div class="dashboard-header">
             <div>
               <span class="card-badge">噪声参考</span>
-              <h3 class="dashboard-title" style="margin-top:6px">Daytime Reference &amp; Nighttime Reference</h3>
+              <h3 class="dashboard-title" style="margin-top:6px">昼间参考与夜间参考</h3>
             </div>
             <span class="loud-badge" title="Plain-language label">🚨 Loud talking ~ 65 dB</span>
           </div>
@@ -208,7 +208,7 @@
                 <strong>昼间参考（6:00-22:00）</strong>
                 <span>Quiet residential context, conversation, daytime activity.</span>
               </div>
-              <span class="meter">≤ 60 dB</span>
+              <span class="meter">≤ 55 dB</span>
             </div>
             <div class="dashboard-row">
               <span class="icon-orb moon" aria-hidden="true">☾</span>
@@ -216,7 +216,7 @@
                 <strong>夜间参考（22:00-6:00）</strong>
                 <span>Sleep, recovery, and quiet-hour expectations.</span>
               </div>
-              <span class="meter">≤ 55 dB</span>
+              <span class="meter">≤ 45 dB</span>
             </div>
             <div class="dashboard-row">
               <span class="icon-orb sun" aria-hidden="true">⚠</span>
@@ -415,4 +415,11 @@
     </footer>
   </main>
 </body>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration failed:', err));
+    });
+  }
+</script>
 </html>
