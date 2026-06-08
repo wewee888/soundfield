@@ -1,6 +1,18 @@
 // Cloudflare Pages Function: /api/track
 // Receives CTA click events from A/B test variants
-// Logs to console (visible in CF Pages → Logs) and Analytics Engine dataset "ab_test_events"
+// Persists to KV (counters) + logs to console
+
+const VARIANTS = ['A', 'B', 'C'];
+const CTAS = [
+  'start_monitoring',
+  'view_sample',
+  'bento_neighbor',
+  'bento_construction',
+  'bento_bar',
+  'bento_rental',
+  'pricing_free',
+  'pricing_pro',
+];
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -10,30 +22,33 @@ export async function onRequestPost(context) {
   } catch (_) {
     return new Response('bad json', { status: 400 });
   }
-  const { variant, cta, ts, ua } = payload;
-  if (!variant || !cta) {
-    return new Response('missing variant/cta', { status: 400 });
+  const variant = String(payload.variant || '').slice(0, 8).toUpperCase();
+  const cta = String(payload.cta || '').slice(0, 32);
+  if (!VARIANTS.includes(variant) || !CTAS.includes(cta)) {
+    return new Response('invalid variant/cta', { status: 400 });
   }
-  const record = {
-    variant: String(variant).slice(0, 8),
-    cta: String(cta).slice(0, 32),
-    ts: Number(ts) || Date.now(),
-    ua: String(ua || '').slice(0, 200),
-  };
-  // Cloudflare Analytics Engine (free tier: 100K events/day)
-  // Dataset binding name: ab_test_events (configured in Pages → Settings → Bindings)
-  if (env.AB_TEST_EVENTS) {
+  const ts = Number(payload.ts) || Date.now();
+
+  // Persist to KV (best-effort, do not fail the click if KV is down)
+  if (env.ab_test) {
     try {
-      env.AB_TEST_EVENTS.writeDataPoint({
-        blobs: [record.variant, record.cta],
-        doubles: [record.ts],
-        indexes: [record.variant + ':' + record.cta],
-      });
+      const key = `clicks:${variant}:${cta}`;
+      const cur = parseInt((await env.ab_test.get(key)) || '0', 10);
+      await env.ab_test.put(key, String(cur + 1));
+      // Total clicks per variant
+      const totalKey = `clicks:${variant}:_total`;
+      const total = parseInt((await env.ab_test.get(totalKey)) || '0', 10);
+      await env.ab_test.put(totalKey, String(total + 1));
+      // Lifetime counter
+      const lifeKey = 'lifetime:total';
+      const life = parseInt((await env.ab_test.get(lifeKey)) || '0', 10);
+      await env.ab_test.put(lifeKey, String(life + 1));
     } catch (e) {
-      console.error('analytics engine write failed', e);
+      console.error('KV write failed', e);
     }
   }
-  console.log('CTA_TRACK', JSON.stringify(record));
+
+  console.log('CTA_TRACK', JSON.stringify({ variant, cta, ts }));
   return new Response('ok', {
     status: 200,
     headers: { 'Access-Control-Allow-Origin': '*' },
