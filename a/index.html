@@ -18,8 +18,7 @@
   <script src="../assets/site-auth.js" defer></script>
   <script src="../assets/site-experience.js" defer></script>
   <!-- Cloudflare Web Analytics (page view tracking for A/B test) -->
-  <!-- Token placeholder: user adds their CF Web Analytics token from CF dashboard -->
-  <!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "REPLACE_ME"}'></script> -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "b186d30096b547a383ddcdd17d8c56fc"}'></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -33,6 +32,16 @@
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://soundtest.pro/">
+  <meta property="og:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
+  <meta property="og:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta property="og:image" content="https://soundtest.pro/assets/icon-512.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
+  <meta name="twitter:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta name="twitter:image" content="https://soundtest.pro/assets/icon-512.png">
   <style>
     /* Hero variant A: evidence-pitch, compact single-column with a real preview panel on the right */
     .hero.compact { padding: 28px 0 24px; gap: 22px; }
@@ -406,7 +415,7 @@
           <ul>
             <li><a href="../privacy.html">Privacy Policy</a></li>
             <li><a href="../compliance.html">Terms of Service</a></li>
-            <li><a href="../compliance.html">Disclaimer</a></li>
+            <li><a href="../disclaimer">Disclaimer</a></li>
             <li><a href="../privacy.html">GDPR &amp; Consent</a></li>
             <li><a href="../auth.html">Account &amp; Membership</a></li>
           </ul>
@@ -452,6 +461,13 @@
         el.addEventListener('click', () => send(el.dataset.cta));
       });
     })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch((err) => console.log('SW registration failed:', err));
+      });
+    }
   </script>
 </body>
 </html>

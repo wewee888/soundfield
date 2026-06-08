@@ -98,3 +98,25 @@ export async function onRequestPost(context){
   }
   return json({ok:true,plan,checkoutUrl:created.checkoutUrl});
 }
+
+export function onRequestGet(){
+  return new Response(JSON.stringify({error:'method_not_allowed',message:'POST {plan,email} only'}),{
+    status:405,
+    headers:{
+      'content-type':'application/json; charset=utf-8',
+      'cache-control':'no-store',
+      'allow':'POST',
+    },
+  });
+}
+
+export function onRequestOptions(){
+  return new Response(null,{
+    status:204,
+    headers:{
+      'access-control-allow-origin':'*',
+      'access-control-allow-methods':'POST, OPTIONS',
+      'access-control-allow-headers':'content-type',
+    },
+  });
+}

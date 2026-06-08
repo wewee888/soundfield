@@ -17,3 +17,7 @@ scripts/missing.json
 _temp/
 package.json
 package-lock.json
+
+# One-off command captures / KV test outputs
+_tmp*.txt
+_tmp_*/

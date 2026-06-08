@@ -36,6 +36,13 @@
     .links a:hover { color: var(--text-strong); border-color: var(--ink-rim-strong); }
     .links a.live { color: var(--accent); border-color: rgba(44, 240, 193, 0.3); }
     .empty { padding: 40px; text-align: center; color: var(--muted); border: 1px dashed var(--ink-border); border-radius: var(--radius-lg); }
+    .reset-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; padding: 14px 16px; border-radius: var(--radius-md); border: 1px solid var(--ink-border); background: rgba(255, 80, 80, 0.06); flex-wrap: wrap; }
+    .reset-bar .label { font-size: 13px; color: var(--text); }
+    .reset-bar .label small { color: var(--muted); margin-left: 8px; font-size: 12px; }
+    .reset-btn { font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; padding: 8px 14px; border-radius: 8px; background: transparent; color: #ff6b6b; border: 1px solid rgba(255, 107, 107, 0.4); cursor: pointer; transition: background 200ms var(--ease), color 200ms var(--ease); }
+    .reset-btn:hover { background: rgba(255, 107, 107, 0.12); color: #ff8a8a; }
+    .reset-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .reset-btn.done { color: var(--accent); border-color: rgba(44, 240, 193, 0.4); background: rgba(44, 240, 193, 0.08); }
   </style>
 </head>
 <body>
@@ -49,6 +56,10 @@
     </div>
 
     <div id="verdict-host"></div>
+    <div class="reset-bar">
+      <div class="label">Stale test data? <small>Wipes the counter so the dashboard starts at 0</small></div>
+      <button id="reset-btn" class="reset-btn" type="button">RESET COUNTERS</button>
+    </div>
     <div id="variants-host" class="variants"></div>
 
     <div class="verdict" style="margin-top:24px">
@@ -138,6 +149,33 @@
 
     load();
     setInterval(load, 60_000);
+
+    document.getElementById('reset-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('reset-btn');
+      if (!confirm('Clear all click counters and start at 0?')) return;
+      btn.disabled = true;
+      btn.textContent = 'CLEARING…';
+      try {
+        const r = await fetch('/api/reset', { method: 'POST' });
+        const data = await r.json();
+        if (data.ok) {
+          btn.textContent = `CLEARED · ${data.deleted} KEYS`;
+          btn.classList.add('done');
+          setTimeout(() => { load(); }, 800);
+          setTimeout(() => {
+            btn.textContent = 'RESET COUNTERS';
+            btn.classList.remove('done');
+            btn.disabled = false;
+          }, 4000);
+        } else {
+          btn.textContent = 'FAILED';
+          setTimeout(() => { btn.textContent = 'RESET COUNTERS'; btn.disabled = false; }, 3000);
+        }
+      } catch (e) {
+        btn.textContent = 'NETWORK ERROR';
+        setTimeout(() => { btn.textContent = 'RESET COUNTERS'; btn.disabled = false; }, 3000);
+      }
+    });
   </script>
 </body>
 </html>

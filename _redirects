@@ -1,0 +1,9 @@
+# CF Pages _redirects file
+# Make Variant A the default homepage. Direct / → /a/ (302 by default for non-static).
+# A/B/C tests remain reachable: /a/, /b/, /c/.
+# When a winner is picked, change the target or remove this line and replace /a/ with /index.html.
+
+/ /a/ 302
+
+# Block direct access to old generic homepage so we don't have two competing homepages
+/index.html /a/ 302
