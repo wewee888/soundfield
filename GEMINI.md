@@ -12,7 +12,7 @@ The project is built primarily with Vanilla HTML, CSS, and JavaScript. It does n
 - **External Libraries**: `jsPDF` (loaded via CDN) for PDF report generation.
 
 ## Key Directories and Files
-- `index.html`, `app.html`, `soundtest.html`: The main entry points. `soundtest.html` is the core application logic.
+- `index.html`, `measure/`, `measure/`: The main entry points. `measure/` is the core application logic.
 - `assets/`: Contains shared CSS (`site.css`, `layout-flow.css`) and JavaScript modules (`pro-meter.js`, `evidence-utils.js`, `storage-utils.js`, `site-content.js`) extracted from the main HTML to improve maintainability.
 - `functions/`: Cloudflare Pages Functions for backend logic (e.g., membership checkout and lookups).
 - `scripts/`: Python utility scripts for automation tasks (e.g., syncing locale homepages, downloading flags).
@@ -32,7 +32,7 @@ python -m http.server 8080
 ```
 Then navigate to:
 - `http://localhost:8080/index.html` (Marketing Home)
-- `http://localhost:8080/soundtest.html` (Core App)
+- `http://localhost:8080/measure/` (Core App)
 
 *Note: For testing microphone, camera, and geolocation features, you must access the app via `localhost`, `127.0.0.1`, or a secure HTTPS connection, as modern browsers restrict these APIs on plain HTTP network IPs.*
 
@@ -43,11 +43,11 @@ npx wrangler pages deploy . --project-name=soundtest-pro
 ```
 
 ## Development Conventions
-1. **No Build Toolchain**: Keep `soundtest.html` directly executable in the browser. Avoid introducing bundlers (Webpack/Vite/Rollup) unless a formal migration is planned.
-2. **Modularization**: Continue the ongoing effort to extract inline CSS and JS from `soundtest.html` into the `assets/` directory. Always ensure `soundtest.html` remains fully functional after each extraction.
+1. **No Build Toolchain**: Keep `measure/` directly executable in the browser. Avoid introducing bundlers (Webpack/Vite/Rollup) unless a formal migration is planned.
+2. **Modularization**: Continue the ongoing effort to extract inline CSS and JS from `measure/` into the `assets/` directory. Always ensure `measure/` remains fully functional after each extraction.
 3. **Conservative Disclaimers**: The app is for civilian reference and field documentation, not a legally certified sound level meter. User-facing text and documentation must consistently reflect this limitation.
 4. **Testing**: Run tests using Node's built-in test runner: `node --test tests/`.
-5. **State Management**: Key state variables are managed globally at the top of the script in `soundtest.html`. Data persistence uses `localStorage` (key: `sf_v5`) and `IndexedDB` (for media blobs).
+5. **State Management**: Key state variables are managed globally at the top of the script in `measure/`. Data persistence uses `localStorage` (key: `sf_v5`) and `IndexedDB` (for media blobs).
 
 ## Backend/Membership (Cloudflare Functions)
 To test the Lemon Squeezy integration locally or in production, you need to configure the following environment variables in your Cloudflare project settings:

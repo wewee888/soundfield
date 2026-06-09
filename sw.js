@@ -1,9 +1,6 @@
-const CACHE_NAME = 'soundtest-pro-v2';
+const CACHE_NAME = 'soundtest-pro-v3';
 const ASSETS_TO_CACHE = [
   '/',
-  '/index.html',
-  '/soundtest.html',
-  '/app.html',
   '/assets/site.css',
   '/assets/utils.js',
   '/assets/i18n-data.js',

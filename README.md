@@ -1,6 +1,6 @@
 # SOUNDTEST.PRO 开发交接文档
 
-`soundfield` 是一个单文件静态网页声级计应用，入口文件为 `soundtest.html`。它面向移动端浏览器和桌面浏览器，提供实时分贝估算、A/C/Z 计权切换、快/慢响应、波形/频谱/1/3 倍频程/趋势可视化、录音/录像取证、GPS 与结构化测点标记、历史记录、CSV/PDF 导出等能力。
+`soundfield` 是一个单文件静态网页声级计应用，入口文件为 `measure/`。它面向移动端浏览器和桌面浏览器，提供实时分贝估算、A/C/Z 计权切换、快/慢响应、波形/频谱/1/3 倍频程/趋势可视化、录音/录像取证、GPS 与结构化测点标记、历史记录、CSV/PDF 导出等能力。
 
 > 重要说明：当前 App 使用浏览器麦克风和 Web Audio API 做消费级声级估算，不是法定计量声级计。不同设备、浏览器、麦克风增益、系统音频链路会导致数值差异。正式噪声检测仍需专业校准设备。
 
@@ -19,10 +19,10 @@ python -m http.server 8080
 
 ```text
 http://localhost:8080/index.html       # 全球推广网站首页
-http://localhost:8080/soundtest.html  # 直接打开声级记录工具
+http://localhost:8080/measure/  # 直接打开声级记录工具
 ```
 
-也可以直接双击 `soundtest.html`，但麦克风、摄像头、定位等权限在 `file://` 下可能不可用。正式调试请使用 `localhost` 或 HTTPS。
+也可以直接双击 `measure/`，但麦克风、摄像头、定位等权限在 `file://` 下可能不可用。正式调试请使用 `localhost` 或 HTTPS。
 
 ## Lemon Squeezy 收款与会员（已接入）
 
@@ -39,7 +39,7 @@ http://localhost:8080/soundtest.html  # 直接打开声级记录工具
 - `LEMON_VARIANT_PRO`：Pro 订阅 Variant ID
 - `LEMON_VARIANT_TEAM`：Team 订阅 Variant ID
 - `LEMON_VARIANT_LIFETIME`：买断版 Variant ID
-- `LEMON_REDIRECT_URL`（可选）：支付成功回跳地址，不填默认回到 `soundtest.html`
+- `LEMON_REDIRECT_URL`（可选）：支付成功回跳地址，不填默认回到 `measure/`
 - `LEMON_SQUEEZY_MODE`（可选）：`live` / `test`，不填会按 Key 前缀推断
 
 ## 当前发布状态
@@ -68,8 +68,8 @@ SOUNDTEST.PRO 自己的首次授权引导会用 `localStorage` 记录在 `sf_per
 ```text
 soundfield/
   index.html         # 全球推广网站首页：定位、用例入口、SEO 关键词和 CTA
-  app.html           # Web/PWA 工具入口页，跳转到 soundtest.html
-  soundtest.html    # 单文件应用：HTML + CSS + JavaScript
+  measure/           # Web/PWA 工具入口页，跳转到 measure/
+  measure/    # 单文件应用：HTML + CSS + JavaScript
   privacy.html       # 全球推广信任页：权限、隐私、本地存储和数据边界
   accuracy.html      # 精度与计量边界说明：非认证测量、设备差异、校准建议
   standards.html     # WHO/美国/欧盟/昼夜噪声参考说明，避免自动合规判定
@@ -98,14 +98,14 @@ soundfield/
   README.md          # 本交接文档
 ```
 
-`soundtest.html` 内部大致分为四段：
+`measure/` 内部大致分为四段：
 
 - `<head>`：页面元信息、主题色、移动端 viewport。
 - `<style>`：完整 UI 样式、布局、响应式和动画。
 - `<body>`：App 壳、主屏、记录页、地图页、设置页、底部导航。
 - `<script>`：状态管理、Web Audio、绘图、录制、导出和初始化逻辑。
 
-新增的 `assets/` 文件是方案 B/C 的第一步拆分。后续继续拆分时，优先把内联 CSS/JS 逐步迁移到 `assets/`，每次迁移后保持 `soundtest.html` 可直接运行。
+新增的 `assets/` 文件是方案 B/C 的第一步拆分。后续继续拆分时，优先把内联 CSS/JS 逐步迁移到 `assets/`，每次迁移后保持 `measure/` 可直接运行。
 
 ## 页面功能
 
@@ -194,7 +194,7 @@ soundfield/
 
 ## 核心状态变量
 
-主要状态集中在 `soundtest.html` 的脚本开头：
+主要状态集中在 `measure/` 的脚本开头：
 
 | 变量 | 说明 |
 | --- | --- |
@@ -372,7 +372,7 @@ const LS_KEY = 'sf_v5';
 
 ## 维护约定
 
-- 保持 `soundtest.html` 可直接运行，不引入必须构建的工具链，除非明确迁移为正式项目。
+- 保持 `measure/` 可直接运行，不引入必须构建的工具链，除非明确迁移为正式项目。
 - 新增状态字段时同步更新 `saveState()` 和 `loadState()`。
 - 修改 DOM id 时同步检查所有 `document.getElementById()` 调用。
 - 修改记录结构时同步更新 `renderRecs()`、`drawMap()`、`exportCSV()` 和 `buildPDF()`。

@@ -7,3 +7,26 @@
 
 # Block direct access to old generic homepage so we don't have two competing homepages
 /index.html /a/ 302
+
+# --- Noise recorder unification (2026-06) ---
+# Canonical entry is /soundtest.html. /app.html was a useless 5-second
+# meta-refresh splash page that just bounced here — replace it with a
+# direct 302 so users land in the recorder immediately.
+/app.html /soundtest.html 302
+/app /soundtest.html 302
+
+# --- Doc pages: .html → clean URL (no more 308 chain) ---
+# Cloudflare Pages auto-strips .html via 308, which feels broken to users.
+# Explicit 302 lets us serve the canonical URL directly.
+/samples.html /samples/ 302
+/accuracy.html /accuracy/ 302
+/auth.html /auth/ 302
+/compliance.html /compliance/ 302
+/download.html /download/ 302
+/launch-metrics.html /launch-metrics/ 302
+/monetization.html /monetization/ 302
+/standards.html /standards/ 302
+/changelog.html /changelog/ 302
+/disclaimer.html /disclaimer/ 302
+/privacy.html /privacy/ 302
+/refund.html /refund/ 302
