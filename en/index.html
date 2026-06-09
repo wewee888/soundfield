@@ -83,19 +83,19 @@
           <h1 class="hero-headline">Free Online Noise Evidence Recorder | No App Required.<br><em>Measure dB. Lock the evidence. Stay private.</em></h1>
           <p class="hero-lead">Measure Decibels, Record Sound, Save Time &amp; Location for Legal Complaint Documentation. Neighbor noise, construction, bar &amp; street disturbance, rental dispute — start recording in one click, right in your browser.</p>
 
-          <form class="hero-search" data-hero-form aria-label="Try the noise evidence workflow">
+          <form class="hero-search" data-hero-form aria-label="Pick a noise evidence template">
             <div class="hero-search-row">
-              <input type="text" class="hero-search-input" data-hero-input placeholder="Describe what you want to document — e.g. nightly bar noise on Elm Street" autocomplete="off" spellcheck="false">
-              <button class="hero-search-btn" type="submit">
-                <span>Run AI workflow</span>
+              <input type="text" class="hero-search-input" data-hero-input placeholder="Pick the one closest to your scenario" autocomplete="off" spellcheck="false">
+              <a class="hero-search-btn" href="../use-cases/" role="button" data-cta="pick_template">
+                <span>Pick a template</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-              </button>
+              </a>
             </div>
             <div class="hero-search-chips" role="list" aria-label="Quick scenarios">
-              <button type="button" class="chip" role="listitem" data-chip="Neighbor noise above my apartment" data-chip-path="use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Neighbor noise</button>
-              <button type="button" class="chip" role="listitem" data-chip="Construction noise during workday" data-chip-path="use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>Construction</button>
-              <button type="button" class="chip" role="listitem" data-chip="Late-night bar noise on the street" data-chip-path="use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>Bar &amp; street</button>
-              <button type="button" class="chip" role="listitem" data-chip="Rental dispute evidence packet" data-chip-path="use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Rental dispute</button>
+              <a class="chip" role="listitem" href="../use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Neighbor noise</a>
+              <a class="chip" role="listitem" href="../use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>Construction</a>
+              <a class="chip" role="listitem" href="../use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>Bar &amp; street</a>
+              <a class="chip" role="listitem" href="../use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Rental dispute</a>
             </div>
             <div class="recent-bar" data-recent-host hidden></div>
             <div class="hero-meta">
@@ -125,25 +125,6 @@
             <span class="echo-hud-label">Standby</span>
           </div>
         </aside>
-      </div>
-
-      <div class="hero-search reveal" data-live-card style="margin-top:14px;background:rgba(255,255,255,0.04)">
-        <div class="card-badge">Live preview</div>
-        <h3 style="margin-top:6px">Running your scenario locally — no data leaves your browser.</h3>
-        <p class="muted" style="margin-top:6px;font-size:13px">We assemble an evidence template based on what you typed. Then jump into the live recorder to capture audio, photos, and PDF/CSV reports.</p>
-        <div class="live-card" data-live-card style="display:block;background:transparent;border:0;padding:14px 0 0">
-          <div class="live-steps">
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Parsing scenario &amp; selecting evidence template…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Configuring dB, LAeq, GPS, and photo capture rules…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Building report layout &amp; export bundle…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Ready — launch the recorder to start documenting.</span></div>
-          </div>
-          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-            <button class="button primary" type="button" data-live-cta data-target="soundtest.html" hidden>Launch recorder</button>
-            <a class="button" href="../samples.html">View report samples</a>
-            <a class="button ghost" href="../accuracy.html">Read measurement limits</a>
-          </div>
-        </div>
       </div>
     </section>
 

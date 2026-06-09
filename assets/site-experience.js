@@ -75,9 +75,8 @@
     `;
     host.querySelectorAll('.recent-pill').forEach((pill) => {
       pill.addEventListener('click', () => {
-        const label = pill.getAttribute('data-recent-label') || '';
-        const path = pill.getAttribute('data-recent-path') || '';
-        triggerSearch(label, path);
+        const path = pill.getAttribute('data-recent-path') || '../use-cases/';
+        window.location.href = path;
       });
     });
   }
@@ -94,45 +93,6 @@
     })[char]);
   }
 
-  function runSimulatedRun(label, path) {
-    const live = document.querySelector('[data-live-card]');
-    if (!live) return;
-    const steps = live.querySelectorAll('.live-step');
-    if (!steps.length) return;
-
-    live.setAttribute('data-open', 'true');
-    steps.forEach((step) => step.setAttribute('data-state', 'idle'));
-
-    const sequence = Array.from(steps);
-    let current = 0;
-    const tickOnce = () => {
-      if (current > 0) sequence[current - 1].setAttribute('data-state', 'done');
-      if (current >= sequence.length) {
-        finish();
-        return;
-      }
-      sequence[current].setAttribute('data-state', 'active');
-      current += 1;
-    };
-    const finish = () => {
-      clearInterval(timer);
-      writeRecent({ label, path });
-      const cta = live.querySelector('[data-live-cta]');
-      if (cta) cta.hidden = false;
-    };
-
-    tickOnce();
-    const timer = setInterval(tickOnce, 950);
-  }
-
-  function triggerSearch(label, path = 'soundtest.html') {
-    const input = document.querySelector('[data-hero-input]');
-    if (input) input.value = label;
-    runSimulatedRun(label, path);
-    const live = document.querySelector('[data-live-card]');
-    if (live) live.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
   function initHero() {
     const form = document.querySelector('[data-hero-form]');
     if (!form) return;
@@ -141,29 +101,14 @@
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      const value = (input?.value || '').trim();
-      if (!value) {
-        input?.focus();
-        return;
-      }
-      triggerSearch(value, 'soundtest.html');
+      // Honest: send the user to the use-cases landing page so they can
+      // pick a real template. The search input value is just a visual cue.
+      const q = (input?.value || '').trim();
+      const target = q
+        ? `../use-cases/?q=${encodeURIComponent(q)}`
+        : '../use-cases/';
+      window.location.href = target;
     });
-
-    document.querySelectorAll('[data-chip]').forEach((chip) => {
-      chip.addEventListener('click', () => {
-        const label = chip.getAttribute('data-chip') || chip.textContent.trim();
-        const path = chip.getAttribute('data-chip-path') || 'soundtest.html';
-        triggerSearch(label, path);
-      });
-    });
-
-    const cta = document.querySelector('[data-live-cta]');
-    if (cta) {
-      cta.addEventListener('click', () => {
-        const target = cta.getAttribute('data-target') || 'soundtest.html';
-        window.location.href = target;
-      });
-    }
   }
 
   function initCookieConsent() {

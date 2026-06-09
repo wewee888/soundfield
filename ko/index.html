@@ -83,27 +83,20 @@
           <h1 class="hero-headline">무료 온라인 소음 증거 녹음 도구 | <em>앱 설치 불필요</em>.<br><em>dB 측정. 증거 고정. 프라이버시 유지.</em></h1>
           <p class="hero-lead">데시벨 측정, 소리 녹음, 시간과 위치 저장으로 법적 민원 자료 정리. 이웃 소음, 공사, 술집 및 거리 소음, 임대 분쟁 — 브라우저에서 원클릭으로 녹음 시작.</p>
 
-          <form class="hero-search" data-hero-form aria-label="Try the noise evidence workflow">
+                    <form class="hero-search" data-hero-form aria-label="소음 증거 템플릿 선택">
             <div class="hero-search-row">
-              <input type="text" class="hero-search-input" data-hero-input placeholder="문서화할 내용을 설명하세요 — 예: Elm Street의 야간 바 소음" autocomplete="off" spellcheck="false">
-              <button class="hero-search-btn" type="submit">
-                <span>AI 워크플로 실행</span>
+              <input type="text" class="hero-search-input" data-hero-input placeholder="내 상황에 가장 가까운 것을 고르세요" autocomplete="off" spellcheck="false">
+              <a class="hero-search-btn" href="../use-cases/" role="button" data-cta="pick_template">
+                <span>템플릿 선택</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-              </button>
+              </a>
             </div>
-            <div class="hero-search-chips" role="list" aria-label="Quick scenarios">
-              <button type="button" class="chip" role="listitem" data-chip="이웃 소음 above my apartment" data-chip-path="use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>이웃 소음</button>
-              <button type="button" class="chip" role="listitem" data-chip="공사 noise during workday" data-chip-path="use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>공사</button>
-              <button type="button" class="chip" role="listitem" data-chip="Late-night bar noise on the street" data-chip-path="use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>술집 및 거리</button>
-              <button type="button" class="chip" role="listitem" data-chip="임대 분쟁 evidence packet" data-chip-path="use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>임대 분쟁</button>
+            <div class="hero-search-chips" role="list" aria-label="빠른 시나리오">
+              <a class="chip" role="listitem" href="../use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>이웃 소음</a>
+              <a class="chip" role="listitem" href="../use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>공사 소음</a>
+              <a class="chip" role="listitem" href="../use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>바 & 거리</a>
+              <a class="chip" role="listitem" href="../use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>임대 분쟁</a>
             </div>
-            <div class="recent-bar" data-recent-host hidden></div>
-            <div class="hero-meta">
-              <span>✓ <strong>원클릭 시작</strong> · No registration</span>
-              <span>✓ <strong>9개 언어</strong> live</span>
-              <span>✓ <strong>PDF / CSV / JSON</strong> exports</span>
-            </div>
-          </form>
 
           <div class="hero-actions">
             <a class="button primary" href="../app.html">측정 시작</a>
@@ -125,25 +118,6 @@
             <span class="echo-hud-label">Standby</span>
           </div>
         </aside>
-      </div>
-
-      <div class="hero-search reveal" data-live-card style="margin-top:14px;background:rgba(255,255,255,0.04)">
-        <div class="card-badge">Live preview</div>
-        <h3 style="margin-top:6px">Running your scenario locally — no data leaves your browser.</h3>
-        <p class="muted" style="margin-top:6px;font-size:13px">We assemble an evidence template based on what you typed. Then jump into the live recorder to capture audio, photos, and PDF/CSV reports.</p>
-        <div class="live-card" data-live-card style="display:block;background:transparent;border:0;padding:14px 0 0">
-          <div class="live-steps">
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Parsing scenario &amp; selecting evidence template…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Configuring dB, LAeq, GPS, and photo capture rules…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Building report layout &amp; export bundle…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Ready — launch the recorder to start documenting.</span></div>
-          </div>
-          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-            <button class="button primary" type="button" data-live-cta data-target="soundtest.html" hidden>Launch recorder</button>
-            <a class="button" href="../samples.html">보고서 샘플 보기</a>
-            <a class="button ghost" href="../accuracy.html">Read measurement limits</a>
-          </div>
-        </div>
       </div>
     </section>
 

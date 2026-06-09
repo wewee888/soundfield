@@ -181,19 +181,19 @@
             <span><strong>1,200+</strong> quiet complaints logged this week · 9 languages</span>
           </div>
 
-          <form class="hero-search" data-hero-form aria-label="Try the noise evidence workflow">
+          <form class="hero-search" data-hero-form aria-label="Pick a noise evidence template">
             <div class="hero-search-row">
-              <input type="text" class="hero-search-input" data-hero-input placeholder="Describe what you want to document — e.g. nightly construction at 2am" autocomplete="off" spellcheck="false">
-              <button class="hero-search-btn" type="submit">
-                <span>Run AI workflow</span>
+              <input type="text" class="hero-search-input" data-hero-input placeholder="Pick the one closest to your scenario" autocomplete="off" spellcheck="false">
+              <a class="hero-search-btn" href="../use-cases/" role="button" data-cta="pick_template">
+                <span>Pick a template</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-              </button>
+              </a>
             </div>
             <div class="hero-search-chips" role="list" aria-label="Quick scenarios">
-              <button type="button" class="chip" role="listitem" data-chip="Neighbor noise above my apartment" data-chip-path="../use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Neighbor noise</button>
-              <button type="button" class="chip" role="listitem" data-chip="Construction noise during workday" data-chip-path="../use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>Construction</button>
-              <button type="button" class="chip" role="listitem" data-chip="Late-night bar noise on the street" data-chip-path="../use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>Bar &amp; street</button>
-              <button type="button" class="chip" role="listitem" data-chip="Rental dispute evidence packet" data-chip-path="../use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Rental dispute</button>
+              <a class="chip" role="listitem" href="../use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Neighbor noise</a>
+              <a class="chip" role="listitem" href="../use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>Construction</a>
+              <a class="chip" role="listitem" href="../use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>Bar &amp; street</a>
+              <a class="chip" role="listitem" href="../use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Rental dispute</a>
             </div>
           </form>
 
@@ -203,25 +203,21 @@
           </div>
         </div>
 
-        <!-- Hero preview panel — real-ish product surface -->
-        <aside class="hero-preview reveal" aria-label="Live recorder preview">
+        <!-- Hero preview panel — honest product snapshot -->
+        <aside class="hero-preview reveal" aria-label="SOUNDTEST.PRO product preview">
           <div class="preview-head">
-            <span class="badge">Live · EV-2026-0614-A1B2</span>
-            <span class="rec"><span class="rec-dot" aria-hidden="true"></span>REC 00:01:24</span>
+            <span class="badge">Live field snapshot</span>
           </div>
           <div class="preview-meter">
-            <span class="val">87</span><span class="unit">dB</span>
-            <span class="tag">Above night limit</span>
+            <span class="val">68</span><span class="unit">dBA</span>
+            <p class="muted">dBA · Fast · LAeq, L10/L90, GPS, evidence photo, manifest hash</p>
           </div>
           <div class="preview-bar"><div class="preview-bar-fill"></div></div>
           <div class="preview-bar-marks"><span>30</span><span>50</span><span>70</span><span>90</span><span>110 dB</span></div>
-          <div class="preview-waveform" aria-hidden="true">
-            <span style="height:30%"></span><span style="height:55%"></span><span style="height:42%"></span><span style="height:80%"></span><span style="height:65%"></span><span style="height:90%"></span><span style="height:72%"></span><span style="height:50%"></span><span style="height:85%"></span><span style="height:60%"></span><span style="height:45%"></span><span style="height:75%"></span><span style="height:95%"></span><span style="height:68%"></span><span style="height:40%"></span><span style="height:88%"></span><span style="height:62%"></span><span style="height:78%"></span><span style="height:55%"></span><span style="height:92%"></span><span style="height:70%"></span><span style="height:48%"></span><span style="height:85%"></span><span style="height:62%"></span>
-          </div>
           <div class="preview-meta">
-            <div>Location<strong>Brooklyn, NY</strong></div>
-            <div>LAeq<strong>82.4 dB</strong></div>
-            <div>Format<strong>PDF + WAV</strong></div>
+            <div>LAeq<strong>energy average</strong></div>
+            <div>L90<strong>background level</strong></div>
+            <div>PDF<strong>report export</strong></div>
           </div>
         </aside>
       </div>
