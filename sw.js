@@ -1,4 +1,4 @@
-const CACHE_NAME = 'soundtest-pro-v3';
+const CACHE_NAME = 'soundtest-pro-v4';
 const ASSETS_TO_CACHE = [
   '/',
   '/assets/site.css',
@@ -13,6 +13,7 @@ const ASSETS_TO_CACHE = [
   '/assets/pro-meter.js',
   '/assets/evidence-utils.js',
   '/assets/storage-utils.js',
+  '/assets/jspdf.umd.min.js',
   '/assets/icon.svg',
   '/assets/echo-mascot.png',
   '/assets/echo-mascot-removebg-preview.png',

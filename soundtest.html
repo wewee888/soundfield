@@ -22,6 +22,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/layout-flow.css">
+<!--
+  TODO (tech-debt backlog, 2026-06):
+  - 1237 行内联 <style> 后续可拆到 assets/soundtest.css（注意色板 #2AFFD4 与 site.css 的 #2cf0c1 不同）
+  - 4194 行内联 <script> 后续可拆到 assets/soundtest-app.js
+  - 7 个派生 i18n locale (es/fr/de/ja/ko/vi/th) 仍回退到英文，待翻译
+  - 重复的设置 UI（底部抽屉 + 内嵌面板）后续可合一
+  任何时候拆这部分，请严格按函数逐个迁移 + 全量回归测试。
+-->
 <style>
 :root{
   --bg:#060A12;--surf:#0D1525;--surf2:#111E30;--surf3:#16263A;
@@ -2398,7 +2406,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" data-cfasync="false" async></script>
+<script src="assets/jspdf.umd.min.js" data-cfasync="false" async></script>
 <script src="assets/utils.js" data-cfasync="false"></script>
 <script src="assets/i18n-data.js" data-cfasync="false"></script>
 <script src="assets/lang-flags.js" data-cfasync="false"></script>
