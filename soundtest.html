@@ -23,11 +23,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/layout-flow.css">
 <!--
-  TODO (tech-debt backlog, 2026-06):
+  TODO (tech-debt backlog, 2026-06-10):
   - 1237 行内联 <style> 后续可拆到 assets/soundtest.css（注意色板 #2AFFD4 与 site.css 的 #2cf0c1 不同）
   - 4194 行内联 <script> 后续可拆到 assets/soundtest-app.js
-  - 7 个派生 i18n locale (es/fr/de/ja/ko/vi/th) 仍回退到英文，待翻译
-  - 重复的设置 UI（底部抽屉 + 内嵌面板）后续可合一
+  - i18n 已完成（9 locales × 207 keys 全部翻译，无回退）；保留作为完整数据表
+  - 视觉升级进行中 (in progress, 2026-06-10):
+    · dB 仪表盘渐变描边 + 呼吸光晕 (linear-gradient stroke + drop-shadow glow)
+    · 录音按钮多圈扩散动画 + 状态色切换 (multi-layer ring + haptic color shift)
+    · 设置抽屉毛玻璃统一 (drawer glassmorphism unify)
+  - UI 合并进行中 (in progress, 2026-06-10):
+    · 底部抽屉作为主设置入口（移动端优选），内嵌面板保留为 Hub
+    · 重复的 -2 后缀函数（togDayNightThreshold2 / setSustainedAlertSec2 / setAutoRecMinSec2 / setAutoRecAfterStopSec2 / togAutoRec2）已合并为单一函数，DOM ID 保留以兼容
   任何时候拆这部分，请严格按函数逐个迁移 + 全量回归测试。
 -->
 <style>
@@ -153,7 +159,32 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
   width:min(100%,390px);height:92px;
   pointer-events:none;opacity:.88;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--level-color) 28%,transparent));
   z-index:0;
+  transition:filter .35s ease;
 }
+/* ── dB arc gradient + breathing glow (Upgrade 1) ── */
+.gauge-arc-stroke{
+  filter:drop-shadow(0 0 6px color-mix(in srgb,var(--level-color) 35%,transparent))
+         drop-shadow(0 0 14px color-mix(in srgb,var(--level-color) 18%,transparent));
+  transition:filter .4s ease,stroke .3s ease;
+}
+.db-stage[data-level="low"] .gauge-arc-stroke{
+  filter:drop-shadow(0 0 6px rgba(42,255,212,.32)) drop-shadow(0 0 14px rgba(42,255,212,.14));
+}
+.db-stage[data-level="mid"] .gauge-arc-stroke{
+  filter:drop-shadow(0 0 8px rgba(255,181,32,.42)) drop-shadow(0 0 18px rgba(255,181,32,.20));
+  animation:gauge-breathe-mid 2.4s ease-in-out infinite;
+}
+.db-stage[data-level="high"] .gauge-arc-stroke{
+  filter:drop-shadow(0 0 10px rgba(255,63,80,.55)) drop-shadow(0 0 22px rgba(255,63,80,.28));
+  animation:gauge-breathe-high 1.4s ease-in-out infinite;
+}
+.db-stage[data-level="danger"] .gauge-arc-stroke{
+  filter:drop-shadow(0 0 14px rgba(192,132,252,.62)) drop-shadow(0 0 28px rgba(192,132,252,.34));
+  animation:gauge-breathe-danger 1.0s ease-in-out infinite;
+}
+@keyframes gauge-breathe-mid{0%,100%{filter:drop-shadow(0 0 6px rgba(255,181,32,.32)) drop-shadow(0 0 14px rgba(255,181,32,.14))}50%{filter:drop-shadow(0 0 12px rgba(255,181,32,.55)) drop-shadow(0 0 24px rgba(255,181,32,.28))}}
+@keyframes gauge-breathe-high{0%,100%{filter:drop-shadow(0 0 8px rgba(255,63,80,.40)) drop-shadow(0 0 18px rgba(255,63,80,.20))}50%{filter:drop-shadow(0 0 14px rgba(255,63,80,.65)) drop-shadow(0 0 28px rgba(255,63,80,.36))}}
+@keyframes gauge-breathe-danger{0%,100%{filter:drop-shadow(0 0 10px rgba(192,132,252,.50)) drop-shadow(0 0 22px rgba(192,132,252,.28))}50%{filter:drop-shadow(0 0 18px rgba(192,132,252,.72)) drop-shadow(0 0 34px rgba(192,132,252,.42))}}
 .db-hero{
   display:flex;align-items:center;justify-content:center;
   position:relative;z-index:1;width:100%;height:100%;max-width:none;padding:24px 16px 20px;
@@ -253,8 +284,13 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
 .rec-wrap{position:relative;flex:0 0 48px;width:48px;height:48px;display:flex;justify-content:center}
 .rec-ring{position:absolute;border-radius:50%;border:1.5px solid var(--red);opacity:0;inset:-7px;pointer-events:none}
 .rec-ring2{position:absolute;border-radius:50%;border:1.5px solid var(--red);opacity:0;inset:-14px;pointer-events:none}
-.recording-active .rec-ring{display:none}
-.recording-active .rec-ring2{display:none}
+/* ── Recording ring expansion (Upgrade 2) ── */
+.rec-wrap.recording-active .rec-ring{animation:rec-ring-expand 1.8s ease-out infinite;opacity:0}
+.rec-wrap.recording-active .rec-ring2{animation:rec-ring-expand 1.8s ease-out infinite .9s;opacity:0}
+@keyframes rec-ring-expand{
+  0%{transform:scale(.6);opacity:.55;border-width:2px}
+  100%{transform:scale(1.7);opacity:0;border-width:.5px}
+}
 @keyframes rec-subtle{0%,100%{transform:scale(1);box-shadow:0 0 0 rgba(255,63,80,0)}50%{transform:scale(1.035);box-shadow:0 0 12px rgba(255,63,80,.28)}}
 .rec-btn{
   width:48px;height:48px;aspect-ratio:1/1;border-radius:50%;border:none;cursor:pointer;
@@ -267,6 +303,16 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
 .rec-btn.idle svg{stroke:var(--red)}
 .rec-btn.recording-state{background:var(--red);border-color:var(--red);box-shadow:0 0 12px rgba(255,63,80,.28);animation:rec-subtle 1.45s ease-in-out infinite} /* recordButtonSubtlePulse */
 .rec-btn.recording-state svg{stroke:#fff}
+/* ── Rec button state transitions (Upgrade 2) ── */
+.rec-btn[data-state="idle"]{color:var(--red)}
+.rec-btn[data-state="idle"] svg{stroke:var(--red)}
+.rec-btn[data-state="listening"]{color:var(--accent);border-color:rgba(42,255,212,.4);box-shadow:0 0 10px rgba(42,255,212,.18)}
+.rec-btn[data-state="listening"] svg{stroke:var(--accent)}
+.rec-btn[data-state="recording"]{background:var(--red);border-color:var(--red);box-shadow:0 0 14px rgba(255,63,80,.34);animation:rec-subtle 1.45s ease-in-out infinite}
+.rec-btn[data-state="recording"] svg{stroke:#fff}
+.rec-btn[data-state="alarming"]{background:var(--red);border-color:var(--red);box-shadow:0 0 18px rgba(255,63,80,.55),0 0 38px rgba(255,63,80,.25);animation:rec-alarm-flash .8s ease-in-out infinite}
+.rec-btn[data-state="alarming"] svg{stroke:#fff}
+@keyframes rec-alarm-flash{0%,100%{transform:scale(1);box-shadow:0 0 14px rgba(255,63,80,.45),0 0 28px rgba(255,63,80,.18)}50%{transform:scale(1.06);box-shadow:0 0 22px rgba(255,63,80,.7),0 0 44px rgba(255,63,80,.34)}}
 /* Cam & Loc buttons */
 .icon-btn{
   width:48px;height:48px;aspect-ratio:1/1;border-radius:50%;border:.5px solid var(--bdr2);
@@ -617,11 +663,13 @@ video#cam{width:100%;border-radius:var(--rs);display:block;aspect-ratio:16/9;obj
   display:flex;flex-direction:column;
   max-height:85vh;min-height:0;
   border-radius:24px 24px 0 0;
-  background:linear-gradient(180deg,rgba(13,21,37,.98),rgba(8,12,24,.98));
-  border:.5px solid rgba(42,255,212,.18);
-  box-shadow:0 -20px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);
+  background:linear-gradient(180deg,rgba(13,21,37,.88),rgba(8,12,24,.92));
+  border:.5px solid var(--bdr2);
+  border-top-color:rgba(42,255,212,.20);
+  box-shadow:var(--polish-shadow),0 -20px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);
   transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);
-  backdrop-filter:blur(20px);
+  backdrop-filter:blur(28px) saturate(140%);
+  -webkit-backdrop-filter:blur(28px) saturate(140%);
 }
 .settings-drawer.open{transform:translateY(0)}
 .settings-drawer-backdrop{
@@ -683,7 +731,11 @@ video#cam{width:100%;border-radius:var(--rs);display:block;aspect-ratio:16/9;obj
 .settings-drawer-row{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
   padding:10px 0;border-bottom:.5px solid rgba(255,255,255,.06);
+  transition:background-color .2s ease,padding-left .2s ease;
+  border-radius:var(--rs);
+  margin:0 -4px;padding-left:8px;padding-right:8px;
 }
+.settings-drawer-row:hover{background:rgba(255,255,255,.025)}
 .settings-drawer-row:last-child{border:none}
 .settings-drawer-label{font-size:13px;color:var(--tx1)}
 .settings-drawer-desc{font-size:10px;color:var(--tx2);margin-top:2px;line-height:1.4}
@@ -1663,11 +1715,20 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   </div>
 
   <!-- Big dB number -->
-  <div class="db-stage" id="dbStage">
+  <div class="db-stage" id="dbStage" data-level="low">
     <div class="db-scan" aria-hidden="true"></div>
     <svg class="gauge-svg" id="gaugeSvg" viewBox="0 0 220 120" aria-hidden="true">
+      <defs>
+        <linearGradient id="gaugeGradient" x1="20" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#2AFFD4"/>
+          <stop offset="45%" stop-color="#2AFFD4"/>
+          <stop offset="65%" stop-color="#FFB520"/>
+          <stop offset="85%" stop-color="#FF3F50"/>
+          <stop offset="100%" stop-color="#C084FC"/>
+        </linearGradient>
+      </defs>
       <path d="M20 110 A90 90 0 0 1 200 110" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10" stroke-linecap="round"/>
-      <path id="gaugeArc" d="M20 110 A90 90 0 0 1 200 110" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="butt" stroke-dasharray="0 283" opacity="0"/>
+      <path class="gauge-arc-stroke" id="gaugeArc" d="M20 110 A90 90 0 0 1 200 110" fill="none" stroke="url(#gaugeGradient)" stroke-width="10" stroke-linecap="butt" stroke-dasharray="0 283" opacity="0"/>
     </svg>
     <div class="db-hero">
     <div class="db-num-wrap">
@@ -2094,7 +2155,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
           </div>
           <div class="sdesc">白天 55 dB / 夜间 45 dB 自动切换（7:00–22:00 为白天）</div>
         </div>
-        <div class="sctrl"><div class="tog off" id="dayNightTog2" onclick="togDayNightThreshold2()" role="switch" aria-checked="false" tabindex="0"></div></div>
+        <div class="sctrl"><div class="tog off" id="dayNightTog2" onclick="togDayNightThreshold()" role="switch" aria-checked="false" tabindex="0"></div></div>
       </div>
       <div class="srow" id="dayNightOpts2" style="display:none">
         <div><div class="slabel">当前阈值</div><div class="sdesc" id="dayNightStatus2">—</div></div>
@@ -2105,7 +2166,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       </div>
       <div class="srow" id="sustainedAlertOpts2" style="display:none">
         <div><div class="slabel">持续超标秒数</div><div class="sdesc">持续超过阈值多少秒后告警</div></div>
-        <div class="sctrl"><input type="range" id="susAlertsR2" min="5" max="120" value="30" step="5" oninput="setSustainedAlertSec2()"><span class="sval" id="susAlertsV2">30s</span></div>
+        <div class="sctrl"><input type="range" id="susAlertsR2" min="5" max="120" value="30" step="5" oninput="setSustainedAlertSec()"><span class="sval" id="susAlertsV2">30s</span></div>
       </div>
       <div class="srow">
         <div>
@@ -2115,13 +2176,13 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
           </div>
           <div class="sdesc">超标持续数秒后自动开始录音，停止后继续录制一段时间。Pro 专属功能。</div>
         </div>
-        <div class="sctrl"><div class="tog off" id="autoRecTog2" onclick="togAutoRec2()" role="switch" aria-checked="false" tabindex="0"></div></div>
+        <div class="sctrl"><div class="tog off" id="autoRecTog2" onclick="togAutoRec()" role="switch" aria-checked="false" tabindex="0"></div></div>
       </div>
       <div class="srow" id="autoRecOpts2" style="display:none">
         <div><div class="slabel">超标持续秒数</div><div class="sdesc">超标持续多久后开始录音</div></div>
-        <div class="sctrl"><input type="range" id="autoRecMinSR2" min="1" max="30" value="3" step="1" oninput="setAutoRecMinSec2()"><span class="sval" id="autoRecMinSV2">3s</span></div>
+        <div class="sctrl"><input type="range" id="autoRecMinSR2" min="1" max="30" value="3" step="1" oninput="setAutoRecMinSec()"><span class="sval" id="autoRecMinSV2">3s</span></div>
         <div><div class="slabel">停止后录制秒数</div><div class="sdesc">超标结束后继续录制多少秒</div></div>
-        <div class="sctrl"><input type="range" id="autoRecAfterStopSR2" min="3" max="60" value="10" step="1" oninput="setAutoRecAfterStopSec2()"><span class="sval" id="autoRecAfterStopSV2">10s</span></div>
+        <div class="sctrl"><input type="range" id="autoRecAfterStopSR2" min="3" max="60" value="10" step="1" oninput="setAutoRecAfterStopSec()"><span class="sval" id="autoRecAfterStopSV2">10s</span></div>
       </div>
       <div class="srow">
         <div><div class="slabel">地点识别</div><div class="sdesc">定位后识别小区、道路或附近地点；会把坐标发送给地图服务。</div></div>
@@ -4457,12 +4518,17 @@ function updateLnStats(stats){
 
 function updateGauge(db){
   const arc=document.getElementById('gaugeArc');if(!arc)return;
+  const stage=document.getElementById('dbStage');
   const len=283,pct=Math.max(0,Math.min(1,db/120));
   const visible=pct>.01;
   arc.setAttribute('stroke-linecap',visible?'round':'butt');
   arc.setAttribute('stroke-dasharray',visible?`${(pct*len).toFixed(1)} ${len}`:`0 ${len}`);
-  arc.setAttribute('stroke',dbCol(db));
-  arc.style.opacity=visible?'.9':'0';
+  arc.setAttribute('stroke','url(#gaugeGradient)');
+  arc.style.opacity=visible?'.95':'0';
+  if(stage){
+    const lv=db<50?'low':db<70?'mid':db<85?'high':'danger';
+    if(stage.getAttribute('data-level')!==lv)stage.setAttribute('data-level',lv);
+  }
 }
 
 async function requestWakeLock(){
@@ -5974,7 +6040,6 @@ function setTh(){alertTh=+document.getElementById('thR').value;document.getEleme
 function togAlert(){alertsOn=!alertsOn;const t=document.getElementById('alertTog');t.classList.toggle('on',alertsOn);t.setAttribute('aria-checked',alertsOn);saveState();}
 function togSustainedAlert(){sustainedAlertOn=!sustainedAlertOn;const t=document.getElementById('sustainedAlertTog');t.classList.toggle('on',sustainedAlertOn);t.setAttribute('aria-checked',sustainedAlertOn);const opts=document.getElementById('sustainedAlertOpts');if(opts)opts.style.display=sustainedAlertOn?'flex':'none';const opts2=document.getElementById('sustainedAlertOpts2');if(opts2)opts2.style.display=sustainedAlertOn?'flex':'none';saveState();}
 function setSustainedAlertSec(){sustainedAlertMinSeconds=+document.getElementById('susAlertsR').value;document.getElementById('susAlertsV').textContent=sustainedAlertMinSeconds+'s';document.getElementById('susAlertsR2').value=sustainedAlertMinSeconds;document.getElementById('susAlertsV2').textContent=sustainedAlertMinSeconds+'s';saveState();}
-function setSustainedAlertSec2(){sustainedAlertMinSeconds=+document.getElementById('susAlertsR2').value;document.getElementById('susAlertsV2').textContent=sustainedAlertMinSeconds+'s';document.getElementById('susAlertsR').value=sustainedAlertMinSeconds;document.getElementById('susAlertsV').textContent=sustainedAlertMinSeconds+'s';saveState();}
 function isDayPeriod(){
   const h=new Date().getHours();
   return h>=7&&h<22;
@@ -6014,18 +6079,6 @@ function togDayNightThreshold(){
   if(opts2)opts2.style.display=autoDayNightMode?'flex':'none';
   if(autoDayNightMode){applyDayNightThreshold();}saveState();
 }
-function togDayNightThreshold2(){
-  autoDayNightMode=!autoDayNightMode;
-  const t=document.getElementById('dayNightTog2');
-  t.classList.toggle('on',autoDayNightMode);t.setAttribute('aria-checked',autoDayNightMode);
-  const opts=document.getElementById('dayNightOpts2');
-  if(opts)opts.style.display=autoDayNightMode?'flex':'none';
-  const t2=document.getElementById('dayNightTog');
-  if(t2){t2.classList.toggle('on',autoDayNightMode);t2.setAttribute('aria-checked',autoDayNightMode);}
-  const opts2=document.getElementById('dayNightOpts');
-  if(opts2)opts2.style.display=autoDayNightMode?'flex':'none';
-  if(autoDayNightMode){applyDayNightThreshold();}saveState();
-}
 function togAutoRec(){
   if(!isProActive()){
     toast(appLanguage!=='zh-CN'?'Auto-record is a Pro feature. Upgrade to unlock it.':'超标自动录音是 Pro 专属功能，升级后解锁。','warn',5000);
@@ -6042,11 +6095,8 @@ function togAutoRec(){
   saveState();
   trackEvent(autoRecOnThreshold?'auto_rec_enabled':'auto_rec_disabled',{plan:membershipState.plan});
 }
-function togAutoRec2(){togAutoRec();}
 function setAutoRecMinSec(){autoRecMinSeconds=+document.getElementById('autoRecMinSR').value;document.getElementById('autoRecMinSV').textContent=autoRecMinSeconds+'s';document.getElementById('autoRecMinSR2').value=autoRecMinSeconds;document.getElementById('autoRecMinSV2').textContent=autoRecMinSeconds+'s';saveState();}
-function setAutoRecMinSec2(){autoRecMinSeconds=+document.getElementById('autoRecMinSR2').value;document.getElementById('autoRecMinSV2').textContent=autoRecMinSeconds+'s';document.getElementById('autoRecMinSR').value=autoRecMinSeconds;document.getElementById('autoRecMinSV').textContent=autoRecMinSeconds+'s';saveState();}
 function setAutoRecAfterStopSec(){autoRecAfterStopSeconds=+document.getElementById('autoRecAfterStopSR').value;document.getElementById('autoRecAfterStopSV').textContent=autoRecAfterStopSeconds+'s';document.getElementById('autoRecAfterStopSR2').value=autoRecAfterStopSeconds;document.getElementById('autoRecAfterStopSV2').textContent=autoRecAfterStopSeconds+'s';saveState();}
-function setAutoRecAfterStopSec2(){autoRecAfterStopSeconds=+document.getElementById('autoRecAfterStopSR2').value;document.getElementById('autoRecAfterStopSV2').textContent=autoRecAfterStopSeconds+'s';document.getElementById('autoRecAfterStopSR').value=autoRecAfterStopSeconds;document.getElementById('autoRecAfterStopSV').textContent=autoRecAfterStopSeconds+'s';saveState();}
 function setSm(){smoothing=+document.getElementById('smR').value;document.getElementById('smV').textContent=smoothing;if(analyser)analyser.smoothingTimeConstant=analyserSmooth(smoothing);saveState();}
 function togPlaceLookup(){placeLookupOn=!placeLookupOn;const t=document.getElementById('placeTog');t.classList.toggle('on',placeLookupOn);t.setAttribute('aria-checked',placeLookupOn);if(!placeLookupOn)setPlaceText(null,'off');saveState();}
 function syncPowerSaverToggle(){const t=document.getElementById('powerSaverTog');if(!t)return;t.classList.toggle('on',longRunPowerSaver);t.setAttribute('aria-checked',longRunPowerSaver);}

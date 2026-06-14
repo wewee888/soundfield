@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="../assets/site.css">
   <link rel="manifest" href="../manifest.webmanifest">
   <script src="../assets/lang-flags.js" defer></script>
-  <script src="../assets/site-i18n.js" defer></script>
+  <script src="assets/site-i18n.js?v=6" defer></script>
   <script src="../assets/site-auth.js" defer></script>
   <script src="../assets/site-experience.js" defer></script>
   <script type="application/ld+json">
@@ -166,8 +166,8 @@
       </div>
       <div class="split-asym">
         <div class="chip-cluster reveal">
-          <div class="card-badge">Pick a scenario</div>
-          <h3 style="margin-top:6px">One tap, the recorder loads the right template.</h3>
+          <div class="card-badge">시나리오 선택</div>
+          <h3 style="margin-top:6px">한 번의 탭으로, 녹음기가 알맞은 템플릿을 불러옵니다.</h3>
           <div class="chip-floats">
             <a class="chip-float" href="../use-cases/neighbor-noise-evidence.html"><span class="emoji" aria-hidden="true">🏢</span>이웃 및 아파트 소음</a>
             <a class="chip-float" href="../use-cases/construction-noise-monitoring.html"><span class="emoji" aria-hidden="true">🚧</span>건설 및 리모델링 소음</a>
@@ -249,9 +249,9 @@
 
     <section class="section" id="pricing">
       <div class="section-header reveal">
-        <span class="eyebrow">Plans</span>
-        <h2>Free is enough for most complaints. Pro adds polish for repeated cases.</h2>
-        <p class="lead">No subscription wall in front of the tool. Upgrade only when you want premium templates, PDF batches, and metadata backups.</p>
+        <span class="eyebrow">요금제</span>
+        <h2>대부분의 민원에는 무료 버전이면 충분합니다. Pro는 반복 사례에 세련된 마무리를 더합니다.</h2>
+        <p class="lead">도구 앞에 구독벽은 두지 않습니다. 프리미엄 템플릿, PDF 일괄 내보내기, 메타데이터 백업이 필요할 때에만 업그레이드하세요.</p>
       </div>
 
       <div class="pricing-row">
@@ -260,10 +260,10 @@
           <span class="price-name">웹 도구로 시작</span>
           <span class="price-tag">$0</span>
           <ul class="check-list">
-            <li>Real-time decibel meter</li>
-            <li>Basic audio recording</li>
-            <li>Time &amp; location stamp</li>
-            <li>Manual screenshot save</li>
+            <li>실시간 데시벨 측정기</li>
+            <li>기본 오디오 녹음</li>
+            <li>시간 및 위치 스탬프</li>
+            <li>수동 스크린샷 저장</li>
           </ul>
           <a class="button" href="../app.html">무료 도구 열기</a>
         </div>
@@ -271,13 +271,13 @@
         <div class="price-card pro reveal">
           <span class="price-pill">Pro 프리미엄 버전</span>
           <span class="price-name">프리미엄으로 업그레이드</span>
-          <span class="price-tag">$2.99/mo · $14.99/yr · $29.99 lifetime</span>
+          <span class="price-tag">$2.99/월 · $14.99/년 · $29.99 평생 이용권</span>
           <ul class="check-list">
-            <li>No Advertisements</li>
-            <li>Extended local recording workflow</li>
-            <li>Export PDF evidence report</li>
-            <li>Premium evidence templates</li>
-            <li>Metadata backup export</li>
+            <li>광고 제거</li>
+            <li>확장된 로컬 녹음 워크플로</li>
+            <li>PDF 증거 보고서 내보내기</li>
+            <li>프리미엄 증거 템플릿</li>
+            <li>메타데이터 백업 내보내기</li>
           </ul>
           <a class="button primary" href="../auth.html">계정 만들기 및 결제</a>
         </div>
@@ -287,34 +287,34 @@
     <section class="section" id="updates">
       <div class="section-header reveal">
         <span class="eyebrow">최근 업데이트</span>
-        <h2>Built in public, with a clear product record.</h2>
-        <p class="lead">Every shipped change shows up in the changelog — SEO, language routing, evidence pipeline, storage health, and account hooks.</p>
+        <h2>공개적으로 개발하며, 투명한 제품 기록을 남깁니다.</h2>
+        <p class="lead">배포된 모든 변경 사항은 변경 로그에 기록됩니다 — SEO, 언어 라우팅, 증거 파이프라인, 저장소 상태, 계정 연동까지.</p>
       </div>
       <div class="grid">
         <a class="card reveal" href="../changelog.html">
-          <div class="card-badge">Brand · SEO</div>
-          <h3>SOUNDTEST.PRO brand and SEO launch</h3>
-          <p>Canonical URLs, hreflang language paths, sitemap, robots, manifest, and structured data now align to soundtest.pro.</p>
+          <div class="card-badge">브랜드 · SEO</div>
+          <h3>SOUNDTEST.PRO 브랜드 및 SEO 론칭</h3>
+          <p>정식 URL, hreflang 언어 경로, 사이트맵, robots, 매니페스트, 구조화된 데이터가 soundtest.pro 기준으로 정렬되었습니다.</p>
         </a>
         <a class="card reveal" href="../changelog.html">
-          <div class="card-badge">Internationalization</div>
-          <h3>언어 follows system or choice</h3>
-          <p>The site recommends a language from browser settings and saves the user selection locally on the device.</p>
+          <div class="card-badge">다국어 지원</div>
+          <h3>언어는 시스템 설정 또는 사용자 선택을 따릅니다</h3>
+          <p>사이트는 브라우저 설정에 따라 언어를 추천하고, 사용자가 선택한 언어는 기기에 로컬로 저장됩니다.</p>
         </a>
         <a class="card reveal" href="../changelog.html">
-          <div class="card-badge">Evidence workflow</div>
-          <h3>Evidence workflow hardening</h3>
-          <p>Evidence IDs, hashing, weighting, percentile metrics, photo capture, and storage health improvements are tracked.</p>
+          <div class="card-badge">증거 워크플로</div>
+          <h3>증거 워크플로 강화</h3>
+          <p>증거 ID, 해싱, 가중치 적용, 백분위 측정, 사진 캡처, 저장소 상태 점검 등 개선 사항을 지속적으로 추적합니다.</p>
         </a>
       </div>
     </section>
 
     <section class="section grid two">
       <div class="notice reveal">
-        <strong>면책 조항:</strong> This tool is for civilian reference and field documentation only, not professional metering equipment. All audio and data are processed locally on your device unless you choose to export or share files.
+        <strong>면책 조항:</strong> 본 도구는 일반 사용자의 참고 및 현장 기록용이며, 전문 측정 장비가 아닙니다. 모든 오디오와 데이터는 사용자가 직접 내보내거나 공유하지 않는 한, 사용자의 기기에서 로컬로 처리됩니다.
       </div>
       <div class="notice reveal" style="border-left-color:var(--accent-2);background:linear-gradient(135deg, rgba(124,155,255,0.10), rgba(255,255,255,0.025))">
-        <strong>개인정보 보호:</strong> 정적 웹 도구는 수집하지 않습니다, store, or share your microphone, location, or recording data on a server. Your records remain local to your browser unless you export them.
+        <strong>개인정보 보호:</strong> 본 정적 웹 도구는 사용자의 마이크, 위치, 녹음 데이터를 서버에서 수집, 저장 또는 공유하지 않습니다. 내보내기 전까지 모든 기록은 브라우저에 로컬로 보관됩니다.
       </div>
     </section>
 
@@ -325,7 +325,7 @@
             <span class="brand-mark" aria-hidden="true"></span>
             <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
           </a>
-          <p>Acoustic evidence aid for global noise documentation. Browser-native, local-first, multilingual. Formal measurements should be verified with a certified sound level meter.</p>
+          <p>전 세계 소음 기록을 위한 음향 증거 도우미. 브라우저 기반, 로컬 우선, 다국어 지원. 공식 측정은 공인 음향 측정기를 통해 검증하시기 바랍니다.</p>
           <div class="footer-flags" aria-label="언어 matrix">
             <a class="footer-flag" href="../en/index.html" title="English">🇺🇸</a>
             <a class="footer-flag" href="../zh/index.html" title="中文">🇨🇳</a>
@@ -343,10 +343,10 @@
           <h4>제품</h4>
           <ul>
             <li><a href="../app.html">앱 열기</a></li>
-            <li><a href="../soundtest.html">Online Decibel Meter</a></li>
-            <li><a href="../samples.html">Noise Recorder Samples</a></li>
-            <li><a href="../accuracy.html">Mic Test &amp; Accuracy</a></li>
-            <li><a href="../download.html">Install as PWA</a></li>
+            <li><a href="../soundtest.html">온라인 데시벨 측정기</a></li>
+            <li><a href="../samples.html">소음 녹음 샘플</a></li>
+            <li><a href="../accuracy.html">마이크 테스트 및 정확도</a></li>
+            <li><a href="../download.html">PWA로 설치</a></li>
           </ul>
         </div>
 
@@ -400,10 +400,30 @@
   </main>
 </body>
 <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration failed:', err));
-    });
-  }
+  (function() {
+    try {
+      if (sessionStorage.getItem('__sfV7Boot')) return;
+      sessionStorage.setItem('__sfV7Boot', '1');
+    } catch (e) { return; }
+    if (!('serviceWorker' in navigator)) return;
+    navigator.serviceWorker.getRegistrations().then(function(regs) {
+      var hasV7 = regs.some(function(r) {
+        var u = (r.active && r.active.scriptURL) || '';
+        return u.indexOf('v=7') !== -1 || u.indexOf('v=6') !== -1;
+      });
+      if (hasV7) return null;
+      return Promise.all(regs.map(function(r) { return r.unregister(); }))
+        .then(function() {
+          return 'caches' in self ? caches.keys() : Promise.resolve([]);
+        })
+        .then(function(keys) {
+          return Promise.all(keys.filter(function(k) { return k.indexOf('soundtest-pro-') === 0; }).map(function(k) { return caches.delete(k); }));
+        })
+        .then(function() {
+          return navigator.serviceWorker.register('/sw.js?v=7');
+        })
+        .then(function() { location.reload(); });
+    }).catch(function() {});
+  })();
 </script>
 </html>

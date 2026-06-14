@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="../assets/site.css">
   <link rel="manifest" href="../manifest.webmanifest">
   <script src="../assets/lang-flags.js" defer></script>
-  <script src="../assets/site-i18n.js" defer></script>
+  <script src="assets/site-i18n.js?v=6" defer></script>
   <script src="../assets/site-auth.js" defer></script>
   <script src="../assets/site-experience.js" defer></script>
   <script type="application/ld+json">
@@ -125,7 +125,7 @@
       <div class="section-header reveal">
         <span class="eyebrow">4つのコア機能</span>
         <h2>測定・録音・タイムスタンプ・書き出し — 静かなワークフロー。</h2>
-        <p class="lead">Built for people who arrive anxious about noise and need a calm, professional way to lock the facts before they speak with a landlord, manager, or adviser.</p>
+        <p class="lead">騒音問題に不安を抱え、大家・管理人・専門家へ相談する前に、落ち着いて事実を確実に記録できる、プロ仕様の方法を必要とされる方のために設計されています。</p>
       </div>
       <div class="feature-grid-22">
         <div class="card reveal">
@@ -133,28 +133,28 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg>
           </span>
           <h3>リアルタイム分貝計</h3>
-          <p>Accurate sound level detection: live <strong>dB / dBA</strong>, peak, average, <strong>LAeq</strong>, and L5/L10/L50/L90/L95 percentile summaries — all computed locally on your device.</p>
+          <p>高精度な騒音レベル検出：ライブ<strong>dB / dBA</strong>、ピーク値、平均値、<strong>LAeq</strong>、L5/L10/L50/L90/L95 パーセンタイル集計 — すべてお使いのデバイス上でローカル処理されます。</p>
         </div>
         <div class="card reveal">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2l2-6 3 14 3-10 2 6 2-4 4 0"/></svg>
           </span>
           <h3>音声・波形録音</h3>
-          <p>Record noise with waveform and spectrum context to keep complete, local sound documentation. Waveform, spectrum chart, and timestamps stay with the file.</p>
+          <p>波形とスペクトラム情報を伴って騒音を録音し、完全でローカル完結型の音響記録を保持します。波形・スペクトラムチャート・タイムスタンプはファイルに保持されます。</p>
         </div>
         <div class="card reveal">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
           </span>
           <h3>自動タイム＆位置スタンプ</h3>
-          <p>Automatically record date, time, and geographic location when permission is granted — the metadata you need to make a complaint hold up under scrutiny.</p>
+          <p>許可をいただいた場合、日時・地理的位置情報を自動的に記録します。苦情申立ての根拠を厳格な検証に耐えるものにするために必要なメタデータです。</p>
         </div>
         <div class="card reveal">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
           </span>
           <h3>証拠レポート書き出し</h3>
-          <p>Generate structured <strong>PDF</strong>, <strong>CSV</strong>, and <strong>JSON</strong> reports — official-feeling templates ready for property management, local authority, or legal advisers.</p>
+          <p>構造化された<strong>PDF</strong>・<strong>CSV</strong>・<strong>JSON</strong>レポートを生成 — 物業管理、自治体、法的顧問に提出できる公式志向のテンプレートです。</p>
         </div>
       </div>
     </section>
@@ -166,8 +166,8 @@
       </div>
       <div class="split-asym">
         <div class="chip-cluster reveal">
-          <div class="card-badge">Pick a scenario</div>
-          <h3 style="margin-top:6px">One tap, the recorder loads the right template.</h3>
+          <div class="card-badge">シナリオを選ぶ</div>
+          <h3 style="margin-top:6px">ワンタップで、最適なテンプレートがレコーダーに読み込まれます。</h3>
           <div class="chip-floats">
             <a class="chip-float" href="../use-cases/neighbor-noise-evidence.html"><span class="emoji" aria-hidden="true">🏢</span>隣人・マンション騒音</a>
             <a class="chip-float" href="../use-cases/construction-noise-monitoring.html"><span class="emoji" aria-hidden="true">🚧</span>建設・リフォーム騒音</a>
@@ -183,14 +183,14 @@
               <span class="card-badge">グローバル騒音基準</span>
               <h3 class="dashboard-title" style="margin-top:6px">昼間基準と夜間基準</h3>
             </div>
-            <span class="loud-badge" title="Plain-language label">🚨 Loud talking ~ 65 dB</span>
+            <span class="loud-badge" title="Plain-language label">🚨 大声での会話 ≈ 65 dB</span>
           </div>
           <div class="dashboard-rows">
             <div class="dashboard-row">
               <span class="icon-orb sun" aria-hidden="true">☀</span>
               <div class="label">
                 <strong>昼間基準 (6:00–22:00)</strong>
-                <span>Quiet residential context, conversation, daytime activity.</span>
+                <span>閑静な住宅環境での会話・日中の生活音。</span>
               </div>
               <span class="meter">≤ 55 dB</span>
             </div>
@@ -198,20 +198,20 @@
               <span class="icon-orb moon" aria-hidden="true">☾</span>
               <div class="label">
                 <strong>夜間基準 (22:00–6:00)</strong>
-                <span>Sleep, recovery, and quiet-hour expectations.</span>
+                <span>睡眠・休養・夜間静穏時間の期待値。</span>
               </div>
               <span class="meter">≤ 45 dB</span>
             </div>
             <div class="dashboard-row">
               <span class="icon-orb sun" aria-hidden="true">⚠</span>
               <div class="label">
-                <strong>Anything sustained &gt; 70 dB</strong>
-                <span>Already comparable to a busy street — record patterns immediately.</span>
+                <strong>70 dB を超える持続音</strong>
+                <span>すでに賑やかな道路と同等のレベルです — 直ちにパターン記録を開始してください。</span>
               </div>
               <span class="meter">≥ 70 dB</span>
             </div>
           </div>
-          <p class="dashboard-foot">Reference only. Local rules vary, and formal proof should be verified with local authority procedures or certified equipment.</p>
+          <p class="dashboard-foot">参考値です。地域ごとに規制が異なるため、正式な証明は自治体所定の手続きまたは検定済み機器により検証してください。</p>
         </div>
       </div>
 
@@ -221,37 +221,37 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2z"/></svg>
           </span>
           <h3>隣人・マンション騒音</h3>
-          <p>For tenants, owners, and mediators who need a structured diary with dB trends, timestamps, photos, and reports.</p>
+          <p>テナント・オーナー・調停者向けに、dB 推移・タイムスタンプ・写真・レポートを備えた構造化日誌を提供します。</p>
         </a>
         <a class="card reveal" href="../use-cases/construction-noise-monitoring.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21V12h6v9"/></svg>
           </span>
           <h3>建設・リフォーム騒音</h3>
-          <p>Capture start, peak, and quiet-after periods with site notes, GPS, video, and exportable summaries.</p>
+          <p>開始時刻・ピーク・静穏化までの推移を、現場メモ・GPS・動画とともに記録し、エクスポート可能なサマリーとして出力します。</p>
         </a>
         <a class="card reveal" href="../use-cases/bar-street-disturbance.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M5 6v6c0 4 3 7 7 7s7-3 7-7V6"/><path d="M9 2v3M15 2v3"/></svg>
           </span>
           <h3>バー・店舗・街頭騒音</h3>
-          <p>Document repeated disturbance patterns with time, place, media, and complaint-ready summaries.</p>
+          <p>繰り返される迷惑行為のパターンを、日時・場所・メディア・苦情申立て用サマリーとともに記録します。</p>
         </a>
         <a class="card reveal" href="../use-cases/rental-dispute-evidence.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7l8-4 8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 17l8 4 8-4"/></svg>
           </span>
           <h3>賃貸トラブルと法的証拠支援</h3>
-          <p>Organize facts before speaking with a landlord, property manager, local authority, or legal adviser.</p>
+          <p>大家・不動産管理会社・自治体・法的顧問に相談する前に、事実関係を整理できます。</p>
         </a>
       </div>
     </section>
 
     <section class="section" id="pricing">
       <div class="section-header reveal">
-        <span class="eyebrow">Plans</span>
-        <h2>Free is enough for most complaints. Pro adds polish for repeated cases.</h2>
-        <p class="lead">No subscription wall in front of the tool. Upgrade only when you want premium templates, PDF batches, and metadata backups.</p>
+        <span class="eyebrow">料金プラン</span>
+        <h2>無料版で大半の苦情に対応できます。Pro は継続的なケースに磨かれた機能を追加します。</h2>
+        <p class="lead">ツールの前にサブスクリプションの壁はありません。プレミアムテンプレート・PDF 一括出力・メタデータバックアップが必要になったときだけアップグレードしてください。</p>
       </div>
 
       <div class="pricing-row">
@@ -260,10 +260,10 @@
           <span class="price-name">Webツールで始める</span>
           <span class="price-tag">$0</span>
           <ul class="check-list">
-            <li>Real-time decibel meter</li>
-            <li>Basic audio recording</li>
-            <li>Time &amp; location stamp</li>
-            <li>Manual screenshot save</li>
+            <li>リアルタイム dB メーター</li>
+            <li>基本的な音声録音</li>
+            <li>日時・位置情報スタンプ</li>
+            <li>手動スクリーンショット保存</li>
           </ul>
           <a class="button" href="../app.html">無料ツールを開く</a>
         </div>
@@ -271,13 +271,13 @@
         <div class="price-card pro reveal">
           <span class="price-pill">Proプレミアム版</span>
           <span class="price-name">プレミアムにアップグレード</span>
-          <span class="price-tag">$2.99/mo · $14.99/yr · $29.99 lifetime</span>
+          <span class="price-tag">月額 $2.99 · 年額 $14.99 · 買い切り $29.99</span>
           <ul class="check-list">
-            <li>No Advertisements</li>
-            <li>Extended local recording workflow</li>
-            <li>Export PDF evidence report</li>
-            <li>Premium evidence templates</li>
-            <li>Metadata backup export</li>
+            <li>広告非表示</li>
+            <li>拡張ローカル録音ワークフロー</li>
+            <li>PDF 証拠レポート書き出し</li>
+            <li>プレミアム証拠テンプレート</li>
+            <li>メタデータバックアップ書き出し</li>
           </ul>
           <a class="button primary" href="../auth.html">アカウント作成と購入</a>
         </div>
@@ -287,34 +287,34 @@
     <section class="section" id="updates">
       <div class="section-header reveal">
         <span class="eyebrow">最新の更新</span>
-        <h2>Built in public, with a clear product record.</h2>
-        <p class="lead">Every shipped change shows up in the changelog — SEO, language routing, evidence pipeline, storage health, and account hooks.</p>
+        <h2>公開主義で、透明性の高い製品記録とともに。</h2>
+        <p class="lead>リリースしたすべての変更は changelog に反映されます — SEO、言語切替、証拠パイプライン、ストレージ健全性、アカウント連携まで。</p>
       </div>
       <div class="grid">
         <a class="card reveal" href="../changelog.html">
-          <div class="card-badge">Brand · SEO</div>
-          <h3>SOUNDTEST.PRO brand and SEO launch</h3>
-          <p>Canonical URLs, hreflang language paths, sitemap, robots, manifest, and structured data now align to soundtest.pro.</p>
+          <div class="card-badge">ブランド · SEO</div>
+          <h3>SOUNDTEST.PRO ブランドと SEO ローンチ</h3>
+          <p>Canonical URL・hreflang 言語パス・サイトマップ・robots・マニフェスト・構造化データを soundtest.pro 配下で統一しました。</p>
         </a>
         <a class="card reveal" href="../changelog.html">
-          <div class="card-badge">Internationalization</div>
-          <h3>言語 follows system or choice</h3>
-          <p>The site recommends a language from browser settings and saves the user selection locally on the device.</p>
+          <div class="card-badge">国際化対応</div>
+          <h3>言語はシステム設定または選択に従います</h3>
+          <p>ブラウザ設定から推奨言語を判定し、ユーザーが選択した言語はデバイス上にローカル保存されます。</p>
         </a>
         <a class="card reveal" href="../changelog.html">
-          <div class="card-badge">Evidence workflow</div>
-          <h3>Evidence workflow hardening</h3>
-          <p>Evidence IDs, hashing, weighting, percentile metrics, photo capture, and storage health improvements are tracked.</p>
+          <div class="card-badge">証拠ワークフロー</div>
+          <h3>証拠ワークフローの堅牢化</h3>
+          <p>証拠 ID・ハッシュ処理・重み付け・パーセンタイル指標・写真撮影・ストレージ健全性チェックの改善を管理下に置きました。</p>
         </a>
       </div>
     </section>
 
     <section class="section grid two">
       <div class="notice reveal">
-        <strong>免責事項：</strong> This tool is for civilian reference and field documentation only, not professional metering equipment. All audio and data are processed locally on your device unless you choose to export or share files.
+        <strong>免責事項：</strong> 本ツールは市民の参考および現場記録用途のみであり、業務用の計量機器ではありません。すべての音声とデータは、ファイルをエクスポートまたは共有する場合を除き、お使いのデバイス上でローカル処理されます。
       </div>
       <div class="notice reveal" style="border-left-color:var(--accent-2);background:linear-gradient(135deg, rgba(124,155,255,0.10), rgba(255,255,255,0.025))">
-        <strong>プライバシー保護：</strong> 静的Webツールは収集しません, store, or share your microphone, location, or recording data on a server. Your records remain local to your browser unless you export them.
+        <strong>プライバシー保護：</strong> 静的 Web ツールは、マイク・位置情報・録音データをサーバーに収集・保存・共有することはありません。エクスポートされない限り、記録はブラウザ内にローカル保持されます。
       </div>
     </section>
 
@@ -325,8 +325,8 @@
             <span class="brand-mark" aria-hidden="true"></span>
             <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
           </a>
-          <p>Acoustic evidence aid for global noise documentation. Browser-native, local-first, multilingual. Formal measurements should be verified with a certified sound level meter.</p>
-          <div class="footer-flags" aria-label="言語 matrix">
+          <p>世界の騒音記録を支援する音響証拠ツール。ブラウザネイティブ・ローカル優先・多言語対応。公式な計測値は、検定済みの sound level meter で検証してください。</p>
+          <div class="footer-flags" aria-label="言語マトリクス">
             <a class="footer-flag" href="../en/index.html" title="English">🇺🇸</a>
             <a class="footer-flag" href="../zh/index.html" title="中文">🇨🇳</a>
             <a class="footer-flag" href="../es/index.html" title="Español">🇪🇸</a>
@@ -343,32 +343,32 @@
           <h4>製品</h4>
           <ul>
             <li><a href="../app.html">アプリを開く</a></li>
-            <li><a href="../soundtest.html">Online Decibel Meter</a></li>
-            <li><a href="../samples.html">Noise Recorder Samples</a></li>
-            <li><a href="../accuracy.html">Mic Test &amp; Accuracy</a></li>
-            <li><a href="../download.html">Install as PWA</a></li>
+            <li><a href="../soundtest.html">オンライン dB メーター</a></li>
+            <li><a href="../samples.html">騒音録音サンプル</a></li>
+            <li><a href="../accuracy.html">マイクテストと精度</a></li>
+            <li><a href="../download.html">PWA としてインストール</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>リソース</h4>
           <ul>
-            <li><a href="../standards.html">Noise Standards</a></li>
-            <li><a href="../changelog.html">Updates &amp; Blog</a></li>
-            <li><a href="../use-cases/neighbor-noise-evidence.html">Neighbor Noise Guide</a></li>
-            <li><a href="../use-cases/construction-noise-monitoring.html">工事 Guide</a></li>
-            <li><a href="../use-cases/rental-dispute-evidence.html">Rental Dispute Guide</a></li>
+            <li><a href="../standards.html">騒音基準</a></li>
+            <li><a href="../changelog.html">更新情報 &amp; ブログ</a></li>
+            <li><a href="../use-cases/neighbor-noise-evidence.html">隣人騒音ガイド</a></li>
+            <li><a href="../use-cases/construction-noise-monitoring.html">工事騒音ガイド</a></li>
+            <li><a href="../use-cases/rental-dispute-evidence.html">賃貸トラブルガイド</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>法的事項</h4>
           <ul>
-            <li><a href="../privacy.html">Privacy Policy</a></li>
-            <li><a href="../compliance.html">Terms of Service</a></li>
-            <li><a href="../disclaimer">Disclaimer</a></li>
-            <li><a href="../privacy.html">GDPR &amp; Consent</a></li>
-            <li><a href="../auth.html">アカウント &amp; Membership</a></li>
+            <li><a href="../privacy.html">プライバシーポリシー</a></li>
+            <li><a href="../compliance.html">利用規約</a></li>
+            <li><a href="../disclaimer">免責事項</a></li>
+            <li><a href="../privacy.html">GDPR &amp; 同意</a></li>
+            <li><a href="../auth.html">アカウント &amp; メンバーシップ</a></li>
           </ul>
         </div>
 
@@ -389,7 +389,7 @@
       </div>
 
       <div class="footer-meta">
-        <span>© SOUNDTEST.PRO · Local-first acoustic evidence aid · Not a certified sound level meter.</span>
+        <span>© SOUNDTEST.PRO · ローカル優先の音響証拠支援 · 検定済み sound level meter ではありません。</span>
         <div class="footer-social" aria-label="Social channels">
           <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
           <a href="../changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
@@ -400,10 +400,30 @@
   </main>
 </body>
 <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration failed:', err));
-    });
-  }
+  (function() {
+    try {
+      if (sessionStorage.getItem('__sfV7Boot')) return;
+      sessionStorage.setItem('__sfV7Boot', '1');
+    } catch (e) { return; }
+    if (!('serviceWorker' in navigator)) return;
+    navigator.serviceWorker.getRegistrations().then(function(regs) {
+      var hasV7 = regs.some(function(r) {
+        var u = (r.active && r.active.scriptURL) || '';
+        return u.indexOf('v=7') !== -1 || u.indexOf('v=6') !== -1;
+      });
+      if (hasV7) return null;
+      return Promise.all(regs.map(function(r) { return r.unregister(); }))
+        .then(function() {
+          return 'caches' in self ? caches.keys() : Promise.resolve([]);
+        })
+        .then(function(keys) {
+          return Promise.all(keys.filter(function(k) { return k.indexOf('soundtest-pro-') === 0; }).map(function(k) { return caches.delete(k); }));
+        })
+        .then(function() {
+          return navigator.serviceWorker.register('/sw.js?v=7');
+        })
+        .then(function() { location.reload(); });
+    }).catch(function() {});
+  })();
 </script>
 </html>

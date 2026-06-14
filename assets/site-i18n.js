@@ -56,7 +56,10 @@
 
   function localePath(locale) {
     const normalized = normalizeLocale(locale) || 'en';
-    return `${normalized}/index.html`;
+    const origin = (typeof window !== 'undefined' && window.location && window.location.origin)
+      ? window.location.origin
+      : '';
+    return `${origin}/${normalized}/index.html`;
   }
 
   function readSavedLocale() {
