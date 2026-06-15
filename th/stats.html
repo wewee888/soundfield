@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A/B Test Dashboard · SOUNDTEST.PRO</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../assets/site.css">
+  <style>
+    .dash { max-width: 1100px; margin: 0 auto; padding: 24px 24px 60px; }
+    .dash-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--ink-border); }
+    .dash-head h1 { font-size: clamp(22px, 3vw, 32px); letter-spacing: -0.03em; }
+    .dash-head .meta { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--muted); }
+    .live-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: rgba(44, 240, 193, 0.12); border: 1px solid rgba(44, 240, 193, 0.3); color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .live-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .variants { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    @media (max-width: 720px) { .variants { grid-template-columns: 1fr; } }
+    .vcard { position: relative; padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--ink-border); background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); backdrop-filter: blur(20px) saturate(140%); }
+    .vcard.winner { border-color: rgba(44, 240, 193, 0.4); box-shadow: 0 0 0 1px rgba(44, 240, 193, 0.3), 0 14px 40px rgba(44, 240, 193, 0.15); }
+    .vcard .vlabel { font-family: "Plus Jakarta Sans", sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .vcard .vtotal { font-family: "JetBrains Mono", monospace; font-size: 56px; font-weight: 700; color: var(--text-strong); letter-spacing: -0.04em; line-height: 1; margin-bottom: 4px; }
+    .vcard .vsub { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+    .vcard .vsub strong { color: var(--text-strong); }
+    .vcard .h1line { font-size: 14px; color: var(--text); font-family: "Plus Jakarta Sans", sans-serif; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+    .vcard .ctabreak { display: grid; gap: 6px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--ink-border); }
+    .vcard .ctaline { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--muted); }
+    .vcard .ctaline strong { color: var(--text); font-family: "JetBrains Mono", monospace; }
+    .winner-badge { position: absolute; top: -10px; right: 16px; padding: 4px 12px; border-radius: 999px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #04101a; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; box-shadow: 0 8px 24px rgba(44, 240, 193, 0.35); }
+    .verdict { padding: 22px; border-radius: var(--radius-lg); border: 1px solid var(--ink-border); background: linear-gradient(135deg, rgba(44, 240, 193, 0.08), rgba(124, 155, 255, 0.06)); }
+    .verdict h2 { font-size: 20px; margin-bottom: 8px; }
+    .verdict p { color: var(--muted); font-size: 14.5px; line-height: 1.6; }
+    .verdict strong { color: var(--text-strong); }
+    .links { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .links a { font-size: 12.5px; color: var(--muted); padding: 6px 12px; border-radius: 999px; border: 1px solid var(--ink-border); transition: color 200ms var(--ease), border-color 200ms var(--ease); }
+    .links a:hover { color: var(--text-strong); border-color: var(--ink-rim-strong); }
+    .links a.live { color: var(--accent); border-color: rgba(44, 240, 193, 0.3); }
+    .empty { padding: 40px; text-align: center; color: var(--muted); border: 1px dashed var(--ink-border); border-radius: var(--radius-lg); }
+    .reset-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; padding: 14px 16px; border-radius: var(--radius-md); border: 1px solid var(--ink-border); background: rgba(255, 80, 80, 0.06); flex-wrap: wrap; }
+    .reset-bar .label { font-size: 13px; color: var(--text); }
+    .reset-bar .label small { color: var(--muted); margin-left: 8px; font-size: 12px; }
+    .reset-btn { font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; padding: 8px 14px; border-radius: 8px; background: transparent; color: #ff6b6b; border: 1px solid rgba(255, 107, 107, 0.4); cursor: pointer; transition: background 200ms var(--ease), color 200ms var(--ease); }
+    .reset-btn:hover { background: rgba(255, 107, 107, 0.12); color: #ff8a8a; }
+    .reset-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .reset-btn.done { color: var(--accent); border-color: rgba(44, 240, 193, 0.4); background: rgba(44, 240, 193, 0.08); }
+  </style>
+</head>
+<body>
+  <main class="dash">
+    <div class="dash-head">
+      <div>
+        <h1>A/B/C Test Dashboard</h1>
+        <div class="meta" id="meta">Loading…</div>
+      </div>
+      <span class="live-pill">Live · 60s refresh</span>
+    </div>
+
+    <div id="verdict-host"></div>
+    <div class="reset-bar">
+      <div class="label">Stale test data? <small>Wipes the counter so the dashboard starts at 0</small></div>
+      <button id="reset-btn" class="reset-btn" type="button">RESET COUNTERS</button>
+    </div>
+    <div id="variants-host" class="variants"></div>
+
+    <div class="verdict" style="margin-top:24px">
+      <h2>How to use this</h2>
+      <p>Three Hero versions are live at <strong>/a/</strong>, <strong>/b/</strong>, <strong>/c/</strong>. Share each link with a different audience (Twitter, Reddit, email, etc.) and let the click count decide.</p>
+      <p style="margin-top:8px">The version with the most <strong>start_monitoring</strong> clicks wins. When one is clearly ahead (2× the others, or &gt;1000 clicks per variant), promote it to the homepage at <strong>/index.html</strong>.</p>
+      <div class="links">
+        <a class="live" href="..//a/" target="_blank" rel="noopener">→ A · Lock the noise. Hold the proof.</a>
+        <a class="live" href="..//b/" target="_blank" rel="noopener">→ B · They won't stop the noise. You can stop the silence.</a>
+        <a class="live" href="..//c/" target="_blank" rel="noopener">→ C · Quiet, on record.</a>
+        <a href="..//api/stats" target="_blank" rel="noopener">→ Raw JSON</a>
+      </div>
+    </div>
+
+<footer class="footer-deluxe" role="contentinfo">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand brand-glow" href="index.html" aria-label="SOUNDTEST.PRO home">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
+          </a>
+          <p>ตัวช่วยหลักฐานเสียงสำหรับการบันทึกเสียงรบกวนทั่วโลก ทำงานบนเบราว์เซอร์ ทำงาน in-place เป็นหลัก รองรับหลายภาษา การวัดผลอย่างเป็นทางการควรได้รับการตรวจสอบด้วยเครื่องวัดระดับเสียงที่ผ่านการรับรอง</p>
+          <div class="footer-flags" aria-label="Language matrix">
+            <a class="footer-flag" href="../en/index.html" title="English">🇺🇸</a>
+            <a class="footer-flag" href="../zh/index.html" title="中文">🇨🇳</a>
+            <a class="footer-flag" href="../es/index.html" title="Español">🇪🇸</a>
+            <a class="footer-flag" href="../fr/index.html" title="Français">🇫🇷</a>
+            <a class="footer-flag" href="../de/index.html" title="Deutsch">🇩🇪</a>
+            <a class="footer-flag" href="../ja/index.html" title="日本語">🇯🇵</a>
+            <a class="footer-flag" href="../ko/index.html" title="한국어">🇰🇷</a>
+            <a class="footer-flag" href="../vi/index.html" title="Tiếng Việt">🇻🇳</a>
+            <a class="footer-flag" href="../th/index.html" title="ไทย">🇹🇭</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>ผลิตภัณฑ์</h4>
+          <ul>
+            <li><a href="app.html">เปิดแอป</a></li>
+            <li><a href="../soundtest.html">เครื่องวัดเดซิเบลออนไลน์</a></li>
+            <li><a href="samples.html">ตัวอย่างการบันทึก</a></li>
+            <li><a href="accuracy.html">ทดสอบไมค์และความแม่นยำ</a></li>
+            <li><a href="download.html">ติดตั้งเป็น PWA</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>ทรัพยากร</h4>
+          <ul>
+            <li><a href="standards.html">มาตรฐานเสียงรบกวน</a></li>
+            <li><a href="changelog.html">อัปเดตและบล็อก</a></li>
+            <li><a href="../use-cases/neighbor-noise-evidence.html">คู่มือ: เสียงรบกวนจากเพื่อนบ้าน</a></li>
+            <li><a href="../use-cases/construction-noise-monitoring.html">คู่มือ: การก่อสร้าง</a></li>
+            <li><a href="../use-cases/rental-dispute-evidence.html">คู่มือ: ข้อพิพาทการเช่า</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>ข้อกฎหมาย</h4>
+          <ul>
+            <li><a href="privacy.html">นโยบายความเป็นส่วนตัว</a></li>
+            <li><a href="compliance.html">ข้อกำหนดการให้บริการ</a></li>
+            <li><a href="disclaimer.html">ข้อจำกัดความรับผิดชอบ</a></li>
+            <li><a href="privacy.html">GDPR และความยินยอม</a></li>
+            <li><a href="auth.html">บัญชีและสมาชิก</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>ภาษา</h4>
+          <ul>
+            <li><a href="../en/index.html">English</a></li>
+            <li><a href="../zh/index.html">中文</a></li>
+            <li><a href="../es/index.html">Español</a></li>
+            <li><a href="../fr/index.html">Français</a></li>
+            <li><a href="../de/index.html">Deutsch</a></li>
+            <li><a href="../ja/index.html">日本語</a></li>
+            <li><a href="../ko/index.html">한국어</a></li>
+            <li><a href="../vi/index.html">Tiếng Việt</a></li>
+            <li><a href="../th/index.html">ไทย</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-meta">
+        <span>© SOUNDTEST.PRO · ตัวช่วยหลักฐานเสียงที่ทำงานในเครื่องเป็นหลัก · ไม่ใช่เครื่องวัดระดับเสียงที่ผ่านการรับรอง</span>
+        <div class="footer-social" aria-label="Social channels">
+          <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
+          <a href="standards.html" aria-label="Standards"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const VARIANT_NAMES = {
+      A: 'Lock the noise.<br>Hold the proof.',
+      B: "They won't stop the noise.<br>You can stop the silence.",
+      C: 'Quiet,<br>on record.',
+    };
+    const CTA_LABELS = {
+      start_monitoring: 'Hero primary CTA',
+      view_sample: 'Hero secondary',
+      bento_neighbor: 'Bento: neighbor',
+      bento_construction: 'Bento: construction',
+      bento_bar: 'Bento: bar / street',
+      bento_rental: 'Bento: rental',
+      pricing_free: 'Pricing: free',
+      pricing_pro: 'Pricing: pro',
+    };
+
+    async function load() {
+      try {
+        const r = await fetch('/api/stats', { cache: 'no-store' });
+        const data = await r.json();
+        render(data);
+      } catch (e) {
+        document.getElementById('meta').textContent = 'Failed to load /api/stats: ' + e.message;
+      }
+    }
+
+    function render(data) {
+      const meta = document.getElementById('meta');
+      const updated = data.updated_at ? new Date(data.updated_at).toLocaleString() : '—';
+      meta.textContent = `Last update: ${updated} · Lifetime clicks: ${data.lifetime_total || 0}`;
+
+      const totals = Object.entries(data.variants || {}).map(([k, v]) => ({ k, total: v.total, ctas: v.ctas }));
+      const max = Math.max(1, ...totals.map((t) => t.total));
+      const winner = totals.reduce((a, b) => (b.total > a.total ? b : a), { k: '—', total: 0 });
+
+      const variantsHost = document.getElementById('variants-host');
+      if (data.lifetime_total === 0) {
+        variantsHost.innerHTML = '<div class="empty">No clicks yet. Share the three links (<a href="..//a/" style="color:var(--accent)">/a/</a> · <a href="..//b/" style="color:var(--accent)">/b/</a> · <a href="..//c/" style="color:var(--accent)">/c/</a>) and the click counts will appear here.</div>';
+      } else {
+        variantsHost.innerHTML = totals.map((t) => {
+          const isWinner = t.k === winner.k && t.total > 0;
+          const sharePct = ((t.total / data.lifetime_total) * 100).toFixed(1);
+          const ctaHtml = Object.entries(t.ctas)
+            .sort((a, b) => b[1] - a[1])
+            .map(([k, n]) => `<div class="ctaline"><span>${CTA_LABELS[k] || k}</span><strong>${n}</strong></div>`)
+            .join('');
+          return `<div class="vcard${isWinner ? ' winner' : ''}">
+            ${isWinner ? '<span class="winner-badge">Leading</span>' : ''}
+            <div class="vlabel">Variant ${t.k}</div>
+            <div class="vtotal">${t.total}</div>
+            <div class="vsub"><strong>${sharePct}%</strong> of all clicks</div>
+            <div class="h1line">${VARIANT_NAMES[t.k]}</div>
+            <div class="ctabreak">${ctaHtml || '<div class="ctaline"><span>—</span><strong>0</strong></div>'}</div>
+          </div>`;
+        }).join('');
+      }
+
+      const verdictHost = document.getElementById('verdict-host');
+      if (data.lifetime_total === 0) {
+        verdictHost.innerHTML = '';
+      } else if (winner.total === 0) {
+        verdictHost.innerHTML = '<div class="empty">Clicks recorded but no winner yet — wait for more data.</div>';
+      } else {
+        const runners = totals.filter((t) => t.k !== winner.k).map((t) => `${t.k} (${t.total})`);
+        verdictHost.innerHTML = `<div class="verdict">
+          <h2>Current leader: Variant ${winner.k}</h2>
+          <p><strong>${winner.total}</strong> clicks vs ${runners.join(' · ')}. Keep running — promote to homepage when the gap is clearly wide (2× or more) and you have at least ~1500 visitors per variant.</p>
+        </div>`;
+      }
+    }
+
+    load();
+    setInterval(load, 60_000);
+
+    document.getElementById('reset-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('reset-btn');
+      if (!confirm('Clear all click counters and start at 0?')) return;
+      btn.disabled = true;
+      btn.textContent = 'CLEARING…';
+      try {
+        const r = await fetch('/api/reset', { method: 'POST' });
+        const data = await r.json();
+        if (data.ok) {
+          btn.textContent = `CLEARED · ${data.deleted} KEYS`;
+          btn.classList.add('done');
+          setTimeout(() => { load(); }, 800);
+          setTimeout(() => {
+            btn.textContent = 'RESET COUNTERS';
+            btn.classList.remove('done');
+            btn.disabled = false;
+          }, 4000);
+        } else {
+          btn.textContent = 'FAILED';
+          setTimeout(() => { btn.textContent = 'RESET COUNTERS'; btn.disabled = false; }, 3000);
+        }
+      } catch (e) {
+        btn.textContent = 'NETWORK ERROR';
+        setTimeout(() => { btn.textContent = 'RESET COUNTERS'; btn.disabled = false; }, 3000);
+      }
+    });
+  </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration failed:', err));
+    });
+  }
+</script>
+</body>
+</html>

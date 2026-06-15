@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage your SOUNDTEST.PRO account: subscription, saved templates, evidence records, and profile settings.">
+  <title>Account · SOUNDTEST.PRO</title>
+  <link rel="canonical" href="https://soundtest.pro/auth.html">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/auth.css">
+  <script src="../assets/lang-flags.js" defer></script>
+  <script src="../assets/site-i18n.js?v=7" defer></script>
+  <script src="../assets/site-auth.js" defer></script>
+  <script src="../assets/site-experience.js" defer></script>
+</head>
+<body>
+  <main class="site-shell">
+
+    <!-- ── Logged-out shell ── -->
+    <section class="auth-layout" data-auth-page="unauthenticated">
+
+      <!-- Left brand panel -->
+      <div class="auth-brand">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>SOUNDTEST.PRO</span></a>
+        <div class="auth-brand-content">
+          <div class="auth-brand-headline">
+            <h1>Your acoustic evidence, <em>secured</em>.</h1>
+            <p>One account to manage subscription, saved templates, and all your noise documentation records — with export history and tamper-evident timestamps.</p>
+          </div>
+          <div class="auth-value-props">
+            <div class="auth-value-item">
+              <span class="auth-value-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </span>
+              <div>
+                <strong>Local-first privacy</strong>
+                <span>All recordings stay on your device. Only your email and a salted password hash are stored.</span>
+              </div>
+            </div>
+            <div class="auth-value-item">
+              <span class="auth-value-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </span>
+              <div>
+                <strong>Evidence templates</strong>
+                <span>Save and reuse report layouts for repeated cases — landlord disputes, construction monitoring, workplace inspections.</span>
+              </div>
+            </div>
+            <div class="auth-value-item">
+              <span class="auth-value-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </span>
+              <div>
+                <strong>Subscription sync</strong>
+                <span>Pro, Team, and Lifetime plans unlock automatically after Lemon Squeezy checkout using your billing email.</span>
+              </div>
+            </div>
+          </div>
+          <div class="auth-brand-footer">
+            <span>Already have an account?</span>
+            <a href="../auth.html?mode=login" class="auth-brand-link">Sign in</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right form panel -->
+      <div class="auth-form-panel">
+
+        <!-- Tabs -->
+        <div class="auth-tabs" role="tablist" aria-label="Account mode">
+          <button class="auth-tab active" type="button" data-auth-tab="login" role="tab" aria-selected="true" aria-controls="auth-form-login">Sign in</button>
+          <button class="auth-tab" type="button" data-auth-tab="register" role="tab" aria-selected="false" aria-controls="auth-form-register">Create account</button>
+          <div class="auth-tab-indicator" aria-hidden="true"></div>
+        </div>
+
+        <!-- Login form -->
+        <div class="auth-form-wrap" id="auth-form-login" data-auth-form="login" role="tabpanel">
+          <form novalidate autocomplete="on">
+            <div class="field-group">
+              <div class="field">
+                <input id="loginEmail" name="email" type="email" autocomplete="email" required placeholder=" ">
+                <label for="loginEmail">Email address</label>
+              </div>
+              <div class="field-error" data-error="email"></div>
+            </div>
+            <div class="field-group">
+              <div class="field">
+                <input id="loginPassword" name="password" type="password" autocomplete="current-password" required placeholder=" ">
+                <label for="loginPassword">Password</label>
+                <button type="button" class="field-toggle" aria-label="Show password" data-toggle-password="loginPassword">
+                  <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+              <div class="field-error" data-error="password"></div>
+            </div>
+            <button type="submit" class="btn-primary btn-full">
+              <span>Sign in</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <p class="auth-form-note">
+              <a href="../auth.html?mode=register" data-switch-tab="register">No account yet? Create one free</a>
+            </p>
+          </form>
+        </div>
+
+        <!-- Register form -->
+        <div class="auth-form-wrap" id="auth-form-register" data-auth-form="register" role="tabpanel" hidden>
+          <form novalidate autocomplete="on">
+            <div class="field-group">
+              <div class="field">
+                <input id="registerName" name="name" type="text" autocomplete="name" required placeholder=" " minlength="2" maxlength="48">
+                <label for="registerName">Display name</label>
+              </div>
+              <div class="field-error" data-error="name"></div>
+            </div>
+            <div class="field-group">
+              <div class="field">
+                <input id="registerEmail" name="email" type="email" autocomplete="email" required placeholder=" ">
+                <label for="registerEmail">Email address</label>
+                <span class="field-hint">Use your Lemon Squeezy billing email for automatic plan detection</span>
+              </div>
+              <div class="field-error" data-error="email"></div>
+            </div>
+            <div class="field-group">
+              <div class="field">
+                <input id="registerPassword" name="password" type="password" autocomplete="new-password" required placeholder=" " minlength="8">
+                <label for="registerPassword">Password</label>
+                <button type="button" class="field-toggle" aria-label="Show password" data-toggle-password="registerPassword">
+                  <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+              <div class="password-strength" data-strength="registerPassword">
+                <div class="strength-bars">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+                <span class="strength-label"></span>
+              </div>
+              <div class="field-error" data-error="password"></div>
+            </div>
+            <div class="field-group">
+              <div class="field">
+                <input id="registerConfirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required placeholder=" " minlength="8">
+                <label for="registerConfirmPassword">Confirm password</label>
+              </div>
+              <div class="field-error" data-error="confirmPassword"></div>
+            </div>
+            <button type="submit" class="btn-primary btn-full">
+              <span>Create account</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <p class="auth-form-note">
+              <a href="../auth.html?mode=login" data-switch-tab="login">Already have an account? Sign in</a>
+            </p>
+          </form>
+        </div>
+
+        <p class="auth-form-global" data-auth-message></p>
+
+        <p class="auth-mvp-note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          MVP: credentials stored locally in your browser. Server-side identity with email verification and password reset are on the roadmap.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Logged-in dashboard ── -->
+    <section class="dashboard" data-auth-page="authenticated" hidden>
+      <div class="dashboard-header">
+        <div class="dashboard-header-inner">
+          <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>SOUNDTEST.PRO</span></a>
+          <div class="dashboard-header-right">
+            <div class="dashboard-plan-badge" data-plan-badge>
+              <span class="plan-dot"></span>
+              <span class="plan-name">Free</span>
+            </div>
+            <button class="btn-ghost btn-sm" id="dashboard-logout" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-body">
+
+        <!-- Profile card -->
+        <div class="dash-profile-card">
+          <div class="dash-profile-avatar" data-profile-avatar aria-hidden="true">
+            <span data-avatar-initial></span>
+          </div>
+          <div class="dash-profile-info">
+            <h2 class="dash-profile-name" data-profile-name></h2>
+            <p class="dash-profile-email" data-profile-email></p>
+            <p class="dash-profile-since">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Member since <span data-profile-since></span>
+            </p>
+          </div>
+          <button class="btn-outline btn-sm" id="edit-profile-btn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit profile
+          </button>
+        </div>
+
+        <!-- Stats row -->
+        <div class="dash-stats-row">
+          <div class="dash-stat-card">
+            <span class="dash-stat-value" data-stat="records">0</span>
+            <span class="dash-stat-label">Sessions recorded</span>
+          </div>
+          <div class="dash-stat-card">
+            <span class="dash-stat-value" data-stat="exports">0</span>
+            <span class="dash-stat-label">PDF/CSV exports</span>
+          </div>
+          <div class="dash-stat-card">
+            <span class="dash-stat-value" data-stat="photos">0</span>
+            <span class="dash-stat-label">Evidence photos</span>
+          </div>
+          <div class="dash-stat-card">
+            <span class="dash-stat-value" data-stat="templates">0</span>
+            <span class="dash-stat-label">Saved templates</span>
+          </div>
+        </div>
+
+        <!-- Main grid: plan + settings -->
+        <div class="dash-grid">
+
+          <!-- Subscription card -->
+          <div class="dash-card dash-subscription-card">
+            <div class="dash-card-header">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Subscription
+              </h3>
+              <span class="dash-card-badge" data-subscription-badge>Free plan</span>
+            </div>
+            <div class="dash-subscription-body">
+              <div class="subscription-plan-display" data-plan-display>
+                <div class="plan-icon-wrap">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="plan-info">
+                  <p class="plan-tier">Free</p>
+                  <p class="plan-desc">Real-time dB meter, basic audio recording, manual screenshot, time &amp; location stamp</p>
+                </div>
+              </div>
+              <div class="subscription-upsell" data-subscription-upsell>
+                <p>Upgrade to unlock PDF evidence reports, premium templates, and metadata backup export.</p>
+                <a class="btn-primary btn-sm" href="../index.html#pricing">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+                  Upgrade to Pro
+                </a>
+              </div>
+              <div class="subscription-prodactive" data-prodactive hidden>
+                <div class="prodactive-badge">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  Active
+                </div>
+                <p class="prodactive-tier" data-prodactive-tier></p>
+                <p class="prodactive-note">Manage or cancel your subscription through the Lemon Squeezy billing portal linked to your account email.</p>
+                <a class="btn-outline btn-sm" href="mailto:hello@soundtest.pro">Contact support</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings card -->
+          <div class="dash-card dash-settings-card">
+            <div class="dash-card-header">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Settings
+              </h3>
+            </div>
+            <div class="dash-settings-body">
+              <div class="setting-row" id="setting-password">
+                <div class="setting-row-info">
+                  <strong>Change password</strong>
+                  <span>Update your account password</span>
+                </div>
+                <button class="btn-outline btn-sm" type="button" data-open-panel="password">Update</button>
+              </div>
+              <div class="setting-row" id="setting-export">
+                <div class="setting-row-info">
+                  <strong>Export all data</strong>
+                  <span>Download your records, templates, and account info as JSON</span>
+                </div>
+                <button class="btn-outline btn-sm" type="button" id="export-all-data">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Export
+                </button>
+              </div>
+              <div class="setting-row" id="setting-danger">
+                <div class="setting-row-info">
+                  <strong>Delete account</strong>
+                  <span>Permanently remove your account and all local data</span>
+                </div>
+                <button class="btn-danger btn-sm" type="button" id="delete-account-btn">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity -->
+        <div class="dash-card dash-activity-card">
+          <div class="dash-card-header">
+            <h3>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Recent activity
+            </h3>
+            <span class="dash-card-badge">Local only</span>
+          </div>
+          <div class="activity-list" data-activity-list>
+            <div class="activity-empty">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <p>No sessions recorded yet. Open the recorder to start documenting noise events.</p>
+              <a class="btn-primary btn-sm" href="app.html">Open recorder</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Password change panel (slide-in drawer) -->
+    <div class="panel-overlay" id="passwordPanelOverlay" style="display:none" onclick="closePanel('password')"></div>
+    <div class="panel-drawer" id="passwordPanel" role="dialog" aria-modal="true" aria-label="Change password" style="display:none">
+      <div class="panel-header">
+        <h3>Change password</h3>
+        <button class="panel-close" type="button" aria-label="Close" onclick="closePanel('password')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form class="panel-body" id="change-password-form" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" required placeholder=" ">
+            <label for="currentPassword">Current password</label>
+          </div>
+          <div class="field-error" data-error="currentPassword"></div>
+        </div>
+        <div class="field-group">
+          <div class="field">
+            <input id="newPassword" name="newPassword" type="password" autocomplete="new-password" required placeholder=" " minlength="8">
+            <label for="newPassword">New password</label>
+          </div>
+          <div class="field-error" data-error="newPassword"></div>
+        </div>
+        <div class="field-group">
+          <div class="field">
+            <input id="confirmNewPassword" name="confirmNewPassword" type="password" autocomplete="new-password" required placeholder=" " minlength="8">
+            <label for="confirmNewPassword">Confirm new password</label>
+          </div>
+          <div class="field-error" data-error="confirmNewPassword"></div>
+        </div>
+        <p class="panel-global-error" data-panel-error></p>
+        <div class="panel-actions">
+          <button type="button" class="btn-ghost" onclick="closePanel('password')">Cancel</button>
+          <button type="submit" class="btn-primary">Save password</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Edit profile panel -->
+    <div class="panel-overlay" id="profilePanelOverlay" style="display:none" onclick="closePanel('profile')"></div>
+    <div class="panel-drawer" id="profilePanel" role="dialog" aria-modal="true" aria-label="Edit profile" style="display:none">
+      <div class="panel-header">
+        <h3>Edit profile</h3>
+        <button class="panel-close" type="button" aria-label="Close" onclick="closePanel('profile')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form class="panel-body" id="edit-profile-form" novalidate>
+        <div class="field-group">
+          <div class="field">
+            <input id="editName" name="name" type="text" autocomplete="name" required placeholder=" " minlength="2" maxlength="48">
+            <label for="editName">Display name</label>
+          </div>
+          <div class="field-error" data-error="name"></div>
+        </div>
+        <p class="panel-global-error" data-panel-error></p>
+        <div class="panel-actions">
+          <button type="button" class="btn-ghost" onclick="closePanel('profile')">Cancel</button>
+          <button type="submit" class="btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Toast notifications -->
+    <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
+
+
+<footer class="footer-deluxe" role="contentinfo">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand brand-glow" href="index.html" aria-label="SOUNDTEST.PRO home">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
+          </a>
+          <p>Akustische Beweishilfe für globale Lärmdokumentation. Browser-nativ, lokal-zuerst, mehrsprachig. Formelle Messungen sollten mit einem zertifizierten Schallpegelmesser überprüft werden.</p>
+          <div class="footer-flags" aria-label="Language matrix">
+            <a class="footer-flag" href="../en/index.html" title="English">🇺🇸</a>
+            <a class="footer-flag" href="../zh/index.html" title="中文">🇨🇳</a>
+            <a class="footer-flag" href="../es/index.html" title="Español">🇪🇸</a>
+            <a class="footer-flag" href="../fr/index.html" title="Français">🇫🇷</a>
+            <a class="footer-flag" href="../de/index.html" title="Deutsch">🇩🇪</a>
+            <a class="footer-flag" href="../ja/index.html" title="日本語">🇯🇵</a>
+            <a class="footer-flag" href="../ko/index.html" title="한국어">🇰🇷</a>
+            <a class="footer-flag" href="../vi/index.html" title="Tiếng Việt">🇻🇳</a>
+            <a class="footer-flag" href="../th/index.html" title="ไทย">🇹🇭</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Produkt</h4>
+          <ul>
+            <li><a href="app.html">App öffnen</a></li>
+            <li><a href="../soundtest.html">Online-Dezibelmesser</a></li>
+            <li><a href="samples.html">Aufnahme-Beispiele</a></li>
+            <li><a href="accuracy.html">Mikrofon-Test & Genauigkeit</a></li>
+            <li><a href="download.html">Als PWA installieren</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Ressourcen</h4>
+          <ul>
+            <li><a href="standards.html">Lärmstandards</a></li>
+            <li><a href="changelog.html">Updates & Blog</a></li>
+            <li><a href="../use-cases/neighbor-noise-evidence.html">Ratgeber: Nachbarschaftslärm</a></li>
+            <li><a href="../use-cases/construction-noise-monitoring.html">Ratgeber: Baulärm</a></li>
+            <li><a href="../use-cases/rental-dispute-evidence.html">Ratgeber: Mietstreitigkeiten</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <ul>
+            <li><a href="privacy.html">Datenschutzrichtlinie</a></li>
+            <li><a href="compliance.html">Nutzungsbedingungen</a></li>
+            <li><a href="disclaimer.html">Haftungsausschluss</a></li>
+            <li><a href="privacy.html">DSGVO & Zustimmung</a></li>
+            <li><a href="auth.html">Konto & Mitgliedschaft</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Sprache</h4>
+          <ul>
+            <li><a href="../en/index.html">English</a></li>
+            <li><a href="../zh/index.html">中文</a></li>
+            <li><a href="../es/index.html">Español</a></li>
+            <li><a href="../fr/index.html">Français</a></li>
+            <li><a href="../de/index.html">Deutsch</a></li>
+            <li><a href="../ja/index.html">日本語</a></li>
+            <li><a href="../ko/index.html">한국어</a></li>
+            <li><a href="../vi/index.html">Tiếng Việt</a></li>
+            <li><a href="../th/index.html">ไทย</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-meta">
+        <span>© SOUNDTEST.PRO · Lokal-zuerst akustische Beweishilfe · Kein zertifizierter Schallpegelmesser.</span>
+        <div class="footer-social" aria-label="Social channels">
+          <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
+          <a href="standards.html" aria-label="Standards"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
+        </div>
+      </div>
+    </footer>
+  </main>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration failed:', err));
+    });
+  }
+</script>
+</body>
+</html>

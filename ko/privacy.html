@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SOUNDTEST.PRO privacy model: local microphone analysis, optional camera/location access, local browser storage, and user-controlled exports.">
+  <title>Privacy · SOUNDTEST.PRO</title>
+  <link rel="canonical" href="https://soundtest.pro/privacy.html">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/lang-flags.js" defer></script>
+  <script src="../assets/site-i18n.js?v=7" defer></script>
+  <script src="../assets/site-auth.js" defer></script>
+  <script src="../assets/site-experience.js" defer></script>
+</head>
+<body>
+  <main class="site-shell">
+    <nav class="site-nav" aria-label="Primary">
+      <div class="site-nav-main">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>SOUNDTEST.PRO</span></a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="app.html">앱 열기</a>
+          <a href="accuracy.html">Accuracy</a>
+          <a href="samples.html">Samples</a>
+          <a href="auth.html">계정</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-stack reveal">
+        <span class="eyebrow">Trust center · Local-first</span>
+        <h1 class="hero-headline"><em>Local-first</em> privacy for sensitive noise records.</h1>
+        <p class="hero-lead">Noise evidence can include voices, people, private spaces, and precise locations. SOUNDTEST.PRO keeps the Stage 1 web beta on your device unless you explicitly export or save files.</p>
+      </div>
+    </section>
+
+    <section class="section grid">
+      <div class="card reveal"><div class="card-badge">Microphone</div><h3>Live, on-device analysis</h3><p>The microphone stream is processed in the browser for live dB analysis. Audio is saved only after you start audio or video recording.</p></div>
+      <div class="card reveal"><div class="card-badge">Camera</div><h3>Optional capture only</h3><p>Used only for preview, acoustic evidence photos, or watermarked video. You control when media is generated.</p></div>
+      <div class="card reveal"><div class="card-badge">Location</div><h3>You choose the granularity</h3><p>Used for GPS, map links, place labels, and report metadata. Reverse geocoding may send coordinates to the selected map provider.</p></div>
+      <div class="card reveal"><div class="card-badge">Storage</div><h3>localStorage + IndexedDB</h3><p>Settings and metadata use localStorage. Media clips use IndexedDB when supported. Browser cleanup may remove local data.</p></div>
+      <div class="card reveal"><div class="card-badge">Exports</div><h3>Only when you say so</h3><p>PDF, CSV, JSON manifest, images, audio, and video files are created only when you choose to export or save them.</p></div>
+      <div class="card reveal"><div class="card-badge">Beta scope</div><h3>No cloud in beta</h3><p>Stage 1 has no account sync, cloud backup, team sharing, or server-side evidence retention.</p></div>
+    </section>
+
+    <section class="section grid two">
+      <div class="card reveal">
+        <div class="card-badge">User responsibilities</div>
+        <h2>Stay safe and respectful while recording.</h2>
+        <ul class="check-list">
+          <li>Follow local audio/video recording consent laws.</li>
+          <li>Avoid sharing faces, private spaces, exact residential locations, or sensitive details without permission.</li>
+          <li>Save important media promptly because browser storage can be cleared.</li>
+        </ul>
+      </div>
+      <div class="notice reveal">Future account or cloud versions must add account deletion, cloud deletion, retention controls, regional compliance, and encrypted storage policies before paid global launch.</div>
+    </section>
+
+<footer class="footer-deluxe" role="contentinfo">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand brand-glow" href="index.html" aria-label="SOUNDTEST.PRO home">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
+          </a>
+          <p>글로벌 소음 기록을 위한 음향 증거 보조 도구. 브라우저 기본, 로컬 우선, 다국어 지원. 공식 측정은 인증된 소음계로 확인해야 합니다.</p>
+          <div class="footer-flags" aria-label="Language matrix">
+            <a class="footer-flag" href="../en/index.html" title="English">🇺🇸</a>
+            <a class="footer-flag" href="../zh/index.html" title="中文">🇨🇳</a>
+            <a class="footer-flag" href="../es/index.html" title="Español">🇪🇸</a>
+            <a class="footer-flag" href="../fr/index.html" title="Français">🇫🇷</a>
+            <a class="footer-flag" href="../de/index.html" title="Deutsch">🇩🇪</a>
+            <a class="footer-flag" href="../ja/index.html" title="日本語">🇯🇵</a>
+            <a class="footer-flag" href="../ko/index.html" title="한국어">🇰🇷</a>
+            <a class="footer-flag" href="../vi/index.html" title="Tiếng Việt">🇻🇳</a>
+            <a class="footer-flag" href="../th/index.html" title="ไทย">🇹🇭</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>제품</h4>
+          <ul>
+            <li><a href="app.html">앱 열기</a></li>
+            <li><a href="../soundtest.html">온라인 데시벨 측정기</a></li>
+            <li><a href="samples.html">녹음 샘플</a></li>
+            <li><a href="accuracy.html">마이크 테스트 및 정확도</a></li>
+            <li><a href="download.html">PWA로 설치</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>리소스</h4>
+          <ul>
+            <li><a href="standards.html">소음 기준</a></li>
+            <li><a href="changelog.html">업데이트 및 블로그</a></li>
+            <li><a href="../use-cases/neighbor-noise-evidence.html">가이드: 이웃 소음</a></li>
+            <li><a href="../use-cases/construction-noise-monitoring.html">가이드: 공사 소음</a></li>
+            <li><a href="../use-cases/rental-dispute-evidence.html">가이드: 임대 분쟁</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>법적 고지</h4>
+          <ul>
+            <li><a href="privacy.html">개인정보 처리방침</a></li>
+            <li><a href="compliance.html">서비스 약관</a></li>
+            <li><a href="disclaimer.html">면책 조항</a></li>
+            <li><a href="privacy.html">GDPR 및 동의</a></li>
+            <li><a href="auth.html">계정 및 멤버십</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>언어</h4>
+          <ul>
+            <li><a href="../en/index.html">English</a></li>
+            <li><a href="../zh/index.html">中文</a></li>
+            <li><a href="../es/index.html">Español</a></li>
+            <li><a href="../fr/index.html">Français</a></li>
+            <li><a href="../de/index.html">Deutsch</a></li>
+            <li><a href="../ja/index.html">日本語</a></li>
+            <li><a href="../ko/index.html">한국어</a></li>
+            <li><a href="../vi/index.html">Tiếng Việt</a></li>
+            <li><a href="../th/index.html">ไทย</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-meta">
+        <span>© SOUNDTEST.PRO · 로컬 우선 음향 증거 보조 · 인증된 소음계가 아님.</span>
+        <div class="footer-social" aria-label="Social channels">
+          <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
+          <a href="standards.html" aria-label="Standards"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
+        </div>
+      </div>
+    </footer>
+  </main>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration failed:', err));
+    });
+  }
+</script>
+</body>
+</html>

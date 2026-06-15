@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#070B14">
+<meta name="description" content="SOUNDTEST.PRO 退款政策 — Pro 会员、Team 团队版和一次性 Lifetime Offline 权益的退款条件、申请流程与处理时效。">
+<meta name="application-name" content="SOUNDTEST.PRO Refund">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Refund · SOUNDTEST.PRO">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://soundtest.pro/refund.html">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="../assets/icon.svg">
+<link rel="apple-touch-icon" sizes="192x192" href="../assets/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="../assets/icon-512.png">
+<title>退款政策 · Refund Policy · SOUNDTEST.PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/layout-flow.css">
+<style>
+:root{
+  --bg:#060A12;--surf:#0D1525;--surf2:#111E30;--surf3:#16263A;
+  --bdr:rgba(255,255,255,.075);--bdr2:rgba(255,255,255,.145);
+  --accent:#2AFFD4;--accent-d:rgba(42,255,212,.13);
+  --amber:#FFB520;--amber-d:rgba(255,181,32,.13);
+  --red:#FF3F50;--red-d:rgba(255,63,80,.13);
+  --tx1:#E6F0FF;--tx2:#B6C4D8;--tx3:#7A8AA0;
+  --r:14px;--rs:9px;
+  --polish-shadow:0 14px 38px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.045);
+  --polish-glow:0 0 28px rgba(42,255,212,.10);
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  --display:'Plus Jakarta Sans','Inter',sans-serif;
+  --mono:'SF Mono','Cascadia Code','Fira Code','Consolas','Courier New',monospace;
+  --violet:#9B7BFF;
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+  --maxw:880px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--sans);color:var(--tx1);
+  background:radial-gradient(circle at 50% -8%,rgba(42,255,212,.11),transparent 34%),radial-gradient(circle at 0% 26%,rgba(124,92,255,.08),transparent 30%),linear-gradient(180deg,#060A12,#080D17 48%,#050810);
+  min-height:100%;line-height:1.65;-webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── Top bar ── */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px clamp(16px,4vw,32px);
+  padding-top:calc(14px + var(--safe-t));
+  background:rgba(6,10,18,.72);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  border-bottom:.5px solid var(--bdr);
+}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:.07em;color:var(--tx1)}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent-d)}
+.lang-toggle{display:flex;gap:4px;background:var(--surf);border:.5px solid var(--bdr2);border-radius:999px;padding:3px}
+.lang-toggle button{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;
+  padding:5px 11px;border-radius:999px;border:0;background:transparent;color:var(--tx2);cursor:pointer;
+  transition:all .15s ease;
+}
+.lang-toggle button.active{background:var(--accent);color:#07090F;box-shadow:0 0 14px var(--accent-d)}
+.lang-toggle button:not(.active):hover{color:var(--tx1);background:rgba(255,255,255,.04)}
+
+/* ── Main ── */
+main{
+  flex:1;width:100%;max-width:var(--maxw);
+  margin:0 auto;padding:clamp(28px,6vw,56px) clamp(16px,4vw,32px);
+  padding-bottom:calc(clamp(28px,6vw,56px) + var(--safe-b));
+}
+.kicker{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:14px;display:inline-flex;align-items:center;gap:8px;
+}
+.kicker::before{content:"";width:18px;height:1px;background:var(--accent)}
+h1{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(28px,6vw,42px);line-height:1.15;letter-spacing:-.02em;
+  margin-bottom:14px;color:var(--tx1);
+}
+.lead{font-size:clamp(14px,3.4vw,16px);color:var(--tx2);max-width:64ch;margin-bottom:32px}
+.meta{
+  display:flex;flex-wrap:wrap;gap:10px 18px;margin-bottom:36px;padding:14px 16px;
+  background:var(--surf);border:.5px solid var(--bdr2);border-radius:var(--r);
+  box-shadow:var(--polish-shadow);
+}
+.meta-item{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--tx3);text-transform:uppercase}
+.meta-item strong{color:var(--tx1);font-weight:600;margin-left:6px}
+
+/* ── Sections ── */
+section{margin-bottom:28px}
+section h2{
+  font-family:var(--display);font-weight:700;font-size:clamp(18px,4.2vw,22px);
+  color:var(--tx1);margin-bottom:14px;letter-spacing:-.01em;
+  display:flex;align-items:baseline;gap:12px;
+}
+section h2 .num{
+  font-family:var(--mono);font-weight:700;font-size:11px;
+  color:var(--accent);background:var(--accent-d);
+  padding:3px 8px;border-radius:6px;letter-spacing:.08em;
+}
+.policy-pill{
+  padding:14px 16px;border:.5px solid var(--bdr2);border-radius:var(--rs);
+  background:rgba(255,255,255,.025);font-size:13px;line-height:1.65;color:var(--tx2);
+  margin-bottom:10px;
+}
+.policy-pill strong{display:block;color:var(--tx1);font-size:13px;margin-bottom:4px;font-weight:600}
+.policy-pill em{font-style:normal;color:var(--amber);font-weight:600}
+
+ul.checks{list-style:none;padding:0;margin:0}
+ul.checks li{
+  position:relative;padding:11px 0 11px 30px;font-size:13.5px;color:var(--tx2);line-height:1.6;
+  border-bottom:.5px solid var(--bdr);
+}
+ul.checks li:last-child{border-bottom:0}
+ul.checks li::before{
+  content:"";position:absolute;left:0;top:14px;width:16px;height:16px;
+  border-radius:50%;background:var(--accent-d);border:.5px solid var(--accent);
+}
+ul.checks li::after{
+  content:"";position:absolute;left:4px;top:19px;width:6px;height:9px;
+  border-right:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent);
+  transform:rotate(45deg);
+}
+ul.checks li strong{color:var(--tx1);font-weight:600;margin-right:4px}
+ul.warns li::before{background:var(--amber-d);border-color:var(--amber)}
+ul.warns li::after{border-color:var(--amber)}
+
+.cta{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;
+  padding:12px 18px;border-radius:10px;border:0;cursor:pointer;
+  background:linear-gradient(135deg,#2AFFD4,#8DFFE9);color:#07090F;
+  box-shadow:0 8px 24px rgba(42,255,212,.22),inset 0 1px 0 rgba(255,255,255,.18);
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+.cta:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(42,255,212,.32),inset 0 1px 0 rgba(255,255,255,.22);text-decoration:none}
+.cta:active{transform:translateY(0)}
+
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.cta.secondary{
+  background:transparent;border:.5px solid var(--bdr2);color:var(--tx1);
+  box-shadow:none;
+}
+.cta.secondary:hover{background:rgba(255,255,255,.04);box-shadow:none}
+
+/* ── Language visibility ── */
+[data-lang]{display:none}
+[data-lang].active{display:block}
+
+/* ── Footer ── */
+footer{
+  margin-top:auto;padding:24px clamp(16px,4vw,32px);
+  padding-bottom:calc(24px + var(--safe-b));
+  border-top:.5px solid var(--bdr);background:rgba(6,10,18,.5);
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  color:var(--tx3);text-transform:uppercase;text-align:center;
+}
+footer a{color:var(--tx2)}
+footer .row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:8px}
+
+/* Mobile tweaks */
+@media (max-width:520px){
+  .topbar{padding:12px 14px;padding-top:calc(12px + var(--safe-t))}
+  .brand{font-size:13px}
+  .lang-toggle button{padding:5px 9px;font-size:9px}
+  h1{font-size:30px}
+  .cta-row{flex-direction:column;align-items:stretch}
+  .cta{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="app.html" class="brand" aria-label="SOUNDTEST.PRO">
+    <span class="brand-dot"></span>
+    SOUNDTEST.PRO
+  </a>
+  <div class="lang-toggle" role="tablist" aria-label="Language">
+    <button type="button" data-set-lang="zh" class="active" role="tab" aria-selected="true">中文</button>
+    <button type="button" data-set-lang="en" role="tab" aria-selected="false">English</button>
+  </div>
+</header>
+
+<main>
+
+  <div data-lang="zh" class="active">
+    <div class="kicker">政策 · POLICY</div>
+    <h1>退款政策</h1>
+    <p class="lead">本页说明 SOUNDTEST.PRO 各档付费权益(Pro 会员、Team 团队版、一次性 Lifetime Offline)的退款条件、申请方式与处理时效。请在下单前阅读,避免后续争议。</p>
+
+    <div class="meta">
+      <div class="meta-item">生效日期<strong>2026-06-08</strong></div>
+      <div class="meta-item">适用范围<strong>Web / PWA / 桌面端</strong></div>
+      <div class="meta-item">联系邮箱<strong>billing@soundtest.pro</strong></div>
+    </div>
+
+    <section>
+      <h2><span class="num">01</span>总则</h2>
+      <div class="policy-pill">
+        <strong>无理由 7 天全额退款</strong>首次订阅任一档付费权益后 <em>7 个自然日内</em> 且累计使用时长不超过 <em>30 分钟</em>,可在未导出大量证据、未触发批量 PDF / CSV 的前提下申请全额退款。
+      </div>
+      <div class="policy-pill">
+        <strong>实质性故障 30 天内可退</strong>若产品在您所在地区、您的主流浏览器(Chrome / Safari / Edge 最新两个大版本)上无法实现<em>核心功能</em>(实时分贝显示、地点标注、证据导出 PDF),且经我们确认 30 天内未修复,可申请按剩余天数比例退款。
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">02</span>各档权益退款规则</h2>
+      <ul class="checks">
+        <li><strong>Pro 月度 / 年度会员</strong>订阅期内可申请;已使用 ≥ 50% 周期按比例退款;未使用部分按原支付通道原路退回。</li>
+        <li><strong>Team 团队版</strong>以开通日为锚点的 14 天内全额退款;14 天后按未使用席位 × 月单价 × 剩余比例计算。</li>
+        <li><strong>Lifetime Offline 终身买断</strong>自购买起 30 天内、未在多设备激活(≤ 2 台)且未触发云端同步的可申请全额退款;30 天后原则上不再退款,但出现严重功能缺失可走个案通道。</li>
+        <li><strong>应用商店内购(iOS / Android)</strong>遵循 Apple / Google 平台规则,需在原商店订单页提交退款申请,本政策仅作参考,以平台裁决为准。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="num">03</span>不适用情况</h2>
+      <ul class="checks warns">
+        <li>账号因违反使用条款(发布虚假证据、滥用 API、违法录音录像等)被封禁。</li>
+        <li>购买超过 30 天且无实质性故障证据。</li>
+        <li>由汇率波动、关税或个人偏好改变导致的单纯后悔。</li>
+        <li>经客服书面同意已发放的代金券、兑换码或活动赠送权益。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="num">04</span>申请流程</h2>
+      <ul class="checks">
+        <li>发送邮件至 <strong>billing@soundtest.pro</strong>,主题注明「退款申请 + 订单号」。</li>
+        <li>附上支付凭证截图、账号注册邮箱、申请退款的原因(50 字以内即可)。</li>
+        <li>我们会在 <em>2 个工作日内</em> 回复并确认材料完整性。</li>
+        <li>材料齐全后 <em>5–10 个工作日</em> 内原路退回,具体到账时间取决于您的发卡行。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="num">05</span>需要联系?</h2>
+      <div class="cta-row">
+        <a class="cta" href="mailto:billing@soundtest.pro?subject=Refund%20Request">申请退款</a>
+        <a class="cta secondary" href="app.html">返回应用</a>
+      </div>
+    </section>
+  </div>
+
+  <div data-lang="en">
+    <div class="kicker">POLICY</div>
+    <h1>Refund Policy</h1>
+    <p class="lead">This page explains the refund terms for SOUNDTEST.PRO paid tiers (Pro membership, Team plan, and one-time Lifetime Offline). Please read before purchasing to avoid disputes.</p>
+
+    <div class="meta">
+      <div class="meta-item">Effective<strong>2026-06-08</strong></div>
+      <div class="meta-item">Scope<strong>Web / PWA / Desktop</strong></div>
+      <div class="meta-item">Billing email<strong>billing@soundtest.pro</strong></div>
+    </div>
+
+    <section>
+      <h2><span class="num">01</span>Overview</h2>
+      <div class="policy-pill">
+        <strong>7-day no-questions refund</strong> Within <em>7 calendar days</em> of your first paid subscription, and if cumulative usage is under <em>30 minutes</em> with no bulk PDF / CSV exports, you may request a full refund.
+      </div>
+      <div class="policy-pill">
+        <strong>30-day material-defect refund</strong> If a <em>core feature</em> (live dB display, location tagging, PDF evidence export) is non-functional on your region / latest two major versions of Chrome, Safari, or Edge, and we cannot fix it within 30 days, you may request a pro-rata refund for the unused period.
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">02</span>Per-tier rules</h2>
+      <ul class="checks">
+        <li><strong>Pro Monthly / Annual</strong>Available at any time during the active term; refunds for periods with ≥ 50% usage are pro-rata. Unused portions are returned via the original payment method.</li>
+        <li><strong>Team</strong>Full refund within 14 days of activation. After 14 days, refund equals: unused seats × monthly price × remaining ratio.</li>
+        <li><strong>Lifetime Offline</strong>Full refund within 30 days of purchase, provided activation is on ≤ 2 devices and no cloud sync was triggered. After 30 days refunds are generally not available, except in documented cases of severe functional defects.</li>
+        <li><strong>In-app purchases (iOS / Android)</strong>Subject to Apple / Google platform rules. Refund requests must be filed in the original store. This policy is informational; the platform decision prevails.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="num">03</span>Non-eligible cases</h2>
+      <ul class="checks warns">
+        <li>Accounts suspended for violating the Terms of Use (fabricated evidence, API abuse, illegal recording, etc.).</li>
+        <li>Requests filed more than 30 days after purchase without material-defect evidence.</li>
+        <li>Buyer's remorse driven by exchange-rate, tax, or personal-preference changes.</li>
+        <li>Vouchers, redemption codes, or promotional grants that were issued in writing by support.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="num">04</span>How to apply</h2>
+      <ul class="checks">
+        <li>Email <strong>billing@soundtest.pro</strong> with subject “Refund Request — Order #”.</li>
+        <li>Include payment receipt, registered email, and a brief reason (≤ 50 words is fine).</li>
+        <li>We will reply within <em>2 business days</em> to confirm document completeness.</li>
+        <li>Once complete, refund is issued to the original method within <em>5–10 business days</em>, depending on your card issuer.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2><span class="num">05</span>Need help?</h2>
+      <div class="cta-row">
+        <a class="cta" href="mailto:billing@soundtest.pro?subject=Refund%20Request">Request a refund</a>
+        <a class="cta secondary" href="app.html">Back to app</a>
+      </div>
+    </section>
+  </div>
+<footer class="footer-deluxe" role="contentinfo">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand brand-glow" href="index.html" aria-label="SOUNDTEST.PRO home">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
+          </a>
+          <p>面向全球噪音记录需求的声学证据辅助工具。基于浏览器、本地优先、多语言。正式检测请以经检定声级计复核。</p>
+          <div class="footer-flags" aria-label="Language matrix">
+            <a class="footer-flag" href="../en/index.html" title="English">🇺🇸</a>
+            <a class="footer-flag" href="../zh/index.html" title="中文">🇨🇳</a>
+            <a class="footer-flag" href="../es/index.html" title="Español">🇪🇸</a>
+            <a class="footer-flag" href="../fr/index.html" title="Français">🇫🇷</a>
+            <a class="footer-flag" href="../de/index.html" title="Deutsch">🇩🇪</a>
+            <a class="footer-flag" href="../ja/index.html" title="日本語">🇯🇵</a>
+            <a class="footer-flag" href="../ko/index.html" title="한국어">🇰🇷</a>
+            <a class="footer-flag" href="../vi/index.html" title="Tiếng Việt">🇻🇳</a>
+            <a class="footer-flag" href="../th/index.html" title="ไทย">🇹🇭</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>产品</h4>
+          <ul>
+            <li><a href="app.html">打开工具</a></li>
+            <li><a href="../soundtest.html">在线分贝仪</a></li>
+            <li><a href="samples.html">录音样例</a></li>
+            <li><a href="accuracy.html">麦克风测试与精度</a></li>
+            <li><a href="download.html">安装 PWA 应用</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>资源</h4>
+          <ul>
+            <li><a href="standards.html">噪声标准</a></li>
+            <li><a href="changelog.html">更新记录与博客</a></li>
+            <li><a href="../use-cases/neighbor-noise-evidence.html">邻里噪音指南</a></li>
+            <li><a href="../use-cases/construction-noise-monitoring.html">施工噪音指南</a></li>
+            <li><a href="../use-cases/rental-dispute-evidence.html">租房纠纷指南</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>法律信息</h4>
+          <ul>
+            <li><a href="privacy.html">隐私政策</a></li>
+            <li><a href="compliance.html">服务条款</a></li>
+            <li><a href="disclaimer.html">免责声明</a></li>
+            <li><a href="privacy.html">GDPR 与同意</a></li>
+            <li><a href="auth.html">账户与会员</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>语言</h4>
+          <ul>
+            <li><a href="../en/index.html">English</a></li>
+            <li><a href="../zh/index.html">中文</a></li>
+            <li><a href="../es/index.html">Español</a></li>
+            <li><a href="../fr/index.html">Français</a></li>
+            <li><a href="../de/index.html">Deutsch</a></li>
+            <li><a href="../ja/index.html">日本語</a></li>
+            <li><a href="../ko/index.html">한국어</a></li>
+            <li><a href="../vi/index.html">Tiếng Việt</a></li>
+            <li><a href="../th/index.html">ไทย</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-meta">
+        <span>© SOUNDTEST.PRO · 本地优先的声学证据辅助工具 · 非专业检定声级计。</span>
+        <div class="footer-social" aria-label="Social channels">
+          <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
+          <a href="standards.html" aria-label="Standards"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
+        </div>
+      </div>
+    </footer>
+
+
+</main>
+
+<footer>
+  <div class="row">
+    <a href="app.html">App</a>
+    <a href="../manifest.webmanifest">Manifest</a>
+    <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>
+  </div>
+  <div>© 2026 SOUNDTEST.PRO · All rights reserved</div>
+</footer>
+
+<script>
+(function(){
+  const btns = document.querySelectorAll('[data-set-lang]');
+  const blocks = document.querySelectorAll('[data-lang]');
+  const stored = (function(){ try { return localStorage.getItem('sf-refund-lang') } catch(e){ return null } })();
+  const initial = stored === 'en' || stored === 'zh' ? stored : 'zh';
+  setLang(initial);
+  btns.forEach(function(b){ b.addEventListener('click', function(){ setLang(b.dataset.setLang) }) });
+  function setLang(lang){
+    btns.forEach(function(b){
+      const on = b.dataset.setLang === lang;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    blocks.forEach(function(el){ el.classList.toggle('active', el.dataset.lang === lang) });
+    document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-CN');
+    try { localStorage.setItem('sf-refund-lang', lang) } catch(e){}
+  }
+})();
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration failed:', err));
+    });
+  }
+</script>
+</body>
+</html>
