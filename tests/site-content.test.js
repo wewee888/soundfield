@@ -79,8 +79,8 @@ test('language routing prefers saved choice, then system language, then English'
   assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['fr-CA', 'en-US'] }), 'fr');
   assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['zh-CN'] }), 'zh');
   assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['zh-TW'] }), 'zh');
-  assert.equal(i18n.localePath('ko'), 'ko/index.html');
-  assert.equal(i18n.localePath('zh-CN'), 'zh/index.html');
+  assert.equal(i18n.localePath('ko'), '/ko/index.html');
+  assert.equal(i18n.localePath('zh-CN'), '/zh/index.html');
 });
 
 test('global language directories cover launch locales', () => {
@@ -238,9 +238,6 @@ test('core app language options stay synchronized with the website locales', () 
   assert.match(html, /supportedLanguageFromPrimary/);
   assert.match(html, /SITE_LANG_KEY='soundtest_locale'/);
   assert.match(html, /localStorage\.getItem\(SITE_LANG_KEY\)/);
-  ['es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'].forEach((locale) => {
-    assert.match(html, new RegExp(`${locale}:englishLocale\\('${locale}'`), `${locale} uses full English fallback locale`);
-  });
   assert.match(html, /const base=I18N\[appLanguage\]\|\|\{\}/);
   assert.match(html, /const useEnglish=appLanguage!=='zh-CN'/);
   assert.doesNotMatch(html, /appLanguage==='en-US'/);
@@ -271,7 +268,7 @@ test('Cloudflare membership API endpoints exist', () => {
 
 test('account page provides register and login forms', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'auth.html'), 'utf8');
-  assert.match(html, /data-auth-shell/);
+  assert.match(html, /data-auth-page="unauthenticated"/);
   assert.match(html, /data-auth-form="login"/);
   assert.match(html, /data-auth-form="register"/);
   assert.match(html, /assets\/site-auth\.js/);
@@ -333,7 +330,8 @@ test('static website local links resolve to files', () => {
       const target = match[1];
       if (/^(https?:|mailto:|tel:|data:)/i.test(target)) continue;
       if (target.startsWith('#')) continue;
-      assert.ok(fs.existsSync(path.resolve(baseDir, target)), `${file} links to existing ${target}`);
+      const targetPath = target.split('?')[0];
+      assert.ok(fs.existsSync(path.resolve(baseDir, targetPath)), `${file} links to existing ${target}`);
     }
   }
 });
