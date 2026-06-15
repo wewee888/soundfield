@@ -79,8 +79,8 @@ test('language routing prefers saved choice, then system language, then English'
   assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['fr-CA', 'en-US'] }), 'fr');
   assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['zh-CN'] }), 'zh');
   assert.equal(i18n.pickLocale({ savedLocale: '', navigatorLanguages: ['zh-TW'] }), 'zh');
-  assert.equal(i18n.localePath('ko'), '/ko/index.html');
-  assert.equal(i18n.localePath('zh-CN'), '/zh/index.html');
+  assert.equal(i18n.localePath('ko'), '/ko/');
+  assert.equal(i18n.localePath('zh-CN'), '/zh/');
 });
 
 test('global language directories cover launch locales', () => {

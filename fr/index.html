@@ -42,21 +42,21 @@
   }
   </script>
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://soundtest.pro/fr/">
-  <meta property="og:title" content="Enregistreur de Bruit Preuve Gratuit Sans Application · SOUNDTEST.PRO">
-  <meta property="og:description" content="Mesureur de dB gratuit dans le navigateur qui transforme 60 secondes de son en preuve horodatée, géolocalisée et exportable.">
+  <meta property="og:url" content="https://soundtest.pro/">
+  <meta property="og:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
+  <meta property="og:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
   <meta property="og:image" content="https://soundtest.pro/assets/icon-512.png">
-  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Enregistreur de Bruit Preuve Gratuit Sans Application · SOUNDTEST.PRO">
-  <meta name="twitter:description" content="Mesureur de dB gratuit dans le navigateur qui transforme 60 secondes de son en preuve horodatée, géolocalisée et exportable.">
+  <meta name="twitter:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
+  <meta name="twitter:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
   <meta name="twitter:image" content="https://soundtest.pro/assets/icon-512.png">
 </head>
 <body>
   <main class="site-shell">
-    <nav class="site-nav site-nav--floating" aria-label="Navigation principale">
+    <nav class="site-nav site-nav--floating" aria-label="Primary">
       <div class="site-nav-main">
-        <a class="brand brand-glow" href="../index.html" aria-label="Accueil SOUNDTEST.PRO">
+        <a class="brand brand-glow" href="../index.html" aria-label="SOUNDTEST.PRO home">
           <span class="brand-mark" aria-hidden="true"></span>
           <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
         </a>
@@ -83,20 +83,27 @@
           <h1 class="hero-headline">Enregistreur de Bruit Preuve Gratuit Sans Application.<br><em>Mesurez les dB. Verrouillez la preuve. Restez privé.</em></h1>
           <p class="hero-lead">Mesurez les décibels, enregistrez le son, sauvegardez l'heure et le lieu pour la documentation de plainte légale. Bruit de voisinage, construction, bars et rue, litige locatif — commencez à enregistrer en un clic, directement dans votre navigateur.</p>
 
-                    <form class="hero-search" data-hero-form aria-label="Choisir un modèle de preuve sonore">
+          <form class="hero-search" data-hero-form aria-label="Try the noise evidence workflow">
             <div class="hero-search-row">
-              <input type="text" class="hero-search-input" data-hero-input placeholder="Choisissez celle qui correspond le mieux à votre situation" autocomplete="off" spellcheck="false">
-              <a class="hero-search-btn" href="../use-cases/" role="button" data-cta="pick_template">
-                <span>Choisir un modèle</span>
+              <input type="text" class="hero-search-input" data-hero-input placeholder="Décrivez ce que vous voulez documenter — p. ex. bruit nocturne de bar rue Elm" autocomplete="off" spellcheck="false">
+              <button class="hero-search-btn" type="submit">
+                <span>Lancer le flux IA</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-              </a>
+              </button>
             </div>
-            <div class="hero-search-chips" role="list" aria-label="Scénarios rapides">
-              <a class="chip" role="listitem" href="../use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Bruit de voisinage</a>
-              <a class="chip" role="listitem" href="../use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>Construction</a>
-              <a class="chip" role="listitem" href="../use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>Bar et rue</a>
-              <a class="chip" role="listitem" href="../use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Conflit de location</a>
+            <div class="hero-search-chips" role="list" aria-label="Quick scenarios">
+              <button type="button" class="chip" role="listitem" data-chip="Bruit du voisin du dessus" data-chip-path="use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Bruit de voisinage</button>
+              <button type="button" class="chip" role="listitem" data-chip="Bruit de construction" data-chip-path="use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>Construction</button>
+              <button type="button" class="chip" role="listitem" data-chip="Bruit de bar tard la nuit" data-chip-path="use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>Bar et rue</button>
+              <button type="button" class="chip" role="listitem" data-chip="Dossier de litige locatif" data-chip-path="use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Litige locatif</button>
             </div>
+            <div class="recent-bar" data-recent-host hidden></div>
+            <div class="hero-meta">
+              <span>✓ <strong>Démarrage en un clic</strong> · No registration</span>
+              <span>✓ <strong>9 langues</strong> live</span>
+              <span>✓ <strong>PDF / CSV / JSON</strong> exports</span>
+            </div>
+          </form>
 
           <div class="hero-actions">
             <a class="button primary" href="../app.html">Lancer la mesure</a>
@@ -105,19 +112,38 @@
           </div>
         </div>
 
-        <aside class="echo-stage reveal" aria-label="Mascotte Echo présentant l'enregistreur en veille">
+        <aside class="echo-stage reveal" aria-label="Echo mascot showing the recorder in standby">
           <div class="echo-stage-tags">
             <span class="echo-stage-tag"><span class="dot" aria-hidden="true"></span>Veille · cliquer pour activer</span>
             <span class="echo-stage-tag"><span class="dot violet" aria-hidden="true"></span>Micro local uniquement</span>
             <span class="echo-stage-tag"><span class="dot rose" aria-hidden="true"></span>9 langues</span>
           </div>
-          <div class="echo-mascot" role="img" aria-label="Echo, la mascotte hibou de cristal de SOUNDTEST.PRO, posée sur un plateau de verre avec un égaliseur en veille sur la poitrine"></div>
+          <div class="echo-mascot" role="img" aria-label="Echo, the SOUNDTEST.PRO crystal owl mascot, standing on a glass platter with an idle equalizer chest"></div>
           <div class="echo-hud" aria-hidden="true">
             <span class="echo-hud-dot"></span>
             <span class="echo-hud-value">00 dB</span>
-            <span class="echo-hud-label">Veille</span>
+            <span class="echo-hud-label">Standby</span>
           </div>
         </aside>
+      </div>
+
+      <div class="hero-search reveal" data-live-card style="margin-top:14px;background:rgba(255,255,255,0.04)">
+        <div class="card-badge">Aperçu en direct</div>
+        <h3 style="margin-top:6px">Exécution locale — aucune donnée ne quitte le navigateur.</h3>
+        <p class="muted" style="margin-top:6px;font-size:13px">Nous assemblons un modèle de preuve. Lancez ensuite l'enregistreur pour capturer audio, photos et rapports.</p>
+        <div class="live-card" data-live-card style="display:block;background:transparent;border:0;padding:14px 0 0">
+          <div class="live-steps">
+            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Analyse du scénario et sélection du modèle…</span></div>
+            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Configuration des règles dB, LAeq, GPS…</span></div>
+            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Construction de la mise en page du rapport…</span></div>
+            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Prêt — lancez l'enregistreur pour commencer.</span></div>
+          </div>
+          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+            <button class="button primary" type="button" data-live-cta data-target="soundtest.html" hidden>Lancer l'enregistreur</button>
+            <a class="button" href="../samples.html">Voir des exemples de rapports</a>
+            <a class="button ghost" href="../accuracy.html">Read measurement limits</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -125,7 +151,7 @@
       <div class="section-header reveal">
         <span class="eyebrow">Quatre capacités clés</span>
         <h2>Mesurer, enregistrer, horodater et exporter — un flux serein.</h2>
-        <p class="lead">Conçu pour les personnes préoccupées par le bruit qui ont besoin d'un moyen calme et professionnel de verrouiller les faits avant de parler à un propriétaire, un gérant ou un conseiller.</p>
+        <p class="lead">Built for people who arrive anxious about noise and need a calm, professional way to lock the facts before they speak with a landlord, manager, or adviser.</p>
       </div>
       <div class="feature-grid-22">
         <div class="card reveal">
@@ -133,28 +159,28 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg>
           </span>
           <h3>Sonomètre en temps réel</h3>
-          <p>Détection précise du niveau sonore : <strong>dB / dBA</strong> en direct, crête, moyenne, <strong>LAeq</strong> et synthèses par percentiles L5/L10/L50/L90/L95 — le tout calculé localement sur votre appareil.</p>
+          <p>Accurate sound level detection: live <strong>dB / dBA</strong>, peak, average, <strong>LAeq</strong>, and L5/L10/L50/L90/L95 percentile summaries — all computed locally on your device.</p>
         </div>
         <div class="card reveal">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2l2-6 3 14 3-10 2 6 2-4 4 0"/></svg>
           </span>
           <h3>Enregistrement audio et forme d'onde</h3>
-          <p>Enregistrez le bruit avec la forme d'onde et le spectre pour conserver une documentation sonore complète et locale. La forme d'onde, le spectre et les horodatages restent attachés au fichier.</p>
+          <p>Record noise with waveform and spectrum context to keep complete, local sound documentation. Waveform, spectrum chart, and timestamps stay with the file.</p>
         </div>
         <div class="card reveal">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
           </span>
           <h3>Horodatage et géolocalisation automatiques</h3>
-          <p>Enregistre automatiquement la date, l'heure et la position géographique dès l'autorisation accordée — les métadonnées nécessaires pour qu'une plainte tienne face à un examen attentif.</p>
+          <p>Automatically record date, time, and geographic location when permission is granted — the metadata you need to make a complaint hold up under scrutiny.</p>
         </div>
         <div class="card reveal">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
           </span>
           <h3>Export du rapport de preuve</h3>
-          <p>Génère des rapports structurés en <strong>PDF</strong>, <strong>CSV</strong> et <strong>JSON</strong> — des modèles au rendu officiel, prêts pour la gestion immobilière, l'autorité locale ou les conseillers juridiques.</p>
+          <p>Generate structured <strong>PDF</strong>, <strong>CSV</strong>, and <strong>JSON</strong> reports — official-feeling templates ready for property management, local authority, or legal advisers.</p>
         </div>
       </div>
     </section>
@@ -166,8 +192,8 @@
       </div>
       <div class="split-asym">
         <div class="chip-cluster reveal">
-          <div class="card-badge">Choisissez un scénario</div>
-          <h3 style="margin-top:6px">D'un clic, l'enregistreur charge le bon modèle.</h3>
+          <div class="card-badge">Pick a scenario</div>
+          <h3 style="margin-top:6px">One tap, the recorder loads the right template.</h3>
           <div class="chip-floats">
             <a class="chip-float" href="../use-cases/neighbor-noise-evidence.html"><span class="emoji" aria-hidden="true">🏢</span>Bruit de voisinage et d'appartement</a>
             <a class="chip-float" href="../use-cases/construction-noise-monitoring.html"><span class="emoji" aria-hidden="true">🚧</span>Bruit de construction et rénovation</a>
@@ -177,20 +203,20 @@
           </div>
         </div>
 
-        <div class="standards-dashboard reveal" aria-label="Tableau de référence mondiale du bruit">
+        <div class="standards-dashboard reveal" aria-label="Référence mondiale du bruit dashboard">
           <div class="dashboard-header">
             <div>
               <span class="card-badge">Référence mondiale du bruit</span>
               <h3 class="dashboard-title" style="margin-top:6px">Références diurne et nocturne</h3>
             </div>
-            <span class="loud-badge" title="Libellé en langage courant">🚨 Conversation à voix forte ~ 65 dB</span>
+            <span class="loud-badge" title="Plain-language label">🚨 Loud talking ~ 65 dB</span>
           </div>
           <div class="dashboard-rows">
             <div class="dashboard-row">
               <span class="icon-orb sun" aria-hidden="true">☀</span>
               <div class="label">
                 <strong>Référence diurne (6h00–22h00)</strong>
-                <span>Contexte résidentiel calme, conversation, activité diurne.</span>
+                <span>Quiet residential context, conversation, daytime activity.</span>
               </div>
               <span class="meter">≤ 55 dB</span>
             </div>
@@ -198,20 +224,20 @@
               <span class="icon-orb moon" aria-hidden="true">☾</span>
               <div class="label">
                 <strong>Référence nocturne (22h00–6h00)</strong>
-                <span>Sommeil, récupération et attentes des heures calmes.</span>
+                <span>Sleep, recovery, and quiet-hour expectations.</span>
               </div>
               <span class="meter">≤ 45 dB</span>
             </div>
             <div class="dashboard-row">
               <span class="icon-orb sun" aria-hidden="true">⚠</span>
               <div class="label">
-                <strong>Tout niveau soutenu &gt; 70 dB</strong>
-                <span>Déjà comparable à une rue passante — enregistrez les cycles sans tarder.</span>
+                <strong>Anything sustained &gt; 70 dB</strong>
+                <span>Already comparable to a busy street — record patterns immediately.</span>
               </div>
               <span class="meter">≥ 70 dB</span>
             </div>
           </div>
-          <p class="dashboard-foot">Référence indicative uniquement. Les règles locales varient ; toute preuve formelle doit être vérifiée selon les procédures de l'autorité locale ou avec un équipement certifié.</p>
+          <p class="dashboard-foot">Reference only. Local rules vary, and formal proof should be verified with local authority procedures or certified equipment.</p>
         </div>
       </div>
 
@@ -221,28 +247,28 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2z"/></svg>
           </span>
           <h3>Bruit de voisinage et d'appartement</h3>
-          <p>Pour les locataires, propriétaires et médiateurs qui ont besoin d'un journal structuré avec tendances en dB, horodatages, photos et rapports.</p>
+          <p>For tenants, owners, and mediators who need a structured diary with dB trends, timestamps, photos, and reports.</p>
         </a>
         <a class="card reveal" href="../use-cases/construction-noise-monitoring.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21V12h6v9"/></svg>
           </span>
           <h3>Bruit de construction et rénovation</h3>
-          <p>Capturez les phases de début, de pic et de retour au calme avec notes de chantier, GPS, vidéo et synthèses exportables.</p>
+          <p>Capture start, peak, and quiet-after periods with site notes, GPS, video, and exportable summaries.</p>
         </a>
         <a class="card reveal" href="../use-cases/bar-street-disturbance.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M5 6v6c0 4 3 7 7 7s7-3 7-7V6"/><path d="M9 2v3M15 2v3"/></svg>
           </span>
           <h3>Nuisances de bars, commerces et rue</h3>
-          <p>Documentez les schémas de nuisances répétées avec heure, lieu, médias et synthèses prêtes pour une plainte.</p>
+          <p>Document repeated disturbance patterns with time, place, media, and complaint-ready summaries.</p>
         </a>
         <a class="card reveal" href="../use-cases/rental-dispute-evidence.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7l8-4 8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 17l8 4 8-4"/></svg>
           </span>
           <h3>Litige locatif et aide à la preuve légale</h3>
-          <p>Organisez les faits avant d'échanger avec un propriétaire, un gérant, l'autorité locale ou un conseiller juridique.</p>
+          <p>Organize facts before speaking with a landlord, property manager, local authority, or legal adviser.</p>
         </a>
       </div>
     </section>
@@ -250,8 +276,8 @@
     <section class="section" id="pricing">
       <div class="section-header reveal">
         <span class="eyebrow">Plans</span>
-        <h2>La version gratuite suffit pour la plupart des plaintes. Pro apporte la finition pour les cas récurrents.</h2>
-        <p class="lead">Aucun mur d'abonnement ne barre l'accès à l'outil. Passez à la version supérieure uniquement si vous souhaitez des modèles premium, des exports PDF groupés et des sauvegardes de métadonnées.</p>
+        <h2>Free is enough for most complaints. Pro adds polish for repeated cases.</h2>
+        <p class="lead">No subscription wall in front of the tool. Upgrade only when you want premium templates, PDF batches, and metadata backups.</p>
       </div>
 
       <div class="pricing-row">
@@ -260,10 +286,10 @@
           <span class="price-name">Commencez avec l'outil web</span>
           <span class="price-tag">$0</span>
           <ul class="check-list">
-            <li>Sonomètre en temps réel</li>
-            <li>Enregistrement audio basique</li>
-            <li>Horodatage et géolocalisation</li>
-            <li>Sauvegarde manuelle par capture d'écran</li>
+            <li>Real-time decibel meter</li>
+            <li>Basic audio recording</li>
+            <li>Time &amp; location stamp</li>
+            <li>Manual screenshot save</li>
           </ul>
           <a class="button" href="../app.html">Ouvrir l'outil gratuit</a>
         </div>
@@ -271,13 +297,13 @@
         <div class="price-card pro reveal">
           <span class="price-pill">Version Pro Premium</span>
           <span class="price-name">Passer à Premium</span>
-          <span class="price-tag">2,99 $/mois · 14,99 $/an · 29,99 $ à vie</span>
+          <span class="price-tag">$2.99/mo · $14.99/yr · $29.99 lifetime</span>
           <ul class="check-list">
-            <li>Sans publicité</li>
-            <li>Flux d'enregistrement local étendu</li>
-            <li>Export PDF du rapport de preuve</li>
-            <li>Modèles de preuve premium</li>
-            <li>Export de sauvegarde des métadonnées</li>
+            <li>No Advertisements</li>
+            <li>Extended local recording workflow</li>
+            <li>Export PDF evidence report</li>
+            <li>Premium evidence templates</li>
+            <li>Metadata backup export</li>
           </ul>
           <a class="button primary" href="../auth.html">Créer un compte et payer</a>
         </div>
@@ -287,46 +313,46 @@
     <section class="section" id="updates">
       <div class="section-header reveal">
         <span class="eyebrow">Dernières mises à jour</span>
-        <h2>Construit en public, avec un historique produit clair.</h2>
-        <p class="lead">Chaque modification publiée apparaît dans le journal des changements — SEO, routage des langues, pipeline de preuves, santé du stockage et hooks de compte.</p>
+        <h2>Built in public, with a clear product record.</h2>
+        <p class="lead">Every shipped change shows up in the changelog — SEO, language routing, evidence pipeline, storage health, and account hooks.</p>
       </div>
       <div class="grid">
         <a class="card reveal" href="../changelog.html">
-          <div class="card-badge">Marque · SEO</div>
-          <h3>Lancement de la marque et du SEO SOUNDTEST.PRO</h3>
-          <p>Les URL canoniques, les chemins de langue hreflang, le sitemap, robots, le manifeste et les données structurées s'alignent désormais sur soundtest.pro.</p>
+          <div class="card-badge">Brand · SEO</div>
+          <h3>SOUNDTEST.PRO brand and SEO launch</h3>
+          <p>Canonical URLs, hreflang language paths, sitemap, robots, manifest, and structured data now align to soundtest.pro.</p>
         </a>
         <a class="card reveal" href="../changelog.html">
-          <div class="card-badge">Internationalisation</div>
-          <h3>La langue suit le système ou le choix de l'utilisateur</h3>
-          <p>Le site suggère une langue à partir des paramètres du navigateur et mémorise le choix de l'utilisateur localement sur l'appareil.</p>
+          <div class="card-badge">Internationalization</div>
+          <h3>Langue follows system or choice</h3>
+          <p>The site recommends a language from browser settings and saves the user selection locally on the device.</p>
         </a>
         <a class="card reveal" href="../changelog.html">
-          <div class="card-badge">Flux de preuves</div>
-          <h3>Renforcement du flux de preuves</h3>
-          <p>Les identifiants de preuve, le hachage, la pondération, les métriques de percentiles, la capture photo et l'amélioration de la santé du stockage sont suivis.</p>
+          <div class="card-badge">Evidence workflow</div>
+          <h3>Evidence workflow hardening</h3>
+          <p>Evidence IDs, hashing, weighting, percentile metrics, photo capture, and storage health improvements are tracked.</p>
         </a>
       </div>
     </section>
 
     <section class="section grid two">
       <div class="notice reveal">
-        <strong>Avertissement :</strong> Cet outil est réservé à un usage civil et à la documentation de terrain ; il ne remplace pas un équipement de mesure professionnel. L'audio et les données sont traités localement sur votre appareil, sauf si vous choisissez d'exporter ou de partager les fichiers.
+        <strong>Avertissement :</strong> This tool is for civilian reference and field documentation only, not professional metering equipment. All audio and data are processed locally on your device unless you choose to export or share files.
       </div>
       <div class="notice reveal" style="border-left-color:var(--accent-2);background:linear-gradient(135deg, rgba(124,155,255,0.10), rgba(255,255,255,0.025))">
-        <strong>Protection de la vie privée :</strong> L'outil web statique ne collecte pas, ne stocke pas et ne partage pas les données de votre micro, de votre position ou de vos enregistrements sur un serveur. Vos relevés restent locaux à votre navigateur, sauf si vous les exportez.
+        <strong>Protection de la vie privée :</strong> L'outil web statique ne collecte pas, store, or share your microphone, location, or recording data on a server. Your records remain local to your browser unless you export them.
       </div>
     </section>
 
     <footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
-          <a class="brand brand-glow" href="../index.html" aria-label="Accueil SOUNDTEST.PRO">
+          <a class="brand brand-glow" href="../index.html" aria-label="SOUNDTEST.PRO home">
             <span class="brand-mark" aria-hidden="true"></span>
             <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
           </a>
-          <p>Outil d'aide à la preuve acoustique pour la documentation sonore mondiale. Natif dans le navigateur, local d'abord, multilingue. Les mesures formelles doivent être vérifiées avec un sonomètre certifié.</p>
-          <div class="footer-flags" aria-label="Matrice des langues">
+          <p>Acoustic evidence aid for global noise documentation. Browser-native, local-first, multilingual. Formal measurements should be verified with a certified sound level meter.</p>
+          <div class="footer-flags" aria-label="Langue matrix">
             <a class="footer-flag" href="../en/index.html" title="English">🇺🇸</a>
             <a class="footer-flag" href="../zh/index.html" title="中文">🇨🇳</a>
             <a class="footer-flag" href="../es/index.html" title="Español">🇪🇸</a>
@@ -343,32 +369,32 @@
           <h4>Produit</h4>
           <ul>
             <li><a href="../app.html">Ouvrir l'app</a></li>
-            <li><a href="../soundtest.html">Sonomètre en ligne</a></li>
-            <li><a href="../samples.html">Exemples d'enregistrements</a></li>
-            <li><a href="../accuracy.html">Test micro &amp; précision</a></li>
-            <li><a href="../download.html">Installer en PWA</a></li>
+            <li><a href="../soundtest.html">Online Decibel Meter</a></li>
+            <li><a href="../samples.html">Noise Recorder Samples</a></li>
+            <li><a href="../accuracy.html">Mic Test &amp; Accuracy</a></li>
+            <li><a href="../download.html">Install as PWA</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Ressources</h4>
           <ul>
-            <li><a href="../standards.html">Normes acoustiques</a></li>
-            <li><a href="../changelog.html">Mises à jour &amp; blog</a></li>
-            <li><a href="../use-cases/neighbor-noise-evidence.html">Guide bruit de voisinage</a></li>
-            <li><a href="../use-cases/construction-noise-monitoring.html">Guide chantier</a></li>
-            <li><a href="../use-cases/rental-dispute-evidence.html">Guide litige locatif</a></li>
+            <li><a href="../standards.html">Noise Standards</a></li>
+            <li><a href="../changelog.html">Updates &amp; Blog</a></li>
+            <li><a href="../use-cases/neighbor-noise-evidence.html">Neighbor Noise Guide</a></li>
+            <li><a href="../use-cases/construction-noise-monitoring.html">Construction Guide</a></li>
+            <li><a href="../use-cases/rental-dispute-evidence.html">Rental Dispute Guide</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Mentions légales</h4>
           <ul>
-            <li><a href="../privacy.html">Politique de confidentialité</a></li>
-            <li><a href="../compliance.html">Conditions d'utilisation</a></li>
-            <li><a href="../disclaimer.html">Avertissement</a></li>
-            <li><a href="../privacy.html">RGPD &amp; consentement</a></li>
-            <li><a href="../auth.html">Compte &amp; adhésion</a></li>
+            <li><a href="../privacy.html">Privacy Policy</a></li>
+            <li><a href="../compliance.html">Terms of Service</a></li>
+            <li><a href="../disclaimer.html">Disclaimer</a></li>
+            <li><a href="../privacy.html">GDPR &amp; Consent</a></li>
+            <li><a href="../auth.html">Compte &amp; Membership</a></li>
           </ul>
         </div>
 
@@ -389,41 +415,21 @@
       </div>
 
       <div class="footer-meta">
-        <span>© SOUNDTEST.PRO · Outil d'aide à la preuve acoustique, local d'abord · N'est pas un sonomètre certifié.</span>
-        <div class="footer-social" aria-label="Réseaux sociaux">
-          <a href="mailto:hello@soundtest.pro" aria-label="E-mail"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+        <span>© SOUNDTEST.PRO · Local-first acoustic evidence aid · Not a certified sound level meter.</span>
+        <div class="footer-social" aria-label="Social channels">
+          <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
           <a href="../changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
-          <a href="../standards.html" aria-label="Normes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
+          <a href="../standards.html" aria-label="Standards"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
         </div>
       </div>
     </footer>
   </main>
 </body>
 <script>
-  (function() {
-    try {
-      if (sessionStorage.getItem('__sfV7Boot')) return;
-      sessionStorage.setItem('__sfV7Boot', '1');
-    } catch (e) { return; }
-    if (!('serviceWorker' in navigator)) return;
-    navigator.serviceWorker.getRegistrations().then(function(regs) {
-      var hasV7 = regs.some(function(r) {
-        var u = (r.active && r.active.scriptURL) || '';
-        return u.indexOf('v=7') !== -1 || u.indexOf('v=6') !== -1;
-      });
-      if (hasV7) return null;
-      return Promise.all(regs.map(function(r) { return r.unregister(); }))
-        .then(function() {
-          return 'caches' in self ? caches.keys() : Promise.resolve([]);
-        })
-        .then(function(keys) {
-          return Promise.all(keys.filter(function(k) { return k.indexOf('soundtest-pro-') === 0; }).map(function(k) { return caches.delete(k); }));
-        })
-        .then(function() {
-          return navigator.serviceWorker.register('/sw.js?v=7');
-        })
-        .then(function() { location.reload(); });
-    }).catch(function() {});
-  })();
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration failed:', err));
+    });
+  }
 </script>
 </html>

@@ -157,8 +157,23 @@
       buttons: { startMonitoring: '측정 시작', stopRecording: '녹음 정지', exportReport: '보고서 내보내기', switchLanguage: '언어 전환' },
       disclaimer: '면책 조항: 일반 참고용 도구이며 공식 측정 장비가 아닙니다. 모든 데이터는 기기 내부에서 처리되며 외부로 업로드되지 않습니다.',
     },
-  };
-
+    vi: {
+      slogan: 'Công cụ ghi nhận tiếng ồn trực tuyến miễn phí | Không cần cài app',
+      subtitle: 'Đo decibel, ghi âm, lưu thời gian và vị trí phục vụ hồ sơ khiếu nại.',
+      features: ['Máy đo decibel thời gian thực', 'Ghi âm thanh và dạng sóng', 'Tự động đóng dấu thời gian và vị trí', 'Xuất báo cáo bằng chứng'],
+      scenarios: 'Tiếng ồn hàng xóm / Thi công / Quán bar và đường phố / Tranh chấp thuê nhà',
+      buttons: { startMonitoring: 'Bắt đầu đo', stopRecording: 'Dừng ghi', exportReport: 'Xuất báo cáo', switchLanguage: 'Đổi ngôn ngữ' },
+      disclaimer: 'Tuyên bố miễn trừ: Chỉ dùng cho mục đích tham khảo dân sự, không phải thiết bị đo chuyên nghiệp. Tất cả dữ liệu được xử lý tại thiết bị.',
+    },
+    th: {
+      slogan: 'เครื่องมือบันทึกหลักฐานเสียงรบกวนออนไลน์ฟรี | ไม่ต้องติดตั้งแอป',
+      subtitle: 'วัดเดซิเบล บันทึกเสียง บันทึกเวลาและตำแหน่งเพื่อเตรียมการร้องเรียน',
+      features: ['เครื่องวัดเดซิเบลแบบเรียลไทม์', 'บันทึกเสียงและรูปคลื่น', 'ประทับเวลาและตำแหน่งอัตโนมัติ', 'ส่งออกรายงานหลักฐาน'],
+      scenarios: 'เสียงรบกวนจากเพื่อนบ้าน / การก่อสร้าง / เสียงรบกวนจากบาร์และถนน / ข้อพิพาทการเช่า',
+      buttons: { startMonitoring: 'เริ่มวัด', stopRecording: 'หยุดบันทึก', exportReport: 'ส่งออกรายงาน', switchLanguage: 'เปลี่ยนภาษา' },
+      disclaimer: 'ข้อจำกัดความรับผิดชอบ: สำหรับการอ้างอิงเท่านั้น ไม่ใช่อุปกรณ์วัดระดับมืออาชีพ ข้อมูลทั้งหมดประมวลผลในเครื่องของคุณ',
+    },
+    };
   const noiseGuidelines = [
     {
       title: 'WHO environmental noise guidance',
