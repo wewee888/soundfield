@@ -157,7 +157,7 @@
     const userLocale = detectUserLocale();
     saveLocale(userLocale);
     const path = window.location.pathname;
-    const onRoot = path === '/' || /^\/(?:index\.html?)?$/i.test(path);
+    const onRoot = path === '/' || /^\/(?:index\.html?)?$/i.test(path) || /^\/[a-c]\/(?:index\.html?)?$/i.test(path);
     if (onRoot && userLocale !== 'en') {
       window.location.replace(localePath(userLocale));
       return;

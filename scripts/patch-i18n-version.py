@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(r"E:\.site\dB_test\soundfield")
-VERSION = "v=6"
+VERSION = "v=7"
 
 # Find all HTML files except the scripts directory
 html_files = []
