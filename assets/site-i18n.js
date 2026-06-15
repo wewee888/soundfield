@@ -39,6 +39,11 @@
     return 'en';
   }
 
+  function detectUserLocale() {
+    const navigatorLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
+    return pickLocale({ savedLocale: readSavedLocale(), navigatorLanguages });
+  }
+
   function detectPageLocale() {
     try {
       const segments = window.location.pathname.split('/').filter(Boolean);
@@ -50,8 +55,7 @@
     } catch (_) {
       // ignore
     }
-    const navigatorLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
-    return pickLocale({ savedLocale: readSavedLocale(), navigatorLanguages });
+    return 'en'; // Default to English if no locale is explicitly in the URL
   }
 
   function localePath(locale) {
@@ -150,15 +154,16 @@
   }
 
   function initLanguageSwitcher() {
-    const locale = detectPageLocale();
-    saveLocale(locale);
+    const userLocale = detectUserLocale();
+    saveLocale(userLocale);
     const path = window.location.pathname;
     const onRoot = path === '/' || /^\/(?:index\.html?)?$/i.test(path);
-    if (onRoot && locale !== 'en') {
-      window.location.replace(localePath(locale));
+    if (onRoot && userLocale !== 'en') {
+      window.location.replace(localePath(userLocale));
       return;
     }
-    buildNavLanguageSwitcher(locale);
+    const pageLocale = detectPageLocale();
+    buildNavLanguageSwitcher(pageLocale);
     enhanceFooterFlags();
   }
 
@@ -169,6 +174,7 @@
     normalizeLocale,
     pickLocale,
     detectPageLocale,
+    detectUserLocale,
     localePath,
     initLanguageSwitcher,
   };
