@@ -8,28 +8,12 @@ function json(data, status = 200) {
   });
 }
 
-const LOOKUP_RATE_WINDOW_MS = 10 * 60 * 1000;
-const LOOKUP_RATE_LIMIT = 12;
-const rateBucket = new Map();
-
 async function readBody(request) {
   try {
     return await request.json();
   } catch (e) {
     return {};
   }
-}
-
-function isRateLimited(ip) {
-  const now = Date.now();
-  const current = rateBucket.get(ip) || { count: 0, windowStart: now };
-  if (now - current.windowStart > LOOKUP_RATE_WINDOW_MS) {
-    current.count = 0;
-    current.windowStart = now;
-  }
-  current.count += 1;
-  rateBucket.set(ip, current);
-  return current.count > LOOKUP_RATE_LIMIT;
 }
 
 function planFromProductId(productId, env) {
@@ -40,30 +24,7 @@ function planFromProductId(productId, env) {
   return 'pro';
 }
 
-async function gumroadRequest(path, token) {
-  const response = await fetch(`https://api.gumroad.com/v2${path}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
-    },
-  });
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(`gumroad_${response.status}`);
-  }
-  return payload;
-}
-
-// Treat refunded/chargeback/disputed as inactive.
-const ACTIVE_SALE_STATUSES = new Set(['paid', 'preorder_authorization_successful']);
-// For subscriptions, treat these as active.
-const ACTIVE_SUB_STATUSES = new Set(['active', 'on_trial', 'past_due']);
-
 export async function onRequestPost({ request, env }) {
-  const ip = request.headers.get('cf-connecting-ip') || 'unknown';
-  if (isRateLimited(ip)) {
-    return json({ error: 'too_many_requests' }, 429);
-  }
   const body = await readBody(request);
   const email = String(body.email || '').trim().toLowerCase();
   if (!email || !email.includes('@')) {
@@ -74,60 +35,51 @@ export async function onRequestPost({ request, env }) {
     return json({ error: 'billing_not_configured' }, 503);
   }
 
+  // List recent sales — Gumroad API v2 supports email filter via after-date or
+  // we fetch a small page and filter client-side.
+  let payload;
   try {
-    // Subscriptions (recurring products) — check this first so renewals map to pro/team.
-    let subsResult = { success: true, subscriptions: [] };
-    try {
-      subsResult = await gumroadRequest('/subscriptions', token);
-    } catch (e) {
-      // Continue to one-off sales
-    }
-    const activeSub = (subsResult.subscriptions || []).find((s) =>
-      ACTIVE_SUB_STATUSES.has(String(s.status || ''))
-    );
-    if (activeSub) {
-      const productId = activeSub.product_id || (activeSub.product && activeSub.product.id);
-      const plan = planFromProductId(productId, env);
-      return json({
-        active: true,
-        plan,
-        status: activeSub.status || 'active',
-        renewsAt: activeSub.renews_at || activeSub.end_date || '',
-        subscriptionId: activeSub.id || '',
-        source: 'subscription',
-      });
-    }
-
-    // One-off / lifetime purchases via /sales
-    // Gumroad /sales doesn't have an email filter; fetch first page and filter client-side.
-    const salesResult = await gumroadRequest('/sales?page[size]=100', token);
-    const userSales = (salesResult.sales || []).filter((s) => {
-      if (!s.email || String(s.email).toLowerCase() !== email) return false;
-      if (!ACTIVE_SALE_STATUSES.has(String(s.status || ''))) return false;
-      return true;
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 12000);
+    const resp = await fetch('https://api.gumroad.com/v2/sales?page[size]=50', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
+      signal: ctrl.signal,
     });
-
-    if (userSales.length === 0) {
-      return json({ active: false, plan: 'free', status: 'inactive' });
+    clearTimeout(t);
+    payload = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      return json({ error: 'gumroad_error', status: resp.status, body: payload }, 502);
     }
-
-    // Use the most recent sale.
-    const latest = userSales.sort((a, b) =>
-      String(b.created_at || '').localeCompare(String(a.created_at || ''))
-    )[0];
-
-    const plan = planFromProductId(latest.product_id || (latest.product && latest.product.id), env);
-    return json({
-      active: true,
-      plan,
-      status: latest.status || 'paid',
-      renewsAt: '',
-      saleId: latest.id || '',
-      source: 'sale',
-    });
   } catch (e) {
-    return json({ error: 'lookup_failed', message: e.message || 'unknown' }, 502);
+    return json({ error: 'gumroad_unreachable', message: e && e.message ? e.message : 'fetch failed' }, 502);
   }
+
+  const sales = Array.isArray(payload && payload.sales) ? payload.sales : [];
+  const userSales = sales.filter((s) => {
+    if (!s || !s.email) return false;
+    if (String(s.email).toLowerCase() !== email) return false;
+    if (String(s.status || '') !== 'paid') return false;
+    if (s.refunded === true || s.chargebacked === true) return false;
+    return true;
+  });
+
+  if (userSales.length === 0) {
+    return json({ active: false, plan: 'free', status: 'inactive' });
+  }
+
+  userSales.sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+  const latest = userSales[0];
+  const plan = planFromProductId(latest.product_id || (latest.product && latest.product.id), env);
+
+  return json({
+    active: true,
+    plan,
+    status: latest.status || 'paid',
+    saleId: latest.id || '',
+  });
 }
 
 export function onRequestGet() {
