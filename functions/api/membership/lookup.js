@@ -35,30 +35,32 @@ export async function onRequestPost({ request, env }) {
     return json({ error: 'billing_not_configured' }, 503);
   }
 
-  // List recent sales — Gumroad API v2 supports email filter via after-date or
-  // we fetch a small page and filter client-side.
+  // Use URLSearchParams so brackets are properly encoded.
+  const params = new URLSearchParams();
+  params.set('page[size]', '50');
+  const url = 'https://api.gumroad.com/v2/sales?' + params.toString();
+
   let payload;
   try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 12000);
-    const resp = await fetch('https://api.gumroad.com/v2/sales?page[size]=50', {
+    const resp = await fetch(url, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': 'Bearer ' + token,
         'Accept': 'application/json',
       },
-      signal: ctrl.signal,
     });
-    clearTimeout(t);
     payload = await resp.json().catch(() => ({}));
     if (!resp.ok) {
       return json({ error: 'gumroad_error', status: resp.status, body: payload }, 502);
     }
   } catch (e) {
-    return json({ error: 'gumroad_unreachable', message: e && e.message ? e.message : 'fetch failed' }, 502);
+    return json({
+      error: 'gumroad_unreachable',
+      message: (e && e.message) ? e.message : 'fetch failed',
+    }, 502);
   }
 
   const sales = Array.isArray(payload && payload.sales) ? payload.sales : [];
-  const userSales = sales.filter((s) => {
+  const userSales = sales.filter(function (s) {
     if (!s || !s.email) return false;
     if (String(s.email).toLowerCase() !== email) return false;
     if (String(s.status || '') !== 'paid') return false;
@@ -70,13 +72,18 @@ export async function onRequestPost({ request, env }) {
     return json({ active: false, plan: 'free', status: 'inactive' });
   }
 
-  userSales.sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+  userSales.sort(function (a, b) {
+    return String(b.created_at || '').localeCompare(String(a.created_at || ''));
+  });
   const latest = userSales[0];
-  const plan = planFromProductId(latest.product_id || (latest.product && latest.product.id), env);
+  const plan = planFromProductId(
+    latest.product_id || (latest.product && latest.product.id),
+    env,
+  );
 
   return json({
     active: true,
-    plan,
+    plan: plan,
     status: latest.status || 'paid',
     saleId: latest.id || '',
   });
