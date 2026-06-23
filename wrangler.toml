@@ -10,3 +10,12 @@ pages_build_output_dir = "."
 binding = "ab_test"
 id = "f55cc042ea81496fb9599564c5fdfedd"
 preview_id = "f55cc042ea81496fb9599564c5fdfedd"
+
+# Gumroad payment integration (public values; secret token set via wrangler pages secret put)
+[vars]
+GUMROAD_URL_PRO_MONTHLY = "https://weevolution0.gumroad.com/l/soundtest-pro-monthly"
+GUMROAD_URL_PRO_YEARLY = "https://weevolution0.gumroad.com/l/soundtest-pro-yearly"
+GUMROAD_URL_LIFETIME = "https://weevolution0.gumroad.com/l/soundtest-pro-lifetime"
+GUMROAD_PRODUCT_ID_PRO_MONTHLY = "vzehlz"
+GUMROAD_PRODUCT_ID_PRO_YEARLY = "adhyu"
+GUMROAD_PRODUCT_ID_LIFETIME = "bclypn"

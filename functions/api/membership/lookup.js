@@ -1,108 +1,156 @@
-function json(data,status=200){
-  return new Response(JSON.stringify(data),{
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), {
     status,
-    headers:{
-      'content-type':'application/json; charset=utf-8',
-      'cache-control':'no-store',
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
     },
   });
 }
 
-const LOOKUP_RATE_WINDOW_MS=10*60*1000;
-const LOOKUP_RATE_LIMIT=12;
-const rateBucket=new Map();
+const LOOKUP_RATE_WINDOW_MS = 10 * 60 * 1000;
+const LOOKUP_RATE_LIMIT = 12;
+const rateBucket = new Map();
 
-async function readBody(request){
-  try{
+async function readBody(request) {
+  try {
     return await request.json();
-  }catch(e){
+  } catch (e) {
     return {};
   }
 }
 
-function planFromName(name=''){
-  const lower=name.toLowerCase();
-  if(lower.includes('team'))return 'team';
-  if(lower.includes('life'))return 'lifetime';
+function isRateLimited(ip) {
+  const now = Date.now();
+  const current = rateBucket.get(ip) || { count: 0, windowStart: now };
+  if (now - current.windowStart > LOOKUP_RATE_WINDOW_MS) {
+    current.count = 0;
+    current.windowStart = now;
+  }
+  current.count += 1;
+  rateBucket.set(ip, current);
+  return current.count > LOOKUP_RATE_LIMIT;
+}
+
+function planFromProductId(productId, env) {
+  const id = String(productId || '');
+  if (id && id === String(env.GUMROAD_PRODUCT_ID_PRO_MONTHLY || '')) return 'pro';
+  if (id && id === String(env.GUMROAD_PRODUCT_ID_PRO_YEARLY || '')) return 'team';
+  if (id && id === String(env.GUMROAD_PRODUCT_ID_LIFETIME || '')) return 'lifetime';
   return 'pro';
 }
 
-async function lemonRequest(path,apiKey){
-  const response=await fetch(`https://api.lemonsqueezy.com/v1${path}`,{
-    headers:{
-      'Accept':'application/vnd.api+json',
-      'Authorization':`Bearer ${apiKey}`,
+async function gumroadRequest(path, token) {
+  const response = await fetch(`https://api.gumroad.com/v2${path}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
     },
   });
-  const payload=await response.json().catch(()=>({}));
-  if(!response.ok){
-    throw new Error(`lemon_${response.status}`);
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(`gumroad_${response.status}`);
   }
   return payload;
 }
 
-function isRateLimited(ip){
-  const now=Date.now();
-  const current=rateBucket.get(ip)||{count:0,windowStart:now};
-  if(now-current.windowStart>LOOKUP_RATE_WINDOW_MS){
-    current.count=0;
-    current.windowStart=now;
+// Treat refunded/chargeback/disputed as inactive.
+const ACTIVE_SALE_STATUSES = new Set(['paid', 'preorder_authorization_successful']);
+// For subscriptions, treat these as active.
+const ACTIVE_SUB_STATUSES = new Set(['active', 'on_trial', 'past_due']);
+
+export async function onRequestPost({ request, env }) {
+  const ip = request.headers.get('cf-connecting-ip') || 'unknown';
+  if (isRateLimited(ip)) {
+    return json({ error: 'too_many_requests' }, 429);
   }
-  current.count+=1;
-  rateBucket.set(ip,current);
-  return current.count>LOOKUP_RATE_LIMIT;
+  const body = await readBody(request);
+  const email = String(body.email || '').trim().toLowerCase();
+  if (!email || !email.includes('@')) {
+    return json({ error: 'invalid_email' }, 400);
+  }
+  const token = String(env.GUMROAD_ACCESS_TOKEN || '');
+  if (!token) {
+    return json({ error: 'billing_not_configured' }, 503);
+  }
+
+  try {
+    // Subscriptions (recurring products) — check this first so renewals map to pro/team.
+    let subsResult = { success: true, subscriptions: [] };
+    try {
+      subsResult = await gumroadRequest('/subscriptions', token);
+    } catch (e) {
+      // Continue to one-off sales
+    }
+    const activeSub = (subsResult.subscriptions || []).find((s) =>
+      ACTIVE_SUB_STATUSES.has(String(s.status || ''))
+    );
+    if (activeSub) {
+      const productId = activeSub.product_id || (activeSub.product && activeSub.product.id);
+      const plan = planFromProductId(productId, env);
+      return json({
+        active: true,
+        plan,
+        status: activeSub.status || 'active',
+        renewsAt: activeSub.renews_at || activeSub.end_date || '',
+        subscriptionId: activeSub.id || '',
+        source: 'subscription',
+      });
+    }
+
+    // One-off / lifetime purchases via /sales
+    // Gumroad /sales doesn't have an email filter; fetch first page and filter client-side.
+    const salesResult = await gumroadRequest('/sales?page[size]=100', token);
+    const userSales = (salesResult.sales || []).filter((s) => {
+      if (!s.email || String(s.email).toLowerCase() !== email) return false;
+      if (!ACTIVE_SALE_STATUSES.has(String(s.status || ''))) return false;
+      return true;
+    });
+
+    if (userSales.length === 0) {
+      return json({ active: false, plan: 'free', status: 'inactive' });
+    }
+
+    // Use the most recent sale.
+    const latest = userSales.sort((a, b) =>
+      String(b.created_at || '').localeCompare(String(a.created_at || ''))
+    )[0];
+
+    const plan = planFromProductId(latest.product_id || (latest.product && latest.product.id), env);
+    return json({
+      active: true,
+      plan,
+      status: latest.status || 'paid',
+      renewsAt: '',
+      saleId: latest.id || '',
+      source: 'sale',
+    });
+  } catch (e) {
+    return json({ error: 'lookup_failed', message: e.message || 'unknown' }, 502);
+  }
 }
 
-export async function onRequestPost({request,env}){
-  const ip=request.headers.get('cf-connecting-ip')||'unknown';
-  if(isRateLimited(ip)){
-    return json({error:'too_many_requests'},429);
-  }
-  const body=await readBody(request);
-  const email=String(body.email||'').trim().toLowerCase();
-  if(!email||!email.includes('@')){
-    return json({error:'invalid_email'},400);
-  }
-  const apiKey=String(env.LEMON_SQUEEZY_API_KEY||'');
-  if(!apiKey){
-    return json({error:'billing_not_configured'},503);
-  }
+export function onRequestGet() {
+  return new Response(
+    JSON.stringify({ error: 'method_not_allowed', message: 'POST {email} only' }),
+    {
+      status: 405,
+      headers: {
+        'content-type': 'application/json; charset=utf-8',
+        'cache-control': 'no-store',
+        allow: 'POST',
+      },
+    },
+  );
+}
 
-  try{
-    const encoded=encodeURIComponent(email);
-    const subscriptions=await lemonRequest(`/subscriptions?filter[user_email]=${encoded}&page[size]=5&sort=-created_at`,apiKey);
-    const activeSub=(subscriptions.data||[]).find(item=>['active','on_trial','past_due'].includes(item?.attributes?.status));
-    if(activeSub){
-      const attrs=activeSub.attributes||{};
-      const variantName=attrs.variant_name||attrs.product_name||'';
-      return json({
-        active:true,
-        plan:planFromName(variantName),
-        status:attrs.status||'active',
-        renewsAt:attrs.renews_at||attrs.ends_at||'',
-        subscriptionId:activeSub.id||'',
-      });
-    }
-
-    const orders=await lemonRequest(`/orders?filter[user_email]=${encoded}&page[size]=10&sort=-created_at`,apiKey);
-    const paidOrder=(orders.data||[]).find(item=>{
-      const attrs=item?.attributes||{};
-      const status=String(attrs.status||'').toLowerCase();
-      const variant=String(attrs.first_order_item?.variant_name||attrs.first_order_item?.product_name||'').toLowerCase();
-      return status==='paid'&&variant.includes('life');
-    });
-    if(paidOrder){
-      return json({
-        active:true,
-        plan:'lifetime',
-        status:'paid',
-        renewsAt:'',
-        orderId:paidOrder.id||'',
-      });
-    }
-
-    return json({active:false,plan:'free',status:'inactive'});
-  }catch(e){
-    return json({error:'lookup_failed',message:e.message||'unknown'},502);
-  }
+export function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'access-control-allow-origin': '*',
+      'access-control-allow-methods': 'POST, OPTIONS',
+      'access-control-allow-headers': 'content-type',
+    },
+  });
 }

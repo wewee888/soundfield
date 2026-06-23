@@ -288,8 +288,8 @@
   const monetization = {
     plans: [
       { name: 'Free', price: '$0', benefits: ['Live decibel estimate', 'Single evidence records', 'Basic PDF/CSV export', 'Careful ads outside core controls'] },
-      { name: 'Pro', price: '$2.99/month or $14.99/year', benefits: ['No ads', 'Batch PDF/CSV', 'Premium report templates', 'Longer local recording guidance', 'Metadata backup tools'] },
-      { name: 'Lifetime', price: '$29.99', benefits: ['No ads', 'Local-first desktop/offline edition waitlist', 'PDF templates', 'Calibration profiles', 'No subscription renewal'] },
+      { name: 'Pro', price: '$4.99/month or $24.99/year', benefits: ['No ads', 'Batch PDF/CSV', 'Premium report templates', 'Longer local recording guidance', 'Metadata backup tools'] },
+      { name: 'Lifetime', price: '$79.99', benefits: ['No ads', 'Local-first desktop/offline edition waitlist', 'PDF templates', 'Calibration profiles', 'No subscription renewal'] },
     ],
     affiliate: ['soundproofing materials', 'professional sound level meters', 'tenant and legal consultation services'],
     warning: 'Do not promise cloud storage until accounts, deletion, encryption, retention, and regional privacy compliance are ready.',
