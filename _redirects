@@ -3,10 +3,10 @@
 # A/B/C tests remain reachable: /a/, /b/, /c/.
 # When a winner is picked, change the target or remove this line and replace /a/ with /index.html.
 
-/ /a/ 302
+# / → variant assignment now done by functions/_middleware.js (random a/b/c + cookie)
 
 # Block direct access to old generic homepage so we don't have two competing homepages
-/index.html /a/ 302
+# /index.html → variant assignment now done by middleware; can still reach /a/, /b/, /c/ directly
 
 # --- Noise recorder unification (2026-06) ---
 # Canonical entry is /soundtest.html. /app.html was a useless 5-second
