@@ -925,7 +925,7 @@ COPY = {
 def prefix_relative_urls(html: str, prefix: str = "../") -> str:
     def fix_attr(match: re.Match[str]) -> str:
         attr, url = match.group(1), match.group(2)
-        if url.startswith(("http://", "https://", "mailto:", "#", "javascript:")):
+        if url.startswith(("http://", "https://", "mailto:", "#", "javascript:", "//")) :
             return match.group(0)
         if url.startswith(prefix):
             return match.group(0)

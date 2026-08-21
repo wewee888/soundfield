@@ -328,7 +328,7 @@ test('static website local links resolve to files', () => {
     const baseDir = path.dirname(absoluteFile);
     for (const match of html.matchAll(localReferencePattern)) {
       const target = match[1];
-      if (/^(https?:|mailto:|tel:|data:)/i.test(target)) continue;
+      if (/^(https?:|mailto:|tel:|data:|\/\/)/i.test(target)) continue;
       if (target.startsWith('#')) continue;
       const targetPath = target.split('?')[0];
       assert.ok(fs.existsSync(path.resolve(baseDir, targetPath)), `${file} links to existing ${target}`);
