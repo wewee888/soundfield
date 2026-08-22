@@ -9,13 +9,13 @@
   const SUPPORTED_APP_LANGUAGES = [
     { primary: 'en', value: 'en-US' },
     { primary: 'zh', value: 'zh-CN' },
-    { primary: 'es', value: 'es-ES' },
-    { primary: 'fr', value: 'fr-FR' },
-    { primary: 'de', value: 'de-DE' },
-    { primary: 'ja', value: 'ja-JP' },
-    { primary: 'ko', value: 'ko-KR' },
-    { primary: 'vi', value: 'vi-VN' },
-    { primary: 'th', value: 'th-TH' },
+    { primary: 'es', value: 'es' },
+    { primary: 'fr', value: 'fr' },
+    { primary: 'de', value: 'de' },
+    { primary: 'ja', value: 'ja' },
+    { primary: 'ko', value: 'ko' },
+    { primary: 'vi', value: 'vi' },
+    { primary: 'th', value: 'th' },
   ];
 
   function escHtml(str) {

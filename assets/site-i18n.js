@@ -19,11 +19,6 @@
 
   function normalizeLocale(value) {
     if (!value || typeof value !== 'string') return '';
-    // Delegate to shared utils if available
-    if (window.__sfUtils && window.__sfUtils.supportedLanguageFromPrimary) {
-      const result = window.__sfUtils.supportedLanguageFromPrimary(value);
-      return result ? result.primary : '';
-    }
     const primary = value.trim().toLowerCase().split(/[-_]/)[0];
     return supportedLocales.includes(primary) ? primary : '';
   }

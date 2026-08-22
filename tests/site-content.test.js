@@ -6,9 +6,11 @@ const path = require('node:path');
 global.window = {};
 require(path.join(__dirname, '..', 'assets', 'site-content.js'));
 require(path.join(__dirname, '..', 'assets', 'site-i18n.js'));
+require(path.join(__dirname, '..', 'assets', 'lang-flags.js'));
 
 const site = global.window.SoundfieldSite;
 const i18n = global.window.SoundtestI18n;
+const langFlags = global.window.LangFlags;
 
 test('global positioning keeps the product in documentation territory', () => {
   assert.match(site.positioning.en, /noise documentation/i);
@@ -69,9 +71,24 @@ test('locale flag images are stored locally for Cloudflare deploy', () => {
     assert.ok(fs.existsSync(file), `${iso}.png exists`);
     assert.ok(fs.statSync(file).size > 80, `${iso}.png is non-empty`);
   });
-  const langFlags = fs.readFileSync(path.join(__dirname, '..', 'assets', 'lang-flags.js'), 'utf8');
-  assert.match(langFlags, /flags\//);
-  assert.doesNotMatch(langFlags, /flagcdn\.com/);
+  const langFlagsCode = fs.readFileSync(path.join(__dirname, '..', 'assets', 'lang-flags.js'), 'utf8');
+  assert.match(langFlagsCode, /flags\//);
+  assert.doesNotMatch(langFlagsCode, /flagcdn\.com/);
+});
+
+test('LangFlags maps primary languages and flag URLs correctly', () => {
+  assert.equal(langFlags.primaryFromValue('zh-CN'), 'zh');
+  assert.equal(langFlags.primaryFromValue('zh'), 'zh');
+  assert.equal(langFlags.primaryFromValue('en-US'), 'en');
+  assert.equal(langFlags.primaryFromValue('en'), 'en');
+  assert.equal(langFlags.primaryFromValue('ja-JP'), 'ja');
+  assert.equal(langFlags.primaryFromValue('ko-KR'), 'ko');
+  assert.equal(langFlags.primaryFromValue('es-ES'), 'es');
+  assert.match(langFlags.flagUrl('zh'), /cn\.png$/);
+  assert.match(langFlags.flagUrl('en'), /us\.png$/);
+  assert.match(langFlags.flagUrl('ja'), /jp\.png$/);
+  assert.match(langFlags.flagUrl('ko'), /kr\.png$/);
+  assert.match(langFlags.flagUrl('es'), /es\.png$/);
 });
 
 test('language routing prefers saved choice, then system language, then English', () => {

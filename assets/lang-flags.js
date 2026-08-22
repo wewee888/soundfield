@@ -36,12 +36,9 @@
   };
 
   function primaryFromValue(value) {
-    // Delegate to shared utils.js if available
-    if (window.__sfUtils && window.__sfUtils.supportedLanguageFromPrimary) {
-      return window.__sfUtils.supportedLanguageFromPrimary(value)?.primary || 'en';
-    }
     if (!value) return 'en';
-    return String(value).trim().toLowerCase().split(/[-_]/)[0];
+    const raw = String(value).trim().toLowerCase().split(/[-_]/)[0];
+    return FLAG_ISO[raw] ? raw : 'en';
   }
 
   function flagUrl(primary) {
@@ -154,10 +151,12 @@
     return mount;
   }
 
-  document.addEventListener('click', () => closeAllPickers(null));
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeAllPickers(null);
-  });
+  if (typeof document !== 'undefined') {
+    document.addEventListener('click', () => closeAllPickers(null));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeAllPickers(null);
+    });
+  }
 
   window.LangFlags = {
     FLAG_ISO,
