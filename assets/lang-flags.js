@@ -3,7 +3,7 @@
 
   const FLAG_ASSET_BASE = (() => {
     try {
-      const src = document.currentScript?.src;
+      const src = document.currentScript?.src || (typeof document !== 'undefined' && document.querySelector('script[src*="lang-flags"]')?.src);
       if (src) return new URL('flags/', src);
     } catch (_) {
       // ignore
@@ -46,7 +46,7 @@
     if (FLAG_ASSET_BASE) {
       return new URL(`${iso}.png`, FLAG_ASSET_BASE).href;
     }
-    return `assets/flags/${iso}.png`;
+    return `/assets/flags/${iso}.png`;
   }
 
   function closeAllPickers(except) {

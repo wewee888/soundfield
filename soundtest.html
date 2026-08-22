@@ -2472,13 +2472,13 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
-<script src="assets/jspdf.umd.min.js" data-cfasync="false" async></script>
-<script src="assets/utils.js" data-cfasync="false"></script>
-<script src="assets/i18n-data.js" data-cfasync="false"></script>
-<script src="assets/lang-flags.js" data-cfasync="false"></script>
-<script src="assets/pro-meter.js" data-cfasync="false"></script>
-<script src="assets/evidence-utils.js" data-cfasync="false"></script>
-<script src="assets/storage-utils.js" data-cfasync="false"></script>
+<script src="assets/jspdf.umd.min.js?v=20260823b" data-cfasync="false" async></script>
+<script src="assets/utils.js?v=20260823b" data-cfasync="false"></script>
+<script src="assets/i18n-data.js?v=20260823b" data-cfasync="false"></script>
+<script src="assets/lang-flags.js?v=20260823b" data-cfasync="false"></script>
+<script src="assets/pro-meter.js?v=20260823b" data-cfasync="false"></script>
+<script src="assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
+<script src="assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
 <script>
 /* ══ STATE ══ */
 const LS_KEY='sf_v5';
@@ -2688,6 +2688,13 @@ let dbAnimRaf=null;
 const SUPPORTED_APP_LANGUAGES=window.__sfSupportedAppLanguages||[
   {value:'en-US',primary:'en',flag:'🇺🇸',label:'English'},
   {value:'zh-CN',primary:'zh',flag:'🇨🇳',label:'中文'},
+  {value:'es',primary:'es',flag:'🇪🇸',label:'Español'},
+  {value:'fr',primary:'fr',flag:'🇫🇷',label:'Français'},
+  {value:'de',primary:'de',flag:'🇩🇪',label:'Deutsch'},
+  {value:'ja',primary:'ja',flag:'🇯🇵',label:'日本語'},
+  {value:'ko',primary:'ko',flag:'🇰🇷',label:'한국어'},
+  {value:'vi',primary:'vi',flag:'🇻🇳',label:'Tiếng Việt'},
+  {value:'th',primary:'th',flag:'🇹🇭',label:'ไทย'},
 ];
 function appLangPickerOptions(){
   return SUPPORTED_APP_LANGUAGES.map((meta)=>({
