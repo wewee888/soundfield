@@ -21,17 +21,25 @@
 
 ## 修复历史
 
-### 2026-09-05 一次性修复
+### 2026-09-05 三轮修复
 
-| Commit | 内容 |
-|---|---|
-| `c43b145` | 重写 sitemap.xml：22 个 `<url>` 节点，每个含 x-default + 9 语言 hreflang，URL 用 clean URL（与 `_redirects` 目标一致） |
-| `15023e2` | 195 个 HTML 页面的 canonical 修复，每页指向自己的语言版 clean URL |
+| Commit | 内容 | 解决 GSC 哪个问题 |
+|---|---|---|
+| `c43b145` | 重写 sitemap.xml：22 个 `<url>` 节点，每个含 x-default + 9 语言 hreflang，URL 用 clean URL | 71 个"自动重定向" |
+| `15023e2` | 195 个 HTML 页面的 canonical 修复，每页指向自己的语言版 clean URL | 1 个"重复 canonical" |
+| `db1548c` | **174 个翻译子页面补全 hreflang 注解** + use-cases 路径 canonical 修正 | 378 个"备用网页"（这一项是 GSC 数字不掉的主因） |
 
 辅助脚本（可重复运行）：
 
 - `scripts/generate-sitemap.py`：扫仓库、套 `_redirects` 规则，重新生成 `sitemap.xml`。
-- `scripts/fix-canonical.py`：批量修复/补全所有 HTML 的 `<link rel="canonical">`。
+- `scripts/fix-canonical.py`：仅修复 canonical（已被 `fix-hreflang-and-canonical.py` 取代，保留作历史参考）。
+- `scripts/fix-hreflang-and-canonical.py`：**生产用的脚本**，同时修 canonical + 加 hreflang 注解。
+
+### 重要教训（已写入脚本注释）
+
+1. **Google 主要看 HTML head 里的 hreflang，不是 sitemap 里的**。第一轮只修了 sitemap hreflang，HTML 里的 hreflang 是 0，结果 GSC 备用网页数字纹丝不动。
+2. **CF Pages 的 URL 路由**：文件路径 `use-cases/zh/foo.html` 对应的可访问 URL 是 `/use-cases/zh/foo/`，**不是** `/zh/use-cases/foo/`。前者在文件系统里有对应路径，后者在 CF Pages 会 fallthrough 到首页（但因为不在 sitemap 也不被链接，实际无害）。
+3. **`next(iter(dict.values()))` 取第一个值**在 Python 3.7+ 是插入顺序，第一次写脚本时没注意，导致 canonical 全部指向遍历顺序里第一个语言（`de/`），所有翻译页的 canonical 全错。第二轮修复时改为按 `lang` key 显式取值。
 
 ### 部署方式变更
 
@@ -44,25 +52,26 @@
 
 | 触发条件 | 操作 |
 |---|---|
-| 新增语言子目录（如新增 `pt/`） | 在 `scripts/generate-sitemap.py` 的 `LANGS` 加 `"pt"`，跑两个脚本 |
-| 新增 doc 页面（如 `guide.html`）且 `_redirects` 有规则 | 在 `scripts/generate-sitemap.py` 和 `fix-canonical.py` 的 `HTML_TO_CANONICAL` 加映射，跑两个脚本 |
+| 新增语言子目录（如新增 `pt/`） | 在两个脚本的 `LANGS` 加 `"pt"`，跑两个脚本 |
+| 新增 doc 页面（如 `guide.html`）且 `_redirects` 有规则 | 在两个脚本的 `HTML_TO_CANONICAL` 加映射，跑两个脚本 |
 | 新增 use-case 页面 | 只需 `python scripts/generate-sitemap.py`（use-cases 自动识别） |
-| 新增语言版本但页面结构不变 | 只需 `python scripts/fix-canonical.py`（按目录自动推断 lang） |
+| 新增语言版本但页面结构不变 | 只需 `python scripts/fix-hreflang-and-canonical.py` |
 
 新页面落地的完整流程：
 ```bash
 # 1. 编辑 HTML
 # 2. 如果是新的 doc 类型 + 新的 _redirects 规则，更新两个脚本的 HTML_TO_CANONICAL
-# 3. 重生成 sitemap + 修 canonical
+# 3. 重生成 sitemap + 修 canonical + 加 hreflang
 python scripts/generate-sitemap.py
-python scripts/fix-canonical.py
+python scripts/fix-hreflang-and-canonical.py
 # 4. 提交
 git add -A
 git commit -m "feat(content): add <page>"
 git push origin main
 # 5. CF Pages 自动部署（通常 30-90 秒）
-# 6. 验证
-curl -s https://soundtest.pro/sitemap.xml | grep -c "xhtml:link"   # 应 >= 100
+# 6. 验证：sitemap 有 xhtml:link，翻译页 head 有 hreflang
+curl -s https://soundtest.pro/sitemap.xml | grep -c "xhtml:link"        # 应 >= 100
+curl -sL "https://soundtest.pro/zh/accuracy/" | grep -c 'rel="alternate" hreflang='   # 应 = 10
 ```
 
 ### 每次发版后 1-2 小时验证
@@ -81,12 +90,15 @@ curl -sL "https://soundtest.pro/zh/accuracy/" | grep -o '<link rel="canonical"[^
 **首次提交（已完成 2026-09-05）**：
 1. GSC → 站点地图 → 输入 `https://soundtest.pro/sitemap.xml` → 提交
 2. GSC → 网址检查 → 输入 `https://soundtest.pro/` → 请求编入索引
+3. GSC → 网页 → 每条"网页未被编入索引的原因"右侧点"**验证**"按钮 → "已开始"
 
 **周节奏**（建议每周一看一眼）：
 - GSC → 网页 → 索引覆盖率。重点关注：
-  - "备用网页"数字**应持续下降**（如果还在涨，说明 hreflang/canonical 出错）
+  - "备用网页"数字**应持续下降**（如果还在涨，说明 hreflang/canonical 出错，需要重跑 `scripts/fix-hreflang-and-canonical.py`）
   - "已编入索引"数字**应持续上升**
 - GSC → 站点地图 → 状态应保持 "成功"，提取 URL 数 = sitemap 节点数 × 语言变体数
+
+**重要**：GSC 显示"已开始"不等于"完成"，只是触发重新评估。验证完成要等 1-7 天，URL 重新抓取另要 1-3 天，所以 GSC 数字变化有 **2-14 天延迟**是正常的。
 
 **季度节奏**：
 - GSC → 链接 → 外链数（domain authority 信号）
