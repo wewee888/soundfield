@@ -1,0 +1,134 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "lang": "en",
+    "updated": "2026-09-05",
+    "note": "FAQ source-of-truth for English use-case pages. Re-run scripts/add-faq-section.py after editing. Each answer must include the 'documentation-grade estimate' disclaimer to match site-wide tone and reduce liability."
+  },
+  "neighbor-noise-evidence": {
+    "title": "Frequently asked questions",
+    "questions": [
+      {
+        "q": "Can phone recordings be used as evidence of neighbor noise?",
+        "a": "In most jurisdictions, audio you record in your own home without trespassing is admissible as supporting evidence, not as a definitive legal proof. Pair recordings with timestamped dB trends, photos, and notes about the time and date to make them more useful in mediation, landlord discussions, or small-claims hearings. SOUNDTEST.PRO is a documentation-grade estimate tool, not a certified sound level meter; verify any formal claim with calibrated equipment."
+      },
+      {
+        "q": "What decibel level is considered harassment from a neighbor?",
+        "a": "There is no single universal number. WHO public-health guidance treats sustained exposure above roughly 55 dB indoors as a sleep-disturbance risk, and most city nuisance ordinances treat repeated nighttime disturbance above 70 to 85 dB as actionable. The right threshold depends on your local ordinance, lease terms, and the pattern (single loud event vs. repeated intrusion). Document dB, time, and duration, then check your local rules before escalating."
+      },
+      {
+        "q": "How long should I record noise from a neighbor before making a complaint?",
+        "a": "Multiple short sessions across several days are far more persuasive than a single long recording. Aim for 10 to 30 minutes per session, repeated over at least a week, capturing both the worst moments and quiet baseline. This produces a defensible pattern of behavior rather than a one-off snapshot."
+      },
+      {
+        "q": "Should I talk to my neighbor first or start documenting?",
+        "a": "Both, in parallel. A friendly heads-up can resolve the issue without escalation, but start documenting immediately because casual conversations have no paper trail. SOUNDTEST.PRO records are time-stamped and exportable, so they cost nothing to keep even if you never need them."
+      }
+    ]
+  },
+  "construction-noise-monitoring": {
+    "title": "Frequently asked questions",
+    "questions": [
+      {
+        "q": "What hours is construction noise allowed in residential areas?",
+        "a": "Most cities permit noisy construction between roughly 7 or 8 AM and 6 or 7 PM on weekdays, with quieter hours on weekends and no work on holidays. These windows vary widely by municipality, county, and lease. Check your local code before assuming a site is breaking rules. SOUNDTEST.PRO records are documentation-grade estimates; the actual enforcement decision is made by local authorities."
+      },
+      {
+        "q": "What dB level is too loud during construction or renovation?",
+        "a": "WHO environmental guidance recommends keeping community noise below roughly 55 dB during daytime to limit long-term health impact. Permitted construction sites typically allow short peaks of 75 to 90 dB during allowed hours, while nighttime work usually must stay below 55 to 60 dB at the property line. SOUNDTEST.PRO can show LAeq and peak readings to compare against your local rule."
+      },
+      {
+        "q": "Do I need a calibrated meter to file a construction noise complaint?",
+        "a": "For an initial complaint, a documentation-grade recording with timestamps, dB trends, and photos is usually enough to start the conversation with the site manager or local authority. For permit enforcement or formal legal action, the agency will typically require measurements from a calibrated Type 1 or Type 2 sound level meter operated by a qualified technician."
+      },
+      {
+        "q": "How do I report a construction site for noise violations?",
+        "a": "Start with the on-site supervisor or project manager and document the conversation. If the issue persists, contact your city's code enforcement, building department, or non-emergency police line. Bring your time-stamped dB records, photos, and a short written timeline. SOUNDTEST.PRO exports PDF and CSV reports that consolidate this into a single shareable file."
+      }
+    ]
+  },
+  "bar-street-disturbance": {
+    "title": "Frequently asked questions",
+    "questions": [
+      {
+        "q": "What decibel level can bars and venues legally play music at?",
+        "a": "Most cities set venue indoor music limits between 85 and 100 dB inside, with outdoor or open-window limits of 55 to 70 dB at the property line after 10 or 11 PM. Rules differ sharply by jurisdiction, license type, and time of day. Document the dB level, time, and your location relative to the venue, then check your local entertainment or noise ordinance."
+      },
+      {
+        "q": "Who do I contact about loud music from a bar or nightclub?",
+        "a": "Start with the venue manager or security during the event so they can act in real time. For repeated issues, file a complaint with your city's licensing board, code enforcement, or non-emergency police line. Include timestamps, dB readings, and a short note about whether the issue is one-off or ongoing. SOUNDTEST.PRO reports can be exported as PDF for formal complaints."
+      },
+      {
+        "q": "Can I record audio inside my apartment to document venue noise?",
+        "a": "In most jurisdictions you can record audio inside your own residence for personal documentation. Laws vary for sharing or publishing that recording, and a few regions require one-party or two-party consent. Use the recordings as supporting evidence; do not claim they are calibrated or legally definitive. SOUNDTEST.PRO records are documentation-grade estimates, not certified measurements."
+      },
+      {
+        "q": "Do weekend and late-night noise rules differ from weekday rules?",
+        "a": "Yes, almost universally. Most cities enforce stricter limits after 10 or 11 PM on any day, and some permit noisier activity during weekday daytime hours while restricting weekend mornings. Local ordinance language is what matters, not the venue's stated hours. Capture the time of every event so the pattern is clear in your records."
+      }
+    ]
+  },
+  "rental-dispute-evidence": {
+    "title": "Frequently asked questions",
+    "questions": [
+      {
+        "q": "Are phone recordings legal evidence in a rental dispute?",
+        "a": "In most regions you may record audio in your own home for personal documentation. Admissibility in a formal hearing depends on local law and the type of dispute; small-claims and tenancy tribunals often accept well-organized documentation even if it is not from a certified instrument. SOUNDTEST.PRO records are documentation-grade estimates, not certified measurements; pair them with photos and a written timeline for the strongest case."
+      },
+      {
+        "q": "How many noise incidents do I need to document for a rental dispute?",
+        "a": "Aim for at least 6 to 10 documented events across several weeks, ideally with timestamps, dB trends, and notes about duration and impact. A clear, repeated pattern is far more persuasive than a single loud night. Keep your records in one exportable PDF so a landlord, mediator, or judge can scan them in minutes."
+      },
+      {
+        "q": "Does soundtest evidence hold up in small claims court?",
+        "a": "SOUNDTEST.PRO records are treated as supporting documentation, not certified measurements. They are useful for establishing a pattern of disturbance, but a final ruling will weigh calibrated measurements, witness statements, lease terms, and local ordinance. Bring your records alongside any other evidence you have; do not rely on them alone."
+      },
+      {
+        "q": "Should I notify my landlord before recording noise?",
+        "a": "You do not usually need to inform your landlord before documenting in your own home, but sending a brief written complaint that includes your records is the right next step. A paper trail dated before any escalation protects you if the dispute later goes to mediation or court. SOUNDTEST.PRO exports PDF reports that are easy to attach to an email."
+      }
+    ]
+  },
+  "property-noise-complaint-report": {
+    "title": "Frequently asked questions",
+    "questions": [
+      {
+        "q": "Who handles a noise complaint, the landlord or the city?",
+        "a": "Both can, and they cover different situations. Your landlord is responsible for enforcing lease terms and resolving disputes between tenants on the property. The city handles ordinance violations like construction hours, venue noise, and noise that crosses the property line into public space. Start with the landlord in writing, and escalate to the city if the issue persists or originates outside the building."
+      },
+      {
+        "q": "What is the difference between HOA and city noise enforcement?",
+        "a": "An HOA enforces private community rules, which can be stricter than city law but only applies to common areas and HOA members. City code enforcement applies to everyone in the jurisdiction, regardless of HOA membership, and is the right path for violations of public noise ordinances. Many people file both, since each can lead to a different remedy."
+      },
+      {
+        "q": "How do I file a formal noise complaint?",
+        "a": "Document at least a week of incidents with timestamps, dB readings, and short notes. Submit a written complaint to the responsible party (landlord, HOA, or city) by email or an online form, and attach your exported PDF report. Keep copies of everything you send and receive. SOUNDTEST.PRO PDF exports are designed for this exact workflow."
+      },
+      {
+        "q": "How long does a noise complaint take to resolve?",
+        "a": "Expect 2 to 6 weeks for first contact and initial review, and another 2 to 8 weeks for substantive action depending on jurisdiction and severity. Repeated, well-documented complaints move faster than one-off reports. Continue documenting while the process is in motion so you have current data if escalation is needed."
+      }
+    ]
+  },
+  "workplace-noise-inspection": {
+    "title": "Frequently asked questions",
+    "questions": [
+      {
+        "q": "What decibel level requires hearing protection at work?",
+        "a": "Most occupational safety standards require hearing protection at 85 dB averaged over an 8-hour shift (TWA), with action levels starting at 80 dB TWA. Short peaks above 100 to 115 dB require double protection. SOUNDTEST.PRO shows LAeq and peak readings, which are useful as supporting documentation, but formal workplace noise assessments should be performed with calibrated equipment by a qualified professional."
+      },
+      {
+        "q": "Who enforces occupational noise rules?",
+        "a": "Enforcement varies by country. In the United States, OSHA sets and enforces workplace noise limits for general industry and construction. In the European Union, the Noise Directive (2003/10/EC) sets exposure limits and required protective measures. Many other countries have equivalent agencies. If you suspect unsafe noise at work, document it, then report to your safety officer or the relevant agency."
+      },
+      {
+        "q": "Can I record noise levels at my workplace?",
+        "a": "Personal documentation is generally allowed in common work areas where you have a reasonable expectation of recording, but policies vary by employer and jurisdiction. Treat your records as supporting documentation, not a substitute for an employer-conducted noise assessment. SOUNDTEST.PRO records are documentation-grade estimates, not certified measurements."
+      },
+      {
+        "q": "What is TWA vs peak in workplace noise measurement?",
+        "a": "TWA, or Time-Weighted Average, is the average noise exposure over a working day, normalized to 8 hours; OSHA's action level is 80 dB TWA and the permissible limit is 90 dB TWA. Peak refers to instantaneous maximum sound pressure, with limits around 115 dB (140 dB for impact noise). Both matter; sustained exposure and sudden peaks can each cause hearing damage."
+      }
+    ]
+  }
+}
