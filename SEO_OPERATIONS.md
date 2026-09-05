@@ -21,19 +21,24 @@
 
 ## 修复历史
 
-### 2026-09-05 三轮修复
+### 2026-09-05 三轮修复 + 内容层
 
-| Commit | 内容 | 解决 GSC 哪个问题 |
+| Commit | 内容 | 解决 GSC 哪个问题 / 哪个 SEO 维度 |
 |---|---|---|
 | `c43b145` | 重写 sitemap.xml：22 个 `<url>` 节点，每个含 x-default + 9 语言 hreflang，URL 用 clean URL | 71 个"自动重定向" |
 | `15023e2` | 195 个 HTML 页面的 canonical 修复，每页指向自己的语言版 clean URL | 1 个"重复 canonical" |
-| `db1548c` | **174 个翻译子页面补全 hreflang 注解** + use-cases 路径 canonical 修正 | 378 个"备用网页"（这一项是 GSC 数字不掉的主因） |
+| `db1548c` | **174 个翻译子页面补全 hreflang 注解** + use-cases 路径 canonical 修正 | 378 个"备用网页"（这一项是 GSC 数字不掉的主因）|
+| `c680d52` | 6 个英文 use-case 页加 FAQPage schema + 可见 FAQ section，24 条 Q&A | 长尾关键词命中（"邻居噪音能否报警"、"多少分贝算扰民"） |
+| `8504667` | 新建 `/noise-levels/` 页（30 行 dB 参考表 + FAQPage + ItemList schema），206 个 footer 加链接，sitemap 加项 | Featured Snippet 抢占（"how many dB is X"） |
 
 辅助脚本（可重复运行）：
 
-- `scripts/generate-sitemap.py`：扫仓库、套 `_redirects` 规则，重新生成 `sitemap.xml`。
+- `scripts/generate-sitemap.py`：扫仓库、套 `_redirects` 规则，重新生成 `sitemap.xml`。**新增 doc 类型时必须在 HTML_TO_CANONICAL 加映射**。
 - `scripts/fix-canonical.py`：仅修复 canonical（已被 `fix-hreflang-and-canonical.py` 取代，保留作历史参考）。
 - `scripts/fix-hreflang-and-canonical.py`：**生产用的脚本**，同时修 canonical + 加 hreflang 注解。
+- `scripts/add-faq-section.py`：从 `scripts/content/use-case-faqs.json` 读问答，注入可见 FAQ section + JSON-LD schema。
+- `scripts/add-footer-link.py`：把给定链接加进 footer Resources 段，幂等。
+- `scripts/content/use-case-faqs.json`：6 use-case × 4 Q&A 的 source-of-truth；扩 FAQ 时改这里然后重跑 `add-faq-section.py`。
 
 ### 重要教训（已写入脚本注释）
 
@@ -64,14 +69,17 @@
 # 3. 重生成 sitemap + 修 canonical + 加 hreflang
 python scripts/generate-sitemap.py
 python scripts/fix-hreflang-and-canonical.py
-# 4. 提交
+# 4. (可选) 加 FAQ: 在 scripts/content/use-case-faqs.json 加问答，再跑 add-faq-section.py --lang en
+# 5. (可选) 加 footer 链接: python scripts/add-footer-link.py
+# 6. 提交
 git add -A
 git commit -m "feat(content): add <page>"
 git push origin main
-# 5. CF Pages 自动部署（通常 30-90 秒）
-# 6. 验证：sitemap 有 xhtml:link，翻译页 head 有 hreflang
-curl -s https://soundtest.pro/sitemap.xml | grep -c "xhtml:link"        # 应 >= 100
+# 7. CF Pages 自动部署（通常 30-90 秒）
+# 8. 验证：sitemap 有 xhtml:link，翻译页 head 有 hreflang，新页 FAQPage schema 在
+curl -s https://soundtest.pro/sitemap.xml | grep -c "xhtml:link"        # 应 >= 220
 curl -sL "https://soundtest.pro/zh/accuracy/" | grep -c 'rel="alternate" hreflang='   # 应 = 10
+curl -sL "https://soundtest.pro/<new-page>/" | grep -c "FAQPage"         # 应 = 1 (如果加了 FAQ)
 ```
 
 ### 每次发版后 1-2 小时验证
@@ -92,11 +100,22 @@ curl -sL "https://soundtest.pro/zh/accuracy/" | grep -o '<link rel="canonical"[^
 2. GSC → 网址检查 → 输入 `https://soundtest.pro/` → 请求编入索引
 3. GSC → 网页 → 每条"网页未被编入索引的原因"右侧点"**验证**"按钮 → "已开始"
 
+**Featured Snippet 监控**（新增）：
+- GSC → 效果 → 搜索结果 → 过滤 URL 包含 `/noise-levels/`，看展示次数与点击
+- Google 搜索 `how many decibels is a vacuum cleaner`、`70 dB sound example`、`噪音等级对照` —— 看 `/noise-levels/` 是否在 #0 位
+- 不在也别慌 —— Featured Snippet 是渐进的，2-4 周才会稳定
+
+**FAQ rich result 监控**（新增）：
+- 打开 https://search.google.com/test/rich-results，输入 use-case 页面 URL
+- 期望检测到 `FAQPage` 类型且无错误
+- 注意：Google 自 2023 年 8 月起大幅限制 FAQ rich result 在 SERP 中的显示（仅政府和权威站点），所以**看到 FAQ 标记命中但不显示在 SERP 也属正常**
+
 **周节奏**（建议每周一看一眼）：
 - GSC → 网页 → 索引覆盖率。重点关注：
   - "备用网页"数字**应持续下降**（如果还在涨，说明 hreflang/canonical 出错，需要重跑 `scripts/fix-hreflang-and-canonical.py`）
   - "已编入索引"数字**应持续上升**
-- GSC → 站点地图 → 状态应保持 "成功"，提取 URL 数 = sitemap 节点数 × 语言变体数
+- GSC → 站点地图 → 状态应保持 "成功"，提取 URL 数 = 23（22 旧 + `/noise-levels/`）
+- GSC → 效果 → 哪些查询开始带来展示？长尾关键词（如 "邻居噪音记录"、"施工噪音投诉"、"vacuum cleaner dB"）出现 = 内容层见效
 
 **重要**：GSC 显示"已开始"不等于"完成"，只是触发重新评估。验证完成要等 1-7 天，URL 重新抓取另要 1-3 天，所以 GSC 数字变化有 **2-14 天延迟**是正常的。
 
