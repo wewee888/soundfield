@@ -63,6 +63,7 @@ HTML_TO_CANONICAL: dict[str, str] = {
     "privacy.html": "/privacy/",
     "refund.html": "/refund/",
     "stats.html": "/stats/",
+    "noise-levels.html": "/noise-levels/",
 }
 
 
