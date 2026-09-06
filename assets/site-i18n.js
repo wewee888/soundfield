@@ -58,9 +58,20 @@
     return `/${normalized}/`;
   }
 
+  function readCookie(name) {
+    try {
+      const match = document.cookie?.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+      return match ? decodeURIComponent(match[1]) : '';
+    } catch (_) {
+      return '';
+    }
+  }
+
   function readSavedLocale() {
     try {
-      return window.localStorage?.getItem(storageKey) || '';
+      const cookieLocale = normalizeLocale(readCookie('sf_locale'));
+      if (cookieLocale) return cookieLocale;
+      return normalizeLocale(window.localStorage?.getItem(storageKey)) || '';
     } catch (error) {
       return '';
     }
@@ -71,6 +82,7 @@
     if (!normalized) return '';
     try {
       window.localStorage?.setItem(storageKey, normalized);
+      document.cookie = 'sf_locale=' + normalized + '; Path=/; Max-Age=31536000; SameSite=Lax';
     } catch (error) {
       // ignore
     }
@@ -96,6 +108,9 @@
       if (!label) return;
       link.setAttribute('title', label.name);
       link.setAttribute('aria-label', label.name);
+      link.addEventListener('click', () => {
+        saveLocale(locale);
+      });
       let img = link.querySelector('.footer-flag-img');
       if (!img) {
         const emoji = link.textContent.trim().slice(0, 4);
@@ -149,15 +164,20 @@
   }
 
   function initLanguageSwitcher() {
-    const userLocale = detectUserLocale();
-    saveLocale(userLocale);
+    const pageLocale = detectPageLocale();
+    if (pageLocale && pageLocale !== 'en') {
+      saveLocale(pageLocale);
+    }
     const path = window.location.pathname;
     const onRoot = path === '/' || /^\/(?:index\.html?)?$/i.test(path) || /^\/[a-c]\/(?:index\.html?)?$/i.test(path);
-    if (onRoot && userLocale !== 'en') {
-      window.location.replace(localePath(userLocale));
-      return;
+    if (onRoot) {
+      const userLocale = detectUserLocale();
+      if (userLocale && userLocale !== 'en') {
+        saveLocale(userLocale);
+        window.location.replace(localePath(userLocale));
+        return;
+      }
     }
-    const pageLocale = detectPageLocale();
     buildNavLanguageSwitcher(pageLocale);
     enhanceFooterFlags();
   }
