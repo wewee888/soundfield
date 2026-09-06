@@ -1,4 +1,4 @@
-const CACHE_NAME = 'soundtest-pro-v7';
+const CACHE_NAME = 'soundtest-pro-v8';
 const NETWORK_FIRST_PATHS = [
   '/assets/site-i18n.js',
   '/assets/site-i18n.js?v=6',
@@ -19,6 +19,7 @@ const ASSETS_TO_CACHE = [
   '/assets/storage-utils.js',
   '/assets/jspdf.umd.min.js',
   '/assets/icon.svg',
+  '/assets/echo-mascot.webp',
   '/assets/echo-mascot.png',
   '/assets/echo-mascot-removebg-preview.png',
   '/manifest.webmanifest'
