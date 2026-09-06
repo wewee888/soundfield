@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 150" fill="none">
+  <defs>
+    <linearGradient id="bg_rec" x1="0" y1="0" x2="400" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a1226"/>
+      <stop offset="1" stop-color="#050814"/>
+    </linearGradient>
+    <linearGradient id="wave_grad" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#2cf0c1"/>
+      <stop offset="0.5" stop-color="#7c9bff"/>
+      <stop offset="1" stop-color="#ff6276"/>
+    </linearGradient>
+    <filter id="glow1" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <rect width="400" height="150" rx="14" fill="url(#bg_rec)"/>
+  <rect x="0.5" y="0.5" width="399" height="149" rx="13.5" stroke="rgba(168,196,255,0.12)"/>
+  
+  <!-- Apartment Ceiling & Wall Wireframe -->
+  <path d="M30 35 L370 35" stroke="rgba(255,255,255,0.18)" stroke-width="2" stroke-dasharray="4 4"/>
+  <text x="35" y="26" fill="#7c9bff" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600">UPSTAIRS / CEILING BOUNDARY</text>
+  
+  <!-- Impact Sound Ripples -->
+  <circle cx="200" cy="35" r="8" fill="#ff6276" opacity="0.8"/>
+  <circle cx="200" cy="35" r="22" stroke="#ff6276" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="200" cy="35" r="38" stroke="#ffb858" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.5"/>
+  <circle cx="200" cy="35" r="56" stroke="#2cf0c1" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Waveform spikes downstairs -->
+  <path d="M40 105 Q70 105 85 90 T130 115 T170 80 T200 60 T230 85 T270 110 T310 95 T360 105" fill="none" stroke="url(#wave_grad)" stroke-width="2.5" filter="url(#glow1)"/>
+  
+  <!-- Context Pills -->
+  <g transform="translate(30, 118)">
+    <rect width="90" height="22" rx="11" fill="rgba(255,98,118,0.15)" stroke="rgba(255,98,118,0.3)"/>
+    <text x="45" y="15" fill="#ff6276" font-family="-apple-system,sans-serif" font-size="10" font-weight="700" text-anchor="middle">PEAK 74.2 dB</text>
+  </g>
+  <g transform="translate(130, 118)">
+    <rect width="110" height="22" rx="11" fill="rgba(124,155,255,0.12)" stroke="rgba(124,155,255,0.25)"/>
+    <text x="55" y="15" fill="#a8c4ff" font-family="-apple-system,sans-serif" font-size="10" font-weight="600" text-anchor="middle">TIME 23:45:12</text>
+  </g>
+  <g transform="translate(250, 118)">
+    <rect width="120" height="22" rx="11" fill="rgba(44,240,193,0.1)" stroke="rgba(44,240,193,0.25)"/>
+    <text x="60" y="15" fill="#2cf0c1" font-family="-apple-system,sans-serif" font-size="10" font-weight="600" text-anchor="middle">BEDROOM · CLOSED</text>
+  </g>
+</svg>

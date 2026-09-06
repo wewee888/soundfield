@@ -34,27 +34,83 @@
     </nav>
 
     <section class="hero">
-      <div class="hero-stack reveal">
-        <span class="eyebrow">Use case · Bar / street disturbance</span>
-        <h1 class="hero-headline">Bar, shop, and street <em>disturbance</em> records.</h1>
-        <p class="hero-lead">Document repeated late-night or street-level disturbance patterns with timestamps, place notes, audio, photos, and exportable summaries you can share with property managers or local authorities.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="../app.html">Start documenting noise</a>
-          <a class="button" href="../privacy.html">Check privacy model</a>
+      <div class="hero-split">
+        <div class="hero-split-text reveal">
+          <span class="eyebrow">Use case · Bar / street disturbance</span>
+          <h1 class="hero-headline">Bar, shop, and street <em>disturbance</em> records.</h1>
+          <p class="hero-lead">Document repeated late-night or street-level disturbance patterns with timestamps, place notes, audio, photos, and exportable summaries you can share with property managers or local authorities.</p>
+          <div class="hero-actions" style="justify-content: flex-start;">
+            <a class="button primary" href="../app.html">Start documenting noise</a>
+            <a class="button" href="../privacy.html">Check privacy model</a>
+          </div>
+          <div class="hero-meta" style="margin-top: 14px; font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 14px;">
+            <span>✓ <strong>Night disturbance diary</strong></span>
+            <span>✓ <strong>LAeq 15-min exposure</strong></span>
+            <span>✓ <strong>Evidence photo watermark</strong></span>
+          </div>
         </div>
-        <div class="hero-image-wrapper" style="margin-top: 2.5rem; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05);">
-          <img src="../assets/images/bar_street_noise.webp" alt="Bar and street noise monitoring interface" style="width: 100%; height: auto; display: block;" loading="lazy">
+        <div class="hero-split-visual reveal" style="display: flex; justify-content: center; align-items: center;">
+          <div class="hero-device-frame">
+            <img src="../assets/images/bar_street_noise.webp" alt="Bar and street noise monitoring interface" loading="lazy">
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section grid">
-      <div class="card reveal"><div class="card-badge">Patterns</div><h3>Repeat patterns</h3><p>Record start, peak, and quiet-after windows so repeated events are easier to compare.</p></div>
-      <div class="card reveal"><div class="card-badge">Context</div><h3>Context media</h3><p>Attach audio, evidence photos, and notes that explain the source and location context.</p></div>
-      <div class="card reveal"><div class="card-badge">Prep</div><h3>Complaint preparation</h3><p>Export organized records before speaking with a property manager, local authority, or adviser.</p></div>
+      <div class="card reveal">
+        <div class="card-media">
+          <img src="../assets/images/cards/card_what_to_record.svg" alt="Repeat noise patterns" loading="lazy">
+        </div>
+        <div class="card-badge">Patterns</div>
+        <h3>Repeat patterns</h3>
+        <p>Record start, peak, and quiet-after windows so repeated events are easier to compare.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-media">
+          <img src="../assets/images/cards/card_engine_features.svg" alt="Context media and acoustic engine" loading="lazy">
+        </div>
+        <div class="card-badge">Context</div>
+        <h3>Context media</h3>
+        <p>Attach audio, evidence photos, and notes that explain the source and location context.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-media">
+          <img src="../assets/images/cards/card_how_to_share.svg" alt="Complaint preparation dossier" loading="lazy">
+        </div>
+        <div class="card-badge">Prep</div>
+        <h3>Complaint preparation</h3>
+        <p>Export organized records before speaking with a property manager, local authority, or adviser.</p>
+      </div>
     </section>
 
-    <section class="notice reveal">SOUNDTEST.PRO is not a certified sound level meter. Local rules and complaint procedures vary.</section>
+    <section class="section grid two">
+      <div class="card reveal">
+        <div class="card-media" style="height: 130px;">
+          <img src="../assets/images/cards/card_three_habits.svg" alt="Documenting venue disturbances" loading="lazy">
+        </div>
+        <div class="card-badge">Tips</div>
+        <h2>Documenting venue disturbances</h2>
+        <ul class="check-list">
+          <li>Record from inside with windows closed, then note if open.</li>
+          <li>Capture bass vibrations and peak periods between 11 PM and 2 AM.</li>
+          <li>Export PDF summaries before calling municipal code enforcement.</li>
+        </ul>
+      </div>
+
+      <div class="card reveal" style="border-left-color:var(--accent-2); display: flex; flex-direction: column; justify-content: flex-start;">
+        <div class="card-media" style="height: 130px;">
+          <img src="../assets/images/microphone_calibration_test.webp" alt="Local ordinance boundaries" style="object-fit: cover;" loading="lazy">
+        </div>
+        <div class="card-badge" style="color:var(--accent-2)">Boundary</div>
+        <h3>Local ordinance boundaries</h3>
+        <p style="margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6;">
+          SOUNDTEST.PRO is not a certified sound level meter. Local municipal noise limits and licensing procedures vary. Statutory enforcement requires official inspections.
+        </p>
+      </div>
+    </section>
 
     <section class="section" id="faq-section">
       <div class="section-heading reveal">

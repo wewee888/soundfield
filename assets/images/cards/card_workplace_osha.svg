@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 150" fill="none">
+  <defs>
+    <linearGradient id="bg_osha" x1="0" y1="0" x2="400" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a1226"/>
+      <stop offset="1" stop-color="#050814"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="150" rx="14" fill="url(#bg_osha)"/>
+  <rect x="0.5" y="0.5" width="399" height="149" rx="13.5" stroke="rgba(168,196,255,0.12)"/>
+  
+  <!-- Gauge bar -->
+  <rect x="30" y="45" width="340" height="14" rx="7" fill="rgba(255,255,255,0.08)"/>
+  <rect x="30" y="45" width="170" height="14" rx="7" fill="#2cf0c1"/>
+  <rect x="200" y="45" width="60" height="14" fill="#ffb858"/>
+  <rect x="260" y="45" width="110" height="14" rx="0 7 7 0" fill="#ff6276"/>
+  
+  <!-- OSHA 85dB Marker line -->
+  <line x1="260" y1="35" x2="260" y2="70" stroke="#fff" stroke-width="2"/>
+  <text x="260" y="30" fill="#ff6276" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" text-anchor="middle">OSHA 85 dBA ACTION LIMIT</text>
+  
+  <!-- Readings & Status -->
+  <g transform="translate(30, 85)">
+    <rect width="105" height="42" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="12" y="18" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="9">FLOOR NOISE</text>
+    <text x="12" y="34" fill="#2cf0c1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">72.1 dBA</text>
+    
+    <rect x="115" width="115" height="42" rx="8" fill="rgba(255,98,118,0.1)" stroke="rgba(255,98,118,0.3)"/>
+    <text x="127" y="18" fill="#ff6276" font-family="-apple-system,sans-serif" font-size="9">EQUIPMENT ROOM</text>
+    <text x="127" y="34" fill="#ff6276" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">89.4 dBA ⚠️</text>
+    
+    <rect x="240" width="100" height="42" rx="8" fill="rgba(124,155,255,0.08)" stroke="rgba(124,155,255,0.2)"/>
+    <text x="252" y="18" fill="#a8c4ff" font-family="-apple-system,sans-serif" font-size="9">PROTECTION</text>
+    <text x="252" y="34" fill="#fff" font-family="-apple-system,sans-serif" font-size="11" font-weight="600">Ear Muffs Req.</text>
+  </g>
+</svg>

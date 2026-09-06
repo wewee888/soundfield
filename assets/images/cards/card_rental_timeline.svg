@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 150" fill="none">
+  <defs>
+    <linearGradient id="bg_rent" x1="0" y1="0" x2="400" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a1226"/>
+      <stop offset="1" stop-color="#050814"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="150" rx="14" fill="url(#bg_rent)"/>
+  <rect x="0.5" y="0.5" width="399" height="149" rx="13.5" stroke="rgba(168,196,255,0.12)"/>
+  
+  <!-- Calendar / timeline cards -->
+  <g transform="translate(30, 25)">
+    <!-- Day 1 -->
+    <rect width="95" height="65" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="10" y="20" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="9">Mon · 23:30</text>
+    <text x="10" y="42" fill="#ff6276" font-family="'JetBrains Mono',monospace" font-size="15" font-weight="700">76.4 dB</text>
+    <text x="10" y="56" fill="#ffb858" font-family="-apple-system,sans-serif" font-size="8">Loud Bass TV</text>
+    
+    <!-- Day 3 -->
+    <rect x="110" width="95" height="65" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="120" y="20" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="9">Wed · 01:15</text>
+    <text x="120" y="42" fill="#ff6276" font-family="'JetBrains Mono',monospace" font-size="15" font-weight="700">81.0 dB</text>
+    <text x="120" y="56" fill="#ff6276" font-family="-apple-system,sans-serif" font-size="8">Party / Shouting</text>
+    
+    <!-- Day 5 -->
+    <rect x="220" width="120" height="65" rx="8" fill="rgba(44,240,193,0.08)" stroke="rgba(44,240,193,0.3)"/>
+    <text x="230" y="20" fill="#2cf0c1" font-family="-apple-system,sans-serif" font-size="9" font-weight="700">EVIDENCE DOSSIER</text>
+    <text x="230" y="40" fill="#fff" font-family="-apple-system,sans-serif" font-size="12" font-weight="700">Ready to Send</text>
+    <text x="230" y="56" fill="#2cf0c1" font-family="-apple-system,sans-serif" font-size="9">PDF Exported ✓</text>
+  </g>
+  
+  <text x="30" y="125" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="11">Turn ambiguous lease complaints into an airtight, date-stamped paper trail.</text>
+</svg>
