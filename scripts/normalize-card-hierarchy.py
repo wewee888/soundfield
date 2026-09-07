@@ -1,7 +1,8 @@
 import glob
 import re
 
-files = glob.glob('use-cases/**/*.html', recursive=True)
+files = glob.glob('use-cases/**/*.html', recursive=True) + glob.glob('use-cases/*.html')
+files = list(set(files))
 count = 0
 
 for f in files:
@@ -9,19 +10,41 @@ for f in files:
         content = fp.read()
     
     orig = content
-    # Replace misleading card-badge FAQ in habits card with Habits
-    content = re.sub(r'<div class="card-badge">FAQ</div>(\s*<h[23]>.*?</h[23]>)', r'<div class="card-badge">Habits</div>\1', content)
-    # Ensure headings inside grid two cards are h3 for proper hierarchy
-    content = re.sub(r'(<section class="section grid two">[\s\S]*?<div class="card-badge">Habits</div>\s*)<h2>(.*?)</h2>', r'\1<h3>\2</h3>', content)
-    content = re.sub(r'(<section class="section grid two">[\s\S]*?<div class="card-badge">Practice</div>\s*)<h2>(.*?)</h2>', r'\1<h3>\2</h3>', content)
-    content = re.sub(r'(<section class="section grid two">[\s\S]*?<div class="card-badge">Tips</div>\s*)<h2>(.*?)</h2>', r'\1<h3>\2</h3>', content)
-    content = re.sub(r'(<section class="section grid two">[\s\S]*?<div class="card-badge">Suggested script</div>\s*)<h2>(.*?)</h2>', r'\1<h3>\2</h3>', content)
-    content = re.sub(r'(<section class="section grid two">[\s\S]*?<div class="card-badge">Best fit</div>\s*)<h2>(.*?)</h2>', r'\1<h3>\2</h3>', content)
+
+    # 1. Replace microphone_calibration_test.webp with cards/card_acoustic_limits.svg
+    content = re.sub(
+        r'src="([^"]*?)microphone_calibration_test\.webp"',
+        r'src="\1cards/card_acoustic_limits.svg"',
+        content
+    )
+
+    # 2. Add robust containment to card-media height: 130px containers
+    content = re.sub(
+        r'<div class="card-media" style="height: 130px;">',
+        r'<div class="card-media" style="height: 130px; overflow: hidden; position: relative;">',
+        content
+    )
+
+    # 3. Add robust styling to images inside card-media
+    content = re.sub(
+        r'(<div class="card-media"[^>]*>\s*<img [^>]*?)(style="[^"]*")?(\s*loading="lazy">)',
+        lambda m: m.group(1).rstrip() + ' style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">',
+        content
+    )
+
+
+    # 4. Cache-bust site.css -> site.css?v=8
+    content = re.sub(
+        r'href="([^"]*?assets/site\.css)(?:\?v=\d+)?"',
+        r'href="\1?v=8"',
+        content
+    )
 
     if content != orig:
         with open(f, 'w', encoding='utf-8') as fp:
             fp.write(content)
-        print('Fixed badge & heading hierarchy in:', f)
+        print('Updated:', f)
         count += 1
 
 print('Total files updated:', count)
+
