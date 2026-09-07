@@ -1735,6 +1735,56 @@ a.card:hover h3 { color: var(--text-strong); }
 
 .price-card ul { margin: 0; padding: 0; }
 
+/* ─── FAQ Section & FAQ Grid ─── */
+.section-heading {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 28px;
+  max-width: 720px;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.faq-grid .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.faq-grid .card h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--text-strong);
+}
+
+.faq-grid .card p {
+  flex: 1;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+@media (max-width: 768px) {
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ensure cards in two-column grid have consistent heading hierarchy */
+.grid.two > .card h2,
+.grid.two > .card h3 {
+  font-size: 19px;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
 /* ─── Sitemap footer ─── */
 .footer-deluxe {
   position: relative;

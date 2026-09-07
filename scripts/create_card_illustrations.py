@@ -146,48 +146,55 @@ svg_how_to_share = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 1
 </svg>'''
 
 # 4. card_three_habits.svg
-svg_three_habits = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 130" fill="none">
+svg_three_habits = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 150" fill="none">
   <defs>
-    <linearGradient id="bg_habits" x1="0" y1="0" x2="500" y2="130" gradientUnits="userSpaceOnUse">
+    <linearGradient id="bg_habits" x1="0" y1="0" x2="400" y2="150" gradientUnits="userSpaceOnUse">
       <stop stop-color="#0a1226"/>
       <stop offset="1" stop-color="#050814"/>
     </linearGradient>
   </defs>
-  <rect width="500" height="130" rx="14" fill="url(#bg_habits)"/>
-  <rect x="0.5" y="0.5" width="499" height="129" rx="13.5" stroke="rgba(168,196,255,0.12)"/>
+  <rect width="400" height="150" rx="14" fill="url(#bg_habits)"/>
+  <rect x="0.5" y="0.5" width="399" height="149" rx="13.5" stroke="rgba(168,196,255,0.12)"/>
   
-  <!-- Step 1 -->
-  <g transform="translate(25, 25)">
-    <circle cx="20" cy="20" r="18" fill="rgba(44,240,193,0.15)" stroke="#2cf0c1" stroke-width="1.5"/>
-    <text x="20" y="25" fill="#2cf0c1" font-family="'JetBrains Mono',monospace" font-size="14" font-weight="700" text-anchor="middle">1</text>
-    <text x="48" y="16" fill="#fff" font-family="-apple-system,sans-serif" font-size="12" font-weight="700">Multiple Sessions</text>
-    <text x="48" y="32" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="10">10-30 min over 7 days</text>
+  <!-- 3-Step Timeline horizontal -->
+  <g transform="translate(20, 20)">
+    <!-- Step 1 -->
+    <g transform="translate(0, 0)">
+      <circle cx="16" cy="16" r="14" fill="rgba(44,240,193,0.15)" stroke="#2cf0c1" stroke-width="1.5"/>
+      <text x="16" y="21" fill="#2cf0c1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" text-anchor="middle">1</text>
+      <text x="38" y="14" fill="#fff" font-family="-apple-system,sans-serif" font-size="11" font-weight="700">Multi-Session</text>
+      <text x="38" y="27" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="9">10-30m / 7 days</text>
+    </g>
+    
+    <!-- Connector 1 -->
+    <line x1="125" y1="16" x2="140" y2="16" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="2 2"/>
+    
+    <!-- Step 2 -->
+    <g transform="translate(145, 0)">
+      <circle cx="16" cy="16" r="14" fill="rgba(124,155,255,0.15)" stroke="#7c9bff" stroke-width="1.5"/>
+      <text x="16" y="21" fill="#7c9bff" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" text-anchor="middle">2</text>
+      <text x="38" y="14" fill="#fff" font-family="-apple-system,sans-serif" font-size="11" font-weight="700">Fixed Point</text>
+      <text x="38" y="27" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="9">Same room &amp; note</text>
+    </g>
+    
+    <!-- Connector 2 -->
+    <line x1="250" y1="16" x2="265" y2="16" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="2 2"/>
+    
+    <!-- Step 3 -->
+    <g transform="translate(270, 0)">
+      <circle cx="16" cy="16" r="14" fill="rgba(255,184,88,0.15)" stroke="#ffb858" stroke-width="1.5"/>
+      <text x="16" y="21" fill="#ffb858" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" text-anchor="middle">3</text>
+      <text x="38" y="14" fill="#fff" font-family="-apple-system,sans-serif" font-size="11" font-weight="700">Export &amp; Hash</text>
+      <text x="38" y="27" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="9">Tamper-evident</text>
+    </g>
   </g>
   
-  <!-- Connector 1 -->
-  <line x1="175" y1="45" x2="195" y2="45" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="3 3"/>
-  
-  <!-- Step 2 -->
-  <g transform="translate(205, 25)">
-    <circle cx="20" cy="20" r="18" fill="rgba(124,155,255,0.15)" stroke="#7c9bff" stroke-width="1.5"/>
-    <text x="20" y="25" fill="#7c9bff" font-family="'JetBrains Mono',monospace" font-size="14" font-weight="700" text-anchor="middle">2</text>
-    <text x="48" y="16" fill="#fff" font-family="-apple-system,sans-serif" font-size="12" font-weight="700">Fixed Point</text>
-    <text x="48" y="32" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="10">Same room, note windows</text>
+  <!-- Info banner below -->
+  <g transform="translate(20, 80)">
+    <rect width="360" height="48" rx="10" fill="rgba(44,240,193,0.06)" stroke="rgba(44,240,193,0.2)"/>
+    <text x="14" y="22" fill="#2cf0c1" font-family="-apple-system,sans-serif" font-size="11" font-weight="700">💡 Defensible Evidence Standard</text>
+    <text x="14" y="38" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="9.5">Consistency beats emotional clips: 10 documented events form a pattern.</text>
   </g>
-  
-  <!-- Connector 2 -->
-  <line x1="340" y1="45" x2="360" y2="45" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="3 3"/>
-  
-  <!-- Step 3 -->
-  <g transform="translate(370, 25)">
-    <circle cx="20" cy="20" r="18" fill="rgba(255,184,88,0.15)" stroke="#ffb858" stroke-width="1.5"/>
-    <text x="20" y="25" fill="#ffb858" font-family="'JetBrains Mono',monospace" font-size="14" font-weight="700" text-anchor="middle">3</text>
-    <text x="48" y="16" fill="#fff" font-family="-apple-system,sans-serif" font-size="12" font-weight="700">Export &amp; Hash</text>
-    <text x="48" y="32" fill="#8ca5d0" font-family="-apple-system,sans-serif" font-size="10">Save PDF with records</text>
-  </g>
-  
-  <rect x="25" y="82" width="450" height="30" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)"/>
-  <text x="250" y="101" fill="#a8c4ff" font-family="-apple-system,sans-serif" font-size="11" text-anchor="middle">💡 Defensible noise records require consistency, not just a one-off emotional clip.</text>
 </svg>'''
 
 files = {
