@@ -15,7 +15,6 @@ preview_id = "f55cc042ea81496fb9599564c5fdfedd"
 # Creem & WeChat payment integration & system vars
 [vars]
 EMAIL_FROM = "system@soundtest.pro"
-CLOUDFLARE_ACCOUNT_ID = "514556cd08e5edb572a5b17e3f46eaf8"
 CREEM_URL_SINGLE = "https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC"
 CREEM_URL_PRO_MONTHLY = "https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ"
 CREEM_URL_PRO_YEARLY = "https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c"
