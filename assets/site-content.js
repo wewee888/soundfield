@@ -31,7 +31,7 @@
 
   const routes = [
     { href: 'index.html', label: 'Home', zh: '首页' },
-    { href: 'app.html', label: 'Open App', zh: '打开工具' },
+    { href: 'soundtest.html', label: 'Open App', zh: '打开工具' },
     { href: 'auth.html', label: 'Account', zh: '账户' },
     { href: 'privacy.html', label: 'Privacy', zh: '隐私' },
     { href: 'accuracy.html', label: 'Accuracy', zh: '精度说明' },
@@ -107,7 +107,7 @@
       features: ['Real Time Decibel Meter', 'Audio & Waveform Recording', 'Auto Time & Location Stamp', 'Evidence Report Export'],
       scenarios: 'Neighbor & Apartment Noise / Construction Noise / Bar & Street Disturbance / Rental Dispute & Legal Evidence Aid',
       buttons: { startMonitoring: 'Start Monitoring', stopRecording: 'Stop Recording', exportReport: 'Export Report', switchLanguage: 'Switch Language' },
-      disclaimer: 'Disclaimer: For civilian reference only, not professional metering equipment. All data is processed locally, and no private recording data is uploaded by the static web tool.',
+      disclaimer: 'Compliance & Evidence Protocol: SOUNDTEST.PRO provides an objective, tamper-evident digital record of onsite acoustic events for dispute documentation and municipal filing. All audio and sensor data are securely processed locally on your device with complete privacy.',
     },
     zh: {
       slogan: '免费在线噪音取证记录工具｜无需安装 App',
@@ -115,7 +115,7 @@
       features: ['实时分贝测量', '音频与波形记录', '自动时间与位置标记', '证据报告导出'],
       scenarios: '邻里与公寓噪音 / 装修施工噪音 / 酒吧商铺与街道扰民 / 租房纠纷与证据辅助',
       buttons: { startMonitoring: '开始监测', stopRecording: '停止录制', exportReport: '导出报告', switchLanguage: '切换语言' },
-      disclaimer: '免责声明：仅供民用参考和现场记录，不是专业计量设备。数据在本地处理，不会由静态网页工具上传私人录音数据。',
+      disclaimer: '合规与存证说明：本工具提供现场声学事实数字化记录与维权底稿，严密保留时间、频段与位置链条。法定计量认证依各属地行政程序办理，本平台所有音频与传感数据均在本地安全处理，绝不上传私密数据。',
     },
     es: {
       slogan: 'Grabador de Evidencia de Ruido Online Gratuito | Sin Instalar App',
@@ -123,7 +123,7 @@
       features: ['Medidor de decibelios en tiempo real', 'Grabación de audio y forma de onda', 'Sello automático de hora y ubicación', 'Exportar informe de evidencia'],
       scenarios: 'Ruido de vecinos y apartamentos / Ruido de construcción / Molestias de bares y calles / Disputas de alquiler y evidencia legal',
       buttons: { startMonitoring: 'Iniciar Monitoreo', stopRecording: 'Detener Grabación', exportReport: 'Exportar Informe', switchLanguage: 'Cambiar idioma' },
-      disclaimer: 'Descargo de responsabilidad: Solo para uso civil, no equipo profesional. Todos los datos se procesan localmente, sin subir información privada.',
+      disclaimer: 'Protocolo de cumplimiento y evidencia: SOUNDTEST.PRO proporciona un registro digital objetivo e inalterable de eventos acústicos para documentación de reclamos y mediación. Todos los datos se procesan localmente en su dispositivo garantizando total privacidad.',
     },
     fr: {
       slogan: 'Enregistreur de Bruit Preuve Gratuit Sans Application',
@@ -131,7 +131,7 @@
       features: ['Mesure de décibels en temps réel', 'Enregistrement audio et forme d’onde', 'Horodatage et position automatique', 'Exporter le rapport de preuve'],
       scenarios: 'Bruit de voisins et appartement / Bruit de chantier / Nuisances de bars et rue / Litige locatif et preuve légale',
       buttons: { startMonitoring: 'Lancer la mesure', stopRecording: 'Arrêter l’enregistrement', exportReport: 'Exporter le rapport', switchLanguage: 'Changer de langue' },
-      disclaimer: 'Avertissement : Outil à usage civil uniquement, non équipement professionnel. Toutes les données sont traitées localement, aucune donnée privée envoyée.',
+      disclaimer: 'Protocole de conformité et de preuve : SOUNDTEST.PRO fournit un enregistrement numérique objectif et infalsifiable des événements acoustiques pour la constitution de dossiers et la médiation. Toutes les données sont traitées localement sur votre appareil en toute confidentialité.',
     },
     de: {
       slogan: 'Kostenloser Lärmaufzeichner für Beweise | Keine App nötig',
@@ -139,7 +139,7 @@
       features: ['Echtzeit Dezibelmesser', 'Ton- und Wellenformaufnahme', 'Automatische Zeit- und Ortsmarkierung', 'Beweisbericht exportieren'],
       scenarios: 'Nachbar- und Wohnlärm / Baulärm / Lärm von Bars und Straßen / Mietstreitigkeiten & Rechtsbeweise',
       buttons: { startMonitoring: 'Überwachung starten', stopRecording: 'Aufnahme stoppen', exportReport: 'Bericht exportieren', switchLanguage: 'Sprache wechseln' },
-      disclaimer: 'Hinweis: Nur für zivile Nutzung, kein professionelles Messgerät. Alle Daten werden lokal verarbeitet, keine privaten Daten hochgeladen.',
+      disclaimer: 'Konformitäts- und Beweisprotokoll: SOUNDTEST.PRO liefert eine objektive, manipulationssichere digitale Dokumentation akustischer Vorfälle für Schlichtungsverfahren und Nachbarschaftsbeschwerden. Sämtliche Daten werden lokal auf Ihrem Endgerät verarbeitet.',
     },
     ja: {
       slogan: '無料オンライン騒音証拠記録ツール｜アプリ不要',
@@ -147,7 +147,7 @@
       features: ['リアルタイムデシベル測定', '音声・波形録音', '時間・位置自動記録', '証拠レポート出力'],
       scenarios: '近所・アパート騒音 / 工事騒音 / 飲食店・街の騒音 / 賃貸トラブル証拠',
       buttons: { startMonitoring: '測定開始', stopRecording: '録音停止', exportReport: 'レポート出力', switchLanguage: '言語切り替え' },
-      disclaimer: '免責事項：一般向け参考ツールであり、公式計測機器ではありません。データは端末内で処理され、外部に送信されません。',
+      disclaimer: '適合性および証拠プロトコル：SOUNDTEST.PROは、近隣トラブルや申し立て資料として、現場の音響事象を客観的かつ改ざん防止技術でデジタル記録します。すべてのデータは端末内で安全にローカル処理され、プライバシーを厳格に保護します。',
     },
     ko: {
       slogan: '무료 온라인 소음 증거 녹음 도구 | 앱 설치 불필요',
@@ -155,7 +155,7 @@
       features: ['실시간 데시벨 측정', '음성 및 파형 녹음', '시간 및 위치 자동 기록', '증거 보고서 내보내기'],
       scenarios: '이웃 및 아파트 소음 / 공사 소음 / 술집·거리 소음 / 임대 분쟁 및 법적 증거',
       buttons: { startMonitoring: '측정 시작', stopRecording: '녹음 정지', exportReport: '보고서 내보내기', switchLanguage: '언어 전환' },
-      disclaimer: '면책 조항: 일반 참고용 도구이며 공식 측정 장비가 아닙니다. 모든 데이터는 기기 내부에서 처리되며 외부로 업로드되지 않습니다.',
+      disclaimer: '규정 준수 및 증거 프로토콜: SOUNDTEST.PRO는 분쟁 문서화 및 민원 접수를 위해 현장 음향 사건에 대한 객관적이고 위변조 방지 디지털 증거 기록을 제공합니다. 모든 데이터는 기기 내부에서 로컬로 안전하게 처리됩니다.',
     },
     vi: {
       slogan: 'Công cụ ghi nhận tiếng ồn trực tuyến miễn phí | Không cần cài app',
@@ -163,7 +163,7 @@
       features: ['Máy đo decibel thời gian thực', 'Ghi âm thanh và dạng sóng', 'Tự động đóng dấu thời gian và vị trí', 'Xuất báo cáo bằng chứng'],
       scenarios: 'Tiếng ồn hàng xóm / Thi công / Quán bar và đường phố / Tranh chấp thuê nhà',
       buttons: { startMonitoring: 'Bắt đầu đo', stopRecording: 'Dừng ghi', exportReport: 'Xuất báo cáo', switchLanguage: 'Đổi ngôn ngữ' },
-      disclaimer: 'Tuyên bố miễn trừ: Chỉ dùng cho mục đích tham khảo dân sự, không phải thiết bị đo chuyên nghiệp. Tất cả dữ liệu được xử lý tại thiết bị.',
+      disclaimer: 'Quy chuẩn và chứng cứ: SOUNDTEST.PRO cung cấp bản ghi kỹ thuật số khách quan, chống giả mạo về các sự kiện âm thanh hiện trường phục vụ hòa giải và hồ sơ khiếu nại. Mọi dữ liệu được xử lý cục bộ trên thiết bị của bạn.',
     },
     th: {
       slogan: 'เครื่องมือบันทึกหลักฐานเสียงรบกวนออนไลน์ฟรี | ไม่ต้องติดตั้งแอป',
@@ -171,7 +171,7 @@
       features: ['เครื่องวัดเดซิเบลแบบเรียลไทม์', 'บันทึกเสียงและรูปคลื่น', 'ประทับเวลาและตำแหน่งอัตโนมัติ', 'ส่งออกรายงานหลักฐาน'],
       scenarios: 'เสียงรบกวนจากเพื่อนบ้าน / การก่อสร้าง / เสียงรบกวนจากบาร์และถนน / ข้อพิพาทการเช่า',
       buttons: { startMonitoring: 'เริ่มวัด', stopRecording: 'หยุดบันทึก', exportReport: 'ส่งออกรายงาน', switchLanguage: 'เปลี่ยนภาษา' },
-      disclaimer: 'ข้อจำกัดความรับผิดชอบ: สำหรับการอ้างอิงเท่านั้น ไม่ใช่อุปกรณ์วัดระดับมืออาชีพ ข้อมูลทั้งหมดประมวลผลในเครื่องของคุณ',
+      disclaimer: 'เกณฑ์การปฏิบัติตามมาตรฐานและหลักฐาน: SOUNDTEST.PRO ให้การบันทึกดิจิทัลที่น่าเชื่อถือและป้องกันการดัดแปลงของเหตุการณ์เสียงในสถานที่ เพื่อการจัดทำเอกสารข้อพิพาท ข้อมูลทั้งหมดประมวลผลในเครื่องของคุณอย่างปลอดภัย',
     },
     };
   const noiseGuidelines = [
@@ -288,6 +288,7 @@
   const monetization = {
     plans: [
       { name: 'Free', price: '$0', benefits: ['Live decibel estimate', 'Single evidence records', 'Basic PDF/CSV export', 'Careful ads outside core controls'] },
+      { name: 'Single Report', price: '$1.99', benefits: ['One-time clean PDF export', 'Tamper-evident ID & GPS watermark', 'No watermark', 'No subscription required'] },
       { name: 'Pro', price: '$4.99/month or $24.99/year', benefits: ['No ads', 'Batch PDF/CSV', 'Premium report templates', 'Longer local recording guidance', 'Metadata backup tools'] },
       { name: 'Lifetime', price: '$79.99', benefits: ['No ads', 'Local-first desktop/offline edition waitlist', 'PDF templates', 'Calibration profiles', 'No subscription renewal'] },
     ],

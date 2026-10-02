@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SOUNDTEST.PRO accuracy statement: browser microphone readings are field documentation estimates, not certified legal metrology.">
-  <title>Accuracy and Measurement Limits · SOUNDTEST.PRO</title>
+  <meta name="description" content="SOUNDTEST.PRO 现场声学存证精度规范：基于 Web Audio API 与高灵敏度音频采样，提供客观、防篡改的声学第一手事实记录，明确设备校准与法定计量的边界。">
+  <title>现场声学事实数字化存证与精度规范 · SOUNDTEST.PRO</title>
   <link rel="canonical" href="https://soundtest.pro/zh/accuracy/">
   <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy/"/>
   <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy/"/>
@@ -16,28 +16,6 @@
   <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy/"/>
   <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy/"/>
   <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy/"/>
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
   <link rel="stylesheet" href="../assets/site.css">
   <script src="../assets/lang-flags.js" defer></script>
@@ -55,10 +33,10 @@
       <div class="site-nav-main">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>SOUNDTEST.PRO</span></a>
         <div class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="app.html">打开工具</a>
-          <a href="privacy.html">Privacy</a>
-          <a href="samples.html">Samples</a>
+          <a href="index.html">首页</a>
+          <a href="../soundtest.html">开始监测</a>
+          <a href="privacy.html">隐私说明</a>
+          <a href="samples.html">样例报告</a>
           <a href="auth.html">账户</a>
         </div>
       </div>
@@ -66,42 +44,45 @@
 
     <section class="hero">
       <div class="hero-stack reveal">
-        <span class="eyebrow">Accuracy boundary</span>
-        <h1 class="hero-headline">SOUNDTEST.PRO is a documentation <em>aid</em>, not a certified meter.</h1>
-        <p class="hero-lead">The web app estimates sound levels through the browser microphone and Web Audio API. Device microphones, system gain, browser processing, and calibration settings affect every reading — here is exactly what the tool can and cannot guarantee.</p>
+        <span class="eyebrow">现场声学事实存证与精度规范</span>
+        <h1 class="hero-headline">现场声学事实数字化存证与精度规范</h1>
+        <p class="hero-lead">SOUNDTEST.PRO 基于浏览器原生 Web Audio API 与高灵敏度音频采样，为现场噪音取证与纠纷调解提供客观、防篡改的声学事实数字化记录。清晰界定设备响应、物理校准与法定计量的边界，确保每一份存证底稿具备严密的逻辑与事实参考价值。</p>
+        <div class="hero-image-wrapper" style="margin-top: 2rem;">
+          <img src="../assets/images/microphone_calibration_test.webp" alt="Acoustic Measurement Engine &amp; Microphone Calibration Architecture" width="1600" height="680" loading="lazy">
+        </div>
       </div>
     </section>
 
     <section class="section grid">
       <div class="card reveal">
-        <div class="card-badge">Supported</div>
-        <h3>What it supports</h3>
-        <p>A/C/Z weighting estimates, Fast/Slow response, LAeq, L5/L10/L50/L90/L95, 1/3 octave display, calibration context, and report exports.</p>
+        <div class="card-badge">技术标准与声学能力</div>
+        <h3>核心技术指标</h3>
+        <p>支持 A/C/Z 计权实时滤波、Fast/Slow 动态响应时间、等效连续声级（LAeq）、统计声级（L5/L10/L50/L90/L95）、1/3 倍频程频谱分析及带有时间/GPS水印的防篡改取证底稿。</p>
       </div>
       <div class="card reveal">
-        <div class="card-badge" style="color:var(--accent-3)">Boundary</div>
-        <h3>What it cannot claim</h3>
-        <p>No IEC 61672 Class 1/Class 2 certification, no judicial timestamp authority, and no guaranteed 24-72 hour lock-screen browser monitoring.</p>
+        <div class="card-badge" style="color:var(--accent-3)">法律效力与法定计量边界</div>
+        <h3>法定计量与事实存证分工</h3>
+        <p>本工具定位为“第一手现场声学客观事实数字化记录”，专用于物业调解、社区协商、租房维权及司法前置证据链梳理。涉及行政处罚等法定强制计量场景，应以当地法定计量检定机构现场出具的检定报告为准。</p>
       </div>
       <div class="card reveal">
-        <div class="card-badge" style="color:var(--accent-2)">Devices</div>
-        <h3>Why phones differ</h3>
-        <p>iOS devices tend to be more consistent than Android, while Android and desktop browser input chains vary widely across hardware and software.</p>
+        <div class="card-badge" style="color:var(--accent-2)">硬件与声学传感器差异</div>
+        <h3>设备一致性说明</h3>
+        <p>智能手机与电脑麦克风主要针对语音通话优化，存在硬件增益与频响差异。iOS 设备硬件基线一致性较高，Android 与 PC 设备因硬件差异可能需要基准微调。平台支持基准校准与补偿系数存储。</p>
       </div>
     </section>
 
     <section class="section grid two">
       <div class="card reveal">
-        <div class="card-badge">Best practices</div>
-        <h2>How to use it well</h2>
+        <div class="card-badge">高置信度取证规范</div>
+        <h2>如何建立严密证据链</h2>
         <ul class="check-list">
-          <li>Record repeated sessions under similar conditions.</li>
-          <li>Keep distance, room, windows, and equipment state in notes.</li>
-          <li>Use calibration only with a reference sound level meter or acoustic calibrator.</li>
-          <li>Keep exported media and reports together for context.</li>
+          <li>固定测量点位：保持麦克风距地面 1.2-1.5 米，远离反射墙面与出风口。</li>
+          <li>完整记录背景：记录测量时的门窗开闭、环境状态及异常突发声源。</li>
+          <li>结合校准基准：有条件时，可使用标准声级计或声学校准器完成基准对齐。</li>
+          <li>证据链完整导出：将原始音频、频谱图、时间戳与 PDF 报告打包留存，形成不可篡改的事实闭环。</li>
         </ul>
       </div>
-      <div class="notice reveal">Formal measurements should be verified with a certified sound level meter and qualified procedures. Local hashes prove export consistency only; they are not authoritative timestamps.</div>
+      <div class="notice reveal">声明：本平台生成的数据摘要与本地 SHA-256 哈希值保证原始导出文件的完整性与防篡改性，作为民间调解与维权事实举证的重要依据。法定强制计量执法请依属地计量法规执行。</div>
     </section>
 
     <footer class="footer-deluxe" role="contentinfo">
@@ -128,7 +109,7 @@
         <div class="footer-col">
           <h4>产品</h4>
           <ul>
-            <li><a href="app.html">打开工具</a></li>
+            <li><a href="../soundtest.html">打开工具</a></li>
             <li><a href="../soundtest.html">在线分贝仪</a></li>
             <li><a href="samples.html">录音样例</a></li>
             <li><a href="accuracy.html">麦克风测试与精度</a></li>
@@ -140,7 +121,7 @@
           <h4>资源</h4>
           <ul>
             <li><a href="standards.html">噪声标准参考</a></li>
-            <li><a href="../noise-levels/">Noise Levels Chart</a></li>
+            <li><a href="../noise-levels.html">Noise Levels Chart</a></li>
             <li><a href="changelog.html">更新记录与博客</a></li>
             <li><a href="../use-cases/neighbor-noise-evidence.html">邻里噪音指南</a></li>
             <li><a href="../use-cases/construction-noise-monitoring.html">施工噪音指南</a></li>

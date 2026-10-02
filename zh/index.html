@@ -72,7 +72,7 @@
         </div>
       </div>
       <div class="nav-utility">
-        <a class="nav-upgrade" href="https://weevolution0.gumroad.com/l/soundtest-pro-yearly" target="_blank" rel="noopener">
+        <a class="nav-upgrade" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">
           <span class="star" aria-hidden="true">★</span>
           <span>升级 Pro</span>
         </a>
@@ -87,30 +87,8 @@
           <h1 class="hero-headline">免费在线噪音取证记录工具｜<em>无需安装 App</em>。<br><em>测量分贝、锁定证据、数据留在本机。</em></h1>
           <p class="hero-lead">测量分贝、记录声音、保存时间与位置，用于噪音投诉资料整理。邻里噪音、装修施工、商铺街道噪音、租房纠纷 — 浏览器一键开始记录。</p>
 
-          <form class="hero-search" data-hero-form aria-label="Try the noise evidence workflow">
-            <div class="hero-search-row">
-              <input type="text" class="hero-search-input" data-hero-input placeholder="描述要记录的场景，例如：夜间酒吧街噪" autocomplete="off" spellcheck="false">
-              <button class="hero-search-btn" type="submit">
-                <span>运行工作流</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-              </button>
-            </div>
-            <div class="hero-search-chips" role="list" aria-label="Quick scenarios">
-              <button type="button" class="chip" role="listitem" data-chip="楼上邻居噪音" data-chip-path="use-cases/neighbor-noise-evidence.html"><span class="chip-icon" aria-hidden="true"></span>邻里噪音</button>
-              <button type="button" class="chip" role="listitem" data-chip="工作日施工噪音" data-chip-path="use-cases/construction-noise-monitoring.html"><span class="chip-icon" aria-hidden="true"></span>施工噪音</button>
-              <button type="button" class="chip" role="listitem" data-chip="深夜酒吧扰民" data-chip-path="use-cases/bar-street-disturbance.html"><span class="chip-icon" aria-hidden="true"></span>酒吧街道</button>
-              <button type="button" class="chip" role="listitem" data-chip="租房纠纷证据包" data-chip-path="use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>租房纠纷</button>
-            </div>
-            <div class="recent-bar" data-recent-host hidden></div>
-            <div class="hero-meta">
-              <span>✓ <strong>一键开始</strong> · No registration</span>
-              <span>✓ <strong>9 种语言</strong> live</span>
-              <span>✓ <strong>PDF / CSV / JSON</strong> exports</span>
-            </div>
-          </form>
-
           <div class="hero-actions">
-            <a class="button primary" href="../app.html">开始监测</a>
+            <a class="button primary" href="../soundtest.html">开始监测</a>
             <a class="button" href="../samples.html">查看报告样例</a>
             <a class="button ghost" href="../accuracy.html">查看精度说明</a>
           </div>
@@ -122,30 +100,117 @@
             <span class="echo-stage-tag"><span class="dot violet" aria-hidden="true"></span>仅本地麦克风</span>
             <span class="echo-stage-tag"><span class="dot rose" aria-hidden="true"></span>9 种语言</span>
           </div>
+          <div class="echo-waveform-rings" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
           <div class="echo-mascot" role="img" aria-label="Echo, the SOUNDTEST.PRO crystal owl mascot, standing on a glass platter with an idle equalizer chest"></div>
           <div class="echo-hud" aria-hidden="true">
             <span class="echo-hud-dot"></span>
             <span class="echo-hud-value">00 dB</span>
             <span class="echo-hud-label">Standby</span>
           </div>
+          <div class="echo-evidence-stamp" aria-hidden="true">
+            <span class="stamp-icon"></span>
+            <span>声学取证标准 · 防篡改</span>
+          </div>
         </aside>
       </div>
 
-      <div class="hero-search reveal" data-live-card style="margin-top:14px;background:rgba(255,255,255,0.04)">
-        <div class="card-badge">实时预览</div>
-        <h3 style="margin-top:6px">在本地运行 — 任何数据都不会离开浏览器。</h3>
-        <p class="muted" style="margin-top:6px;font-size:13px">我们根据您的输入构建取证模板。然后进入记录器获取录音、照片以及报告。</p>
-        <div class="live-card" data-live-card style="display:block;background:transparent;border:0;padding:14px 0 0">
-          <div class="live-steps">
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>正在解析场景并选择证据模板…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>正在配置分贝、LAeq、GPS 和拍照规则…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>正在构建报告布局与导出包…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>准备就绪 — 启动记录器开始取证。</span></div>
+      <div class="hero-workbench reveal" id="scenario-workbench">
+        <!-- 左栏：场景选择 -->
+        <div class="workbench-card">
+          <div class="workbench-header">
+            <span class="card-badge">第 1 步 · 选择噪音场景</span>
+            <h3>请选择您遇到的噪音类型</h3>
+            <p>系统将自动加载符合国家标准的参考限值、取证规则与维权底稿模板。</p>
           </div>
-          <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-            <button class="button primary" type="button" data-live-cta data-target="soundtest.html" hidden>启动记录器</button>
-            <a class="button" href="../samples.html">查看报告样例</a>
-            <a class="button ghost" href="../accuracy.html">Read measurement limits</a>
+
+          <div class="workbench-chips-grid" role="tablist">
+            <button type="button" class="scenario-pill-btn active" data-scenario="neighbor" role="tab" aria-selected="true">
+              <span class="scenario-pill-icon">🏠</span>
+              <div class="scenario-pill-text">
+                <strong>邻里生活噪音</strong>
+                <small>楼上脚步、低音炮、共振</small>
+              </div>
+            </button>
+            <button type="button" class="scenario-pill-btn" data-scenario="construction" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🚧</span>
+              <div class="scenario-pill-text">
+                <strong>装修工程施工</strong>
+                <small>电钻砸墙、违规超时作业</small>
+              </div>
+            </button>
+            <button type="button" class="scenario-pill-btn" data-scenario="street" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🍻</span>
+              <div class="scenario-pill-text">
+                <strong>酒吧商铺扰民</strong>
+                <small>排风机低频、夜市音乐喧哗</small>
+              </div>
+            </button>
+            <button type="button" class="scenario-pill-btn" data-scenario="rental" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">📋</span>
+              <div class="scenario-pill-text">
+                <strong>租房维权举证</strong>
+                <small>退租退押、居住安宁证据包</small>
+              </div>
+            </button>
+          </div>
+
+          <form class="workbench-custom-row" data-wb-custom-form onsubmit="return false;">
+            <input type="text" class="workbench-custom-input" data-wb-custom-input placeholder="描述具体场景（例如：夜间电梯机房低频共振）..." autocomplete="off">
+            <button type="submit" class="workbench-custom-btn" data-wb-custom-btn>
+              <span>匹配</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </form>
+
+          <div class="hero-meta" style="margin-top:10px;justify-content:flex-start">
+            <span>✓ <strong>一键测噪</strong> · 无需安装</span>
+            <span>✓ <strong>纯本地计算</strong> · 绝不传云端</span>
+            <span>✓ <strong>PDF / CSV</strong> 维权底稿</span>
+          </div>
+        </div>
+
+        <!-- 右栏：存证流水线预演与直接启动 -->
+        <div class="workbench-card">
+          <div class="workbench-header">
+            <span class="card-badge" style="color:var(--accent)">第 2 步 · 现场存证流水线</span>
+            <h3 id="wb-preview-title">邻里与公寓噪音取证模板</h3>
+            <p id="wb-preview-desc">针对楼上脚步声、低音炮扰民、宠物吠叫与管道空调震动优化。</p>
+          </div>
+
+          <div class="workbench-specs-row" id="wb-specs">
+            <div class="wb-spec-cell">
+              <span>昼间限值</span>
+              <strong id="wb-day">≤ 55 dB</strong>
+            </div>
+            <div class="wb-spec-cell">
+              <span>夜间限值</span>
+              <strong id="wb-night">≤ 45 dB</strong>
+            </div>
+            <div class="wb-spec-cell">
+              <span>核心指标</span>
+              <strong id="wb-metric">LAeq 等效声级</strong>
+            </div>
+            <div class="wb-spec-cell">
+              <span>防伪存证</span>
+              <strong id="wb-tamper" style="color:var(--accent)">GPS + SHA-256</strong>
+            </div>
+          </div>
+
+          <div class="live-steps" id="wb-steps">
+            <div class="live-step" data-state="done"><span class="dot" aria-hidden="true">✓</span><span id="wb-s1">已匹配居住区生活噪音取证规范</span></div>
+            <div class="live-step" data-state="done"><span class="dot" aria-hidden="true">✓</span><span id="wb-s2">初始化 A 计权滤波与快速动态响应</span></div>
+            <div class="live-step" data-state="done"><span class="dot" aria-hidden="true">✓</span><span id="wb-s3">纯本地零云端存储已验证</span></div>
+            <div class="live-step" data-state="active"><span class="dot" aria-hidden="true">●</span><span id="wb-s4">就绪 — 启动取证以生成物业/法务标准底稿</span></div>
+          </div>
+
+          <div class="workbench-actions-row">
+            <a class="button primary" id="wb-cta" href="../soundtest.html?scenario=neighbor">
+              <span>启动邻里噪音取证</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="button ghost" id="wb-guide" href="../use-cases/neighbor-noise-evidence.html">邻里维权指南</a>
           </div>
         </div>
       </div>
@@ -283,43 +348,65 @@
 
     <section class="section" id="pricing">
       <div class="section-header reveal">
-        <span class="eyebrow">Plans</span>
-        <h2>Free is enough for most complaints. Pro adds polish for repeated cases.</h2>
-        <p class="lead">No subscription wall in front of the tool. Upgrade only when you want premium templates, PDF batches, and metadata backups.</p>
+        <span class="eyebrow">方案与定价</span>
+        <h2>基础监测完全免费。需要正式存证报告时随时解锁。</h2>
+        <p class="lead">核心工具零门槛直接使用。单次维权仅需 ¥3.9，年卡特惠 ¥19.9，终身买断 ¥39.9。支持微信安全支付，无强制自动续费陷阱。</p>
       </div>
 
       <div class="pricing-row">
         <div class="price-card reveal">
           <span class="price-pill">免费版</span>
-          <span class="price-name">先用网页工具开始</span>
-          <span class="price-tag">$0</span>
+          <span class="price-name">网页工具即开即用</span>
+          <span class="price-tag">¥0 / $0</span>
           <ul class="check-list">
-            <li>Real-time decibel meter</li>
-            <li>Basic audio recording</li>
-            <li>Time &amp; location stamp</li>
-            <li>Manual screenshot save</li>
+            <li>实时高精度分贝监测</li>
+            <li>现场音频与波形录制</li>
+            <li>自动时间戳与地理位置标记</li>
+            <li>手动屏幕快照与基础预览</li>
           </ul>
-          <a class="button" href="../app.html">打开免费工具</a>
+          <a class="button" href="../soundtest.html">打开免费工具</a>
+        </div>
+
+        <div class="price-card single-report reveal">
+          <span class="price-pill">单次报告版</span>
+          <span class="price-name">单次正式存证报告</span>
+          <span class="price-tag">¥3.9 <small style="font-size:14px;color:var(--soft);">/ 海外 $1.99</small></span>
+          <div class="price-compare-hint">一次性买断单次报告 · 适合单一纠纷，无需月度续费</div>
+          <ul class="check-list">
+            <li>导出 1 份完整无水印正式 PDF 存证报告</li>
+            <li>加盖防篡改数字存证 ID 与 GPS 水印</li>
+            <li>标准声学统计指标 (LAeq, L10, L90, 峰值)</li>
+            <li>适用于物业交涉、居委会调解或报警备查</li>
+          </ul>
+          <a class="button" href="../soundtest.html?pay=single">微信支付解锁 · ¥3.9</a>
+          <div style="font-size:12px;color:var(--soft);text-align:center;margin-top:-4px;">
+            <a href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener" style="color:var(--soft);text-decoration:underline;">海外信用卡结算 ($1.99) &rarr;</a>
+          </div>
         </div>
 
         <div class="price-card pro reveal">
+          <span class="price-badge-popular">★ 最受欢迎 · 年付仅合 ¥1.6/月</span>
           <span class="price-pill">高级版</span>
-          <span class="price-name">升级高级版</span>
-          <span class="price-tag">$4.99/mo · $24.99/yr · $79.99 lifetime</span>
+          <span class="price-name">Pro 专业长期维权</span>
+          <span class="price-tag">¥19.9/年 · ¥39.9终身 <small style="font-size:13px;color:var(--soft);">(月卡¥9.9)</small></span>
+          <div class="price-compare-hint">比购买实体分贝仪（通常需 ¥200~¥500）更便宜、更快速，随时可退</div>
           <ul class="check-list">
-            <li>No Advertisements</li>
-            <li>Extended local recording workflow</li>
-            <li>Export PDF evidence report</li>
-            <li>Premium evidence templates</li>
-            <li>Metadata backup export</li>
+            <li>全程无广告干扰</li>
+            <li>无限次导出正式无水印 PDF 存证报告</li>
+            <li>24小时超长连续监测与录制底稿</li>
+            <li>解锁 5 套纠纷维权模板与投诉话术</li>
+            <li>本地证据元数据备份与恢复导出</li>
           </ul>
-          <a class="button primary" href="https://weevolution0.gumroad.com/l/soundtest-pro-yearly" target="_blank" rel="noopener">Get Pro Yearly · $24.99</a>
+          <a class="button primary" href="../soundtest.html?pay=yearly">微信支付开通年卡 · ¥19.9</a>
           <div class="price-extra-links">
-            <a href="https://weevolution0.gumroad.com/l/soundtest-pro-monthly" target="_blank" rel="noopener">Monthly · $4.99</a>
+            <a href="../soundtest.html?pay=pro">月卡 · ¥9.9</a>
             <span aria-hidden="true">·</span>
-            <a href="https://weevolution0.gumroad.com/l/soundtest-pro-lifetime" target="_blank" rel="noopener">Lifetime · $79.99</a>
+            <a href="../soundtest.html?pay=lifetime" style="font-weight:700;color:var(--accent);">终身买断 · ¥39.9</a>
           </div>
-          <a class="button-link" href="../auth.html">I already have an account</a>
+          <div style="font-size:11.5px;color:var(--soft);text-align:center;margin-top:4px;">
+            海外信用卡 (Creem): <a href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener" style="color:var(--soft);text-decoration:underline;">年付 $24.99</a> · <a href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="color:var(--soft);text-decoration:underline;">月付 $4.99</a> · <a href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="color:var(--soft);text-decoration:underline;">终身 $79.99</a>
+          </div>
+          <a class="button-link" href="../auth.html" style="margin-top:6px;">已有账号？登录同步权益</a>
         </div>
       </div>
     </section>
@@ -351,11 +438,9 @@
 
     <section class="section grid two">
       <div class="notice reveal">
-        <strong>免责声明：</strong> This tool is for civilian reference and field documentation only, not professional metering equipment. All audio and data are processed locally on your device unless you choose to export or share files.
-      </div>
+        <strong>合规与事实存证声明：</strong> SOUNDTEST.PRO 提供客观、防篡改的现场声学第一手事实数字化存证，精准记录分贝变化、频率特征、时间戳与地理位置链条，专用于物业协调、民间调解、租房争议与行政投诉的事实底稿呈递。涉及法定强制计量行政处罚的案件，以当地法定计量检定机构数据为准。全部音频与传感数据均在本地运行处理。</div>
       <div class="notice reveal" style="border-left-color:var(--accent-2);background:linear-gradient(135deg, rgba(124,155,255,0.10), rgba(255,255,255,0.025))">
-        <strong>隐私保护：</strong> 静态网页工具不会收集, store, or share your microphone, location, or recording data on a server. Your records remain local to your browser unless you export them.
-      </div>
+        <strong>隐私保护与数据完整性：</strong> 本系统采用纯本地（Zero-Knowledge）计算架构，绝不向任何外部云端服务器上传、留存或转录您的麦克风音频、地理位置与现场录像。所有取证报告与原始数据均完好加密保存在您的本地浏览器中，由您完全自主掌控导出。</div>
     </section>
 
     <footer class="footer-deluxe" role="contentinfo">
@@ -382,7 +467,7 @@
         <div class="footer-col">
           <h4>产品</h4>
           <ul>
-            <li><a href="../app.html">打开工具</a></li>
+            <li><a href="../soundtest.html">打开工具</a></li>
             <li><a href="../soundtest.html">在线分贝仪</a></li>
             <li><a href="../samples.html">录音样例</a></li>
             <li><a href="../accuracy.html">麦克风测试与精度</a></li>
@@ -394,7 +479,7 @@
           <h4>资源</h4>
           <ul>
             <li><a href="../standards.html">噪声标准</a></li>
-            <li><a href="../noise-levels/">Noise Levels Chart</a></li>
+            <li><a href="../noise-levels.html">Noise Levels Chart</a></li>
             <li><a href="../changelog.html">更新记录与博客</a></li>
             <li><a href="../use-cases/neighbor-noise-evidence.html">邻里噪音指南</a></li>
             <li><a href="../use-cases/construction-noise-monitoring.html">施工噪音指南</a></li>

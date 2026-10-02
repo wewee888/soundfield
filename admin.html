@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>超级管理员控制台 · SOUNDTEST.PRO Admin</title>
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/auth.css">
+  <style>
+    :root {
+      --admin-bg: #040711;
+      --admin-panel: #0b1120;
+      --admin-card: rgba(15, 23, 42, 0.75);
+      --admin-border: rgba(44, 240, 193, 0.2);
+      --admin-accent: #2cf0c1;
+      --admin-accent-glow: rgba(44, 240, 193, 0.35);
+      --admin-gold: #f59e0b;
+      --admin-blue: #3b82f6;
+    }
+    body {
+      background-color: var(--admin-bg);
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .admin-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: var(--admin-panel);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      margin-bottom: 28px;
+    }
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .admin-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(44, 240, 193, 0.15);
+      border: 1px solid rgba(44, 240, 193, 0.4);
+      color: var(--admin-accent);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .stat-box {
+      background: var(--admin-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 20px 22px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--admin-accent), transparent);
+    }
+    .stat-label {
+      font-size: 12.5px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .stat-val {
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+    }
+    .stat-sub {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 6px;
+    }
+
+    /* Admin Action Split */
+    .admin-main-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 960px) {
+      .admin-main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .admin-card {
+      background: var(--admin-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .admin-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .form-control {
+      width: 100%;
+      box-sizing: border-box;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .form-control:focus {
+      border-color: var(--admin-accent);
+      box-shadow: 0 0 12px rgba(44, 240, 193, 0.2);
+    }
+    .btn-admin {
+      background: linear-gradient(135deg, #2cf0c1 0%, #10b981 100%);
+      color: #04101a;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: 0 4px 16px var(--admin-accent-glow);
+      transition: all .2s ease;
+    }
+    .btn-admin:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--admin-accent-glow);
+    }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      margin-top: 8px;
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* Orders Table */
+    .table-tools {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+    th {
+      background: rgba(15, 23, 42, 0.95);
+      padding: 12px 14px;
+      color: #94a3b8;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+      white-space: nowrap;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .status-paid { background: rgba(44, 240, 193, 0.15); color: #2cf0c1; border: 1px solid rgba(44, 240, 193, 0.4); }
+    .status-pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+    /* Auth Gate Modal */
+    .login-gate {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 17, 0.95);
+      backdrop-filter: blur(16px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-box {
+      width: 100%;
+      max-width: 400px;
+      background: var(--admin-panel);
+      border: 1px solid var(--admin-border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(44, 240, 193, 0.15);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Super Admin Authentication Gate Modal -->
+  <div class="login-gate" id="adminGateModal">
+    <div class="login-box">
+      <div style="font-size: 32px; margin-bottom: 12px;">🛡️</div>
+      <h2 style="margin: 0 0 6px; color: #fff; font-size: 20px; font-weight: 800;">超级管理员安全入口</h2>
+      <p style="font-size: 13px; color: #94a3b8; margin: 0 0 24px;">SOUNDTEST.PRO · Super Admin Authentication</p>
+      
+      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+        <div class="form-group" style="text-align: left;">
+          <label for="adminSecretInput">管理员授权密匙 (ADMIN_SECRET)</label>
+          <input type="password" id="adminSecretInput" class="form-control" placeholder="输入管理员密匙" required autofocus autocomplete="current-password">
+        </div>
+        <p id="adminLoginErr" style="color: #f87171; font-size: 12.5px; margin: -6px 0 14px; text-align: left; display: none;"></p>
+        <button type="submit" class="btn-admin" id="adminLoginBtn">解锁超级管理控制台</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Main Dashboard App -->
+  <div class="admin-container" id="adminApp" style="display: none;">
+    <!-- Top Bar -->
+    <header class="admin-header">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <a href="index.html" class="admin-brand">
+          <span style="font-size: 20px;">⚡</span>
+          <span style="font-weight: 900; font-size: 18px; letter-spacing: 0.05em;">SOUNDTEST<span style="color:var(--admin-accent)">.PRO</span></span>
+        </a>
+        <span class="admin-badge">Super Admin Console</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 12px; color: #94a3b8;">KV 引擎: <strong style="color:#2cf0c1">ab_test 在线</strong></span>
+        <button onclick="handleAdminLogout()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #cbd5e1; padding: 6px 14px; font-size: 12px; cursor: pointer;">退出管理</button>
+      </div>
+    </header>
+
+    <!-- Top Stats Overview -->
+    <div class="admin-stats-grid">
+      <div class="stat-box">
+        <div class="stat-label">微信支付总额 (CNY)</div>
+        <div class="stat-val" id="statGmvCny">¥ 0.00</div>
+        <div class="stat-sub">境内微信支付累计已入账</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">海外支付总额 (USD)</div>
+        <div class="stat-val" id="statGmvUsd">$ 0.00</div>
+        <div class="stat-sub">Creem.io / Gumroad 海外累计</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">今日营业额 (Today GMV)</div>
+        <div class="stat-val" id="statTodayGmv" style="color: #f59e0b;">¥ 0.00</div>
+        <div class="stat-sub">当日实时支付流水</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">成功付费订单数</div>
+        <div class="stat-val" id="statPaidCount" style="color: #2cf0c1;">0</div>
+        <div class="stat-sub">总计有效核销交易</div>
+      </div>
+    </div>
+
+    <!-- Main Grid: License Granting & Live Orders -->
+    <div class="admin-main-grid">
+      <!-- Left Panel: License Provisioning & Email Magic Link Test -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- Grant License Card -->
+        <div class="admin-card">
+          <h3 class="admin-card-title">🔑 用户授权与 VIP 开通</h3>
+          <p style="font-size: 12.5px; color: #94a3b8; margin: -10px 0 16px; line-height: 1.5;">
+            手动为指定邮箱开通或撤销 PRO / 终身会员资格，写入 Cloudflare KV 立即全球生效。
+          </p>
+          <form id="grantLicenseForm" onsubmit="handleGrantLicense(event)">
+            <div class="form-group">
+              <label for="grantEmail">用户邮箱 (User Email)</label>
+              <input type="email" id="grantEmail" class="form-control" placeholder="user@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="grantPlan">会员层级方案 (Plan Tier)</label>
+              <select id="grantPlan" class="form-control" onchange="adjustDaysDefault()">
+                <option value="single">单次版 (Single Report) - ¥3.9 / $1.99</option>
+                <option value="pro" selected>月度 PRO 会员 (Monthly) - ¥9.9 / $4.99</option>
+                <option value="yearly">年度专业版 (Yearly Team) - ¥19.9 / $24.99</option>
+                <option value="lifetime">终身无限制版 (Lifetime) - ¥39.9 / $79.99</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="grantDays">有效天数 (Expiration Days)</label>
+              <input type="number" id="grantDays" class="form-control" value="30">
+            </div>
+            <div class="form-group">
+              <label for="grantNote">管理员备注 (Internal Note)</label>
+              <input type="text" id="grantNote" class="form-control" placeholder="微信转账客户 / 运营赠送" value="微信客户手动开通">
+            </div>
+            <button type="submit" class="btn-admin" id="btnSubmitGrant">一键授权开通 / Grant License</button>
+            <button type="button" class="btn-admin btn-danger" onclick="handleRevokeLicense()">撤销该用户会员资格 / Revoke</button>
+            <div id="grantResultMsg" style="margin-top: 14px; font-size: 12.5px; display: none;"></div>
+          </form>
+        </div>
+
+        <!-- Email Sending Magic Link Quick Tester -->
+        <div class="admin-card">
+          <h3 class="admin-card-title">✉️ 邮件免密登录通道测试</h3>
+          <p style="font-size: 12.5px; color: #94a3b8; margin: -10px 0 16px; line-height: 1.5;">
+            测试 Cloudflare Email Sending (system@soundtest.pro) 魔法链接与动态验证码发信通道。
+          </p>
+          <div class="form-group">
+            <label for="testEmailInput">测试接收邮箱</label>
+            <input type="email" id="testEmailInput" class="form-control" placeholder="输入测试收件箱">
+          </div>
+          <button type="button" class="btn-admin" onclick="handleTestMagicEmail()" id="btnTestEmail">发送测试魔法邮件</button>
+          <div id="testEmailMsg" style="margin-top: 12px; font-size: 12.5px; display: none;"></div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Live Orders Stream Table -->
+      <div class="admin-card" style="display: flex; flex-direction: column;">
+        <div class="table-tools">
+          <h3 class="admin-card-title" style="margin: 0;">📦 实时支付交易流水</h3>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="orderSearchInput" class="form-control" placeholder="搜索订单号或邮箱…" style="width: 200px; padding: 6px 10px; font-size: 12px;" oninput="renderOrdersTable()">
+            <button onclick="fetchOrders()" class="btn-admin" style="width: auto; padding: 6px 14px; font-size: 12px;">刷新数据</button>
+            <button onclick="exportOrdersCsv()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; padding: 6px 12px; font-size: 12px; cursor: pointer;">导出 CSV</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>订单号</th>
+                <th>用户邮箱</th>
+                <th>购买方案</th>
+                <th>金额</th>
+                <th>支付方式</th>
+                <th>订单状态</th>
+                <th>创建时间</th>
+                <th>支付完成时间</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <tr>
+                <td colspan="8" style="text-align: center; color: #64748b; padding: 30px;">正在加载订单流水…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let adminToken = sessionStorage.getItem('soundtest_admin_token') || '';
+    let rawOrdersList = [];
+
+    function checkAuth() {
+      if (adminToken) {
+        document.getElementById('adminGateModal').style.display = 'none';
+        document.getElementById('adminApp').style.display = 'block';
+        fetchOrders();
+      } else {
+        document.getElementById('adminGateModal').style.display = 'flex';
+        document.getElementById('adminApp').style.display = 'none';
+      }
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const input = document.getElementById('adminSecretInput');
+      const errEl = document.getElementById('adminLoginErr');
+      const btn = document.getElementById('adminLoginBtn');
+      const token = input.value.trim();
+      if (!token) return;
+
+      btn.disabled = true;
+      btn.textContent = '正在验证…';
+      errEl.style.display = 'none';
+
+      try {
+        const resp = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (resp.ok && data.ok) {
+          adminToken = token;
+          sessionStorage.setItem('soundtest_admin_token', adminToken);
+          checkAuth();
+        } else {
+          errEl.textContent = data.message || '管理员密码错误，请重试';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = '解锁超级管理控制台';
+        }
+      } catch (err) {
+        errEl.textContent = '网络错误，请稍后重试';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = '解锁超级管理控制台';
+      }
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem('soundtest_admin_token');
+      adminToken = '';
+      checkAuth();
+    }
+
+    function adjustDaysDefault() {
+      const plan = document.getElementById('grantPlan').value;
+      const daysInput = document.getElementById('grantDays');
+      if (plan === 'pro') daysInput.value = 30;
+      else if (plan === 'yearly') daysInput.value = 365;
+      else if (plan === 'lifetime') daysInput.value = 36500;
+      else if (plan === 'single') daysInput.value = 365;
+    }
+
+    async function fetchOrders() {
+      try {
+        const resp = await fetch('/api/admin/orders', {
+          headers: {
+            'Authorization': 'Bearer ' + adminToken,
+          }
+        });
+        if (resp.status === 401) {
+          handleAdminLogout();
+          return;
+        }
+        const data = await resp.json().catch(() => ({}));
+        if (data.ok) {
+          document.getElementById('statGmvCny').textContent = '¥ ' + (data.stats.total_cny || 0).toFixed(2);
+          document.getElementById('statGmvUsd').textContent = '$ ' + (data.stats.total_usd || 0).toFixed(2);
+          document.getElementById('statTodayGmv').textContent = '¥ ' + (data.stats.today_cny || 0).toFixed(2);
+          document.getElementById('statPaidCount').textContent = data.stats.paid_orders || 0;
+
+          rawOrdersList = data.orders || [];
+          renderOrdersTable();
+        }
+      } catch (err) {
+        console.error('Fetch orders failed', err);
+      }
+    }
+
+    function renderOrdersTable() {
+      const tbody = document.getElementById('ordersTableBody');
+      const search = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
+
+      const filtered = rawOrdersList.filter(o => {
+        if (!search) return true;
+        return (o.id && o.id.toLowerCase().includes(search)) ||
+               (o.email && o.email.toLowerCase().includes(search)) ||
+               (o.plan && o.plan.toLowerCase().includes(search));
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 26px;">暂无匹配的订单记录</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(o => {
+        const isPaid = o.status === 'paid';
+        const feeFormatted = o.fee ? (o.fee > 100 ? (o.fee / 100).toFixed(2) : Number(o.fee).toFixed(2)) : '0.00';
+        const currencySym = (o.provider === 'creem' || o.provider === 'gumroad') ? '$' : '¥';
+        const planNames = { single: '单次报告', pro: '月度 PRO', yearly: '年度 Team', lifetime: '终身版' };
+        const planText = planNames[o.plan] || o.plan;
+        const createdDate = o.created_at ? new Date(o.created_at).toLocaleString() : '--';
+        const paidDate = o.paid_at ? new Date(o.paid_at).toLocaleString() : (isPaid ? createdDate : '--');
+
+        return `<tr>
+          <td style="font-family: monospace; font-size: 12px; color: #94a3b8;">${o.id || '--'}</td>
+          <td style="font-weight: 600; color: #fff;">${o.email || '<span style="color:#64748b">微信游客</span>'}</td>
+          <td><span style="color: #2cf0c1; font-weight: 700;">${planText}</span></td>
+          <td style="font-weight: 800; font-family: monospace; color: #f59e0b;">${currencySym} ${feeFormatted}</td>
+          <td><span style="font-size: 11.5px; color: #94a3b8;">${o.provider || '微信支付'}</span></td>
+          <td>
+            <span class="status-badge ${isPaid ? 'status-paid' : 'status-pending'}">
+              ${isPaid ? '已支付' : '等待支付'}
+            </span>
+          </td>
+          <td style="font-size: 12px; color: #64748b;">${createdDate}</td>
+          <td style="font-size: 12px; color: #64748b;">${paidDate}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function handleGrantLicense(e) {
+      e.preventDefault();
+      const email = document.getElementById('grantEmail').value.trim();
+      const plan = document.getElementById('grantPlan').value;
+      const days = document.getElementById('grantDays').value;
+      const note = document.getElementById('grantNote').value;
+      const msgEl = document.getElementById('grantResultMsg');
+      const btn = document.getElementById('btnSubmitGrant');
+
+      btn.disabled = true;
+      btn.textContent = '正在开通…';
+      msgEl.style.display = 'none';
+
+      try {
+        const resp = await fetch('/api/admin/grant', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + adminToken,
+          },
+          body: JSON.stringify({ email, plan, days, note, action: 'grant' }),
+        });
+        const result = await resp.json().catch(() => ({}));
+        btn.disabled = false;
+        btn.textContent = '一键授权开通 / Grant License';
+
+        if (resp.ok && result.ok) {
+          msgEl.style.color = '#2cf0c1';
+          msgEl.textContent = `✅ 成功开通！用户 ${email} 获授 ${plan.toUpperCase()} 会员，有效至 ${new Date(result.expires_at).toLocaleDateString()}`;
+          msgEl.style.display = 'block';
+          fetchOrders();
+        } else {
+          msgEl.style.color = '#f87171';
+          msgEl.textContent = '❌ 操作失败：' + (result.message || '未知错误');
+          msgEl.style.display = 'block';
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = '一键授权开通 / Grant License';
+        msgEl.style.color = '#f87171';
+        msgEl.textContent = '网络请求失败，请稍后重试';
+        msgEl.style.display = 'block';
+      }
+    }
+
+    async function handleRevokeLicense() {
+      const email = document.getElementById('grantEmail').value.trim();
+      if (!email || !email.includes('@')) {
+        alert('请输入需要撤销的有效用户邮箱');
+        return;
+      }
+      if (!confirm(`确定要撤销用户 ${email} 的会员授权吗？`)) return;
+
+      const msgEl = document.getElementById('grantResultMsg');
+      try {
+        const resp = await fetch('/api/admin/grant', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + adminToken,
+          },
+          body: JSON.stringify({ email, action: 'revoke' }),
+        });
+        const result = await resp.json().catch(() => ({}));
+        if (resp.ok && result.ok) {
+          msgEl.style.color = '#fbbf24';
+          msgEl.textContent = `⚠️ 已成功撤销用户 ${email} 的会员资格并清除 KV 记录。`;
+          msgEl.style.display = 'block';
+        } else {
+          msgEl.style.color = '#f87171';
+          msgEl.textContent = '撤销失败：' + (result.message || '未知错误');
+          msgEl.style.display = 'block';
+        }
+      } catch (err) {
+        msgEl.style.color = '#f87171';
+        msgEl.textContent = '网络错误';
+        msgEl.style.display = 'block';
+      }
+    }
+
+    async function handleTestMagicEmail() {
+      const email = document.getElementById('testEmailInput').value.trim();
+      const msgEl = document.getElementById('testEmailMsg');
+      const btn = document.getElementById('btnTestEmail');
+      if (!email || !email.includes('@')) {
+        alert('请输入有效的测试收件邮箱');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '正在通过 env.EMAIL 发送…';
+      msgEl.style.display = 'none';
+
+      try {
+        const resp = await fetch('/api/auth/magic-link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        const result = await resp.json().catch(() => ({}));
+        btn.disabled = false;
+        btn.textContent = '发送测试魔法邮件';
+
+        if (resp.ok && result.ok) {
+          msgEl.style.color = '#2cf0c1';
+          msgEl.innerHTML = `✅ 邮件已成功提交发信通道！MessageID: ${result.message_id || 'OK'}<br>若收件箱未收到，请检查垃圾箱或 Cloudflare Email Routing 设置。${result.code ? `<br><strong>动态验证码:</strong> ${result.code}` : ''}`;
+          msgEl.style.display = 'block';
+        } else {
+          msgEl.style.color = '#f87171';
+          msgEl.textContent = '❌ 发信失败：' + (result.message || '未知错误');
+          msgEl.style.display = 'block';
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = '发送测试魔法邮件';
+        msgEl.style.color = '#f87171';
+        msgEl.textContent = '网络请求失败';
+        msgEl.style.display = 'block';
+      }
+    }
+
+    function exportOrdersCsv() {
+      if (!rawOrdersList || rawOrdersList.length === 0) {
+        alert('暂无可导出的订单记录');
+        return;
+      }
+      const headers = ['Order ID', 'Email', 'Plan', 'Fee', 'Provider', 'Status', 'Created At', 'Paid At'];
+      const rows = rawOrdersList.map(o => [
+        `"${o.id || ''}"`,
+        `"${o.email || ''}"`,
+        `"${o.plan || ''}"`,
+        `"${o.fee || ''}"`,
+        `"${o.provider || ''}"`,
+        `"${o.status || ''}"`,
+        `"${o.created_at || ''}"`,
+        `"${o.paid_at || ''}"`,
+      ]);
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `soundtest-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.addEventListener('DOMContentLoaded', checkAuth);
+  </script>
+</body>
+</html>

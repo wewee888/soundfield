@@ -122,7 +122,7 @@
     .bento p { font-size: 14px; }
 
     /* Pricing */
-    .pricing-row { display: grid; grid-template-columns: 1fr 1.2fr; gap: 18px; align-items: stretch; }
+    .pricing-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; align-items: stretch; }
     @media (max-width: 880px) { .pricing-row { grid-template-columns: 1fr; } }
     .pricing-card { padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--ink-border); background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); backdrop-filter: blur(20px) saturate(140%); display: flex; flex-direction: column; }
     .pricing-card.featured { background: linear-gradient(135deg, rgba(44, 240, 193, 0.12), rgba(124, 155, 255, 0.10)); border-color: rgba(44, 240, 193, 0.3); box-shadow: var(--shadow-lg), inset 0 1px 0 var(--ink-rim); }
@@ -158,8 +158,10 @@
     .preview-evidence-row .value.danger { color: var(--red); font-weight: 700; }
     .preview-evidence-row .value.ok { color: var(--accent); }
   </style>
-  <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
-  <script>LA.init({id:"281wblDNvub2tk9f",ck:"281wblDNvub2tk9f"})</script>
+  <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+
+  <script>LA.init({id:"281wblDNvub2tk9f",ck:"281wblDNvub2tk9f"})</script>
+
 </head>
 <body data-variant="B">
   <main class="site-shell">
@@ -196,6 +198,11 @@
             <span><strong>1,200+</strong> quiet complaints logged this week · 9 languages</span>
           </div>
 
+          <div class="hero-actions">
+            <a class="button primary" href="../soundtest.html" data-cta="start_monitoring">Lock In The Evidence</a>
+            <a class="button" href="../samples.html" data-cta="view_sample">See a sample report</a>
+          </div>
+
           <form class="hero-search" data-hero-form aria-label="Try the noise evidence workflow">
             <div class="hero-search-row">
               <input type="text" class="hero-search-input" data-hero-input placeholder="Tell us what&rsquo;s keeping you up..." autocomplete="off" spellcheck="false">
@@ -211,11 +218,6 @@
               <button type="button" class="chip" role="listitem" data-chip="Landlord won&rsquo;t return deposit" data-chip-path="../use-cases/rental-dispute-evidence.html"><span class="chip-icon" aria-hidden="true"></span>Landlord deposit</button>
             </div>
           </form>
-
-          <div class="hero-actions">
-            <a class="button primary" href="../app.html" data-cta="start_monitoring">Lock In The Evidence</a>
-            <a class="button" href="../samples.html" data-cta="view_sample">See a sample report</a>
-          </div>
         </div>
 
         <aside class="hero-preview empathy reveal" aria-label="Live recorder preview">
@@ -350,7 +352,19 @@
             <li>All 9 languages, browser-only</li>
             <li>Local storage, no server upload</li>
           </ul>
-          <a class="button" href="../app.html" data-cta="pricing_free">Open the recorder</a>
+          <a class="button" href="../soundtest.html" data-cta="pricing_free">Open the recorder</a>
+        </div>
+                <div class="pricing-card reveal">
+          <h3>Single Report</h3>
+          <p style="font-size:13.5px;color:var(--muted)">For one-off noise complaints and tenant filings.</p>
+          <div class="price">$1.99<small> / one-time</small></div>
+          <ul>
+            <li>1 Clean unwatermarked official PDF report</li>
+            <li>Digital tamper-evident ID &amp; GPS watermark</li>
+            <li>Acoustic metrics (LAeq, L10, L90, Peak)</li>
+            <li>No subscription or recurring charges</li>
+          </ul>
+          <a class="button" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Unlock Single Report · $1.99</a>
         </div>
         <div class="pricing-card featured reveal">
           <h3>Pro</h3>
@@ -363,9 +377,9 @@
             <li>Share-with-lawyer link, expiry controls</li>
             <li>Priority support, evidence review within 24h</li>
           </ul>
-          <a class="button primary" href="https://weevolution0.gumroad.com/l/soundtest-pro-yearly" target="_blank" rel="noopener">Get Pro Yearly · $24.99</a>
-          <a class="button-link" href="https://weevolution0.gumroad.com/l/soundtest-pro-monthly" target="_blank" rel="noopener">Monthly · $4.99</a>
-          <a class="button-link" href="https://weevolution0.gumroad.com/l/soundtest-pro-lifetime" target="_blank" rel="noopener">Lifetime · $79.99</a>
+          <a class="button primary" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Get Pro Yearly · $24.99</a>
+          <a class="button-link" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener">Monthly · $4.99</a>
+          <a class="button-link" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener">Lifetime · $79.99</a>
         </div>
       </div>
     </section>
@@ -429,7 +443,7 @@
         <div class="footer-col">
           <h4>Product</h4>
           <ul>
-            <li><a href="../app.html">Open App</a></li>
+            <li><a href="../soundtest.html">Open App</a></li>
             <li><a href="../soundtest.html">Online Decibel Meter</a></li>
             <li><a href="../samples.html">Noise Recorder Samples</a></li>
             <li><a href="../accuracy.html">Mic Test &amp; Accuracy</a></li>

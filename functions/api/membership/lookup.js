@@ -22,9 +22,34 @@ export async function onRequestPost(context) {
     if (!email || email.indexOf('@') === -1) {
       return json({ error: 'invalid_email' }, 400);
     }
+
+    // 1. Check Cloudflare KV ab_test first (manual grants, WeChat Pay, Creem)
+    if (env.ab_test) {
+      try {
+        const kvRaw = await env.ab_test.get(`member:${email}`);
+        if (kvRaw) {
+          const mem = JSON.parse(kvRaw);
+          const notExpired = !mem.expires_at || new Date(mem.expires_at).getTime() > Date.now();
+          if (notExpired) {
+            return json({
+              active: true,
+              plan: mem.plan || 'pro',
+              plan_display: mem.plan_display || mem.plan || 'pro',
+              status: mem.status || 'paid',
+              saleId: mem.order_id || 'cf_kv_grant',
+              expires_at: mem.expires_at || null,
+              granted_by: mem.granted_by || 'system',
+            });
+          }
+        }
+      } catch (kvErr) {
+        console.error('KV membership lookup error:', kvErr);
+      }
+    }
+
     const token = String(env.GUMROAD_ACCESS_TOKEN || '');
     if (!token) {
-      return json({ error: 'billing_not_configured' }, 503);
+      return json({ active: false, plan: 'free', status: 'inactive', note: 'kv_checked' });
     }
 
     const url = 'https://api.gumroad.com/v2/sales?after=2020-01-01';

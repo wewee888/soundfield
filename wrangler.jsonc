@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "soundtest-pro",
+  "compatibility_date": "2024-09-01",
+  "pages_build_output_dir": ".",
+  "kv_namespaces": [
+    {
+      "binding": "ab_test",
+      "id": "f55cc042ea81496fb9599564c5fdfedd",
+      "preview_id": "f55cc042ea81496fb9599564c5fdfedd"
+    }
+  ],
+  "vars": {
+    "EMAIL_FROM": "system@soundtest.pro",
+    "CLOUDFLARE_ACCOUNT_ID": "514556cd08e5edb572a5b17e3f46eaf8",
+    "CREEM_URL_SINGLE": "https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC",
+    "CREEM_URL_PRO_MONTHLY": "https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ",
+    "CREEM_URL_PRO_YEARLY": "https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c",
+    "CREEM_URL_LIFETIME": "https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV"
+  }
+}

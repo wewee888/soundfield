@@ -1,10 +1,16 @@
-// Gumroad checkout URL builder. We do NOT call Gumroad's API to create a session —
-// Gumroad product pages are the checkout. We just append the buyer's email and
-// tracking params, then redirect.
+// Creem.io checkout URL builder. Redirects to Creem checkout pages with buyer email and tracking.
 const PLAN_URL_ENV = {
-  pro: 'GUMROAD_URL_PRO_MONTHLY',
-  team: 'GUMROAD_URL_PRO_YEARLY',
-  lifetime: 'GUMROAD_URL_LIFETIME',
+  single: 'CREEM_URL_SINGLE',
+  pro: 'CREEM_URL_PRO_MONTHLY',
+  team: 'CREEM_URL_PRO_YEARLY',
+  lifetime: 'CREEM_URL_LIFETIME',
+};
+
+const DEFAULT_URLS = {
+  single: 'https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC',
+  pro: 'https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ',
+  team: 'https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c',
+  lifetime: 'https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV',
 };
 
 function json(data, status = 200) {
@@ -32,14 +38,21 @@ export async function onRequestPost(context) {
   const email = String(body.email || '').trim().toLowerCase();
   const source = String(body.source || 'soundtest-pro-web');
 
-  if (!['pro', 'team', 'lifetime'].includes(plan)) {
+  if (!['single', 'pro', 'team', 'lifetime'].includes(plan)) {
     return json({ error: 'invalid_plan' }, 400);
   }
   if (!email || !email.includes('@')) {
     return json({ error: 'invalid_email' }, 400);
   }
 
-  const baseUrl = String(env[PLAN_URL_ENV[plan]] || '');
+  const envKey = PLAN_URL_ENV[plan];
+  const baseUrl = String(
+    env[envKey] ||
+    (plan === 'pro' && env.GUMROAD_URL_PRO_MONTHLY) ||
+    (plan === 'team' && env.GUMROAD_URL_PRO_YEARLY) ||
+    (plan === 'lifetime' && env.GUMROAD_URL_LIFETIME) ||
+    DEFAULT_URLS[plan] || ''
+  );
   if (!baseUrl) {
     return json({ error: 'billing_not_configured' }, 503);
   }

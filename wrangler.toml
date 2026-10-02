@@ -11,11 +11,12 @@ binding = "ab_test"
 id = "f55cc042ea81496fb9599564c5fdfedd"
 preview_id = "f55cc042ea81496fb9599564c5fdfedd"
 
-# Gumroad payment integration (public values; secret token set via wrangler pages secret put)
+
+# Creem & WeChat payment integration & system vars
 [vars]
-GUMROAD_URL_PRO_MONTHLY = "https://weevolution0.gumroad.com/l/soundtest-pro-monthly"
-GUMROAD_URL_PRO_YEARLY = "https://weevolution0.gumroad.com/l/soundtest-pro-yearly"
-GUMROAD_URL_LIFETIME = "https://weevolution0.gumroad.com/l/soundtest-pro-lifetime"
-GUMROAD_PRODUCT_ID_PRO_MONTHLY = "vzehlz"
-GUMROAD_PRODUCT_ID_PRO_YEARLY = "adhyu"
-GUMROAD_PRODUCT_ID_LIFETIME = "bclypn"
+EMAIL_FROM = "system@soundtest.pro"
+CLOUDFLARE_ACCOUNT_ID = "514556cd08e5edb572a5b17e3f46eaf8"
+CREEM_URL_SINGLE = "https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC"
+CREEM_URL_PRO_MONTHLY = "https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ"
+CREEM_URL_PRO_YEARLY = "https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c"
+CREEM_URL_LIFETIME = "https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV"

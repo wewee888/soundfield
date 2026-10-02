@@ -26,8 +26,28 @@
   }
 
   function loadRecords() {
-    try { return JSON.parse(localStorage.getItem(RECORDS_KEY) || '[]'); }
-    catch (_) { return []; }
+    try {
+      const authRecords = JSON.parse(localStorage.getItem(RECORDS_KEY) || '[]');
+      const sfData = JSON.parse(localStorage.getItem('sf_v5') || '{}');
+      const sfRecords = Array.isArray(sfData.records) ? sfData.records : [];
+      const combined = [...authRecords];
+      sfRecords.forEach(r => {
+        if (!combined.some(c => c.id === r.id)) {
+          combined.push({
+            id: r.id,
+            title: r.scene ? `${r.scene} noise recording` : 'Sound measurement',
+            decibels: r.laeq || r.db || 0,
+            timestamp: r.time,
+            location: r.place || r.city || '',
+            exportedAt: r.exportedAt || null,
+            photos: r.photos || (r.photoBlob ? [r.photoBlob] : []),
+          });
+        }
+      });
+      return combined;
+    } catch (_) {
+      return [];
+    }
   }
 
   function loadTemplates() {
@@ -94,13 +114,95 @@
     utility.appendChild(register);
   }
 
+  /* ── Magic link token auto-login ── */
+  async function checkMagicTokenLogin() {
+    const params = new URLSearchParams(window.location.search);
+    const magicToken = params.get('magic_token');
+    if (!magicToken) return false;
+
+    showToast('正在验证魔法链接安全凭证… / Verifying…', 'info');
+    try {
+      const res = await fetch('/api/auth/verify-magic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ magic_token: magicToken }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        showToast(data.message || '魔法链接已失效或已被使用，请重新获取。', 'err');
+        return false;
+      }
+
+      const email = data.email;
+      const users = loadUsers();
+      let user = users.find(u => u.email === email);
+      const plan = data.membership?.active ? data.membership.plan : (user?.plan || 'free');
+
+      if (!user) {
+        user = {
+          name: email.split('@')[0],
+          email,
+          createdAt: new Date().toISOString(),
+          plan,
+        };
+        users.push(user);
+        saveUsers(users);
+      } else {
+        user.plan = plan;
+        saveUsers(users);
+      }
+
+      saveSession({
+        name: user.name,
+        email: user.email,
+        plan: user.plan,
+        signedAt: new Date().toISOString(),
+        token: data.session_token,
+      });
+
+      if (data.membership?.active) {
+        try {
+          localStorage.setItem('sf_membership_v1', JSON.stringify({
+            email,
+            active: true,
+            plan: data.membership.plan || 'pro',
+            provider: 'magic_link',
+            status: 'paid',
+            lastCheckedAt: new Date().toISOString(),
+          }));
+        } catch (_) {}
+      }
+
+      const cleanUrl = window.location.pathname + (params.get('redirect_to') ? `?redirect_to=${encodeURIComponent(params.get('redirect_to'))}` : '');
+      window.history.replaceState({}, document.title, cleanUrl);
+
+      showToast('🎉 魔法链接登录成功！欢迎回来。', 'success');
+      return true;
+    } catch (_) {
+      showToast('网络连接异常，请重试', 'err');
+      return false;
+    }
+  }
+
   /* ── Auth page: show/hide shells ── */
-  function initAuthPage() {
+  async function initAuthPage() {
     const unauthenticated = document.querySelector('[data-auth-page="unauthenticated"]');
     const authenticated   = document.querySelector('[data-auth-page="authenticated"]');
     if (!unauthenticated || !authenticated) return;
 
-    const session = loadSession();
+    // Check URL magic link token
+    await checkMagicTokenLogin();
+
+    let session = loadSession();
+    // Sync active plan from sf_membership_v1 if present
+    try {
+      const sfMem = JSON.parse(localStorage.getItem('sf_membership_v1') || 'null');
+      if (sfMem?.active && session) {
+        session.plan = sfMem.plan || session.plan || 'pro';
+        saveSession(session);
+      }
+    } catch (_) {}
+
     // Close any open panels before switching shells
     closePanel('profile');
     closePanel('password');
@@ -156,9 +258,172 @@
       regPassword.addEventListener('input', () => updatePasswordStrength(regPassword.value));
     }
 
+    // Login subtabs switching (Password vs Magic Link)
+    const tabPassword = document.getElementById('tabLoginPassword');
+    const tabMagic = document.getElementById('tabLoginMagic');
+    const subformPassword = document.getElementById('passwordLoginForm');
+    const subformMagic = document.getElementById('magicLoginForm');
+
+    if (tabPassword && tabMagic && subformPassword && subformMagic) {
+      tabPassword.addEventListener('click', () => {
+        tabPassword.classList.add('active');
+        tabPassword.style.background = 'rgba(44,240,193,0.14)';
+        tabPassword.style.color = '#2cf0c1';
+        tabMagic.classList.remove('active');
+        tabMagic.style.background = 'transparent';
+        tabMagic.style.color = '#94a3b8';
+        subformPassword.style.display = 'block';
+        subformMagic.style.display = 'none';
+        clearErrors();
+      });
+
+      tabMagic.addEventListener('click', () => {
+        tabMagic.classList.add('active');
+        tabMagic.style.background = 'rgba(44,240,193,0.14)';
+        tabMagic.style.color = '#2cf0c1';
+        tabPassword.classList.remove('active');
+        tabPassword.style.background = 'transparent';
+        tabPassword.style.color = '#94a3b8';
+        subformPassword.style.display = 'none';
+        subformMagic.style.display = 'block';
+        clearErrors();
+      });
+    }
+
+    // Send Magic Link Button
+    const btnSendMagic = document.getElementById('btnSendMagicLink');
+    const magicCodeSection = document.getElementById('magicCodeSection');
+    if (btnSendMagic) {
+      btnSendMagic.addEventListener('click', async () => {
+        clearErrors();
+        const emailInput = document.getElementById('magicLoginEmail');
+        const email = String(emailInput?.value || '').trim().toLowerCase();
+        if (!email || !email.includes('@')) {
+          setFieldError('magicEmail', '请输入有效的邮箱地址 / Enter a valid email.');
+          return;
+        }
+
+        btnSendMagic.disabled = true;
+        btnSendMagic.textContent = '正在发送凭证… / Sending…';
+
+        try {
+          const resp = await fetch('/api/auth/magic-link', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          });
+          const result = await resp.json().catch(() => ({}));
+          if (!resp.ok || !result.ok) {
+            setFieldError('magicEmail', result.message || '发送失败，请稍后重试');
+            btnSendMagic.disabled = false;
+            btnSendMagic.textContent = '✨ 发送登录链接与验证码 / Send Magic Link';
+            return;
+          }
+
+          showToast('📬 登录凭证已发送，请查收邮箱！', 'success');
+          if (magicCodeSection) magicCodeSection.style.display = 'block';
+          btnSendMagic.style.display = 'none';
+          document.getElementById('magicCodeInput')?.focus();
+
+          if (result.simulated && result.code) {
+            showToast(`[测试模式验证码]: ${result.code}`, 'info');
+          }
+        } catch (_) {
+          setFieldError('magicEmail', '网络错误，请稍后重试');
+          btnSendMagic.disabled = false;
+          btnSendMagic.textContent = '✨ 发送登录链接与验证码 / Send Magic Link';
+        }
+      });
+    }
+
+    // Verify 6-digit Code Button
+    const btnVerifyCode = document.getElementById('btnVerifyCode');
+    if (btnVerifyCode) {
+      btnVerifyCode.addEventListener('click', async () => {
+        clearErrors();
+        const email = String(document.getElementById('magicLoginEmail')?.value || '').trim().toLowerCase();
+        const code = String(document.getElementById('magicCodeInput')?.value || '').trim();
+        if (!code || code.length !== 6) {
+          setFieldError('magicCode', '请输入 6 位纯数字验证码');
+          return;
+        }
+
+        btnVerifyCode.disabled = true;
+        btnVerifyCode.textContent = '正在核验… / Verifying…';
+
+        try {
+          const resp = await fetch('/api/auth/verify-magic', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, code }),
+          });
+          const result = await resp.json().catch(() => ({}));
+          if (!resp.ok || !result.ok) {
+            setFieldError('magicCode', result.message || '验证码错误或已失效');
+            btnVerifyCode.disabled = false;
+            btnVerifyCode.textContent = '验证并登录 / Verify & Sign In';
+            return;
+          }
+
+          const users = loadUsers();
+          let user = users.find(u => u.email === email);
+          const plan = result.membership?.active ? result.membership.plan : (user?.plan || 'free');
+
+          if (!user) {
+            user = {
+              name: email.split('@')[0],
+              email,
+              createdAt: new Date().toISOString(),
+              plan,
+            };
+            users.push(user);
+            saveUsers(users);
+          } else {
+            user.plan = plan;
+            saveUsers(users);
+          }
+
+          saveSession({
+            name: user.name,
+            email: user.email,
+            plan: user.plan,
+            signedAt: new Date().toISOString(),
+            token: result.session_token,
+          });
+
+          if (result.membership?.active) {
+            try {
+              localStorage.setItem('sf_membership_v1', JSON.stringify({
+                email,
+                active: true,
+                plan: result.membership.plan || 'pro',
+                provider: 'magic_code',
+                status: 'paid',
+                lastCheckedAt: new Date().toISOString(),
+              }));
+            } catch (_) {}
+          }
+
+          showToast('🎉 登录成功！欢迎回来。', 'success');
+          setTimeout(() => {
+            initAuthPage();
+            renderNavAuth();
+          }, 500);
+        } catch (_) {
+          setFieldError('magicCode', '核验服务出现异常，请稍后重试');
+          btnVerifyCode.disabled = false;
+          btnVerifyCode.textContent = '验证并登录 / Verify & Sign In';
+        }
+      });
+    }
+
     // Form submissions
-    formLogin.addEventListener('submit', loginUser);
-    formRegister.addEventListener('submit', registerUser);
+    if (subformPassword) {
+      subformPassword.addEventListener('submit', loginUser);
+    } else {
+      formLogin.querySelector('form')?.addEventListener('submit', loginUser);
+    }
+    formRegister.querySelector('form')?.addEventListener('submit', registerUser);
 
     function applyMode(mode) {
       const isRegister = mode === 'register';
@@ -240,6 +505,34 @@
     const users = loadUsers();
     if (users.find(u => u.email === email)) { setFieldError('email', 'Email already registered. Please sign in.'); return; }
 
+    // Verify Cloudflare Turnstile token
+    let turnstileToken = '';
+    if (window.turnstile && typeof window.turnstile.getResponse === 'function') {
+      try { turnstileToken = window.turnstile.getResponse(); } catch (_) {}
+    }
+    if (!turnstileToken) {
+      const tsInput = form.querySelector('[name="cf-turnstile-response"]');
+      if (tsInput) turnstileToken = tsInput.value;
+    }
+
+    try {
+      const verifyResp = await fetch('/api/auth/verify-turnstile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: turnstileToken }),
+      });
+      const verifyData = await verifyResp.json().catch(() => ({}));
+      if (!verifyResp.ok || !verifyData.ok) {
+        setFieldError('turnstile', '请完成人机安全验证 / Please complete human verification.');
+        if (window.turnstile && typeof window.turnstile.reset === 'function') {
+          try { window.turnstile.reset(); } catch (_) {}
+        }
+        return;
+      }
+    } catch (_) {
+      // Offline fallback
+    }
+
     users.push({ name, email, passwordHash: await hashPassword(password), createdAt: new Date().toISOString() });
     saveUsers(users);
     saveSession({ name, email, signedAt: new Date().toISOString() });
@@ -281,9 +574,31 @@
     if (nameEl)  nameEl.textContent  = session.name || 'User';
     if (emailEl) emailEl.textContent = session.email;
 
-    // Find user for createdAt
+    // Find or initialize user
     const users = loadUsers();
-    const user   = users.find(u => u.email === session.email);
+    let user = users.find(u => u.email === session.email);
+    if (!user) {
+      user = {
+        name: session.name || session.email.split('@')[0],
+        email: session.email,
+        createdAt: session.signedAt || new Date().toISOString(),
+        plan: session.plan || 'free',
+      };
+      users.push(user);
+      saveUsers(users);
+    }
+
+    // Check if sf_membership_v1 has active VIP plan
+    try {
+      const sfMem = JSON.parse(localStorage.getItem('sf_membership_v1') || 'null');
+      if (sfMem?.active && sfMem.plan && sfMem.plan !== 'free') {
+        user.plan = sfMem.plan;
+        session.plan = sfMem.plan;
+        saveUsers(users);
+        saveSession(session);
+      }
+    } catch (_) {}
+
     if (sinceEl && user?.createdAt) {
       sinceEl.textContent = new Date(user.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long' });
     }

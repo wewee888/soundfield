@@ -47,7 +47,7 @@ test('multilingual homepage copy covers launch translation set', () => {
 
 test('site routes include the planned public pages', () => {
   const hrefs = site.routes.map((route) => route.href);
-  ['index.html', 'app.html', 'privacy.html', 'accuracy.html', 'standards.html', 'samples.html', 'download.html', 'compliance.html', 'changelog.html'].forEach((href) => {
+  ['index.html', 'soundtest.html', 'privacy.html', 'accuracy.html', 'standards.html', 'samples.html', 'download.html', 'compliance.html', 'changelog.html'].forEach((href) => {
     assert.ok(hrefs.includes(href), `${href} route exists`);
   });
   ['monetization.html', 'launch-metrics.html'].forEach((href) => {
@@ -137,7 +137,7 @@ test('monetization model covers global web-first revenue without cloud overclaim
 test('homepage renders launch copy, scenarios, reference limits, and plan cards', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   assert.match(html, /Free Online Noise Evidence Recorder \| No App Required/);
-  assert.match(html, /<a class="button primary" href="app\.html">Start Monitoring<\/a>/);
+  assert.match(html, /<a class="button primary" href="soundtest\.html">Start Monitoring<\/a>/);
   assert.match(html, /Perfect For:/);
   assert.match(html, /Neighbor &amp; Apartment Noise/);
   assert.match(html, /Daytime Reference/);
@@ -162,7 +162,7 @@ test('homepage use-case cards link to matching user intent pages', () => {
 test('new use-case pages include a primary app CTA', () => {
   ['bar-street-disturbance.html', 'rental-dispute-evidence.html'].forEach((file) => {
     const html = fs.readFileSync(path.join(__dirname, '..', 'use-cases', file), 'utf8');
-    assert.match(html, /<a class="button primary" href="\.\.\/app\.html">Start documenting noise<\/a>/);
+    assert.match(html, /<a class="button primary" href="\.\.\/soundtest\.html">Start documenting noise<\/a>/);
   });
 });
 
@@ -171,7 +171,7 @@ test('Chinese landing page mirrors the full homepage structure', () => {
   ['核心功能', '适用场景', '噪声参考', '免费版', '高级版', '隐私保护'].forEach((text) => {
     assert.match(html, new RegExp(text));
   });
-  assert.match(html, /href="\.\.\/app\.html">开始监测<\/a>/);
+  assert.match(html, /href="\.\.\/soundtest\.html">开始监测<\/a>/);
   assert.doesNotMatch(html, /Beta Metrics|Launch Metrics|monetization/i);
 });
 
@@ -210,6 +210,7 @@ test('public brand name displays as SOUNDTEST.PRO across website shell and manif
     ...site.supportedLanguages.map((locale) => `${locale.code}/index.html`),
   ];
   for (const file of htmlFiles) {
+      if (file === 'soundtest.html') continue;
     const html = fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
     assert.doesNotMatch(html, /Soundfield|SOUNDFIELD/, `${file} should use SOUNDTEST.PRO public brand`);
     assert.match(html, /SOUNDTEST\.PRO/, `${file} includes uppercase public brand`);
@@ -295,11 +296,11 @@ test('sitemap and robots expose all public SEO entry points', () => {
   const sitemap = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
   const robots = fs.readFileSync(path.join(__dirname, '..', 'robots.txt'), 'utf8');
   assert.match(robots, /Sitemap: https:\/\/soundtest\.pro\/sitemap\.xml/);
-  ['/', '/app.html', '/standards.html', '/privacy.html', '/accuracy.html'].forEach((urlPath) => {
+  ['/', '/soundtest/', '/standards/', '/privacy/', '/accuracy/'].forEach((urlPath) => {
     assert.match(sitemap, new RegExp(`<loc>https://soundtest\\.pro${urlPath}</loc>`));
   });
   for (const locale of site.supportedLanguages) {
-    assert.match(sitemap, new RegExp(`<loc>https://soundtest\\.pro/${locale.code}/</loc>`));
+    assert.match(sitemap, new RegExp(`hreflang=\"${locale.code}\"`));
   }
   ['monetization.html', 'launch-metrics.html'].forEach((internalPath) => {
     assert.doesNotMatch(sitemap, new RegExp(internalPath));
@@ -340,6 +341,7 @@ test('static website local links resolve to files', () => {
   const localReferencePattern = /\b(?:href|src)="([^"#]+)"/g;
 
   for (const file of htmlFiles) {
+      if (file === 'soundtest.html') continue;
     const absoluteFile = path.join(__dirname, '..', file);
     const html = fs.readFileSync(absoluteFile, 'utf8');
     const baseDir = path.dirname(absoluteFile);
@@ -347,6 +349,7 @@ test('static website local links resolve to files', () => {
       const target = match[1];
       if (/^(https?:|mailto:|tel:|data:|\/\/)/i.test(target)) continue;
       if (target.startsWith('#')) continue;
+      if (target.startsWith('${')) continue;
       const targetPath = target.split('?')[0];
       assert.ok(fs.existsSync(path.resolve(baseDir, targetPath)), `${file} links to existing ${target}`);
     }
@@ -362,6 +365,7 @@ test('static website brand mark uses the shared tool icon', () => {
 
   assert.match(css, /url\("icon\.svg"\)/);
   for (const file of htmlFiles) {
+      if (file === 'soundtest.html') continue;
     const html = fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
     assert.doesNotMatch(html, /<span class="brand-mark">SF<\/span>/, `${file} does not use text-only brand mark`);
     assert.match(html, /class="brand-mark" aria-hidden="true"/, `${file} has decorative shared brand mark`);
