@@ -616,6 +616,46 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 @keyframes wx-spin{to{transform:rotate(360deg)}}
 .wx-pay-footer{font-size:10.5px;color:var(--tx3);margin-top:14px;border-top:.5px solid rgba(255,255,255,.06);padding-top:10px}
 
+.sentry-hero-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:linear-gradient(135deg,rgba(192,132,252,.18),rgba(129,140,248,.18));border:1px solid rgba(192,132,252,.35);color:#c084fc;font-size:11px;font-weight:800;cursor:pointer;transition:transform .15s,box-shadow .15s;backdrop-filter:blur(8px)}
+.sentry-hero-badge:hover{transform:translateY(-1px);box-shadow:0 0 14px rgba(192,132,252,.35)}
+.sentry-hero-badge:active{transform:scale(.97)}
+.sentry-hero-badge.active{background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;border-color:transparent;box-shadow:0 0 16px rgba(192,132,252,.5)}
+.plan-card.lifetime{border-color:rgba(192,132,252,.4);background:linear-gradient(180deg,rgba(192,132,252,.1),rgba(13,21,37,.76))}
+
+/* ── Sentry Mode Gating Modal ── */
+.sentry-modal{position:fixed;inset:0;z-index:225;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,7,14,.85);backdrop-filter:blur(24px)}
+.sentry-modal.show{display:flex}
+.sentry-card{width:min(100%,480px);border-radius:24px;border:.5px solid rgba(192,132,252,.4);background:linear-gradient(180deg,rgba(16,18,38,.98),rgba(7,10,22,.98));box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 40px rgba(192,132,252,.15);padding:22px;position:relative;overflow:hidden;max-height:92vh;overflow-y:auto}
+.sentry-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:none;color:var(--tx2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;z-index:2}
+.sentry-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.sentry-icon-wrap{width:44px;height:44px;border-radius:12px;background:rgba(192,132,252,.18);border:.5px solid rgba(192,132,252,.35);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sentry-title{font-size:17px;font-weight:850;color:var(--tx1);line-height:1.25}
+.sentry-subtitle{font-size:11px;color:rgba(214,232,250,.6);margin-top:3px}
+.sentry-pain-box{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.sentry-pain-item{padding:11px 13px;border-radius:14px;font-size:11.5px;line-height:1.5}
+.sentry-pain-item p{margin:0}
+.sentry-pain-item.bad{background:rgba(255,63,80,.07);border:.5px solid rgba(255,63,80,.22)}
+.sentry-pain-item.good{background:rgba(42,255,212,.07);border:.5px solid rgba(42,255,212,.26)}
+.sentry-badge-tag{display:inline-block;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;margin-bottom:5px}
+.sentry-badge-tag.bad{background:rgba(255,63,80,.18);color:#ff6b7d}
+.sentry-badge-tag.good{background:rgba(42,255,212,.18);color:#2affd4}
+.sentry-preview-box{background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;margin-bottom:14px}
+.sentry-preview-title{font-size:10.5px;font-weight:700;color:rgba(214,232,250,.7);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.sentry-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.sentry-preview-stat{background:rgba(0,0,0,.28);padding:7px 9px;border-radius:10px;border:.5px solid rgba(255,255,255,.06)}
+.sentry-preview-stat span{display:block;font-size:9px;color:rgba(214,232,250,.5);margin-bottom:2px}
+.sentry-preview-stat strong{font-family:var(--mono);font-size:11.5px;color:#c084fc;font-weight:700}
+.sentry-actions{display:flex;flex-direction:column;gap:8px}
+.sentry-btn-primary{width:100%;min-height:46px;border-radius:999px;border:none;background:linear-gradient(135deg,#c084fc,#818cf8);color:#040810;cursor:pointer;padding:6px 14px;box-shadow:0 0 24px rgba(192,132,252,.35);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sentry-btn-primary:active{transform:scale(.98)}
+.sentry-btn-primary .sentry-btn-text{font-size:13px;font-weight:850}
+.sentry-btn-primary .sentry-btn-sub{font-size:10px;opacity:.85;margin-top:2px}
+.sentry-btn-secondary{width:100%;height:38px;border-radius:999px;border:1px solid rgba(192,132,252,.35);background:rgba(192,132,252,.1);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sentry-btn-secondary:active{transform:scale(.98)}
+.sentry-more-options{display:flex;justify-content:center;gap:6px;font-size:11.5px;color:var(--tx3);margin-top:6px}
+.sentry-more-options a{color:rgba(214,232,250,.75);text-decoration:underline}
+
+
 
 
 /* ── Note input ── */
@@ -1424,7 +1464,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       </div>
       <span class="rpm-badge" id="rpmBadge">预览模式 (含防伪水印)</span>
     </div>
-    <div class="rpm-desc" id="rpmDesc">现场声学测量数据已完成标准化证据链封装（包含声级统计、GPS 坐标、时间戳与波形指纹）。解锁正式版可一键导出无水印官方格式，直接呈递物业协调、社区调解或作为司法初查事实底稿。</div>
+    <div class="rpm-desc" id="rpmDesc">别再用无法证明真伪的普通手机录音去争论。免费版带有全页防伪水印，极易被物业或邻居以“音量造假、自己调大”为由推诿驳回；解锁正式版，加盖 SHA-256 唯一数字指纹与 GPS 坐标锚点，让对方无法以任何借口敷衍你。</div>
     <div class="rpm-stats-grid" id="rpmMetrics">
       <div class="rpm-stat"><span>平均声级</span><strong id="rpmAvg">-- dB</strong></div>
       <div class="rpm-stat"><span>峰值声级</span><strong id="rpmPeak">-- dB</strong></div>
@@ -1434,21 +1474,21 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     <div class="rpm-comparison">
       <div class="rpm-comp-row">
         <span class="rpm-comp-bad">✕</span>
-        <span id="rpmCompBadText"><strong>当前预览版：</strong>含全页防伪水印，适合现场快速初查，正式呈递前需获取无水印版本。</span>
+        <span id="rpmCompBadText"><strong>当前预览版 (带全页水印)：</strong>仅供个人参考初筛，极易被物业或房东以“证据可被私自调大音量篡改”为由推诿不予采信。</span>
       </div>
       <div class="rpm-comp-row">
         <span class="rpm-comp-good">✓</span>
-        <span id="rpmCompGoodText"><strong>正式存证版：</strong>去除全部水印，生成标准化声学事实底稿，加盖防篡改数字存证 ID 与时间戳，解锁 5 套专属纠纷维权模板。</span>
+        <span id="rpmCompGoodText"><strong>正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一防伪指纹</strong>与 <strong>GPS 经纬度锚点</strong>，彻底杜绝对方以造假为由推诿。</span>
       </div>
     </div>
     <div class="rpm-actions">
-      <button class="rpm-btn-single" id="rpmUnlockSingleBtn" type="button" style="display:none">
-        <span id="rpmUnlockSingleBtnText">⚡ 微信支付 ¥3.9 · 获取本次正式取证报告（无水印·带存证ID）</span>
-      </button>
       <button class="rpm-btn-pro" id="rpmUpgradeBtn" type="button">
-        <span id="rpmUpgradeBtnText">★ 升级 PRO ¥9.9 / 月 · 30天无限次无水印+长时监测</span>
+        <span id="rpmUpgradeBtnText">★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限次无水印 + 长期纠纷档案 + 夜间哨兵</span>
       </button>
-      <button class="rpm-btn-preview" id="rpmDownloadFreeBtn" type="button">先下载带水印预览版 (仅供参考)</button>
+      <button class="rpm-btn-single" id="rpmUnlockSingleBtn" type="button" style="display:none">
+        <span id="rpmUnlockSingleBtnText">⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去除全页水印 + 加盖防伪存证ID</span>
+      </button>
+      <button class="rpm-btn-preview" id="rpmDownloadFreeBtn" type="button">先下载带水印预览版 (仅供个人自查)</button>
     </div>
   </div>
 </div>
@@ -1467,11 +1507,16 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     </div>
     
     <div class="wx-pay-product-box">
-      <div class="wx-pay-prod-name" id="wxPayProdName">单次取证报告解锁</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="wx-pay-prod-name" id="wxPayProdName">单次取证报告解锁</div>
+        <span id="wxPayDiscountBadge" style="font-size:10.5px;font-weight:800;color:#07C160;background:rgba(7,193,96,.12);border:1px solid rgba(7,193,96,.25);padding:2px 7px;border-radius:999px;">限时特惠</span>
+      </div>
       <div class="wx-pay-prod-fee">
         <span class="wx-currency">¥</span>
         <strong id="wxPayProdFee">3.90</strong>
+        <del id="wxPayOrigFee" style="font-size:13px;color:rgba(214,232,250,.4);margin-left:6px;font-weight:normal;">¥9.90</del>
       </div>
+      <div id="wxPaySaveTip" style="font-size:11px;color:rgba(214,232,250,.7);margin-top:4px;">已自动享受立减优惠，无需优惠码</div>
     </div>
 
     <div class="wx-pay-body">
@@ -1498,6 +1543,66 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 
     <div class="wx-pay-footer">
       <span>🔒 虎皮椒安全结算 · 支付成功即时生效 · 随时可查</span>
+    </div>
+  </div>
+</div>
+
+<div class="sentry-modal" id="sentryModal" role="dialog" aria-modal="true" aria-labelledby="sentryModalTitle">
+  <div class="sentry-card">
+    <button class="sentry-close" type="button" onclick="closeSentryModal()" aria-label="关闭">×</button>
+    <div class="sentry-header">
+      <div class="sentry-icon-wrap" aria-hidden="true">🌙</div>
+      <div>
+        <div class="sentry-title" id="sentryModalTitle">夜间噪音哨兵模式 (Sentry Mode)</div>
+        <div class="sentry-subtitle" id="sentryModalSubtitle">“睡你的觉，让系统替你守夜” · 超标自动唤醒抓现行</div>
+      </div>
+    </div>
+    
+    <div class="sentry-pain-box">
+      <div class="sentry-pain-item bad">
+        <span class="sentry-badge-tag bad" id="sentryBadTag">人工盯守之痛</span>
+        <p id="sentryBadText">突发邻里噪音、恶犬吠叫、半夜重低音往往只有几秒。等你惊醒摸出手机、解开锁屏、打开录音，声音早已停止，抓不到任何违规证据。</p>
+      </div>
+      <div class="sentry-pain-item good">
+        <span class="sentry-badge-tag good" id="sentryGoodTag">PRO 哨兵方案</span>
+        <p id="sentryGoodText">旧手机插上充电器，静置床头待命。<strong>设定分贝阈值，突发超标瞬间全自动抓取音频并加盖时间戳</strong>，静音后自动封存；醒来直接查看《整夜违规超标流水单》。</p>
+      </div>
+    </div>
+
+    <div class="sentry-preview-box">
+      <div class="sentry-preview-title" id="sentryPreviewTitle">哨兵待命参数 (PRO 专属已预设)</div>
+      <div class="sentry-preview-grid">
+        <div class="sentry-preview-stat">
+          <span>触发阈值</span>
+          <strong>45 dB (国标夜间)</strong>
+        </div>
+        <div class="sentry-preview-stat">
+          <span>持续触发</span>
+          <strong>≥ 3 秒自动抓取</strong>
+        </div>
+        <div class="sentry-preview-stat">
+          <span>静音封存</span>
+          <strong>超标停止后延录 10s</strong>
+        </div>
+        <div class="sentry-preview-stat">
+          <span>防篡改</span>
+          <strong>SHA-256 + GPS</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="sentry-actions">
+      <button class="sentry-btn-primary" id="sentryUpgradeYearlyBtn" type="button" onclick="checkoutSentry('yearly')">
+        <div class="sentry-btn-text" id="sentryBtnYearlyText">★ 微信特惠开通 PRO 年卡 ¥19.9 / 年 (原价 ¥59.9 · 立省 67%)</div>
+        <div class="sentry-btn-sub" id="sentryBtnYearlySub">折合 ¥1.6/月 · 解锁整夜哨兵 + 长期纠纷档案 + 无限次无水印报告 (最划算)</div>
+      </button>
+      <button class="sentry-btn-secondary" id="sentryUpgradeMonthlyBtn" type="button" onclick="checkoutSentry('pro')">
+        <span id="sentryBtnMonthlyText">开通 PRO 月卡 ¥9.9 / 月 (原价 ¥19.9 · 5折) · 30天集中守夜取证</span>
+      </button>
+      <div class="sentry-more-options" id="sentryMoreOptions">
+        <span>其他方案：</span>
+        <a href="javascript:void(0)" onclick="checkoutSentry('lifetime')">💎 终身买断版 ¥39.9 (原价 ¥199 · 立省 ¥159.1)</a>
+      </div>
     </div>
   </div>
 </div>
@@ -1829,11 +1934,15 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       <button class="app-pro-btn" type="button" onclick="showSubscriptionPlans()">★ Upgrade Pro</button>
     </div>
   </div>
-  <div class="logo-row" style="margin-bottom:4px">
+  <div class="logo-row" style="margin-bottom:4px;display:flex;align-items:center;justify-content:space-between">
     <div class="status-pill">
       <span class="sdot" id="sdot"></span>
       <span class="stxt" id="stxt">就绪</span>
     </div>
+    <button class="sentry-hero-badge" id="heroSentryBtn" onclick="triggerSentryModeHook()" type="button" title="夜间噪音超标自动抓拍录音">
+      <span>🌙</span>
+      <span id="heroSentryBtnText">夜间哨兵</span>
+    </button>
   </div>
 
   <!-- Alert -->
@@ -1963,6 +2072,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
         <button class="mode-pill active" id="modeAudioBtn" type="button" role="tab" aria-selected="true" onclick="setEvidenceMode('audio')"><strong>录音模式</strong><span>低耗电，保存声音证据</span></button>
         <button class="mode-pill" id="modeVideoBtn" type="button" role="tab" aria-selected="false" onclick="setEvidenceMode('video')"><strong>录像模式</strong><span>画面 + 麦克风同步保存</span></button>
         <button class="mode-pill" id="modePhotoBtn" type="button" role="tab" aria-selected="false" onclick="setEvidenceMode('photo')"><strong>照片模式</strong><span>生成带分贝和地址照片</span></button>
+        <button class="mode-pill" id="modeSentryBtn" type="button" role="tab" aria-selected="false" onclick="triggerSentryModeHook()"><strong>🌙 哨兵模式 <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>夜间静默待命，超标自动抓现行</span></button>
       </div>
       <div class="mode-title" id="modeTitle">录音模式</div>
       <div class="mode-desc" id="modeDesc">用于长时间记录噪声，耗电最低；点击主按钮后会先启动监测并保存录音。</div>
@@ -2435,17 +2545,43 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
         </div>
       </div>
       <div class="plan-grid">
-        <div class="plan-card" data-plan-card="free"><div class="plan-name">Free</div><div class="plan-price">¥0</div><div class="plan-features">实时监测、基础记录、单条媒体下载、基础带水印 PDF/CSV 预览、低干扰广告。</div><button class="btn" onclick="setPlan('free')">使用 Free</button></div>
-        <div class="plan-card pro" data-plan-card="pro"><div style="display:inline-block;padding:2px 8px;border-radius:999px;background:linear-gradient(135deg,var(--accent),#00d4ff);color:#040711;font-size:9px;font-weight:900;letter-spacing:.05em;margin-bottom:4px">★ 最受欢迎 · 节省 58%</div><div class="plan-name">Pro</div><div class="plan-price">¥18/月 · ¥128/年 ($24.99/yr)</div><div style="font-size:10px;color:rgba(214,232,250,.6);margin:-2px 0 6px">比买实体分贝仪更便宜、更快速，随时可退</div><div class="plan-features">一键生成物业/合规标准取证报告、无广告、批量 PDF/CSV、专属维权模板、长时夜间连续监测、校准档案与防篡改备份。</div><button class="btn b-cyan" onclick="beginCheckout('pro')">开通 Pro</button></div>
-        <div class="plan-card" data-plan-card="team" data-plan="teamEnterpriseAnnualPlan"><div class="plan-name">Team Annual</div><div class="plan-price">¥1,998/年</div><div class="plan-features">5 个成员席位、企业项目空间、共享证据库、企业报告抬头、审计日志、成员权限、统一合规资料和年度云留存。</div><button class="btn b-amber" onclick="beginCheckout('team')">开通 Team</button></div>
+        <div class="plan-card" data-plan-card="single">
+          <div class="plan-name">单次报告解锁</div>
+          <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥9.9</del>¥3.9</div>
+          <div style="font-size:10px;color:var(--accent);margin:-2px 0 6px">限时特惠 · 单份去水印</div>
+          <div class="plan-features">单次报告去除全页防伪水印、加盖 SHA-256 唯一数字防伪指纹、GPS 经纬度绝对坐标锚点、法务级文书抬头。</div>
+          <button class="btn" onclick="beginCheckout('single')">解锁单次报告</button>
+        </div>
+        <div class="plan-card pro" data-plan-card="yearly">
+          <div style="display:inline-block;padding:2px 8px;border-radius:999px;background:linear-gradient(135deg,var(--accent),#00d4ff);color:#040711;font-size:9px;font-weight:900;letter-spacing:.05em;margin-bottom:4px">★ 最受欢迎 · 立省 67%</div>
+          <div class="plan-name">Pro 年度全能版</div>
+          <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥59.9</del>¥19.9<span style="font-size:12px;color:rgba(214,232,250,.6)">/年</span></div>
+          <div style="font-size:10px;color:rgba(214,232,250,.8);margin:-2px 0 6px">折合仅 ¥1.6/月 · 彻底搞定长期纠纷</div>
+          <div class="plan-features">365天无限次无水印导出、🌙 夜间噪音哨兵模式、📊 《连续噪音滋扰评估档案》、带阅读回执安全分享、云端加密存证。</div>
+          <button class="btn b-cyan" onclick="beginCheckout('yearly')">开通年卡 (推荐)</button>
+        </div>
+        <div class="plan-card" data-plan-card="pro">
+          <div class="plan-name">Pro 月度会员</div>
+          <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥19.9</del>¥9.9<span style="font-size:12px;color:rgba(214,232,250,.6)">/月</span></div>
+          <div style="font-size:10px;color:rgba(214,232,250,.6);margin:-2px 0 6px">30天集中维权首选</div>
+          <div class="plan-features">30天内无限次无水印报告导出、夜间哨兵自动超标录制、批量 CSV/PDF 导出、无广告。</div>
+          <button class="btn" onclick="beginCheckout('pro')">开通月卡</button>
+        </div>
+        <div class="plan-card lifetime" data-plan-card="lifetime">
+          <div style="display:inline-block;padding:2px 8px;border-radius:999px;background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;font-weight:900;letter-spacing:.05em;margin-bottom:4px">💎 终身买断 · 立省 ¥159.1</div>
+          <div class="plan-name">终身永久买断版</div>
+          <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥199</del>¥39.9</div>
+          <div style="font-size:10px;color:rgba(214,232,250,.6);margin:-2px 0 6px">一次付费 · 永久有效无续费</div>
+          <div class="plan-features">永久无限制使用所有 PRO 功能、永久去水印、未来所有升级功能免费享用、终身云端留存。</div>
+          <button class="btn b-amber" onclick="beginCheckout('lifetime')">终身买断</button>
+        </div>
       </div>
       <div class="benefit-grid" id="planBenefitGrid" data-commercial="plan-benefit-grid"></div>
-      <div class="sdesc" id="planStatus" style="margin-top:10px">当前方案：Free。已接入 Lemon Squeezy 支付预留，请先配置环境变量后启用真实收款。</div>
-      <div class="plan-note" id="lifetimeOfflineNote"><strong>Lifetime Offline：</strong>建议作为桌面买断版提供本地监测、本地导出和免广告；不包含云备份、团队协作或长期云留存。</div>
+      <div class="sdesc" id="planStatus" style="margin-top:10px">当前方案：Free。已接入安全微信收银台与国际信用卡通道。</div>
       <div class="tool-actions" style="margin-top:10px">
-        <button class="btn b-cyan" onclick="beginCheckout('pro')">前往 Pro 支付</button>
-        <button class="btn b-amber" onclick="beginCheckout('team')">前往 Team 支付</button>
-        <button class="btn" onclick="beginCheckout('lifetime')">前往买断支付</button>
+        <button class="btn b-cyan" onclick="beginCheckout('yearly')">开通 Pro 年卡 (¥19.9)</button>
+        <button class="btn" onclick="beginCheckout('single')">解锁单次报告 (¥3.9)</button>
+        <button class="btn b-amber" onclick="beginCheckout('lifetime')">终身买断 (¥39.9)</button>
       </div>
     </div>
     <div class="card admin-only layout-settings-admin" id="mediaStorageCard" data-settings-section="admin">
@@ -2694,7 +2830,7 @@ const COMMERCIAL_METRICS_KEY='sf_commercial_metrics_v1';
 const COMMERCIAL_METRICS_LIMIT=300;
 const MEMBERSHIP_KEY='sf_membership_v1';
 const MEMBERSHIP_API_BASE='/api/membership';
-const LEMON_PLANS=['pro','team','lifetime'];
+const LEMON_PLANS=['single','pro','yearly','team','lifetime'];
 const SUPER_ADMIN_USERNAME='admin';
 const SUPER_ADMIN_PASSWORD='SOUNDTEST.PRO@2026';
 const SUPER_ADMIN_SESSION_KEY='sf_super_admin_session_v1';
@@ -2710,16 +2846,49 @@ const PLAN_CONFIG={
     summary:'免费版保留完整核心记录流程，适合验证噪声记录和单条证据下载。',
     enSummary:'Free keeps the core recording flow available for validating noise records and single evidence downloads.'
   },
+  single:{
+    label:'Single Report',
+    price:'¥3.9 (原价 ¥9.9)',
+    ads:false,
+    batchExport:'single',
+    support:'basic',
+    benefits:['单次报告去水印','加盖防伪数字指纹','法律维权抬头','高精度声学事实底稿'],
+    enBenefits:['Remove watermark for 1 report','Forensic SHA-256 stamp','Official dispute header','Acoustic factsheet'],
+    summary:'适合单次应急投诉、邻里纠纷或施工扰民取证。',
+    enSummary:'For one-off noise complaints and immediate dispute documentation.'
+  },
   pro:{
-    label:'Pro',
-    price:'¥18/月 · ¥128/年',
+    label:'Pro Monthly',
+    price:'¥9.9/月 (原价 ¥19.9)',
     ads:false,
     batchExport:'pro',
     support:'priority',
-    benefits:['免广告','批量 PDF/CSV','高级证据模板','校准档案','长时录制','云备份预留'],
-    enBenefits:['No ads','Batch PDF/CSV','Evidence templates','Calibration profiles','Longer recordings','Cloud backup placeholder'],
-    summary:'Pro 原型用于验证个人专业用户是否愿意为免广告、批量导出、模板和校准档案付费。',
-    enSummary:'The Pro prototype validates whether individual power users will pay for no ads, batch exports, templates, and calibration profiles.'
+    benefits:['无限次无水印导出','🌙 自动阈值哨兵录制','云端安全存证','批量 CSV/PDF 导出'],
+    enBenefits:['Unlimited clean reports','🌙 Sentry threshold recording','Cloud sync placeholder','Batch CSV/PDF export'],
+    summary:'适合短期（1个月内）集中解决邻里或施工噪声纠纷。',
+    enSummary:'Best for intensive 30-day noise documentation.'
+  },
+  yearly:{
+    label:'Pro Yearly (推荐)',
+    price:'¥19.9/年 (原价 ¥59.9 · 立省 67%)',
+    ads:false,
+    batchExport:'pro',
+    support:'priority',
+    benefits:['365天全功能无限制','📊 长期纠纷评估档案 (Dossier)','🌙 夜间哨兵自动监测','带阅读回执的安全分享','专属纠纷法律模板'],
+    enBenefits:['365-day all features','📊 Long-term noise dossier','🌙 Sentry auto-trigger mode','Read-receipt share link','Priority acoustic templates'],
+    summary:'最受欢迎方案。折合仅 ¥1.6/月，彻底搞定长期噪声维权。',
+    enSummary:'Most popular. Comprehensive toolkit for prolonged noise disputes.'
+  },
+  lifetime:{
+    label:'Lifetime All-Access',
+    price:'¥39.9 (原价 ¥199 · 立省 ¥159.1)',
+    ads:false,
+    batchExport:'pro',
+    support:'priority',
+    benefits:['终身无限制使用','未来所有 PRO 功能免费更新','永久免广告','终身云端存证空间'],
+    enBenefits:['Lifetime unrestricted access','All future PRO updates','Permanent ad-free','Permanent cloud storage'],
+    summary:'一次付费，终身拥有专业声学测量与法务取证工具。',
+    enSummary:'One-time purchase, lifetime forensic sound metering.'
   },
   team:{
     label:'Team Annual',
@@ -3351,6 +3520,25 @@ function syncEvidenceModeUi(){
     btn.setAttribute('aria-selected',active?'true':'false');
     btn.innerHTML=`<strong>${copy.label}</strong><span>${copy.tagline}</span>`;
   });
+  const sentryBtn = document.getElementById('modeSentryBtn');
+  if (sentryBtn) {
+    const isZh = appLanguage === 'zh-CN';
+    sentryBtn.classList.toggle('active', !!autoRecOnThreshold);
+    if (autoRecOnThreshold) {
+      sentryBtn.innerHTML = `<strong>🌙 ${isZh ? '哨兵运行中' : 'Sentry Active'}</strong><span>${isZh ? '超标自动录音已开启' : 'Auto-record engaged'}</span>`;
+    } else {
+      sentryBtn.innerHTML = `<strong>🌙 ${isZh ? '哨兵模式' : 'Sentry Mode'} <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>${isZh ? '夜间静默待命，超标自动抓现行' : 'Overnight auto-capture'}</span>`;
+    }
+  }
+  const heroSentry = document.getElementById('heroSentryBtn');
+  if (heroSentry) {
+    const isZh = appLanguage === 'zh-CN';
+    heroSentry.classList.toggle('active', !!autoRecOnThreshold);
+    const textEl = document.getElementById('heroSentryBtnText');
+    if (textEl) {
+      textEl.textContent = autoRecOnThreshold ? (isZh ? '哨兵守护中' : 'Sentry On') : (isZh ? '夜间哨兵' : 'Sentry Mode');
+    }
+  }
   document.querySelectorAll('[data-mode-panel]').forEach(panel=>{
     const modes=(panel.getAttribute('data-mode-panel')||'').split(/\s+/);
     panel.hidden=!modes.includes(evidenceMode);
@@ -6234,18 +6422,17 @@ function togDayNightThreshold(){
 }
 function togAutoRec(){
   if(!isProActive()){
-    toast(appLanguage!=='zh-CN'?'Auto-record is a Pro feature. Upgrade to unlock it.':'超标自动录音是 Pro 专属功能，升级后解锁。','warn',5000);
-    showSubscriptionPlans();
+    openSentryGatingModal();
     return;
   }
   autoRecOnThreshold=!autoRecOnThreshold;
   const t=document.getElementById('autoRecTog');
-  t.classList.toggle('on',autoRecOnThreshold);
-  t.setAttribute('aria-checked',autoRecOnThreshold);
+  if(t){t.classList.toggle('on',autoRecOnThreshold);t.setAttribute('aria-checked',autoRecOnThreshold);}
   const opts=document.getElementById('autoRecOpts');if(opts)opts.style.display=autoRecOnThreshold?'flex':'none';
   const opts2=document.getElementById('autoRecOpts2');if(opts2)opts2.style.display=autoRecOnThreshold?'flex':'none';
   const t2=document.getElementById('autoRecTog2');if(t2){t2.classList.toggle('on',autoRecOnThreshold);t2.setAttribute('aria-checked',autoRecOnThreshold);}
   saveState();
+  syncEvidenceModeUi();
   trackEvent(autoRecOnThreshold?'auto_rec_enabled':'auto_rec_disabled',{plan:membershipState.plan});
 }
 function setAutoRecMinSec(){autoRecMinSeconds=+document.getElementById('autoRecMinSR').value;document.getElementById('autoRecMinSV').textContent=autoRecMinSeconds+'s';document.getElementById('autoRecMinSR2').value=autoRecMinSeconds;document.getElementById('autoRecMinSV2').textContent=autoRecMinSeconds+'s';saveState();}
@@ -6970,19 +7157,19 @@ function openReportPreviewModal(recs, isBatch = false) {
   const dlBtn = document.getElementById('rpmDownloadFreeBtn');
 
   if (isZh) {
-    if (badEl) badEl.innerHTML = '<strong>当前预览版：</strong>含全页防伪水印，适合现场快速初查，正式呈递前需获取无水印版本。';
-    if (goodEl) goodEl.innerHTML = '<strong>正式存证版：</strong>去除全部水印，生成标准化声学事实底稿，加盖防篡改数字存证 ID 与时间戳，解锁 5 套专属纠纷维权模板。';
-    if (dlBtn) dlBtn.textContent = '先下载带水印预览版 (仅供参考)';
+    if (badEl) badEl.innerHTML = '<strong>当前预览版 (带全页防伪水印)：</strong>仅供个人试测初查，向物业或房东投诉时容易被质疑“录音可自行调大音量或证据造假”。';
+    if (goodEl) goodEl.innerHTML = '<strong>官方正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一数字指纹</strong>与 <strong>GPS 经纬度绝对坐标锚点</strong>，彻底杜绝对方以造假为由推诿。';
+    if (dlBtn) dlBtn.textContent = '先下载带水印预览版 (仅供个人自查)';
     if (singleBtn) {
       singleBtn.style.display = 'flex';
-      if (singleBtnText) singleBtnText.textContent = '⚡ 微信支付 ¥3.9 · 获取本次正式取证报告（无水印·带存证ID）';
+      if (singleBtnText) singleBtnText.textContent = '⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去水印 + 防伪存证ID';
       singleBtn.onclick = () => {
         closeReportPreviewModal();
         openWeChatPayModal('single', recs, isBatch);
       };
     }
     if (upBtnText) {
-      upBtnText.textContent = '★ 微信支付 ¥19.9 / 年 (立省83%) · 365天无限次无水印+长时监测';
+      upBtnText.textContent = '★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限制去水印 + 长期纠纷档案 + 夜间哨兵';
     }
     if (upBtn) {
       upBtn.onclick = () => {
@@ -7001,9 +7188,9 @@ function openReportPreviewModal(recs, isBatch = false) {
       wxOptEl.style.display = 'flex';
       wxOptEl.innerHTML = `
         <span style="color:var(--soft);">其他方案：</span>
-        <a href="javascript:void(0)" id="rpmWxMonthlyLink" style="color:var(--text-dim);text-decoration:underline;">月卡 ¥9.9</a>
+        <a href="javascript:void(0)" id="rpmWxMonthlyLink" style="color:var(--text-dim);text-decoration:underline;">月卡 ¥9.9 (<del>¥19.9</del>)</a>
         <span>·</span>
-        <a href="javascript:void(0)" id="rpmWxLifetimeLink" style="color:var(--text-dim);text-decoration:underline;">终身买断 ¥39.9</a>
+        <a href="javascript:void(0)" id="rpmWxLifetimeLink" style="color:var(--text-dim);text-decoration:underline;">终身买断 ¥39.9 (<del>¥199</del> · 立省 ¥159.1)</a>
       `;
       const mLink = document.getElementById('rpmWxMonthlyLink');
       const lLink = document.getElementById('rpmWxLifetimeLink');
@@ -7012,24 +7199,32 @@ function openReportPreviewModal(recs, isBatch = false) {
     }
   } else {
     const wxOptEl = document.getElementById('rpmWxMoreOptions');
-    if (wxOptEl) wxOptEl.style.display = 'none';
-    if (badEl) badEl.innerHTML = '<strong>Free Preview:</strong> Contains full-page watermark, suitable for initial field check. Remove watermark for formal submissions.';
-    if (goodEl) goodEl.innerHTML = '<strong>Official Evidence Report:</strong> Removes all watermarks, generates structured acoustic documentation with tamper-evident digital ID & GPS timestamp.';
+    if (wxOptEl) wxOptEl.style.display = 'flex';
+    if (badEl) badEl.innerHTML = '<strong>Free Preview (Watermarked):</strong> For personal checks only. Easily disputed by landlords or property managers as unverified or volume-manipulated.';
+    if (goodEl) goodEl.innerHTML = '<strong>Forensic Evidence Report (Watermark Removed):</strong> Sealed with <strong>SHA-256 cryptographic hash</strong> and <strong>GPS geolocation anchor</strong>—irrefutable acoustic documentation.';
     if (dlBtn) dlBtn.textContent = 'Download Watermarked Preview (Reference Only)';
     if (singleBtn) {
       singleBtn.style.display = 'flex';
-      if (singleBtnText) singleBtnText.textContent = '⚡ Unlock Single Report $1.99 · Clean PDF & Evidentiary ID';
+      if (singleBtnText) singleBtnText.textContent = '⚡ Unlock Single Report $1.99 (Reg. $4.99 · Save 60%) · Clean PDF & Cryptographic ID';
       singleBtn.onclick = () => {
         window.open(CREEM_CHECKOUT_URLS.single, '_blank', 'noopener');
       };
     }
     if (upBtnText) {
-      upBtnText.textContent = '★ Upgrade PRO $4.99/mo · Unlimited Reports & Continuous Monitoring';
+      upBtnText.textContent = '★ Upgrade PRO Yearly $24.99/yr (Reg. $59.99 · Best Value) · Unlimited Reports + Dossier + Sentry Mode';
     }
     if (upBtn) {
       upBtn.onclick = () => {
-        window.open(CREEM_CHECKOUT_URLS.monthly, '_blank', 'noopener');
+        window.open(CREEM_CHECKOUT_URLS.yearly, '_blank', 'noopener');
       };
+    }
+    if (wxOptEl) {
+      wxOptEl.innerHTML = `
+        <span style="color:var(--soft);">Other options:</span>
+        <a href="javascript:void(0)" onclick="window.open(CREEM_CHECKOUT_URLS.monthly, '_blank', 'noopener')" style="color:var(--text-dim);text-decoration:underline;">Monthly $4.99 (<del>$9.99</del>)</a>
+        <span>·</span>
+        <a href="javascript:void(0)" onclick="window.open(CREEM_CHECKOUT_URLS.lifetime, '_blank', 'noopener')" style="color:var(--text-dim);text-decoration:underline;">Lifetime $79.99 (<del>$199</del>)</a>
+      `;
     }
   }
 
@@ -7054,6 +7249,82 @@ function openReportPreviewModal(recs, isBatch = false) {
 function closeReportPreviewModal() {
   const modal = document.getElementById('reportPreviewModal');
   if (modal) modal.classList.remove('show');
+}
+
+function triggerSentryModeHook() {
+  if (!isProActive()) {
+    openSentryGatingModal();
+    return;
+  }
+  togAutoRec();
+  if (autoRecOnThreshold) {
+    toast(appLanguage === 'zh-CN' ? '🌙 哨兵模式已启动：夜间超标持续3秒将自动唤醒录音存证' : '🌙 Sentry Mode active: Auto-records on threshold exceed', 'info', 4000);
+    if (!isMon) {
+      toast(appLanguage === 'zh-CN' ? '提示：请点击【开始监测】保持屏幕常亮守夜' : 'Tip: Click [Start Monitoring] to begin night surveillance', 'warn', 5000);
+    }
+  } else {
+    toast(appLanguage === 'zh-CN' ? '🌙 哨兵模式已停止' : '🌙 Sentry Mode stopped', 'info', 3000);
+  }
+}
+
+function openSentryGatingModal() {
+  const modal = document.getElementById('sentryModal');
+  if (!modal) return;
+  const isZh = appLanguage === 'zh-CN';
+  const titleEl = document.getElementById('sentryModalTitle');
+  const subEl = document.getElementById('sentryModalSubtitle');
+  const badTag = document.getElementById('sentryBadTag');
+  const badP = document.getElementById('sentryBadText');
+  const goodTag = document.getElementById('sentryGoodTag');
+  const goodP = document.getElementById('sentryGoodText');
+  const prevTitle = document.getElementById('sentryPreviewTitle');
+  const btnYearlyText = document.getElementById('sentryBtnYearlyText');
+  const btnYearlySub = document.getElementById('sentryBtnYearlySub');
+  const btnMonthlyText = document.getElementById('sentryBtnMonthlyText');
+  const moreOpts = document.getElementById('sentryMoreOptions');
+
+  if (isZh) {
+    if (titleEl) titleEl.textContent = '🌙 夜间噪音哨兵模式 (Sentry Mode)';
+    if (subEl) subEl.textContent = '“睡你的觉，让系统替你守夜” · 超标自动唤醒抓现行';
+    if (badTag) badTag.textContent = '人工盯守之痛';
+    if (badP) badP.textContent = '突发邻里噪音、恶犬吠叫、半夜重低音往往只有几秒。等你惊醒摸出手机、解开锁屏、打开录音，声音早已停止，抓不到任何违规证据。';
+    if (goodTag) goodTag.textContent = 'PRO 哨兵方案';
+    if (goodP) goodP.innerHTML = '旧手机插上充电器，静置床头待命。<strong>设定分贝阈值，突发超标瞬间全自动抓取音频并加盖时间戳</strong>，静音后自动封存；醒来直接查看《整夜违规超标流水单》。';
+    if (prevTitle) prevTitle.textContent = '哨兵待命参数 (PRO 专属已预设)';
+    if (btnYearlyText) btnYearlyText.textContent = '★ 微信特惠开通 PRO 年卡 ¥19.9 / 年 (原价 ¥59.9 · 立省 67%)';
+    if (btnYearlySub) btnYearlySub.textContent = '折合 ¥1.6/月 · 解锁整夜哨兵 + 长期纠纷档案 + 无限次无水印报告 (最划算)';
+    if (btnMonthlyText) btnMonthlyText.textContent = '开通 PRO 月卡 ¥9.9 / 月 (原价 ¥19.9 · 5折) · 30天集中守夜取证';
+    if (moreOpts) moreOpts.innerHTML = '<span>其他方案：</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 终身买断版 ¥39.9 (原价 ¥199 · 立省 ¥159.1)</a>';
+  } else {
+    if (titleEl) titleEl.textContent = '🌙 Overnight Noise Sentry Mode';
+    if (subEl) subEl.textContent = '“Sleep tight while the system watches” · Auto-triggered forensic capture';
+    if (badTag) badTag.textContent = 'Manual Monitoring Pain';
+    if (badP) badP.textContent = 'Sudden midnight noise (barks, thumps, bass vibrations) lasts only seconds. By the time you wake up and unlock your phone, the noise is gone—leaving no proof.';
+    if (goodTag) goodTag.textContent = 'PRO Sentry Solution';
+    if (goodP) goodP.innerHTML = 'Plug in an old phone by your bedside. <strong>The moment sound spikes past threshold, it automatically records audio with SHA-256 & GPS stamps</strong>. Wake up to a complete violation log.';
+    if (prevTitle) prevTitle.textContent = 'Sentry Standby Parameters (PRO)';
+    if (btnYearlyText) btnYearlyText.textContent = '★ Upgrade PRO Yearly $24.99/yr (Reg. $59.99 · Save 60%)';
+    if (btnYearlySub) btnYearlySub.textContent = 'All-access: Overnight Sentry + Multi-Day Dossier + Unlimited Reports';
+    if (btnMonthlyText) btnMonthlyText.textContent = 'Monthly Pass $4.99/mo (Reg. $9.99) · 30-Day Intensive Surveillance';
+    if (moreOpts) moreOpts.innerHTML = '<span>Other options:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Lifetime All-Access $79.99 (Reg. $199)</a>';
+  }
+  modal.classList.add('show');
+  trackEvent('sentry_modal_opened', { plan: currentPlan });
+}
+
+function closeSentryModal() {
+  const modal = document.getElementById('sentryModal');
+  if (modal) modal.classList.remove('show');
+}
+
+function checkoutSentry(plan) {
+  closeSentryModal();
+  if (appLanguage === 'zh-CN') {
+    openWeChatPayModal(plan);
+  } else {
+    const url = CREEM_CHECKOUT_URLS[plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : 'monthly')];
+    if (url) window.open(url, '_blank', 'noopener');
+  }
 }
 
 let weChatPollTimer = null;
@@ -7082,14 +7353,18 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
   const statusEl = document.getElementById('wxPayStatusText');
 
   const planInfo = {
-    single: { name: '单次报告取证解锁', fee: '3.90' },
-    pro: { name: 'PRO 会员月卡 (30天无限制)', fee: '9.90' },
-    yearly: { name: 'PRO 会员年卡 (365天无限制)', fee: '19.90' },
-    lifetime: { name: 'PRO 终身永久买断版', fee: '39.90' },
-  }[plan] || { name: 'PRO 会员年卡', fee: '19.90' };
+    single: { name: '单次报告防伪去水印解锁', fee: '3.90', origFee: '¥9.90', badge: '立省 60%' },
+    pro: { name: 'PRO 会员月卡 (30天无限制)', fee: '9.90', origFee: '¥19.90', badge: '立省 50%' },
+    yearly: { name: 'PRO 会员年卡 (365天全功能)', fee: '19.90', origFee: '¥59.90', badge: '★ 最受欢迎 · 立省 67%' },
+    lifetime: { name: 'PRO 终身永久买断版', fee: '39.90', origFee: '¥199.00', badge: '💎 终身买断 · 立省 ¥159.1' },
+  }[plan] || { name: 'PRO 会员年卡', fee: '19.90', origFee: '¥59.90', badge: '★ 最受欢迎' };
 
   if (titleEl) titleEl.textContent = planInfo.name;
   if (feeEl) feeEl.textContent = planInfo.fee;
+  const origEl = document.getElementById('wxPayOrigFee');
+  if (origEl) origEl.textContent = planInfo.origFee;
+  const badgeEl = document.getElementById('wxPayDiscountBadge');
+  if (badgeEl) badgeEl.textContent = planInfo.badge;
   if (statusEl) statusEl.textContent = '正在连接微信安全收银台…';
 
   modal.classList.add('show');
@@ -7272,21 +7547,26 @@ window.addEventListener('orientationchange',onViewportChange,{passive:true});
 window.visualViewport?.addEventListener('resize',onViewportChange,{passive:true});
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){setAppHeight();reflowViz();if(isMon&&shouldHoldWakeLock())requestWakeLock();}
-});
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(e=>console.log('SW reg failed',e)))}
-</script>
-</body>
-</html>
-
-// Auto open WeChat pay modal if query string contains pay param (e.g. ?pay=yearly)
+// Auto open WeChat pay modal if query string contains pay param (e.g. ?pay=yearly) or sentry param
 try {
   const urlParams = new URLSearchParams(window.location.search);
   const payParam = urlParams.get('pay');
+  const sentryParam = urlParams.get('sentry');
   if (payParam && ['single', 'pro', 'yearly', 'lifetime'].includes(payParam)) {
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         if (typeof openWeChatPayModal === 'function') openWeChatPayModal(payParam);
       }, 500);
     });
+  } else if (sentryParam) {
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        if (typeof triggerSentryModeHook === 'function') triggerSentryModeHook();
+      }, 600);
+    });
   }
 } catch (_) {}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(e=>console.log('SW reg failed',e)))}
+</script>
+</body>
+</html>
