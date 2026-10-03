@@ -517,6 +517,7 @@
 
         btnSendMagic.disabled = true;
         btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '正在发送凭证…' : 'Sending…';
+        if (magicCodeSection) magicCodeSection.style.display = 'block';
 
         try {
           const redirectTo = new URLSearchParams(window.location.search).get('redirect_to') || '';
@@ -536,17 +537,30 @@
 
           showToast(getNavAuthLang() === 'zh' ? '📬 登录凭证已发送，请查收邮箱！' : '📬 Login credentials sent to your inbox!', 'success');
           if (magicCodeSection) magicCodeSection.style.display = 'block';
-          btnSendMagic.style.display = 'none';
           if (magicCodeInput) {
-            magicCodeInput.value = '';
             magicCodeInput.focus();
           }
+
+          let countdown = 60;
+          btnSendMagic.disabled = true;
+          btnSendMagic.textContent = getNavAuthLang() === 'zh' ? `重新发送 (${countdown}s)` : `Resend (${countdown}s)`;
+          clearInterval(resendTimer);
+          resendTimer = setInterval(() => {
+            countdown -= 1;
+            if (countdown <= 0) {
+              clearInterval(resendTimer);
+              btnSendMagic.disabled = false;
+              btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '✨ 重新发送验证码与链接' : '✨ Resend Code & Link';
+            } else {
+              btnSendMagic.textContent = getNavAuthLang() === 'zh' ? `重新发送 (${countdown}s)` : `Resend (${countdown}s)`;
+            }
+          }, 1000);
 
           if (result.simulated && result.code) {
             showToast(`[测试模式验证码]: ${result.code}`, 'info');
           }
         } catch (_) {
-          setFieldError('magicEmail', getNavAuthLang() === 'zh' ? '网络稍慢，若已收到邮件请直接输入验证码' : 'Slow connection. If you received the code, enter it below:');
+          setFieldError('magicEmail', getNavAuthLang() === 'zh' ? '若已在邮箱收到验证码，请在下方直接输入：' : 'If you received the code in your email, please enter it below:');
           btnSendMagic.disabled = false;
           btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '✨ 重新发送验证码与链接' : '✨ Resend Code & Link';
           if (magicCodeSection) magicCodeSection.style.display = 'block';

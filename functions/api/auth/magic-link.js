@@ -81,7 +81,7 @@ function renderMagicLinkEmail({ email, code, magicLinkUrl }) {
                 <tr>
                   <td align="center">
                     <a href="${magicLinkUrl}" target="_blank" rel="noopener" style="display: block; width: 100%; box-sizing: border-box; background: linear-gradient(135deg, #2cf0c1 0%, #10b981 100%); color: #04101a; font-size: 16px; font-weight: 800; text-align: center; text-decoration: none; padding: 16px 28px; border-radius: 12px; box-shadow: 0 8px 24px rgba(44, 240, 193, 0.35); letter-spacing: 0.02em;">
-                      ✨ 一键安全登录 / Instant Magic Sign-In
+                      ✨ 一键快捷登录 / Instant Sign-In
                     </a>
                   </td>
                 </tr>
@@ -181,10 +181,22 @@ export async function onRequestPost(context) {
       }
     }
 
-    // 4. Build Magic Link URL
+    // 4. Build Magic Link URL respecting user's active locale
     const reqUrl = new URL(request.url);
     const origin = reqUrl.origin;
-    const magicLinkUrl = `${origin}/auth.html?magic_token=${encodeURIComponent(token)}${redirectTo ? `&redirect_to=${encodeURIComponent(redirectTo)}` : ''}`;
+    const referer = request.headers.get('Referer') || '';
+    let targetPath = '/auth.html';
+    if (referer.includes('/zh/')) targetPath = '/zh/auth.html';
+    else if (referer.includes('/en/')) targetPath = '/en/auth.html';
+    else if (referer.includes('/es/')) targetPath = '/es/auth.html';
+    else if (referer.includes('/fr/')) targetPath = '/fr/auth.html';
+    else if (referer.includes('/de/')) targetPath = '/de/auth.html';
+    else if (referer.includes('/ja/')) targetPath = '/ja/auth.html';
+    else if (referer.includes('/ko/')) targetPath = '/ko/auth.html';
+    else if (referer.includes('/vi/')) targetPath = '/vi/auth.html';
+    else if (referer.includes('/th/')) targetPath = '/th/auth.html';
+
+    const magicLinkUrl = `${origin}${targetPath}?magic_token=${encodeURIComponent(token)}${redirectTo ? `&redirect_to=${encodeURIComponent(redirectTo)}` : ''}`;
 
     // 5. Render HTML & text templates
     const emailHtml = renderMagicLinkEmail({ email, code, magicLinkUrl });

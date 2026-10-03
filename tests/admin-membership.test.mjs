@@ -135,9 +135,8 @@ test('UI templates contain admin console card, close button, and friendly subtab
   assert.ok(zhAuthHtml.includes('id="adminConsoleCard"'), 'zh/auth.html has admin console card');
   assert.ok(enAuthHtml.includes('id="adminConsoleCard"'), 'auth.html has admin console card');
 
-  // CSS floating label styling prevents overlap
-  assert.ok(authCss.includes('top: 7px;'), 'auth.css has top: 7px for floating label');
-  assert.ok(authCss.includes('padding: 24px 44px 6px 16px;'), 'auth.css has 24px top padding');
+  // CSS label styling cleanly separates label above input (no text crowding/overlap)
+  assert.ok(authCss.includes('flex-direction: column-reverse;'), 'auth.css separates label above input');
   assert.ok(authCss.includes('.dash-admin-card'), 'auth.css has .dash-admin-card style');
 
   // PWA banner has close button and guide modal
@@ -149,13 +148,24 @@ test('Mobile anti-transcoding, interactive watermark camera, and multi-tier geo 
   const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
   const headersFile = fs.readFileSync(path.join(rootDir, '_headers'), 'utf8');
   const geoReversePath = path.join(rootDir, 'functions/api/geo/reverse.js');
+  const siteCss = fs.readFileSync(path.join(rootDir, 'assets/site.css'), 'utf8');
+  const authCss = fs.readFileSync(path.join(rootDir, 'assets/auth.css'), 'utf8');
 
-  // Anti-transcoding & anti-ad injection
+  // Anti-transcoding & anti-ad injection while retaining 51.la analytics
   assert.ok(headersFile.includes('Cache-Control: no-transform, no-siteapp'), '_headers prevents carrier transcoding');
   assert.ok(soundtestHtml.includes('meta http-equiv="Cache-Control" content="no-siteapp"'), 'soundtest.html has no-siteapp meta');
   assert.ok(soundtestHtml.includes('meta http-equiv="Cache-Control" content="no-transform"'), 'soundtest.html has no-transform meta');
-  assert.ok(!soundtestHtml.includes('sdk.51.la'), 'soundtest.html does not load 51.la tracking script');
+  assert.ok(soundtestHtml.includes('sdk.51.la'), 'soundtest.html retains 51.la tracking script');
+  assert.ok(soundtestHtml.includes('281wblDNvub2tk9f'), 'soundtest.html retains 51.la account id');
   assert.ok(soundtestHtml.includes('[id*="baidu_transcode"]'), 'soundtest.html contains defensive ad suppression CSS');
+
+  // Mobile 2-column footer layout (两排两列)
+  assert.ok(siteCss.includes('grid-template-columns: repeat(2, minmax(0, 1fr));'), 'site.css has 2-column mobile footer');
+  assert.ok(siteCss.includes('grid-column: 1 / -1;'), 'site.css spans footer brand across both columns');
+
+  // Mobile auth page first-screen form visibility
+  assert.ok(authCss.includes('.auth-brand {\n    display: contents;\n  }'), 'auth.css unwraps auth-brand on mobile');
+  assert.ok(authCss.includes('.auth-form-panel {\n    order: 2;'), 'auth.css places form panel first on mobile');
 
   // Interactive watermark camera overlays
   assert.ok(soundtestHtml.includes('id="watermarkMonitoringPill" onclick="toggleMon({fromAuthModal:true})"'), 'monitoring pill is clickable');

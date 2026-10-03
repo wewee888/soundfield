@@ -51,11 +51,8 @@ export async function onRequestPost(context) {
           return json({ ok: false, error: 'corrupt_token_data' }, 500);
         }
 
-        // Single-use: delete both keys
+        // Single-use: delete magic token, but keep magic_code until natural TTL so user can still enter code
         await env.ab_test.delete(`magic:${magicToken}`);
-        if (verifiedEmail) {
-          await env.ab_test.delete(`magic_code:${verifiedEmail}`);
-        }
       } else if (email && code) {
         // Verification by 6-digit code
         const raw = await env.ab_test.get(`magic_code:${email}`);
