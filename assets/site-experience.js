@@ -1322,6 +1322,75 @@
       }, 3500);
     }
 
+    function openPwaGuideModal(isApple) {
+      if (document.getElementById('sf-pwa-guide-modal')) return;
+      const lang = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
+      const isZh = lang === 'zh';
+
+      const overlay = document.createElement('div');
+      overlay.id = 'sf-pwa-guide-modal';
+      overlay.className = 'pwa-guide-overlay';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+
+      const iosSteps = isZh ? [
+        { num: '1', title: '点击 Safari 底部「分享」图标', desc: '在屏幕底端工具栏中央，找到并点击带有向上箭头的正方形分享按钮 ⎋。' },
+        { num: '2', title: '向上滑动菜单，点击「添加到主屏幕」', desc: '在弹出面板中向上滑动，找到带有 ➕ 号的“添加到主屏幕 (Add to Home Screen)”。' },
+        { num: '3', title: '点击右上角「添加」', desc: '确认名称后点击右上角“添加”，手机主屏幕即可生成图标，支持全屏免安装使用。' }
+      ] : [
+        { num: '1', title: 'Tap the Share icon in Safari', desc: 'Find and tap the share button ⎋ (square with an up arrow) at the bottom.' },
+        { num: '2', title: 'Scroll down and tap "Add to Home Screen"', desc: 'In the share sheet, scroll down to find the "Add to Home Screen" option with a ➕ icon.' },
+        { num: '3', title: 'Tap "Add" in the top-right', desc: 'Confirm to add the SOUNDTEST.PRO icon directly to your home screen.' }
+      ];
+
+      const androidSteps = isZh ? [
+        { num: '1', title: '点击浏览器右上角菜单 ⋮', desc: '在 Chrome、Edge 或自带浏览器右上角找到三点菜单按钮。' },
+        { num: '2', title: '点击「安装应用」或「添加到主屏幕」', desc: '选择“安装应用”或“添加到主屏幕”，无需通过任何应用商店。' },
+        { num: '3', title: '在桌面一键启动', desc: '桌面将生成应用快捷方式，启动即为独立窗口，测声更快捷。' }
+      ] : [
+        { num: '1', title: 'Open the browser menu ⋮', desc: 'Tap the three dots menu icon at the top right of your browser.' },
+        { num: '2', title: 'Tap "Install app" or "Add to Home Screen"', desc: 'Select install from the menu to download the lightweight web app.' },
+        { num: '3', title: 'Launch from your home screen', desc: 'Enjoy 1-tap instant sound monitoring directly from your phone screen.' }
+      ];
+
+      const steps = isApple ? iosSteps : androidSteps;
+
+      overlay.innerHTML = `
+        <div class="pwa-guide-modal">
+          <button type="button" class="pwa-close-btn" id="pwaGuideClose" aria-label="${isZh ? '关闭' : 'Close'}">×</button>
+          <div class="pwa-guide-header">
+            <h3>📱 ${isZh ? (isApple ? 'iPhone / iPad 添加到桌面教程' : '安卓与桌面端安装教程') : 'How to Add to Home Screen'}</h3>
+            <p>${isZh ? '无需在 App Store 下载，仅需 3 秒即可将专业分贝仪添加到手机桌面：' : 'No app store download needed. Set up 1-tap instant monitoring in seconds:'}</p>
+          </div>
+          <div class="pwa-guide-steps">
+            ${steps.map(s => `
+              <div class="pwa-guide-step">
+                <div class="pwa-step-num">${s.num}</div>
+                <div class="pwa-step-body">
+                  <strong>${s.title}</strong>
+                  <p>${s.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="pwa-guide-footer">
+            <button type="button" class="btn-primary btn-sm" id="pwaGuideDoneBtn">${isZh ? '我知道了' : 'Got it'}</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const closeModal = () => {
+        overlay.remove();
+      };
+      overlay.querySelector('#pwaGuideClose')?.addEventListener('click', closeModal);
+      overlay.querySelector('#pwaGuideDoneBtn')?.addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+      });
+    }
+
     function renderInstallBanner(isApple) {
       if (document.getElementById('sf-pwa-banner')) return;
       const lang = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
@@ -1329,19 +1398,19 @@
 
       const banner = document.createElement('aside');
       banner.id = 'sf-pwa-banner';
-      banner.className = 'pwa-install-banner reveal is-visible';
+      banner.className = 'pwa-install-banner'; // Clean class, never reveal or is-visible
       banner.setAttribute('role', 'region');
       banner.setAttribute('aria-label', isZh ? '安装应用提示' : 'PWA Install Prompt');
 
-      const title = isZh ? '安装 SOUNDTEST.PRO 到桌面' : 'Install SOUNDTEST.PRO App';
+      const title = isZh ? '添加 SOUNDTEST.PRO 到桌面' : 'Install SOUNDTEST.PRO App';
       const desc = isApple
-        ? (isZh ? '点击底部分享 ⎋，选择“添加到主屏幕 [+]”，获得即开即测全屏体验。' : 'Tap Share ⎋ then "Add to Home Screen" for instant 1-tap sound monitoring.')
-        : (isZh ? '免应用商店，一键添加至手机桌面，支持离线声级取证。' : 'Add to home screen for fast full-screen noise recording without app stores.');
-      const btnText = isZh ? '立即添加' : 'Install';
-      const closeText = isZh ? '暂不需要' : 'Dismiss';
+        ? (isZh ? '点击分享 ⎋ 选择“添加到主屏幕”，可全屏免安装使用。' : 'Tap Share ⎋ then "Add to Home Screen" for instant 1-tap monitoring.')
+        : (isZh ? '免应用商店，一键添加至手机桌面，支持离线声级取证。' : 'Add to home screen for fast full-screen noise recording.');
+      const btnText = isZh ? '查看教程' : 'Install Guide';
 
       banner.innerHTML = `
-        <div class="pwa-banner-content">
+        <button type="button" class="pwa-close-btn" id="pwaBannerCloseBtn" aria-label="${isZh ? '关闭' : 'Close'}">×</button>
+        <div class="pwa-banner-content" id="pwaBannerClickArea">
           <div class="pwa-banner-icon" aria-hidden="true">📱</div>
           <div class="pwa-banner-text">
             <strong>${title}</strong>
@@ -1349,33 +1418,25 @@
           </div>
         </div>
         <div class="pwa-banner-actions">
-          ${!isApple ? `<button type="button" class="btn-primary btn-sm pwa-install-btn">${btnText}</button>` : ''}
-          <button type="button" class="btn-ghost btn-sm pwa-dismiss-btn">${closeText}</button>
+          <button type="button" class="btn-ghost btn-sm pwa-guide-btn">${btnText}</button>
         </div>
       `;
 
       document.body.appendChild(banner);
 
-      banner.querySelector('.pwa-dismiss-btn')?.addEventListener('click', () => {
+      const dismissBanner = () => {
         localStorage.setItem(DISMISS_KEY, 'true');
-        banner.remove();
-      });
-
-      if (!isApple) {
-        banner.querySelector('.pwa-install-btn')?.addEventListener('click', async () => {
-          if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-              localStorage.setItem(DISMISS_KEY, 'true');
-            }
-            deferredPrompt = null;
-          }
-          banner.remove();
-        });
-      } else {
         sessionStorage.setItem('sf_ios_pwa_seen', 'true');
-      }
+        banner.remove();
+      };
+
+      banner.querySelector('#pwaBannerCloseBtn')?.addEventListener('click', dismissBanner);
+      banner.querySelector('.pwa-guide-btn')?.addEventListener('click', () => {
+        openPwaGuideModal(isApple);
+      });
+      banner.querySelector('#pwaBannerClickArea')?.addEventListener('click', () => {
+        openPwaGuideModal(isApple);
+      });
     }
   }
 

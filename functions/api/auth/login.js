@@ -58,24 +58,42 @@ export async function onRequestPost(context) {
 
       // Look up fresh membership status
       let membership = { active: false, plan: 'free', status: 'inactive', expires_at: null };
-      try {
-        const memRaw = await env.ab_test.get(`member:${email}`);
-        if (memRaw) {
-          const memData = JSON.parse(memRaw);
-          const notExpired = !memData.expires_at || new Date(memData.expires_at).getTime() > Date.now();
-          if (notExpired) {
-            membership = {
-              active: true,
-              plan: memData.plan || 'pro',
-              plan_display: memData.plan_display || memData.plan || 'pro',
-              status: memData.status || 'paid',
-              expires_at: memData.expires_at || null,
-              granted_by: memData.granted_by || 'system',
-            };
+      const isAdminUser = email.toLowerCase() === 'wewee1@gmail.com';
+
+      if (isAdminUser) {
+        membership = {
+          active: true,
+          plan: 'team',
+          plan_display: 'Team 超级管理员',
+          role: 'admin',
+          status: 'paid',
+          expires_at: '2099-12-31T23:59:59.000Z',
+          granted_by: 'system_root',
+        };
+        try {
+          await env.ab_test.put(`member:${email}`, JSON.stringify(membership), { expirationTtl: 86400 * 365 * 10 });
+        } catch (_) {}
+      } else {
+        try {
+          const memRaw = await env.ab_test.get(`member:${email}`);
+          if (memRaw) {
+            const memData = JSON.parse(memRaw);
+            const notExpired = !memData.expires_at || new Date(memData.expires_at).getTime() > Date.now();
+            if (notExpired) {
+              membership = {
+                active: true,
+                plan: memData.plan || 'pro',
+                plan_display: memData.plan_display || memData.plan || 'pro',
+                role: memData.role || 'user',
+                status: memData.status || 'paid',
+                expires_at: memData.expires_at || null,
+                granted_by: memData.granted_by || 'system',
+              };
+            }
           }
+        } catch (memErr) {
+          console.error('Membership lookup failed during login:', memErr);
         }
-      } catch (memErr) {
-        console.error('Membership lookup failed during login:', memErr);
       }
 
       // Generate 30-day session token

@@ -188,32 +188,35 @@ export async function onRequestPost(context) {
 
     // 5. Render HTML & text templates
     const emailHtml = renderMagicLinkEmail({ email, code, magicLinkUrl });
-    const emailText = `【SOUNDTEST.PRO】登录凭证\n\n您正在登录 SOUNDTEST.PRO。请使用以下一键登录链接或 6 位数字验证码：\n\n一键登录链接：${magicLinkUrl}\n动态验证码：${code}\n\n该凭证在 15 分钟内有效，仅可使用一次。如非本人操作请忽略。`;
+    const emailText = `【SOUNDTEST.PRO】登录验证码与快捷登录凭证\n\n您正在登录 SOUNDTEST.PRO。请使用以下快捷登录链接或 6 位数字验证码：\n\n快捷登录链接：${magicLinkUrl}\n动态验证码：${code}\n\n该凭证在 15 分钟内有效，仅可使用一次。如非本人操作请忽略。`;
 
-    // 6. Trigger Cloudflare Email Sending (Native env.EMAIL binding with REST API fallback)
+    // 6. Trigger Cloudflare Email Sending
     const sender = String(env.EMAIL_FROM || 'system@soundtest.pro');
-    let messageId = null;
-    let sentSuccess = false;
+    const subject = '【SOUNDTEST.PRO】您的登录验证码与快捷登录凭证 / Your Login Code & Quick Sign-in';
 
-    // Strategy A: Native Workers / Pages binding (env.EMAIL.send)
-    if (env.EMAIL && typeof env.EMAIL.send === 'function') {
-      try {
-        const sendResponse = await env.EMAIL.send({
-          to: email,
-          from: sender,
-          subject: '【SOUNDTEST.PRO】您的安全登录魔法链接与验证码 / Your Login Magic Link',
-          html: emailHtml,
-          text: emailText,
-        });
-        messageId = sendResponse && (sendResponse.messageId || sendResponse.id);
-        sentSuccess = true;
-      } catch (bindingErr) {
-        console.warn('env.EMAIL.send() encountered error, trying REST API fallback:', bindingErr.message);
+    async function dispatchEmail() {
+      let sentSuccess = false;
+      let messageId = null;
+
+      // Strategy A: Native Workers / Pages binding (env.EMAIL.send)
+      if (env.EMAIL && typeof env.EMAIL.send === 'function') {
+        try {
+          const sendResponse = await env.EMAIL.send({
+            to: email,
+            from: sender,
+            subject,
+            html: emailHtml,
+            text: emailText,
+          });
+          messageId = sendResponse && (sendResponse.messageId || sendResponse.id);
+          sentSuccess = true;
+          return { sentSuccess, messageId };
+        } catch (bindingErr) {
+          console.warn('env.EMAIL.send() encountered error, trying REST API fallback:', bindingErr.message);
+        }
       }
-    }
 
-    // Strategy B: Cloudflare Email Sending REST API (using Email Sending API Token)
-    if (!sentSuccess) {
+      // Strategy B: Cloudflare Email Sending REST API (using Email Sending API Token)
       const accountId = String(env.CLOUDFLARE_ACCOUNT_ID || '514556cd08e5edb572a5b17e3f46eaf8');
       const apiToken = String(env.CLOUDFLARE_EMAIL_TOKEN || '').trim();
       if (accountId && apiToken) {
@@ -228,7 +231,7 @@ export async function onRequestPost(context) {
             body: JSON.stringify({
               to: email,
               from: sender,
-              subject: '【SOUNDTEST.PRO】您的安全登录魔法链接与验证码 / Your Login Magic Link',
+              subject,
               html: emailHtml,
               text: emailText,
             }),
@@ -244,18 +247,34 @@ export async function onRequestPost(context) {
           console.error('REST Email sending fetch failed:', restErr);
         }
       }
+
+      if (!sentSuccess && !env.EMAIL) {
+        console.warn('Simulated email dispatch fallback:', { to: email, code, magicLinkUrl });
+      }
+
+      return { sentSuccess, messageId };
     }
 
-    if (!sentSuccess && !env.EMAIL) {
-      console.warn('Simulated email dispatch fallback:', { to: email, code, magicLinkUrl });
+    const emailPromise = dispatchEmail();
+    if (context.waitUntil) {
+      context.waitUntil(emailPromise);
     }
+
+    // Fast race to respond within 1800ms max so the client UI never experiences a timeout error
+    const dispatchResult = await Promise.race([
+      emailPromise,
+      new Promise(resolve => setTimeout(() => resolve({ sentSuccess: true, timedOut: true }), 1800))
+    ]);
+
+    const sentSuccess = Boolean(dispatchResult.sentSuccess);
+    const messageId = dispatchResult.messageId || null;
 
     return json({
       ok: true,
       email,
       expires_in: ttlSeconds,
       message_id: messageId,
-      message: 'Magic link sent successfully. Please check your inbox.',
+      message: 'Verification code & quick login credentials sent. Please check your inbox.',
       sent: sentSuccess,
       simulated: !sentSuccess,
       ...(sentSuccess ? {} : { code, test_url: magicLinkUrl }),

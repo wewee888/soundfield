@@ -285,77 +285,102 @@
   }
 
   /* ── Magic link token auto-login ── */
+  let magicTokenCheckPromise = null;
   async function checkMagicTokenLogin() {
+    if (magicTokenCheckPromise) return magicTokenCheckPromise;
     const params = new URLSearchParams(window.location.search);
     const magicToken = params.get('magic_token');
     if (!magicToken) return false;
 
-    showToast('正在验证魔法链接安全凭证… / Verifying…', 'info');
-    try {
-      const res = await fetch('/api/auth/verify-magic', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ magic_token: magicToken }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        showToast(data.message || '魔法链接已失效或已被使用，请重新获取。', 'err');
+    magicTokenCheckPromise = (async () => {
+      showToast(getNavAuthLang() === 'zh' ? '正在验证安全登录凭证… / Verifying…' : 'Verifying credentials…', 'info');
+      try {
+        const res = await fetch('/api/auth/verify-magic', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ magic_token: magicToken }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          showToast(data.message || (getNavAuthLang() === 'zh' ? '登录凭证已失效或已被使用，请重新获取。' : 'Credentials expired or invalid.'), 'err');
+          return false;
+        }
+
+        const email = data.email;
+        const isSuperAdmin = (email.toLowerCase() === 'wewee1@gmail.com') || (data.membership?.role === 'admin');
+        const users = loadUsers();
+        let user = users.find(u => u.email === email);
+        const plan = isSuperAdmin ? 'team' : (data.membership?.active ? data.membership.plan : (user?.plan || 'free'));
+
+        if (!user) {
+          user = {
+            name: email.split('@')[0],
+            email,
+            createdAt: new Date().toISOString(),
+            plan,
+            role: isSuperAdmin ? 'admin' : 'user',
+          };
+          users.push(user);
+          saveUsers(users);
+        } else {
+          user.plan = plan;
+          if (isSuperAdmin) user.role = 'admin';
+          saveUsers(users);
+        }
+
+        const session = {
+          name: user.name,
+          email: user.email,
+          plan: user.plan,
+          role: isSuperAdmin ? 'admin' : (data.membership?.role || user.role || 'user'),
+          signedAt: new Date().toISOString(),
+          token: data.session_token,
+        };
+        saveSession(session);
+
+        if (data.membership?.active || isSuperAdmin) {
+          try {
+            localStorage.setItem('sf_membership_v1', JSON.stringify({
+              email,
+              active: true,
+              plan: isSuperAdmin ? 'team' : (data.membership?.plan || 'pro'),
+              role: isSuperAdmin ? 'admin' : 'user',
+              provider: 'magic_link',
+              status: 'paid',
+              lastCheckedAt: new Date().toISOString(),
+            }));
+          } catch (_) {}
+        }
+
+        const redirectTo = params.get('redirect_to');
+        const cleanUrl = window.location.pathname + (redirectTo ? `?redirect_to=${encodeURIComponent(redirectTo)}` : '');
+        window.history.replaceState({}, document.title, cleanUrl);
+
+        showToast(getNavAuthLang() === 'zh' ? '🎉 登录成功！欢迎回来。' : '🎉 Successfully signed in! Welcome back.', 'success');
+
+        // Immediately update DOM shells to authenticated state
+        const unauth = document.querySelector('[data-auth-page="unauthenticated"]');
+        const auth = document.querySelector('[data-auth-page="authenticated"]');
+        if (unauth && auth) {
+          unauth.hidden = true;
+          unauth.style.display = 'none';
+          auth.hidden = false;
+          auth.style.display = 'block';
+          renderDashboard(session);
+          renderNavAuth();
+        }
+
+        if (redirectTo && !redirectTo.includes('auth.html')) {
+          setTimeout(() => location.href = redirectTo, 800);
+        }
+        return true;
+      } catch (_) {
+        showToast(getNavAuthLang() === 'zh' ? '网络连接异常，请重试' : 'Network error, please retry.', 'err');
         return false;
       }
+    })();
 
-      const email = data.email;
-      const users = loadUsers();
-      let user = users.find(u => u.email === email);
-      const plan = data.membership?.active ? data.membership.plan : (user?.plan || 'free');
-
-      if (!user) {
-        user = {
-          name: email.split('@')[0],
-          email,
-          createdAt: new Date().toISOString(),
-          plan,
-        };
-        users.push(user);
-        saveUsers(users);
-      } else {
-        user.plan = plan;
-        saveUsers(users);
-      }
-
-      saveSession({
-        name: user.name,
-        email: user.email,
-        plan: user.plan,
-        signedAt: new Date().toISOString(),
-        token: data.session_token,
-      });
-
-      if (data.membership?.active) {
-        try {
-          localStorage.setItem('sf_membership_v1', JSON.stringify({
-            email,
-            active: true,
-            plan: data.membership.plan || 'pro',
-            provider: 'magic_link',
-            status: 'paid',
-            lastCheckedAt: new Date().toISOString(),
-          }));
-        } catch (_) {}
-      }
-
-      const redirectTo = params.get('redirect_to');
-      const cleanUrl = window.location.pathname + (redirectTo ? `?redirect_to=${encodeURIComponent(redirectTo)}` : '');
-      window.history.replaceState({}, document.title, cleanUrl);
-
-      showToast(getNavAuthLang() === 'zh' ? '🎉 登录成功！欢迎回来。' : '🎉 Magic link verified! Welcome back.', 'success');
-      if (redirectTo) {
-        setTimeout(() => location.href = redirectTo, 800);
-      }
-      return true;
-    } catch (_) {
-      showToast(getNavAuthLang() === 'zh' ? '网络连接异常，请重试' : 'Network error, please retry.', 'err');
-      return false;
-    }
+    return magicTokenCheckPromise;
   }
 
   /* ── Auth page: show/hide shells ── */
@@ -504,7 +529,8 @@
           if (!resp.ok || !result.ok) {
             setFieldError('magicEmail', result.message || (getNavAuthLang() === 'zh' ? '发送失败，请稍后重试' : 'Failed to send, please retry.'));
             btnSendMagic.disabled = false;
-            btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '✨ 发送登录链接与验证码' : '✨ Send Magic Link & Code';
+            btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '✨ 发送邮箱验证码与快捷链接' : '✨ Send Verification Code & Login Link';
+            if (magicCodeSection) magicCodeSection.style.display = 'block';
             return;
           }
 
@@ -520,9 +546,10 @@
             showToast(`[测试模式验证码]: ${result.code}`, 'info');
           }
         } catch (_) {
-          setFieldError('magicEmail', getNavAuthLang() === 'zh' ? '网络错误，请稍后重试' : 'Network error, please retry.');
+          setFieldError('magicEmail', getNavAuthLang() === 'zh' ? '网络稍慢，若已收到邮件请直接输入验证码' : 'Slow connection. If you received the code, enter it below:');
           btnSendMagic.disabled = false;
-          btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '✨ 发送登录链接与验证码' : '✨ Send Magic Link & Code';
+          btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '✨ 重新发送验证码与链接' : '✨ Resend Code & Link';
+          if (magicCodeSection) magicCodeSection.style.display = 'block';
         }
       });
     }
@@ -569,9 +596,10 @@
             return;
           }
 
+          const isSuperAdmin = (email.toLowerCase() === 'wewee1@gmail.com') || (result.membership?.role === 'admin');
           const users = loadUsers();
           let user = users.find(u => u.email === email);
-          const plan = result.membership?.active ? result.membership.plan : (user?.plan || 'free');
+          const plan = isSuperAdmin ? 'team' : (result.membership?.active ? result.membership.plan : (user?.plan || 'free'));
 
           if (!user) {
             user = {
@@ -579,11 +607,13 @@
               email,
               createdAt: new Date().toISOString(),
               plan,
+              role: isSuperAdmin ? 'admin' : 'user',
             };
             users.push(user);
             saveUsers(users);
           } else {
             user.plan = plan;
+            if (isSuperAdmin) user.role = 'admin';
             saveUsers(users);
           }
 
@@ -591,16 +621,18 @@
             name: user.name,
             email: user.email,
             plan: user.plan,
+            role: isSuperAdmin ? 'admin' : (result.membership?.role || user.role || 'user'),
             signedAt: new Date().toISOString(),
             token: result.session_token,
           });
 
-          if (result.membership?.active) {
+          if (result.membership?.active || isSuperAdmin) {
             try {
               localStorage.setItem('sf_membership_v1', JSON.stringify({
                 email,
                 active: true,
-                plan: result.membership.plan || 'pro',
+                plan: isSuperAdmin ? 'team' : (result.membership?.plan || 'pro'),
+                role: isSuperAdmin ? 'admin' : 'user',
                 provider: 'magic_code',
                 status: 'paid',
                 lastCheckedAt: new Date().toISOString(),
@@ -611,7 +643,7 @@
           showToast(getNavAuthLang() === 'zh' ? '🎉 登录成功！欢迎回来。' : '🎉 Signed in successfully!', 'success');
           setTimeout(() => {
             const redirectTo = new URLSearchParams(window.location.search).get('redirect_to');
-            if (redirectTo) {
+            if (redirectTo && !redirectTo.includes('auth.html')) {
               location.href = redirectTo;
               return;
             }
@@ -941,6 +973,9 @@
   }
 
   function getEffectivePlan(session) {
+    if (session?.email && String(session.email).trim().toLowerCase() === 'wewee1@gmail.com') {
+      return 'team';
+    }
     let plan = session?.plan || 'free';
     try {
       const sfMem = JSON.parse(localStorage.getItem('sf_membership_v1') || 'null');
@@ -1724,6 +1759,111 @@
         });
       }
     });
+
+    // ── Super Admin Console Handlers ──
+    const adminCard = document.getElementById('adminConsoleCard');
+    const isSuperAdmin = (session?.email && String(session.email).trim().toLowerCase() === 'wewee1@gmail.com') || (session?.role === 'admin');
+
+    if (adminCard) {
+      if (isSuperAdmin) {
+        adminCard.style.display = 'block';
+        const btnGrant = document.getElementById('btnAdminGrant');
+        const btnQuery = document.getElementById('btnAdminQuery');
+        const inputTarget = document.getElementById('adminTargetEmail');
+        const selectPlan = document.getElementById('adminTargetPlan');
+        const selectDuration = document.getElementById('adminTargetDuration');
+        const feedbackBox = document.getElementById('adminFeedbackBox');
+
+        function setFeedback(msg, isSuccess = true) {
+          if (!feedbackBox) return;
+          feedbackBox.textContent = msg;
+          feedbackBox.className = 'admin-result-box ' + (isSuccess ? 'is-success' : 'is-error');
+          feedbackBox.style.display = 'block';
+        }
+
+        if (btnGrant && !btnGrant.hasAttribute('data-bound')) {
+          btnGrant.setAttribute('data-bound', 'true');
+          btnGrant.addEventListener('click', async () => {
+            const targetEmail = String(inputTarget?.value || '').trim().toLowerCase();
+            if (!targetEmail || !targetEmail.includes('@')) {
+              setFeedback('请输入有效的目标用户邮箱地址', false);
+              return;
+            }
+            btnGrant.disabled = true;
+            btnGrant.textContent = '正在授权…';
+            try {
+              const res = await fetch('/api/admin/membership', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'x-admin-email': session.email,
+                  'x-session-token': session.token || '',
+                },
+                body: JSON.stringify({
+                  admin_email: session.email,
+                  admin_token: session.token,
+                  target_email: targetEmail,
+                  plan: selectPlan?.value || 'team',
+                  duration_days: parseInt(selectDuration?.value || '3650', 10),
+                }),
+              });
+              const data = await res.json().catch(() => ({}));
+              if (!res.ok || !data.ok) {
+                setFeedback(data.message || '授权配置失败，请检查网络或权限', false);
+              } else {
+                setFeedback(`✅ ${data.message}（到期时间: ${data.record?.expires_at ? new Date(data.record.expires_at).toLocaleDateString() : '永久'}）`, true);
+                showToast('会员权限配置已生效！', 'success');
+              }
+            } catch (err) {
+              setFeedback('网络请求异常，请稍后重试: ' + err.message, false);
+            } finally {
+              btnGrant.disabled = false;
+              btnGrant.textContent = '⚡ 立即生效';
+            }
+          });
+        }
+
+        if (btnQuery && !btnQuery.hasAttribute('data-bound')) {
+          btnQuery.setAttribute('data-bound', 'true');
+          btnQuery.addEventListener('click', async () => {
+            const targetEmail = String(inputTarget?.value || '').trim().toLowerCase();
+            if (!targetEmail || !targetEmail.includes('@')) {
+              setFeedback('请输入要查询的目标用户邮箱地址', false);
+              return;
+            }
+            btnQuery.disabled = true;
+            btnQuery.textContent = '正在查询…';
+            try {
+              const res = await fetch(`/api/admin/membership?email=${encodeURIComponent(targetEmail)}`, {
+                headers: {
+                  'x-admin-email': session.email,
+                  'x-session-token': session.token || '',
+                },
+              });
+              const data = await res.json().catch(() => ({}));
+              if (!res.ok || !data.ok) {
+                setFeedback(data.message || '查询失败', false);
+              } else {
+                const mem = data.membership;
+                if (!mem || !mem.active || mem.plan === 'free') {
+                  setFeedback(`ℹ️ 用户 ${targetEmail} 当前为【免费版】或无有效会员记录。`, false);
+                } else {
+                  const exp = mem.expires_at ? new Date(mem.expires_at).toLocaleDateString() : '永久有效';
+                  setFeedback(`🌟 用户 ${targetEmail} 当前权限: 【${(mem.plan_display || mem.plan).toUpperCase()}】 | 状态: ${mem.status} | 有效期至: ${exp}`, true);
+                }
+              }
+            } catch (err) {
+              setFeedback('网络请求异常: ' + err.message, false);
+            } finally {
+              btnQuery.disabled = false;
+              btnQuery.textContent = '🔍 查询状态';
+            }
+          });
+        }
+      } else {
+        adminCard.style.display = 'none';
+      }
+    }
   }
 
   /* ── Panels ── */
@@ -1783,19 +1923,21 @@
   /* ── Utilities ── */
   // escHtml provided by assets/utils.js (window.__sfUtils.escHtml)
 
-  /* ── Panel close bindings ── */
-  document.addEventListener('DOMContentLoaded', () => {
+  /* ── Panel close bindings & App Bootstrap ── */
+  function bootstrap() {
+    renderNavAuth();
+    if (document.querySelector('[data-auth-page]')) {
+      initAuthPage();
+    }
+
     // Fire session refresh in background — no await so UI is never blocked
     silentSessionRefresh().then(() => {
-      // Re-render nav & auth page after refresh so plan badge is current
       renderNavAuth();
-      if (document.querySelector('[data-auth-page]')) {
-        initAuthPage();
+      const currentSession = loadSession();
+      if (currentSession?.email && document.querySelector('[data-auth-page="authenticated"]')) {
+        renderDashboard(currentSession);
       }
     }).catch(() => {});
-
-    renderNavAuth();
-    initAuthPage();
 
     // Close panel buttons
     document.querySelectorAll('[data-close-panel]').forEach(btn => {
@@ -1819,5 +1961,11 @@
         closePanel(id);
       });
     });
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrap);
+  } else {
+    bootstrap();
+  }
 })();
