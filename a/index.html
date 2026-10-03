@@ -105,16 +105,33 @@
     .anxiety-copy .stanza { padding: 12px 0; border-left: 2px solid var(--ink-border); padding-left: 16px; margin: 12px 0; }
     .anxiety-copy .stanza strong { color: var(--text-strong); }
 
-    /* Bento 5 */
-    .bento { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: minmax(180px, auto); gap: 14px; }
-    .bento .card { padding: 24px; }
-    .bento .b1 { grid-column: span 3; grid-row: span 2; }
-    .bento .b2 { grid-column: span 3; }
-    .bento .b3 { grid-column: span 3; }
-    .bento .b4 { grid-column: span 2; }
-    .bento .b5 { grid-column: span 4; background: linear-gradient(135deg, rgba(44, 240, 193, 0.10), rgba(124, 155, 255, 0.08)); }
-    @media (max-width: 880px) { .bento { grid-template-columns: 1fr 1fr; } .bento .b1, .bento .b2, .bento .b3, .bento .b4, .bento .b5 { grid-column: span 2; grid-row: auto; } }
-    @media (max-width: 560px) { .bento { grid-template-columns: 1fr; } .bento .b1, .bento .b2, .bento .b3, .bento .b4, .bento .b5 { grid-column: span 1; } }
+    /* Bento Grid (2x2 paired layout + full-width Pro callout) */
+    .bento { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .bento .card { padding: 24px; display: flex; flex-direction: column; }
+    .bento .b1, .bento .b2, .bento .b3, .bento .b4 { grid-column: span 1; grid-row: auto; }
+    .bento .card-thumb { margin-top: auto; border-radius: 12px; overflow: hidden; height: 160px; border: 1px solid rgba(255,255,255,0.08); }
+    .bento .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+    .bento .card:hover .card-thumb img { transform: scale(1.03); }
+    .bento .b5 {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(44, 240, 193, 0.10), rgba(124, 155, 255, 0.08));
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .bento .b5 .b5-text { flex: 1; min-width: 260px; }
+    .bento .b5 .b5-text h3 { margin: 8px 0 6px; }
+    .bento .b5 .b5-text p { margin: 0; color: var(--muted); }
+    .bento .b5 .b5-cta { flex-shrink: 0; }
+    @media (max-width: 880px) {
+      .bento { grid-template-columns: 1fr; }
+      .bento .b1, .bento .b2, .bento .b3, .bento .b4, .bento .b5 { grid-column: span 1; }
+      .bento .b5 { flex-direction: column; align-items: flex-start; }
+      .bento .b5 .b5-cta { width: 100%; margin-top: 14px; }
+      .bento .b5 .b5-cta .button { width: 100%; text-align: center; }
+    }
     .bento .case-num { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--soft); margin-bottom: 8px; }
     .bento .case-icon { width: 44px; height: 44px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(44, 240, 193, 0.18), rgba(124, 155, 255, 0.16)); border: 1px solid rgba(168, 196, 255, 0.2); color: var(--accent); margin-bottom: 14px; }
     .bento .case-icon svg { width: 22px; height: 22px; stroke-width: 2; }
@@ -265,7 +282,7 @@
           </span>
           <h3>Neighbor &amp; apartment noise</h3>
           <p>Footsteps above at midnight, TV bass through the wall, dogs barking at 6am. Record the exact dB and time. The record speaks when words don't.</p>
-          <div class="card-thumb" style="margin-top: 14px; border-radius: 12px; overflow: hidden; height: 160px; border: 1px solid rgba(255,255,255,0.08);">
+          <div class="card-thumb" style="margin-top: 16px; border-radius: 12px; overflow: hidden; height: 160px; border: 1px solid rgba(255,255,255,0.08);">
             <img src="../assets/images/neighbor_noise_monitor.webp" alt="Neighbor & apartment noise monitoring" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
           </div>
         </a>
@@ -276,7 +293,7 @@
           </span>
           <h3>Construction &amp; renovation</h3>
           <p>Permit says 9–5. The jackhammer starts at 7. A timestamped log of out-of-hours spikes is what the city inspector actually wants.</p>
-          <div class="card-thumb" style="margin-top: 14px; border-radius: 12px; overflow: hidden; height: 140px; border: 1px solid rgba(255,255,255,0.08);">
+          <div class="card-thumb" style="margin-top: 16px; border-radius: 12px; overflow: hidden; height: 160px; border: 1px solid rgba(255,255,255,0.08);">
             <img src="../assets/images/construction_noise_evidence.webp" alt="Construction noise monitoring on site" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
           </div>
         </a>
@@ -287,7 +304,7 @@
           </span>
           <h3>Bar &amp; street disturbance</h3>
           <p>Patio crowds, late delivery trucks, sirens stacked on sirens. Capture LAeq over 15 minutes and your case stops being "he said / she said."</p>
-          <div class="card-thumb" style="margin-top: 14px; border-radius: 12px; overflow: hidden; height: 140px; border: 1px solid rgba(255,255,255,0.08);">
+          <div class="card-thumb" style="margin-top: 16px; border-radius: 12px; overflow: hidden; height: 160px; border: 1px solid rgba(255,255,255,0.08);">
             <img src="../assets/images/bar_street_noise.webp" alt="Bar and street noise disturbance recording" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
           </div>
         </a>
@@ -298,14 +315,19 @@
           </span>
           <h3>Rental deposit dispute</h3>
           <p>Quiet hours broken across a lease? A folder of timestamped dB records converts a 4-week back-and-forth into a one-meeting settlement.</p>
-          <div class="card-thumb" style="margin-top: 14px; border-radius: 12px; overflow: hidden; height: 140px; border: 1px solid rgba(255,255,255,0.08);">
+          <div class="card-thumb" style="margin-top: 16px; border-radius: 12px; overflow: hidden; height: 160px; border: 1px solid rgba(255,255,255,0.08);">
             <img src="../assets/images/rental_dispute_evidence.webp" alt="Rental deposit dispute acoustic evidence" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
           </div>
         </a>
         <div class="card b5 reveal">
-          <span class="card-badge">Pro · $4.99/mo</span>
-          <h3>Lock the evidence. Keep the case.</h3>
-          <p>Unlimited recordings, notarized PDF certificates, multi-device sync, and a "share with my lawyer" link that doesn't expire. <a href="#pricing" style="color:var(--accent);font-weight:600">See what's in Pro →</a></p>
+          <div class="b5-text">
+            <span class="card-badge">Pro · $4.99/mo</span>
+            <h3>Lock the evidence. Keep the case.</h3>
+            <p>Unlimited recordings, notarized PDF certificates, multi-device sync, and a "share with my lawyer" link that doesn't expire.</p>
+          </div>
+          <div class="b5-cta">
+            <a class="button primary" href="#pricing">See what's in Pro →</a>
+          </div>
         </div>
       </div>
     </section>
