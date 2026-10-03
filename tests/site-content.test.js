@@ -526,3 +526,31 @@ test('all 9 locales and root pages feature unified 7-item navigation with authen
   });
 });
 
+test('all 9 locales and root index feature all 6 noise scenarios and 6 use-case cards', () => {
+  const scenarioKeys = ['general', 'neighbor', 'construction', 'street', 'rental', 'traffic'];
+  const useCaseFiles = [
+    'neighbor-noise-evidence.html',
+    'construction-noise-monitoring.html',
+    'bar-street-disturbance.html',
+    'rental-dispute-evidence.html',
+    'property-noise-complaint-report.html',
+    'workplace-noise-inspection.html'
+  ];
+  const allDirs = ['', 'zh', 'en', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'];
+
+  allDirs.forEach((dir) => {
+    const filePath = dir ? path.join(__dirname, '..', dir, 'index.html') : path.join(__dirname, '..', 'index.html');
+    const html = fs.readFileSync(filePath, 'utf8');
+    
+    // Check all 6 scenario buttons
+    scenarioKeys.forEach((key) => {
+      assert.ok(html.includes(`data-scenario="${key}"`), `${filePath} contains scenario button ${key}`);
+    });
+
+    // Check all 6 use-case cards
+    useCaseFiles.forEach((file) => {
+      assert.ok(html.includes(file), `${filePath} contains use-case card for ${file}`);
+    });
+  });
+});
+

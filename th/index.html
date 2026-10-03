@@ -44,12 +44,12 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://soundtest.pro/">
   <meta property="og:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
-  <meta property="og:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta property="og:description" content="A free browser dB meter that turns sound into tamper-evident proof. Local-first by default, with multi-device cloud backup.">
   <meta property="og:image" content="https://soundtest.pro/assets/icon-512.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
-  <meta name="twitter:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta name="twitter:description" content="A free browser dB meter that turns sound into tamper-evident proof. Local-first by default, with multi-device cloud backup.">
   <meta name="twitter:image" content="https://soundtest.pro/assets/icon-512.png">
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 
@@ -85,7 +85,7 @@
     <section class="hero">
       <div class="hero-split">
         <div class="hero-split-text reveal">
-          <span class="privacy-badge">ประมวลผลในเครื่อง · ไม่อัปโหลด</span>
+          <span class="privacy-badge">ประมวลผลในเครื่อง · รองรับซิงค์คลาวด์</span>
           <span class="eyebrow">ไม่ต้องติดตั้ง · หลายภาษา · ใช้เครื่องเป็นหลัก</span>
           <h1 class="hero-headline">เครื่องมือบันทึกหลักฐานเสียงรบกวนออนไลน์ฟรี | <em>ไม่ต้องติดตั้งแอป</em>。<br><em>วัด dB ล็อกหลักฐาน ข้อมูลอยู่ในเครื่อง</em></h1>
           <p class="hero-lead">วัดเดซิเบล บันทึกเสียง บันทึกเวลาและตำแหน่งเพื่อเป็นหลักฐานในการร้องเรียนทางกฎหมาย เสียงรบกวนจากเพื่อนบ้าน การก่อสร้าง บาร์และถนน ข้อพิพาทการเช่า — เริ่มบันทึกได้ในคลิกเดียว บนเบราว์เซอร์ของคุณ</p>
@@ -151,48 +151,48 @@
           </div>
 
           <div class="workbench-chips-grid" role="tablist">
+            <button type="button" class="scenario-pill-btn" data-scenario="general" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🌐</span>
+              <div class="scenario-pill-text">
+                <strong>วัดเสียงทั่วไป</strong>
+                <small>เสียงรบกวนฉับพลันหรือรอบตัว · วัดได้ทันที</small>
+              </div>
+            </button>
             <button type="button" class="scenario-pill-btn active" data-scenario="neighbor" role="tab" aria-selected="true">
               <span class="scenario-pill-icon">🏠</span>
               <div class="scenario-pill-text">
-                <strong>เสียงเพื่อนบ้าน</strong>
-                <small>เสียงเดิน กระแทก เบส ท่อสั่น</small>
+                <strong>เสียงรบกวนข้างห้อง</strong>
+                <small>เสียงฝีเท้า, เบส และแรงสั่นสะเทือน</small>
               </div>
             </button>
             <button type="button" class="scenario-pill-btn" data-scenario="construction" role="tab" aria-selected="false">
               <span class="scenario-pill-icon">🚧</span>
               <div class="scenario-pill-text">
                 <strong>งานก่อสร้างต่อเติม</strong>
-                <small>เจาะ ทุบ ทำงานนอกเวลา</small>
+                <small>เสียงเจาะ สว่าน และทำงานเกินเวลา</small>
               </div>
             </button>
             <button type="button" class="scenario-pill-btn" data-scenario="street" role="tab" aria-selected="false">
               <span class="scenario-pill-icon">🍻</span>
               <div class="scenario-pill-text">
-                <strong>ร้านค้าและถนน</strong>
-                <small>เสียงเบสสถานบันเทิง พัดลมระบายอากาศ</small>
+                <strong>สถานบันเทิงและถนน</strong>
+                <small>เสียงเบส พัดลมระบายอากาศ และท่อไอเสีย</small>
               </div>
             </button>
             <button type="button" class="scenario-pill-btn" data-scenario="rental" role="tab" aria-selected="false">
               <span class="scenario-pill-icon">📋</span>
               <div class="scenario-pill-text">
-                <strong>ข้อพิพาทสัญญาเช่า</strong>
-                <small>หลักฐานการยกเลิกสัญญา ขอคืนเงินมัดจำ</small>
+                <strong>ข้อพิพาทเช่าห้อง</strong>
+                <small>หลักฐานขอยกเลิกสัญญา คืนเงินประกัน</small>
               </div>
             </button>
-          </div>
-
-          <form class="workbench-custom-row" data-wb-custom-form onsubmit="return false;">
-            <input type="text" class="workbench-custom-input" data-wb-custom-input placeholder="อธิบายเสียงรบกวน (เช่น เสียงลิฟต์สั่นตอนกลางคืน)..." autocomplete="off">
-            <button type="submit" class="workbench-custom-btn" data-wb-custom-btn>
-              <span>นำไปใช้</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <button type="button" class="scenario-pill-btn" data-scenario="traffic" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🚗</span>
+              <div class="scenario-pill-text">
+                <strong>การจราจรและถนนใหญ่</strong>
+                <small>เสียงยานพาหนะ บีบแตร และเสียงยางบดถนน</small>
+              </div>
             </button>
-          </form>
-
-          <div class="hero-meta" style="margin-top:10px;justify-content:flex-start">
-            <span>✓ <strong>เริ่มทันทีใน 1 คลิก</strong> · ไม่ต้องโหลดแอป</span>
-            <span>✓ <strong>ไม่ส่งข้อมูลขึ้นคลาวด์</strong></span>
-            <span>✓ <strong>ส่งออกชุดหลักฐาน PDF / CSV</strong></span>
           </div>
         </div>
 
@@ -347,33 +347,47 @@
       </div>
 
       <div class="grid" style="margin-top:18px">
-        <a class="card reveal" href="../use-cases/neighbor-noise-evidence.html">
+        <a class="card reveal" href="../use-cases/th/neighbor-noise-evidence.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2z"/></svg>
           </span>
-          <h3>เสียงรบกวนจากเพื่อนบ้านและอพาร์ตเมนต์</h3>
-          <p>For tenants, owners, and mediators who need a structured diary with dB trends, timestamps, photos, and reports.</p>
+          <h3>เสียงรบกวนจากเพื่อนบ้านและคอนโด</h3>
+          <p>สำหรับผู้เช่า เจ้าของห้อง และผู้ไกล่เกลี่ยที่ต้องการบันทึกแบบมีโครงสร้าง พร้อมกราฟแนวโน้ม dB ประทับเวลา รูปภาพ และรายงาน.</p>
         </a>
-        <a class="card reveal" href="../use-cases/construction-noise-monitoring.html">
+        <a class="card reveal" href="../use-cases/th/construction-noise-monitoring.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21V12h6v9"/></svg>
           </span>
-          <h3>เสียงรบกวนจากการก่อสร้างและรีโนเวท</h3>
-          <p>Capture start, peak, and quiet-after periods with site notes, GPS, video, and exportable summaries.</p>
+          <h3>เสียงงานก่อสร้างและต่อเติม</h3>
+          <p>จับภาพช่วงเวลาเริ่มต้น ช่วงเสียงดังสูงสุด และช่วงหยุดพัก พร้อมบันทึกสถานที่ GPS วิดีโอ และสรุปรายงาน.</p>
         </a>
-        <a class="card reveal" href="../use-cases/bar-street-disturbance.html">
+        <a class="card reveal" href="../use-cases/th/bar-street-disturbance.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M5 6v6c0 4 3 7 7 7s7-3 7-7V6"/><path d="M9 2v3M15 2v3"/></svg>
           </span>
-          <h3>เสียงรบกวนจากบาร์ ร้านค้า และถนน</h3>
-          <p>Document repeated disturbance patterns with time, place, media, and complaint-ready summaries.</p>
+          <h3>สถานบันเทิง ร้านค้า และถนน</h3>
+          <p>บันทึกรูปแบบการรบกวนที่เกิดขึ้นซ้ำๆ พร้อมเวลา สถานที่ สื่อ และสรุปข้อมูลพร้อมยื่นร้องเรียน.</p>
         </a>
-        <a class="card reveal" href="../use-cases/rental-dispute-evidence.html">
+        <a class="card reveal" href="../use-cases/th/rental-dispute-evidence.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7l8-4 8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 17l8 4 8-4"/></svg>
           </span>
-          <h3>ข้อพิพาทการเช่าและตัวช่วยหลักฐานทางกฎหมาย</h3>
-          <p>Organize facts before speaking with a landlord, property manager, local authority, or legal adviser.</p>
+          <h3>ข้อพิพาทการเช่าและหลักฐานทางกฎหมาย</h3>
+          <p>รวบรวมข้อเท็จจริงก่อนเจรจากับเจ้าของห้อง นิติบุคคล เจ้าหน้าที่ หรือที่ปรึกษากฎหมายเพื่อขอยกเลิกสัญญา.</p>
+        </a>
+        <a class="card reveal" href="../use-cases/th/property-noise-complaint-report.html">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 13h6M9 17h6"/></svg>
+          </span>
+          <h3>นิติบุคคลอาคารชุดและผู้จัดการตึก</h3>
+          <p>บันทึกข้อร้องเรียนและรายงานตรวจสอบซ้ำที่เป็นระบบ แยกตามอาคาร ชั้น และห้องชุดเพื่อไกล่เกลี่ย.</p>
+        </a>
+        <a class="card reveal" href="../use-cases/th/workplace-noise-inspection.html">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v6H4zM4 14h16v6H4z"/><path d="M8 7h2M8 17h2"/></svg>
+          </span>
+          <h3>การตรวจสอบเสียงในสถานที่ทำงาน</h3>
+          <p>การบันทึกตรวจวัดเสียงสำหรับสำนักงาน ร้านค้า โรงงาน ตามมาตรฐานความปลอดภัยและอาชีวอนามัย.</p>
         </a>
       </div>
     </section>

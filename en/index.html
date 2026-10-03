@@ -44,12 +44,12 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://soundtest.pro/">
   <meta property="og:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
-  <meta property="og:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta property="og:description" content="A free browser dB meter that turns sound into tamper-evident proof. Local-first by default, with multi-device cloud backup.">
   <meta property="og:image" content="https://soundtest.pro/assets/icon-512.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
-  <meta name="twitter:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta name="twitter:description" content="A free browser dB meter that turns sound into tamper-evident proof. Local-first by default, with multi-device cloud backup.">
   <meta name="twitter:image" content="https://soundtest.pro/assets/icon-512.png">
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 
@@ -85,7 +85,7 @@
     <section class="hero">
       <div class="hero-split">
         <div class="hero-split-text reveal">
-          <span class="privacy-badge">Data processed locally · No upload</span>
+          <span class="privacy-badge">Local-First Privacy · Multi-Device Sync</span>
           <span class="eyebrow">English · No app download</span>
           <h1 class="hero-headline">Free Online Noise Evidence Recorder | No App Required.<br><em>Measure dB. Lock the evidence. Stay private.</em></h1>
           <p class="hero-lead">Measure Decibels, Record Sound, Save Time &amp; Location for Legal Complaint Documentation. Neighbor noise, construction, bar &amp; street disturbance, rental dispute — start recording in one click, right in your browser.</p>
@@ -129,6 +129,13 @@
           </div>
 
           <div class="workbench-chips-grid" role="tablist">
+            <button type="button" class="scenario-pill-btn" data-scenario="general" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🌐</span>
+              <div class="scenario-pill-text">
+                <strong>General Sound Check</strong>
+                <small>Any sudden or ambient noise · Instant test</small>
+              </div>
+            </button>
             <button type="button" class="scenario-pill-btn active" data-scenario="neighbor" role="tab" aria-selected="true">
               <span class="scenario-pill-icon">🏠</span>
               <div class="scenario-pill-text">
@@ -157,20 +164,13 @@
                 <small>Habitability &amp; lease proof</small>
               </div>
             </button>
-          </div>
-
-          <form class="workbench-custom-row" data-wb-custom-form onsubmit="return false;">
-            <input type="text" class="workbench-custom-input" data-wb-custom-input placeholder="Describe noise (e.g. nightly elevator hum)..." autocomplete="off">
-            <button type="submit" class="workbench-custom-btn" data-wb-custom-btn>
-              <span>Apply</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <button type="button" class="scenario-pill-btn" data-scenario="traffic" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🚗</span>
+              <div class="scenario-pill-text">
+                <strong>Traffic &amp; Highway</strong>
+                <small>Traffic flow, honking &amp; road rumble</small>
+              </div>
             </button>
-          </form>
-
-          <div class="hero-meta" style="margin-top:10px;justify-content:flex-start">
-            <span>✓ <strong>One-click start</strong> · No app</span>
-            <span>✓ <strong>Zero cloud upload</strong></span>
-            <span>✓ <strong>PDF / CSV</strong> bundle</span>
           </div>
         </div>
 
@@ -345,6 +345,20 @@
           </span>
           <h3>Rental Dispute &amp; Legal Evidence Aid</h3>
           <p>Organize facts before speaking with a landlord, property manager, local authority, or legal adviser.</p>
+        </a>
+        <a class="card reveal" href="../use-cases/property-noise-complaint-report.html">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 13h6M9 17h6"/></svg>
+          </span>
+          <h3>Property &amp; Building Management Coordination</h3>
+          <p>Structured complaint logs and re-check reports for building managers, HOAs, and tenant mediation.</p>
+        </a>
+        <a class="card reveal" href="../use-cases/workplace-noise-inspection.html">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v6H4zM4 14h16v6H4z"/><path d="M8 7h2M8 17h2"/></svg>
+          </span>
+          <h3>Workplace &amp; Occupational Noise Inspection</h3>
+          <p>Repeatable acoustic monitoring for offices, retail stores, manufacturing, and OSHA/health compliance checks.</p>
         </a>
       </div>
     </section>

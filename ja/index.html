@@ -44,12 +44,12 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://soundtest.pro/">
   <meta property="og:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
-  <meta property="og:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta property="og:description" content="A free browser dB meter that turns sound into tamper-evident proof. Local-first by default, with multi-device cloud backup.">
   <meta property="og:image" content="https://soundtest.pro/assets/icon-512.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
-  <meta name="twitter:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta name="twitter:description" content="A free browser dB meter that turns sound into tamper-evident proof. Local-first by default, with multi-device cloud backup.">
   <meta name="twitter:image" content="https://soundtest.pro/assets/icon-512.png">
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 
@@ -85,7 +85,7 @@
     <section class="hero">
       <div class="hero-split">
         <div class="hero-split-text reveal">
-          <span class="privacy-badge">ローカル処理 · アップロードなし</span>
+          <span class="privacy-badge">ローカル優先・マルチデバイス同期対応</span>
           <span class="eyebrow">インストール不要 · 多言語 · ローカル優先</span>
           <h1 class="hero-headline">無料オンライン騒音証拠記録ツール｜<em>アプリ不要</em>。<br><em>dBを測定。証拠を固定。プライバシーを守る。</em></h1>
           <p class="hero-lead">デシベルを測定し、音を録音し、時間と場所を保存して法的苦情の証拠に。隣人騒音、工事、バーや街の騒音、賃貸トラブル — ブラウザでワンクリック録音開始。</p>
@@ -151,48 +151,48 @@
           </div>
 
           <div class="workbench-chips-grid" role="tablist">
+            <button type="button" class="scenario-pill-btn" data-scenario="general" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🌐</span>
+              <div class="scenario-pill-text">
+                <strong>一般的な環境測定</strong>
+                <small>日常・突発騒音 · 分類せずすぐ測定</small>
+              </div>
+            </button>
             <button type="button" class="scenario-pill-btn active" data-scenario="neighbor" role="tab" aria-selected="true">
               <span class="scenario-pill-icon">🏠</span>
               <div class="scenario-pill-text">
                 <strong>近隣・生活騒音</strong>
-                <small>上階の足音、重低音、振動</small>
+                <small>足音、重低音、壁の共振</small>
               </div>
             </button>
             <button type="button" class="scenario-pill-btn" data-scenario="construction" role="tab" aria-selected="false">
               <span class="scenario-pill-icon">🚧</span>
               <div class="scenario-pill-text">
-                <strong>解体・内装工事</strong>
-                <small>ドリル打撃音、時間外作業</small>
+                <strong>工事・リフォーム騒音</strong>
+                <small>ドリル、打撃音、時間外作業</small>
               </div>
             </button>
             <button type="button" class="scenario-pill-btn" data-scenario="street" role="tab" aria-selected="false">
               <span class="scenario-pill-icon">🍻</span>
               <div class="scenario-pill-text">
-                <strong>店舗・路上騒音</strong>
-                <small>重低音ウーファー、排気ダクト</small>
+                <strong>飲食店・街頭騒音</strong>
+                <small>排気ファン低周波、音楽、喧騒</small>
               </div>
             </button>
             <button type="button" class="scenario-pill-btn" data-scenario="rental" role="tab" aria-selected="false">
               <span class="scenario-pill-icon">📋</span>
               <div class="scenario-pill-text">
-                <strong>賃貸トラブル・証拠</strong>
-                <small>退去・敷金返還、住環境証拠</small>
+                <strong>賃貸トラブル証拠</strong>
+                <small>解約・敷金返還、居住権侵害の証拠</small>
               </div>
             </button>
-          </div>
-
-          <form class="workbench-custom-row" data-wb-custom-form onsubmit="return false;">
-            <input type="text" class="workbench-custom-input" data-wb-custom-input placeholder="具体的な状況を入力（例：夜間のエレベーター低周波）..." autocomplete="off">
-            <button type="submit" class="workbench-custom-btn" data-wb-custom-btn>
-              <span>適用</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <button type="button" class="scenario-pill-btn" data-scenario="traffic" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🚗</span>
+              <div class="scenario-pill-text">
+                <strong>道路・交通騒音</strong>
+                <small>幹線道路、クラクション、ロードノイズ</small>
+              </div>
             </button>
-          </form>
-
-          <div class="hero-meta" style="margin-top:10px;justify-content:flex-start">
-            <span>✓ <strong>ワンクリック開始</strong> · アプリ不要</span>
-            <span>✓ <strong>クラウド送信なし</strong></span>
-            <span>✓ <strong>PDF / CSV 報告書</strong></span>
           </div>
         </div>
 
@@ -347,33 +347,47 @@
       </div>
 
       <div class="grid" style="margin-top:18px">
-        <a class="card reveal" href="../use-cases/neighbor-noise-evidence.html">
+        <a class="card reveal" href="../use-cases/ja/neighbor-noise-evidence.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2z"/></svg>
           </span>
-          <h3>隣人・マンション騒音</h3>
-          <p>For tenants, owners, and mediators who need a structured diary with dB trends, timestamps, photos, and reports.</p>
+          <h3>近隣・マンション騒音</h3>
+          <p>上階の足音、重低音、ペットの鳴き声に悩む居住者のための構造化記録：デシベル推移、時間刻印、現場写真、報告書。</p>
         </a>
-        <a class="card reveal" href="../use-cases/construction-noise-monitoring.html">
+        <a class="card reveal" href="../use-cases/ja/construction-noise-monitoring.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21V12h6v9"/></svg>
           </span>
-          <h3>建設・リフォーム騒音</h3>
-          <p>Capture start, peak, and quiet-after periods with site notes, GPS, video, and exportable summaries.</p>
+          <h3>工事・リフォーム騒音</h3>
+          <p>違法な夜間・早朝工事や重機作業のピーク値、作業時間帯、GPS位置情報を素早く記録し、行政や管理組合へ提出。</p>
         </a>
-        <a class="card reveal" href="../use-cases/bar-street-disturbance.html">
+        <a class="card reveal" href="../use-cases/ja/bar-street-disturbance.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M5 6v6c0 4 3 7 7 7s7-3 7-7V6"/><path d="M9 2v3M15 2v3"/></svg>
           </span>
-          <h3>バー・店舗・街頭騒音</h3>
-          <p>Document repeated disturbance patterns with time, place, media, and complaint-ready summaries.</p>
+          <h3>飲食店・商店・街頭騒音</h3>
+          <p>夜市、クラブの重低音、店舗スピーカーによる反復的な迷惑騒音パターンを、時間・位置・メディア証拠とともに蓄積。</p>
         </a>
-        <a class="card reveal" href="../use-cases/rental-dispute-evidence.html">
+        <a class="card reveal" href="../use-cases/ja/rental-dispute-evidence.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7l8-4 8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 17l8 4 8-4"/></svg>
           </span>
-          <h3>賃貸トラブルと法的証拠支援</h3>
-          <p>Organize facts before speaking with a landlord, property manager, local authority, or legal adviser.</p>
+          <h3>賃貸トラブル・証拠支援</h3>
+          <p>深刻な騒音で安眠が妨げられた際、大家や管理会社との交渉、契約解除、敷金返還請求のための客観資料を整理。</p>
+        </a>
+        <a class="card reveal" href="../use-cases/ja/property-noise-complaint-report.html">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 13h6M9 17h6"/></svg>
+          </span>
+          <h3>管理会社・マンション管理組合</h3>
+          <p>苦情の受付から現場再確認まで、棟・階・号室ごとに整理された客観的な調査報告書を作成。</p>
+        </a>
+        <a class="card reveal" href="../use-cases/ja/workplace-noise-inspection.html">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v6H4zM4 14h16v6H4z"/><path d="M8 7h2M8 17h2"/></svg>
+          </span>
+          <h3>職場・オフィス・工場騒音巡回</h3>
+          <p>オフィス、店舗、工場や静寂空間における労働安全衛生・環境基準に準拠した定期点検記録。</p>
         </a>
       </div>
     </section>

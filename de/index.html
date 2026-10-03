@@ -44,12 +44,12 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://soundtest.pro/">
   <meta property="og:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
-  <meta property="og:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta property="og:description" content="A free browser dB meter that turns sound into tamper-evident proof. Local-first by default, with multi-device cloud backup.">
   <meta property="og:image" content="https://soundtest.pro/assets/icon-512.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Lock the Noise. Hold the Proof. · SOUNDTEST.PRO">
-  <meta name="twitter:description" content="A free browser dB meter that turns 60 seconds of sound into timestamped, exportable evidence. No app. No upload. No account.">
+  <meta name="twitter:description" content="A free browser dB meter that turns sound into tamper-evident proof. Local-first by default, with multi-device cloud backup.">
   <meta name="twitter:image" content="https://soundtest.pro/assets/icon-512.png">
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 
@@ -85,7 +85,7 @@
     <section class="hero">
       <div class="hero-split">
         <div class="hero-split-text reveal">
-          <span class="privacy-badge">Lokale Verarbeitung · Kein Upload</span>
+          <span class="privacy-badge">Lokal gespeichert · Cloud-Synchronisation</span>
           <span class="eyebrow">Keine Installation · Mehrsprachig · Lokal zuerst</span>
           <h1 class="hero-headline">Kostenloser Lärmaufzeichner für Beweise | <em>Keine App nötig</em>.<br><em>dB messen. Beweise sichern. Privat bleiben.</em></h1>
           <p class="hero-lead">Dezibel messen, Ton aufnehmen, Zeit und Ort für die Dokumentation rechtlicher Beschwerden speichern. Nachbarschaftslärm, Bauarbeiten, Bars und Straße, Mietstreitigkeiten — starten Sie die Aufnahme mit einem Klick, direkt in Ihrem Browser.</p>
@@ -151,48 +151,48 @@
           </div>
 
           <div class="workbench-chips-grid" role="tablist">
+            <button type="button" class="scenario-pill-btn" data-scenario="general" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🌐</span>
+              <div class="scenario-pill-text">
+                <strong>Allgemeine Messung</strong>
+                <small>Umgebungs- oder Spontanlärm · Direkt messen</small>
+              </div>
+            </button>
             <button type="button" class="scenario-pill-btn active" data-scenario="neighbor" role="tab" aria-selected="true">
               <span class="scenario-pill-icon">🏠</span>
               <div class="scenario-pill-text">
                 <strong>Nachbarschaftslärm</strong>
-                <small>Schritte, Bässe &amp; Trittschall</small>
+                <small>Schritte, Bässe &amp; Vibrationen</small>
               </div>
             </button>
             <button type="button" class="scenario-pill-btn" data-scenario="construction" role="tab" aria-selected="false">
               <span class="scenario-pill-icon">🚧</span>
               <div class="scenario-pill-text">
-                <strong>Bau- &amp; Sanierungslärm</strong>
+                <strong>Baustellen &amp; Umbau</strong>
                 <small>Bohren, Hämmern &amp; Ruhezeiten</small>
               </div>
             </button>
             <button type="button" class="scenario-pill-btn" data-scenario="street" role="tab" aria-selected="false">
               <span class="scenario-pill-icon">🍻</span>
               <div class="scenario-pill-text">
-                <strong>Gastronomie &amp; Straße</strong>
-                <small>Tieffrequente Bässe &amp; Außenlüfter</small>
+                <strong>Bars &amp; Straßenlärm</strong>
+                <small>Basslärm, Gastronomie &amp; Auspuffe</small>
               </div>
             </button>
             <button type="button" class="scenario-pill-btn" data-scenario="rental" role="tab" aria-selected="false">
               <span class="scenario-pill-icon">📋</span>
               <div class="scenario-pill-text">
                 <strong>Mietstreitigkeiten</strong>
-                <small>Mietminderung &amp; Wohnruhe-Beweis</small>
+                <small>Wohnmängel, Mietminderung &amp; Kaution</small>
               </div>
             </button>
-          </div>
-
-          <form class="workbench-custom-row" data-wb-custom-form onsubmit="return false;">
-            <input type="text" class="workbench-custom-input" data-wb-custom-input placeholder="Lärmsituation beschreiben (z.B. nächtlicher Aufzug)..." autocomplete="off">
-            <button type="submit" class="workbench-custom-btn" data-wb-custom-btn>
-              <span>Anwenden</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <button type="button" class="scenario-pill-btn" data-scenario="traffic" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🚗</span>
+              <div class="scenario-pill-text">
+                <strong>Straßenverkehr</strong>
+                <small>Hauptverkehr, Hupen &amp; Abrollgeräusche</small>
+              </div>
             </button>
-          </form>
-
-          <div class="hero-meta" style="margin-top:10px;justify-content:flex-start">
-            <span>✓ <strong>Sofortstart im Browser</strong> · Ohne App</span>
-            <span>✓ <strong>Keine Cloud-Übertragung</strong></span>
-            <span>✓ <strong>PDF / CSV Protokoll</strong></span>
           </div>
         </div>
 
@@ -347,33 +347,47 @@
       </div>
 
       <div class="grid" style="margin-top:18px">
-        <a class="card reveal" href="../use-cases/neighbor-noise-evidence.html">
+        <a class="card reveal" href="../use-cases/de/neighbor-noise-evidence.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2z"/></svg>
           </span>
           <h3>Nachbarschafts- und Wohnungslärm</h3>
-          <p>For tenants, owners, and mediators who need a structured diary with dB trends, timestamps, photos, and reports.</p>
+          <p>Für Mieter, Eigentümer und Schlichter, die ein strukturiertes Lärmprotokoll mit dB-Verläufen, Zeitstempeln, Fotos und Berichten benötigen.</p>
         </a>
-        <a class="card reveal" href="../use-cases/construction-noise-monitoring.html">
+        <a class="card reveal" href="../use-cases/de/construction-noise-monitoring.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21V12h6v9"/></svg>
           </span>
           <h3>Bau- und Renovierungslärm</h3>
-          <p>Capture start, peak, and quiet-after periods with site notes, GPS, video, and exportable summaries.</p>
+          <p>Erfassen Sie Arbeitsbeginn, Spitzenwerte und Ruhephasen mit Baustellennotizen, GPS, Video und exportierbaren Protokollen.</p>
         </a>
-        <a class="card reveal" href="../use-cases/bar-street-disturbance.html">
+        <a class="card reveal" href="../use-cases/de/bar-street-disturbance.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M5 6v6c0 4 3 7 7 7s7-3 7-7V6"/><path d="M9 2v3M15 2v3"/></svg>
           </span>
           <h3>Belästigung durch Bars, Geschäfte und Straße</h3>
-          <p>Document repeated disturbance patterns with time, place, media, and complaint-ready summaries.</p>
+          <p>Dokumentieren Sie wiederkehrende Lärmmuster mit Uhrzeit, Ort, Medien und beschwerdereifen Zusammenfassungen.</p>
         </a>
-        <a class="card reveal" href="../use-cases/rental-dispute-evidence.html">
+        <a class="card reveal" href="../use-cases/de/rental-dispute-evidence.html">
           <span class="feature-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7l8-4 8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 17l8 4 8-4"/></svg>
           </span>
           <h3>Mietstreit und juristische Beweishilfe</h3>
-          <p>Organize facts before speaking with a landlord, property manager, local authority, or legal adviser.</p>
+          <p>Strukturieren Sie Fakten vor dem Gespräch mit Vermieter, Hausverwaltung, Behörden oder Rechtsbeistand.</p>
+        </a>
+        <a class="card reveal" href="../use-cases/de/property-noise-complaint-report.html">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 13h6M9 17h6"/></svg>
+          </span>
+          <h3>Hausverwaltung &amp; Quartiere</h3>
+          <p>Strukturierte Beschwerdeprotokolle und Nachprüfberichte für Hausverwaltungen, Beiräte und Mediation.</p>
+        </a>
+        <a class="card reveal" href="../use-cases/de/workplace-noise-inspection.html">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v6H4zM4 14h16v6H4z"/><path d="M8 7h2M8 17h2"/></svg>
+          </span>
+          <h3>Betrieblicher Arbeitsschutz &amp; Lärm</h3>
+          <p>Reproduzierbare Lärmaudits für Büros, Filialen, Gewerbehallen und betrieblichen Gesundheitsschutz.</p>
         </a>
       </div>
     </section>
