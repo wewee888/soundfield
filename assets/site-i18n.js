@@ -82,6 +82,8 @@
     if (!normalized) return '';
     try {
       window.localStorage?.setItem(storageKey, normalized);
+      const appLang = normalized === 'zh' ? 'zh-CN' : (normalized === 'en' ? 'en-US' : normalized);
+      window.localStorage?.setItem('sf_language', appLang);
       document.cookie = 'sf_locale=' + normalized + '; Path=/; Max-Age=31536000; SameSite=Lax';
     } catch (error) {
       // ignore

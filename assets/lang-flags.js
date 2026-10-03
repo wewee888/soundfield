@@ -78,6 +78,30 @@
     const currentLabel = options.find((o) => o.value === value)?.label || LABELS[currentPrimary] || value;
 
     mount.classList.add('lang-picker');
+
+    const existingBtn = mount.querySelector('.lang-picker-btn');
+    const existingMenu = mount.querySelector('.lang-picker-menu');
+    if (existingBtn && existingMenu) {
+      const flag = existingBtn.querySelector('.lang-picker-flag');
+      if (flag) flag.src = flagUrl(currentPrimary);
+      const label = existingBtn.querySelector('.lang-picker-label');
+      if (label) label.textContent = currentLabel;
+      existingBtn.setAttribute('aria-label', ariaLabel);
+      existingBtn.setAttribute('aria-expanded', 'false');
+      mount.classList.remove('is-open');
+      existingMenu.hidden = true;
+      existingMenu.style.display = 'none';
+
+      existingMenu.querySelectorAll('.lang-picker-option').forEach((optEl) => {
+        if (optEl.dataset.value === value) {
+          optEl.setAttribute('aria-selected', 'true');
+        } else {
+          optEl.removeAttribute('aria-selected');
+        }
+      });
+      return mount;
+    }
+
     mount.classList.remove('is-open');
     mount.innerHTML = '';
 

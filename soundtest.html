@@ -2561,7 +2561,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     <div class="ad-slot" id="monitorAdSlot" data-ad-slot="monitor">首页广告位预留 · 免费版低干扰展示 · 不遮挡实时监测</div>
     <!-- Recording info + note -->
     <div class="card mode-panel" id="audioModePanel" data-mode-panel="audio video">
-      <div class="clabel">录制状态</div>
+      <div class="clabel" id="recStatusCardLabel">录制状态</div>
       <div class="rec-info-row">
         <div style="width:10px;height:10px;border-radius:50%;background:var(--tx3);flex-shrink:0;transition:background .3s;box-shadow:none" id="recDot"></div>
         <div style="flex:1">
@@ -2585,7 +2585,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     </div>
     <!-- Camera preview -->
     <div class="card mode-panel" id="cameraModePanel" data-mode-panel="video photo">
-      <div class="clabel">摄像头预览</div>
+      <div class="clabel" id="camPreviewCardLabel">摄像头预览</div>
       <div class="cam-stage" data-camera="cameraOverlayDashboard">
         <div class="cam-ph" id="camPh" role="button" tabindex="0" onclick="openCameraFromPreview()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCameraFromPreview();}" data-action="cameraPreviewOpen">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
@@ -2641,7 +2641,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
           </svg>
         </div>
         <div style="flex:1">
-          <div class="clabel" style="margin-bottom:3px">GPS 位置</div>
+          <div class="clabel" id="gpsCardLabel" style="margin-bottom:3px">GPS 位置</div>
           <div class="loc-val" id="locVal">尚未获取</div>
           <div class="loc-acc" id="locAcc"></div>
           <div class="loc-place muted" id="locPlace">地点识别未开始</div>
@@ -2675,15 +2675,15 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       <div class="tool-desc" id="recordToolsDesc">从这里开始录制、导出全部记录，或清空本机证据数据。没有记录时也可以直接跳转到监测页。</div>
       <div class="tool-actions">
         <button class="btn b-cyan" id="startRecFromRecsBtn" onclick="startRecordFromRecords()">开始录制</button>
-        <button class="btn b-amber" onclick="exportCSV()">导出 CSV</button>
-        <button class="btn b-cyan" onclick="exportAllPDF()">导出 PDF</button>
-        <button class="btn b-red" onclick="clearAll()">清空记录</button>
+        <button class="btn b-amber" id="recExportCsvBtn" onclick="exportCSV()">导出 CSV</button>
+        <button class="btn b-cyan" id="recExportPdfBtn" onclick="exportAllPDF()">导出 PDF</button>
+        <button class="btn b-red" id="recClearAllBtn" onclick="clearAll()">清空记录</button>
       </div>
     </div>
     <div class="sum-grid layout-record-summary" id="sumGrid" style="display:none">
-      <div class="sum-stat"><div class="stat-lbl">会话</div><div class="stat-val" id="sumN">0</div></div>
-      <div class="sum-stat"><div class="stat-lbl">均值</div><div class="stat-val" id="sumA">--<span class="u">dB</span></div></div>
-      <div class="sum-stat"><div class="stat-lbl">峰值</div><div class="stat-val" id="sumP">--<span class="u">dB</span></div></div>
+      <div class="sum-stat"><div class="stat-lbl" id="sumLabelSessions">会话</div><div class="stat-val" id="sumN">0</div></div>
+      <div class="sum-stat"><div class="stat-lbl" id="sumLabelAvg">均值</div><div class="stat-val" id="sumA">--<span class="u">dB</span></div></div>
+      <div class="sum-stat"><div class="stat-lbl" id="sumLabelPeak">峰值</div><div class="stat-val" id="sumP">--<span class="u">dB</span></div></div>
     </div>
     <div class="srch-wrap layout-record-search">
       <span class="srch-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
@@ -2724,7 +2724,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       </div>
     </div>
     <div class="card layout-map-canvas" id="mapCanvasCard">
-      <div class="clabel">噪音分布地图</div>
+      <div class="clabel" id="noiseMapCardLabel">噪音分布地图</div>
       <canvas id="mapCvs" height="280"></canvas>
       <div class="legend">
         <div class="legend-item"><div class="ldot" style="background:#4ADE80"></div><span id="legendQuiet">0–49 dB 安静</span></div>
@@ -2734,7 +2734,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       </div>
     </div>
     <div id="mapList" class="card layout-map-list">
-      <div class="clabel">带坐标的会话</div>
+      <div class="clabel" id="geoSessionsCardLabel">带坐标的会话</div>
       <div style="font-size:12px;color:var(--tx3)">尚无带 GPS 的记录。</div>
     </div>
   </div>
@@ -2744,7 +2744,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     <div class="card layout-settings-measure settings-hub-card" id="settingsHubCard">
       <div class="settings-hub-head">
         <div>
-          <div class="clabel">设置中心</div>
+          <div class="clabel" id="settingsHubCardLabel">设置中心</div>
           <div class="settings-hub-title" id="settingsHubTitle">选择要调整的功能</div>
           <div class="settings-hub-desc" id="settingsHubDesc">常用设置在前，管理员和发布资料需要超级管理员登录后才显示。</div>
         </div>
@@ -3158,11 +3158,11 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     </div>
     <div class="ad-slot layout-settings-ad" data-ad-slot="settings" data-settings-section="subscription">广告位预留 · 设置页底部低干扰展示</div>
     <div class="card layout-settings-data" data-settings-section="report">
-      <div class="clabel">数据</div>
+      <div class="clabel" id="dataCardLabel">数据</div>
       <div style="display:flex;gap:7px;flex-wrap:wrap;padding-top:2px">
-        <button class="btn b-cyan" onclick="exportCSV()">导出 CSV</button>
-        <button class="btn b-amber" onclick="exportAllPDF()">导出 PDF</button>
-        <button class="btn b-red" onclick="clearAll()">清空记录</button>
+        <button class="btn b-cyan" id="settingsExportCsvBtn" onclick="exportCSV()">导出 CSV</button>
+        <button class="btn b-amber" id="settingsExportPdfBtn" onclick="exportAllPDF()">导出 PDF</button>
+        <button class="btn b-red" id="settingsClearAllBtn" onclick="clearAll()">清空记录</button>
       </div>
     </div>
   </div>
@@ -3508,15 +3508,47 @@ function t(path,fallback=''){
   return chinese==null?fallback:chinese;
 }
 function detectInitialLanguage(){
-  const saved=localStorage.getItem(LANG_KEY);
-  const savedLanguage=normalizeAppLanguage(saved);
-  if(savedLanguage)return savedLanguage;
-  const siteSavedLanguage=normalizeAppLanguage(localStorage.getItem(SITE_LANG_KEY));
-  if(siteSavedLanguage)return siteSavedLanguage;
-  const languages=navigator.languages?.length?navigator.languages:[navigator.language||navigator.userLanguage||''];
-  for(const lang of languages){
-    const match=normalizeAppLanguage(lang);
-    if(match)return match;
+  // 1. Explicit URL parameter: ?lang= or ?locale=
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const urlLang = normalizeAppLanguage(params.get('lang') || params.get('locale'));
+    if (urlLang) return urlLang;
+  } catch (_) {}
+
+  // 2. Cookie sf_locale
+  try {
+    const match = document.cookie?.match(/(?:^|;\s*)sf_locale=([^;]+)/);
+    if (match) {
+      const cookieLang = normalizeAppLanguage(decodeURIComponent(match[1]));
+      if (cookieLang) return cookieLang;
+    }
+  } catch (_) {}
+
+  // 3. Referrer pathname (/en/, /zh/, /es/, /fr/, /de/, /ja/, /ko/, /vi/, /th/)
+  try {
+    if (document.referrer) {
+      const refMatch = document.referrer.match(/\/(en|zh|es|fr|de|ja|ko|vi|th)\b/i);
+      if (refMatch) {
+        const refLang = normalizeAppLanguage(refMatch[1]);
+        if (refLang) return refLang;
+      }
+    }
+  } catch (_) {}
+
+  // 4. Saved site locale
+  const siteSavedLanguage = normalizeAppLanguage(localStorage.getItem(SITE_LANG_KEY));
+  if (siteSavedLanguage) return siteSavedLanguage;
+
+  // 5. Saved app language
+  const saved = localStorage.getItem(LANG_KEY);
+  const savedLanguage = normalizeAppLanguage(saved);
+  if (savedLanguage) return savedLanguage;
+
+  // 6. Browser languages
+  const languages = navigator.languages?.length ? navigator.languages : [navigator.language || navigator.userLanguage || ''];
+  for (const lang of languages) {
+    const match = normalizeAppLanguage(lang);
+    if (match) return match;
   }
   return 'en-US';
 }
@@ -3531,16 +3563,15 @@ function applySeoLanguage(){
 function setStartButtonText(){
   const startBtn=document.getElementById('startBtn');
   const recActionBtn=document.getElementById('recActionBtn');
-  const isZh = appLanguage === 'zh-CN';
 
   // Left button: Live Monitor (50%)
   if(startBtn){
     if(isMon){
       startBtn.className='start-btn stop';
-      startBtn.innerHTML='<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" stroke="none"/></svg><span class="btn-copy"><span class="btn-title">' + (isZh ? '停止监测' : t('ui.stopMeter','Stop Meter')) + '</span><span class="btn-sub">' + (isZh ? '正在测声' : t('ui.monitoringSub','Monitoring')) + '</span></span>';
+      startBtn.innerHTML='<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" stroke="none"/></svg><span class="btn-copy"><span class="btn-title">' + t('ui.stopMeter','Stop Meter') + '</span><span class="btn-sub">' + t('ui.monitoringSub','Monitoring') + '</span></span>';
     } else {
       startBtn.className='start-btn';
-      startBtn.innerHTML='<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/></svg><span class="btn-copy"><span class="btn-title">' + (isZh ? '开始实时监测' : t('ui.startMeter','Start Meter')) + '</span><span class="btn-sub">' + (isZh ? '仅测分贝' : t('ui.meterSub','Live dB Only')) + '</span></span>';
+      startBtn.innerHTML='<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/></svg><span class="btn-copy"><span class="btn-title">' + t('ui.startMeter','Start Meter') + '</span><span class="btn-sub">' + t('ui.meterSub','Live dB Only') + '</span></span>';
     }
   }
 
@@ -3548,10 +3579,10 @@ function setStartButtonText(){
   if(recActionBtn){
     if(isRec){
       recActionBtn.className='rec-action-btn recording';
-      recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + (isZh ? '停止并保存' : t('ui.stopRecord','Stop & Save')) + '</span><span class="btn-sub">' + (isZh ? '录音保全中' : t('ui.recordingSub','Recording...')) + '</span></span>';
+      recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + t('ui.stopRecord','Stop & Save') + '</span><span class="btn-sub">' + t('ui.recordingSub','Recording...') + '</span></span>';
     } else {
       recActionBtn.className='rec-action-btn idle';
-      recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + (isZh ? '录音存证' : t('ui.recordEvidence','Record Audio')) + '</span><span class="btn-sub">' + (isZh ? '测分贝+留底录音' : t('ui.recordSub','dB + Audio File')) + '</span></span>';
+      recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + t('ui.recordEvidence','Record Audio') + '</span><span class="btn-sub">' + t('ui.recordSub','dB + Audio File') + '</span></span>';
     }
   }
 }
@@ -3711,14 +3742,15 @@ function applyTranslations(){
   const hsel=document.getElementById('headerLanguageSelect');if(hsel)hsel.value=appLanguage;
   syncLanguageSelectOptions();
   const proBtn=document.querySelector('.app-pro-btn');if(proBtn)proBtn.textContent='★ '+t('ui.upgradePro');
-  setText('appBrandSub',isZh?'现场声学事实记录':'Field Acoustic Recorder');
+  setText('appBrandSub',t('ui.brandSub',isZh?'现场声学事实记录':'Field Acoustic Recorder'));
   const stxtEl=document.getElementById('stxt');
   if(stxtEl){stxtEl.textContent=isRec?t('ui.recording'):(isMon?t('ui.monitoring'):t('ui.ready'));}
   const heroSentry=document.getElementById('heroSentryBtn');
   if(heroSentry){
     heroSentry.classList.toggle('active',!!autoRecOnThreshold);
     const textEl=document.getElementById('heroSentryBtnText');
-    if(textEl)textEl.textContent=autoRecOnThreshold?(isZh?'哨兵守护中':'Sentry On'):(isZh?'夜间哨兵':'Sentry Mode');
+    const sentryCopy=t('modes.sentry',{});
+    if(textEl)textEl.textContent=autoRecOnThreshold?(sentryCopy.on||'Sentry On'):(sentryCopy.label||'Sentry Mode');
   }
   const sceneLabel=document.getElementById('sceneChipLabel');if(sceneLabel)sceneLabel.textContent=t('ui.quickScene');
   const sceneHint=document.getElementById('sceneChipHint');if(sceneHint)sceneHint.textContent=t('ui.quickSceneHint');
@@ -3734,6 +3766,13 @@ function applyTranslations(){
   setButtonTextWithSvg('nt-m',t('ui.monitor'));
   setButtonTextWithSvg('nt-r',t('ui.evidenceLibrary'));
   setButtonTextWithSvg('nt-map',t('ui.map'));
+  setButtonTextWithSvg('nt-s',t('ui.settings','Settings'));
+  const ntm=document.getElementById('nt-m');if(ntm)ntm.title=t('ui.monitor');
+  const ntr=document.getElementById('nt-r');if(ntr)ntr.title=t('ui.evidenceLibrary');
+  const ntmap=document.getElementById('nt-map');if(ntmap)ntmap.title=t('ui.map');
+  const nts=document.getElementById('nt-s');if(nts)nts.title=t('ui.settings','Settings');
+  const camBtn=document.getElementById('camBtn');if(camBtn)camBtn.title=t('ui.camera','Camera');
+  const locBtn=document.getElementById('locBtn');if(locBtn)locBtn.title=t('ui.gps','GPS Location');
   document.querySelectorAll('.meter-mark')[1].textContent=t('ui.quiet');
   document.querySelectorAll('.meter-mark')[2].textContent=t('ui.moderate');
   document.querySelectorAll('.meter-mark')[3].textContent=t('ui.loud');
@@ -3741,55 +3780,78 @@ function applyTranslations(){
   document.querySelectorAll('.stats-row .stat-lbl')[2].textContent=t('ui.min');
   document.querySelectorAll('.stats-row .stat-lbl')[3].textContent=t('ui.duration');
   document.querySelectorAll('.stats-row.secondary .stat-lbl')[0].textContent=t('ui.avg');
-  const clabels=[t('ui.quickScene'),t('ui.recordStatus'),t('ui.cameraPreview'),t('ui.gps'),t('ui.noiseMap'),t('ui.geoSessions'),t('ui.settings')];
-  document.querySelectorAll('.clabel').forEach(el=>{
-    const txt=el.textContent.trim();
-    const map={'一键场景':clabels[0],'声级参考':clabels[0],'Quick scene tags':clabels[0],'Sound reference':clabels[0],'录制状态':clabels[1],'摄像头预览':clabels[2],'GPS 位置':clabels[3],'噪音分布地图':clabels[4],'带坐标的会话':clabels[5],'测量设置':clabels[6],'Sound Level Reference':clabels[0],'Recording Status':clabels[1],'Camera Preview':clabels[2],'GPS Location':clabels[3],'Noise Distribution Map':clabels[4],'Sessions with coordinates':clabels[5],'Measurement Settings':clabels[6]};
-    if(map[txt])el.textContent=map[txt];
-  });
-  setText('longMonitorTaskTitle',isZh?'长时监测任务':'Long-term Monitoring Task');
-  setPlaceholder('autoStopMinutes',isZh?'自动停止分钟':'Auto-stop (mins)');
-  setPlaceholder('eventThresholdDb',isZh?'事件阈值 dB':'Event threshold dB');
-  setText('applyTaskBtn',isZh?'应用任务':'Apply Task');
-  setText('markEventBtn',isZh?'标记噪声':'Mark Event');
+  
+  // Section clabels
+  setText('modeCardLabel',t('modes.cardLabel','Evidence mode'));
+  setText('recStatusCardLabel',t('ui.recordStatus','Recording Status'));
+  setText('camPreviewCardLabel',t('ui.cameraPreview','Camera Preview'));
+  setText('gpsCardLabel',t('ui.gps','GPS Location'));
+  setText('noiseMapCardLabel',t('ui.noiseMap','Noise Distribution Map'));
+  setText('geoSessionsCardLabel',t('ui.geoSessions','Geotagged sessions'));
+  setText('settingsHubCardLabel',t('ui.settingsHub',isZh?'设置中心':'Settings Hub'));
+  setText('dataCardLabel',t('ui.data',isZh?'数据':'Data'));
+
+  setText('longMonitorTaskTitle',t('ui.longMonitorTask','Long-term Monitoring Task'));
+  setPlaceholder('autoStopMinutes',t('ui.autoStopMins','Auto-stop (mins)'));
+  setPlaceholder('eventThresholdDb',t('ui.eventThreshold','Event threshold dB'));
+  setText('applyTaskBtn',t('ui.applyTask','Apply Task'));
+  setText('markEventBtn',t('ui.markEvent','Mark Event'));
   const evSummary=document.getElementById('noiseEventSummary');
   if(evSummary&&(!longMonitorNoiseEvents||!longMonitorNoiseEvents.length)){
-    evSummary.textContent=isZh?'未记录噪声事件。Web 版不承诺锁屏后台 24-72 小时稳定录制。':'No noise events recorded yet. Web app cannot guarantee 24–72h background recording with screen locked.';
+    evSummary.textContent=t('ui.noEventsRecorded','No noise events recorded yet. Web app cannot guarantee 24–72h background recording with screen locked.');
   }
-  setPlaceholder('buildingInput',isZh?'楼栋':'Building');
-  setPlaceholder('floorInput',isZh?'楼层':'Floor');
-  setPlaceholder('roomInput',isZh?'房间号':'Room');
-  setPlaceholder('pointInput',isZh?'测点名，如窗边':'Point (e.g. window)');
-  setText('savePointBtn',isZh?'保存测点':'Save Point');
-  setText('saveManualPlaceBtn',isZh?'保存地点':t('ui.savePlace','Save place'));
-  setText('rerunPlaceLookupBtn',isZh?'重新识别':t('ui.rerunPlace','Look up again'));
+  setPlaceholder('buildingInput',t('placeholders.building','Building'));
+  setPlaceholder('floorInput',t('placeholders.floor','Floor'));
+  setPlaceholder('roomInput',t('placeholders.room','Room'));
+  setPlaceholder('pointInput',t('placeholders.point','Point (e.g. window)'));
+  setText('savePointBtn',t('ui.savePoint','Save Point'));
+  setText('saveManualPlaceBtn',t('ui.savePlace','Save place'));
+  setText('rerunPlaceLookupBtn',t('ui.rerunPlace','Look up again'));
   setText('mapBaidu',isZh?'百度':'Baidu');
   setText('mapAmap',isZh?'高德':'Amap');
-  setText('recordingConsentNotice',isZh?'录制会保存声音；开启摄像头后会同时保存画面。请在录制前遵守当地录音、录像和隐私法律，避免公开他人面部、儿童信息和精确住址。':'Audio is saved when recording; video is also saved when camera is enabled. Comply with local privacy and recording laws, and avoid publicly sharing faces, minors, or exact private addresses.');
-  setText('camPhTitle',t('ui.cameraOpen',isZh?'点击打开摄像头':'Tap to open camera'));
-  setText('camPhDesc',t('ui.cameraOpenSub',isZh?'用于预览、拍照取证和录像画面':'For preview, acoustic photo evidence, and video'));
-  setText('camModeHint',t('ui.cameraHint',isZh?'声学取证相机：可先打开摄像头预览，开始监测后拍照会叠加分贝、GPS 和地点信息。':'Acoustic camera: preview the scene, then take photos overlaid with dB, GPS, and place details.'));
-  setText('cameraCloseHint',isZh?'摄像头打开后，可在这里直接关闭预览。':'When the camera is open, you can close it directly here.');
-  setText('cameraCloseBtn',isZh?'关闭摄像头':'Close Camera');
-  setText('recordToolsTitle',t('ui.recordTools',isZh?'证据库管理':'Record Tools'));
-  setText('recordToolsDesc',t('ui.recordToolsDesc',isZh?'从这里查看已保存的声音事实、导出正式 PDF/CSV 证据，或管理本机存证案卷。没有记录时也可以直接跳转到监测页。':'Start recordings, export all evidence records, or clear local data from here. You can jump directly to monitoring at any time.'));
-  setText('startRecFromRecsBtn',t('ui.startRecord',isZh?'开始取证录音':'Start recording'));
-  setText('promoCardTitle',t('ui.shareTitle',isZh?'推荐 SOUNDTEST.PRO 给需要噪声证据的人':'Recommend SOUNDTEST.PRO to anyone needing noise evidence'));
-  setText('promoCardDesc',t('ui.shareDesc',isZh?'分享应用入口或当前报告摘要；默认不分享精确坐标，保护用户隐私。':'Share the app link or current report summary. Precise coordinates are omitted by default for privacy.'));
-  setText('shareAppReferralBtn',t('ui.share',isZh?'推荐分享':'Share'));
-  setText('mapToolsTitle',t('ui.mapTools',isZh?'地图工具':'Map Tools'));
-  setText('mapToolsDesc',t('ui.mapToolsDesc',isZh?'地图基于已保存记录的 GPS 坐标绘制；可导出图片，或把最新记录打开到外部地图。':'The map is generated from GPS coordinates of saved records. You can export map images or view points in external maps.'));
-  setText('drawMapBtn',t('ui.refreshMap',isZh?'刷新地图':'Refresh Map'));
-  setText('exportMapImageBtn',t('ui.exportMap',isZh?'导出地图图片':'Export Map Image'));
-  setText('openLatestLocationMapBtn',t('ui.openLatestLocation',isZh?'打开最新位置':'Open Latest Point'));
-  setText('backToMonitorBtn',t('ui.backMonitor',isZh?'返回监测':'Back to Monitor'));
-  setText('legendQuiet',`0–49 dB ${t('ui.quiet','安静')}`);
-  setText('legendMid',`50–69 ${t('ui.moderate','中等')}`);
-  setText('legendLoud',`70–84 ${t('ui.loud','嘈杂')}`);
-  setText('legendDanger',`85+ ${t('levels.danger',isZh?'危险':'Hazardous')}`);
+  setText('recordingConsentNotice',t('ui.consentNotice','Audio is saved when recording; video is also saved when camera is enabled. Comply with local privacy and recording laws, and avoid publicly sharing faces, minors, or exact private addresses.'));
+  setText('monitorAdSlot',t('ui.adNotice','Reserved ad slot · Low-interruption display in free tier · Never blocks live monitoring'));
+  setText('camPhTitle',t('ui.cameraOpen','Tap to open camera'));
+  setText('camPhDesc',t('ui.cameraOpenSub','For preview, acoustic photo evidence, and video'));
+  setText('camModeHint',t('ui.cameraHint','Acoustic camera: preview the scene, then take photos overlaid with dB, GPS, and place details.'));
+  setText('cameraCloseHint',t('modes.cameraCloseHint','When the camera is open, you can close it directly here.'));
+  setText('cameraCloseBtn',t('modes.closeCamera','Close Camera'));
+  setText('lmnText',t('ui.liveMonitorAudioPrompt','Not currently recording audio.'));
+  setText('lmnConvertBtn',t('ui.convertToEvidence','● Switch to Audio Evidence'));
+  setText('camOverlayPhotoBtn',t('modes.photo.primary','Capture photo'));
+  setText('camOverlayVideoBtn',t('modes.video.primary','Record video'));
+
+  setText('recordToolsTitle',t('ui.recordTools','Record Tools'));
+  setText('recordToolsDesc',t('ui.recordToolsDesc','Start recordings, export all evidence records, or clear local data from here. You can jump directly to monitoring at any time.'));
+  setText('startRecFromRecsBtn',t('ui.startRecord','Start recording'));
+  setText('recExportCsvBtn',t('ui.exportCsv','Export CSV'));
+  setText('recExportPdfBtn',t('ui.exportPdf','Export PDF'));
+  setText('recClearAllBtn',t('ui.clearRecords','Clear records'));
+  setText('sumLabelSessions',t('ui.sessions','Sessions'));
+  setText('sumLabelAvg',t('ui.avg','Avg'));
+  setText('sumLabelPeak',t('ui.peak','Peak'));
+
+  setText('promoCardTitle',t('ui.shareTitle','Recommend SOUNDTEST.PRO to anyone needing noise evidence'));
+  setText('promoCardDesc',t('ui.shareDesc','Share the app link or current report summary. Precise coordinates are omitted by default for privacy.'));
+  setText('shareAppReferralBtn',t('ui.share','Share'));
+  setText('mapToolsTitle',t('ui.mapTools','Map Tools'));
+  setText('mapToolsDesc',t('ui.mapToolsDesc','The map is generated from GPS coordinates of saved records. You can export map images or view points in external maps.'));
+  setText('drawMapBtn',t('ui.refreshMap','Refresh Map'));
+  setText('exportMapImageBtn',t('ui.exportMap','Export Map Image'));
+  setText('openLatestLocationMapBtn',t('ui.openLatestLocation','Open Latest Point'));
+  setText('backToMonitorBtn',t('ui.backMonitor','Back to Monitor'));
+  setText('legendQuiet',`0–49 dB ${t('ui.quiet','Quiet')}`);
+  setText('legendMid',`50–69 ${t('ui.moderate','Moderate')}`);
+  setText('legendLoud',`70–84 ${t('ui.loud','Loud')}`);
+  setText('legendDanger',`85+ ${t('levels.danger','Hazardous')}`);
+
+  setText('settingsExportCsvBtn',t('ui.exportCsv','Export CSV'));
+  setText('settingsExportPdfBtn',t('ui.exportPdf','Export PDF'));
+  setText('settingsClearAllBtn',t('ui.clearRecords','Clear records'));
+
   const locStatusEl=document.getElementById('locProviderStatus');
   if(locStatusEl&&(!curLoc)){
-    locStatusEl.textContent=isZh?'地图服务：等待定位':'Map service: waiting for location';
+    locStatusEl.textContent=t('ui.locWaiting',isZh?'地图服务：等待定位':'Map service: waiting for location');
   }
   updateReportTemplateOptions();
   syncEvidenceModeUi();
@@ -3797,10 +3859,10 @@ function applyTranslations(){
   updateWeightUi();
   updateCameraOverlay();
   // Viz tab labels
-  setText('vtLabelWave',appLanguage!=='zh-CN'?'Waveform':'波形');
-  setText('vtLabelSpec',appLanguage!=='zh-CN'?'Spectrum':'频谱');
-  setText('vtLabelOct',appLanguage!=='zh-CN'?'1/3 Octave':'1/3倍频');
-  setText('vtLabelTrend',appLanguage!=='zh-CN'?'Trend':'趋势');
+  setText('vtLabelWave',t('ui.waveform',appLanguage!=='zh-CN'?'Waveform':'波形'));
+  setText('vtLabelSpec',t('ui.spectrum',appLanguage!=='zh-CN'?'Spectrum':'频谱'));
+  setText('vtLabelOct',t('ui.octave',appLanguage!=='zh-CN'?'1/3 Octave':'1/3倍频'));
+  setText('vtLabelTrend',t('ui.trend',appLanguage!=='zh-CN'?'Trend':'趋势'));
 }
 function updateReportTemplateOptions(){
   const select=document.getElementById('reportTemplate');if(!select)return;
@@ -3833,18 +3895,23 @@ const SCENE_CHIP_DEFS=[
 function renderSceneChips(){
   const grid=document.getElementById('sceneChipGrid');
   if(!grid)return;
-  const zh=appLanguage==='zh-CN';
-  grid.innerHTML=SCENE_CHIP_DEFS.map(c=>`<button type="button" class="scene-chip" onclick="fillSceneChip('${c.id}')"><span class="emoji">${c.emoji}</span><span>${zh?c.zh:c.en}</span></button>`).join('');
+  grid.innerHTML=SCENE_CHIP_DEFS.map(c=>{
+    const label=t(`sceneChips.${c.id}.label`,appLanguage==='zh-CN'?c.zh:c.en);
+    return `<button type="button" class="scene-chip" onclick="fillSceneChip('${c.id}')"><span class="emoji">${c.emoji}</span><span>${label}</span></button>`;
+  }).join('');
 }
 function fillSceneChip(id){
   const chip=SCENE_CHIP_DEFS.find(c=>c.id===id);
   if(!chip)return;
+  const label=t(`sceneChips.${id}.label`,appLanguage==='zh-CN'?chip.zh:chip.en);
+  const note=t(`sceneChips.${id}.note`,appLanguage==='zh-CN'?chip.noteZh:chip.noteEn);
   const ann=document.getElementById('ann');
-  if(ann)ann.value=appLanguage==='zh-CN'?chip.noteZh:chip.noteEn;
+  if(ann)ann.value=note;
   const sel=document.getElementById('reportTemplate');
   if(sel&&reportTemplates[id]){sel.value=id;setReportTemplate();}
   updateGeoDock();
-  toast(appLanguage==='zh-CN'?`已填入「${chip.zh}」场景`:`Applied “${chip.en}” scene`,'info',2200);
+  const msg=appLanguage==='zh-CN'?`已填入「${label}」场景`:`Applied “${label}” scene`;
+  toast(msg,'info',2200);
 }
 function updateGeoDock(){
   const place=document.getElementById('geoPlace');
@@ -3907,9 +3974,21 @@ function animateDbNumber(target){
 }
 function setAppLanguage(lang,{persist=true,notify=true}={}){
   appLanguage=normalizeAppLanguage(lang)||'en-US';
+  const primary=appLanguage.split('-')[0];
   if(persist){
     localStorage.setItem(LANG_KEY,appLanguage);
-    localStorage.setItem(SITE_LANG_KEY,appLanguage);
+    localStorage.setItem(SITE_LANG_KEY,primary);
+    try{
+      document.cookie='sf_locale='+encodeURIComponent(primary)+';path=/;max-age=31536000;SameSite=Lax';
+    }catch(_){}
+    try{
+      const url=new URL(window.location.href);
+      if(url.searchParams.has('lang')||url.searchParams.has('locale')){
+        url.searchParams.set('lang',primary);
+        url.searchParams.delete('locale');
+        window.history.replaceState(null,'',url.toString());
+      }
+    }catch(_){}
   }
   applyTranslations();
   const activeSettings=document.querySelector('[data-settings-nav].active')?.dataset.settingsNav||'measure';
@@ -3922,6 +4001,8 @@ function setAppLanguage(lang,{persist=true,notify=true}={}){
   renderAppLangPickers();
   renderSceneChips();
   updateGeoDock();
+  syncEvidenceModeUi();
+  setStartButtonText();
   if(notify)toast(t('messages.languageSaved'),'info');
 }
 function initAppLanguage(){
@@ -4146,12 +4227,18 @@ function setRecordingButtonsAvailability(){
 }
 
 function modeCopy(mode=evidenceMode){
-  const fallback={
+  const enFallback={
+    audio:{label:'Audio',short:'Audio',tagline:'Low-power audio log',title:'Audio mode',desc:'Best for long sessions. Uses the mic only and keeps power use low.',primary:'Start audio',stop:'Stop & save'},
+    video:{label:'Video',short:'Video',tagline:'Video + microphone',title:'Evidence video',desc:'Capture the scene, microphone audio, and burned-in evidence watermark in the full-screen camera.',primary:'Start evidence video',stop:'Stop & save'},
+    photo:{label:'Photo',short:'Photo',tagline:'dB-stamped photo',title:'Photo mode',desc:'Capture a photo with dB, GPS, address, and calibration details.',primary:'Capture photo',stop:'Capture photo'},
+  };
+  const zhFallback={
     audio:{label:'录音存证',short:'录音',tagline:'低耗电 · 自动加密入库',title:'取证录音模式',desc:'录制完整音频与分贝时间序列，自动保全入库并支持导出正式 PDF 维权报告。',primary:'● 开始取证录音（入库保全）',stop:'⏹ 停止录音并保存证据'},
     video:{label:'录像存证',short:'录像',tagline:'画面+声学水印 · 同步保全',title:'取证录像模式',desc:'现场画面与麦克风声音同步保存，自动叠加分贝、时间与 GPS 防伪水印，停止后写入证据库。',primary:'📹 开始取证录像（入库保全）',stop:'⏹ 停止录像并保存证据'},
     photo:{label:'照片取证',short:'照片',tagline:'生成带分贝水印与地点照片',title:'照片取证模式',desc:'快速抓拍现场并叠加实时分贝、经纬度、地点与时间戳，保存为不可篡改的证据照片。',primary:'📷 拍照取证（生成水印）',stop:'📷 拍照取证（生成水印）'},
   };
-  return t(`modes.${mode}`,fallback[mode]||fallback.audio);
+  const fallback=appLanguage==='zh-CN'?(zhFallback[mode]||zhFallback.audio):(enFallback[mode]||enFallback.audio);
+  return t(`modes.${mode}`,fallback);
 }
 
 function setEvidenceMode(mode,{save=true}={}){
@@ -4184,21 +4271,21 @@ function syncEvidenceModeUi(){
   });
   const sentryBtn = document.getElementById('modeSentryBtn');
   if (sentryBtn) {
-    const isZh = appLanguage === 'zh-CN';
     sentryBtn.classList.toggle('active', !!autoRecOnThreshold);
+    const sentryCopy = t('modes.sentry', {});
     if (autoRecOnThreshold) {
-      sentryBtn.innerHTML = `<strong>🌙 ${isZh ? '哨兵运行中' : 'Sentry Active'}</strong><span>${isZh ? '超标自动录音已开启' : 'Auto-record engaged'}</span>`;
+      sentryBtn.innerHTML = `<strong>🌙 ${sentryCopy.activeLabel || 'Sentry Active'}</strong><span>${sentryCopy.activeTagline || 'Auto-record engaged'}</span>`;
     } else {
-      sentryBtn.innerHTML = `<strong>🌙 ${isZh ? '哨兵模式' : 'Sentry Mode'} <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>${isZh ? '夜间静默待命，超标自动抓现行' : 'Overnight auto-capture'}</span>`;
+      sentryBtn.innerHTML = `<strong>🌙 ${sentryCopy.label || 'Sentry Mode'} <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>${sentryCopy.tagline || 'Overnight auto-capture'}</span>`;
     }
   }
   const heroSentry = document.getElementById('heroSentryBtn');
   if (heroSentry) {
-    const isZh = appLanguage === 'zh-CN';
     heroSentry.classList.toggle('active', !!autoRecOnThreshold);
     const textEl = document.getElementById('heroSentryBtnText');
+    const sentryCopy = t('modes.sentry', {});
     if (textEl) {
-      textEl.textContent = autoRecOnThreshold ? (isZh ? '哨兵守护中' : 'Sentry On') : (isZh ? '夜间哨兵' : 'Sentry Mode');
+      textEl.textContent = autoRecOnThreshold ? (sentryCopy.on || 'Sentry On') : (sentryCopy.label || 'Sentry Mode');
     }
   }
   document.querySelectorAll('[data-mode-panel]').forEach(panel=>{
@@ -8140,12 +8227,12 @@ function triggerSentryModeHook() {
   }
   togAutoRec();
   if (autoRecOnThreshold) {
-    toast(appLanguage === 'zh-CN' ? '🌙 哨兵模式已启动：夜间超标持续3秒将自动唤醒录音存证' : '🌙 Sentry Mode active: Auto-records on threshold exceed', 'info', 4000);
+    toast(t('modes.sentry.startedToast', '🌙 Sentry Mode active: Auto-records on threshold exceed'), 'info', 4000);
     if (!isMon) {
-      toast(appLanguage === 'zh-CN' ? '提示：请点击【开始监测】保持屏幕常亮守夜' : 'Tip: Click [Start Monitoring] to begin night surveillance', 'warn', 5000);
+      toast(t('modes.sentry.tipToast', 'Tip: Click [Start Monitoring] to begin night surveillance'), 'warn', 5000);
     }
   } else {
-    toast(appLanguage === 'zh-CN' ? '🌙 哨兵模式已停止' : '🌙 Sentry Mode stopped', 'info', 3000);
+    toast(t('modes.sentry.stoppedToast', '🌙 Sentry Mode stopped'), 'info', 3000);
   }
 }
 

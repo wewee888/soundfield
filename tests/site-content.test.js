@@ -384,3 +384,78 @@ test('action bar dual buttons and translation keys are configured', () => {
   assert.match(i18nCode, /startMeter:/);
   assert.match(i18nCode, /recordEvidence:/);
 });
+
+test('all 9 locales have complete dual buttons, sentry, scene chips, and new UI keys', () => {
+  const i18nCode = fs.readFileSync(path.join(__dirname, '..', 'assets', 'i18n-data.js'), 'utf8');
+  const win = {};
+  eval(i18nCode.replace('window.__sfI18N = I18N_DATA;', 'win.__sfI18N = I18N_DATA;').replace('window.__sfSupportedAppLanguages', 'win.__sfSupportedAppLanguages'));
+  const locales = ['en-US', 'zh-CN', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'];
+  const chips = ['general', 'neighbor', 'footstep', 'renovation', 'traffic', 'hvac', 'pet', 'appliance', 'ktv', 'elevator', 'property', 'inspection', 'boundary', 'legal'];
+
+  locales.forEach((loc) => {
+    const data = win.__sfI18N[loc];
+    assert.ok(data, `${loc} translation data exists`);
+
+    // Dual buttons
+    assert.ok(data.ui.startMeter, `${loc} has startMeter`);
+    assert.ok(data.ui.meterSub, `${loc} has meterSub`);
+    assert.ok(data.ui.stopMeter, `${loc} has stopMeter`);
+    assert.ok(data.ui.monitoringSub, `${loc} has monitoringSub`);
+    assert.ok(data.ui.recordEvidence, `${loc} has recordEvidence`);
+    assert.ok(data.ui.recordSub, `${loc} has recordSub`);
+    assert.ok(data.ui.stopRecord, `${loc} has stopRecord`);
+    assert.ok(data.ui.recordingSub, `${loc} has recordingSub`);
+
+    // Sentry mode
+    assert.ok(data.modes.sentry?.label, `${loc} has sentry label`);
+    assert.ok(data.modes.sentry?.activeLabel, `${loc} has sentry activeLabel`);
+    assert.ok(data.modes.sentry?.tagline, `${loc} has sentry tagline`);
+    assert.ok(data.modes.sentry?.activeTagline, `${loc} has sentry activeTagline`);
+
+    // Scene chips (all 14)
+    chips.forEach((c) => {
+      assert.ok(data.sceneChips[c]?.label, `${loc} sceneChip ${c} has label`);
+      assert.ok(data.sceneChips[c]?.note, `${loc} sceneChip ${c} has note`);
+    });
+
+    // Extra UI & placeholders
+    assert.ok(data.ui.brandSub, `${loc} has brandSub`);
+    assert.ok(data.ui.savePoint, `${loc} has savePoint`);
+    assert.ok(data.ui.exportCsv, `${loc} has exportCsv`);
+    assert.ok(data.ui.exportPdf, `${loc} has exportPdf`);
+    assert.ok(data.ui.clearRecords, `${loc} has clearRecords`);
+    assert.ok(data.ui.sessions, `${loc} has sessions`);
+    assert.ok(data.placeholders.building, `${loc} has building placeholder`);
+    assert.ok(data.placeholders.floor, `${loc} has floor placeholder`);
+    assert.ok(data.placeholders.room, `${loc} has room placeholder`);
+    assert.ok(data.placeholders.point, `${loc} has point placeholder`);
+  });
+});
+
+test('soundtest.html applies translations to bottom nav, mode cards, and scene chips', () => {
+  const soundtestHtml = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+
+  // Bottom navigation 4th button translated
+  assert.match(soundtestHtml, /setButtonTextWithSvg\('nt-s',\s*t\('ui\.settings'/);
+
+  // Mode card label translated via t()
+  assert.match(soundtestHtml, /setText\('modeCardLabel',\s*t\('modes\.cardLabel'/);
+
+  // New element IDs exist
+  assert.match(soundtestHtml, /id="recStatusCardLabel"/);
+  assert.match(soundtestHtml, /id="camPreviewCardLabel"/);
+  assert.match(soundtestHtml, /id="gpsCardLabel"/);
+  assert.match(soundtestHtml, /id="noiseMapCardLabel"/);
+  assert.match(soundtestHtml, /id="geoSessionsCardLabel"/);
+  assert.match(soundtestHtml, /id="settingsHubCardLabel"/);
+  assert.match(soundtestHtml, /id="dataCardLabel"/);
+
+  // Language detection checks URL query params first
+  assert.match(soundtestHtml, /params\.get\('lang'\)\s*\|\|\s*params\.get\('locale'\)/);
+  // Language detection checks cookie sf_locale
+  assert.match(soundtestHtml, /document\.cookie\?\.match\(/);
+  assert.match(soundtestHtml, /sf_locale=/);
+  // Language detection checks referrer
+  assert.match(soundtestHtml, /document\.referrer\.match\(/);
+});
+

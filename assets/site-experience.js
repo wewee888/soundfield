@@ -723,7 +723,7 @@
       if (s4El) s4El.textContent = copy.s4;
 
       if (ctaBtn) {
-        ctaBtn.href = `${basePrefix}soundtest.html?scenario=${key}`;
+        ctaBtn.href = `${basePrefix}soundtest.html?scenario=${key}&lang=${langKey}`;
         const ctaSpan = ctaBtn.querySelector('span');
         if (ctaSpan) ctaSpan.textContent = copy.cta;
       }
@@ -755,7 +755,7 @@
         if (titleEl) titleEl.textContent = (isZh ? '自定义场景：' : 'Custom Scenario: ') + val;
         if (descEl) descEl.textContent = isZh ? '正在根据您的输入匹配声学滤波与防篡改存证参数。' : 'Configuring acoustic filters and tamper-proof evidence rules for your input.';
         if (ctaBtn) {
-          ctaBtn.href = `${basePrefix}soundtest.html?scenario=custom&note=${encodeURIComponent(val)}`;
+          ctaBtn.href = `${basePrefix}soundtest.html?scenario=custom&note=${encodeURIComponent(val)}&lang=${langKey}`;
           const ctaSpan = ctaBtn.querySelector('span');
           if (ctaSpan) ctaSpan.textContent = isZh ? `启动「${val.slice(0, 8)}」取证` : `Launch for "${val.slice(0, 10)}"`;
         }
