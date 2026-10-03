@@ -2132,15 +2132,20 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       <div class="settings-drawer-row" style="flex-direction:column;align-items:stretch;gap:8px">
         <div class="settings-drawer-label">模板类型</div>
         <select class="setting-select" id="reportTemplate" onchange="setReportTemplate()" style="max-width:none;width:100%">
+          <option value="general">通用测量（常规记录）</option>
           <option value="complaint">投诉沟通</option>
           <option value="property">物业协同</option>
           <option value="inspection">企业巡检</option>
           <option value="legal">律师沟通辅助</option>
           <option value="neighbor">邻里扰民</option>
+          <option value="footstep">楼上脚步/冲击</option>
           <option value="renovation">装修施工</option>
+          <option value="traffic">道路交通</option>
           <option value="elevator">电梯机房</option>
           <option value="ktv">商铺/KTV</option>
           <option value="hvac">空调外机</option>
+          <option value="pet">宠物犬吠</option>
+          <option value="appliance">水泵/家电共振</option>
           <option value="boundary">厂界噪声</option>
         </select>
         <div class="settings-drawer-desc" id="templateGuidance">选择模板后，这里会显示采样建议</div>
@@ -3035,17 +3040,22 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
         <div><div class="slabel">模板类型</div><div class="sdesc">根据使用场景调整 PDF 标题、用途说明和报告语气。</div></div>
         <div class="sctrl">
           <select class="setting-select" id="reportTemplate" onchange="setReportTemplate()">
-            <option value="complaint">投诉沟通</option>
-            <option value="property">物业协同</option>
-            <option value="inspection">企业巡检</option>
-            <option value="legal">律师沟通辅助</option>
-            <option value="neighbor">邻里扰民</option>
-            <option value="renovation">装修施工</option>
-            <option value="elevator">电梯机房</option>
-            <option value="ktv">商铺/KTV</option>
-            <option value="hvac">空调外机</option>
-            <option value="boundary">厂界噪声</option>
-          </select>
+          <option value="general">通用测量（常规记录）</option>
+          <option value="complaint">投诉沟通</option>
+          <option value="property">物业协同</option>
+          <option value="inspection">企业巡检</option>
+          <option value="legal">律师沟通辅助</option>
+          <option value="neighbor">邻里扰民</option>
+          <option value="footstep">楼上脚步/冲击</option>
+          <option value="renovation">装修施工</option>
+          <option value="traffic">道路交通</option>
+          <option value="elevator">电梯机房</option>
+          <option value="ktv">商铺/KTV</option>
+          <option value="hvac">空调外机</option>
+          <option value="pet">宠物犬吠</option>
+          <option value="appliance">水泵/家电共振</option>
+          <option value="boundary">厂界噪声</option>
+        </select>
         </div>
       </div>
       <div class="store-copy" id="templateGuidance" data-report-template-guidance>选择模板后，这里会显示采样建议和报告重点。</div>
@@ -3387,15 +3397,20 @@ const PDF_REPORT_TEXT={
   ],
 };
 const reportTemplates={
+  general:{title:'Environmental Noise Measurement Report',label:'通用测量',purpose:'适用于日常声学取证、常规环境监测、未特定分类的突发或持续声源记录。',guidance:'建议在门窗关闭及开启状态下各测一组，记录等效声级 LAeq、峰值 Lpeak 及背景声 L90 对比。'},
   complaint:{title:'Noise Complaint Evidence Report',label:'投诉沟通',purpose:'For resident communication, property feedback, and preliminary complaint records.'},
   property:{title:'Property Noise Coordination Report',label:'物业协同',purpose:'For property management coordination and site follow-up.'},
   inspection:{title:'Workplace Noise Inspection Report',label:'企业巡检',purpose:'For routine environmental inspection and internal records.'},
   legal:{title:'Acoustic Evidence Aid Report',label:'律师沟通辅助',purpose:'For evidence organization and legal communication aid, not formal metrology.'},
   neighbor:{title:'Neighbor Noise Evidence Report',label:'邻里扰民',purpose:'For documenting repeated neighbor noise, night disturbance, impact sounds, and mediation materials.',guidance:'建议记录发生时段、持续时间、楼栋/楼层/房间、手动噪声标记和 L10/L90 对比。'},
+  footstep:{title:'Floor Impact & Footstep Noise Report',label:'楼上脚步/冲击',purpose:'针对楼上跑跳、高跟鞋脚步、拖拽桌椅及重物坠落等结构传声冲击记录。',guidance:'建议在安静背景下抓拍突发峰值，重点记录 Lmax、L10 频次及持续时间，比对背景声差值。'},
   renovation:{title:'Renovation Construction Noise Report',label:'装修施工',purpose:'For documenting renovation or construction noise, site communication, and property follow-up.',guidance:'建议在施工开始、峰值阶段和停止后各记录一段，保留施工位置、时间段和峰值事件。'},
+  traffic:{title:'Traffic & Transportation Noise Report',label:'道路交通',purpose:'针对临街主干道车流、早晚高峰、车辆鸣笛与低频胎噪记录。',guidance:'建议在早晚高峰时段连续采样 10-20 分钟，记录 LAeq 与 L10（代表车流高峰瞬时声级）。'},
   elevator:{title:'Elevator Machine Room Low-Frequency Report',label:'电梯机房',purpose:'For elevator machine room, shaft, pump, and low-frequency equipment noise review.',guidance:'建议使用 C/Z 计权和 1/3 倍频程，重点观察 31.5-200 Hz 低频段。'},
   ktv:{title:'Retail or KTV Disturbance Report',label:'商铺/KTV',purpose:'For retail, KTV, bar, restaurant, and entertainment venue disturbance documentation.',guidance:'建议夜间多段记录，保留室内测点、窗户状态、L5/L10 峰值和连续背景声。'},
   hvac:{title:'Outdoor AC Unit Noise Report',label:'空调外机',purpose:'For HVAC outdoor unit, fan, compressor, and tonal noise documentation.',guidance:'建议记录开机、稳定运行和停机前后，结合频谱判断低频或高频啸叫。'},
+  pet:{title:'Pet & Animal Disturbance Noise Report',label:'宠物犬吠',purpose:'针对邻家犬吠、夜间鸣叫、阳台宠物间歇性高分贝扰民记录。',guidance:'建议开启自动超标录音，记录每次吠叫开始时间、单次持续时长与全天累计频次。'},
+  appliance:{title:'Plumbing & Domestic Appliance Noise Report',label:'水泵/家电共振',purpose:'针对二次供水加压泵、暖气管道共振、变压器与大型家电低频嗡鸣。',guidance:'建议夜间低背景声时段测量，切换 C 计权或 1/3 倍频程查看低频能量集中段。'},
   boundary:{title:'Factory Boundary Noise Report',label:'厂界噪声',purpose:'For preliminary factory boundary or workplace environmental noise documentation.',guidance:'建议记录测点、边界方向、时间段、气象/门窗状态，并保留非认证测量声明。'},
 };
 const LANG_KEY='sf_language';
@@ -3776,12 +3791,20 @@ function renderTemplateGuidance(){
 }
 
 const SCENE_CHIP_DEFS=[
-  {id:'neighbor',emoji:'🏠',zh:'邻居扰民',en:'Neighbor noise',noteZh:'夜间邻居噪声、敲击与谈话',noteEn:'Night neighbor noise, impacts & conversation'},
+  {id:'general',emoji:'🌐',zh:'通用测量',en:'General',noteZh:'常规环境噪声与日常声级测量',noteEn:'General ambient noise and routine measurement'},
+  {id:'neighbor',emoji:'🏠',zh:'邻里扰民',en:'Neighbor noise',noteZh:'夜间邻居噪声、敲击与谈话',noteEn:'Night neighbor noise, impacts & conversation'},
+  {id:'footstep',emoji:'👣',zh:'楼上脚步',en:'Footsteps',noteZh:'楼上跑跳脚步、拖拽桌椅与地板震动',noteEn:'Upstairs footsteps, running, dragging & floor impacts'},
   {id:'renovation',emoji:'🏗️',zh:'装修施工',en:'Renovation',noteZh:'装修/施工峰值与时段记录',noteEn:'Renovation peaks & time windows'},
+  {id:'traffic',emoji:'🚗',zh:'道路交通',en:'Traffic',noteZh:'主干道车流、车辆鸣笛与低频胎噪',noteEn:'Road traffic, vehicle honking & tire rumble'},
+  {id:'hvac',emoji:'❄️',zh:'空调外机',en:'AC outdoor unit',noteZh:'外机低频/高频啸叫与风机共振',noteEn:'Outdoor unit tonal noise & fan resonance'},
+  {id:'pet',emoji:'🐕',zh:'宠物犬吠',en:'Pet barking',noteZh:'邻居宠物日夜持续吠叫与叫声扰民',noteEn:'Persistent pet barking & animal disturbances'},
+  {id:'appliance',emoji:'⚡',zh:'水泵/家电',en:'Plumbing/Pumps',noteZh:'水泵二次加压、管道水锤与家电低频嗡鸣',noteEn:'Water pumps, plumbing hammer & appliance resonance'},
   {id:'ktv',emoji:'🍺',zh:'商铺/KTV',en:'Bar / KTV',noteZh:'商业娱乐场所夜间扰民',noteEn:'Entertainment venue night noise'},
-  {id:'hvac',emoji:'❄️',zh:'空调外机',en:'AC outdoor unit',noteZh:'外机低频/高频啸叫',noteEn:'Outdoor unit tonal noise'},
+  {id:'elevator',emoji:'🛗',zh:'电梯机房',en:'Elevator shaft',noteZh:'电梯运行机房与轨道低频共振',noteEn:'Elevator machine room & shaft low-frequency vibration'},
   {id:'property',emoji:'🏢',zh:'物业协同',en:'Property coord.',noteZh:'物业沟通与现场复测',noteEn:'Property follow-up visit'},
   {id:'inspection',emoji:'📋',zh:'企业巡检',en:'Workplace audit',noteZh:'办公室/厂区例行巡检',noteEn:'Office or plant inspection'},
+  {id:'boundary',emoji:'🏭',zh:'厂界噪声',en:'Factory boundary',noteZh:'工业企业厂界与作业区昼夜噪声',noteEn:'Industrial boundary & day/night compliance check'},
+  {id:'legal',emoji:'⚖️',zh:'律师沟通',en:'Legal aid',noteZh:'法务审阅前声学事实初筛与存证归档',noteEn:'Pre-litigation acoustic facts & evidence filing'},
 ];
 function renderSceneChips(){
   const grid=document.getElementById('sceneChipGrid');

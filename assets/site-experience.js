@@ -94,6 +94,69 @@
   }
 
   const SCENARIO_DATA = {
+    "general": {
+        "en": {
+            "title": "General Environmental Sound Measurement",
+            "desc": "Standard unclassified sound level monitoring with equivalent LAeq, peak and statistical metrics.",
+            "day": "≤ 55 dB",
+            "night": "≤ 45 dB",
+            "metric": "LAeq + Lpeak + L90",
+            "tamper": "GPS + SHA-256",
+            "s1": "General environmental sound logging standards applied",
+            "s2": "A-weighting & Fast dynamic response ready",
+            "s3": "Local-only tamper-evident verification locked",
+            "s4": "Ready — launch to generate official acoustic measurement log",
+            "cta": "Start General Measurement",
+            "guide": "Acoustic Standards"
+        },
+        "zh": {
+            "title": "通用声学环境测量与日常记录模板",
+            "desc": "面向未特定分类、日常突发声响、居家或办公环境的客观分贝存证记录。",
+            "day": "≤ 55 dB",
+            "night": "≤ 45 dB",
+            "metric": "LAeq 等效声级 + Lpeak",
+            "tamper": "GPS + SHA-256",
+            "s1": "已加载通用声学环境监测与统计规范",
+            "s2": "初始化 A 计权滤波与全频段平滑处理",
+            "s3": "纯本地防篡改 SHA-256 存证链已就绪",
+            "s4": "就绪 — 启动即可生成标准声学测量底稿",
+            "cta": "启动通用环境测量",
+            "guide": "噪声标准指南"
+        },
+        "path": "neighbor-noise-evidence.html"
+    },
+    "traffic": {
+        "en": {
+            "title": "Traffic & Road Transportation Noise",
+            "desc": "Capture peak traffic flow, exhaust acceleration, and continuous road tire rumble.",
+            "day": "≤ 70 dB",
+            "night": "≤ 55 dB",
+            "metric": "LAeq + L10 (Traffic Peaks)",
+            "tamper": "GPS + SHA-256",
+            "s1": "Transportation road boundary regulations loaded",
+            "s2": "L10 traffic peak percentile calculator active",
+            "s3": "GPS roadway anchor point confirmed",
+            "s4": "Ready — monitor highway & road traffic noise",
+            "cta": "Start Traffic Monitoring",
+            "guide": "Road Noise Guide"
+        },
+        "zh": {
+            "title": "道路交通与过往车辆噪音记录模板",
+            "desc": "针对临街主干道车流、早晚高峰车辆鸣笛、大货车制动与低频胎噪。",
+            "day": "≤ 70 dB",
+            "night": "≤ 55 dB",
+            "metric": "LAeq + L10 交通峰值",
+            "tamper": "GPS + SHA-256",
+            "s1": "已加载交通干线环境噪声限值标准",
+            "s2": "启动 L10 交通流量峰值分位数统计",
+            "s3": "GPS 临路绝对经纬度锚点已校验",
+            "s4": "就绪 — 连续监测主干道车辆噪声数据",
+            "cta": "启动道路交通监测",
+            "guide": "交通噪声标准"
+        },
+        "path": "construction-noise-monitoring.html"
+    },
+
     "neighbor": {
         "en": {
             "title": "Neighbor Noise Evidence Template",
