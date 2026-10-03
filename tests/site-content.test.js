@@ -554,3 +554,14 @@ test('all 9 locales and root index feature all 6 noise scenarios and 6 use-case 
   });
 });
 
+test('soundtest.html verifies microphone permission and pops up permission modal on real-time monitor click if unauthorized', () => {
+  const soundtestHtml = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+  assert.match(soundtestHtml, /id="permModal"/);
+  assert.match(soundtestHtml, /id="permDeniedWarning"/);
+  assert.match(soundtestHtml, /micPermissionGranted/);
+  assert.match(soundtestHtml, /openPermissionModal/);
+  assert.match(soundtestHtml, /if\(!opts\?\.fromAuthModal && !micPermissionGranted\)/);
+  assert.match(soundtestHtml, /isIOS&&\(name==='microphone'\|\|name==='camera'\)/);
+  assert.match(soundtestHtml, /Safari 浏览器 ➔ 麦克风/);
+});
+
