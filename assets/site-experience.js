@@ -1011,15 +1011,58 @@
 
   function getMobileNavUrls(lang) {
     const path = window.location.pathname;
+    const isFile = window.location.protocol === 'file:';
     const isUseCase = path.includes('/use-cases/');
     const isLocaleSubdir = /\/(zh|en|es|fr|de|ja|ko|vi|th)\//.test(path);
+    const variantMatch = path.match(/\/([abc])(?:\/|$)/i);
+    const isVariantSubdir = !!variantMatch;
+    const variant = variantMatch ? variantMatch[1].toLowerCase() : null;
 
+    if (!isFile) {
+      // Standard HTTP/HTTPS deployment (Cloudflare Pages)
+      const meterUrl = '/soundtest.html';
+      let homeUrl = `/${lang}/index.html`;
+      let pricingUrl = `/${lang}/index.html#pricing`;
+      let scenariosUrl = `/${lang}/index.html#scenarios`;
+
+      if (isVariantSubdir) {
+        homeUrl = `/${variant}/index.html`;
+        pricingUrl = `/${variant}/index.html#pricing`;
+        scenariosUrl = `/${variant}/index.html#scenarios`;
+      } else if (!isLocaleSubdir && !isUseCase) {
+        homeUrl = '/index.html';
+        pricingUrl = '/index.html#pricing';
+        scenariosUrl = '/index.html#scenarios';
+      }
+
+      const localePrefix = `/${lang}/`;
+      return {
+        home: homeUrl,
+        pricing: pricingUrl,
+        scenarios: scenariosUrl,
+        meter: meterUrl,
+        standards: `${localePrefix}standards.html`,
+        accuracy: `${localePrefix}accuracy.html`,
+        samples: `${localePrefix}samples.html`,
+        download: `${localePrefix}download.html`,
+        changelog: `${localePrefix}changelog.html`,
+        disclaimer: `${localePrefix}disclaimer.html`,
+        privacy: `${localePrefix}privacy.html`,
+        compliance: `${localePrefix}compliance.html`,
+        auth: `${localePrefix}auth.html`,
+      };
+    }
+
+    // Local file:// protocol fallback
     let base = '';
     let meterUrl = 'soundtest.html';
 
     if (isUseCase) {
       base = `../../${lang}/`;
       meterUrl = '../../soundtest.html';
+    } else if (isVariantSubdir) {
+      base = `../${lang}/`;
+      meterUrl = '../soundtest.html';
     } else if (isLocaleSubdir) {
       base = '';
       meterUrl = '../soundtest.html';
@@ -1028,7 +1071,7 @@
       meterUrl = 'soundtest.html';
     }
 
-    const homeUrl = base ? `${base}index.html` : 'index.html';
+    const homeUrl = isVariantSubdir ? 'index.html' : (base ? `${base}index.html` : 'index.html');
     return {
       home: homeUrl,
       pricing: `${homeUrl}#pricing`,

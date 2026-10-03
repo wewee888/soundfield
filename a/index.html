@@ -138,19 +138,9 @@
     .bento h3 { margin-bottom: 8px; }
     .bento p { font-size: 14px; }
 
-    /* Pricing */
-    .pricing-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; align-items: stretch; }
+    /* Pricing section styles are unified from site.css */
+    .pricing-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; align-items: stretch; }
     @media (max-width: 880px) { .pricing-row { grid-template-columns: 1fr; } }
-    .pricing-card { padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--ink-border); background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); backdrop-filter: blur(20px) saturate(140%); display: flex; flex-direction: column; }
-    .pricing-card.featured { background: linear-gradient(135deg, rgba(44, 240, 193, 0.12), rgba(124, 155, 255, 0.10)); border-color: rgba(44, 240, 193, 0.3); box-shadow: var(--shadow-lg), inset 0 1px 0 var(--ink-rim); }
-    .pricing-card h3 { font-size: 20px; margin-bottom: 4px; }
-    .pricing-card .price { font-family: "JetBrains Mono", monospace; font-size: 38px; font-weight: 700; color: var(--text-strong); margin: 14px 0 4px; letter-spacing: -0.03em; }
-    .pricing-card .price small { font-size: 14px; color: var(--muted); font-weight: 500; }
-    .pricing-card ul { list-style: none; padding: 0; margin: 18px 0 22px; }
-    .pricing-card li { padding: 6px 0 6px 22px; position: relative; color: var(--muted); font-size: 14px; line-height: 1.5; }
-    .pricing-card li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
-    .pricing-card .button { width: 100%; }
-    .pricing-card.featured .button.primary { margin-top: auto; }
 
     /* FAQ */
     .faq { display: grid; gap: 10px; }
@@ -339,44 +329,105 @@
         <h2>Start free. Upgrade when the noise gets serious.</h2>
       </div>
       <div class="pricing-row">
-        <div class="pricing-card reveal">
-          <h3>Free</h3>
-          <p style="font-size:13.5px;color:var(--muted)">For the first recording, the first week, the first 10 reports.</p>
-          <div class="price">$0<small> / forever</small></div>
-          <ul>
-            <li>Up to 10 reports per month</li>
-            <li>dB, LAeq, waveform, PDF / CSV</li>
-            <li>All 9 languages, browser-only</li>
-            <li>Local storage, no server upload</li>
+        <!-- Free Tier -->
+        <div class="price-card reveal">
+          <span class="price-pill">Free Version</span>
+          <span class="price-name">Instant Web Check</span>
+          <div class="price-tag">$0</div>
+          <div class="price-compare-hint">Quick baseline check to verify if noise levels violate legal standards</div>
+          <ul class="check-list">
+            <li>Real-time decibel meter (A/C weighting)</li>
+            <li>Live audio recording &amp; waveform view</li>
+            <li>Automatic time &amp; GPS location stamp</li>
+            <li>Watermarked preview report (personal reference only)</li>
+            <li>Stored temporarily in local browser cache</li>
           </ul>
-          <a class="button" href="../soundtest.html" data-cta="pricing_free">Open the recorder</a>
+          <a class="button" href="../soundtest.html" data-cta="pricing_free">Try Web Meter Free</a>
         </div>
-                <div class="pricing-card reveal">
-          <h3>Single Report</h3>
-          <p style="font-size:13.5px;color:var(--muted)">For one-off noise complaints and tenant filings.</p>
-          <div class="price">$1.99<small> / one-time</small></div>
-          <ul>
-            <li>1 Clean unwatermarked official PDF report</li>
-            <li>Digital tamper-evident ID &amp; GPS watermark</li>
-            <li>Acoustic metrics (LAeq, L10, L90, Peak)</li>
-            <li>No subscription or recurring charges</li>
+
+        <!-- Single Official Report -->
+        <div class="price-card single-report reveal">
+          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/forensic_report_preview.webp" alt="Official forensic PDF vs watermarked preview comparison" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center top;display:block;">
+          </div>
+          <span class="price-pill">Single Report</span>
+          <span class="price-name">Official Evidence PDF</span>
+          <div class="price-tag">
+            <del class="price-del">$4.99</del>$1.99
+            <span class="price-discount-tag">60% OFF</span>
+          </div>
+          <div class="price-compare-hint">One-time purchase · Eliminates "volume turned up" disputes</div>
+          <ul class="check-list">
+            <li>1 Full <strong>unwatermarked evidentiary PDF report</strong></li>
+            <li><strong>SHA-256 cryptographic digital fingerprint</strong> &amp; GPS anchor</li>
+            <li>Official acoustic metrics (LAeq, L10, L90, Peak dB)</li>
+            <li>Timestamped photos &amp; coordinates evidence sheet</li>
+            <li>Formal documentation for landlords, HOAs, and mediation</li>
           </ul>
           <a class="button" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Unlock Single Report · $1.99</a>
         </div>
-        <div class="pricing-card featured reveal">
-          <h3>Pro</h3>
-          <p style="font-size:13.5px;color:var(--muted)">For the case you're actually building.</p>
-          <div class="price">$4.99<small> / month, cancel any time</small></div>
-          <ul>
-            <li><strong>Unlimited</strong> recordings &amp; reports</li>
-            <li>Notarized PDF certificate with timestamp hash</li>
-            <li>Multi-device sync &amp; 5-year retention</li>
-            <li>Share-with-lawyer link, expiry controls</li>
-            <li>Priority support, evidence review within 24h</li>
+
+        <!-- Pro Monthly -->
+        <div class="price-card monthly reveal">
+          <span class="price-pill">Pro Flexible Monthly</span>
+          <span class="price-name">Pro Monthly Access</span>
+          <div class="price-tag">
+            <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
+            <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
+          </div>
+          <div class="price-compare-hint">Ideal for short-term disputes, temporary construction, or rental inspections</div>
+          <ul class="check-list">
+            <li><strong>30 Days of unlimited</strong> unwatermarked PDF evidence generation</li>
+            <li>🌙 <strong>Overnight Sentry Mode</strong>: Auto-records when noise exceeds threshold</li>
+            <li>📊 <strong>Multi-Day Disturbance Dossier</strong>: 30-day aggregated trend graphs</li>
+            <li>⚖️ <strong>Formal Dispute Notice Templates</strong>: Standardized complaint formats</li>
+            <li>☁️ <strong>Encrypted Cloud Sync</strong>: Safe evidence retention across devices</li>
+          </ul>
+          <a class="button" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">Get Pro Monthly · $4.99</a>
+        </div>
+
+        <!-- Pro Yearly (Recommended) -->
+        <div class="price-card pro reveal">
+          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/sentry_night_monitor.webp" alt="Overnight Sentry Mode illustration" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center 40%;display:block;">
+          </div>
+          <span class="price-badge-popular">★ Most Popular · ~$2.08/mo</span>
+          <span class="price-pill">Pro Premium Version</span>
+          <span class="price-name">Continuous Dispute Dossier</span>
+          <div class="price-tag">
+            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
+            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35.00</span>
+          </div>
+          <div class="price-compare-hint">365 Days of automated surveillance · Relieves manual monitoring fatigue</div>
+          <ul class="check-list">
+            <li><strong>365 Days of unlimited</strong> unwatermarked PDF evidence generation</li>
+            <li>🌙 <strong>Overnight Sentry Mode</strong>: Auto-records when noise exceeds threshold</li>
+            <li>📊 <strong>Multi-Day Disturbance Dossier</strong>: Aggregated trend graphs &amp; peak logs</li>
+            <li>⚖️ <strong>Formal Dispute Notice Templates</strong>: Standardized dispute documentation</li>
+            <li>☁️ <strong>Encrypted Cloud Sync</strong>: Safe multi-device synchronization</li>
           </ul>
           <a class="button primary" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Get Pro Yearly · $24.99</a>
-          <a class="button-link" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener">Monthly · $4.99</a>
-          <a class="button-link" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener">Lifetime · $79.99</a>
+          <a class="button-link" href="../en/auth.html" style="margin-top:6px;font-size:12px;">Already have an account? Sign in</a>
+        </div>
+
+        <!-- Lifetime License -->
+        <div class="price-card lifetime reveal">
+          <span class="price-pill">Lifetime License</span>
+          <span class="price-name">Perpetual All-Access</span>
+          <div class="price-tag">
+            <del class="price-del">$199.00</del>$79.99
+            <span class="price-discount-tag">Save $119 · 60% OFF</span>
+          </div>
+          <div class="price-compare-hint">One-time payment · Permanent peace of mind for tenants &amp; homeowners</div>
+          <ul class="check-list">
+            <li><strong>Permanent ownership license</strong> with zero recurring subscription fees</li>
+            <li>Includes all Sentry Mode, Dossier generation, and template features</li>
+            <li>Cross-device sync &amp; permanent evidence storage</li>
+            <li>Priority support &amp; all future acoustic updates included forever</li>
+            <li>Ready anytime you face rental, neighbor, or commercial disturbances</li>
+          </ul>
+          <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">Get Lifetime Access · $79.99</a>
+          <a class="button-link" href="../en/auth.html" style="margin-top:6px;font-size:12px;">Already have an account? Sign in</a>
         </div>
       </div>
     </section>

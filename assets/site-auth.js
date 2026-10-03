@@ -746,9 +746,61 @@
       }
     }
 
-    users.push({ name, email, passwordHash: await hashPassword(password), createdAt: new Date().toISOString() });
+    const pwdHash = await hashPassword(password);
+    let serverSessionToken = '';
+    let plan = 'free';
+
+    // Register with Cloudflare KV backend for cross-device auth
+    try {
+      const resp = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          passwordHash: pwdHash,
+          clientCreatedAt: new Date().toISOString(),
+        }),
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok || !data.ok) {
+        if (data.error === 'email_exists') {
+          setFieldError('email', getAuthMsg('email_exists'));
+          return;
+        }
+      } else {
+        serverSessionToken = data.session_token || '';
+        if (data.membership?.active) {
+          plan = data.membership.plan || 'pro';
+        }
+      }
+    } catch (_) {
+      // Offline fallback
+    }
+
+    users.push({ name, email, passwordHash: pwdHash, createdAt: new Date().toISOString(), plan });
     saveUsers(users);
-    saveSession({ name, email, signedAt: new Date().toISOString() });
+    saveSession({
+      name,
+      email,
+      plan,
+      token: serverSessionToken,
+      signedAt: new Date().toISOString(),
+    });
+
+    if (plan !== 'free') {
+      try {
+        localStorage.setItem('sf_membership_v1', JSON.stringify({
+          email,
+          active: true,
+          plan,
+          provider: 'register',
+          status: 'paid',
+          lastCheckedAt: new Date().toISOString(),
+        }));
+      } catch (_) {}
+    }
+
     showToast(getAuthMsg('account_created'), 'success');
     setTimeout(() => location.href = getLocaleAuthHref(), 800);
   }
@@ -764,14 +816,113 @@
     if (!email)    { setFieldError('email', getAuthMsg('email_req')); return; }
     if (!password) { setFieldError('password', getAuthMsg('pwd_req')); return; }
 
-    const users  = loadUsers();
-    const target = users.find(u => u.email === email);
-    if (!target)    { setFieldError('email', getAuthMsg('no_account')); return; }
-    if (await hashPassword(password) !== target.passwordHash) { setFieldError('password', getAuthMsg('pwd_incorrect')); return; }
+    const pwdHash = await hashPassword(password);
+    let loginSuccess = false;
+    let userName = '';
+    let userPlan = 'free';
+    let sessionToken = '';
+    let createdAt = new Date().toISOString();
 
-    saveSession({ name: target.name, email: target.email, signedAt: new Date().toISOString() });
-    showToast(getAuthMsg('welcome_back'), 'success');
-    setTimeout(() => location.href = getLocaleAuthHref(), 600);
+    // 1. Authenticate against Cloudflare KV backend (allows cross-device PC -> Mobile login)
+    try {
+      const resp = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, passwordHash: pwdHash }),
+      });
+      const data = await resp.json().catch(() => ({}));
+
+      if (resp.ok && data.ok) {
+        loginSuccess = true;
+        userName = data.name || email.split('@')[0];
+        sessionToken = data.session_token || '';
+        if (data.membership?.active) {
+          userPlan = data.membership.plan || 'pro';
+        }
+        if (data.createdAt) createdAt = data.createdAt;
+      } else if (data.error === 'pwd_incorrect') {
+        setFieldError('password', getAuthMsg('pwd_incorrect'));
+        return;
+      } else if (data.error === 'no_account') {
+        // If not in cloud KV yet, check local device cache to auto-migrate legacy account
+        const users = loadUsers();
+        const localUser = users.find(u => u.email === email);
+        if (localUser && localUser.passwordHash === pwdHash) {
+          try {
+            const regResp = await fetch('/api/auth/register', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: localUser.name,
+                email: localUser.email,
+                passwordHash: localUser.passwordHash,
+                clientCreatedAt: localUser.createdAt,
+              }),
+            });
+            const regData = await regResp.json().catch(() => ({}));
+            if (regResp.ok && regData.ok) {
+              loginSuccess = true;
+              userName = localUser.name;
+              sessionToken = regData.session_token || '';
+              if (regData.membership?.active) userPlan = regData.membership.plan || 'pro';
+            }
+          } catch (_) {}
+        }
+
+        if (!loginSuccess) {
+          setFieldError('email', getAuthMsg('no_account'));
+          return;
+        }
+      }
+    } catch (_) {
+      // Offline fallback: check local storage
+      const users  = loadUsers();
+      const target = users.find(u => u.email === email);
+      if (!target)    { setFieldError('email', getAuthMsg('no_account')); return; }
+      if (pwdHash !== target.passwordHash) { setFieldError('password', getAuthMsg('pwd_incorrect')); return; }
+      loginSuccess = true;
+      userName = target.name;
+      userPlan = target.plan || 'free';
+    }
+
+    if (loginSuccess) {
+      // Sync to local users cache on this device
+      const users = loadUsers();
+      let user = users.find(u => u.email === email);
+      if (!user) {
+        user = { name: userName, email, passwordHash: pwdHash, createdAt, plan: userPlan };
+        users.push(user);
+      } else {
+        user.name = userName;
+        user.plan = userPlan;
+        user.passwordHash = pwdHash;
+      }
+      saveUsers(users);
+
+      saveSession({
+        name: userName,
+        email,
+        plan: userPlan,
+        token: sessionToken,
+        signedAt: new Date().toISOString(),
+      });
+
+      if (userPlan !== 'free') {
+        try {
+          localStorage.setItem('sf_membership_v1', JSON.stringify({
+            email,
+            active: true,
+            plan: userPlan,
+            provider: 'login',
+            status: 'paid',
+            lastCheckedAt: new Date().toISOString(),
+          }));
+        } catch (_) {}
+      }
+
+      showToast(getAuthMsg('welcome_back'), 'success');
+      setTimeout(() => location.href = getLocaleAuthHref(), 600);
+    }
   }
 
   /* ── Dashboard rendering ── */
@@ -980,13 +1131,36 @@
         if (!neu || neu.length < 8) { setPanelError(changePasswordForm, getAuthMsg('new_pwd_len')); return; }
         if (neu !== con) { setPanelError(changePasswordForm, getAuthMsg('pwd_mismatch')); return; }
 
-        let users = loadUsers();
-        const idx = users.findIndex(u => u.email === session.email);
-        if (idx === -1) { setPanelError(changePasswordForm, getAuthMsg('no_account')); return; }
-        if (await hashPassword(cur) !== users[idx].passwordHash) { setPanelError(changePasswordForm, getAuthMsg('cur_pwd_incorrect')); return; }
+        const curHash = await hashPassword(cur);
+        if (idx !== -1 && curHash !== users[idx].passwordHash) {
+          setPanelError(changePasswordForm, getAuthMsg('cur_pwd_incorrect'));
+          return;
+        }
 
-        users[idx].passwordHash = await hashPassword(neu);
-        saveUsers(users);
+        const neuHash = await hashPassword(neu);
+
+        // Update in Cloudflare KV
+        try {
+          const resp = await fetch('/api/auth/change-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: session.email,
+              currentPasswordHash: curHash,
+              newPasswordHash: neuHash,
+            }),
+          });
+          const data = await resp.json().catch(() => ({}));
+          if (!resp.ok && data.error === 'cur_pwd_incorrect') {
+            setPanelError(changePasswordForm, getAuthMsg('cur_pwd_incorrect'));
+            return;
+          }
+        } catch (_) {}
+
+        if (idx !== -1) {
+          users[idx].passwordHash = neuHash;
+          saveUsers(users);
+        }
         closePanel('password');
         changePasswordForm.reset();
         showToast(getAuthMsg('pwd_updated'), 'success');
