@@ -55,6 +55,8 @@
         node.classList.remove('is-open');
         const btn = node.querySelector('.lang-picker-btn');
         if (btn) btn.setAttribute('aria-expanded', 'false');
+        const menu = node.querySelector('.lang-picker-menu');
+        if (menu) menu.hidden = true;
       }
     });
   }
@@ -127,14 +129,12 @@
       text.textContent = opt.label || LABELS[primary] || opt.value;
 
       item.append(img, text);
-      item.addEventListener('click', () => {
-        if (opt.value === value) {
-          mount.classList.remove('is-open');
-          btn.setAttribute('aria-expanded', 'false');
-          menu.hidden = true;
-          return;
+      item.addEventListener('click', (event) => {
+        event.stopPropagation();
+        closeAllPickers(null);
+        if (typeof onChange === 'function') {
+          onChange(opt.value);
         }
-        onChange(opt.value);
       });
       menu.appendChild(item);
     });
@@ -152,9 +152,17 @@
   }
 
   if (typeof document !== 'undefined') {
-    document.addEventListener('click', () => closeAllPickers(null));
+    const handleDismiss = (event) => {
+      if (!event.target?.closest || !event.target.closest('.lang-picker')) {
+        closeAllPickers(null);
+      }
+    };
+    document.addEventListener('click', handleDismiss, true);
+    document.addEventListener('pointerdown', handleDismiss, true);
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeAllPickers(null);
+      if (event.key === 'Escape' || event.key === 'Esc') {
+        closeAllPickers(null);
+      }
     });
   }
 

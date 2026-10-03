@@ -496,6 +496,17 @@
     },
   };
 
+  // Locale code aliases (support both primary 'zh' and full 'zh-CN', etc.)
+  I18N_DATA['zh'] = I18N_DATA['zh-CN'];
+  I18N_DATA['en'] = I18N_DATA['en-US'];
+  I18N_DATA['es-ES'] = I18N_DATA['es'];
+  I18N_DATA['fr-FR'] = I18N_DATA['fr'];
+  I18N_DATA['de-DE'] = I18N_DATA['de'];
+  I18N_DATA['ja-JP'] = I18N_DATA['ja'];
+  I18N_DATA['ko-KR'] = I18N_DATA['ko'];
+  I18N_DATA['vi-VN'] = I18N_DATA['vi'];
+  I18N_DATA['th-TH'] = I18N_DATA['th'];
+
   window.__sfI18N = I18N_DATA;
   window.__sfSupportedAppLanguages = SUPPORTED_APP_LANGUAGES;
 

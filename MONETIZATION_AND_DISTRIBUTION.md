@@ -159,7 +159,7 @@ Android App：
 最小可行版本可以先做：
 
 - 邮箱验证码登录。
-- Stripe Web 订阅。
+- CREEM Web 订阅。
 - 后端会员权益接口。
 
 后端需要保存：
@@ -172,7 +172,7 @@ Android App：
 - 设备/浏览器登录状态。
 - 付款 webhook 记录。
 
-支付成功后，必须由后端接收 Stripe / Apple / Google / 微信 / 支付宝回调，再更新会员状态。
+支付成功后，必须由后端接收 Creem / Apple / Google / 微信 / 支付宝回调，再更新会员状态。
 
 ## 地图服务与 Key 管理
 
