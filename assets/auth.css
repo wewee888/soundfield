@@ -951,6 +951,104 @@
   color: var(--soft);
 }
 
+/* ── Storage & Cloud Sync Card ── */
+.storage-meter-wrap {
+  margin-bottom: 12px;
+}
+.storage-meter-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.storage-usage-text {
+  font-weight: 700;
+  color: var(--text-strong);
+}
+.storage-quota-text {
+  color: var(--soft);
+}
+.storage-progress-bar {
+  width: 100%;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.storage-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent, #2cfaa0), #3b82f6);
+  border-radius: 999px;
+  transition: width 300ms ease;
+}
+.storage-note {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+.storage-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ── Team Workspace & Enterprise Branding Card ── */
+.team-branding-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.field-sm {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field-sm label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.field-sm input {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ink-border);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 150ms;
+}
+.field-sm input:focus {
+  border-color: var(--accent, #2cfaa0);
+}
+.team-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .team-grid-2 { grid-template-columns: 1fr; }
+}
+.team-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+.team-status-pill {
+  font-size: 11px;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
 /* ── Slide-in panels ── */
 .panel-overlay {
   position: fixed;

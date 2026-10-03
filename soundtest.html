@@ -8024,15 +8024,53 @@ function buildPDF(recs){
     const ts=r.time.toLocaleString(PDF_DATE_LOCALE,{year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
     const tpl=pdfTemplateInfo(reportTemplate);
     const fields=PDF_REPORT_TEXT.fields;
+    let enterpriseBranding = {};
+    try {
+      enterpriseBranding = JSON.parse(localStorage.getItem('sf_enterprise_branding_v1') || '{}');
+    } catch (_) {}
+
+    const orgToUse = organizationName || enterpriseBranding.enterpriseName || '';
+    const inspectorToUse = enterpriseBranding.defaultInspector || '';
+    const projectRefToUse = enterpriseBranding.projectCodePrefix ? `${enterpriseBranding.projectCodePrefix}${r.id || '01'}` : '';
+    const stampToUse = enterpriseBranding.disclaimerStamp || '';
+
     doc.setFillColor(10,14,25);doc.rect(0,0,W,28,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(42,255,212);doc.text(PDF_REPORT_TEXT.brand,M,11);
-    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(140,160,180);doc.text(PDF_REPORT_TEXT.subtitle,M,17);
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(140,160,180);
+    doc.text(orgToUse ? `${PDF_REPORT_TEXT.subtitle} · ${pdfSafeText(orgToUse)}` : PDF_REPORT_TEXT.subtitle, M, 17);
     doc.setFontSize(7);doc.text(`${new Date().toLocaleString(PDF_DATE_LOCALE)}`,W-M,11,{align:'right'});
     doc.text(`${ri+1}/${recs.length}`,W-M,17,{align:'right'});
     doc.setDrawColor(42,255,212);doc.setLineWidth(0.3);doc.line(M,24,W-M,24);
     let y=33;
     doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.setTextColor(210,220,240);doc.text(PDF_REPORT_TEXT.details,M,y);y+=7;
-    const detailRows=[[fields.evidenceId,r.evidenceId||'SF-LEGACY'],[fields.mediaHash,r.hashes?.mediaSha256||'N/A'],[fields.metadataHash,r.hashes?.metadataSha256||'N/A'],[fields.template,tpl.label],[fields.organization,pdfSafeText(organizationName,'Non-Latin organization name stored in app/CSV')],[fields.purpose,tpl.purpose],[fields.recorded,ts],[fields.duration,fmtTime(r.dur||0)],[fields.place,pdfPlaceText(r)],[fields.gps,r.loc?`${r.loc.lat},${r.loc.lng} (+/-${r.loc.acc}m)`:'N/A'],[fields.weighting,`${r.weighting||weighting} / ${r.timeWeight||timeWeight}`],[fields.calibration,`${r.calibration?.offsetDb??calOffset} dB, mic gain ${r.calibration?.micGainDb??micGainDb} dB`],[fields.errorRange,pdfSafeText(r.calibration?.errorRange||calibrationErrorRange(),'Estimated error stored in app/CSV')],[fields.avg,`${r.avgDb} dB - ${pdfLevelLabel(r.avgDb)}`],[fields.peak,`${r.peakDb} dB`],[fields.min,`${r.minDb} dB`],[fields.l5,`${r.l5Db||0} dB`],[fields.l10,`${r.l10Db||0} dB`],[fields.l50,`${r.l50Db||0} dB`],[fields.l90,`${r.l90Db||0} dB`],[fields.l95,`${r.l95Db||0} dB`],[fields.media,pdfMediaLabel(r)],[fields.note,pdfSafeText(r.note,'Non-Latin note stored in app/CSV')]];
+    const detailRows=[
+      [fields.evidenceId,r.evidenceId||'SF-LEGACY'],
+      ...(projectRefToUse ? [['Project Ref', pdfSafeText(projectRefToUse)]] : []),
+      [fields.mediaHash,r.hashes?.mediaSha256||'N/A'],
+      [fields.metadataHash,r.hashes?.metadataSha256||'N/A'],
+      [fields.template,tpl.label],
+      [fields.organization,pdfSafeText(orgToUse || 'Civilian Reference / Individual Record','Stored in app/CSV')],
+      ...(inspectorToUse ? [['Inspector/Auditor', pdfSafeText(inspectorToUse)]] : []),
+      [fields.purpose,tpl.purpose],
+      [fields.recorded,ts],
+      [fields.duration,fmtTime(r.dur||0)],
+      [fields.place,pdfPlaceText(r)],
+      [fields.gps,r.loc?`${r.loc.lat},${r.loc.lng} (+/-${r.loc.acc}m)`:'N/A'],
+      [fields.weighting,`${r.weighting||weighting} / ${r.timeWeight||timeWeight}`],
+      [fields.calibration,`${r.calibration?.offsetDb??calOffset} dB, mic gain ${r.calibration?.micGainDb??micGainDb} dB`],
+      [fields.errorRange,pdfSafeText(r.calibration?.errorRange||calibrationErrorRange(),'Estimated error stored in app/CSV')],
+      [fields.avg,`${r.avgDb} dB - ${pdfLevelLabel(r.avgDb)}`],
+      [fields.peak,`${r.peakDb} dB`],
+      [fields.min,`${r.minDb} dB`],
+      [fields.l5,`${r.l5Db||0} dB`],
+      [fields.l10,`${r.l10Db||0} dB`],
+      [fields.l50,`${r.l50Db||0} dB`],
+      [fields.l90,`${r.l90Db||0} dB`],
+      [fields.l95,`${r.l95Db||0} dB`],
+      [fields.media,pdfMediaLabel(r)],
+      ...(stampToUse ? [['Audit Stamp', pdfSafeText(stampToUse)]] : []),
+      [fields.note,pdfSafeText(r.note,'Non-Latin note stored in app/CSV')]
+    ];
     detailRows.forEach(([k,v],i)=>{
       const rowH=5.7,ry=y+i*rowH;doc.setFillColor(i%2===0?15:22,i%2===0?20:30,i%2===0?35:48);doc.rect(M,ry-3,W-M*2,rowH,'F');
       doc.setFont('helvetica','normal');doc.setTextColor(100,130,160);doc.setFontSize(6.8);doc.text(k,M+2,ry);

@@ -1298,7 +1298,86 @@
     initMobileBottomNav();
     initCookieConsent();
     initPricingNavigation();
+    initPwaInstallBanner();
   });
+
+  function initPwaInstallBanner() {
+    let deferredPrompt = null;
+    const DISMISS_KEY = 'sf_pwa_dismissed_v1';
+    if (localStorage.getItem(DISMISS_KEY)) return;
+
+    const isIOS = /(iPad|iPhone|iPod)/i.test(navigator.userAgent || '') && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (isStandalone) return;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      renderInstallBanner(false);
+    });
+
+    if (isIOS && !sessionStorage.getItem('sf_ios_pwa_seen')) {
+      setTimeout(() => {
+        renderInstallBanner(true);
+      }, 3500);
+    }
+
+    function renderInstallBanner(isApple) {
+      if (document.getElementById('sf-pwa-banner')) return;
+      const lang = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
+      const isZh = lang === 'zh';
+
+      const banner = document.createElement('aside');
+      banner.id = 'sf-pwa-banner';
+      banner.className = 'pwa-install-banner reveal is-visible';
+      banner.setAttribute('role', 'region');
+      banner.setAttribute('aria-label', isZh ? '安装应用提示' : 'PWA Install Prompt');
+
+      const title = isZh ? '安装 SOUNDTEST.PRO 到桌面' : 'Install SOUNDTEST.PRO App';
+      const desc = isApple
+        ? (isZh ? '点击底部分享 ⎋，选择“添加到主屏幕 [+]”，获得即开即测全屏体验。' : 'Tap Share ⎋ then "Add to Home Screen" for instant 1-tap sound monitoring.')
+        : (isZh ? '免应用商店，一键添加至手机桌面，支持离线声级取证。' : 'Add to home screen for fast full-screen noise recording without app stores.');
+      const btnText = isZh ? '立即添加' : 'Install';
+      const closeText = isZh ? '暂不需要' : 'Dismiss';
+
+      banner.innerHTML = `
+        <div class="pwa-banner-content">
+          <div class="pwa-banner-icon" aria-hidden="true">📱</div>
+          <div class="pwa-banner-text">
+            <strong>${title}</strong>
+            <p>${desc}</p>
+          </div>
+        </div>
+        <div class="pwa-banner-actions">
+          ${!isApple ? `<button type="button" class="btn-primary btn-sm pwa-install-btn">${btnText}</button>` : ''}
+          <button type="button" class="btn-ghost btn-sm pwa-dismiss-btn">${closeText}</button>
+        </div>
+      `;
+
+      document.body.appendChild(banner);
+
+      banner.querySelector('.pwa-dismiss-btn')?.addEventListener('click', () => {
+        localStorage.setItem(DISMISS_KEY, 'true');
+        banner.remove();
+      });
+
+      if (!isApple) {
+        banner.querySelector('.pwa-install-btn')?.addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+              localStorage.setItem(DISMISS_KEY, 'true');
+            }
+            deferredPrompt = null;
+          }
+          banner.remove();
+        });
+      } else {
+        sessionStorage.setItem('sf_ios_pwa_seen', 'true');
+      }
+    }
+  }
 
   function initPricingNavigation() {
     document.addEventListener('click', (e) => {

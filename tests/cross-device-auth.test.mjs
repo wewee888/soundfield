@@ -118,3 +118,73 @@ test('variant pages a, b, and c feature all 5 pricing tiers matching site standa
     assert.ok(content.includes('prod_18nHbuAQNpc4n334rM9hGV'), `${pageRel} must link to Lifetime checkout`);
   }
 });
+
+test('delete-account and team workspace endpoints exist and function as expected', async () => {
+  const deleteAccountPath = path.join(rootDir, 'functions/api/auth/delete-account.js');
+  const teamWorkspacePath = path.join(rootDir, 'functions/api/team/workspace.js');
+
+  assert.ok(fs.existsSync(deleteAccountPath), 'delete-account.js must exist');
+  assert.ok(fs.existsSync(teamWorkspacePath), 'team/workspace.js must exist');
+
+  const deleteModule = await import(`file://${deleteAccountPath.replace(/\\/g, '/')}`);
+  const teamModule = await import(`file://${teamWorkspacePath.replace(/\\/g, '/')}`);
+
+  assert.equal(typeof deleteModule.onRequestPost, 'function');
+  assert.equal(typeof teamModule.onRequestGet, 'function');
+  assert.equal(typeof teamModule.onRequestPost, 'function');
+
+  // Mock KV
+  const kv = new Map();
+  const mockEnv = {
+    ab_test: {
+      get: async (k) => kv.get(k) || null,
+      put: async (k, v) => kv.set(k, v),
+      delete: async (k) => kv.delete(k),
+    },
+  };
+
+  // 1. Save team workspace & enterprise branding
+  const teamSaveReq = new Request('https://soundtest.pro/api/team/workspace', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      teamId: 'team@soundtest.pro',
+      enterpriseName: 'Acme Property Management Ltd.',
+      projectCodePrefix: 'PRJ-2026-',
+      defaultInspector: 'Lead Inspector Wu',
+      disclaimerStamp: 'Official Field Noise Inspection Record',
+    }),
+  });
+  const teamSaveRes = await teamModule.onRequestPost({ request: teamSaveReq, env: mockEnv });
+  assert.equal(teamSaveRes.status, 200);
+  const teamSaveData = await teamSaveRes.json();
+  assert.equal(teamSaveData.ok, true);
+  assert.equal(teamSaveData.workspace.enterpriseName, 'Acme Property Management Ltd.');
+
+  // 2. Fetch team workspace
+  const teamGetReq = new Request('https://soundtest.pro/api/team/workspace?teamId=team@soundtest.pro');
+  const teamGetRes = await teamModule.onRequestGet({ request: teamGetReq, env: mockEnv });
+  assert.equal(teamGetRes.status, 200);
+  const teamGetData = await teamGetRes.json();
+  assert.equal(teamGetData.ok, true);
+  assert.equal(teamGetData.workspace.enterpriseName, 'Acme Property Management Ltd.');
+
+  // 3. Delete account
+  kv.set('user:delete_me@soundtest.pro', JSON.stringify({ name: 'Delete Me' }));
+  kv.set('session:token123', JSON.stringify({ email: 'delete_me@soundtest.pro' }));
+
+  const delReq = new Request('https://soundtest.pro/api/auth/delete-account', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      email: 'delete_me@soundtest.pro',
+      token: 'token123',
+    }),
+  });
+  const delRes = await deleteModule.onRequestPost({ request: delReq, env: mockEnv });
+  assert.equal(delRes.status, 200);
+  const delData = await delRes.json();
+  assert.equal(delData.ok, true);
+  assert.equal(kv.has('user:delete_me@soundtest.pro'), false);
+  assert.equal(kv.has('session:token123'), false);
+});

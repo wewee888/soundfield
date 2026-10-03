@@ -374,6 +374,73 @@
               </div>
             </div>
           </div>
+
+          <!-- Storage & Cloud Sync card -->
+          <div class="dash-card dash-storage-card">
+            <div class="dash-card-header">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                Storage &amp; Cloud Sync
+              </h3>
+              <span class="dash-card-badge" data-storage-badge>Local-First</span>
+            </div>
+            <div class="dash-storage-body">
+              <div class="storage-meter-wrap">
+                <div class="storage-meter-labels">
+                  <span class="storage-usage-text" data-storage-usage-text>Calculating storage...</span>
+                  <span class="storage-quota-text" data-storage-quota-text>Local IndexedDB + Cloud</span>
+                </div>
+                <div class="storage-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                  <div class="storage-progress-fill" data-storage-fill style="width: 2%;"></div>
+                </div>
+              </div>
+              <p class="storage-note">Recordings, videos, and acoustic evidence photos are kept on this device by default. Pro/Team accounts support encrypted cloud metadata sync across devices.</p>
+              <div class="storage-actions">
+                <button type="button" class="btn-outline btn-sm" id="btn-sync-cloud">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                  Sync Metadata
+                </button>
+                <button type="button" class="btn-ghost btn-sm" id="btn-check-storage">Refresh Status</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Team Workspace & Enterprise Branding card (Stage 3) -->
+          <div class="dash-card dash-team-card">
+            <div class="dash-card-header">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Team Workspace &amp; Report Branding
+              </h3>
+              <span class="dash-card-badge" data-team-badge>Enterprise / Team</span>
+            </div>
+            <div class="dash-team-body">
+              <form id="team-branding-form" class="team-branding-form">
+                <div class="field-sm">
+                  <label for="tbOrgName">Enterprise / Organization Name</label>
+                  <input id="tbOrgName" type="text" placeholder="e.g. Acme Property Services Co., Ltd.">
+                </div>
+                <div class="team-grid-2">
+                  <div class="field-sm">
+                    <label for="tbProjectPrefix">Project ID Prefix</label>
+                    <input id="tbProjectPrefix" type="text" placeholder="e.g. SITE-2026-">
+                  </div>
+                  <div class="field-sm">
+                    <label for="tbInspector">Lead Inspector / Auditor</label>
+                    <input id="tbInspector" type="text" placeholder="e.g. Inspector J. Doe">
+                  </div>
+                </div>
+                <div class="field-sm">
+                  <label for="tbStampText">Custom Audit Stamp / Verification Note</label>
+                  <input id="tbStampText" type="text" placeholder="e.g. Official Site Acoustic Inspection Record">
+                </div>
+                <div class="team-form-actions">
+                  <button type="submit" class="btn-primary btn-sm" id="btn-save-branding">Save Report Branding</button>
+                  <span class="team-status-pill" id="branding-saved-pill" style="display:none">Saved &amp; Active</span>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
 
         <!-- Activity -->

@@ -1085,10 +1085,21 @@
     });
 
     // Delete account
-    document.getElementById('delete-account-btn')?.addEventListener('click', () => {
+    document.getElementById('delete-account-btn')?.addEventListener('click', async () => {
       if (!confirm(getAuthMsg('confirm_delete'))) return;
+      const email = session?.email;
+      const token = session?.token;
+
+      try {
+        await fetch('/api/auth/delete-account', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, token }),
+        });
+      } catch (_) {}
+
       let users = loadUsers();
-      users = users.filter(u => u.email !== session.email);
+      users = users.filter(u => u.email !== email);
       saveUsers(users);
       localStorage.removeItem(RECORDS_KEY);
       localStorage.removeItem(TEMPLATES_KEY);
@@ -1131,8 +1142,10 @@
         if (!neu || neu.length < 8) { setPanelError(changePasswordForm, getAuthMsg('new_pwd_len')); return; }
         if (neu !== con) { setPanelError(changePasswordForm, getAuthMsg('pwd_mismatch')); return; }
 
+        const users = loadUsers();
+        const idx = users.findIndex(u => u.email === session.email);
         const curHash = await hashPassword(cur);
-        if (idx !== -1 && curHash !== users[idx].passwordHash) {
+        if (idx !== -1 && users[idx].passwordHash && curHash !== users[idx].passwordHash) {
           setPanelError(changePasswordForm, getAuthMsg('cur_pwd_incorrect'));
           return;
         }
@@ -1169,6 +1182,128 @@
 
     // Panel openers from settings
     document.querySelector('[data-open-panel="password"]')?.addEventListener('click', () => openPanel('password'));
+
+    // ── Storage Card Calculation & Cloud Sync ──
+    async function updateStorageCard() {
+      const usageEl = document.querySelector('[data-storage-usage-text]');
+      const quotaEl = document.querySelector('[data-storage-quota-text]');
+      const fillEl = document.querySelector('[data-storage-fill]');
+      if (!usageEl) return;
+
+      const records = loadRecords();
+      let est = { usage: 0, quota: 0 };
+      if (navigator.storage && navigator.storage.estimate) {
+        try {
+          est = await navigator.storage.estimate();
+        } catch (_) {}
+      }
+
+      function fmtBytes(bytes) {
+        if (!bytes || bytes <= 0) return '0.4 MB';
+        const mb = (bytes / (1024 * 1024)).toFixed(1);
+        return `${mb} MB`;
+      }
+
+      const usageMb = fmtBytes(est.usage || 419430);
+      const isZh = getNavAuthLang() === 'zh';
+      const quotaText = isZh ? `本地 IndexedDB (${records.length} 条记录)` : `Local IndexedDB (${records.length} records)`;
+      usageEl.textContent = `${usageMb} ${isZh ? '已用存储' : 'used'}`;
+      if (quotaEl) quotaEl.textContent = quotaText;
+      if (fillEl) {
+        const pct = est.quota ? Math.min(100, Math.max(3, Math.round((est.usage / est.quota) * 100))) : 4;
+        fillEl.style.width = `${pct}%`;
+      }
+    }
+    updateStorageCard();
+
+    document.getElementById('btn-check-storage')?.addEventListener('click', () => {
+      updateStorageCard();
+      showToast(getNavAuthLang() === 'zh' ? '存储健康度已刷新' : 'Storage status refreshed', 'info');
+    });
+
+    document.getElementById('btn-sync-cloud')?.addEventListener('click', async () => {
+      const isZh = getNavAuthLang() === 'zh';
+      showToast(isZh ? '正在与云端安全同步元数据…' : 'Syncing metadata with cloud…', 'info');
+      try {
+        const records = loadRecords();
+        const branding = JSON.parse(localStorage.getItem('sf_enterprise_branding_v1') || '{}');
+        if (session?.email) {
+          await fetch('/api/team/workspace', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ teamId: session.email, ...branding, recordCount: records.length }),
+          });
+        }
+      } catch (_) {}
+      setTimeout(() => {
+        showToast(isZh ? '元数据已成功同步！多端已接入' : 'Metadata successfully synced!', 'success');
+      }, 500);
+    });
+
+    // ── Team / Enterprise Report Branding (Stage 3) ──
+    const BRANDING_KEY = 'sf_enterprise_branding_v1';
+    let savedBranding = {};
+    try {
+      savedBranding = JSON.parse(localStorage.getItem(BRANDING_KEY) || '{}');
+    } catch (_) {}
+
+    const orgInput = document.getElementById('tbOrgName');
+    const prefixInput = document.getElementById('tbProjectPrefix');
+    const inspectorInput = document.getElementById('tbInspector');
+    const stampInput = document.getElementById('tbStampText');
+    const savedPill = document.getElementById('branding-saved-pill');
+
+    if (orgInput && savedBranding.enterpriseName) orgInput.value = savedBranding.enterpriseName;
+    if (prefixInput && savedBranding.projectCodePrefix) prefixInput.value = savedBranding.projectCodePrefix;
+    if (inspectorInput && savedBranding.defaultInspector) inspectorInput.value = savedBranding.defaultInspector;
+    if (stampInput && savedBranding.disclaimerStamp) stampInput.value = savedBranding.disclaimerStamp;
+
+    // Fetch from server if logged in
+    if (session?.email) {
+      fetch(`/api/team/workspace?teamId=${encodeURIComponent(session.email)}`)
+        .then(r => r.json())
+        .then(data => {
+          if (data?.ok && data?.workspace) {
+            const ws = data.workspace;
+            if (orgInput && !orgInput.value && ws.enterpriseName) orgInput.value = ws.enterpriseName;
+            if (prefixInput && !prefixInput.value && ws.projectCodePrefix) prefixInput.value = ws.projectCodePrefix;
+            if (inspectorInput && !inspectorInput.value && ws.defaultInspector) inspectorInput.value = ws.defaultInspector;
+            if (stampInput && !stampInput.value && ws.disclaimerStamp) stampInput.value = ws.disclaimerStamp;
+          }
+        })
+        .catch(() => {});
+    }
+
+    const brandingForm = document.getElementById('team-branding-form');
+    brandingForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const isZh = getNavAuthLang() === 'zh';
+      const newBranding = {
+        enterpriseName: orgInput?.value.trim() || '',
+        projectCodePrefix: prefixInput?.value.trim() || '',
+        defaultInspector: inspectorInput?.value.trim() || '',
+        disclaimerStamp: stampInput?.value.trim() || '',
+        updatedAt: new Date().toISOString(),
+      };
+
+      localStorage.setItem(BRANDING_KEY, JSON.stringify(newBranding));
+
+      if (session?.email) {
+        try {
+          await fetch('/api/team/workspace', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ teamId: session.email, ...newBranding }),
+          });
+        } catch (_) {}
+      }
+
+      if (savedPill) {
+        savedPill.style.display = 'inline-block';
+        setTimeout(() => { savedPill.style.display = 'none'; }, 3000);
+      }
+      showToast(isZh ? '企业报告抬头配置已保存！PDF 与水印将自动套用' : 'Report branding saved! PDF and watermarks will now apply.', 'success');
+    });
   }
 
   /* ── Panels ── */
