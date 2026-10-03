@@ -92,9 +92,22 @@ export async function onRequestGet(context) {
       const isPaid = status === 'OD' || status === 'complete' || status === 'paid';
 
       let plan = 'single';
-      const fee = result.data.total_amount || '';
+      const fee = String(result.data.total_amount || '');
       if (fee === '9.90') plan = 'pro';
+      else if (fee === '19.90') plan = 'yearly';
       else if (fee === '39.90') plan = 'lifetime';
+      else if (fee === '1998.00' || fee === '1998') plan = 'team';
+
+      // If KV stored the order creation plan, prefer it
+      if (env.ab_test && order_id) {
+        try {
+          const preOrder = await env.ab_test.get(`order:${order_id}`);
+          if (preOrder) {
+            const parsedPre = JSON.parse(preOrder);
+            if (parsedPre.plan) plan = parsedPre.plan;
+          }
+        } catch (_) {}
+      }
 
       if (isPaid && env.ab_test && order_id) {
         try {

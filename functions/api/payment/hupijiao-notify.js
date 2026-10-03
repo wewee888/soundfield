@@ -73,13 +73,14 @@ export async function onRequestPost(context) {
             const plan = parsed.plan || 'pro';
             let days = 30;
             if (plan === 'yearly') days = 365;
+            else if (plan === 'team') days = 365;
             else if (plan === 'lifetime') days = 36500;
             else if (plan === 'single') days = 365;
 
             const expDate = new Date(Date.now() + days * 86400 * 1000).toISOString();
             const memberRecord = {
               email: parsed.email,
-              plan: plan === 'yearly' ? 'team' : plan,
+              plan: plan === 'team' ? 'team' : (plan === 'yearly' || plan === 'lifetime' || plan === 'pro' ? 'pro' : plan),
               plan_display: plan,
               status: 'paid',
               granted_at: new Date().toISOString(),

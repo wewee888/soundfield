@@ -206,3 +206,90 @@ test('geo reverse geocoding endpoint exists and handles valid and invalid reques
   assert.equal(optRes.status, 204);
 });
 
+test('hupijiao payment endpoints support team plan and correct yearly mapping', async () => {
+  const createPath = path.join(rootDir, 'functions/api/payment/hupijiao-create.js');
+  const checkPath = path.join(rootDir, 'functions/api/payment/hupijiao-check.js');
+  const notifyPath = path.join(rootDir, 'functions/api/payment/hupijiao-notify.js');
+
+  assert.ok(fs.existsSync(createPath), 'hupijiao-create.js exists');
+  assert.ok(fs.existsSync(checkPath), 'hupijiao-check.js exists');
+  assert.ok(fs.existsSync(notifyPath), 'hupijiao-notify.js exists');
+
+  const notifyModule = await import(`file://${notifyPath.replace(/\\/g, '/')}`);
+
+  const kv = new Map();
+  const mockEnv = {
+    ab_test: {
+      get: async (k) => kv.get(k) || null,
+      put: async (k, v) => kv.set(k, v),
+      delete: async (k) => kv.delete(k),
+    },
+    HUPIJIAO_APPID: 'test_appid',
+    HUPIJIAO_APPSECRET: 'test_secret',
+  };
+
+  // Test notify for team plan
+  const tradeOrderId = 'sf_team_test_123';
+  kv.set(`order:${tradeOrderId}`, JSON.stringify({
+    plan: 'team',
+    fee: '1998.00',
+    email: 'team_admin@enterprise.com',
+  }));
+
+  // Create valid MD5 hash for notification
+  const params = {
+    trade_order_id: tradeOrderId,
+    status: 'OD',
+    total_fee: '1998.00',
+  };
+  const sorted = Object.keys(params).sort();
+  const qs = sorted.map(k => `${k}=${params[k]}`).join('&');
+  const hash = await notifyModule.md5(qs + mockEnv.HUPIJIAO_APPSECRET);
+
+  const notifyReq = new Request('https://soundtest.pro/api/payment/hupijiao-notify', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ ...params, hash }),
+  });
+  const notifyRes = await notifyModule.onRequestPost({ request: notifyReq, env: mockEnv });
+  assert.equal(notifyRes.status, 200);
+
+  // Check that member record was created with plan: 'team'
+  const memberRaw = kv.get('member:team_admin@enterprise.com');
+  assert.ok(memberRaw, 'Member record must be created in KV');
+  const member = JSON.parse(memberRaw);
+  assert.equal(member.plan, 'team');
+  assert.equal(member.status, 'paid');
+});
+
+test('assets/site-auth.js includes openUpgradePayModal and guards paid features', () => {
+  const authJsPath = path.join(rootDir, 'assets/site-auth.js');
+  const authCssPath = path.join(rootDir, 'assets/auth.css');
+  assert.ok(fs.existsSync(authJsPath), 'site-auth.js must exist');
+  assert.ok(fs.existsSync(authCssPath), 'auth.css must exist');
+
+  const jsContent = fs.readFileSync(authJsPath, 'utf8');
+  const cssContent = fs.readFileSync(authCssPath, 'utf8');
+
+  // Verify modal function and helpers exist
+  assert.ok(jsContent.includes('function openUpgradePayModal'), 'openUpgradePayModal function must be defined');
+  assert.ok(jsContent.includes('function getEffectivePlan'), 'getEffectivePlan function must be defined');
+  assert.ok(jsContent.includes('closeUpgradePayModal'), 'closeUpgradePayModal function must be defined');
+
+  // Verify feature configs include sync, team, and pro
+  assert.ok(jsContent.includes('featureConfigs'), 'featureConfigs must be configured');
+  assert.ok(jsContent.includes('1998.00'), 'Team pricing 1998.00 must be in configs');
+  assert.ok(jsContent.includes('19.90'), 'Yearly pricing 19.90 must be in configs');
+
+  // Verify paid features guard checks
+  assert.ok(jsContent.includes("feature: 'sync'"), 'btn-sync-cloud must guard with openUpgradePayModal sync');
+  assert.ok(jsContent.includes("feature: 'team'"), 'team-branding-form must guard with openUpgradePayModal team');
+
+  // Verify modal CSS classes exist
+  assert.ok(cssContent.includes('.auth-pay-overlay'), '.auth-pay-overlay style must be defined');
+  assert.ok(cssContent.includes('.auth-pay-modal'), '.auth-pay-modal style must be defined');
+  assert.ok(cssContent.includes('.auth-pay-qr-wrapper'), '.auth-pay-qr-wrapper style must be defined');
+  assert.ok(cssContent.includes('.auth-pay-plan-btn'), '.auth-pay-plan-btn style must be defined');
+});
+
+

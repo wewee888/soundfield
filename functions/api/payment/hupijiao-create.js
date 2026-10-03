@@ -19,6 +19,7 @@ const PLAN_CONFIGS = {
   pro: { fee: '9.90', title: 'SOUNDTEST.PRO-专业版月度订阅' },
   yearly: { fee: '19.90', title: 'SOUNDTEST.PRO-专业版年度订阅' },
   lifetime: { fee: '39.90', title: 'SOUNDTEST.PRO-终身买断专业版' },
+  team: { fee: '1998.00', title: 'SOUNDTEST.PRO-企业团队年度版' },
 };
 
 function json(data, status = 200) {

@@ -925,6 +925,376 @@
     }
   }
 
+  /* ── Paid Feature Upgrade & Payment Modal ── */
+  let authPayPollTimer = null;
+
+  function closeUpgradePayModal() {
+    if (authPayPollTimer) {
+      clearInterval(authPayPollTimer);
+      authPayPollTimer = null;
+    }
+    const overlay = document.getElementById('authUpgradePayModalOverlay');
+    if (overlay) {
+      overlay.remove();
+    }
+    document.body.style.overflow = '';
+  }
+
+  function getEffectivePlan(session) {
+    let plan = session?.plan || 'free';
+    try {
+      const sfMem = JSON.parse(localStorage.getItem('sf_membership_v1') || 'null');
+      if (sfMem?.active && sfMem.plan && sfMem.plan !== 'free') {
+        plan = sfMem.plan;
+      }
+    } catch (_) {}
+    return String(plan).toLowerCase();
+  }
+
+  function openUpgradePayModal({ feature = 'sync', session = null, onSuccess = null } = {}) {
+    closeUpgradePayModal();
+
+    const isZh = getNavAuthLang() === 'zh';
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+    const featureConfigs = {
+      sync: {
+        badge: isZh ? '⚡ PRO 专业版专属权益' : '⚡ PRO EXCLUSIVE FEATURE',
+        title: isZh ? '升级解锁「存储健康度与多端云同步」' : 'Upgrade to Unlock Cloud Sync',
+        subtitle: isZh
+          ? '端到端加密同步现场取证元数据、跨设备访问与夜间持续哨兵监测'
+          : 'End-to-end encrypted evidence sync, multi-device access & continuous sentry mode',
+        bullets: isZh
+          ? [
+              '⚡ 跨手机与电脑实时同步现场取证元数据与项目模版',
+              '🛡️ 解锁防伪司法级 PDF 报告无水印直出与 SHA-256 存证指纹',
+              '🌙 支持夜间床头哨兵自动监测与超标噪音自动录音',
+            ]
+          : [
+              '⚡ End-to-end encrypted cross-device sync for metadata & templates',
+              '🛡️ Watermark-free certified PDF reports with SHA-256 evidence hashes',
+              '🌙 Sentry mode for automated overnight noise monitoring & capture',
+            ],
+        plans: [
+          { id: 'yearly', name: isZh ? 'PRO 年度版' : 'Pro Annual', fee: '19.90', origFee: '¥59.90', tag: isZh ? '★ 最受欢迎 · 省67%' : '★ POPULAR' },
+          { id: 'lifetime', name: isZh ? 'PRO 终身版' : 'Lifetime', fee: '39.90', origFee: '¥199.00', tag: isZh ? '💎 买断立省¥159' : '💎 LIFETIME' },
+          { id: 'pro', name: isZh ? 'PRO 月度版' : 'Pro Monthly', fee: '9.90', origFee: '¥19.90', tag: isZh ? '单月体验' : 'MONTHLY' },
+        ],
+        defaultPlan: 'yearly',
+      },
+      team: {
+        badge: isZh ? '🏢 企业团队版专属权益' : '🏢 ENTERPRISE / TEAM FEATURE',
+        title: isZh ? '升级企业团队版「报告抬头与协同」' : 'Upgrade to Team Edition',
+        subtitle: isZh
+          ? '企业法定抬头、项目编号规则、专用核验章与 5 席位协同'
+          : 'Custom enterprise branding, project rules, audit stamps & team collaboration',
+        bullets: isZh
+          ? [
+              '🏢 自定义企业 / 物业法定全称与官方报告抬头',
+              '🏷️ 项目 / 案件编号规则前缀与现场核验员姓名套用',
+              '🔖 专属盖章说明与报告结论防伪存证数字印章',
+              '👥 包含 5 个协同成员席位与团队共享取证空间',
+            ]
+          : [
+              '🏢 Custom company / property management legal headers',
+              '🏷️ Project / case prefix rules and lead inspector names',
+              '🔖 Official audit verification stamps & conclusion notes',
+              '👥 5 member seats with shared enterprise evidence workspace',
+            ],
+        plans: [
+          { id: 'team', name: isZh ? '企业团队年卡' : 'Team Annual', fee: '1998.00', origFee: '¥3,999.00', tag: isZh ? '🏢 5人团队 · 企业级' : '🏢 5 SEATS' },
+          { id: 'lifetime', name: isZh ? '个人终身买断' : 'Pro Lifetime', fee: '39.90', origFee: '¥199.00', tag: isZh ? '💎 个人买断' : '💎 PERSONAL' },
+          { id: 'yearly', name: isZh ? '个人年度版' : 'Pro Annual', fee: '19.90', origFee: '¥59.90', tag: isZh ? '个人年卡' : 'PERSONAL' },
+        ],
+        defaultPlan: 'team',
+      },
+      pro: {
+        badge: isZh ? '⚡ PRO 专业版专属权益' : '⚡ PRO MEMBERSHIP',
+        title: isZh ? '升级为 SOUNDTEST.PRO 专业版' : 'Upgrade to SOUNDTEST.PRO',
+        subtitle: isZh
+          ? '解锁防伪司法级 PDF 报告、多端云同步与夜间持续哨兵监测'
+          : 'Unlock certified PDF reports, multi-device cloud sync and sentry mode',
+        bullets: isZh
+          ? [
+              '⚡ 跨手机与电脑实时同步现场取证元数据与项目模版',
+              '🛡️ 解锁防伪司法级 PDF 报告无水印直出与 SHA-256 存证指纹',
+              '🌙 支持夜间床头哨兵自动监测与超标噪音自动录音',
+            ]
+          : [
+              '⚡ End-to-end encrypted cross-device sync for metadata & templates',
+              '🛡️ Watermark-free certified PDF reports with SHA-256 evidence hashes',
+              '🌙 Sentry mode for automated overnight noise monitoring & capture',
+            ],
+        plans: [
+          { id: 'yearly', name: isZh ? 'PRO 年度版' : 'Pro Annual', fee: '19.90', origFee: '¥59.90', tag: isZh ? '★ 最受欢迎 · 省67%' : '★ POPULAR' },
+          { id: 'lifetime', name: isZh ? 'PRO 终身版' : 'Lifetime', fee: '39.90', origFee: '¥199.00', tag: isZh ? '💎 买断立省¥159' : '💎 LIFETIME' },
+          { id: 'pro', name: isZh ? 'PRO 月度版' : 'Pro Monthly', fee: '9.90', origFee: '¥19.90', tag: isZh ? '单月体验' : 'MONTHLY' },
+        ],
+        defaultPlan: 'yearly',
+      },
+    };
+
+    const cfg = featureConfigs[feature] || featureConfigs.sync;
+    let selectedPlanId = cfg.defaultPlan;
+
+    // Create modal DOM element
+    const overlay = document.createElement('div');
+    overlay.className = 'auth-pay-overlay';
+    overlay.id = 'authUpgradePayModalOverlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+
+    overlay.innerHTML = `
+      <div class="auth-pay-modal">
+        <button type="button" class="auth-pay-close" id="authPayModalClose" aria-label="${isZh ? '关闭' : 'Close'}">×</button>
+        <div class="auth-pay-header">
+          <span class="auth-pay-badge">${cfg.badge}</span>
+          <h2 class="auth-pay-title">${cfg.title}</h2>
+          <p class="auth-pay-subtitle">${cfg.subtitle}</p>
+        </div>
+
+        <div class="auth-pay-features">
+          ${cfg.bullets.map(b => `
+            <div class="auth-pay-feature-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>${b}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="auth-pay-plans" id="authPayPlanButtons">
+          ${cfg.plans.map(p => `
+            <button type="button" class="auth-pay-plan-btn ${p.id === selectedPlanId ? 'active' : ''}" data-pay-plan="${p.id}">
+              ${p.tag ? `<span class="auth-pay-plan-tag">${p.tag}</span>` : ''}
+              <span class="auth-pay-plan-name">${p.name}</span>
+              <span class="auth-pay-plan-price">¥${p.fee}</span>
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="auth-pay-box">
+          <div class="auth-pay-pricing-summary">
+            <span class="auth-pay-summary-label" id="authPayPlanLabel">${isZh ? '微信扫码安全直付' : 'WeChat Pay Safe Checkout'}</span>
+            <div class="auth-pay-summary-amount">
+              <span class="auth-pay-currency">¥</span>
+              <span class="auth-pay-amount-num" id="authPayAmount">--</span>
+              <span class="auth-pay-orig-num" id="authPayOrig">--</span>
+            </div>
+          </div>
+
+          <div class="auth-pay-qr-wrapper" id="authPayQrWrapper">
+            <img class="auth-pay-qr-img" id="authPayQrImg" alt="${isZh ? '微信支付二维码' : 'WeChat Pay QR Code'}" src="" style="display:none;" />
+            <div class="auth-pay-qr-loading" id="authPayQrLoading">
+              <div class="auth-pay-spinner"></div>
+              <span>${isZh ? '正在生成微信安全支付二维码…' : 'Generating payment QR code…'}</span>
+            </div>
+          </div>
+
+          <div class="auth-pay-mobile-action" id="authPayMobileAction" style="display:none;">
+            <a class="auth-pay-mobile-btn" id="authPayMobileBtn" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M8.5 2C4.36 2 1 4.91 1 8.5c0 1.99 1.01 3.77 2.61 4.96L2.8 16.2c-.08.24.15.45.38.35l3.22-1.38c.66.19 1.37.33 2.1.33.25 0 .5-.02.74-.04-.21-.63-.34-1.3-.34-2 0-3.87 3.8-7 8.5-7 .34 0 .67.02 1 .05C17.06 3.93 13.09 2 8.5 2zM6 6.5c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5.5 3c-4.14 0-7.5 2.69-7.5 6s3.36 6 7.5 6c.65 0 1.28-.08 1.87-.24l2.58 1.11c.21.09.43-.09.35-.31l-.64-2.18C22.02 18.77 23 17.25 23 15.5c0-3.31-3.36-6-7.5-6zm-2.5 3.5c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75zm4.5 0c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75z"/></svg>
+              <span>${isZh ? '唤起微信完成支付' : 'Open WeChat to Pay'}</span>
+            </a>
+          </div>
+
+          <div class="auth-pay-status-pill" id="authPayStatusPill">
+            <span class="auth-pay-dot"></span>
+            <span id="authPayStatusText">${isZh ? '等待扫码中，支付完成后自动激活…' : 'Awaiting payment, auto-activates when done…'}</span>
+          </div>
+        </div>
+
+        <div class="auth-pay-footer">
+          <span>🔒 ${isZh ? '虎皮椒安全微信结算 · 支付成功即时生效 · 跨设备多端通用' : 'Secure payment gateway · Instant activation across devices'}</span>
+          <div>
+            ${isZh
+              ? '如需对公转账或开具发票，请联系客服 <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>'
+              : 'Need invoicing or wire transfer? Contact <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>'}
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    // Close handlers
+    overlay.querySelector('#authPayModalClose')?.addEventListener('click', closeUpgradePayModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeUpgradePayModal();
+    });
+    const keyHandler = (e) => {
+      if (e.key === 'Escape') {
+        closeUpgradePayModal();
+        window.removeEventListener('keydown', keyHandler);
+      }
+    };
+    window.addEventListener('keydown', keyHandler);
+
+    // Plan selection handler
+    const planButtons = overlay.querySelectorAll('[data-pay-plan]');
+    planButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const nextPlanId = btn.getAttribute('data-pay-plan');
+        if (nextPlanId === selectedPlanId) return;
+        selectedPlanId = nextPlanId;
+        planButtons.forEach(b => b.classList.toggle('active', b.getAttribute('data-pay-plan') === selectedPlanId));
+        loadPaymentOrder(selectedPlanId);
+      });
+    });
+
+    async function loadPaymentOrder(planId) {
+      if (authPayPollTimer) {
+        clearInterval(authPayPollTimer);
+        authPayPollTimer = null;
+      }
+
+      const curPlanCfg = cfg.plans.find(p => p.id === planId) || cfg.plans[0];
+      const amountEl = overlay.querySelector('#authPayAmount');
+      const origEl = overlay.querySelector('#authPayOrig');
+      const qrImg = overlay.querySelector('#authPayQrImg');
+      const qrLoading = overlay.querySelector('#authPayQrLoading');
+      const mobileAction = overlay.querySelector('#authPayMobileAction');
+      const mobileBtn = overlay.querySelector('#authPayMobileBtn');
+      const statusText = overlay.querySelector('#authPayStatusText');
+
+      if (amountEl) amountEl.textContent = curPlanCfg.fee;
+      if (origEl) origEl.textContent = curPlanCfg.origFee;
+
+      if (qrLoading) {
+        qrLoading.style.display = 'flex';
+        qrLoading.innerHTML = `<div class="auth-pay-spinner"></div><span>${isZh ? '正在生成微信安全支付二维码…' : 'Generating payment QR code…'}</span>`;
+      }
+      if (qrImg) qrImg.style.display = 'none';
+      if (mobileAction) mobileAction.style.display = 'none';
+      if (statusText) statusText.textContent = isZh ? '正在连接安全收银台…' : 'Connecting to checkout gateway…';
+
+      try {
+        const resp = await fetch('/api/payment/hupijiao-create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plan: planId,
+            email: session?.email || '',
+            return_url: window.location.href,
+          }),
+        });
+
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok || !data.ok) {
+          throw new Error(data.error || (isZh ? '创建订单失败' : 'Failed to create order'));
+        }
+
+        if (qrLoading) qrLoading.style.display = 'none';
+
+        if (isMobile) {
+          if (mobileAction && mobileBtn && data.url) {
+            mobileAction.style.display = 'block';
+            mobileBtn.href = data.url;
+          }
+          if (statusText) statusText.textContent = isZh ? '请点击上方按钮唤起微信支付…' : 'Click the button above to pay in WeChat…';
+        } else {
+          if (qrImg && data.url_qrcode) {
+            qrImg.src = data.url_qrcode;
+            qrImg.style.display = 'block';
+          }
+          if (statusText) statusText.textContent = isZh ? '请使用手机微信扫码支付，完成后自动激活…' : 'Please scan with WeChat, auto-activates when done…';
+        }
+
+        // Start polling
+        startPaymentPolling(data.order_id, data.open_order_id, planId);
+      } catch (err) {
+        if (qrLoading) {
+          qrLoading.style.display = 'flex';
+          qrLoading.innerHTML = `<span style="color:#ff6276;padding:10px;text-align:center;">${err.message || (isZh ? '网络连接超时，请重试' : 'Network error, please retry')}</span><button type="button" class="btn-outline btn-sm" id="authPayRetryBtn" style="margin-top:6px;">${isZh ? '重新加载' : 'Retry'}</button>`;
+          qrLoading.querySelector('#authPayRetryBtn')?.addEventListener('click', () => loadPaymentOrder(planId));
+        }
+        if (statusText) statusText.textContent = isZh ? '订单初始化失败，请稍后重试' : 'Order initialization failed';
+      }
+    }
+
+    function startPaymentPolling(orderId, openOrderId, planId) {
+      if (authPayPollTimer) clearInterval(authPayPollTimer);
+      let count = 0;
+      authPayPollTimer = setInterval(async () => {
+        count++;
+        if (count > 150) { // 5 minutes timeout
+          clearInterval(authPayPollTimer);
+          authPayPollTimer = null;
+          return;
+        }
+
+        try {
+          const checkResp = await fetch(`/api/payment/hupijiao-check?order_id=${encodeURIComponent(orderId)}&open_order_id=${encodeURIComponent(openOrderId || '')}`);
+          const info = await checkResp.json().catch(() => ({}));
+          if (info && info.paid) {
+            clearInterval(authPayPollTimer);
+            authPayPollTimer = null;
+            handlePaymentSuccess(planId, orderId);
+          }
+        } catch (_) {}
+      }, 2000);
+    }
+
+    function handlePaymentSuccess(planId, orderId) {
+      const statusText = overlay.querySelector('#authPayStatusText');
+      if (statusText) statusText.textContent = isZh ? '🎉 支付成功！正在为您激活权益…' : '🎉 Payment successful! Activating…';
+
+      const activeDays = planId === 'lifetime' ? 36500 : (planId === 'pro' ? 30 : 365);
+      const expDate = new Date(Date.now() + activeDays * 86400 * 1000).toISOString();
+      const effectiveTier = (planId === 'team') ? 'team' : 'pro';
+
+      // 1. Sync local sf_membership_v1 for core meter tools
+      try {
+        localStorage.setItem('sf_membership_v1', JSON.stringify({
+          email: session?.email || '',
+          active: true,
+          plan: effectiveTier,
+          plan_display: planId,
+          provider: 'wechat_pay',
+          status: 'paid',
+          expires_at: expDate,
+          order_id: orderId,
+          lastCheckedAt: new Date().toISOString(),
+        }));
+      } catch (_) {}
+
+      // 2. Update session and users
+      if (session) {
+        session.plan = effectiveTier;
+        saveSession(session);
+        const users = loadUsers();
+        const uIdx = users.findIndex(u => u.email === session.email);
+        if (uIdx !== -1) {
+          users[uIdx].plan = effectiveTier;
+          saveUsers(users);
+        }
+      }
+
+      showToast(isZh ? '🎉 微信支付成功！已为您即时激活会员权益' : '🎉 Payment successful! Membership activated.', 'success');
+
+      setTimeout(() => {
+        closeUpgradePayModal();
+        if (session) {
+          renderDashboard(session);
+        }
+        if (typeof onSuccess === 'function') {
+          onSuccess();
+        }
+      }, 700);
+    }
+
+    // Initial load
+    loadPaymentOrder(selectedPlanId);
+  }
+
+  // Expose on window for easy access/testing
+  if (typeof window !== 'undefined') {
+    window.soundtestAuth = window.soundtestAuth || {};
+    window.soundtestAuth.openUpgradePayModal = openUpgradePayModal;
+    window.soundtestAuth.closeUpgradePayModal = closeUpgradePayModal;
+    window.soundtestAuth.getEffectivePlan = getEffectivePlan;
+  }
+
   /* ── Dashboard rendering ── */
   function renderDashboard(session) {
     const lang = getNavAuthLang();
@@ -984,16 +1354,18 @@
     });
 
     // Plan badge
+    const effectivePlan = getEffectivePlan(session);
+    const isPro = effectivePlan && effectivePlan !== 'free';
+
     const planBadge = document.querySelector('[data-plan-badge]');
     if (planBadge) {
-      const plan = user?.plan || 'free';
-      planBadge.setAttribute('data-plan', plan);
+      planBadge.setAttribute('data-plan', effectivePlan);
       const planName = planBadge.querySelector('.plan-name');
       if (planName) {
         if (lang === 'zh') {
-          planName.textContent = plan === 'pro' ? 'Pro 专业版' : (plan === 'team' ? '团队版' : (plan === 'lifetime' ? '终身版' : '免费版'));
+          planName.textContent = effectivePlan === 'pro' ? 'Pro 专业版' : (effectivePlan === 'team' ? '团队版' : (effectivePlan === 'lifetime' ? '终身版' : '免费版'));
         } else {
-          planName.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+          planName.textContent = effectivePlan.charAt(0).toUpperCase() + effectivePlan.slice(1);
         }
       }
     }
@@ -1007,22 +1379,21 @@
     const planTierEl    = planDisplay?.querySelector('.plan-tier');
     const planDescEl    = planDisplay?.querySelector('.plan-desc');
 
-    const isPro = user?.plan && user.plan !== 'free';
     if (upsellEl)      upsellEl.hidden      = isPro;
     if (prodactiveEl)  prodactiveEl.hidden  = !isPro;
     if (planDisplay)   planDisplay.hidden    = isPro;
     if (badgeEl) {
       if (lang === 'zh') {
-        badgeEl.textContent = isPro ? (user.plan === 'pro' ? 'Pro 专业版' : (user.plan === 'team' ? '团队版' : '终身版')) : '免费版';
+        badgeEl.textContent = isPro ? (effectivePlan === 'pro' ? 'Pro 专业版' : (effectivePlan === 'team' ? '团队版' : '终身版')) : '免费版';
       } else {
-        badgeEl.textContent = isPro ? `${user.plan} plan` : 'Free plan';
+        badgeEl.textContent = isPro ? `${effectivePlan} plan` : 'Free plan';
       }
     }
     if (isPro && prodactiveTier) {
       if (lang === 'zh') {
-        prodactiveTier.textContent = (user.plan === 'pro' ? 'Pro 专业版' : (user.plan === 'team' ? 'Team 团队版' : '终身高级版')) + ' 会员权益生效中';
+        prodactiveTier.textContent = (effectivePlan === 'pro' ? 'Pro 专业版' : (effectivePlan === 'team' ? 'Team 团队版' : '终身高级版')) + ' 会员权益生效中';
       } else {
-        prodactiveTier.textContent = user.plan.charAt(0).toUpperCase() + user.plan.slice(1) + ' Plan';
+        prodactiveTier.textContent = effectivePlan.charAt(0).toUpperCase() + effectivePlan.slice(1) + ' Plan';
       }
     }
 
@@ -1031,7 +1402,17 @@
       planDescEl.textContent = '实时分贝仪监测、基础录音、手动截图、时间与位置水印';
     }
     if (isPro && planTierEl) {
-      planTierEl.textContent = lang === 'zh' ? (user.plan === 'pro' ? 'Pro 专业版' : user.plan) : (user.plan.charAt(0).toUpperCase() + user.plan.slice(1));
+      planTierEl.textContent = lang === 'zh' ? (effectivePlan === 'pro' ? 'Pro 专业版' : effectivePlan) : (effectivePlan.charAt(0).toUpperCase() + effectivePlan.slice(1));
+    }
+
+    // Bind upsell button to open payment modal directly
+    const upsellBtn = upsellEl?.querySelector('a');
+    if (upsellBtn && !upsellBtn.hasAttribute('data-pay-bound')) {
+      upsellBtn.setAttribute('data-pay-bound', 'true');
+      upsellBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openUpgradePayModal({ feature: 'pro', session });
+      });
     }
 
     // Activity list
@@ -1221,7 +1602,7 @@
       showToast(getNavAuthLang() === 'zh' ? '存储健康度已刷新' : 'Storage status refreshed', 'info');
     });
 
-    document.getElementById('btn-sync-cloud')?.addEventListener('click', async () => {
+    const runCloudSync = async () => {
       const isZh = getNavAuthLang() === 'zh';
       showToast(isZh ? '正在与云端安全同步元数据…' : 'Syncing metadata with cloud…', 'info');
       try {
@@ -1238,6 +1619,20 @@
       setTimeout(() => {
         showToast(isZh ? '元数据已成功同步！多端已接入' : 'Metadata successfully synced!', 'success');
       }, 500);
+    };
+
+    document.getElementById('btn-sync-cloud')?.addEventListener('click', () => {
+      const plan = getEffectivePlan(session);
+      const hasAccess = ['pro', 'yearly', 'lifetime', 'team'].includes(plan);
+      if (!hasAccess) {
+        openUpgradePayModal({
+          feature: 'sync',
+          session,
+          onSuccess: () => runCloudSync(),
+        });
+        return;
+      }
+      runCloudSync();
     });
 
     // ── Team / Enterprise Report Branding (Stage 3) ──
@@ -1274,9 +1669,7 @@
         .catch(() => {});
     }
 
-    const brandingForm = document.getElementById('team-branding-form');
-    brandingForm?.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    const saveBranding = async () => {
       const isZh = getNavAuthLang() === 'zh';
       const newBranding = {
         enterpriseName: orgInput?.value.trim() || '',
@@ -1303,6 +1696,33 @@
         setTimeout(() => { savedPill.style.display = 'none'; }, 3000);
       }
       showToast(isZh ? '企业报告抬头配置已保存！PDF 与水印将自动套用' : 'Report branding saved! PDF and watermarks will now apply.', 'success');
+    };
+
+    const brandingForm = document.getElementById('team-branding-form');
+    brandingForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const plan = getEffectivePlan(session);
+      if (plan !== 'team') {
+        openUpgradePayModal({
+          feature: 'team',
+          session,
+          onSuccess: () => saveBranding(),
+        });
+        return;
+      }
+      saveBranding();
+    });
+
+    document.getElementById('btn-save-branding')?.addEventListener('click', (e) => {
+      const plan = getEffectivePlan(session);
+      if (plan !== 'team') {
+        e.preventDefault();
+        openUpgradePayModal({
+          feature: 'team',
+          session,
+          onSuccess: () => saveBranding(),
+        });
+      }
     });
   }
 
