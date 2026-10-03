@@ -1,0 +1,15 @@
+# Cloudflare Pages Headers Configuration
+# Enforces anti-transcoding, anti-hijack, and secure permissions delegation
+
+/*
+  Cache-Control: no-transform
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: microphone=(self), camera=(self), geolocation=(self)
+
+/soundtest.html
+  Cache-Control: no-transform, no-siteapp
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: microphone=(self), camera=(self), geolocation=(self)
+
+/assets/*
+  Cache-Control: public, max-age=604800, no-transform

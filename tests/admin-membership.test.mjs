@@ -144,3 +144,37 @@ test('UI templates contain admin console card, close button, and friendly subtab
   assert.ok(experienceJs.includes('pwa-close-btn'), 'site-experience.js has close button');
   assert.ok(experienceJs.includes('openPwaGuideModal'), 'site-experience.js has install guide modal');
 });
+
+test('Mobile anti-transcoding, interactive watermark camera, and multi-tier geo fallback', async () => {
+  const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+  const headersFile = fs.readFileSync(path.join(rootDir, '_headers'), 'utf8');
+  const geoReversePath = path.join(rootDir, 'functions/api/geo/reverse.js');
+
+  // Anti-transcoding & anti-ad injection
+  assert.ok(headersFile.includes('Cache-Control: no-transform, no-siteapp'), '_headers prevents carrier transcoding');
+  assert.ok(soundtestHtml.includes('meta http-equiv="Cache-Control" content="no-siteapp"'), 'soundtest.html has no-siteapp meta');
+  assert.ok(soundtestHtml.includes('meta http-equiv="Cache-Control" content="no-transform"'), 'soundtest.html has no-transform meta');
+  assert.ok(!soundtestHtml.includes('sdk.51.la'), 'soundtest.html does not load 51.la tracking script');
+  assert.ok(soundtestHtml.includes('[id*="baidu_transcode"]'), 'soundtest.html contains defensive ad suppression CSS');
+
+  // Interactive watermark camera overlays
+  assert.ok(soundtestHtml.includes('id="watermarkMonitoringPill" onclick="toggleMon({fromAuthModal:true})"'), 'monitoring pill is clickable');
+  assert.ok(soundtestHtml.includes('id="watermarkDbCard" onclick="toggleMon({fromAuthModal:true})"'), 'dB card is clickable');
+
+  // Multi-tier geo fallback
+  assert.ok(soundtestHtml.includes('async function fallbackIpLocation()'), 'soundtest.html defines fallbackIpLocation');
+  assert.ok(soundtestHtml.includes('tryLowAccuracy'), 'getLoc falls back to low-accuracy network');
+  assert.ok(soundtestHtml.includes('/api/geo/reverse?mode=ip'), 'getLoc calls IP fallback');
+
+  // Geo reverse endpoint supports IP fallback mode
+  const geoModule = await import(`file://${geoReversePath.replace(/\\/g, '/')}`);
+  const mockCfReq = new Request('https://soundtest.pro/api/geo/reverse?mode=ip');
+  mockCfReq.cf = { latitude: '31.2304', longitude: '121.4737', city: 'Shanghai', country: 'CN' };
+  const geoRes = await geoModule.onRequestGet({ request: mockCfReq, env: {} });
+  assert.equal(geoRes.status, 200);
+  const geoData = await geoRes.json();
+  assert.equal(geoData.ok, true);
+  assert.equal(geoData.isIp, true);
+  assert.ok(geoData.lat && geoData.lng, 'IP geo returns lat and lng');
+});
+

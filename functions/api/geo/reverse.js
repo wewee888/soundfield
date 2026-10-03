@@ -18,11 +18,29 @@ export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
 
-  const lat = parseFloat(url.searchParams.get('lat') || '0');
-  const lng = parseFloat(url.searchParams.get('lng') || '0');
+  const latStr = url.searchParams.get('lat');
+  const lngStr = url.searchParams.get('lng');
+  const isIpQuery = url.searchParams.get('mode') === 'ip' || (!latStr && !lngStr);
 
-  if (!lat || !lng || Math.abs(lat) > 90 || Math.abs(lng) > 180) {
-    return json({ ok: false, error: 'invalid_coordinates' }, 400);
+  let lat = parseFloat(latStr || '0');
+  let lng = parseFloat(lngStr || '0');
+  let isIpFallback = false;
+
+  if (isIpQuery || !lat || !lng || Math.abs(lat) > 90 || Math.abs(lng) > 180) {
+    const cf = request.cf || {};
+    const cfLat = parseFloat(cf.latitude || '0');
+    const cfLng = parseFloat(cf.longitude || '0');
+    if (cfLat && cfLng) {
+      lat = cfLat;
+      lng = cfLng;
+      isIpFallback = true;
+    } else if (!isIpQuery) {
+      return json({ ok: false, error: 'invalid_coordinates' }, 400);
+    }
+  }
+
+  if (!lat || !lng) {
+    return json({ ok: false, error: 'location_unavailable' }, 404);
   }
 
   // Coarse bounding box for China (Roughly lat 18-54, lng 73-135)
@@ -47,6 +65,9 @@ export async function onRequestGet(context) {
         return json(
           {
             ok: true,
+            lat,
+            lng,
+            isIp: isIpFallback,
             provider: 'baidu',
             name: placeName,
             address: r.formatted_address,
@@ -86,6 +107,9 @@ export async function onRequestGet(context) {
       return json(
         {
           ok: true,
+          lat,
+          lng,
+          isIp: isIpFallback,
           provider: 'openstreetmap',
           name: data.display_name,
           address: data.display_name,
@@ -100,7 +124,32 @@ export async function onRequestGet(context) {
       );
     }
   } catch (err) {
-    return json({ ok: false, error: 'lookup_failed', message: err.message }, 502);
+    if (!isIpFallback) {
+      return json({ ok: false, error: 'lookup_failed', message: err.message }, 502);
+    }
+  }
+
+  if (isIpFallback) {
+    const cf = request.cf || {};
+    const cityName = cf.city || cf.region || '';
+    const locName = [cityName, cf.country].filter(Boolean).join(', ') || '网络 IP 定位';
+    return json(
+      {
+        ok: true,
+        lat,
+        lng,
+        isIp: true,
+        provider: 'cloudflare-ip',
+        name: locName,
+        address: locName,
+        city: cityName,
+        country: cf.country || '',
+      },
+      200,
+      {
+        'cache-control': 'public, max-age=3600',
+      }
+    );
   }
 
   return json({ ok: false, error: 'no_place_found' }, 404);

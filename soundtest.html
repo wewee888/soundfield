@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="applicable-device" content="pc,mobile">
+<meta name="MobileOptimized" content="width">
+<meta name="HandheldFriendly" content="true">
+<meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#070B14">
 <meta name="description" content="SOUNDTEST.PRO 是面向居民投诉、物业协同、施工巡检和企业环境管理的专业噪声记录工具，支持实时分贝、地点标注、声学证据照片、录音录像和 PDF/CSV 报告导出。">
 <meta name="application-name" content="SOUNDTEST.PRO">
@@ -1766,11 +1773,33 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   .stat-val{font-size:clamp(13px,3.4cqw,15px)}
   .stat-val.sm{font-size:clamp(12px,3cqw,13px)}
 }
+
+/* Defensive anti-hijack: suppress domestic browser injected ad wrappers and popups */
+[id*="baidu_transcode"], [id*="bd_ad"], [class*="bd-ad"], [id*="cpro_"],
+[class*="transcode-box"], iframe[src*="pos.baidu.com"], iframe[src*="cpro."],
+div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-injected"] {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.watermark-db-card {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 120ms ease;
+}
+.watermark-db-card:active {
+  transform: scale(0.96);
+}
+.watermark-status-pill {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
 </style>
-  <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
-
-  <script>LA.init({id:"281wblDNvub2tk9f",ck:"281wblDNvub2tk9f"})</script>
-
   <link rel="canonical" href="https://soundtest.pro/soundtest/"/>
 </head>
 <body>
@@ -2265,11 +2294,11 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       <div class="watermark-subtitle" id="watermarkModeSubtitle">现场画面叠加声级、时间、地址和 GPS</div>
     </div>
     <div class="watermark-status-row">
-      <div class="watermark-status-pill"><span class="watermark-monitoring-dot" id="watermarkMonitoringDot"></span><span id="watermarkMonitoringText">未监测</span></div>
-      <div class="watermark-status-pill"><span class="watermark-recording-dot" id="watermarkRecordingDot"></span><span id="watermarkRecordingText">未录制</span></div>
+      <div class="watermark-status-pill" id="watermarkMonitoringPill" onclick="toggleMon({fromAuthModal:true})" role="button" tabindex="0" title="点击开始/切换实时监测"><span class="watermark-monitoring-dot" id="watermarkMonitoringDot"></span><span id="watermarkMonitoringText">未监测</span></div>
+      <div class="watermark-status-pill" id="watermarkRecordingPill" onclick="primaryEvidenceAction()" role="button" tabindex="0" title="点击开始/停止录制"><span class="watermark-recording-dot" id="watermarkRecordingDot"></span><span id="watermarkRecordingText">未录制</span></div>
     </div>
   </div>
-  <div class="watermark-db-card">
+  <div class="watermark-db-card" id="watermarkDbCard" onclick="toggleMon({fromAuthModal:true})" role="button" tabindex="0" title="点击开始实时声级监测">
     <strong id="watermarkDb">--</strong>
     <span id="watermarkLevel">声级待测</span>
   </div>
@@ -4334,8 +4363,10 @@ async function primaryEvidenceAction(){
       await toggleCam();
       if(!isCam)return;
     }
-    if(!isMon)await toggleMon();
-    if(!isMon)return;
+    if(!isMon){
+      await toggleMon({fromAuthModal:true});
+      if(!isMon)return;
+    }
     return capturePhoto();
   }
   return toggleRec();
@@ -4382,6 +4413,12 @@ async function openWatermarkCamera(mode=evidenceMode){
   if(!isCam)await toggleCam();
   const wmVideo=document.getElementById('watermarkCam');
   if(wmVideo&&camStream&&wmVideo.srcObject!==camStream)wmVideo.srcObject=camStream;
+  if(!isMon){
+    toggleMon({fromAuthModal:true}).catch(err=>console.warn('[watermarkCamera] mic start error:', err));
+  }
+  if(!curLoc){
+    getLoc();
+  }
   syncWatermarkCameraUi();
 }
 
@@ -5309,10 +5346,11 @@ async function shouldShowPermissionGuide(){
     try{sessionStorage.setItem('sf_mic_granted','1');}catch(_){}
     return false;
   }
-  // If mic is 'denied' or previously seen, don't force popup immediately on enter;
-  // clicking "开始实时监测" will pop it up if unauthorized.
-  if(micState==='denied'&&hasSeenPermissionGuide())return false;
-  if(hasSeenPermissionGuide())return false;
+  // If the user already dismissed the guide in this browser session, don't popup again on tab reload
+  try{
+    if(sessionStorage.getItem('sf_perm_session_dismissed')==='1')return false;
+  }catch(_){}
+  // Otherwise, mic is ungranted: prompt user to grant on entrance
   return true;
 }
 
@@ -5350,6 +5388,7 @@ function openPermissionModal(opts={}){
   m.style.display='flex';
 }
 function dismissPermissionGuide(){
+  try{sessionStorage.setItem('sf_perm_session_dismissed','1');}catch(_){}
   markPermissionGuideSeen('dismissed');
   const m=document.getElementById('permModal');
   if(m){m.classList.remove('show');m.classList.add('hidden');m.style.display='none';}
@@ -6255,15 +6294,17 @@ async function toggleMon(opts={}){
       return;
     }
 
-    // Check authorization: if not initiated from the modal and mic is not confirmed granted, pop up modal first!
+    // Check authorization: if mic is explicitly denied in browser settings, show modal with recovery steps.
+    // If unknown or prompt, do not block the user gesture; let getUserMedia trigger the native prompt!
     if(!opts?.fromAuthModal && !micPermissionGranted){
       const micState=await queryPermissionState('microphone');
+      if(micState==='denied'){
+        openPermissionModal({denied:true});
+        return;
+      }
       if(micState==='granted'){
         micPermissionGranted=true;
         try{sessionStorage.setItem('sf_mic_granted','1');}catch(_){}
-      } else {
-        openPermissionModal({denied:micState==='denied'});
-        return;
       }
     }
 
@@ -6838,9 +6879,11 @@ async function applyPosition(p,source='GPS'){
     setPlaceText(place);
     if(place)document.getElementById('placeInput').value=place.name||'';
     updateCameraOverlay();
+    syncWatermarkCameraUi();
   }else{
     setPlaceText(null,'off');
     updateCameraOverlay();
+    syncWatermarkCameraUi();
   }
 }
 
@@ -6850,31 +6893,145 @@ function stopLocationRefine(){
   clearTimeout(locRefineTmr);locRefineTmr=null;
 }
 
+async function fallbackIpLocation(){
+  try{
+    const valEl=document.getElementById('locVal');
+    const accEl=document.getElementById('locAcc');
+    if(valEl)valEl.textContent=appLanguage!=='zh-CN'?'IP Location…':'网络定位中…';
+    if(accEl)accEl.textContent=appLanguage!=='zh-CN'?'Requesting IP location fallback…':'正在通过 IP 网络获取大致位置…';
+    const res=await fetch(`/api/geo/reverse?mode=ip&lang=${encodeURIComponent(appLanguage)}`);
+    if(res.ok){
+      const data=await res.json();
+      if(data?.ok && data?.lat && data?.lng){
+        const dummyPos={
+          coords:{
+            latitude:parseFloat(data.lat),
+            longitude:parseFloat(data.lng),
+            accuracy:2000
+          }
+        };
+        await applyPosition(dummyPos,appLanguage!=='zh-CN'?'IP Network':'IP 网络定位');
+        if(data.name||data.address){
+          const placeObj={
+            name:data.name||data.address||data.city,
+            address:data.address||data.name||data.city,
+            provider:data.provider==='baidu'?(appLanguage==='zh-CN'?'百度':'Baidu'):(appLanguage==='zh-CN'?'网络定位':'IP Network')
+          };
+          curLoc.place=placeObj;
+          setPlaceText(placeObj);
+          if(placeObj.name){
+            const inp=document.getElementById('placeInput');
+            if(inp)inp.value=placeObj.name;
+          }
+          updateCameraOverlay();
+          syncWatermarkCameraUi();
+        }
+        return true;
+      }
+    }
+  }catch(e){
+    console.warn('[fallbackIpLocation]',e);
+  }
+  return false;
+}
+
 function getLoc(){
-  if(!supports.geolocation){document.getElementById('locVal').textContent='不支持 GPS';toast('当前浏览器不支持定位。','warn');return;}
-  if(!supports.secure){document.getElementById('locVal').textContent='需要 HTTPS';toast(secureContextHelp(),'warn',6200);return;}
+  if(!supports.geolocation){
+    fallbackIpLocation().then(ok=>{
+      if(!ok){
+        document.getElementById('locVal').textContent='不支持 GPS';
+        toast('当前浏览器不支持定位。','warn');
+      }
+    });
+    return;
+  }
+  if(!supports.secure){
+    fallbackIpLocation().then(ok=>{
+      if(!ok){
+        document.getElementById('locVal').textContent='需要 HTTPS';
+        toast(secureContextHelp(),'warn',6200);
+      }
+    });
+    return;
+  }
   stopLocationRefine();
-  document.getElementById('locVal').textContent='定位中…';
-  document.getElementById('locAcc').textContent='正在等待高精度 GPS…';
+  document.getElementById('locVal').textContent=appLanguage!=='zh-CN'?'Locating…':'定位中…';
+  document.getElementById('locAcc').textContent=appLanguage!=='zh-CN'?'Waiting for GPS…':'正在获取位置…';
   setPlaceText(null,placeLookupOn?'loading':'off');
   setPlaceProviderStatus(baiduKey?(appLanguage!=='zh-CN'?'Map service: Baidu will be tried first.':'地图服务：将优先调用百度。'):(appLanguage!=='zh-CN'?'Map service: Baidu key missing, public fallback only.':'地图服务：未配置百度 Key，只能使用公开地图兜底。'),baiduKey?'info':'err');
-  const onErr=err=>{
-    const m={1:'定位权限被拒绝',2:'位置不可用',3:'定位超时'};
-    const msg=m[err.code]||'定位失败';
-    document.getElementById('locVal').textContent=msg;curLoc=null;
-    setPlaceText(null,'none');
-    updateCameraOverlay();
-    toast(msg,'warn');
+
+  let resolved=false;
+
+  const tryLowAccuracy=()=>{
+    if(resolved)return;
+    document.getElementById('locAcc').textContent=appLanguage!=='zh-CN'?'Retrying with network location…':'GPS 较弱，切换基站/网络定位…';
+    navigator.geolocation.getCurrentPosition(
+      p=>{
+        if(resolved)return;
+        resolved=true;
+        applyPosition(p,appLanguage!=='zh-CN'?'Network':'基站/网络');
+        syncWatermarkCameraUi();
+      },
+      async err=>{
+        if(resolved)return;
+        console.warn('[getLoc network failed]',err);
+        const ipOk=await fallbackIpLocation();
+        if(ipOk){
+          resolved=true;
+        }else{
+          resolved=true;
+          const m={1:'定位权限被拒绝',2:'位置不可用',3:'定位超时'};
+          const msg=m[err?.code]||'定位失败';
+          document.getElementById('locVal').textContent=msg;
+          curLoc=null;
+          setPlaceText(null,'none');
+          updateCameraOverlay();
+          syncWatermarkCameraUi();
+          toast(msg,'warn');
+        }
+      },
+      {enableHighAccuracy:false,timeout:5000,maximumAge:300000}
+    );
   };
-  const opts={enableHighAccuracy:true,timeout:22000,maximumAge:0};
-  navigator.geolocation.getCurrentPosition(p=>applyPosition(p,'GPS'),onErr,opts);
-  if(navigator.geolocation.watchPosition){
-    locWatchId=navigator.geolocation.watchPosition(p=>{
-      if(!curLoc||p.coords.accuracy+5<curLoc.acc)applyPosition(p,appLanguage!=='zh-CN'?'GPS refined':'GPS 精校');
-      if(p.coords.accuracy<=20)stopLocationRefine();
-    },()=>{},opts);
-    locRefineTmr=setTimeout(stopLocationRefine,20000);
-  }
+
+  const highOpts={enableHighAccuracy:true,timeout:7000,maximumAge:60000};
+  navigator.geolocation.getCurrentPosition(
+    p=>{
+      resolved=true;
+      applyPosition(p,'GPS');
+      syncWatermarkCameraUi();
+      if(navigator.geolocation.watchPosition){
+        locWatchId=navigator.geolocation.watchPosition(wp=>{
+          if(!curLoc||wp.coords.accuracy+5<curLoc.acc){
+            applyPosition(wp,appLanguage!=='zh-CN'?'GPS refined':'GPS 精校');
+            syncWatermarkCameraUi();
+          }
+          if(wp.coords.accuracy<=20)stopLocationRefine();
+        },()=>{},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+        locRefineTmr=setTimeout(stopLocationRefine,20000);
+      }
+    },
+    err=>{
+      if(resolved)return;
+      console.warn('[getLoc high-accuracy failed]',err);
+      if(err?.code===1){
+        fallbackIpLocation().then(ok=>{
+          if(!ok){
+            resolved=true;
+            document.getElementById('locVal').textContent='定位权限被拒绝';
+            curLoc=null;
+            setPlaceText(null,'none');
+            updateCameraOverlay();
+            syncWatermarkCameraUi();
+            toast('定位权限被拒绝，可在浏览器设置中开启','warn');
+          }
+        });
+      }else{
+        tryLowAccuracy();
+      }
+    },
+    highOpts
+  );
 }
 
 function updateMapLinks(loc){
