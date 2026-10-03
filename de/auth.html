@@ -16,35 +16,13 @@
   <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/auth/"/>
   <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/auth/"/>
   <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/auth/"/>
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
   <link rel="stylesheet" href="../assets/site.css">
   <link rel="stylesheet" href="../assets/auth.css">
   <script src="../assets/lang-flags.js" defer></script>
   <script src="../assets/site-i18n.js?v=7" defer></script>
   <script src="../assets/site-auth.js" defer></script>
   <script src="../assets/site-experience.js" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
 
   <script>LA.init({id:"281wblDNvub2tk9f",ck:"281wblDNvub2tk9f"})</script>
@@ -89,13 +67,13 @@
               </span>
               <div>
                 <strong>Subscription sync</strong>
-                <span>Pro, Team, and Lifetime plans unlock automatically after Lemon Squeezy checkout using your billing email.</span>
+                <span>Pro, Team, and Lifetime plans unlock automatically after checkout using your billing email.</span>
               </div>
             </div>
           </div>
           <div class="auth-brand-footer">
             <span>Already have an account?</span>
-            <a href="../auth.html?mode=login" class="auth-brand-link">Sign in</a>
+            <a href="auth.html?mode=login" class="auth-brand-link">Sign in</a>
           </div>
         </div>
       </div>
@@ -112,7 +90,14 @@
 
         <!-- Login form -->
         <div class="auth-form-wrap" id="auth-form-login" data-auth-form="login" role="tabpanel">
-          <form novalidate autocomplete="on">
+          <!-- Login subtabs -->
+          <div class="login-subtabs" style="display:flex;gap:6px;margin-bottom:18px;background:rgba(255,255,255,0.03);padding:4px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
+            <button type="button" class="login-subtab active" id="tabLoginPassword" data-login-mode="password" style="flex:1;padding:8px 12px;font-size:13px;font-weight:700;border:none;border-radius:8px;background:rgba(44,240,193,0.14);color:#2cf0c1;cursor:pointer;transition:all .2s ease;">🔑 Passwort</button>
+            <button type="button" class="login-subtab" id="tabLoginMagic" data-login-mode="magic" style="flex:1;padding:8px 12px;font-size:13px;font-weight:700;border:none;border-radius:8px;background:transparent;color:#94a3b8;cursor:pointer;transition:all .2s ease;">✨ Magic Link</button>
+          </div>
+
+          <!-- Password subform -->
+          <form id="passwordLoginForm" novalidate autocomplete="on">
             <div class="field-group">
               <div class="field">
                 <input id="loginEmail" name="email" type="email" autocomplete="email" required placeholder=" ">
@@ -136,7 +121,44 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
             <p class="auth-form-note">
-              <a href="../auth.html?mode=register" data-switch-tab="register">No account yet? Create one free</a>
+              <a href="auth.html?mode=register" data-switch-tab="register">No account yet? Create one free</a>
+            </p>
+          </form>
+
+          <!-- Magic Link subform -->
+          <form id="magicLoginForm" novalidate autocomplete="on" style="display:none;">
+            <div class="field-group">
+              <div class="field">
+                <input id="magicLoginEmail" name="magicEmail" type="email" autocomplete="email" required placeholder=" ">
+                <label for="magicLoginEmail">Email address</label>
+              </div>
+              <div class="field-error" data-error="magicEmail"></div>
+            </div>
+
+            <!-- 6-digit code box (revealed after sending link) -->
+            <div id="magicCodeSection" style="display:none;margin-top:14px;">
+              <div class="field-group">
+                <div class="field">
+                  <input id="magicCodeInput" name="magicCode" type="text" inputmode="numeric" maxlength="6" placeholder=" " style="font-family:'JetBrains Mono',monospace;letter-spacing:4px;font-size:18px;font-weight:700;text-align:center;">
+                  <label for="magicCodeInput">6-stelliger Einmalcode</label>
+                </div>
+                <div class="field-error" data-error="magicCode"></div>
+              </div>
+              <p style="font-size:12.5px;color:#94a3b8;line-height:1.55;margin:8px 0 16px;">
+                📬 Anmeldedaten gesendet! Bitte prüfen Sie Ihr Postfach, klicken Sie auf den <strong>Direkt-Login-Link</strong> oder geben Sie den <strong>6-stelligen Code</strong> oben ein.
+              </p>
+              <button type="button" id="btnVerifyCode" class="btn-primary btn-full" style="margin-bottom:12px;">
+                <span>Bestätigen &amp; Anmelden</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+
+            <button type="button" id="btnSendMagicLink" class="btn-primary btn-full">
+              <span>✨ Magic Link senden</span>
+            </button>
+
+            <p class="auth-form-note">
+              <a href="auth.html?mode=register" data-switch-tab="register">No account yet? Create one free</a>
             </p>
           </form>
         </div>
@@ -155,7 +177,7 @@
               <div class="field">
                 <input id="registerEmail" name="email" type="email" autocomplete="email" required placeholder=" ">
                 <label for="registerEmail">Email address</label>
-                <span class="field-hint">Use your Lemon Squeezy billing email for automatic plan detection</span>
+                <span class="field-hint">Use your checkout billing email for automatic plan detection</span>
               </div>
               <div class="field-error" data-error="email"></div>
             </div>
@@ -186,12 +208,19 @@
               </div>
               <div class="field-error" data-error="confirmPassword"></div>
             </div>
+
+            <!-- Cloudflare Turnstile Captcha Widget -->
+            <div class="field-group" style="display:flex;flex-direction:column;align-items:center;margin:12px 0 16px;">
+              <div class="cf-turnstile" id="cfTurnstileWidget" data-sitekey="1x00000000000000000000AA" data-theme="dark"></div>
+              <div class="field-error" data-error="turnstile" style="text-align:center;"></div>
+            </div>
+
             <button type="submit" class="btn-primary btn-full">
               <span>Create account</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
             <p class="auth-form-note">
-              <a href="../auth.html?mode=login" data-switch-tab="login">Already have an account? Sign in</a>
+              <a href="auth.html?mode=login" data-switch-tab="login">Already have an account? Sign in</a>
             </p>
           </form>
         </div>
@@ -200,7 +229,7 @@
 
         <p class="auth-mvp-note">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          MVP: credentials stored locally in your browser. Server-side identity with email verification and password reset are on the roadmap.
+          Lokale Sicherheit zuerst: Passwörter lokal gehasht, Cloudflare Turnstile und Magic Links unterstützt.
         </p>
       </div>
     </section>
@@ -288,7 +317,7 @@
               </div>
               <div class="subscription-upsell" data-subscription-upsell>
                 <p>Upgrade to unlock PDF evidence reports, premium templates, and metadata backup export.</p>
-                <a class="btn-primary btn-sm" href="../index.html#pricing">
+                <a class="btn-primary btn-sm" href="index.html#pricing">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
                   Upgrade to Pro
                 </a>
@@ -299,7 +328,7 @@
                   Active
                 </div>
                 <p class="prodactive-tier" data-prodactive-tier></p>
-                <p class="prodactive-note">Manage or cancel your subscription through the Lemon Squeezy billing portal linked to your account email.</p>
+                <p class="prodactive-note">Manage or cancel your subscription through the receipt link emailed to you after purchase.</p>
                 <a class="btn-outline btn-sm" href="mailto:hello@soundtest.pro">Contact support</a>
               </div>
             </div>
@@ -437,7 +466,7 @@
             <span class="brand-mark" aria-hidden="true"></span>
             <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
           </a>
-          <p>Akustische Beweishilfe für globale Lärmdokumentation. Browser-nativ, lokal-zuerst, mehrsprachig. Formelle Messungen sollten mit einem zertifizierten Schallpegelmesser überprüft werden.</p>
+          <p>Acoustic evidence aid for global noise documentation. Browser-native, local-first, multilingual. Formal measurements should be verified with a certified sound level meter.</p>
           <div class="footer-flags" aria-label="Language matrix">
             <a class="footer-flag" href="../en/index.html" title="English">🇺🇸</a>
             <a class="footer-flag" href="../zh/index.html" title="中文">🇨🇳</a>
@@ -452,41 +481,41 @@
         </div>
 
         <div class="footer-col">
-          <h4>Produkt</h4>
+          <h4>Product</h4>
           <ul>
-            <li><a href="../soundtest.html">App öffnen</a></li>
-            <li><a href="../soundtest.html">Online-Dezibelmesser</a></li>
-            <li><a href="samples.html">Aufnahme-Beispiele</a></li>
-            <li><a href="accuracy.html">Mikrofon-Test & Genauigkeit</a></li>
-            <li><a href="download.html">Als PWA installieren</a></li>
+            <li><a href="../soundtest.html">Open App</a></li>
+            <li><a href="../soundtest.html">Online Decibel Meter</a></li>
+            <li><a href="samples.html">Noise Recorder Samples</a></li>
+            <li><a href="accuracy.html">Mic Test &amp; Accuracy</a></li>
+            <li><a href="download.html">Install as PWA</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Ressourcen</h4>
+          <h4>Resources</h4>
           <ul>
-            <li><a href="standards.html">Lärmstandards</a></li>
+            <li><a href="standards.html">Noise Standards</a></li>
             <li><a href="../noise-levels.html">Noise Levels Chart</a></li>
-            <li><a href="changelog.html">Updates & Blog</a></li>
-            <li><a href="../use-cases/neighbor-noise-evidence.html">Ratgeber: Nachbarschaftslärm</a></li>
-            <li><a href="../use-cases/construction-noise-monitoring.html">Ratgeber: Baulärm</a></li>
-            <li><a href="../use-cases/rental-dispute-evidence.html">Ratgeber: Mietstreitigkeiten</a></li>
+            <li><a href="changelog.html">Updates &amp; Blog</a></li>
+            <li><a href="../use-cases/neighbor-noise-evidence.html">Neighbor Noise Guide</a></li>
+            <li><a href="../use-cases/construction-noise-monitoring.html">Construction Guide</a></li>
+            <li><a href="../use-cases/rental-dispute-evidence.html">Rental Dispute Guide</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Rechtliches</h4>
+          <h4>Legal</h4>
           <ul>
-            <li><a href="privacy.html">Datenschutzrichtlinie</a></li>
-            <li><a href="compliance.html">Nutzungsbedingungen</a></li>
-            <li><a href="disclaimer.html">Haftungsausschluss</a></li>
-            <li><a href="privacy.html">DSGVO & Zustimmung</a></li>
-            <li><a href="auth.html">Konto & Mitgliedschaft</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="compliance.html">Terms of Service</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+            <li><a href="privacy.html">GDPR &amp; Consent</a></li>
+            <li><a href="auth.html">Account &amp; Membership</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Sprache</h4>
+          <h4>Language</h4>
           <ul>
             <li><a href="../en/index.html">English</a></li>
             <li><a href="../zh/index.html">中文</a></li>
@@ -502,7 +531,7 @@
       </div>
 
       <div class="footer-meta">
-        <span>© SOUNDTEST.PRO · Lokal-zuerst akustische Beweishilfe · Kein zertifizierter Schallpegelmesser.</span>
+        <span>© SOUNDTEST.PRO · Local-first acoustic evidence aid · Not a certified sound level meter.</span>
         <div class="footer-social" aria-label="Social channels">
           <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
           <a href="changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>

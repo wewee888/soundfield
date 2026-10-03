@@ -138,17 +138,104 @@
         </aside>
       </div>
 
-      <div class="hero-search reveal" data-live-card style="margin-top:14px;background:rgba(255,255,255,0.04)">
-        <div class="card-badge">Vista previa</div>
-        <h3 style="margin-top:6px">Ejecutando localmente — ningún dato sale del navegador.</h3>
-        <p class="muted" style="margin-top:6px;font-size:13px">Preparamos una plantilla de evidencia según lo que escribiste. Luego entra al grabador en vivo para capturar audio, fotos e informes.</p>
-        <div class="live-card" data-live-card style="display:block;background:transparent;border:0;padding:14px 0 0">
-          <div class="live-steps">
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Analizando escenario y seleccionando plantilla…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Configurando dB, LAeq, GPS y reglas de fotos…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Construyendo diseño del informe…</span></div>
-            <div class="live-step" data-state="idle"><span class="dot" aria-hidden="true"></span><span>Listo — inicia el grabador para empezar.</span></div>
+            <div class="hero-workbench reveal" id="scenario-workbench">
+        <!-- Left Column: Scenario Selector -->
+        <div class="workbench-card">
+          <div class="workbench-header">
+            <span class="card-badge">Paso 1 · Elegir escenario</span>
+            <h3>Seleccione su situación de ruido</h3>
+            <p>Cargue límites acústicos calibrados, reglas de evidencia y plantillas de queja oficiales.</p>
           </div>
+
+          <div class="workbench-chips-grid" role="tablist">
+            <button type="button" class="scenario-pill-btn active" data-scenario="neighbor" role="tab" aria-selected="true">
+              <span class="scenario-pill-icon">🏠</span>
+              <div class="scenario-pill-text">
+                <strong>Ruido de vecinos</strong>
+                <small>Pisadas, graves y música</small>
+              </div>
+            </button>
+            <button type="button" class="scenario-pill-btn" data-scenario="construction" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🚧</span>
+              <div class="scenario-pill-text">
+                <strong>Obras y reformas</strong>
+                <small>Taladros y horarios no autorizados</small>
+              </div>
+            </button>
+            <button type="button" class="scenario-pill-btn" data-scenario="street" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">🍻</span>
+              <div class="scenario-pill-text">
+                <strong>Bares y vía pública</strong>
+                <small>Graves de música y extractores</small>
+              </div>
+            </button>
+            <button type="button" class="scenario-pill-btn" data-scenario="rental" role="tab" aria-selected="false">
+              <span class="scenario-pill-icon">📋</span>
+              <div class="scenario-pill-text">
+                <strong>Disputa de alquiler</strong>
+                <small>Habitabilidad y fianza</small>
+              </div>
+            </button>
+          </div>
+
+          <form class="workbench-custom-row" data-wb-custom-form onsubmit="return false;">
+            <input type="text" class="workbench-custom-input" data-wb-custom-input placeholder="Describa el ruido (ej. motor de ascensor nocturno)..." autocomplete="off">
+            <button type="submit" class="workbench-custom-btn" data-wb-custom-btn>
+              <span>Aplicar</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </form>
+
+          <div class="hero-meta" style="margin-top:10px;justify-content:flex-start">
+            <span>✓ <strong>Inicio con 1 clic</strong> · Sin app</span>
+            <span>✓ <strong>Cero subida a la nube</strong></span>
+            <span>✓ <strong>Informe PDF / CSV</strong></span>
+          </div>
+        </div>
+
+        <!-- Right Column: Live Pipeline Preview & Launch -->
+        <div class="workbench-card">
+          <div class="workbench-header">
+            <span class="card-badge" style="color:var(--accent)">Paso 2 · Flujo de evidencia</span>
+            <h3 id="wb-preview-title">Plantilla de evidencia para ruido vecinal</h3>
+            <p id="wb-preview-desc">Optimizada para pisadas superiores, TV/música, mascotas y vibraciones.</p>
+          </div>
+
+          <div class="workbench-specs-row" id="wb-specs">
+            <div class="wb-spec-cell">
+              <span>Límite diurno</span>
+              <strong id="wb-day">≤ 55 dB</strong>
+            </div>
+            <div class="wb-spec-cell">
+              <span>Límite nocturno</span>
+              <strong id="wb-night">≤ 45 dB</strong>
+            </div>
+            <div class="wb-spec-cell">
+              <span>Métrica clave</span>
+              <strong id="wb-metric">LAeq + L10</strong>
+            </div>
+            <div class="wb-spec-cell">
+              <span>Integridad</span>
+              <strong id="wb-tamper" style="color:var(--accent)">GPS + SHA-256</strong>
+            </div>
+          </div>
+
+          <div class="live-steps" id="wb-steps">
+            <div class="live-step" data-state="done"><span class="dot" aria-hidden="true">✓</span><span id="wb-s1">Perfil acústico del escenario ajustado</span></div>
+            <div class="live-step" data-state="done"><span class="dot" aria-hidden="true">✓</span><span id="wb-s2">Ponderación A y respuesta rápida inicializadas</span></div>
+            <div class="live-step" data-state="done"><span class="dot" aria-hidden="true">✓</span><span id="wb-s3">Procesamiento local confidencial verificado</span></div>
+            <div class="live-step" data-state="active"><span class="dot" aria-hidden="true">●</span><span id="wb-s4">Listo — inicie el registro para capturar pruebas válidas</span></div>
+          </div>
+
+          <div class="workbench-actions-row">
+            <a class="button primary" id="wb-cta" href="../soundtest.html?scenario=neighbor">
+              <span>Iniciar registro de evidencia</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="button ghost" id="wb-guide" href="../use-cases/neighbor-noise-evidence.html">Guía del caso</a>
+          </div>
+        </div>
+      </div>
           <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
             <button class="button primary" type="button" data-live-cta data-target="soundtest.html" hidden>Iniciar grabador</button>
             <a class="button" href="../samples.html">Ver muestras de informes</a>
@@ -311,7 +398,10 @@
         </div>
 
                 <div class="price-card single-report reveal">
-          <span class="price-pill">Informe Único</span>
+                    <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/forensic_report_preview.webp" alt="Official forensic PDF vs watermarked preview comparison" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center top;display:block;">
+          </div>
+<span class="price-pill">Informe Único</span>
           <span class="price-name">Informe Oficial Individual</span>
           <span class="price-tag">$1.99</span>
           <div class="price-compare-hint">Pago único · Sin suscripción recurrente</div>
@@ -325,7 +415,10 @@
         </div>
 
         <div class="price-card pro reveal">
-          <span class="price-badge-popular">★ Más Popular · Ahorra 58%</span>
+                    <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/sentry_night_monitor.webp" alt="Overnight Sentry Mode illustration" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center 40%;display:block;">
+          </div>
+<span class="price-badge-popular">★ Más Popular · Ahorra 58%</span>
           <span class="price-pill">Versión Pro Premium</span>
           <span class="price-name">Actualizar a Premium</span>
           <span class="price-tag">$4.99/mo · $24.99/yr · $79.99 lifetime</span>

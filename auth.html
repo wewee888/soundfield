@@ -82,8 +82,8 @@
         <div class="auth-form-wrap" id="auth-form-login" data-auth-form="login" role="tabpanel">
           <!-- Login subtabs -->
           <div class="login-subtabs" style="display:flex;gap:6px;margin-bottom:18px;background:rgba(255,255,255,0.03);padding:4px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
-            <button type="button" class="login-subtab active" id="tabLoginPassword" data-login-mode="password" style="flex:1;padding:8px 12px;font-size:13px;font-weight:700;border:none;border-radius:8px;background:rgba(44,240,193,0.14);color:#2cf0c1;cursor:pointer;transition:all .2s ease;">🔑 密码登录</button>
-            <button type="button" class="login-subtab" id="tabLoginMagic" data-login-mode="magic" style="flex:1;padding:8px 12px;font-size:13px;font-weight:700;border:none;border-radius:8px;background:transparent;color:#94a3b8;cursor:pointer;transition:all .2s ease;">✨ 邮箱免密 / 动态验证码</button>
+            <button type="button" class="login-subtab active" id="tabLoginPassword" data-login-mode="password" style="flex:1;padding:8px 12px;font-size:13px;font-weight:700;border:none;border-radius:8px;background:rgba(44,240,193,0.14);color:#2cf0c1;cursor:pointer;transition:all .2s ease;">🔑 Password / 密码登录</button>
+            <button type="button" class="login-subtab" id="tabLoginMagic" data-login-mode="magic" style="flex:1;padding:8px 12px;font-size:13px;font-weight:700;border:none;border-radius:8px;background:transparent;color:#94a3b8;cursor:pointer;transition:all .2s ease;">✨ Magic Link / 免密验证</button>
           </div>
 
           <!-- Password subform -->
@@ -219,7 +219,7 @@
 
         <p class="auth-mvp-note">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          MVP: credentials stored locally in your browser. Server-side identity with email verification and password reset are on the roadmap.
+          Local-first security: passwords hashed locally; email verification supported via Cloudflare Turnstile &amp; Magic Links.
         </p>
       </div>
     </section>

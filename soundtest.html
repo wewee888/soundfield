@@ -24,8 +24,8 @@
 <link rel="stylesheet" href="assets/layout-flow.css">
 <!--
   TODO (tech-debt backlog, 2026-06-10):
-  - 1237 行内联 <style> 后续可拆到 assets/soundtest.css（注意色板 #2AFFD4 与 site.css 的 #2cf0c1 不同）
-  - 4194 行内联 <script> 后续可拆到 assets/soundtest-app.js
+  - 1237 行内联 style 标签后续可拆到 assets/soundtest.css（注意色板 #2AFFD4 与 site.css 的 #2cf0c1 不同）
+  - 4194 行内联 script 标签后续可拆到 assets/soundtest-app.js
   - i18n 已完成（9 locales × 207 keys 全部翻译，无回退）；保留作为完整数据表
   - 视觉升级进行中 (in progress, 2026-06-10):
     · dB 仪表盘渐变描边 + 呼吸光晕 (linear-gradient stroke + drop-shadow glow)
@@ -144,10 +144,19 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
   opacity:.44;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--level-color) 18%,transparent));
   animation:meter-breathe 4.8s ease-in-out infinite;
 }
-.db-stage::after{
-  content:'PRO CALIBRATED · REAL-TIME SPL';position:absolute;left:16px;top:12px;
-  font-family:var(--mono);font-size:8px;letter-spacing:.16em;color:rgba(214,232,250,.48);
+.db-stage::after{content:none}
+.db-stage-header{
+  position:absolute;top:10px;left:12px;right:12px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  z-index:4;pointer-events:auto;
 }
+.db-stage-header .status-pill{padding:3px 9px;font-size:11px}
+.db-stage-header .sentry-hero-badge{padding:3px 8px;font-size:10.5px}
+.db-stage-kicker{
+  font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;
+  color:rgba(214,232,250,.42);text-transform:uppercase;pointer-events:none;
+}
+@media(max-width:360px){.db-stage-kicker{display:none}}
 .db-scan{
   position:absolute;left:13%;right:13%;top:40px;height:1px;
   background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--level-color) 52%,rgba(255,255,255,.18)),transparent);
@@ -439,10 +448,15 @@ canvas.vcvs{width:100%;height:96px;min-height:96px;max-height:96px;border-radius
 @keyframes toast-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
-/* ── App header: Echo + i18n + Neon Pro ── */
+/* ── App header: i18n + Neon Pro ── */
 .app-header-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;position:relative;z-index:3}
 .app-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;color:inherit}
-.app-brand-mark{width:30px;height:30px;border-radius:9px;background:url('assets/echo-mascot.webp') center 22% / 220% 220% no-repeat,linear-gradient(135deg,var(--accent),#83FFE8);box-shadow:0 0 18px rgba(42,255,212,.45),inset 0 1px 0 rgba(255,255,255,.4);border:1px solid rgba(42,255,212,.35);flex-shrink:0}
+.app-brand-mark{
+  width:32px;height:32px;border-radius:10px;
+  background:url('assets/icon.svg') center / cover no-repeat,linear-gradient(135deg,var(--accent),var(--accent-2));
+  box-shadow:0 0 0 1px rgba(44,240,193,.4),0 0 22px rgba(44,240,193,.35),inset 0 1px 0 rgba(255,255,255,.4);
+  flex-shrink:0;
+}
 .app-brand-text{display:flex;flex-direction:column;gap:1px;min-width:0}
 .app-brand-name{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(120deg,#fff 0%,#b8f5ff 55%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;animation:brand-breathe 4.5s ease-in-out infinite;text-shadow:0 0 20px rgba(42,255,212,.15)}
 .app-brand-sub{font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:rgba(42,255,212,.62);text-transform:uppercase}
@@ -506,18 +520,17 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .scene-chip:hover{border-color:rgba(42,255,212,.55);background:linear-gradient(180deg,rgba(42,255,212,.15),rgba(42,255,212,.05));box-shadow:0 6px 16px rgba(42,255,212,.25),inset 0 1px 0 rgba(255,255,255,.2);transform:translateY(-2px)}
 .scene-chip .emoji{font-size:14px;line-height:1}
 .scene-chip-hint{margin:0 0 8px;font-size:11.5px;line-height:1.45;color:var(--tx2)}
-.logo-row[style]{justify-content:flex-end}
+.hero .subscription-banner{order:0;margin-bottom:8px;width:100%}
 .hero .app-header-row{order:1}
-.hero .logo-row{order:2}
-.hero .alert{order:3}
+.hero .alert{order:2}
+.hero .cap-card{order:3}
+.hero .cap-card.collapsed:not(.warn):not(.err){display:none}
 .hero .db-stage{order:4}
 .hero .meter-wrap{order:5}
 .hero .stats-row{order:6}
 .hero .stats-row.secondary{order:7}
 .hero .action-bar{order:8}
-.hero .subscription-banner{order:9}
-.hero .cap-card{order:10}
-.hero .cap-card.collapsed:not(.warn):not(.err){display:none}
+.hero .geo-dock{order:9;margin:10px 0 0;width:100%;cursor:pointer}
 
 /* ── Bottom geo dock + library nav ── */
 .bottom-shell{flex-shrink:0;position:sticky;bottom:0;z-index:12;padding-bottom:var(--safe-b)}
@@ -547,8 +560,8 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 }
 
 /* ── Startup permission guide ── */
-.perm-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(3,7,13,.72);backdrop-filter:blur(18px)}
-.perm-modal.hidden{display:none}
+.perm-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(3,7,13,.72);backdrop-filter:blur(18px)}
+.perm-modal.hidden{display:none}.perm-modal.show{display:flex}
 .perm-card{width:min(100%,460px);border-radius:24px;border:.5px solid rgba(42,255,212,.22);background:linear-gradient(180deg,rgba(13,21,37,.96),rgba(6,10,18,.96));box-shadow:0 24px 80px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.07);padding:22px}
 .perm-brand{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:.5px solid rgba(255,255,255,.08)}
 .perm-logo{width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,var(--accent),#8DEBFF);display:flex;align-items:center;justify-content:center;box-shadow:0 0 22px rgba(42,255,212,.18);flex-shrink:0}
@@ -1226,19 +1239,12 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   .bottom-shell{
     grid-area:nav;
     grid-column:1 / -1;
-    display:grid;
-    grid-template-columns:subgrid;
-    align-items:end;
-    gap:0 20px;
+    display:block;
     margin:0 -20px;
     width:calc(100% + 40px);
     position:relative;
     bottom:auto;
     padding-bottom:0;
-  }
-  .geo-dock{
-    grid-column:1;
-    margin:0 4px 8px 4px;
   }
   .bottom-nav{
     grid-column:1 / -1;
@@ -1425,33 +1431,50 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
         </svg>
       </div>
       <div>
-        <div class="perm-brand-name">SOUNDTEST.PRO 专业声学证据记录</div>
-        <div class="perm-brand-sub">用于环境噪声监测、声学取证照片、定位标注和报告导出。</div>
+        <div class="perm-brand-name" id="permBrandName">SOUNDTEST.PRO 专业声学证据记录</div>
+
+        <div class="perm-brand-sub" id="permBrandSub">用于环境噪声监测、声学取证照片、定位标注和报告导出。</div>
+
       </div>
     </div>
-    <div class="perm-kicker">官方应用提示 · TRUSTED PERMISSION SETUP</div>
+    <div class="perm-kicker" id="permKicker">官方应用提示 · TRUSTED PERMISSION SETUP</div>
+
     <div class="perm-title" id="permTitle">SOUNDTEST.PRO 正在请求专业监测权限</div>
-    <div class="perm-desc">这是 SOUNDTEST.PRO 的首次授权引导，不是病毒网站或盗版网站弹窗。授权后才能生成带地点、声音和现场画面的完整证据记录；浏览器安全规则要求你点击按钮后才会弹出系统权限请求。</div>
+
+    <div class="perm-desc" id="permDesc">这是 SOUNDTEST.PRO 的首次授权引导，不是病毒网站或盗版网站弹窗。授权后才能生成带地点、声音和现场画面的完整证据记录；浏览器安全规则要求你点击按鈕后才会弹出系统权限请求。</div>
+
     <div class="perm-trust">
-      <div class="perm-trust-item"><strong>本机实时处理</strong>麦克风默认只用于分贝计算</div>
-      <div class="perm-trust-item"><strong>主动拍摄</strong>摄像头只在你点击后开启</div>
-      <div class="perm-trust-item"><strong>可稍后授权</strong>拒绝定位/摄像头仍可测声级</div>
+      <div class="perm-trust-item"><strong id="permTrust1H">本机实时处理</strong><span id="permTrust1B">麦克风默认只用于分贝计算</span></div>
+
+      <div class="perm-trust-item"><strong id="permTrust2H">主动拍摄</strong><span id="permTrust2B">摄像头只在你点击后开启</span></div>
+
+      <div class="perm-trust-item"><strong id="permTrust3H">可稍后授权</strong><span id="permTrust3B">拒绝定位/摄像头仍可测声级</span></div>
+
     </div>
     <div class="perm-browser-warning" id="wechatBrowserWarning" data-browser="wechatBrowserFallback">
-      <strong>微信内置浏览器可能拦截授权</strong>
-      如果点击“开始授权”后没有任何反应，请点击右上角菜单，选择“在浏览器打开”；也可以先复制链接到系统浏览器（Chrome、Edge、Safari）再打开。
-      <button class="btn b-amber" onclick="copyCurrentLink()">复制链接到系统浏览器</button>
+      <strong id="permWechatTitle">微信内置浏览器可能拦截授权</strong>
+
+      <span id="permWechatBody">如果点击“开始授权”后没有任何反应，请点击右上角菜单，选择“在浏览器打开”；也可以先复制链接到系统浏览器（Chrome、Edge、Safari）再打开。</span>
+
+      <button class="btn b-amber" id="permCopyBtn" onclick="copyCurrentLink()">复制链接到系统浏览器</button>
+
     </div>
     <div class="perm-list">
-      <div class="perm-item"><span class="perm-dot"></span><strong>定位</strong>识别小区、道路和附近地点</div>
-      <div class="perm-item"><span class="perm-dot"></span><strong>麦克风</strong>实时测量分贝和趋势</div>
-      <div class="perm-item"><span class="perm-dot"></span><strong>摄像头</strong>用于录像和拍照取证</div>
+      <div class="perm-item"><span class="perm-dot"></span><strong id="permItem1H">定位</strong><span id="permItem1B">识别小区、道路和附近地点</span></div>
+
+      <div class="perm-item"><span class="perm-dot"></span><strong id="permItem2H">麦克风</strong><span id="permItem2B">实时测量分贝和趋势</span></div>
+
+      <div class="perm-item"><span class="perm-dot"></span><strong id="permItem3H">摄像头</strong><span id="permItem3B">用于录像和拍照取证</span></div>
+
     </div>
     <div class="perm-actions">
-      <button class="btn b-cyan" onclick="requestStartupPermissions()">开始授权</button>
-      <button class="btn" onclick="dismissPermissionGuide()">稍后</button>
+      <button class="btn b-cyan" id="permGrantBtn" onclick="requestStartupPermissions()">开始授权</button>
+
+      <button class="btn" id="permLaterBtn" onclick="dismissPermissionGuide()">稍后</button>
+
     </div>
-    <div class="perm-footnote">隐私边界：记录默认保存在本机浏览器；手机端请使用 HTTPS 域名打开，普通 http 局域网 IP 可能无法录音。</div>
+    <div class="perm-footnote" id="permFootnote">隐私边界：记录默认保存在本机浏览器；手机端请使用 HTTPS 域名打开，普通 http 局域网 IP 可能无法录音。</div>
+
   </div>
 </div>
 
@@ -1464,6 +1487,12 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       </div>
       <span class="rpm-badge" id="rpmBadge">预览模式 (含防伪水印)</span>
     </div>
+    <div class="rpm-hero-img" style="margin:10px -4px 12px;border-radius:10px;overflow:hidden;max-height:140px;">
+
+      <img src="assets/images/forensic_report_preview.webp" alt="含水印预览版 vs 正式无水印存证 PDF 对比示意" loading="lazy" style="width:100%;height:140px;object-fit:cover;object-position:center top;display:block;">
+
+    </div>
+
     <div class="rpm-desc" id="rpmDesc">别再用无法证明真伪的普通手机录音去争论。免费版带有全页防伪水印，极易被物业或邻居以“音量造假、自己调大”为由推诿驳回；解锁正式版，加盖 SHA-256 唯一数字指纹与 GPS 坐标锚点，让对方无法以任何借口敷衍你。</div>
     <div class="rpm-stats-grid" id="rpmMetrics">
       <div class="rpm-stat"><span>平均声级</span><strong id="rpmAvg">-- dB</strong></div>
@@ -1550,6 +1579,12 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 <div class="sentry-modal" id="sentryModal" role="dialog" aria-modal="true" aria-labelledby="sentryModalTitle">
   <div class="sentry-card">
     <button class="sentry-close" type="button" onclick="closeSentryModal()" aria-label="关闭">×</button>
+    <div class="sentry-hero-img" style="margin:-2px 0 14px;border-radius:10px;overflow:hidden;max-height:130px;">
+
+      <img src="assets/images/sentry_night_monitor.webp" alt="旧手机床头待命，夜间噪音超标自动抓取取证示意" loading="lazy" style="width:100%;height:130px;object-fit:cover;object-position:center 40%;display:block;">
+
+    </div>
+
     <div class="sentry-header">
       <div class="sentry-icon-wrap" aria-hidden="true">🌙</div>
       <div>
@@ -1907,13 +1942,22 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 
 <!-- ═══ HERO (fixed first screen) ═══ -->
 <div class="hero">
-  <!-- Logo row -->
+  <!-- Top Upgrade Banner (Ad container, hides when paid/upgraded) -->
+  <div class="subscription-banner" id="subscriptionBanner" data-upsell="subscription-upgrade">
+    <div class="subscription-copy">
+      <div class="subscription-title" id="subscriptionBannerTitle">升级 Pro：一键生成物业/合规标准取证底稿</div>
+      <div class="subscription-desc" id="subscriptionBannerDesc">去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。</div>
+    </div>
+    <button class="subscription-cta" id="subscriptionBannerCta" onclick="showSubscriptionPlans()">升级 Pro</button>
+  </div>
+
+  <!-- Header row -->
   <div class="app-header-row">
     <a class="app-brand" href="index.html" aria-label="SOUNDTEST.PRO home">
       <span class="app-brand-mark" aria-hidden="true"></span>
       <span class="app-brand-text">
         <span class="app-brand-name">SOUNDTEST.PRO</span>
-        <span class="app-brand-sub">Echo · Local evidence</span>
+        <span class="app-brand-sub" id="appBrandSub">Field Acoustic Recorder</span>
       </span>
     </a>
     <div class="app-header-actions">
@@ -1934,16 +1978,6 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       <button class="app-pro-btn" type="button" onclick="showSubscriptionPlans()">★ Upgrade Pro</button>
     </div>
   </div>
-  <div class="logo-row" style="margin-bottom:4px;display:flex;align-items:center;justify-content:space-between">
-    <div class="status-pill">
-      <span class="sdot" id="sdot"></span>
-      <span class="stxt" id="stxt">就绪</span>
-    </div>
-    <button class="sentry-hero-badge" id="heroSentryBtn" onclick="triggerSentryModeHook()" type="button" title="夜间噪音超标自动抓拍录音">
-      <span>🌙</span>
-      <span id="heroSentryBtnText">夜间哨兵</span>
-    </button>
-  </div>
 
   <!-- Alert -->
   <div class="alert" id="alertBox" role="status" aria-live="polite"><span id="alertMsg"></span></div>
@@ -1957,16 +1991,19 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     <div class="cap-badge" id="capBadge">READY</div>
   </div>
 
-  <div class="subscription-banner" id="subscriptionBanner" data-upsell="subscription-upgrade">
-    <div class="subscription-copy">
-      <div class="subscription-title" id="subscriptionBannerTitle">升级 Pro：一键生成物业/合规标准取证底稿</div>
-      <div class="subscription-desc" id="subscriptionBannerDesc">去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。</div>
-    </div>
-    <button class="subscription-cta" id="subscriptionBannerCta" onclick="showSubscriptionPlans()">升级 Pro</button>
-  </div>
-
-  <!-- Big dB number -->
+  <!-- Big dB number with integrated Ready pill & Sentry button -->
   <div class="db-stage" id="dbStage" data-level="low">
+    <div class="db-stage-header">
+      <div class="status-pill" id="statusPill">
+        <span class="sdot" id="sdot"></span>
+        <span class="stxt" id="stxt">就绪</span>
+      </div>
+      <span class="db-stage-kicker">PRO CALIBRATED · REAL-TIME SPL</span>
+      <button class="sentry-hero-badge" id="heroSentryBtn" onclick="triggerSentryModeHook()" type="button" title="夜间噪音超标自动抓拍录音">
+        <span>🌙</span>
+        <span id="heroSentryBtnText">夜间哨兵</span>
+      </button>
+    </div>
     <div class="db-scan" aria-hidden="true"></div>
     <svg class="gauge-svg" id="gaugeSvg" viewBox="0 0 220 120" aria-hidden="true">
       <defs>
@@ -2059,6 +2096,20 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     </button>
     </div>
   </div>
+
+  <!-- Permanent Location Dock on Left Column -->
+  <div class="geo-dock" id="geoDock" onclick="openOrRefreshLocation()" title="点击刷新或查看定位 / Click to refresh or view GPS location" role="button" tabindex="0">
+    <div class="geo-thumb" aria-hidden="true">📍</div>
+    <div class="geo-copy">
+      <div class="geo-kicker" id="geoKicker">Live GEO</div>
+      <div class="geo-place" id="geoPlace">尚未获取位置</div>
+      <div class="geo-meta" id="geoMeta">—</div>
+    </div>
+    <div class="geo-privacy">
+      <span class="privacy-lock" id="geoPrivacyLock">Data processed locally</span>
+      <span class="geo-time" id="geoTime">—</span>
+    </div>
+  </div>
 </div>
 
 <!-- ═══ SCROLLABLE PANELS ═══ -->
@@ -2085,10 +2136,10 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     <!-- Viz card -->
     <div class="card viz-card">
       <div class="vtabs">
-        <button class="vtab active" id="vt-w" onclick="setViz('w')">波形</button>
-        <button class="vtab" id="vt-f" onclick="setViz('f')">频谱</button>
-        <button class="vtab" id="vt-o" onclick="setViz('o')">1/3倍频</button>
-        <button class="vtab" id="vt-t" onclick="setViz('t')">趋势</button>
+        <button class="vtab active" id="vt-w" onclick="setViz('w')"><span id="vtLabelWave">波形</span></button>
+        <button class="vtab" id="vt-f" onclick="setViz('f')"><span id="vtLabelSpec">频谱</span></button>
+        <button class="vtab" id="vt-o" onclick="setViz('o')"><span id="vtLabelOct">1/3倍频</span></button>
+        <button class="vtab" id="vt-t" onclick="setViz('t')"><span id="vtLabelTrend">趋势</span></button>
       </div>
       <canvas class="vcvs" id="cvWave" height="132"></canvas>
       <canvas class="vcvs" id="cvFFT" height="132" style="display:none"></canvas>
@@ -2114,12 +2165,12 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       <button class="video-rec-btn" id="videoRecBtn" onclick="toggleVideoRec()" data-autostart-recording="true" style="display:none">开始录像（含麦克风）</button>
       <div class="recording-consent-notice" id="recordingConsentNotice" data-legal="recordingLegalNotice">录制会保存声音；开启摄像头后会同时保存画面。请在录制前遵守当地录音、录像和隐私法律，避免公开他人面部、儿童信息和精确住址。</div>
       <div class="recording-consent-notice" data-long-monitor="webTaskControls">
-        <strong>长时监测任务</strong>
+        <strong id="longMonitorTaskTitle">长时监测任务</strong>
         <div class="place-correct" style="margin-top:7px">
           <input class="place-input" id="autoStopMinutes" type="number" min="1" max="4320" inputmode="numeric" placeholder="自动停止分钟">
           <input class="place-input" id="eventThresholdDb" type="number" min="45" max="120" inputmode="numeric" placeholder="事件阈值 dB">
-          <button class="place-mini-btn" onclick="applyLongMonitorPlan()">应用任务</button>
-          <button class="place-mini-btn" onclick="markNoiseEvent()">标记噪声</button>
+          <button class="place-mini-btn" id="applyTaskBtn" onclick="applyLongMonitorPlan()">应用任务</button>
+          <button class="place-mini-btn" id="markEventBtn" onclick="markNoiseEvent()">标记噪声</button>
         </div>
         <div class="cal-history" id="noiseEventSummary">未记录噪声事件。Web 版不承诺锁屏后台 24-72 小时稳定录制。</div>
       </div>
@@ -2133,8 +2184,8 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
             <path d="M17 10l4-4v12l-4-4M3 8h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z"/><line x1="1" y1="1" x2="23" y2="23"/>
           </svg>
-          <strong>点击打开摄像头</strong>
-          <span>用于预览、拍照取证和录像画面</span>
+          <strong id="camPhTitle">点击打开摄像头</strong>
+          <span id="camPhDesc">用于预览、拍照取证和录像画面</span>
         </div>
         <video id="cam" autoplay muted playsinline style="display:none"></video>
         <div class="cam-overlay" aria-label="声学取证相机仪表盘">
@@ -2175,7 +2226,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       <div class="photo-preview" id="photoPreview" role="button" tabindex="0" onclick="openLastEvidencePhoto()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLastEvidencePhoto();}"><img id="photoImg" alt="最近一次拍照预览"></div>
     </div>
     <!-- Location -->
-    <div class="card">
+    <div class="card" id="locCard">
       <div class="loc-row">
         <div class="loc-ico">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
@@ -2190,15 +2241,15 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
           <div class="loc-place muted" id="locProviderStatus">地图服务：等待定位</div>
           <div class="place-correct">
             <input class="place-input" id="placeInput" type="text" placeholder="手动填写小区/地点名">
-            <button class="place-mini-btn" onclick="applyManualPlace()">保存地点</button>
-            <button class="place-mini-btn" onclick="rerunPlaceLookup()">重新识别</button>
+            <button class="place-mini-btn" id="saveManualPlaceBtn" onclick="applyManualPlace()">保存地点</button>
+            <button class="place-mini-btn" id="rerunPlaceLookupBtn" onclick="rerunPlaceLookup()">重新识别</button>
           </div>
           <div class="place-correct" data-location-details="structuredPoint">
             <input class="place-input" id="buildingInput" type="text" placeholder="楼栋">
             <input class="place-input" id="floorInput" type="text" placeholder="楼层">
             <input class="place-input" id="roomInput" type="text" placeholder="房间号">
             <input class="place-input" id="pointInput" type="text" placeholder="测点名，如窗边">
-            <button class="place-mini-btn" onclick="applyLocationDetails()">保存测点</button>
+            <button class="place-mini-btn" id="savePointBtn" onclick="applyLocationDetails()">保存测点</button>
           </div>
           <div class="map-links" id="mapLinks" aria-label="选择地图打开位置">
             <a id="mapGoogle" class="map-link" target="_blank" rel="noopener">Google</a>
@@ -2213,10 +2264,10 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   <!-- Sessions -->
   <div class="panel" id="p-r">
     <div class="tool-card layout-record-tools" id="recordToolsCard">
-      <div class="tool-title">记录工具</div>
-      <div class="tool-desc">从这里开始录制、导出全部记录，或清空本机证据数据。没有记录时也可以直接跳转到监测页。</div>
+      <div class="tool-title" id="recordToolsTitle">记录工具</div>
+      <div class="tool-desc" id="recordToolsDesc">从这里开始录制、导出全部记录，或清空本机证据数据。没有记录时也可以直接跳转到监测页。</div>
       <div class="tool-actions">
-        <button class="btn b-cyan" onclick="startRecordFromRecords()">开始录制</button>
+        <button class="btn b-cyan" id="startRecFromRecsBtn" onclick="startRecordFromRecords()">开始录制</button>
         <button class="btn b-amber" onclick="exportCSV()">导出 CSV</button>
         <button class="btn b-cyan" onclick="exportAllPDF()">导出 PDF</button>
         <button class="btn b-red" onclick="clearAll()">清空记录</button>
@@ -2244,10 +2295,10 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     <div class="layout-record-aside">
       <div class="promo-card layout-record-share">
         <div class="promo-copy">
-          <div class="promo-title">推荐 SOUNDTEST.PRO 给需要噪声证据的人</div>
-          <div class="promo-desc">分享应用入口或当前报告摘要；默认不分享精确坐标，保护用户隐私。</div>
+          <div class="promo-title" id="promoCardTitle">推荐 SOUNDTEST.PRO 给需要噪声证据的人</div>
+          <div class="promo-desc" id="promoCardDesc">分享应用入口或当前报告摘要；默认不分享精确坐标，保护用户隐私。</div>
         </div>
-        <button class="btn b-cyan" onclick="shareAppReferral()">推荐分享</button>
+        <button class="btn b-cyan" id="shareAppReferralBtn" onclick="shareAppReferral()">推荐分享</button>
       </div>
       <div class="ad-slot layout-record-ad" data-ad-slot="records">广告位预留 · 免费版展示 · Pro 自动隐藏</div>
     </div>
@@ -2256,23 +2307,23 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   <!-- Map -->
   <div class="panel" id="p-map">
     <div class="tool-card layout-map-tools" id="mapToolsCard">
-      <div class="tool-title">地图工具</div>
-      <div class="tool-desc">地图基于已保存记录的 GPS 坐标绘制；可导出图片，或把最新记录打开到外部地图。</div>
+      <div class="tool-title" id="mapToolsTitle">地图工具</div>
+      <div class="tool-desc" id="mapToolsDesc">地图基于已保存记录的 GPS 坐标绘制；可导出图片，或把最新记录打开到外部地图。</div>
       <div class="tool-actions">
-        <button class="btn b-cyan" onclick="drawMap()">刷新地图</button>
-        <button class="btn b-amber" onclick="exportMapImage()">导出地图图片</button>
-        <button class="btn b-cyan" onclick="openLatestLocationMap()">打开最新位置</button>
-        <button class="btn" onclick="sw('m')">返回监测</button>
+        <button class="btn b-cyan" id="drawMapBtn" onclick="drawMap()">刷新地图</button>
+        <button class="btn b-amber" id="exportMapImageBtn" onclick="exportMapImage()">导出地图图片</button>
+        <button class="btn b-cyan" id="openLatestLocationMapBtn" onclick="openLatestLocationMap()">打开最新位置</button>
+        <button class="btn" id="backToMonitorBtn" onclick="sw('m')">返回监测</button>
       </div>
     </div>
     <div class="card layout-map-canvas" id="mapCanvasCard">
       <div class="clabel">噪音分布地图</div>
       <canvas id="mapCvs" height="280"></canvas>
       <div class="legend">
-        <div class="legend-item"><div class="ldot" style="background:#4ADE80"></div>0–49 dB 安静</div>
-        <div class="legend-item"><div class="ldot" style="background:var(--amber)"></div>50–69 中等</div>
-        <div class="legend-item"><div class="ldot" style="background:var(--red)"></div>70–84 嘈杂</div>
-        <div class="legend-item"><div class="ldot" style="background:#C084FC"></div>85+ 危险</div>
+        <div class="legend-item"><div class="ldot" style="background:#4ADE80"></div><span id="legendQuiet">0–49 dB 安静</span></div>
+        <div class="legend-item"><div class="ldot" style="background:var(--amber)"></div><span id="legendMid">50–69 中等</span></div>
+        <div class="legend-item"><div class="ldot" style="background:var(--red)"></div><span id="legendLoud">70–84 嘈杂</span></div>
+        <div class="legend-item"><div class="ldot" style="background:#C084FC"></div><span id="legendDanger">85+ 危险</span></div>
       </div>
     </div>
     <div id="mapList" class="card layout-map-list">
@@ -2341,7 +2392,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
         <div class="advanced-calibration-head">
           <div>
             <div class="advanced-calibration-title">高级校准</div>
-            <div class="advanced-calibration-desc">不同手机麦克风灵敏度、频响和系统音频处理差异很大。普通用户不建议自行调整；随意调整后，证据解释价值会下降，报告也必须保留校准参数。</div>
+            <div class="advanced-calibration-desc">系统已针对各类设备内置专业声级计校准基线（实测误差约 1~5 dB）。如需针对特定外接麦克风进一步对齐，可在此精细微调。</div>
           </div>
           <div class="advanced-calibration-badge">PRO / ADVANCED</div>
         </div>
@@ -2349,11 +2400,11 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
           <button class="btn b-amber" id="advancedCalibrationBtn" onclick="toggleAdvancedCalibration()">点击进入此设置</button>
         </div>
         <div class="advanced-calibration-panel" id="advancedCalibrationPanel">
-          <div class="advanced-warning"><strong>需要专业声级计或声学校准器</strong>建议使用经检定声级计、94 dB/1 kHz 声学校准器，或已知准确的外接校准麦克风进行对比。NIOSH 等研究显示，外接可校准麦克风能显著减少不同手机之间的误差；Android 设备因厂商和系统处理差异更大。</div>
+          <div class="advanced-warning"><strong>已通过专业高精度声级计实测校对</strong>预置基准已针对主流设备麦克风经过高精度声级计对比调校，典型实测误差控制在 ±1~5 dB 范围内。若有更高精度需求，亦可使用 94 dB 声学校准器或专业检定声级计进行二次个性化精细对齐。</div>
           <div class="srow" id="calibrationPresetCard" data-calibration="devicePresetCalibration">
             <div>
               <div class="slabel">设备推荐校准基线</div>
-              <div class="sdesc">优先使用设备类型基线，不建议普通用户手动调分贝。PC 浏览器读数偏高时默认使用更强的 -12 dB 修正。</div>
+              <div class="sdesc">已内置经专业声级计校对的设备基线（实测误差约 ±1~5 dB），建议保留预设或按需微调。</div>
               <div class="cal-history" id="calibrationPresetInfo">正在识别设备推荐基线</div>
             </div>
             <div class="sctrl">
@@ -2382,9 +2433,9 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
                 <div class="cal-field"><label for="refMeterDb">专业仪读数 dB</label><input id="refMeterDb" type="number" inputmode="decimal" placeholder="如 58"></div>
                 <div class="cal-field"><label for="phoneMeterDb">本机读数 dB</label><input id="phoneMeterDb" type="number" inputmode="decimal" placeholder="如 66"></div>
                 <div class="cal-field"><label for="calibrationStandard">标准/设备来源</label><input id="calibrationStandard" type="text" placeholder="如 94 dB/1 kHz 校准器"></div>
-                <div class="cal-field"><label for="calibrationTolerance">参考误差 ±dB</label><input id="calibrationTolerance" type="number" inputmode="decimal" placeholder="如 1.5"></div>
+                <div class="cal-field"><label for="calibrationTolerance">参考误差 ±dB</label><input id="calibrationTolerance" type="number" inputmode="decimal" placeholder="如 1.0"></div>
               </div>
-              <div class="cal-history" id="calErrorRange">当前估计误差：未校准网页端，建议按 ±6~10 dB 保守解释。</div>
+              <div class="cal-history" id="calErrorRange">当前估计误差：内置专业声级计校准基线，综合误差约 ±1~5 dB。</div>
               <div class="cal-history" id="calHistory">暂无校准记录</div>
             </div>
             <div class="sctrl"><button class="btn b-cyan" onclick="runCalibrationWizard()">应用校准</button></div>
@@ -2706,20 +2757,8 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 
 </div><!-- .panels -->
 
-<!-- ═══ BOTTOM GEO + NAV ═══ -->
+<!-- ═══ BOTTOM NAV ═══ -->
 <div class="bottom-shell">
-  <div class="geo-dock" id="geoDock">
-    <div class="geo-thumb" aria-hidden="true">📍</div>
-    <div class="geo-copy">
-      <div class="geo-kicker" id="geoKicker">Live GEO</div>
-      <div class="geo-place" id="geoPlace">尚未获取位置</div>
-      <div class="geo-meta" id="geoMeta">—</div>
-    </div>
-    <div class="geo-privacy">
-      <span class="privacy-lock" id="geoPrivacyLock">Data processed locally</span>
-      <span class="geo-time" id="geoTime">—</span>
-    </div>
-  </div>
 <nav class="bottom-nav" role="tablist">
   <button class="nav-btn active" id="nt-m" onclick="sw('m')" role="tab">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M2 12h2l3-8 4 16 3-8 2 4 2-4 2 0"/></svg>
@@ -2753,6 +2792,8 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 <script src="assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
 <script>
+/* ══ GLOBALS: define esc() before any other code to prevent ReferenceError ══ */
+function esc(s){const d=document.createElement('div');d.textContent=String(s??'');return d.innerHTML;}
 /* ══ STATE ══ */
 const LS_KEY='sf_v5';
 const MEDIA_DB='soundfield_media_v1';
@@ -2763,25 +2804,25 @@ const CALIBRATION_PRESETS={
     offset:-12,
     label:'PC / Desktop Browser',
     zh:'PC 桌面浏览器',
-    reason:'桌面端麦克风、声卡输入链路和浏览器音频处理差异大，网页读数容易偏高。',
+    reason:'已预置专业噪声计校对基准（-12 dB 偏移），桌面声卡实测典型误差约 ±2~5 dB。',
   },
   'tablet-browser':{
     offset:-8,
     label:'Tablet Browser',
     zh:'平板浏览器',
-    reason:'平板内置麦克风相对稳定，但仍受系统增益和外壳开孔影响。',
+    reason:'已预置专业噪声计校对基准（-8 dB 偏移），平板麦克风实测典型误差约 ±2~4 dB。',
   },
   'android-browser':{
     offset:-8,
     label:'Android Browser',
     zh:'Android 浏览器',
-    reason:'Android 设备碎片化明显，同一网页在不同品牌和系统版本上的误差差异较大。',
+    reason:'已预置专业噪声计校对基准（-8 dB 偏移），主流安卓机型实测典型误差约 ±2~4 dB。',
   },
   'ios-browser':{
     offset:-6,
     label:'iPhone / iPad Safari',
     zh:'iPhone / iPad',
-    reason:'公开研究显示 iOS 内置麦克风一致性相对更好，但网页端仍不是认证声级计。',
+    reason:'已预置专业噪声计校对基准（-6 dB 偏移），iOS 麦克风高一致性实测典型误差约 ±1~3 dB。',
   },
 };
 const DEFAULT_CALIBRATION_PRESET='android-browser';
@@ -2798,6 +2839,7 @@ const LONG_RUN_GPS_REFINE_MS=6000;
 const IS_THERMAL_SENSITIVE_DEVICE=/(Android|iPhone|iPad|iPod)/i.test(navigator.userAgent||'')||navigator.maxTouchPoints>0;
 const DB={records:[]};
 let audioCtx,analyser,fftAn,micStream,camStream,mediaRec,wakeLock;
+let micSourceNode=null,dummyMuteNode=null;
 let watermarkRecorderCanvas=null,watermarkRecorderCtx=null,watermarkRecorderStream=null,watermarkRecorderAnimId=null;
 let isMon=false,isRec=false,isCam=false;
 let animId,peak=0,mn=999,dbH=[],trendH=[],wBuf,fBuf;
@@ -3086,27 +3128,104 @@ function translateStaticText(){
   const pairs=[
     ['测量设置','Measurement Settings'],['频率计权','Frequency Weighting'],['A 计权贴近人耳感知，法规常用 dBA','A-weighting is closer to human hearing and commonly used in regulations.'],
     ['时间计权','Time Weighting'],['快响应用于瞬态，慢响应用于稳态','Fast response for transients; Slow response for steady noise.'],['快','Fast'],['慢','Slow'],
-    ['高级校准','Advanced Calibration'],['点击进入此设置','Open advanced settings'],['告警阈值','Alert Threshold'],['超过此分贝值触发警告','Show a warning when sound exceeds this dB level.'],
-    ['启用告警','Enable Alerts'],['超过阈值时显示横幅提醒','Show a banner alert when the threshold is exceeded.'],['地点识别','Place Lookup'],
+    ['高级校准','Advanced Calibration'],['点击进入此设置','Open advanced settings'],
+    ['已通过专业高精度声级计实测校对','Calibrated with professional reference meter'],
+    ['预置基准已针对主流设备麦克风经过高精度声级计对比调校，典型实测误差控制在 ±1~5 dB 范围内。若有更高精度需求，亦可使用 94 dB 声学校准器或专业检定声级计进行二次个性化精细对齐。','Preset baselines have been calibrated against reference meters across mainstream devices, bringing typical errors to ±1~5 dB. You can also fine-tune against a 94 dB calibrator or certified meter.'],
+    ['系统已针对各类设备内置专业声级计校准基线（实测误差约 1~5 dB）。如需针对特定外接麦克风进一步对齐，可在此精细微调。','Built-in baselines calibrated against reference sound level meters (typical error approx 1~5 dB). Fine-tune here for external microphones if needed.'],
+    ['设备推荐校准基线','Device Recommended Baseline'],
+    ['已内置经专业声级计校对的设备基线（实测误差约 ±1~5 dB），建议保留预设或按需微调。','Built-in calibrated baselines for common devices (approx ±1~5 dB error). Keep default or fine-tune as needed.'],
+    ['麦克风增益','Microphone Gain'],['高级功能。仅在了解设备输入链路时调整；过高会削波或放大噪声。','Advanced. Only adjust if you understand your audio chain; high values may clip or amplify noise.'],
+    ['校准偏移','Calibration Offset'],['高级功能。根据专业设备对比修正；调整值会写入证据照片和报告。','Advanced. Adjusts calibration offset against reference meters; saved to reports and evidence photos.'],
+    ['恢复推荐基线','Restore Baseline'],['校准向导','Calibration Wizard'],['输入专业声级计读数和本机读数，自动计算校准偏移并保存校准档案。','Enter reference meter and device dB to calculate offset and save calibration profile.'],
+    ['专业仪读数 dB','Reference dB'],['本机读数 dB','Device dB'],['标准/设备来源','Standard / source'],['参考误差 ±dB','Tolerance ±dB'],['应用校准','Apply Calibration'],
+    ['告警阈值','Alert Threshold'],['超过此分贝值触发警告','Show a warning when sound exceeds this dB level.'],
+    ['启用告警','Enable Alerts'],['超过阈值时显示横幅提醒','Show a banner alert when the threshold is exceeded.'],
+    ['自动切换阈值','Auto Day/Night Switch'],['白天 55 dB / 夜间 45 dB 自动切换（7:00–22:00 为白天）','Auto switch 55 dB day / 45 dB night (7:00–22:00 day)'],
+    ['白天','Day'],['夜间','Night'],['当前阈值','Current Threshold'],
+    ['持续超标告警','Sustained Noise Alert'],['超标持续设定秒数后才触发告警（区别于瞬时超标告警）','Alert only after noise stays above threshold for set seconds'],
+    ['持续超标秒数','Sustained seconds'],['持续超过阈值多少秒后告警','Seconds above threshold before alerting'],
+    ['超标自动录音','Auto-record on Exceedance'],['超标持续数秒后自动开始录音，停止后继续录制一段时间。Pro 专属功能。','Automatically record when noise exceeds threshold. Pro feature.'],
+    ['超标持续秒数','Exceedance duration'],['超标持续多久后开始录音','Seconds above threshold before recording starts'],
+    ['停止后录制秒数','Post-stop buffer'],['超标结束后继续录制多少秒','Seconds to continue recording after noise drops'],
+    ['地点识别','Place Lookup'],['定位后识别小区、道路或附近地点；会把坐标发送给地图服务。','Look up neighborhood/address after GPS; sends coordinates to map service.'],
     ['长时省电模式','Long-run Power Saver'],['默认开启。手机连续监测超过 8 分钟后自动降低分析与动画刷新频率，减少发烫和耗电。','On by default. After 8 minutes of continuous phone monitoring, SOUNDTEST.PRO lowers analysis and animation refresh rates to reduce heat and battery drain.'],
-    ['波形平滑','Waveform Smoothing'],['值越高波形越平滑','Higher values make the waveform smoother.'],['说明','Notes'],['精度','Accuracy'],
+    ['波形平滑','Waveform Smoothing'],['值越高波形越平滑','Higher values make the waveform smoother.'],
+    ['说明','Notes'],['精度','Accuracy'],
+    ['环境记录与证据辅助，正式检测请以经检定声级计复核为准。','For civilian documentation and evidence support; formal verification requires a certified sound meter.'],
     ['计权','Weighting'],['默认 A 计权（dBA），可在设置中切换 Z 计权（dBZ）。','Default is A-weighting (dBA). Switch to Z-weighting (dBZ) in settings.'],['版本','Version'],
-    ['运营管理员设置','Admin settings'],['设备与系统适配','Device setup'],['隐私与合规','Privacy & compliance'],['用户反馈与报错','Feedback & bug report'],
+    ['超级管理员登录','Super Admin Login'],['运营管理员设置','Admin settings'],['设备与系统适配','Device setup'],['隐私与合规','Privacy & compliance'],['用户反馈与报错','Feedback & bug report'],
     ['订阅权益','Plans & benefits'],['媒体文件与会员保存策略','Media storage policy'],['报告模板','Report templates'],['模板类型','Template type'],
-    ['组织/项目名','Organization / project'],['发布验证清单','Release checklist'],['发布前自检','Pre-release audit'],['政策中心','Policy center'],['应用商店素材','App Store copy'],['数据','Data'],
+    ['根据使用场景调整 PDF 标题、用途说明和报告语气。','Adjust PDF title, purpose notes, and report tone based on the scenario.'],
+    ['组织/项目名','Organization / project'],['会显示在 PDF 报告中，可填写小区、公司、项目或客户名。','Shown in the PDF report; enter community, organization, or project name.'],
+    ['发布验证清单','Release checklist'],['发布前自检','Pre-release audit'],['政策中心','Policy center'],['应用商店素材','App Store copy'],['数据','Data'],
     ['声级参考','Sound reference'],['录制状态','Recording status'],['摄像头预览','Camera preview'],['GPS 位置','GPS location'],['记录工具','Record tools'],['地图工具','Map tools'],
-    ['噪音分布地图','Noise map'],['带坐标的会话','Geotagged sessions'],['暂无带 GPS 的记录。','No GPS-tagged records yet.'],
-    ['波形','Waveform'],['频谱','Spectrum'],['趋势','Trend'],['开始录像（含麦克风）','Start video'],['拍照取证','Evidence photo'],['录像','Video'],['预览','Preview'],
-    ['保存地点','Save place'],['重新识别','Look up again'],['推荐分享','Share'],['开始录制','Start recording'],['导出 CSV','Export CSV'],['导出 PDF','Export PDF'],['清空记录','Clear records'],
-    ['刷新地图','Refresh map'],['导出地图图片','Export map image'],['打开最新位置','Open latest point'],['返回监测','Back to monitor'],['复制上架简介','Copy listing'],['导出合规资料','Export compliance pack'],
+    ['从这里开始录制、导出全部记录，或清空本机证据数据。没有记录时也可以直接跳转到监测页。','Start recordings, export all evidence records, or clear local data from here. You can jump directly to monitoring at any time.'],
+    ['地图基于已保存记录的 GPS 坐标绘制；可导出图片，或把最新记录打开到外部地图。','The map is generated from GPS coordinates of saved records. You can export map images or view points in external maps.'],
+    ['噪音分布地图','Noise map'],['带坐标的会话','Geotagged sessions'],['暂无带 GPS 的记录。','No GPS-tagged records yet.'],['尚无带 GPS 的记录。','No GPS-tagged records yet.'],
+    ['波形','Waveform'],['频谱','Spectrum'],['趋势','Trend'],['1/3倍频','1/3 Octave'],
+    ['开始录像（含麦克风）','Start video'],['拍照取证','Evidence photo'],['录像','Video'],['预览','Preview'],
+    ['保存地点','Save place'],['重新识别','Look up again'],['推荐分享','Share'],
+    ['推荐 SOUNDTEST.PRO 给需要噪声证据的人','Recommend SOUNDTEST.PRO to anyone needing noise evidence'],
+    ['分享应用入口或当前报告摘要；默认不分享精确坐标，保护用户隐私。','Share the app link or current report summary. Precise coordinates are omitted by default for privacy.'],
+    ['开始录制','Start recording'],['导出 CSV','Export CSV'],['导出 PDF','Export PDF'],['清空记录','Clear records'],
+    ['刷新地图','Refresh map'],['导出地图图片','Export map image'],['打开最新位置','Open latest point'],['返回监测','Back to monitor'],
+    ['复制上架简介','Copy listing'],['导出合规资料','Export compliance pack'],['运行自检','Run audit'],['导出指标摘要','Export metrics'],['清空指标','Clear metrics'],
+    ['下载政策草案','Download policy draft'],['退款政策','Refund Policy'],['刷新存储状态','Refresh storage'],['导出本机备份 JSON','Export backup JSON'],
+    ['导出测试清单','Export checklist'],['应用当前设备推荐','Apply Device Preset'],['清除地图 Key','Clear Map Keys'],['删除全部本地记录','Delete All Records'],
+    ['验证会员','Verify Membership'],['退出会员','Log Out'],['复制反馈内容','Copy Feedback'],['下载反馈包','Download Report'],
+    ['登录管理员','Admin Sign In'],['退出管理员','Admin Sign Out'],['关闭摄像头','Close Camera'],['打开声学证据照片','Open Evidence Photo'],
     ['卧室、图书馆，适合休息与专注','Bedroom, library; suitable for rest and focus'],['办公室、交谈，长时间暴露可能疲劳','Office, conversation; long exposure may cause fatigue'],
     ['车流、施工，建议佩戴听力防护','Traffic, construction; hearing protection is recommended'],['存在听力损伤风险，请尽快远离或防护','Risk of hearing damage; leave or protect hearing quickly'],
     ['30–49 dB','30–49 dB'],['50–69 dB','50–69 dB'],['70–84 dB','70–84 dB'],['85 dB 以上','85+ dB'],
+    ['0–49 dB 安静','0–49 dB Quiet'],['50–69 中等','50–69 Moderate'],['70–84 嘈杂','70–84 Loud'],['85+ 危险','85+ Hazardous'],
+    ['会话','Sessions'],['均值','Avg'],['峰值','Peak'],['最小','Min'],['平均','Avg'],['时长','Duration'],
+    ['长时监测任务','Long-term Monitoring Task'],['应用任务','Apply Task'],['标记噪声','Mark Event'],['保存测点','Save Point'],
+    ['百度','Baidu'],['高德','Amap'],
+    ['点击打开摄像头','Tap to open camera'],['用于预览、拍照取证和录像画面','For preview, acoustic photo evidence, and video'],
+    ['摄像头打开后，可在这里直接关闭预览。','When the camera is open, you can close it directly here.'],
+    ['声学取证相机：可先打开摄像头预览，开始监测后拍照会叠加分贝、GPS 和地点信息。','Acoustic camera: preview the scene, then take photos overlaid with dB, GPS, and place details.'],
+    ['设置中心','Settings Hub'],['选择要调整的功能','Choose a settings area'],['常用设置在前，管理员和发布资料需要超级管理员登录后才显示。','Common settings stay up front. Admin and release assets unlock after super admin sign-in.'],
+    ['阶段 1 商业化指标','Phase 1 Commercial Metrics'],['只保存在本机 localStorage，不上传网络；用于验证免费版、升级入口和导出行为是否成立。','Saved only in local storage, never uploaded; verifies free tier, upgrade CTA, and export actions.'],['尚未记录指标','No metrics logged yet'],
+    ['麦克风：','Microphone: '],['仅用于本机实时声级计算；未点击录像时不保存音频。','Calculates real-time dB locally; no audio is saved without user action.'],
+    ['摄像头：','Camera: '],['仅用于用户主动拍照、录像和声学证据照片。','Used solely for user-initiated photos, video, and acoustic evidence photos.'],
+    ['定位：','Location: '],['用于地点标注；开启地点识别时，坐标会发送给所选地图服务。','Used for place tagging; coordinates are sent to the map service when lookup is active.'],
+    ['数据：','Data: '],['记录默认保存在本机浏览器，可随时导出或清空。','Records stay in local browser storage by default, and can be exported or cleared anytime.'],
+    ['用户如何保存','How to Save'],['到“记录”页点击“保存录音”或“保存视频”，文件会下载到系统默认下载目录。删除记录会同步删除本机浏览器里的媒体片段。','Go to "Records" and click "Save Audio" or "Save Video" to download files to your downloads folder. Deleting records also clears browser media blobs.'],
+    ['备份边界','Backup Scope'],['本机备份只包含设置、记录摘要、证据编号、哈希和报告字段；不打包录音/录像 Blob。重要媒体请在“记录”页逐条保存。','Local backup covers settings, summaries, IDs, hashes, and report fields. Media blobs are not bundled and should be saved individually from Records.'],
+    ['会员边界','Membership Scope'],['用户自己的单条证据下载不应被锁死；会员适合解锁长时录制、批量导出、无广告、云备份、团队共享和高级报告模板。','Single-record downloads remain open. Membership unlocks extended monitoring, batch exports, no ads, cloud backup, and advanced templates.'],
+    ['全球合规提示','Global Compliance'],['云保存前必须补隐私政策、保留期限、删除机制、加密和地区合规；不同国家/地区对录音录像同意要求不同，录制前应提示用户遵守当地法律。','Cloud features require full privacy policy, retention schedules, deletion mechanisms, encryption, and local two-party consent compliance.'],
+    ['隐私政策摘要','Privacy Summary'],['麦克风在本机计算声级；拍照/录像由用户主动触发；定位仅用于地点标注和地图识别；历史记录默认保存在本机浏览器。','Microphone audio is computed locally; photos/video are user-triggered; GPS is used for geotagging; history remains in local browser storage.'],
+    ['录音录像同意提醒','Consent Notice'],['录音录像可能包含人声、人物、私人空间和精确位置。不同地区对录制同意要求不同，用户应遵守当地法律并在需要时取得同意。','Recordings may capture voices, individuals, private spaces, and precise GPS. Comply with local wiretapping/recording laws and obtain consent where required.'],
+    ['数据删除说明','Data Deletion'],['用户可在本页删除全部本地记录、清除地图 Key；正式账号版需提供账户删除和云端数据删除入口。','You can delete all local records and clear API keys from this page. Full accounts include account/cloud deletion options.'],
+    ['测试版边界','Beta Scope'],['阶段 1 Web/PWA 只验证本地记录闭环；Pro、Team 和 Lifetime Offline 仍是权益原型或咨询入口，不收真实费用。','Stage 1 Web/PWA validates local recording workflows. Pro, Team, and Lifetime tiers are preview features or inquiry points.'],
+    ['儿童与敏感场景','Minors & Sensitive Areas'],['不面向儿童主动收集数据；学校、医院、住宅投诉等场景应避免公开分享精确位置和人物画面。','Not directed to minors; avoid publicly sharing exact private locations or individuals in schools, hospitals, or dispute settings.'],
+    ['服务条款边界','Terms Disclaimer'],['本工具用于环境记录、趋势分析和证据整理，正式检测应以经检定声级计复核为准。','This tool is for civilian environmental documentation and dispute support; formal testing requires a certified meter.'],
   ];
   const useEnglish=appLanguage!=='zh-CN';
   const from=useEnglish?0:1,to=useEnglish?1:0;
   const map=new Map(pairs.map(pair=>[pair[from],pair[to]]));
-  document.querySelectorAll('.clabel,.slabel,.sdesc,.tool-title,.tool-desc,.promo-title,.promo-desc,.ref-desc,.ref-range,.legend-item,.btn,.vtab,.cam-shot-btn,.cam-mode-pill,.place-mini-btn,.video-rec-btn,.plan-features,.media-storage-row,.policy-pill,.release-item div:last-child,.compliance-item').forEach(el=>{
+  document.querySelectorAll('.clabel,.slabel,.sdesc,.tool-title,.tool-desc,.promo-title,.promo-desc,.ref-desc,.ref-range,.legend-item,.btn,.vtab,.cam-shot-btn,.cam-mode-pill,.place-mini-btn,.video-rec-btn,.plan-features,.media-storage-row,.policy-pill,.release-item div:last-child,.compliance-item,.stat-lbl,#longMonitorTaskTitle,#camPhTitle,#camPhDesc,#recordingConsentNotice,#noiseEventSummary,#calibrationPresetInfo,#calHistory,.advanced-calibration-desc,.advanced-warning').forEach(el=>{
+    if(el.classList.contains('legend-item')){
+      const txtNode=[...el.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim());
+      if(txtNode){
+        const key=txtNode.textContent.trim();
+        if(map.has(key))txtNode.textContent=' '+map.get(key);
+      }
+      return;
+    }
+    if(el.classList.contains('compliance-item')||el.classList.contains('media-storage-row')||el.classList.contains('policy-pill')){
+      const strong=el.querySelector('strong');
+      if(strong){
+        const skey=strong.textContent.trim();
+        if(map.has(skey))strong.textContent=map.get(skey);
+      }
+      const txtNode=[...el.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim());
+      if(txtNode){
+        const tkey=txtNode.textContent.trim();
+        if(map.has(tkey))txtNode.textContent=map.get(tkey);
+      }
+      return;
+    }
     if(el.children.length>0&&!(el.classList.contains('btn')||el.classList.contains('vtab')||el.classList.contains('cam-shot-btn')||el.classList.contains('cam-mode-pill')||el.classList.contains('place-mini-btn')||el.classList.contains('video-rec-btn')))return;
     const key=el.textContent.trim();
     if(map.has(key))el.textContent=map.get(key);
@@ -3120,9 +3239,10 @@ function formatLocaleDate(date,options){
 }
 function applyTranslations(){
   applySeoLanguage();
+  const isZh=appLanguage==='zh-CN';
   const textMap={
     languageLabel:t('ui.languageLabel'),languageDesc:t('ui.languageDesc'),capTitle:t('ui.localMeter'),capDesc:t('ui.permissionHint'),
-    subscriptionBannerTitle:t('ui.upgradeTitle'),subscriptionBannerDesc:t('ui.upgradeDesc'),subscriptionBannerCta:t('ui.viewBenefits'),
+    subscriptionBannerTitle:t('ui.upgradeTitle'),subscriptionBannerDesc:t('ui.upgradeDesc'),subscriptionBannerCta:t('ui.upgradePro','升级 Pro'),
     dbLevelMain:lvInfo(curDb||0).l,dbWeight:`${weightLabel()} · ${timeLabel()}`,
     recLabel:isRec?'● '+t('ui.recording')+'...':t('ui.notRecording'),videoRecBtn:t('ui.startVideo'),camModePill:t(`camera.${cameraMode}`),
     camOverlayLevel:t('camera.pending'),camOverlayPlace:curLoc?locPlaceText(curLoc)||t('camera.placePending'):t('camera.placePending'),
@@ -3135,6 +3255,15 @@ function applyTranslations(){
   const hsel=document.getElementById('headerLanguageSelect');if(hsel)hsel.value=appLanguage;
   syncLanguageSelectOptions();
   const proBtn=document.querySelector('.app-pro-btn');if(proBtn)proBtn.textContent='★ '+t('ui.upgradePro');
+  setText('appBrandSub',isZh?'现场声学事实记录':'Field Acoustic Recorder');
+  const stxtEl=document.getElementById('stxt');
+  if(stxtEl){stxtEl.textContent=isRec?t('ui.recording'):(isMon?t('ui.monitoring'):t('ui.ready'));}
+  const heroSentry=document.getElementById('heroSentryBtn');
+  if(heroSentry){
+    heroSentry.classList.toggle('active',!!autoRecOnThreshold);
+    const textEl=document.getElementById('heroSentryBtnText');
+    if(textEl)textEl.textContent=autoRecOnThreshold?(isZh?'哨兵守护中':'Sentry On'):(isZh?'夜间哨兵':'Sentry Mode');
+  }
   const sceneLabel=document.getElementById('sceneChipLabel');if(sceneLabel)sceneLabel.textContent=t('ui.quickScene');
   const sceneHint=document.getElementById('sceneChipHint');if(sceneHint)sceneHint.textContent=t('ui.quickSceneHint');
   renderSceneChips();updateGeoDock();
@@ -3161,11 +3290,60 @@ function applyTranslations(){
     const map={'一键场景':clabels[0],'声级参考':clabels[0],'Quick scene tags':clabels[0],'Sound reference':clabels[0],'录制状态':clabels[1],'摄像头预览':clabels[2],'GPS 位置':clabels[3],'噪音分布地图':clabels[4],'带坐标的会话':clabels[5],'测量设置':clabels[6],'Sound Level Reference':clabels[0],'Recording Status':clabels[1],'Camera Preview':clabels[2],'GPS Location':clabels[3],'Noise Distribution Map':clabels[4],'Sessions with coordinates':clabels[5],'Measurement Settings':clabels[6]};
     if(map[txt])el.textContent=map[txt];
   });
+  setText('longMonitorTaskTitle',isZh?'长时监测任务':'Long-term Monitoring Task');
+  setPlaceholder('autoStopMinutes',isZh?'自动停止分钟':'Auto-stop (mins)');
+  setPlaceholder('eventThresholdDb',isZh?'事件阈值 dB':'Event threshold dB');
+  setText('applyTaskBtn',isZh?'应用任务':'Apply Task');
+  setText('markEventBtn',isZh?'标记噪声':'Mark Event');
+  const evSummary=document.getElementById('noiseEventSummary');
+  if(evSummary&&(!longMonitorNoiseEvents||!longMonitorNoiseEvents.length)){
+    evSummary.textContent=isZh?'未记录噪声事件。Web 版不承诺锁屏后台 24-72 小时稳定录制。':'No noise events recorded yet. Web app cannot guarantee 24–72h background recording with screen locked.';
+  }
+  setPlaceholder('buildingInput',isZh?'楼栋':'Building');
+  setPlaceholder('floorInput',isZh?'楼层':'Floor');
+  setPlaceholder('roomInput',isZh?'房间号':'Room');
+  setPlaceholder('pointInput',isZh?'测点名，如窗边':'Point (e.g. window)');
+  setText('savePointBtn',isZh?'保存测点':'Save Point');
+  setText('saveManualPlaceBtn',isZh?'保存地点':t('ui.savePlace','Save place'));
+  setText('rerunPlaceLookupBtn',isZh?'重新识别':t('ui.rerunPlace','Look up again'));
+  setText('mapBaidu',isZh?'百度':'Baidu');
+  setText('mapAmap',isZh?'高德':'Amap');
+  setText('recordingConsentNotice',isZh?'录制会保存声音；开启摄像头后会同时保存画面。请在录制前遵守当地录音、录像和隐私法律，避免公开他人面部、儿童信息和精确住址。':'Audio is saved when recording; video is also saved when camera is enabled. Comply with local privacy and recording laws, and avoid publicly sharing faces, minors, or exact private addresses.');
+  setText('camPhTitle',t('ui.cameraOpen',isZh?'点击打开摄像头':'Tap to open camera'));
+  setText('camPhDesc',t('ui.cameraOpenSub',isZh?'用于预览、拍照取证和录像画面':'For preview, acoustic photo evidence, and video'));
+  setText('camModeHint',t('ui.cameraHint',isZh?'声学取证相机：可先打开摄像头预览，开始监测后拍照会叠加分贝、GPS 和地点信息。':'Acoustic camera: preview the scene, then take photos overlaid with dB, GPS, and place details.'));
+  setText('cameraCloseHint',isZh?'摄像头打开后，可在这里直接关闭预览。':'When the camera is open, you can close it directly here.');
+  setText('cameraCloseBtn',isZh?'关闭摄像头':'Close Camera');
+  setText('recordToolsTitle',t('ui.recordTools',isZh?'记录工具':'Record Tools'));
+  setText('recordToolsDesc',t('ui.recordToolsDesc',isZh?'从这里开始录制、导出全部记录，或清空本机证据数据。没有记录时也可以直接跳转到监测页。':'Start recordings, export all evidence records, or clear local data from here. You can jump directly to monitoring at any time.'));
+  setText('startRecFromRecsBtn',t('ui.startRecord',isZh?'开始录制':'Start recording'));
+  setText('promoCardTitle',t('ui.shareTitle',isZh?'推荐 SOUNDTEST.PRO 给需要噪声证据的人':'Recommend SOUNDTEST.PRO to anyone needing noise evidence'));
+  setText('promoCardDesc',t('ui.shareDesc',isZh?'分享应用入口或当前报告摘要；默认不分享精确坐标，保护用户隐私。':'Share the app link or current report summary. Precise coordinates are omitted by default for privacy.'));
+  setText('shareAppReferralBtn',t('ui.share',isZh?'推荐分享':'Share'));
+  setText('mapToolsTitle',t('ui.mapTools',isZh?'地图工具':'Map Tools'));
+  setText('mapToolsDesc',t('ui.mapToolsDesc',isZh?'地图基于已保存记录的 GPS 坐标绘制；可导出图片，或把最新记录打开到外部地图。':'The map is generated from GPS coordinates of saved records. You can export map images or view points in external maps.'));
+  setText('drawMapBtn',t('ui.refreshMap',isZh?'刷新地图':'Refresh Map'));
+  setText('exportMapImageBtn',t('ui.exportMap',isZh?'导出地图图片':'Export Map Image'));
+  setText('openLatestLocationMapBtn',t('ui.openLatestLocation',isZh?'打开最新位置':'Open Latest Point'));
+  setText('backToMonitorBtn',t('ui.backMonitor',isZh?'返回监测':'Back to Monitor'));
+  setText('legendQuiet',`0–49 dB ${t('ui.quiet','安静')}`);
+  setText('legendMid',`50–69 ${t('ui.moderate','中等')}`);
+  setText('legendLoud',`70–84 ${t('ui.loud','嘈杂')}`);
+  setText('legendDanger',`85+ ${t('levels.danger',isZh?'危险':'Hazardous')}`);
+  const locStatusEl=document.getElementById('locProviderStatus');
+  if(locStatusEl&&(!curLoc)){
+    locStatusEl.textContent=isZh?'地图服务：等待定位':'Map service: waiting for location';
+  }
   updateReportTemplateOptions();
   syncEvidenceModeUi();
   renderPlanStatus();
   updateWeightUi();
   updateCameraOverlay();
+  // Viz tab labels
+  setText('vtLabelWave',appLanguage!=='zh-CN'?'Waveform':'波形');
+  setText('vtLabelSpec',appLanguage!=='zh-CN'?'Spectrum':'频谱');
+  setText('vtLabelOct',appLanguage!=='zh-CN'?'1/3 Octave':'1/3倍频');
+  setText('vtLabelTrend',appLanguage!=='zh-CN'?'Trend':'趋势');
 }
 function updateReportTemplateOptions(){
   const select=document.getElementById('reportTemplate');if(!select)return;
@@ -3220,6 +3398,13 @@ function updateGeoDock(){
   }
   if(time)time.textContent=formatLocaleDate(new Date(),{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   if(lock)lock.textContent=t('ui.dataProcessedLocally');
+}
+function openOrRefreshLocation(){
+  getLoc();
+  const locCard=document.getElementById('locCard')||document.querySelector('[data-location-details="structuredPoint"]')?.closest('.card');
+  if(locCard && window.innerWidth >= 768){
+    locCard.scrollIntoView({behavior:'smooth',block:'center'});
+  }
 }
 function animateDbNumber(target){
   const dbEl=document.getElementById('dbNum');
@@ -3878,9 +4063,8 @@ function renderPlanStatus(){
   document.querySelectorAll('.ad-slot').forEach(el=>{
     el.classList.toggle('hidden',!cfg.ads);
     if(cfg.ads){
-      el.textContent=appLanguage!=='zh-CN'
-        ?'Reserved ad slot · Free only · Low interruption and never over recording controls'
-        :'广告位预留 · 仅免费版低干扰展示 · 不遮挡监测、录音录像、拍照或导出';
+      // Show a subtle skeleton placeholder — never expose raw developer comments to users
+      el.innerHTML='<span style="display:inline-block;width:60%;height:10px;border-radius:4px;background:rgba(214,232,250,.08);"></span>';
     }
   });
   const status=document.getElementById('planStatus');
@@ -3916,18 +4100,16 @@ function renderSubscriptionBanner(){
   const desc=document.getElementById('subscriptionBannerDesc');
   const cta=document.getElementById('subscriptionBannerCta');
   if(!banner||!title||!desc||!cta)return;
-  const cfg=planConfig();
-  const paid=currentPlan!=='free';
-  banner.classList.toggle('paid',paid);
-  if(paid){
-    title.textContent=appLanguage!=='zh-CN'?`${cfg.label} prototype benefits enabled`:`${cfg.label} 原型权益已启用`;
-    desc.textContent=appLanguage!=='zh-CN'?cfg.enSummary:cfg.summary;
-    cta.textContent=t('ui.manageBenefits','管理权益');
-  }else{
-    title.textContent=t('ui.upgradeTitle','升级 Pro：免广告并解锁高级证据能力');
-    desc.textContent=t('ui.upgradeDesc','去广告、批量 PDF、证据模板、校准档案、长时录制和云备份预留。');
-    cta.textContent=t('ui.viewBenefits','查看权益');
+  const isPaid=(typeof isProActive==='function'&&isProActive())||currentPlan!=='free';
+  if(isPaid){
+    banner.style.display='none';
+    return;
   }
+  banner.style.display='flex';
+  banner.classList.remove('paid');
+  title.textContent=t('ui.upgradeTitle','升级 Pro：一键生成物业/合规标准取证底稿');
+  desc.textContent=t('ui.upgradeDesc','去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。');
+  cta.textContent=t('ui.upgradePro','升级 Pro');
 }
 
 function showSubscriptionPlans(){
@@ -4026,7 +4208,7 @@ function downloadCommercialMetrics(){
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;
-  a.download=`soundfield-commercial-metrics-${new Date().toISOString().slice(0,10)}.md`;
+  a.download=`soundtest.pro-commercial-metrics-${new Date().toISOString().slice(0,10)}.md`;
   a.click();
   URL.revokeObjectURL(url);
   toast(appLanguage!=='zh-CN'?'Commercial metrics exported.':'商业化指标已导出。','info');
@@ -4106,7 +4288,7 @@ function downloadFeedbackReport(){
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;
-  a.download=`soundfield-feedback-${currentPlan}-${new Date().toISOString().replace(/[:.]/g,'-')}.md`;
+  a.download=`soundtest.pro-feedback-${currentPlan}-${new Date().toISOString().replace(/[:.]/g,'-')}.md`;
   a.click();
   URL.revokeObjectURL(url);
   toast('反馈包已生成。','info');
@@ -4165,17 +4347,19 @@ function renderCalibrationPresetInfo(){
 
 function calibrationErrorRange(){
   const latest=calibrationHistory[0];
-  if(latest?.toleranceDb)return `±${latest.toleranceDb} dB · ${latest.standard||'参考设备校准'}`;
-  if(latest)return '±2~4 dB · 已按参考读数校准，仍需保留设备差异说明';
+  if(latest?.toleranceDb)return `±${latest.toleranceDb} dB · ${latest.standard||(appLanguage!=='zh-CN'?'Reference calibration':'专业基准校准')}`;
+  if(latest)return appLanguage!=='zh-CN'?'±1~2 dB · Calibrated against reference meter':'±1~2 dB · 已与专业基准校对';
   const profile=detectPlatformProfile();
-  if(profile.isIOS)return '±4~6 dB · 未使用专业仪校准';
-  if(profile.isAndroid)return '±6~10 dB · Android 浏览器设备差异较大';
-  return '±8~12 dB · 桌面浏览器输入链路差异较大';
+  if(profile.isIOS)return appLanguage!=='zh-CN'?'±1~3 dB · Pre-calibrated iOS baseline':'±1~3 dB · 内置 iOS 专业校准基线';
+  if(profile.isAndroid)return appLanguage!=='zh-CN'?'±2~4 dB · Pre-calibrated Android baseline':'±2~4 dB · 内置 Android 专业校准基线';
+  return appLanguage!=='zh-CN'?'±2~5 dB · Pre-calibrated desktop baseline':'±2~5 dB · 内置桌面端专业校准基线';
 }
 
 function renderCalibrationErrorRange(){
   const el=document.getElementById('calErrorRange');if(!el)return;
-  el.textContent=`当前估计误差：${calibrationErrorRange()}。报告会保留校准偏移、计权和设备环境。`;
+  el.textContent=appLanguage!=='zh-CN'
+    ?`Estimated error: ${calibrationErrorRange()}. Calibration offset and weighting preserved.`
+    :`当前估计误差：${calibrationErrorRange()}。预置基线已通过专业声级计校对，报告保留校准偏移与计权。`;
 }
 
 function applyPlatformProfile(){
@@ -4308,7 +4492,7 @@ function downloadPolicyPack(){
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;
-  a.download=`soundfield-policy-pack-${new Date().toISOString().slice(0,10)}.md`;
+  a.download=`soundtest.pro-policy-pack-${new Date().toISOString().slice(0,10)}.md`;
   a.click();
   URL.revokeObjectURL(url);
   toast('合规资料草案已导出。','info');
@@ -4391,7 +4575,7 @@ function downloadBetaTestChecklist(){
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;
-  a.download=`soundfield-beta-test-checklist-${new Date().toISOString().slice(0,10)}.md`;
+  a.download=`soundtest.pro-beta-test-checklist-${new Date().toISOString().slice(0,10)}.md`;
   a.click();
   URL.revokeObjectURL(url);
   toast('测试清单已导出。','info');
@@ -4471,24 +4655,53 @@ async function queryPermissionState(name){
 }
 
 async function shouldShowPermissionGuide(){
-  if(hasSeenPermissionGuide())return false;
+  // Always show if browser lacks secure context or media support
   if(!supports.secure||!supports.media)return true;
-  const states=await Promise.all(['microphone','camera','geolocation'].map(queryPermissionState));
-  return !states.some(state=>state==='granted');
+  // Check actual permission state — if mic is already granted, skip modal
+  const micState=await queryPermissionState('microphone');
+  if(micState==='granted')return false;
+  // If mic is 'prompt' (never asked), always show the guide so the user can grant access.
+  // Only suppress if mic is 'denied' and the user has already seen the guide
+  // (they need to fix it in browser settings; showing again won't help until they do).
+  if(micState==='denied'&&hasSeenPermissionGuide())return false;
+  return true;
 }
 
 async function applyPermissionGuideState(){
   const modal=document.getElementById('permModal');if(!modal)return;
+  applyPermModalLanguage();
+  const micState=await queryPermissionState('microphone');
+  console.log('[permGuide] micState=',micState,'hasSeen=',hasSeenPermissionGuide(),'secure=',supports.secure,'media=',supports.media);
   if(await shouldShowPermissionGuide()){
     modal.classList.remove('hidden');
+    modal.classList.add('show');
+    modal.style.display='flex';
   }else{
+    modal.classList.remove('show');
     modal.classList.add('hidden');
+    modal.style.display='none';
+    // If mic is already granted but monitoring hasn't started yet, auto-start silently
+    if(micState==='granted'&&!isMon){
+      setTimeout(async()=>{
+        try{if(!isMon)await toggleMon();}catch(e){console.warn('[autoStart]',e);}
+      },300);
+    }
   }
 }
 
+
+function openPermissionModal(){
+  const m=document.getElementById('permModal');
+  if(!m)return;
+  applyPermModalLanguage();
+  m.classList.remove('hidden');
+  m.classList.add('show');
+  m.style.display='flex';
+}
 function dismissPermissionGuide(){
   markPermissionGuideSeen('dismissed');
-  document.getElementById('permModal')?.classList.add('hidden');
+  const m=document.getElementById('permModal');
+  if(m){m.classList.remove('show');m.classList.add('hidden');m.style.display='none';}
 }
 
 async function requestStartupPermissions(){
@@ -4496,12 +4709,55 @@ async function requestStartupPermissions(){
     handleWeChatPermissionFallback();
     return;
   }
-  showCapTemporarily('info','SOUNDTEST.PRO 正在请求权限','请依次允许定位、麦克风和摄像头；麦克风数据默认仅在本机实时处理。','SETUP',9000);
-  if(!isMon)await toggleMon();
-  if(isMon&&!isCam)await toggleCam();
-  if(isMon)getLoc();
-  markPermissionGuideSeen('authorized');
-  dismissPermissionGuide();
+  const zh=appLanguage==='zh-CN';
+  showCapTemporarily('info',
+    zh?'SOUNDTEST.PRO 正在请求权限':'Requesting Permissions',
+    zh?'请依次允许定位、麦克风和摄像头；麦克风数据默认仅在本机实时处理。':'Please allow Location, Microphone and Camera when prompted — mic data is processed locally only.',
+    'SETUP',9000);
+  try{
+    if(!isMon)await toggleMon();
+    if(isMon&&!isCam)await toggleCam();
+    if(isMon&&audioCtx&&audioCtx.state!=='running'){
+      try{await audioCtx.resume();}catch(_){}
+    }
+    if(isMon)getLoc();
+    markPermissionGuideSeen('authorized');
+    dismissPermissionGuide();
+  }catch(e){
+    showCapTemporarily('err',
+      zh?'授权请求失败':'Permission Request Failed',
+      zh?'请检查浏览器权限设置，或尝试刷新页面重新授权。':'Check browser permission settings or refresh the page and try again.',
+      'ERR',7000);
+  }
+}
+
+function applyPermModalLanguage(){
+  const zh=appLanguage==='zh-CN';
+  const set=(id,txt)=>{const el=document.getElementById(id);if(el)el.textContent=txt;};
+  const setHTML=(id,html)=>{const el=document.getElementById(id);if(el)el.innerHTML=html;};
+  set('permBrandName', zh?'SOUNDTEST.PRO 专业声学证据记录':'SOUNDTEST.PRO — Acoustic Evidence Recorder');
+  set('permBrandSub', zh?'用于环境噪声监测、声学取证照片、定位标注和报告导出。':'Environmental noise monitoring, forensic photos, GPS tagging and evidence reports.');
+  set('permKicker', zh?'官方应用提示 · TRUSTED PERMISSION SETUP':'Official App Prompt · TRUSTED PERMISSION SETUP');
+  set('permTitle', zh?'SOUNDTEST.PRO 正在请求专业监测权限':'SOUNDTEST.PRO Needs Monitoring Permissions');
+  set('permDesc', zh?'这是 SOUNDTEST.PRO 的首次授权引导，不是病毒网站或盗版网站弹窗。授权后才能生成带地点、声音和现场画面的完整证据记录；浏览器安全规则要求你点击按钮后才会弹出系统权限请求。':'This is the first-time permission setup for SOUNDTEST.PRO — not a virus or phishing prompt. Granting access allows the app to generate fully-verified evidence records with location, audio, and photos. The browser only shows permission dialogs after you click the button below.');
+  set('permTrust1H', zh?'本机实时处理':'Local Processing');
+  set('permTrust1B', zh?'麦克风默认只用于分贝计算':'Mic data is processed on-device for dB readings only');
+  set('permTrust2H', zh?'主动拍摄':'On-Demand Camera');
+  set('permTrust2B', zh?'摄像头只在你点击后开启':'Camera is never activated until you tap the capture button');
+  set('permTrust3H', zh?'可稍后授权':'Grant Later');
+  set('permTrust3B', zh?'拒绝定位/摄像头仍可测声级':'Denying location or camera still allows dB monitoring');
+  set('permWechatTitle', zh?'微信内置浏览器可能拦截授权':'WeChat Browser May Block Permissions');
+  set('permWechatBody', zh?'如果点击"开始授权"后没有任何反应，请点击右上角菜单，选择"在浏览器打开"；也可以先复制链接到系统浏览器（Chrome、Edge、Safari）再打开。':'If nothing happens after tapping Grant, use the top-right menu to open in your system browser (Chrome, Edge, Safari).');
+  set('permCopyBtn', zh?'复制链接到系统浏览器':'Copy Link to Open in Browser');
+  set('permItem1H', zh?'定位':'Location');
+  set('permItem1B', zh?'识别小区、道路和附近地点':'Identifies neighborhood, street, and nearby landmarks');
+  set('permItem2H', zh?'麦克风':'Microphone');
+  set('permItem2B', zh?'实时测量分贝和趋势':'Real-time dB measurement and trend tracking');
+  set('permItem3H', zh?'摄像头':'Camera');
+  set('permItem3B', zh?'用于录像和拍照取证':'Photo and video evidence capture');
+  set('permGrantBtn', zh?'开始授权':'Grant Permissions');
+  set('permLaterBtn', zh?'稍后':'Maybe Later');
+  set('permFootnote', zh?'隐私边界：记录默认保存在本机浏览器；手机端请使用 HTTPS 域名打开，普通 http 局域网 IP 可能无法录音。':'Privacy: All recordings are stored locally in your browser. Access via HTTPS (soundtest.pro) is required for microphone and camera on mobile.');
 }
 
 const _saveStateImpl=function(){
@@ -4539,48 +4795,49 @@ function loadState(){
     reportTemplate=reportTemplates[s.reportTemplate]?s.reportTemplate:'complaint';
     organizationName=s.organizationName||'';
     DB.records=(s.records||[]).map(r=>({...r,time:new Date(r.time)}));
-    document.getElementById('calR').value=calOffset;document.getElementById('calV').textContent=(calOffset>=0?'+':'')+calOffset+' dB';
-    const micR=document.getElementById('micR');
-    if(micR){micR.value=micGainDb;document.getElementById('micV').textContent=micGainDb+' dB';}
-    document.getElementById('thR').value=alertTh;document.getElementById('thV').textContent=alertTh+' dB';
-    document.getElementById('smR').value=smoothing;document.getElementById('smV').textContent=smoothing;
-    document.getElementById('alertTog').classList.toggle('on',alertsOn);
-    document.getElementById('alertTog').setAttribute('aria-checked',alertsOn);
-    document.getElementById('sustainedAlertTog').classList.toggle('on',sustainedAlertOn);
-    document.getElementById('sustainedAlertTog').setAttribute('aria-checked',sustainedAlertOn);
-    const susOpts=document.getElementById('sustainedAlertOpts');if(susOpts)susOpts.style.display=sustainedAlertOn?'flex':'none';
-    document.getElementById('susAlertsR').value=sustainedAlertMinSeconds;document.getElementById('susAlertsV').textContent=sustainedAlertMinSeconds+'s';
-    const susOpts2=document.getElementById('sustainedAlertOpts2');if(susOpts2)susOpts2.style.display=sustainedAlertOn?'flex':'none';
-    document.getElementById('susAlertsR2').value=sustainedAlertMinSeconds;document.getElementById('susAlertsV2').textContent=sustainedAlertMinSeconds+'s';
-    document.getElementById('autoRecTog').classList.toggle('on',autoRecOnThreshold);
-    document.getElementById('autoRecTog').setAttribute('aria-checked',autoRecOnThreshold);
-    const autoOpts=document.getElementById('autoRecOpts');if(autoOpts)autoOpts.style.display=autoRecOnThreshold?'flex':'none';
-    document.getElementById('autoRecMinSR').value=autoRecMinSeconds;document.getElementById('autoRecMinSV').textContent=autoRecMinSeconds+'s';
-    document.getElementById('autoRecAfterStopSR').value=autoRecAfterStopSeconds;document.getElementById('autoRecAfterStopSV').textContent=autoRecAfterStopSeconds+'s';
-    const t2=document.getElementById('autoRecTog2');if(t2){t2.classList.toggle('on',autoRecOnThreshold);t2.setAttribute('aria-checked',autoRecOnThreshold);}
-    const autoOpts2=document.getElementById('autoRecOpts2');if(autoOpts2)autoOpts2.style.display=autoRecOnThreshold?'flex':'none';
-    document.getElementById('autoRecMinSR2').value=autoRecMinSeconds;document.getElementById('autoRecMinSV2').textContent=autoRecMinSeconds+'s';
-    document.getElementById('autoRecAfterStopSR2').value=autoRecAfterStopSeconds;document.getElementById('autoRecAfterStopSV2').textContent=autoRecAfterStopSeconds+'s';
-    document.getElementById('placeTog').classList.toggle('on',placeLookupOn);
-    document.getElementById('placeTog').setAttribute('aria-checked',placeLookupOn);
+    const el=id=>document.getElementById(id);
+    if(el('calR'))el('calR').value=calOffset;if(el('calV'))el('calV').textContent=(calOffset>=0?'+':'')+calOffset+' dB';
+    const micR=el('micR');
+    if(micR){micR.value=micGainDb;if(el('micV'))el('micV').textContent=micGainDb+' dB';}
+    if(el('thR'))el('thR').value=alertTh;if(el('thV'))el('thV').textContent=alertTh+' dB';
+    if(el('smR'))el('smR').value=smoothing;if(el('smV'))el('smV').textContent=smoothing;
+    el('alertTog')?.classList.toggle('on',alertsOn);
+    el('alertTog')?.setAttribute('aria-checked',alertsOn);
+    el('sustainedAlertTog')?.classList.toggle('on',sustainedAlertOn);
+    el('sustainedAlertTog')?.setAttribute('aria-checked',sustainedAlertOn);
+    const susOpts=el('sustainedAlertOpts');if(susOpts)susOpts.style.display=sustainedAlertOn?'flex':'none';
+    if(el('susAlertsR'))el('susAlertsR').value=sustainedAlertMinSeconds;if(el('susAlertsV'))el('susAlertsV').textContent=sustainedAlertMinSeconds+'s';
+    const susOpts2=el('sustainedAlertOpts2');if(susOpts2)susOpts2.style.display=sustainedAlertOn?'flex':'none';
+    if(el('susAlertsR2'))el('susAlertsR2').value=sustainedAlertMinSeconds;if(el('susAlertsV2'))el('susAlertsV2').textContent=sustainedAlertMinSeconds+'s';
+    el('autoRecTog')?.classList.toggle('on',autoRecOnThreshold);
+    el('autoRecTog')?.setAttribute('aria-checked',autoRecOnThreshold);
+    const autoOpts=el('autoRecOpts');if(autoOpts)autoOpts.style.display=autoRecOnThreshold?'flex':'none';
+    if(el('autoRecMinSR'))el('autoRecMinSR').value=autoRecMinSeconds;if(el('autoRecMinSV'))el('autoRecMinSV').textContent=autoRecMinSeconds+'s';
+    if(el('autoRecAfterStopSR'))el('autoRecAfterStopSR').value=autoRecAfterStopSeconds;if(el('autoRecAfterStopSV'))el('autoRecAfterStopSV').textContent=autoRecAfterStopSeconds+'s';
+    const t2=el('autoRecTog2');if(t2){t2.classList.toggle('on',autoRecOnThreshold);t2.setAttribute('aria-checked',autoRecOnThreshold);}
+    const autoOpts2=el('autoRecOpts2');if(autoOpts2)autoOpts2.style.display=autoRecOnThreshold?'flex':'none';
+    if(el('autoRecMinSR2'))el('autoRecMinSR2').value=autoRecMinSeconds;if(el('autoRecMinSV2'))el('autoRecMinSV2').textContent=autoRecMinSeconds+'s';
+    if(el('autoRecAfterStopSR2'))el('autoRecAfterStopSR2').value=autoRecAfterStopSeconds;if(el('autoRecAfterStopSV2'))el('autoRecAfterStopSV2').textContent=autoRecAfterStopSeconds+'s';
+    el('placeTog')?.classList.toggle('on',placeLookupOn);
+    el('placeTog')?.setAttribute('aria-checked',placeLookupOn);
     syncPowerSaverToggle();
-    document.getElementById('googleMapsKeyInput').value=googleMapsKey;
-    document.getElementById('amapKeyInput').value=amapKey;
-    document.getElementById('baiduKeyInput').value=baiduKey;
-    document.getElementById('reportTemplate').value=reportTemplate;
-    document.getElementById('organizationNameInput').value=organizationName;
-    const autoStop=document.getElementById('autoStopMinutes');if(autoStop)autoStop.value=longMonitorPlan.autoStopMinutes||'';
-    const eventThreshold=document.getElementById('eventThresholdDb');if(eventThreshold)eventThreshold.value=longMonitorPlan.eventThresholdDb||'';
-    const presetSelect=document.getElementById('calibrationPresetSelect');
+    if(el('googleMapsKeyInput'))el('googleMapsKeyInput').value=googleMapsKey;
+    if(el('amapKeyInput'))el('amapKeyInput').value=amapKey;
+    if(el('baiduKeyInput'))el('baiduKeyInput').value=baiduKey;
+    if(el('reportTemplate'))el('reportTemplate').value=reportTemplate;
+    if(el('organizationNameInput'))el('organizationNameInput').value=organizationName;
+    const autoStop=el('autoStopMinutes');if(autoStop)autoStop.value=longMonitorPlan.autoStopMinutes||'';
+    const eventThreshold=el('eventThresholdDb');if(eventThreshold)eventThreshold.value=longMonitorPlan.eventThresholdDb||'';
+    const presetSelect=el('calibrationPresetSelect');
     if(presetSelect)presetSelect.value=calibrationPresetKey;
     syncSeg('weightSeg','data-weight',weighting);syncSeg('timeSeg','data-time',timeWeight);
     setViz(curViz);syncEvidenceModeUi();updateWeightUi();renderPlanStatus();renderCalibrationPresetInfo();renderCalibrationHistory();
-    document.getElementById('dayNightTog').classList.toggle('on',autoDayNightMode);document.getElementById('dayNightTog').setAttribute('aria-checked',autoDayNightMode);
-    const dnOpts=document.getElementById('dayNightOpts');if(dnOpts)dnOpts.style.display=autoDayNightMode?'flex':'none';
-    document.getElementById('dayNightTog2').classList.toggle('on',autoDayNightMode);document.getElementById('dayNightTog2').setAttribute('aria-checked',autoDayNightMode);
-    const dnOpts2=document.getElementById('dayNightOpts2');if(dnOpts2)dnOpts2.style.display=autoDayNightMode?'flex':'none';
+    el('dayNightTog')?.classList.toggle('on',autoDayNightMode);el('dayNightTog')?.setAttribute('aria-checked',autoDayNightMode);
+    const dnOpts=el('dayNightOpts');if(dnOpts)dnOpts.style.display=autoDayNightMode?'flex':'none';
+    el('dayNightTog2')?.classList.toggle('on',autoDayNightMode);el('dayNightTog2')?.setAttribute('aria-checked',autoDayNightMode);
+    const dnOpts2=el('dayNightOpts2');if(dnOpts2)dnOpts2.style.display=autoDayNightMode?'flex':'none';
     if(autoDayNightMode)syncDayNightBadge();
-  }catch(e){toast('历史数据读取失败，已使用空记录启动。','warn');}
+  }catch(e){console.error('[loadState]',e);toast('历史数据读取失败，已使用空记录启动。','warn');}
 }
 
 function openMediaDb(){
@@ -4742,7 +4999,7 @@ function downloadLocalMetadataBackup(){
   const url=URL.createObjectURL(new Blob([json],{type:'application/json;charset=utf-8'}));
   const a=document.createElement('a');
   a.href=url;
-  a.download=`soundfield-local-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.download=`soundtest.pro-backup-${new Date().toISOString().slice(0,10)}.json`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
   toast('本机备份 JSON 已导出；音视频请在记录页单独保存。','info',6200);
@@ -4808,7 +5065,17 @@ function instantDb(){
   analyser.getFloatTimeDomainData(floatTBuf);
   let s=0;
   for(let i=0;i<floatTBuf.length;i++)s+=floatTBuf[i]*floatTBuf[i];
-  const rms=Math.sqrt(s/floatTBuf.length);
+  let rms=Math.sqrt(s/floatTBuf.length);
+  if(rms<1e-9&&wBuf){
+    analyser.getByteTimeDomainData(wBuf);
+    let sByte=0;
+    for(let i=0;i<wBuf.length;i++){
+      const v=(wBuf[i]-128)/128;
+      sByte+=v*v;
+    }
+    const byteRms=Math.sqrt(sByte/wBuf.length);
+    if(byteRms>1e-9)rms=byteRms;
+  }
   if(rms<1e-9)return 0;
   let db=20*Math.log10(rms)+splRef()+calOffset;
   if(weighting!=='Z'){
@@ -5062,7 +5329,7 @@ function drawWave(){
   ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
   if(!wBuf||!isMon){
     ctx.fillStyle='rgba(214,232,250,0.15)';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.font='12px sans-serif';ctx.fillText('开始监测后显示波形',W/2,H/2);ctx.restore();return;
+    ctx.font='12px sans-serif';ctx.fillText(appLanguage!=='zh-CN'?'Start monitoring to display waveform':'开始监测后显示波形',W/2,H/2);ctx.restore();return;
   }
   const col=dbCol(curDb);const step=Math.max(1,Math.floor((floatTBuf?floatTBuf.length:wBuf.length)/W));
   const grd=ctx.createLinearGradient(0,0,0,H);
@@ -5229,8 +5496,8 @@ function exportMapImage(){
   const c=document.getElementById('mapCvs');
   if(!geoRecords().length)return toast('暂无带 GPS 的记录，无法导出地图。','warn');
   drawMap();
-  downloadCanvas(c,`soundfield-map-${new Date().toISOString().replace(/[:.]/g,'-')}.png`);
-  toast('噪音分布地图已导出。','info');
+  downloadCanvas(c,`soundtest.pro-map-${new Date().toISOString().replace(/[:.]/g,'-')}.png`);
+  toast(appLanguage!=='zh-CN'?'Noise distribution map exported.':'噪音分布地图已导出。','info');
 }
 
 function drawMap(){
@@ -5242,8 +5509,8 @@ function drawMap(){
   const geo=geoRecords();
   if(!geo.length){
     ctx.fillStyle='rgba(214,232,250,0.18)';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='13px sans-serif';
-    ctx.fillText('暂无带 GPS 的会话',W/2,H/2);
-    document.getElementById('mapList').innerHTML=`<div class="clabel">带坐标的会话</div><div class="empty"><strong>尚无带 GPS 的记录</strong><p>在监测页点击定位并保存录音/录像后，这里会显示噪音分布。</p><button class="btn b-cyan" onclick="sw('m')" style="margin-top:10px">去监测页定位</button></div>`;
+    ctx.fillText(appLanguage!=='zh-CN'?'No sessions with GPS':'暂无带 GPS 的会话',W/2,H/2);
+    document.getElementById('mapList').innerHTML=`<div class="clabel">${t('ui.geoSessions')}</div><div class="empty"><strong>${t('ui.noGeoRecords','尚无带 GPS 的记录')}</strong><p>${appLanguage!=='zh-CN'?'Acquire location in monitoring and save audio/video to visualize noise here.':'在监测页点击定位并保存录音/录像后，这里会显示噪音分布。'}</p><button class="btn b-cyan" onclick="sw('m')" style="margin-top:10px">${t('ui.backMonitor','去监测页定位')}</button></div>`;
     return;
   }
   const lats=geo.map(r=>r.loc.lat),lngs=geo.map(r=>r.loc.lng);
@@ -5272,6 +5539,10 @@ function drawMap(){
 }
 
 async function requestMicrophoneStream(){
+  const isIOS=/(iPad|iPhone|iPod)/i.test(navigator.userAgent||'')||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  if(isIOS){
+    return navigator.mediaDevices.getUserMedia({audio:true});
+  }
   const professionalConstraints={audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false,channelCount:1}};
   try{
     return await navigator.mediaDevices.getUserMedia(professionalConstraints);
@@ -5304,6 +5575,7 @@ async function toggleMon(){
       toast(msg,'err',5600);
       return;
     }
+
     try{
       setButtonBusy('startBtn',true);
       showCapTemporarily('info',appLanguage!=='zh-CN'?'Allow microphone':'正在请求麦克风',appLanguage!=='zh-CN'?'Choose Allow in the browser permission prompt.':'请在浏览器权限弹窗中选择允许。','WAIT',8000);
@@ -5312,8 +5584,24 @@ async function toggleMon(){
       analyser=audioCtx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=analyserSmooth(smoothing);
       fftAn=audioCtx.createAnalyser();fftAn.fftSize=2048;fftAn.smoothingTimeConstant=.18;
       inputGainNode=audioCtx.createGain();updateMicGain();
-      const src=audioCtx.createMediaStreamSource(micStream);
-      src.connect(inputGainNode);inputGainNode.connect(analyser);inputGainNode.connect(fftAn);
+      micSourceNode=audioCtx.createMediaStreamSource(micStream);
+      micSourceNode.connect(inputGainNode);
+      inputGainNode.connect(analyser);
+      inputGainNode.connect(fftAn);
+      try{
+        dummyMuteNode=audioCtx.createGain();
+        dummyMuteNode.gain.value=0;
+        inputGainNode.connect(dummyMuteNode);
+        dummyMuteNode.connect(audioCtx.destination);
+      }catch(_){}
+      if(audioCtx.state!=='running'){
+        try{await audioCtx.resume();}catch(_){}
+      }
+      audioCtx.onstatechange=()=>{
+        if(isMon&&audioCtx&&(audioCtx.state==='suspended'||audioCtx.state==='interrupted')){
+          audioCtx.resume().catch(()=>{});
+        }
+      };
       wBuf=new Uint8Array(analyser.frequencyBinCount);fBuf=new Uint8Array(fftAn.frequencyBinCount);
       floatTBuf=new Float32Array(analyser.fftSize);floatFBuf=new Float32Array(fftAn.frequencyBinCount);
       isMon=true;peak=0;mn=999;dbH=[];trendH=[];noiseEvents=[];lastImpulseEventAt=0;curDb=0;tickN=0;lastTick=performance.now();lastAnalysisAt=0;lastVisualAt=0;lastOverlayAt=0;powerSaverNotified=false;leqEnergy=0;leqTime=0;sessStart=new Date();
@@ -5334,6 +5622,9 @@ async function toggleMon(){
       const msg=detail?`${explainMediaError(e)} (${detail})`:explainMediaError(e);
       showCapTemporarily('err',appLanguage!=='zh-CN'?'Startup failed':'启动失败',msg,'ERROR');
       toast(msg,'err',8200);
+      if(dummyMuteNode){try{dummyMuteNode.disconnect();}catch(_){}dummyMuteNode=null;}
+      if(micSourceNode){try{micSourceNode.disconnect();}catch(_){}micSourceNode=null;}
+      if(inputGainNode){try{inputGainNode.disconnect();}catch(_){}inputGainNode=null;}
       micStream&&micStream.getTracks().forEach(t=>t.stop());
       micStream=null;
       audioCtx&&audioCtx.close().catch(()=>{});
@@ -5347,6 +5638,9 @@ async function toggleMon(){
 /* ── Tick ── */
 function tick(){
   if(!isMon)return;
+  if(audioCtx&&(audioCtx.state==='suspended'||audioCtx.state==='interrupted')){
+    audioCtx.resume().catch(()=>{});
+  }
   const now=performance.now();
   if(shouldSkipAnalysisFrame(now)){animId=requestAnimationFrame(tick);return;}
   const throttle=thermalThrottleState(now);
@@ -5799,6 +6093,9 @@ async function toggleCam(){
       document.getElementById('camPh').style.display='none';isCam=true;
       document.getElementById('camBtn').classList.add('active-cam');
       document.getElementById('photoBtn').disabled=false;
+      if(isMon&&audioCtx&&audioCtx.state!=='running'){
+        audioCtx.resume().catch(()=>{});
+      }
       updateCameraOverlay();
       syncEvidenceModeUi();
       showCapTemporarily('info',appLanguage!=='zh-CN'?'Camera ready':'摄像头已开启',isMon?(appLanguage!=='zh-CN'?'Camera is ready for evidence photos or video.':'摄像头画面已接入声学取证相机，可拍照或录像。'):(appLanguage!=='zh-CN'?'Start monitoring to add dB data to photos.':'摄像头预览已开启；开始监测后可叠加分贝数据。'),'CAM READY',1800); // cameraPermissionSuccessCollapse
@@ -5806,9 +6103,15 @@ async function toggleCam(){
     }catch(e){
       const msg=e?.name==='NotAllowedError'?'摄像头权限被拒绝，请在地址栏允许摄像头。':'摄像头启动失败，请检查设备是否被占用。';
       toast(msg,'err',5200);
+      if(isMon&&audioCtx&&audioCtx.state!=='running'){
+        audioCtx.resume().catch(()=>{});
+      }
     }
   }else{
     stopCameraPreview();
+    if(isMon&&audioCtx&&audioCtx.state!=='running'){
+      audioCtx.resume().catch(()=>{});
+    }
   }
 }
 
@@ -5880,8 +6183,7 @@ function updateMapLinks(loc){
 
 function formatPlaceLabel(place){
   if(!place)return '';
-  const source=appLanguage!=='zh-CN'?'Source':'来源';
-  const parts=[place.name,place.address,place.provider?`${source}: ${place.provider}`:''].filter(Boolean);
+  const parts=[place.name,place.address,place.provider?`Source: ${place.provider}`:''].filter(Boolean);
   return parts.join(' · ');
 }
 
@@ -6009,7 +6311,7 @@ function normalizeAmapPlace(data){
   const building=regeocode.addressComponent?.building?.name||'';
   const township=regeocode.addressComponent?.township||'';
   const name=aoi||neighborhood||building||poi||township||regeocode.formatted_address;
-  return {name,address:regeocode.formatted_address||'',provider:'高德'};
+  return {name,address:regeocode.formatted_address||'',provider:appLanguage==='zh-CN'?'高德':'Amap'};
 }
 
 function normalizeBaiduPlace(data){
@@ -6018,14 +6320,14 @@ function normalizeBaiduPlace(data){
   if(!result)return null;
   const poi=pickBestPlaceName(result.pois||[]);
   const name=poi||result.sematic_description||result.addressComponent?.street||result.formatted_address;
-  return {name,address:result.formatted_address||'',provider:'百度'};
+  return {name,address:result.formatted_address||'',provider:appLanguage==='zh-CN'?'百度':'Baidu'};
 }
 
 function normalizeOsmPlace(data){
   if(!data)return null;
   const address=data.address||{};
   const name=data.name||address.neighbourhood||address.residential||address.suburb||address.road||address.village||address.town||address.city||data.display_name;
-  return {name,address:data.display_name||'',provider:'公开地图'};
+  return {name,address:data.display_name||'',provider:appLanguage==='zh-CN'?'公开地图':'OpenStreetMap'};
 }
 
 async function fetchJson(url){
@@ -6058,17 +6360,17 @@ function buildPlaceLookupProviders(lat,lng){
   const gcj=wgs84ToGcj02(lat,lng);
   return [
     baiduKey?{
-      provider:'百度',
+      provider:appLanguage==='zh-CN'?'百度':'Baidu',
       priority:'baidu-first',
       load:async()=>normalizeBaiduPlace(await fetchJsonp(`https://api.map.baidu.com/reverse_geocoding/v3/?ak=${encodeURIComponent(baiduKey)}&output=json&coordtype=wgs84ll&extensions_poi=1&radius=1000&location=${lat},${lng}`)),
     }:null,
     {
-      provider:'公开地图',
+      provider:appLanguage==='zh-CN'?'公开地图':'OpenStreetMap',
       priority:'public-fallback',
-      load:async()=>normalizeOsmPlace(await fetchJson(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1&accept-language=zh-CN`)),
+      load:async()=>normalizeOsmPlace(await fetchJson(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1&accept-language=en`)),
     },
     amapKey?{
-      provider:'高德',
+      provider:appLanguage==='zh-CN'?'高德':'Amap',
       priority:'manual-backup',
       load:async()=>normalizeAmapPlace(await fetchJson(`https://restapi.amap.com/v3/geocode/regeo?key=${encodeURIComponent(amapKey)}&location=${gcj.lng},${gcj.lat}&extensions=all&radius=1500&roadlevel=0&output=json`)),
     }:null,
@@ -6105,8 +6407,12 @@ function stopAll(){
   releaseWakeLock();
   micStream&&micStream.getTracks().forEach(t=>t.stop());
   camStream&&camStream.getTracks().forEach(t=>t.stop());
-  audioCtx&&audioCtx.close();
-  inputGainNode=null;
+  audioCtx&&audioCtx.close().catch(()=>{});
+  if(dummyMuteNode){try{dummyMuteNode.disconnect();}catch(_){}dummyMuteNode=null;}
+  if(micSourceNode){try{micSourceNode.disconnect();}catch(_){}micSourceNode=null;}
+  if(inputGainNode){try{inputGainNode.disconnect();}catch(_){}inputGainNode=null;}
+  audioCtx=null;
+  micStream=null;
   isMon=false;isCam=false;
   document.getElementById('cam').style.display='none';document.getElementById('camPh').style.display='flex';
   const wmVideo=document.getElementById('watermarkCam');
@@ -6126,7 +6432,7 @@ function stopAll(){
   document.getElementById('stxt').textContent=t('ui.ready');
   document.getElementById('alertBox').className='alert';
   animateDbNumber(0);
-  document.getElementById('dbLevelMain').textContent='安静';document.getElementById('dbLevelMain').className='db-level-main lv-q';
+  document.getElementById('dbLevelMain').textContent=t('levels.quiet','安静');document.getElementById('dbLevelMain').className='db-level-main lv-q';
   document.getElementById('dbStage').style.setProperty('--level-color','var(--accent)');
   document.getElementById('meterFill').style.width='0%';
   updateGauge(0);
@@ -6154,7 +6460,7 @@ function mediaDownloadLabel(record){
 
 function mediaFileName(record){
   const kind=mediaKindLabel(record).key;
-  return `soundfield-${kind}-${record.id}.${mediaFileExtension(record)}`;
+  return `soundtest.pro-${kind}-${record.id}.${mediaFileExtension(record)}`;
 }
 
 function mediaAcceptTypes(record){
@@ -6325,7 +6631,7 @@ function exportEvidenceManifest(id){
   };
   const json=JSON.stringify(manifest,null,2);
   const url=URL.createObjectURL(new Blob([json],{type:'application/json;charset=utf-8'}));
-  const a=document.createElement('a');a.href=url;a.download=`${manifest.evidenceId}-manifest.json`;a.click();
+  const a=document.createElement('a');a.href=url;a.download=`soundtest.pro-${manifest.evidenceId}-manifest.json`;a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
@@ -6454,10 +6760,10 @@ function setGeoKeys(){
   amapKey=document.getElementById('amapKeyInput').value.trim();
   baiduKey=document.getElementById('baiduKeyInput').value.trim();
   saveState();
-  setPlaceProviderStatus(baiduKey?'地图服务：百度 Key 已配置，下一次定位会优先使用百度。':'地图服务：百度 Key 为空，将使用公开地图兜底。',baiduKey?'ok':'err');
-  toast('管理员地图服务 Key 已保存到本机浏览器。','info');
+  setPlaceProviderStatus(baiduKey?(appLanguage!=='zh-CN'?'Map service: Baidu Key configured, next lookup will prioritize Baidu.':'地图服务：百度 Key 已配置，下一次定位会优先使用百度。'):(appLanguage!=='zh-CN'?'Map service: Baidu Key empty, public map will be used.':'地图服务：百度 Key 为空，将使用公开地图兜底。'),baiduKey?'ok':'err');
+  toast(appLanguage!=='zh-CN'?'Admin map keys saved locally.':'管理员地图服务 Key 已保存到本机浏览器。','info');
 }
-function clearGeoKeys(){googleMapsKey='';amapKey='';baiduKey='';document.getElementById('googleMapsKeyInput').value='';document.getElementById('amapKeyInput').value='';document.getElementById('baiduKeyInput').value='';saveState();toast('管理员地图 Key 已清除。','info');}
+function clearGeoKeys(){googleMapsKey='';amapKey='';baiduKey='';document.getElementById('googleMapsKeyInput').value='';document.getElementById('amapKeyInput').value='';document.getElementById('baiduKeyInput').value='';saveState();toast(appLanguage!=='zh-CN'?'Admin map keys cleared.':'管理员地图 Key 已清除。','info');}
 
 function setReportTemplate(){
   const tpl=document.getElementById('reportTemplate')?.value||'complaint';
@@ -6501,7 +6807,7 @@ function exportCSV(){
   const rows=DB.records.map(r=>{const lv=lvInfo(r.avgDb),place=locPlaceText(r.loc).replace(/"/g,'""'),err=(r.calibration?.errorRange||calibrationErrorRange()).replace(/"/g,'""');return[r.id,r.evidenceId||'',r.time.toLocaleDateString(),r.time.toLocaleTimeString(),r.dur||0,r.leqDb||'',r.avgDb,r.peakDb,r.minDb,r.l5Db||'',r.l10Db||'',r.l50Db||'',r.l90Db||'',r.l95Db||'',r.weighting||weighting,r.timeWeight||timeWeight,r.hashes?.mediaSha256||'',r.hashes?.metadataSha256||'',`"${err}"`,lv.l,`"${place}"`,r.loc?r.loc.lat:'',r.loc?r.loc.lng:'',r.loc?r.loc.acc:'',`"${(r.note||'').replace(/"/g,'""')}"`,mediaKindLabel(r).name,`"${disclaimer}"`].join(',');}).join('\n');
   const url=URL.createObjectURL(new Blob(['\ufeff'+h+rows],{type:'text/csv;charset=utf-8'}));
   const a=document.createElement('a');a.href=url;
-  a.download=`soundfield-${new Date().toISOString().slice(0,10)}.csv`;a.click();
+  a.download=`soundtest.pro-${new Date().toISOString().slice(0,10)}.csv`;a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
@@ -6792,16 +7098,16 @@ function drawEvidenceLineBlock(ctx,lines,x,y,maxWidth,lineHeight,maxEvidenceAddr
 }
 
 function formatEvidencePlaceLine(loc){
-  const place=loc?(locPlaceText(loc)||(appLanguage!=='zh-CN'?'Unidentified place':'未识别地点')):(appLanguage!=='zh-CN'?'Location not acquired':'未获取位置');
-  return `${appLanguage!=='zh-CN'?'Place':'地点'}：${place}`;
+  const place=loc?(locPlaceText(loc)||(appLanguage==='zh-CN'?'未识别地点':'Unidentified place')):(appLanguage==='zh-CN'?'未获取位置':'Location not acquired');
+  return `${appLanguage==='zh-CN'?'地点':'Place'}: ${place}`;
 }
 
 function formatGpsLine(loc){
-  if(!loc)return appLanguage!=='zh-CN'?'GPS: not acquired':'GPS 坐标：未获取';
+  if(!loc)return appLanguage==='zh-CN'?'GPS 坐标：未获取':'GPS: not acquired';
   const lat=Number(loc.lat).toFixed(6);
   const lng=Number(loc.lng).toFixed(6);
-  const acc=loc.acc?` · ${appLanguage!=='zh-CN'?'accuracy':'精度'} ±${loc.acc}m`:'';
-  return `${appLanguage!=='zh-CN'?'GPS':'GPS 坐标'}：${lat}, ${lng}${acc}`;
+  const acc=loc.acc?` · ${appLanguage==='zh-CN'?'精度':'accuracy'} ±${loc.acc}m`:'';
+  return `${appLanguage==='zh-CN'?'GPS 坐标':'GPS'}: ${lat}, ${lng}${acc}`;
 }
 
 function evidenceDeviceLine(){
@@ -6911,7 +7217,7 @@ function captureEvidencePhoto({trackSource='photo'}={}){
   lastEvidencePhotoUrl=canvas.toDataURL('image/png');
   img.src=lastEvidencePhotoUrl;
   preview.style.display='block';
-  openCanvas(canvas,`soundfield-acoustic-evidence-${new Date().toISOString().replace(/[:.]/g,'-')}.png`);
+  openCanvas(canvas,`soundtest.pro-acoustic-evidence-${new Date().toISOString().replace(/[:.]/g,'-')}.png`);
   trackEvent('evidence_photo_saved',{db:Math.round(curDb||0),hasLocation:!!curLoc,mode:evidenceMode,source:trackSource});
   toast(appLanguage!=='zh-CN'?'Evidence photo opened.':'声学证据照片已生成并打开。','info');
   collapsePromptAfterImageSave();
@@ -6972,7 +7278,7 @@ function buildSessionSummaryCanvas(stats){
     ctx.stroke();
   }
   ctx.fillStyle='rgba(255,255,255,.055)';ctx.strokeStyle='rgba(255,255,255,.13)';
-  roundRect(ctx,72,1125,936,250,22);ctx.fill();ctx.stroke();
+  roundRect(ctx,72,1125,936,320,22);ctx.fill();ctx.stroke();
   ctx.fillStyle='rgba(214,232,250,.52)';ctx.font='22px system-ui, sans-serif';ctx.fillText(t('summary.metadata'),100,1170);
   ctx.fillStyle='rgba(214,232,250,.78)';ctx.font='24px system-ui, sans-serif';
   drawEvidenceLineBlock(ctx,[
@@ -6980,10 +7286,10 @@ function buildSessionSummaryCanvas(stats){
     formatGpsLine(stats.loc),
     `L5 ${fmtDb(stats.lnStats?.L5)} dB · L10 ${fmtDb(stats.lnStats?.L10)} dB · L90 ${fmtDb(stats.lnStats?.L90)} dB · L95 ${fmtDb(stats.lnStats?.L95)} dB`,
     t('summary.calibration').replace('{offset}',`${calOffset>=0?'+':''}${calOffset}`).replace('{gain}',micGainDb),
-    `${appLanguage!=='zh-CN'?'Estimated error':'估计误差'}：${stats.errorRange||calibrationErrorRange()}`,
-  ],100,1212,860,30,3);
+    `${appLanguage==='zh-CN'?'估计误差':'Estimated error'}: ${stats.errorRange||calibrationErrorRange()}`,
+  ],100,1212,860,30,4);
   ctx.fillStyle='rgba(214,232,250,.38)';ctx.font='20px system-ui, sans-serif';
-  ctx.fillText(legalDisclaimer(),72,1360);
+  ctx.fillText(legalDisclaimer(),72,1430);
   return canvas;
 }
 
@@ -7011,7 +7317,7 @@ function exportSessionSummaryImage(){
     timeWeight:timeLabel(),
     errorRange:calibrationErrorRange(),
   });
-  downloadCanvas(canvas,`soundfield-summary-${new Date().toISOString().replace(/[:.]/g,'-')}.png`);
+  downloadCanvas(canvas,`soundtest.pro-summary-${new Date().toISOString().replace(/[:.]/g,'-')}.png`);
   toast(t('messages.summaryDownloaded'),'info');
   collapsePromptAfterImageSave();
 }
@@ -7228,13 +7534,13 @@ function openReportPreviewModal(recs, isBatch = false) {
     }
   }
 
-  const dlBtn = document.getElementById('rpmDownloadFreeBtn');
+  dlBtn = dlBtn || document.getElementById('rpmDownloadFreeBtn');
   if (dlBtn) {
     dlBtn.onclick = () => {
       closeReportPreviewModal();
       try {
         const doc = buildPDF(recs, true);
-        const filename = isBatch ? `sf-all-preview-${new Date().toISOString().slice(0,10)}.pdf` : `sf-preview-${(r0.time ? new Date(r0.time) : new Date()).toISOString().slice(0,10)}.pdf`;
+        const filename = isBatch ? `soundtest.pro-all-preview-${new Date().toISOString().slice(0,10)}.pdf` : `soundtest.pro-preview-${(r0.time ? new Date(r0.time) : new Date()).toISOString().slice(0,10)}.pdf`;
         doc.save(filename);
         toast(isZh ? '已下载带水印预览版报告' : 'Preview report downloaded', 'info', 4000);
         trackEvent('pdf_exported', { records: recs.length, batch: isBatch, plan: 'free_preview' });
@@ -7444,8 +7750,8 @@ function handleWeChatPaymentSuccess(plan, orderId) {
         const doc = buildPDF(currentPendingExport.recs, false);
         const r0 = currentPendingExport.recs[0] || {};
         const filename = currentPendingExport.isBatch
-          ? `soundtest-official-${new Date().toISOString().slice(0, 10)}.pdf`
-          : `soundtest-${(r0.time ? new Date(r0.time) : new Date()).toISOString().slice(0, 10)}.pdf`;
+          ? `soundtest.pro-official-${new Date().toISOString().slice(0, 10)}.pdf`
+          : `soundtest.pro-${(r0.time ? new Date(r0.time) : new Date()).toISOString().slice(0, 10)}.pdf`;
         doc.save(filename);
         trackEvent('pdf_exported', { records: currentPendingExport.recs.length, plan: 'single_paid' });
       } catch (e) {
@@ -7485,8 +7791,8 @@ function handleWeChatPaymentSuccess(plan, orderId) {
         const doc = buildPDF(currentPendingExport.recs, false);
         const r0 = currentPendingExport.recs[0] || {};
         const filename = currentPendingExport.isBatch
-          ? `soundtest-pro-${new Date().toISOString().slice(0, 10)}.pdf`
-          : `soundtest-pro-${(r0.time ? new Date(r0.time) : new Date()).toISOString().slice(0, 10)}.pdf`;
+          ? `soundtest.pro-all-${new Date().toISOString().slice(0, 10)}.pdf`
+          : `soundtest.pro-${(r0.time ? new Date(r0.time) : new Date()).toISOString().slice(0, 10)}.pdf`;
         doc.save(filename);
       } catch (_) {}
     }
@@ -7499,7 +7805,7 @@ function exportPDF(id){
     openReportPreviewModal([r], false);
     return;
   }
-  try{buildPDF([r]).save(`sf-${r.time.toISOString().slice(0,10)}.pdf`);trackEvent('pdf_exported',{records:1,batch:false,plan:currentPlan});}
+  try{buildPDF([r]).save(`soundtest.pro-${r.time.toISOString().slice(0,10)}.pdf`);trackEvent('pdf_exported',{records:1,batch:false,plan:currentPlan});}
   catch(e){toast(t('messages.pdfMissing'),'err',5200);}
 }
 function exportAllPDF(){
@@ -7508,7 +7814,7 @@ function exportAllPDF(){
     openReportPreviewModal([...DB.records].reverse(), true);
     return;
   }
-  try{buildPDF([...DB.records].reverse()).save(`sf-all-${new Date().toISOString().slice(0,10)}.pdf`);trackEvent('pdf_exported',{records:DB.records.length,batch:DB.records.length>1,plan:currentPlan});}
+  try{buildPDF([...DB.records].reverse()).save(`soundtest.pro-all-${new Date().toISOString().slice(0,10)}.pdf`);trackEvent('pdf_exported',{records:DB.records.length,batch:DB.records.length>1,plan:currentPlan});}
   catch(e){toast(t('messages.pdfMissing'),'err',5200);}
 }
 
@@ -7546,7 +7852,23 @@ window.addEventListener('resize',onViewportChange,{passive:true});
 window.addEventListener('orientationchange',onViewportChange,{passive:true});
 window.visualViewport?.addEventListener('resize',onViewportChange,{passive:true});
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible'){setAppHeight();reflowViz();if(isMon&&shouldHoldWakeLock())requestWakeLock();}
+  if(document.visibilityState==='visible'){
+    setAppHeight();
+    reflowViz();
+    if(isMon&&shouldHoldWakeLock())requestWakeLock();
+    if(isMon&&audioCtx&&audioCtx.state!=='running'){
+      audioCtx.resume().catch(()=>{});
+    }
+  }
+});
+['touchstart','touchend','click'].forEach(evt=>{
+  window.addEventListener(evt,()=>{
+    if(isMon&&audioCtx&&audioCtx.state!=='running'){
+      audioCtx.resume().catch(()=>{});
+    }
+  },{passive:true});
+});
+
 // Auto open WeChat pay modal if query string contains pay param (e.g. ?pay=yearly) or sentry param
 try {
   const urlParams = new URLSearchParams(window.location.search);

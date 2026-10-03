@@ -58,5 +58,7 @@
     debounce,
     SUPPORTED_APP_LANGUAGES,
   };
+  // esc() is used extensively in soundtest.html as a shorthand for HTML escaping
+  window.esc = escHtml;
 
 })();
