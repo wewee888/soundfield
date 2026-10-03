@@ -459,3 +459,32 @@ test('soundtest.html applies translations to bottom nav, mode cards, and scene c
   assert.match(soundtestHtml, /document\.referrer\.match\(/);
 });
 
+test('noise-levels pages exist across all 9 locales plus root with complete SEO hreflang matrix and structured data', () => {
+  const rootHtml = fs.readFileSync(path.join(__dirname, '..', 'noise-levels.html'), 'utf8');
+  assert.match(rootHtml, /rel="canonical" href="https:\/\/soundtest\.pro\/noise-levels\/"/);
+  assert.match(rootHtml, /rel="alternate" hreflang="x-default" href="https:\/\/soundtest\.pro\/noise-levels\/"/);
+  assert.match(rootHtml, /class="db-table"/);
+  assert.match(rootHtml, /class="spectrum-scale-bar"/);
+  assert.match(rootHtml, /id="chartLightbox"/);
+
+  const locales = ['en', 'zh', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'];
+  locales.forEach((code) => {
+    const file = path.join(__dirname, '..', code, 'noise-levels.html');
+    assert.ok(fs.existsSync(file), `${code}/noise-levels.html exists`);
+    const html = fs.readFileSync(file, 'utf8');
+    assert.match(html, new RegExp(`rel="canonical" href="https://soundtest\\.pro/${code}/noise-levels/"`));
+    assert.match(html, /rel="alternate" hreflang="x-default" href="https:\/\/soundtest\.pro\/noise-levels\/"/);
+    locales.forEach((l) => {
+      assert.match(html, new RegExp(`rel="alternate" hreflang="${l}" href="https://soundtest\\.pro/${l}/noise-levels/"`));
+    });
+    assert.match(html, /class="db-table"/);
+    assert.match(html, /class="spectrum-scale-bar"/);
+    assert.match(html, /id="chartLightbox"/);
+    assert.match(html, /id="openLightboxBtn"/);
+    assert.match(html, /id="tableSearchInput"/);
+    assert.match(html, /data-filter="quiet"/);
+    assert.match(html, /data-filter="danger"/);
+    assert.match(html, /"@type":\s*"FAQPage"/);
+  });
+});
+

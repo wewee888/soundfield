@@ -129,8 +129,17 @@
   </url>
   <url>
     <loc>https://soundtest.pro/noise-levels/</loc>
-    <lastmod>2026-09-05</lastmod>
+    <lastmod>2026-10-03</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/noise-levels/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/noise-levels/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/noise-levels/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/noise-levels/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/noise-levels/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/noise-levels/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/noise-levels/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/noise-levels/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/noise-levels/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/noise-levels/"/>
   </url>
   <url>
     <loc>https://soundtest.pro/privacy/</loc>

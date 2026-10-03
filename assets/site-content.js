@@ -36,6 +36,7 @@
     { href: 'privacy.html', label: 'Privacy', zh: '隐私' },
     { href: 'accuracy.html', label: 'Accuracy', zh: '精度说明' },
     { href: 'standards.html', label: 'Standards', zh: '噪声参考' },
+    { href: 'noise-levels.html', label: 'Noise Levels', zh: '分贝等级' },
     { href: 'samples.html', label: 'Samples', zh: '报告样例' },
     { href: 'download.html', label: 'Install', zh: '安装' },
     { href: 'compliance.html', label: 'Compliance', zh: '合规' },
