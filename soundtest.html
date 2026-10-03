@@ -6127,15 +6127,23 @@ function latestGeoRecord(){
   return geoRecords()[0]||null;
 }
 
-function externalMapUrl(loc,provider='google'){
+function defaultMapProvider(){
+  const isApple=/(iPad|iPhone|iPod|Macintosh)/i.test(navigator.userAgent||'');
+  if(isApple)return 'apple';
+  if(appLanguage==='zh-CN'||baiduKey)return 'baidu';
+  return 'google';
+}
+
+function externalMapUrl(loc,provider=defaultMapProvider()){
   if(!loc)return '';
   const lat=Number(loc.lat).toFixed(6),lng=Number(loc.lng).toFixed(6);
+  if(provider==='apple')return `https://maps.apple.com/?ll=${lat},${lng}&q=SOUNDTEST.PRO%20Evidence&t=m`;
   if(provider==='amap')return `https://uri.amap.com/marker?position=${lng},${lat}&name=SOUNDTEST.PRO%E5%99%AA%E9%9F%B3%E8%AE%B0%E5%BD%95&src=soundfield&coordinate=wgs84`;
   if(provider==='baidu')return `https://api.map.baidu.com/marker?location=${lat},${lng}&title=SOUNDTEST.PRO%E5%99%AA%E9%9F%B3%E8%AE%B0%E5%BD%95&content=${lat},${lng}&output=html&coord_type=wgs84`;
   return `https://maps.google.com/?q=${lat},${lng}`;
 }
 
-function openRecordInMap(id,provider='google'){
+function openRecordInMap(id,provider=defaultMapProvider()){
   const r=DB.records.find(x=>x.id===id);
   if(!r?.loc)return toast('这条记录没有 GPS 坐标。','warn');
   window.open(externalMapUrl(r.loc,provider),'_blank','noopener');
@@ -6144,7 +6152,7 @@ function openRecordInMap(id,provider='google'){
 function openLatestLocationMap(){
   const r=latestGeoRecord();
   if(!r)return toast('暂无带 GPS 的记录，请先在监测页获取位置并保存记录。','warn');
-  openRecordInMap(r.id,'google');
+  openRecordInMap(r.id,defaultMapProvider());
 }
 
 function exportMapImage(){
