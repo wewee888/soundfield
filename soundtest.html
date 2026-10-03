@@ -278,17 +278,104 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
 .action-tools{display:none;align-items:center;justify-content:flex-end;gap:8px;width:auto;flex:0 0 auto}
 /* Big start/stop button */
 .start-btn{
-  flex:none;width:100%;min-width:0;height:48px;border-radius:40px;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  font-family:var(--sans);font-size:clamp(14px,3.8vw,15px);font-weight:600;
+  flex:none;width:100%;min-width:0;min-height:52px;border-radius:40px;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--sans);font-size:clamp(14px,3.8vw,15px);font-weight:700;
   background:linear-gradient(135deg,#2AFFD4,#8DFFE9);color:#07090F;
   box-shadow:0 10px 30px rgba(42,255,212,.30),inset 0 1px 0 rgba(255,255,255,.56);
   transition:transform .15s,box-shadow .15s,filter .15s;
+  padding:4px 16px;
 }
 .start-btn:active{transform:scale(.96)}
 .start-btn:hover{filter:saturate(1.05);box-shadow:0 12px 34px rgba(42,255,212,.36),inset 0 1px 0 rgba(255,255,255,.62)}
 .start-btn.stop{background:var(--red-d);color:var(--red);border:.5px solid rgba(255,63,80,.4);box-shadow:none}
 .start-btn svg{width:18px;height:18px;flex-shrink:0}
+.start-btn-copy{display:flex;flex-direction:column;align-items:center;line-height:1.2;text-align:center}
+.start-btn-title{font-size:14.5px;font-weight:800;letter-spacing:.02em}
+.start-btn-sub{font-size:10.5px;font-weight:600;opacity:.82;margin-top:1px;white-space:nowrap}
+
+/* ── Live monitor vs recording notice banner ── */
+.live-monitor-notice{
+  margin-top:8px;
+  padding:9px 12px;
+  border-radius:14px;
+  background:rgba(255,181,32,.08);
+  border:1px solid rgba(255,181,32,.25);
+  box-shadow:0 8px 24px rgba(0,0,0,.15);
+  animation:toast-in .25s ease;
+}
+.live-monitor-notice.recording{
+  background:rgba(255,63,80,.08);
+  border-color:rgba(255,63,80,.28);
+}
+.lmn-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.lmn-msg{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  flex:1 1 180px;
+}
+.lmn-badge{
+  font-family:var(--mono);
+  font-size:10px;
+  font-weight:700;
+  padding:3px 7px;
+  border-radius:999px;
+  background:rgba(255,181,32,.18);
+  color:var(--amber);
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.live-monitor-notice.recording .lmn-badge{
+  background:rgba(255,63,80,.2);
+  color:#ff5a6e;
+}
+.lmn-text{
+  font-size:11px;
+  color:var(--tx2);
+  line-height:1.3;
+}
+.lmn-action-btn{
+  height:28px;
+  padding:0 12px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .2s;
+  flex-shrink:0;
+  font-family:var(--sans);
+}
+.lmn-action-btn.convert{
+  background:linear-gradient(135deg,#ff5a6e,#e11d48);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 4px 14px rgba(225,29,72,.35);
+  animation:record-breathe 2.5s ease-in-out infinite;
+}
+.lmn-action-btn.convert:hover{
+  filter:brightness(1.1);
+  transform:translateY(-1px);
+}
+.lmn-action-btn.view-vault{
+  background:rgba(44,240,193,.15);
+  color:var(--accent);
+  border:1px solid rgba(44,240,193,.35);
+}
+.lmn-action-btn.view-vault:hover{
+  background:rgba(44,240,193,.25);
+}
 /* Record button */
 .rec-wrap{position:relative;flex:0 0 48px;width:48px;height:48px;display:flex;justify-content:center}
 .rec-ring{position:absolute;border-radius:50%;border:1.5px solid var(--red);opacity:0;inset:-7px;pointer-events:none}
@@ -453,9 +540,12 @@ canvas.vcvs{width:100%;height:96px;min-height:96px;max-height:96px;border-radius
 .app-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;color:inherit}
 .app-brand-mark{
   width:32px;height:32px;border-radius:10px;
-  background:url('assets/icon.svg') center / cover no-repeat,linear-gradient(135deg,var(--accent),var(--accent-2));
-  box-shadow:0 0 0 1px rgba(44,240,193,.4),0 0 22px rgba(44,240,193,.35),inset 0 1px 0 rgba(255,255,255,.4);
+  display:inline-flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(42,255,212,.18),rgba(155,123,255,.16));
+  border:1px solid rgba(44,240,193,.45);
+  box-shadow:0 0 16px rgba(44,240,193,.25),inset 0 1px 0 rgba(255,255,255,.3);
   flex-shrink:0;
+  padding:4px;
 }
 .app-brand-text{display:flex;flex-direction:column;gap:1px;min-width:0}
 .app-brand-name{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(120deg,#fff 0%,#b8f5ff 55%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;animation:brand-breathe 4.5s ease-in-out infinite;text-shadow:0 0 20px rgba(42,255,212,.15)}
@@ -479,12 +569,74 @@ canvas.vcvs{width:100%;height:96px;min-height:96px;max-height:96px;border-radius
 .lang-setting-ctrl{display:flex;justify-content:flex-end}
 .lang-setting-ctrl .lang-picker-menu{left:0;right:auto}
 .card.layout-settings-measure,.card:has(.lang-picker.is-open),.srow:has(.lang-picker.is-open){overflow:visible!important;z-index:40;position:relative}
-.app-pro-btn{position:relative;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:999px;font-family:var(--display);font-size:11.5px;font-weight:800;letter-spacing:.04em;color:var(--tx1);text-decoration:none;background:rgba(8,12,24,.78);border:1px solid transparent;cursor:pointer;isolation:isolate;transition:transform .2s,filter .2s}
-.app-pro-btn::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from 0deg,var(--accent),var(--violet),#ff90c2,var(--accent));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin-pro 7s linear infinite;z-index:-1}
-.app-pro-btn::after{content:'';position:absolute;inset:-8px;border-radius:inherit;background:radial-gradient(60% 70% at 50% 50%,rgba(124,155,255,.28),transparent 70%);opacity:0;filter:blur(12px);transition:opacity .3s;z-index:-2}
-.app-pro-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes borderRotate {
+  0% { --border-angle: 0deg; }
+  100% { --border-angle: 360deg; }
+}
+
+.app-pro-btn{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  height:34px;
+  padding:0 14px;
+  border-radius:999px;
+  font-family:var(--display);
+  font-size:11.5px;
+  font-weight:800;
+  letter-spacing:.04em;
+  color:var(--tx1);
+  text-decoration:none;
+  background:rgba(8,12,24,.82);
+  border:1px solid rgba(44,240,193,.2);
+  cursor:pointer;
+  isolation:isolate;
+  transition:transform .2s,filter .2s;
+}
+.app-pro-btn::before{
+  content:'';
+  position:absolute;
+  inset:-1.5px;
+  border-radius:inherit;
+  padding:1.5px;
+  background:conic-gradient(
+    from var(--border-angle),
+    transparent 0%,
+    transparent 65%,
+    rgba(44, 240, 193, 0.25) 78%,
+    #2cf0c1 90%,
+    #7c9bff 97%,
+    transparent 100%
+  );
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  animation:borderRotate 3.5s linear infinite;
+  z-index:-1;
+  pointer-events:none;
+}
+.app-pro-btn::after{
+  content:'';
+  position:absolute;
+  inset:-8px;
+  border-radius:inherit;
+  background:radial-gradient(60% 70% at 50% 50%,rgba(44,240,193,.22),transparent 70%);
+  opacity:0;
+  filter:blur(12px);
+  transition:opacity .3s;
+  z-index:-2;
+}
+.app-pro-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
 .app-pro-btn:hover::after{opacity:1}
-@keyframes spin-pro{to{transform:rotate(360deg)}}
 
 /* ── Meter glow + soft stat cards ── */
 .db-stage{border-width:0!important;box-shadow:0 20px 50px rgba(0,0,0,.28),0 0 48px color-mix(in srgb,var(--level-color) 18%,transparent),inset 0 1px 0 rgba(255,255,255,.08)!important}
@@ -533,7 +685,20 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .hero .geo-dock{order:9;margin:10px 0 0;width:100%;cursor:pointer}
 
 /* ── Bottom geo dock + library nav ── */
-.bottom-shell{flex-shrink:0;position:sticky;bottom:0;z-index:12;padding-bottom:var(--safe-b)}
+.bottom-shell{
+  flex-shrink:0;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  width:100%;
+  z-index:120;
+  display:flex;
+  justify-content:center;
+  pointer-events:none;
+  padding-bottom:calc(8px + var(--safe-b));
+  margin:0;
+}
 .geo-dock{
   display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
   margin:0 10px 8px;padding:10px 12px;border-radius:18px;
@@ -550,7 +715,17 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .privacy-lock{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:rgba(42,255,212,.08);border:1px solid rgba(42,255,212,.22);color:var(--accent);font-size:9.5px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
 .privacy-lock::before{content:'';width:12px;height:12px;background:var(--accent);-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4'><rect x='5' y='11' width='14' height='9' rx='2'/><path d='M8 11V7a4 4 0 0 1 8 0v4'/></svg>") center/contain no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4'><rect x='5' y='11' width='14' height='9' rx='2'/><path d='M8 11V7a4 4 0 0 1 8 0v4'/></svg>") center/contain no-repeat}
 .geo-time{font-family:var(--mono);font-size:9px;color:var(--tx3)}
-.bottom-nav{border-top:0!important;border-radius:20px;margin:0 10px;background:linear-gradient(180deg,rgba(8,12,24,.82),rgba(8,12,24,.68))!important;backdrop-filter:blur(22px)!important;box-shadow:0 16px 40px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.06)!important;padding:6px 4px calc(6px + var(--safe-b))!important}
+.bottom-nav{
+  pointer-events:auto;
+  width:min(520px,calc(100% - 20px));
+  margin:0 auto;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,rgba(8,12,24,.92),rgba(8,12,24,.82))!important;
+  backdrop-filter:blur(22px)!important;
+  box-shadow:0 16px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(168,196,255,.14)!important;
+  border:1px solid rgba(168,196,255,.14)!important;
+  padding:6px 6px!important;
+}
 .nav-btn svg{filter:drop-shadow(0 0 6px rgba(42,255,212,.12))}
 .nav-btn.active svg{filter:drop-shadow(0 0 10px rgba(42,255,212,.35))}
 .nav-btn-library.active{color:var(--accent)!important;font-weight:700!important;background:rgba(42,255,212,.08);border-radius:14px}
@@ -1170,18 +1345,31 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 }
 
 @media(min-width:768px){
-  body{flex-direction:column;align-items:center;justify-content:flex-start;padding:12px 16px;box-sizing:border-box}
+  html, body{
+    height:100%;
+    overflow:hidden;
+  }
+  body{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:10px 14px;
+    box-sizing:border-box;
+  }
   .shell{
     display:grid;
-    grid-template-columns:minmax(300px,380px) minmax(0,1fr);
-    grid-template-rows:auto auto;
-    grid-template-areas:"hero panels" "nav nav";
+    grid-template-columns:minmax(320px,380px) minmax(0,1fr);
+    grid-template-rows:1fr;
+    grid-template-areas:"hero panels";
     flex:1 1 auto;
     width:100%;
-    max-width:min(1120px,calc(100vw - 32px));
-    height:auto;
-    max-height:none;
-    min-height:calc(100dvh - 24px);
+    max-width:min(1280px,calc(100vw - 28px));
+    height:calc(100dvh - 20px);
+    max-height:calc(100dvh - 20px);
+    min-height:0;
+    overflow:hidden;
+    position:relative;
     padding:16px 20px 0;
     gap:0 20px;
     border:.5px solid var(--bdr);
@@ -1192,29 +1380,40 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   .glow{width:380px;top:-70px}
   .hero{
     grid-area:hero;
-    align-self:start;
-    height:auto;
+    align-self:stretch;
+    height:100%;
+    max-height:100%;
     min-height:0;
     display:flex;
     flex-direction:column;
-    overflow:visible;
-    padding:8px 16px 16px 4px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:4px 14px 76px 4px;
     border-right:.5px solid var(--bdr);
-    position:sticky;
-    top:12px;
+    position:relative;
+    top:auto;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(168,196,255,.2) transparent;
   }
-  .hero .action-bar{margin-top:0;padding-top:12px;flex-shrink:0}
+  .hero .action-bar{margin-top:0;padding-top:10px;flex-shrink:0}
   .logo-row{margin-bottom:0}
   .hero .subscription-banner{margin-top:2px}
   .panels{
     grid-area:panels;
-    flex:none;
-    height:auto;
+    align-self:stretch;
+    flex:1 1 auto;
+    height:100%;
+    max-height:100%;
     min-height:0;
-    overflow:visible;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:4px 8px 80px 8px;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(168,196,255,.2) transparent;
+    overscroll-behavior-y:contain;
   }
   .panel{
-    padding:8px 4px 12px 0;
+    padding:4px 4px 16px 0;
     overflow-x:hidden;
   }
   #p-m.active{
@@ -1237,21 +1436,28 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     aspect-ratio:16/9;
   }
   .bottom-shell{
-    grid-area:nav;
-    grid-column:1 / -1;
-    display:block;
-    margin:0 -20px;
-    width:calc(100% + 40px);
-    position:relative;
-    bottom:auto;
-    padding-bottom:0;
+    position:fixed;
+    bottom:12px;
+    left:0;
+    right:0;
+    width:100%;
+    z-index:120;
+    display:flex;
+    justify-content:center;
+    pointer-events:none;
+    padding:0;
+    margin:0;
   }
   .bottom-nav{
-    grid-column:1 / -1;
-    margin:0;
-    width:100%;
-    border-radius:0 0 18px 18px;
-    bottom:0;
+    pointer-events:auto;
+    width:min(520px,calc(100vw - 32px));
+    margin:0 auto;
+    border-radius:999px!important;
+    background:linear-gradient(180deg,rgba(8,12,24,.94),rgba(8,12,24,.84))!important;
+    backdrop-filter:blur(24px)!important;
+    box-shadow:0 16px 40px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.1),0 0 0 1px rgba(168,196,255,.16)!important;
+    border:1px solid rgba(168,196,255,.16)!important;
+    padding:6px 10px!important;
   }
   .db-stage{height:200px}
   .db-hero{padding:20px 14px 16px}
@@ -1285,15 +1491,6 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   .tablet-optimized #recList,
   .tablet-optimized #subscriptionPlans,
   .tablet-optimized #privacyComplianceCard{grid-column:1/-1}
-}
-
-@supports not (grid-template-columns:subgrid){
-  @media(min-width:768px){
-    .bottom-shell{grid-template-columns:minmax(300px,380px) minmax(0,1fr)}
-  }
-  @media(min-width:1180px){
-    .desktop-optimized .bottom-shell{grid-template-columns:minmax(320px,390px) minmax(0,1fr)}
-  }
 }
 @media(min-width:1180px){
   .desktop-optimized .shell{
@@ -1954,7 +2151,13 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   <!-- Header row -->
   <div class="app-header-row">
     <a class="app-brand" href="index.html" aria-label="SOUNDTEST.PRO home">
-      <span class="app-brand-mark" aria-hidden="true"></span>
+      <span class="app-brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 512 512" width="100%" height="100%" fill="none" style="display:block">
+          <circle cx="256" cy="256" r="178" stroke="#2AFFD4" stroke-width="26" opacity=".4"/>
+          <path d="M92 276h44l42-116 62 216 50-146 34 72 28-52h68" stroke="#2AFFD4" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="256" cy="256" r="36" fill="#FFB520"/>
+        </svg>
+      </span>
       <span class="app-brand-text">
         <span class="app-brand-name">SOUNDTEST.PRO</span>
         <span class="app-brand-sub" id="appBrandSub">Field Acoustic Recorder</span>
@@ -2067,7 +2270,10 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
       <svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/>
       </svg>
-      开始监测
+      <span class="start-btn-copy">
+        <span class="start-btn-title">开始实时监测</span>
+        <span class="start-btn-sub">（仅测分贝 · 不保存录音）</span>
+      </span>
     </button>
     <div class="action-tools">
     <!-- Record -->
@@ -2097,6 +2303,19 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     </div>
   </div>
 
+  <!-- Live monitor notice & convert banner -->
+  <div class="live-monitor-notice" id="liveMonitorNotice" style="display:none">
+    <div class="lmn-inner">
+      <div class="lmn-msg">
+        <span class="lmn-badge">⚠️ 仅实时测声</span>
+        <span class="lmn-text" id="lmnText">当前未保存录音。若需留存维权证据并导出报告：</span>
+      </div>
+      <button type="button" class="lmn-action-btn convert" id="lmnConvertBtn" onclick="primaryEvidenceAction()">
+        ● 立即转为录音存证
+      </button>
+    </div>
+  </div>
+
   <!-- Permanent Location Dock on Left Column -->
   <div class="geo-dock" id="geoDock" onclick="openOrRefreshLocation()" title="点击刷新或查看定位 / Click to refresh or view GPS location" role="button" tabindex="0">
     <div class="geo-thumb" aria-hidden="true">📍</div>
@@ -2118,19 +2337,19 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   <!-- Monitor -->
   <div class="panel active" id="p-m">
     <div class="card" id="modeControlCard" data-mode="modeSwitcher">
-      <div class="clabel" id="modeCardLabel">证据模式</div>
+      <div class="clabel" id="modeCardLabel">取证存证模式（自动入库 · 生成法律报告）</div>
       <div class="mode-switcher" id="modeSwitcher" role="tablist" aria-label="证据采集模式">
-        <button class="mode-pill active" id="modeAudioBtn" type="button" role="tab" aria-selected="true" onclick="setEvidenceMode('audio')"><strong>录音模式</strong><span>低耗电，保存声音证据</span></button>
-        <button class="mode-pill" id="modeVideoBtn" type="button" role="tab" aria-selected="false" onclick="setEvidenceMode('video')"><strong>录像模式</strong><span>画面 + 麦克风同步保存</span></button>
-        <button class="mode-pill" id="modePhotoBtn" type="button" role="tab" aria-selected="false" onclick="setEvidenceMode('photo')"><strong>照片模式</strong><span>生成带分贝和地址照片</span></button>
-        <button class="mode-pill" id="modeSentryBtn" type="button" role="tab" aria-selected="false" onclick="triggerSentryModeHook()"><strong>🌙 哨兵模式 <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>夜间静默待命，超标自动抓现行</span></button>
+        <button class="mode-pill active" id="modeAudioBtn" type="button" role="tab" aria-selected="true" onclick="setEvidenceMode('audio')"><strong>录音存证</strong><span>低耗电 · 自动加密入库</span></button>
+        <button class="mode-pill" id="modeVideoBtn" type="button" role="tab" aria-selected="false" onclick="setEvidenceMode('video')"><strong>录像存证</strong><span>画面+声学水印 · 同步保全</span></button>
+        <button class="mode-pill" id="modePhotoBtn" type="button" role="tab" aria-selected="false" onclick="setEvidenceMode('photo')"><strong>照片取证</strong><span>叠加分贝+GPS+地址</span></button>
+        <button class="mode-pill" id="modeSentryBtn" type="button" role="tab" aria-selected="false" onclick="triggerSentryModeHook()"><strong>🌙 哨兵模式 <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>夜间静默待命 · 超标自动抓现行</span></button>
       </div>
-      <div class="mode-title" id="modeTitle">录音模式</div>
-      <div class="mode-desc" id="modeDesc">用于长时间记录噪声，耗电最低；点击主按钮后会先启动监测并保存录音。</div>
-      <button class="mode-primary-btn" id="modePrimaryBtn" type="button" onclick="primaryEvidenceAction()">开始录音</button>
+      <div class="mode-title" id="modeTitle">取证录音模式</div>
+      <div class="mode-desc" id="modeDesc">录制完整音频与分贝时间序列，自动保全入库并支持导出正式 PDF 维权报告。</div>
+      <button class="mode-primary-btn" id="modePrimaryBtn" type="button" onclick="primaryEvidenceAction()">● 开始取证录音（入库保全）</button>
       <div class="mode-secondary-actions">
         <button class="btn b-amber" id="modeLocationBtn" type="button" onclick="getLoc()">获取/刷新地址</button>
-        <button class="btn" id="modeRecordsBtn" type="button" onclick="sw('r')">查看记录</button>
+        <button class="btn" id="modeRecordsBtn" type="button" onclick="sw('r')">查看证据库</button>
       </div>
     </div>
     <!-- Viz card -->
@@ -2756,6 +2975,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   </div>
 
 </div><!-- .panels -->
+</div><!-- .shell -->
 
 <!-- ═══ BOTTOM NAV ═══ -->
 <div class="bottom-shell">
@@ -2765,9 +2985,9 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     监测
     <span class="nav-dot" id="rdot"></span>
   </button>
-  <button class="nav-btn nav-btn-library" id="nt-r" onclick="sw('r')" role="tab" title="Evidence Library">
+  <button class="nav-btn nav-btn-library" id="nt-r" onclick="sw('r')" role="tab" title="证据库">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>
-    记录
+    证据库
   </button>
   <button class="nav-btn" id="nt-map" onclick="sw('map')" role="tab">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
@@ -2779,8 +2999,6 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   </button>
 </nav>
 </div><!-- .bottom-shell -->
-
-</div><!-- .shell -->
 
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
@@ -3114,9 +3332,49 @@ function applySeoLanguage(){
 }
 function setStartButtonText(){
   const btn=document.getElementById('startBtn');if(!btn)return;
-  btn.innerHTML=isMon
-    ?'<svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="#07090F" stroke="none"/></svg> '+t('ui.stop')
-    :'<svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/></svg> '+t('ui.start');
+  const isZh = appLanguage === 'zh-CN';
+  if(isMon){
+    if(isRec){
+      btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="#07090F" stroke="none"/></svg> <span class="start-btn-copy"><span class="start-btn-title">' + (isZh ? '停止监测与录音' : 'Stop Monitor & Record') + '</span><span class="start-btn-sub">' + (isZh ? '（保存本次证据）' : '(Saving to Vault)') + '</span></span>';
+    } else {
+      btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="#07090F" stroke="none"/></svg> <span class="start-btn-copy"><span class="start-btn-title">' + (isZh ? '停止实时测声' : 'Stop Live Meter') + '</span><span class="start-btn-sub">' + (isZh ? '（当前未录音存证）' : '(Not recording)') + '</span></span>';
+    }
+  } else {
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/></svg> <span class="start-btn-copy"><span class="start-btn-title">' + (isZh ? '开始实时监测' : 'Start Live Meter') + '</span><span class="start-btn-sub">' + (isZh ? '（仅测分贝 · 不保存录音）' : '(Live only · Not recording)') + '</span></span>';
+  }
+}
+
+function updateLiveMonitorNotice(){
+  const notice = document.getElementById('liveMonitorNotice');
+  if(!notice) return;
+  const isZh = appLanguage === 'zh-CN';
+  if(!isMon){
+    notice.style.display = 'none';
+    return;
+  }
+  notice.style.display = 'block';
+  const badge = notice.querySelector('.lmn-badge');
+  const text = document.getElementById('lmnText');
+  const btn = document.getElementById('lmnConvertBtn');
+  if(isRec){
+    notice.className = 'live-monitor-notice recording';
+    if(badge) badge.textContent = isZh ? '🔴 取证录制中' : '🔴 Recording Evidence';
+    if(text) text.textContent = isZh ? '声音与现场事实正加密保全至证据库，停止后可生成正式报告。' : 'Audio & metadata are being securely recorded to Evidence Vault.';
+    if(btn){
+      btn.textContent = isZh ? '查看证据库' : 'View Vault';
+      btn.onclick = () => sw('r');
+      btn.className = 'lmn-action-btn view-vault';
+    }
+  } else {
+    notice.className = 'live-monitor-notice monitoring';
+    if(badge) badge.textContent = isZh ? '⚠️ 仅实时测声' : '⚠️ Live Meter Only';
+    if(text) text.textContent = isZh ? '当前未保存录音。若需留存维权证据并导出报告：' : 'Audio is not being recorded. To save evidence:';
+    if(btn){
+      btn.textContent = isZh ? '● 立即转为录音存证' : '● Start Evidence Recording';
+      btn.onclick = () => primaryEvidenceAction();
+      btn.className = 'lmn-action-btn convert';
+    }
+  }
 }
 function setButtonTextWithSvg(id,text){
   const btn=document.getElementById(id);if(!btn)return;
@@ -3273,6 +3531,7 @@ function applyTranslations(){
   setPlaceholder('feedbackText',t('placeholders.feedback'));
   setPlaceholder('organizationNameInput',t('placeholders.organization'));
   setStartButtonText();
+  updateLiveMonitorNotice();
   translateStaticText();
   setButtonTextWithSvg('nt-m',t('ui.monitor'));
   setButtonTextWithSvg('nt-r',t('ui.evidenceLibrary'));
@@ -3314,9 +3573,9 @@ function applyTranslations(){
   setText('camModeHint',t('ui.cameraHint',isZh?'声学取证相机：可先打开摄像头预览，开始监测后拍照会叠加分贝、GPS 和地点信息。':'Acoustic camera: preview the scene, then take photos overlaid with dB, GPS, and place details.'));
   setText('cameraCloseHint',isZh?'摄像头打开后，可在这里直接关闭预览。':'When the camera is open, you can close it directly here.');
   setText('cameraCloseBtn',isZh?'关闭摄像头':'Close Camera');
-  setText('recordToolsTitle',t('ui.recordTools',isZh?'记录工具':'Record Tools'));
-  setText('recordToolsDesc',t('ui.recordToolsDesc',isZh?'从这里开始录制、导出全部记录，或清空本机证据数据。没有记录时也可以直接跳转到监测页。':'Start recordings, export all evidence records, or clear local data from here. You can jump directly to monitoring at any time.'));
-  setText('startRecFromRecsBtn',t('ui.startRecord',isZh?'开始录制':'Start recording'));
+  setText('recordToolsTitle',t('ui.recordTools',isZh?'证据库管理':'Record Tools'));
+  setText('recordToolsDesc',t('ui.recordToolsDesc',isZh?'从这里查看已保存的声音事实、导出正式 PDF/CSV 证据，或管理本机存证案卷。没有记录时也可以直接跳转到监测页。':'Start recordings, export all evidence records, or clear local data from here. You can jump directly to monitoring at any time.'));
+  setText('startRecFromRecsBtn',t('ui.startRecord',isZh?'开始取证录音':'Start recording'));
   setText('promoCardTitle',t('ui.shareTitle',isZh?'推荐 SOUNDTEST.PRO 给需要噪声证据的人':'Recommend SOUNDTEST.PRO to anyone needing noise evidence'));
   setText('promoCardDesc',t('ui.shareDesc',isZh?'分享应用入口或当前报告摘要；默认不分享精确坐标，保护用户隐私。':'Share the app link or current report summary. Precise coordinates are omitted by default for privacy.'));
   setText('shareAppReferralBtn',t('ui.share',isZh?'推荐分享':'Share'));
@@ -3670,9 +3929,9 @@ function setRecordingButtonsAvailability(){
 
 function modeCopy(mode=evidenceMode){
   const fallback={
-    audio:{label:'录音模式',short:'录音',tagline:'低耗电，保存声音证据',title:'录音模式',desc:'用于长时间记录噪声，耗电最低；点击主按钮后会先启动监测并保存录音。',primary:'开始录音',stop:'停止录音并保存'},
-    video:{label:'录像模式',short:'录像',tagline:'画面 + 麦克风同步保存',title:'录像模式',desc:'用于保存现场画面和声音证据；摄像头预览打开后，可在预览卡片下方直接关闭。',primary:'开始录像',stop:'停止录像并保存'},
-    photo:{label:'照片模式',short:'照片',tagline:'生成带分贝和地址照片',title:'照片模式',desc:'用于快速生成带分贝、GPS、地址和设备信息的证据照片。',primary:'拍照取证',stop:'拍照取证'},
+    audio:{label:'录音存证',short:'录音',tagline:'低耗电 · 自动加密入库',title:'取证录音模式',desc:'录制完整音频与分贝时间序列，自动保全入库并支持导出正式 PDF 维权报告。',primary:'● 开始取证录音（入库保全）',stop:'⏹ 停止录音并保存证据'},
+    video:{label:'录像存证',short:'录像',tagline:'画面+声学水印 · 同步保全',title:'取证录像模式',desc:'现场画面与麦克风声音同步保存，自动叠加分贝、时间与 GPS 防伪水印，停止后写入证据库。',primary:'📹 开始取证录像（入库保全）',stop:'⏹ 停止录像并保存证据'},
+    photo:{label:'照片取证',short:'照片',tagline:'生成带分贝水印与地点照片',title:'照片取证模式',desc:'快速抓拍现场并叠加实时分贝、经纬度、地点与时间戳，保存为不可篡改的证据照片。',primary:'📷 拍照取证（生成水印）',stop:'📷 拍照取证（生成水印）'},
   };
   return t(`modes.${mode}`,fallback[mode]||fallback.audio);
 }
@@ -5277,9 +5536,11 @@ function initSettingsDrawerTabs() {
 function sw(t){
   if(settingsDrawerOpen) closeSettingsDrawer();
   ['m','r','map','s'].forEach(id=>{
-    document.getElementById('p-'+id).classList.toggle('active',id===t);
-    document.getElementById('nt-'+id).classList.toggle('active',id===t);
+    document.getElementById('p-'+id)?.classList.toggle('active',id===t);
+    document.getElementById('nt-'+id)?.classList.toggle('active',id===t);
   });
+  const panelsEl = document.querySelector('.panels');
+  if(panelsEl) panelsEl.scrollTop = 0;
   if(t==='r')renderRecs();
   if(t==='map')setTimeout(drawMap,40);
 }
@@ -5608,6 +5869,7 @@ async function toggleMon(){
       monTmr=setInterval(()=>{const s=Math.round((Date.now()-sessStart)/1000);document.getElementById('sTime').textContent=fmtTime(s);},1000);
       document.getElementById('startBtn').className='start-btn stop';
       setStartButtonText();
+      updateLiveMonitorNotice();
       document.getElementById('camBtn').disabled=false;
       document.getElementById('locBtn').disabled=false;
       setRecordingButtonsAvailability();
@@ -5950,6 +6212,8 @@ async function toggleRec(){
       document.getElementById('sdot').className='sdot rec';document.getElementById('stxt').textContent=t('ui.recording');
       updateCameraOverlay();
       syncEvidenceModeUi();
+      setStartButtonText();
+      updateLiveMonitorNotice();
       showCapTemporarily('info',t('ui.recording'),storageStatus.persisted?(appLanguage!=='zh-CN'?'The recording will be saved to local records when you stop.':'录音/视频片段会在停止后写入本机记录，并尽量持久保存在浏览器。'):(appLanguage!=='zh-CN'?'Temporary recording. Save it from Records before closing or refreshing.':'录音/视频片段会先暂存在本次会话；停止后请立即在记录页保存到手机。'),'REC');
     }catch(e){
       stopWatermarkedVideoRecording();
@@ -5960,6 +6224,8 @@ async function toggleRec(){
       toast(msg,'err',5200);
       document.getElementById('recLabel').textContent=appLanguage!=='zh-CN'?'Recording failed':'录制启动失败';
       syncEvidenceModeUi();
+      setStartButtonText();
+      updateLiveMonitorNotice();
     }
   }else{
     clearInterval(recTmr);
@@ -5978,6 +6244,8 @@ async function toggleRec(){
     document.getElementById('sdot').className='sdot on';document.getElementById('stxt').textContent=t('ui.monitoring');
     updateCameraOverlay();
     syncEvidenceModeUi();
+    setStartButtonText();
+    updateLiveMonitorNotice();
     showCapTemporarily('info',appLanguage!=='zh-CN'?'Saving':'正在保存会话',appLanguage!=='zh-CN'?'Writing the recording to local browser storage.':'请稍候，录制片段正在写入本地浏览器存储。','SAVE',8000);
   }
 }
@@ -6426,6 +6694,7 @@ function stopAll(){
   setPlaceText(null,'none');
   document.getElementById('startBtn').className='start-btn';
   setStartButtonText();
+  updateLiveMonitorNotice();
   ['camBtn','locBtn','recBtn','videoRecBtn'].forEach(id=>document.getElementById(id).disabled=true);
   document.getElementById('sdot').className='sdot';
   document.getElementById('rdot').className='nav-dot';
