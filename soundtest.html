@@ -3271,8 +3271,8 @@ const AUTO_REC_EVENTS_KEY='sf_auto_rec_events_v1';
 let autoRecEvents=[],autoRecCurrentEvent=null;
 let weighting='A',timeWeight='F';
 let floatTBuf,floatFBuf,inputGainNode;
-let capHideTmr;
-let placeLookupOn=true,longRunPowerSaver=true,powerSaverNotified=false,googleMapsKey='',amapKey='',baiduKey='';
+const DEFAULT_BAIDU_KEY='kdlp0invEEhm1DbHKjmbExA4E0P19qPu';
+let placeLookupOn=true,longRunPowerSaver=true,powerSaverNotified=false,googleMapsKey='',amapKey='',baiduKey=DEFAULT_BAIDU_KEY;
 let currentPlan='free',calibrationHistory=[],commercialMetrics=[];
 let membershipState={email:'',active:false,plan:'free',provider:'none',status:'guest',lastCheckedAt:'',renewsAt:'',orderId:'',subscriptionId:''};
 let membershipConfig={provider:'lemon_squeezy',enabled:false,plans:{pro:false,team:false,lifetime:false},mode:'disabled'};
@@ -5420,7 +5420,7 @@ function loadState(){
     if(s.calibrationBaseline!==CALIBRATION_BASELINE&&typeof s.calOffset!=='number')calOffset=getCalibrationPreset(calibrationPresetKey).offset;
     weighting=['A','C','Z'].includes(s.weighting)?s.weighting:'A';timeWeight=s.timeWeight==='S'?'S':'F';
     evidenceMode=['audio','video','photo'].includes(s.evidenceMode)?s.evidenceMode:'audio';
-    placeLookupOn=s.placeLookupOn!==false;longRunPowerSaver=s.longRunPowerSaver!==false;googleMapsKey=s.googleMapsKey||'';amapKey=s.amapKey||'';baiduKey=s.baiduKey||'';
+    placeLookupOn=s.placeLookupOn!==false;longRunPowerSaver=s.longRunPowerSaver!==false;googleMapsKey=s.googleMapsKey||'';amapKey=s.amapKey||'';baiduKey=s.baiduKey||DEFAULT_BAIDU_KEY;
     longMonitorPlan={autoStopMinutes:Number(s.longMonitorPlan?.autoStopMinutes)||0,eventThresholdDb:Number(s.longMonitorPlan?.eventThresholdDb)||75};
     currentPlan=['free','pro','team'].includes(s.currentPlan)?s.currentPlan:'free';
     if(currentPlan!=='free'&&(!membershipState.active||membershipState.plan!==currentPlan))currentPlan='free';
@@ -6989,7 +6989,7 @@ function normalizeBaiduPlace(data){
   if(data?.status!==0)throw new Error(`Baidu status ${data?.status}${data?.message?`: ${data.message}`:''}`);
   if(!result)return null;
   const poi=pickBestPlaceName(result.pois||[]);
-  const name=poi||result.sematic_description||result.addressComponent?.street||result.formatted_address;
+  const name=result.formatted_address_poi||poi||result.sematic_description||result.addressComponent?.street||result.formatted_address;
   return {name,address:result.formatted_address||'',provider:appLanguage==='zh-CN'?'百度':'Baidu'};
 }
 
@@ -7028,11 +7028,23 @@ function fetchJsonp(url,callbackParam='callback',timeoutMs=9000){
 
 function buildPlaceLookupProviders(lat,lng){
   const gcj=wgs84ToGcj02(lat,lng);
+  const effectiveBaiduKey = baiduKey || DEFAULT_BAIDU_KEY;
   return [
-    baiduKey?{
-      provider:appLanguage==='zh-CN'?'百度':'Baidu',
+    {
+      provider: appLanguage==='zh-CN'?'智能位置服务':'Smart Geo Service',
+      priority: 'edge-cached',
+      load: async () => {
+        const res = await fetch(`/api/geo/reverse?lat=${lat}&lng=${lng}&lang=${encodeURIComponent(appLanguage)}`);
+        if (!res.ok) throw new Error('edge proxy failed');
+        const data = await res.json();
+        if (data?.ok && data?.name) return { name: data.name, address: data.address || data.name, provider: data.provider === 'baidu' ? (appLanguage==='zh-CN'?'百度':'Baidu') : (appLanguage==='zh-CN'?'公开地图':'OpenStreetMap') };
+        throw new Error('no place');
+      },
+    },
+    effectiveBaiduKey?{
+      provider:appLanguage==='zh-CN'?'百度地图':'Baidu Maps',
       priority:'baidu-first',
-      load:async()=>normalizeBaiduPlace(await fetchJsonp(`https://api.map.baidu.com/reverse_geocoding/v3/?ak=${encodeURIComponent(baiduKey)}&output=json&coordtype=wgs84ll&extensions_poi=1&radius=1000&location=${lat},${lng}`)),
+      load:async()=>normalizeBaiduPlace(await fetchJsonp(`https://api.map.baidu.com/reverse_geocoding/v3/?ak=${encodeURIComponent(effectiveBaiduKey)}&output=json&coordtype=wgs84ll&extensions_poi=1&radius=1000&location=${lat},${lng}`)),
     }:null,
     {
       provider:appLanguage==='zh-CN'?'公开地图':'OpenStreetMap',

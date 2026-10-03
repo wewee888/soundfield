@@ -188,3 +188,21 @@ test('delete-account and team workspace endpoints exist and function as expected
   assert.equal(kv.has('user:delete_me@soundtest.pro'), false);
   assert.equal(kv.has('session:token123'), false);
 });
+
+test('geo reverse geocoding endpoint exists and handles valid and invalid requests', async () => {
+  const geoPath = path.join(rootDir, 'functions/api/geo/reverse.js');
+  assert.ok(fs.existsSync(geoPath), 'reverse.js must exist');
+
+  const geoModule = await import(`file://${geoPath.replace(/\\/g, '/')}`);
+  assert.equal(typeof geoModule.onRequestGet, 'function');
+
+  // Test invalid coordinates
+  const badReq = new Request('https://soundtest.pro/api/geo/reverse?lat=invalid&lng=116.4');
+  const badRes = await geoModule.onRequestGet({ request: badReq, env: {} });
+  assert.equal(badRes.status, 400);
+
+  // Test options
+  const optRes = await geoModule.onRequestOptions();
+  assert.equal(optRes.status, 204);
+});
+
