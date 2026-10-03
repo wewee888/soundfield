@@ -488,3 +488,41 @@ test('noise-levels pages exist across all 9 locales plus root with complete SEO 
   });
 });
 
+test('all 9 locales and root pages feature unified 7-item navigation with authentic localized labels and active state', () => {
+  const rootIndex = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.match(rootIndex, /<div class="nav-links">/);
+  assert.match(rootIndex, /<a href="index\.html" class="active">Home<\/a>/);
+  assert.match(rootIndex, /<a href="soundtest\.html">Open App<\/a>/);
+  assert.match(rootIndex, /<a href="samples\.html">Samples<\/a>/);
+  assert.match(rootIndex, /<a href="accuracy\.html">Accuracy<\/a>/);
+  assert.match(rootIndex, /<a href="standards\.html">Standards<\/a>/);
+  assert.match(rootIndex, /<a href="noise-levels\.html">Noise Levels<\/a>/);
+  assert.match(rootIndex, /<a href="auth\.html">Account<\/a>/);
+
+  const zhStandards = fs.readFileSync(path.join(__dirname, '..', 'zh', 'standards.html'), 'utf8');
+  assert.match(zhStandards, /<div class="nav-links">/);
+  assert.match(zhStandards, /<a href="standards\.html" class="active">噪声标准<\/a>/);
+  assert.match(zhStandards, /<a href="samples\.html">报告样例<\/a>/);
+  assert.match(zhStandards, /<a href="noise-levels\.html">分贝等级<\/a>/);
+
+  const locales = {
+    zh: ['首页', '打开工具', '报告样例', '计量精度', '噪声标准', '分贝等级', '账户中心'],
+    es: ['Inicio', 'Abrir app', 'Muestras', 'Precisión', 'Estándares', 'Niveles de ruido', 'Mi cuenta'],
+    fr: ['Accueil', 'Ouvrir l’outil', 'Échantillons', 'Précision', 'Normes', 'Niveaux de bruit', 'Compte'],
+    de: ['Start', 'Tool öffnen', 'Messberichte', 'Genauigkeit', 'Normen', 'Dezibel-Tabelle', 'Konto'],
+    ja: ['ホーム', '測定ツール', 'サンプル', '測定精度', '環境基準', 'デシベル基準', 'アカウント'],
+    ko: ['홈', '측정 도구', '샘플 리포트', '정밀도', '소음 기준', '데시벨 기준', '계정'],
+    vi: ['Trang chủ', 'Mở ứng dụng', 'Mẫu báo cáo', 'Độ chính xác', 'Quy chuẩn', 'Mức decibel', 'Tài khoản'],
+    th: ['หน้าแรก', 'เปิดเครื่องมือ', 'ตัวอย่างรายงาน', 'ความแม่นยำ', 'มาตรฐานเสียง', 'ระดับเดซิเบล', 'บัญชีผู้ใช้'],
+  };
+
+  Object.entries(locales).forEach(([code, labels]) => {
+    const file = path.join(__dirname, '..', code, 'index.html');
+    const html = fs.readFileSync(file, 'utf8');
+    assert.match(html, /<div class="nav-links">/);
+    labels.forEach((label) => {
+      assert.ok(html.includes(label), `${code}/index.html contains nav label ${label}`);
+    });
+  });
+});
+

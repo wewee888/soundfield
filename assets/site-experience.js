@@ -828,6 +828,7 @@
       more: '更多',
       drawerTitle: '快捷导航与工具',
       standards: '国家标准',
+      noiseLevels: '分贝等级',
       accuracy: '精度校准',
       samples: '报告样例',
       download: '安装应用',
@@ -848,6 +849,7 @@
       more: 'More',
       drawerTitle: 'Quick Navigation & Tools',
       standards: 'Standards',
+      noiseLevels: 'Noise Levels',
       accuracy: 'Accuracy',
       samples: 'Samples',
       download: 'Install App',
@@ -868,6 +870,7 @@
       more: 'Más',
       drawerTitle: 'Navegación y Herramientas',
       standards: 'Normas',
+      noiseLevels: 'Niveles de ruido',
       accuracy: 'Calibración',
       samples: 'Muestras',
       download: 'Instalar App',
@@ -888,6 +891,7 @@
       more: 'Plus',
       drawerTitle: 'Navigation & Outils',
       standards: 'Normes',
+      noiseLevels: 'Niveaux de bruit',
       accuracy: 'Étalonnage',
       samples: 'Échantillons',
       download: 'Installer l’App',
@@ -908,6 +912,7 @@
       more: 'Mehr',
       drawerTitle: 'Navigation & Tools',
       standards: 'Normen',
+      noiseLevels: 'Dezibel-Tabelle',
       accuracy: 'Kalibrierung',
       samples: 'Muster',
       download: 'App laden',
@@ -928,6 +933,7 @@
       more: 'メニュー',
       drawerTitle: 'クイックナビゲーション',
       standards: '騒音基準',
+      noiseLevels: 'デシベル基準',
       accuracy: '校正精度',
       samples: 'レポート例',
       download: 'アプリ導入',
@@ -948,6 +954,7 @@
       more: '더보기',
       drawerTitle: '빠른 메뉴 & 도구',
       standards: '소음 기준',
+      noiseLevels: '데시벨 기준',
       accuracy: '정밀도 보정',
       samples: '보고서 샘플',
       download: '앱 설치',
@@ -968,6 +975,7 @@
       more: 'Thêm',
       drawerTitle: 'Điều hướng & Công cụ',
       standards: 'Tiêu chuẩn',
+      noiseLevels: 'Mức decibel',
       accuracy: 'Hiệu chuẩn',
       samples: 'Mẫu báo cáo',
       download: 'Tải ứng dụng',
@@ -988,6 +996,7 @@
       more: 'เพิ่มเติม',
       drawerTitle: 'เมนูทางลัดและเครื่องมือ',
       standards: 'มาตรฐาน',
+      noiseLevels: 'ระดับเดซิเบล',
       accuracy: 'การสอบเทียบ',
       samples: 'ตัวอย่างรายงาน',
       download: 'ติดตั้งแอป',
@@ -1042,6 +1051,7 @@
         scenarios: scenariosUrl,
         meter: meterUrl,
         standards: `${localePrefix}standards.html`,
+        noiseLevels: `${localePrefix}noise-levels.html`,
         accuracy: `${localePrefix}accuracy.html`,
         samples: `${localePrefix}samples.html`,
         download: `${localePrefix}download.html`,
@@ -1078,6 +1088,7 @@
       scenarios: `${homeUrl}#scenarios`,
       meter: meterUrl,
       standards: base ? `${base}standards.html` : 'standards.html',
+      noiseLevels: base ? `${base}noise-levels.html` : 'noise-levels.html',
       accuracy: base ? `${base}accuracy.html` : 'accuracy.html',
       samples: base ? `${base}samples.html` : 'samples.html',
       download: base ? `${base}download.html` : 'download.html',
@@ -1156,6 +1167,12 @@
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
           </div>
           <span>${t.standards}</span>
+        </a>
+        <a href="${urls.noiseLevels}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5v14M7 8v8M22 10v4M2 11v2"/></svg>
+          </div>
+          <span>${t.noiseLevels}</span>
         </a>
         <a href="${urls.accuracy}" class="mobile-drawer-item">
           <div class="mobile-drawer-item-icon">
