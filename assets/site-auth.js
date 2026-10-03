@@ -315,11 +315,15 @@
     closePanel('password');
     if (session?.email) {
       unauthenticated.hidden = true;
+      unauthenticated.style.display = 'none';
       authenticated.hidden = false;
+      authenticated.style.display = 'block';
       renderDashboard(session);
     } else {
       unauthenticated.hidden = false;
+      unauthenticated.style.display = '';
       authenticated.hidden = true;
+      authenticated.style.display = 'none';
       initUnauthenticated();
     }
   }

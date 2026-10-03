@@ -170,11 +170,13 @@
     }
     const path = window.location.pathname;
     const onRoot = path === '/' || /^\/(?:index\.html?)?$/i.test(path) || /^\/[a-c]\/(?:index\.html?)?$/i.test(path);
-    if (onRoot) {
+    const onRootAuth = /^\/(?:auth(?:\.html)?\/?)$/i.test(path);
+    if (onRoot || onRootAuth) {
       const userLocale = detectUserLocale();
       if (userLocale && userLocale !== 'en') {
         saveLocale(userLocale);
-        window.location.replace(localePath(userLocale));
+        const target = onRootAuth ? `/${userLocale}/auth.html${window.location.search}` : localePath(userLocale);
+        window.location.replace(target);
         return;
       }
     }

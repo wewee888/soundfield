@@ -6889,7 +6889,7 @@ function openCanvas(canvas,filename){
             <li><a href="compliance.html">服务条款</a></li>
             <li><a href="disclaimer.html">免责声明</a></li>
             <li><a href="privacy.html">GDPR 与同意</a></li>
-            <li><a href="auth.html">账户与会员</a></li>
+            <li><a href="zh/auth.html">账户与会员</a></li>
           </ul>
         </div>
 
@@ -6989,7 +6989,7 @@ function openLastEvidencePhoto(){
             <li><a href="compliance.html">服务条款</a></li>
             <li><a href="disclaimer.html">免责声明</a></li>
             <li><a href="privacy.html">GDPR 与同意</a></li>
-            <li><a href="auth.html">账户与会员</a></li>
+            <li><a href="zh/auth.html">账户与会员</a></li>
           </ul>
         </div>
 
@@ -7875,17 +7875,27 @@ try {
   const payParam = urlParams.get('pay');
   const sentryParam = urlParams.get('sentry');
   if (payParam && ['single', 'pro', 'yearly', 'lifetime'].includes(payParam)) {
-    window.addEventListener('DOMContentLoaded', () => {
+    const triggerPay = () => {
       setTimeout(() => {
         if (typeof openWeChatPayModal === 'function') openWeChatPayModal(payParam);
-      }, 500);
-    });
+      }, 400);
+    };
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', triggerPay);
+    } else {
+      triggerPay();
+    }
   } else if (sentryParam) {
-    window.addEventListener('DOMContentLoaded', () => {
+    const triggerSentry = () => {
       setTimeout(() => {
         if (typeof triggerSentryModeHook === 'function') triggerSentryModeHook();
-      }, 600);
-    });
+      }, 500);
+    };
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', triggerSentry);
+    } else {
+      triggerSentry();
+    }
   }
 } catch (_) {}
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(e=>console.log('SW reg failed',e)))}

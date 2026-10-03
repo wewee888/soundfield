@@ -1174,6 +1174,27 @@
     initScenarioWorkbench();
     initMobileBottomNav();
     initCookieConsent();
+    initPricingNavigation();
   });
+
+  function initPricingNavigation() {
+    document.addEventListener('click', (e) => {
+      const upgradeBtn = e.target.closest('.nav-upgrade, a[href="#pricing"], a[href$="#pricing"], .mobile-drawer-upgrade');
+      if (!upgradeBtn) return;
+      const pricingSection = document.getElementById('pricing');
+      if (pricingSection) {
+        e.preventDefault();
+        const proCard = pricingSection.querySelector('.price-card.pro') || pricingSection;
+        proCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        proCard.classList.remove('card-highlight-pulse');
+        void proCard.offsetWidth;
+        proCard.classList.add('card-highlight-pulse');
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', '#pricing');
+        }
+      }
+    });
+  }
 })();
+
 

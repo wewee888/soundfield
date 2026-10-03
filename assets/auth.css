@@ -3,6 +3,19 @@
    Split-screen auth layout + dashboard + slide-in panels
    ============================================================ */
 
+/* ── Enforce hidden attribute over grid/flex displays ── */
+[hidden] {
+  display: none !important;
+}
+.auth-layout[hidden],
+[data-auth-page="unauthenticated"][hidden] {
+  display: none !important;
+}
+.dashboard[hidden],
+[data-auth-page="authenticated"][hidden] {
+  display: none !important;
+}
+
 /* ── Auth Layout (unauthenticated) ── */
 .auth-layout {
   display: grid;
@@ -10,6 +23,7 @@
   min-height: 100vh;
   background: var(--ink-950);
 }
+
 
 /* Left brand panel */
 .auth-brand {

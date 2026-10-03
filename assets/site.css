@@ -1998,19 +1998,24 @@ a.card:hover h3 { color: var(--text-strong); }
 
 .feature-grid-22 .card:hover::before { opacity: 1; }
 
-/* ─── Pricing row (Free vs Single Report vs Pro Yearly vs Lifetime) ─── */
+/* ─── Pricing row (Free vs Single vs Pro Monthly vs Pro Yearly vs Lifetime) ─── */
 .pricing-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
   align-items: stretch;
 }
-@media (max-width: 1180px) {
+@media (max-width: 1360px) and (min-width: 1024px) {
+  .pricing-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 1023px) and (min-width: 641px) {
   .pricing-row {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media (max-width: 680px) {
+@media (max-width: 640px) {
   .pricing-row {
     grid-template-columns: 1fr;
   }
@@ -2018,8 +2023,8 @@ a.card:hover h3 { color: var(--text-strong); }
 
 .price-card {
   position: relative;
-  padding: 24px 22px;
-  border-radius: 24px;
+  padding: 24px 20px;
+  border-radius: 22px;
   border: 1px solid var(--ink-border);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
   display: flex;
@@ -2027,6 +2032,19 @@ a.card:hover h3 { color: var(--text-strong); }
   gap: 12px;
   overflow: hidden;
 }
+
+.price-card.monthly {
+  border-color: rgba(124, 155, 255, 0.38);
+  background:
+    linear-gradient(180deg, rgba(18, 24, 46, 0.88), rgba(12, 16, 32, 0.92)),
+    radial-gradient(60% 60% at 50% 0%, rgba(124, 155, 255, 0.16), transparent 70%);
+}
+.price-card.monthly .price-pill {
+  color: #7c9bff;
+  background: rgba(124, 155, 255, 0.12);
+  border-color: rgba(124, 155, 255, 0.35);
+}
+
 
 .price-card.single-report {
   border-color: rgba(44, 240, 193, 0.32);
@@ -2213,6 +2231,12 @@ a.card:hover h3 { color: var(--text-strong); }
   font-size: 14px;
 }
 
+.pricing-matrix thead th.col-monthly {
+  color: #7c9bff;
+  background: rgba(124, 155, 255, 0.08);
+  border-bottom-color: rgba(124, 155, 255, 0.25);
+}
+
 .pricing-matrix thead th.col-pro {
   color: var(--accent, #2cf0c1);
   background: rgba(44, 240, 193, 0.08);
@@ -2225,6 +2249,10 @@ a.card:hover h3 { color: var(--text-strong); }
   border-bottom-color: rgba(245, 158, 11, 0.25);
 }
 
+.pricing-matrix tbody td.col-monthly {
+  background: rgba(124, 155, 255, 0.02);
+}
+
 .pricing-matrix tbody td.col-pro {
   background: rgba(44, 240, 193, 0.02);
 }
@@ -2232,6 +2260,26 @@ a.card:hover h3 { color: var(--text-strong); }
 .pricing-matrix tbody td.col-lifetime {
   background: rgba(245, 158, 11, 0.02);
 }
+
+@keyframes cardHighlightPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(44, 240, 193, 0.8);
+    transform: scale(1);
+  }
+  40% {
+    box-shadow: 0 0 32px 10px rgba(44, 240, 193, 0.8), 0 0 60px 20px rgba(124, 155, 255, 0.5);
+    transform: scale(1.025);
+  }
+  100% {
+    box-shadow: 0 0 24px rgba(44, 240, 193, 0.15);
+    transform: scale(1);
+  }
+}
+
+.card-highlight-pulse {
+  animation: cardHighlightPulse 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
 
 .pricing-matrix tbody tr:hover td {
   background: rgba(255, 255, 255, 0.03);
