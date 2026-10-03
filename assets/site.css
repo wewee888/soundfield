@@ -275,6 +275,8 @@ p { margin: 0; color: var(--muted); text-wrap: pretty; }
   backdrop-filter: blur(16px);
   z-index: 150;
 }
+.lang-picker-menu[hidden] { display: none !important; }
+.lang-picker:not(.is-open) .lang-picker-menu { display: none !important; }
 .lang-picker-option {
   display: flex;
   align-items: center;

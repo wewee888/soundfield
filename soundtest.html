@@ -381,49 +381,82 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
 .cap-card.err .cap-icon{background:rgba(255,63,80,.16);color:var(--red)}
 .cap-card.err .cap-badge{background:rgba(255,63,80,.12);border-color:rgba(255,63,80,.38);color:var(--red)}
 
-/* ── Action buttons (always visible) ── */
+/* ── Action buttons: Dual 50% / 50% (一人一半，左侧实时监测，右侧录音存证) ── */
 .action-bar{
-  display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:10px; /* compactActionControls */
-  padding:0;min-width:0;
+  display:grid;grid-template-columns:1fr 1fr;align-items:stretch;gap:8px;
+  padding:0;min-width:0;width:100%;
 }
-.action-tools{display:none;align-items:center;justify-content:flex-end;gap:8px;width:auto;flex:0 0 auto}
-/* Big start/stop button */
-.start-btn{
-  flex:none;width:100%;min-width:0;min-height:52px;border-radius:40px;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  font-family:var(--sans);font-size:clamp(14px,3.8vw,15px);font-weight:700;
-  background:linear-gradient(135deg,#2AFFD4,#8DFFE9);color:#07090F;
-  box-shadow:0 10px 30px rgba(42,255,212,.30),inset 0 1px 0 rgba(255,255,255,.56);
-  transition:transform .15s,box-shadow .15s,filter .15s;
-  padding:4px 16px;
-}
-.start-btn:active{transform:scale(.96)}
-.start-btn:hover{filter:saturate(1.05);box-shadow:0 12px 34px rgba(42,255,212,.36),inset 0 1px 0 rgba(255,255,255,.62)}
-.start-btn.stop{background:var(--red-d);color:var(--red);border:.5px solid rgba(255,63,80,.4);box-shadow:none}
-.start-btn svg{width:18px;height:18px;flex-shrink:0}
-.start-btn-copy{display:flex;flex-direction:column;align-items:center;line-height:1.2;text-align:center}
-.start-btn-title{font-size:14.5px;font-weight:800;letter-spacing:.02em}
-.start-btn-sub{font-size:10.5px;font-weight:600;opacity:.82;margin-top:1px;white-space:nowrap}
+.action-tools{display:none!important}
 
-/* ── Live monitor vs recording notice banner ── */
-.live-monitor-notice{
-  margin-top:8px;
-  padding:9px 12px;
-  border-radius:14px;
-  background:rgba(255,181,32,.08);
-  border:1px solid rgba(255,181,32,.25);
-  box-shadow:0 8px 24px rgba(0,0,0,.15);
-  max-height:120px;
-  overflow:hidden;
-  transition:max-height .5s cubic-bezier(0.16,1,0.3,1),opacity .45s ease,margin .4s ease,padding .4s ease;
+/* Monitor Button (Left 50%) */
+.start-btn{
+  flex:none;width:100%;min-width:0;min-height:50px;border-radius:18px;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--sans);
+  background:linear-gradient(135deg,#2AFFD4,#8DFFE9);color:#07090F;
+  box-shadow:0 8px 24px rgba(42,255,212,.28),inset 0 1px 0 rgba(255,255,255,.56);
+  transition:transform .15s,box-shadow .15s,filter .15s,background .2s;
+  padding:6px 8px;
 }
-.live-monitor-notice.dismissed{
-  max-height:0;opacity:0;margin-top:0;margin-bottom:0;padding-top:0;padding-bottom:0;border-width:0;pointer-events:none;
+.start-btn:active{transform:scale(.97)}
+.start-btn:hover{filter:saturate(1.08);box-shadow:0 10px 28px rgba(42,255,212,.36)}
+.start-btn.stop{
+  background:rgba(255,63,80,.12);
+  color:var(--red);
+  border:1px solid rgba(255,63,80,.4);
+  box-shadow:0 6px 18px rgba(255,63,80,.12);
 }
-.live-monitor-notice.recording{
-  background:rgba(255,63,80,.08);
-  border-color:rgba(255,63,80,.28);
+.start-btn.stop:hover{background:rgba(255,63,80,.18);border-color:rgba(255,63,80,.6)}
+
+/* Evidence Recording Button (Right 50%) */
+.rec-action-btn{
+  flex:none;width:100%;min-width:0;min-height:50px;border-radius:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--sans);
+  background:linear-gradient(135deg,rgba(255,63,80,.14),rgba(255,90,50,.10));
+  border:1.5px solid rgba(255,63,80,.42);
+  color:#FF5A6E;
+  box-shadow:0 8px 22px rgba(255,63,80,.15),inset 0 1px 0 rgba(255,255,255,.1);
+  transition:transform .15s,box-shadow .15s,filter .15s,background .2s,border-color .2s;
+  padding:6px 8px;
 }
+.rec-action-btn:active{transform:scale(.97)}
+.rec-action-btn:hover{
+  background:linear-gradient(135deg,rgba(255,63,80,.24),rgba(255,90,50,.18));
+  border-color:rgba(255,63,80,.7);
+  box-shadow:0 10px 26px rgba(255,63,80,.24);
+}
+.rec-action-btn.recording{
+  background:linear-gradient(135deg,#FF334B,#FF6347);
+  color:#FFFFFF;
+  border:none;
+  box-shadow:0 8px 26px rgba(255,51,75,.45),inset 0 1px 0 rgba(255,255,255,.4);
+  animation:recPulseGlow 1.8s infinite;
+}
+@keyframes recPulseGlow{
+  0%,100%{box-shadow:0 8px 26px rgba(255,51,75,.45)}
+  50%{box-shadow:0 10px 36px rgba(255,51,75,.75),0 0 14px rgba(255,100,60,.6)}
+}
+
+.action-bar .btn-copy, .start-btn-copy{display:flex;flex-direction:column;align-items:center;line-height:1.2;text-align:center;min-width:0}
+.action-bar .btn-title, .start-btn-title{font-size:clamp(12px,3.2vw,14px);font-weight:800;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.action-bar .btn-sub, .start-btn-sub{font-size:clamp(9.5px,2.4vw,10.5px);font-weight:600;opacity:.82;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.action-bar .btn-icon, .start-btn svg{width:16px;height:16px;flex-shrink:0}
+.rec-pulse-dot{width:10px;height:10px;border-radius:50%;background:#FF334B;box-shadow:0 0 8px #FF334B;flex-shrink:0}
+.rec-action-btn.recording .rec-pulse-dot{
+  background:#FFFFFF;
+  box-shadow:0 0 10px #FFFFFF;
+  border-radius:2px;
+  width:10px;height:10px;
+  animation:recSquarePulse 1s infinite alternate;
+}
+@keyframes recSquarePulse{
+  from{transform:scale(0.85);opacity:0.8}
+  to{transform:scale(1.15);opacity:1}
+}
+
+/* Notice banner is obsolete with dual action buttons */
+.live-monitor-notice{display:none!important}
 .lmn-close{
   background:none;border:none;color:var(--tx3);font-size:13px;cursor:pointer;padding:2px 6px;margin-left:4px;border-radius:4px;line-height:1;transition:color .2s,background .2s;
 }
@@ -685,7 +718,9 @@ canvas.vcvs{width:100%;height:96px;min-height:96px;max-height:96px;border-radius
 .lang-picker-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:180px;margin:0;padding:6px;list-style:none;border-radius:14px;border:1px solid rgba(168,196,255,.2);background:rgba(8,12,24,.96);box-shadow:0 16px 40px rgba(0,0,0,.45);z-index:150;max-height:min(320px,50vh);overflow:auto}
 .lang-picker-option{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;font-size:12px;color:var(--tx1);white-space:nowrap}
 .lang-picker-option:hover,.lang-picker-option[aria-selected="true"]{background:rgba(42,255,212,.12)}
-.lang-picker.is-open .lang-picker-menu[hidden]{display:block}
+.lang-picker-menu[hidden]{display:none!important}
+.lang-picker:not(.is-open) .lang-picker-menu{display:none!important}
+.lang-picker.is-open .lang-picker-menu:not([hidden]){display:block}
 .lang-setting-ctrl{display:flex;justify-content:flex-end}
 .lang-setting-ctrl .lang-picker-menu{left:0;right:auto}
 .card.layout-settings-measure,.card:has(.lang-picker.is-open),.srow:has(.lang-picker.is-open){overflow:visible!important;z-index:40;position:relative}
@@ -794,16 +829,16 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .scene-chip .emoji{font-size:14px;line-height:1}
 .scene-chip-hint{margin:0 0 8px;font-size:11.5px;line-height:1.45;color:var(--tx2)}
 .hero .app-header-row{order:1;margin-bottom:4px}
-.hero .subscription-banner{order:1.5;margin:4px 0 8px;width:100%}
-.hero .alert{order:2;width:100%}
-.hero .cap-card{order:3;width:100%}
-.hero .db-stage{order:4;flex-shrink:0;min-height:185px}
-.hero .meter-wrap{order:5;flex-shrink:0}
-.hero .stats-row{order:6;flex-shrink:0}
-.hero .stats-row.secondary{order:7;flex-shrink:0}
-.hero .action-bar{order:8;flex-shrink:0;margin-top:6px}
-.hero #liveMonitorNotice{order:8.5;margin-top:8px;width:100%}
-.hero .geo-dock{order:9;margin:10px 0 0;width:100%;cursor:pointer;flex-shrink:0}
+.hero .subscription-banner{order:2;margin:4px 0 8px;width:100%}
+.hero .alert{order:3;width:100%}
+.hero .cap-card{order:4;width:100%}
+.hero .db-stage{order:5;flex-shrink:0;min-height:185px}
+.hero .meter-wrap{order:6;flex-shrink:0}
+.hero .stats-row{order:7;flex-shrink:0}
+.hero .stats-row.secondary{order:8;flex-shrink:0}
+.hero .action-bar{order:9;flex-shrink:0;margin-top:6px}
+.hero #liveMonitorNotice{display:none!important}
+.hero .geo-dock{order:10;margin:10px 0 0;width:100%;cursor:pointer;flex-shrink:0}
 
 /* ── Bottom geo dock + library nav ── */
 .bottom-shell{
@@ -2418,59 +2453,54 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     <div class="stat-box"><div class="stat-lbl" title="Residual background level (95%)">L95</div><div class="stat-val sm" id="sL95">--<span class="u"> dB</span></div></div>
   </div>
 
-  <!-- Action bar -->
-  <div class="action-bar">
-    <!-- Start / Stop -->
-    <button class="start-btn" id="startBtn" onclick="toggleMon()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Action bar: Dual 50% / 50% buttons (一人一半：左侧实时监测，右侧录音存证) -->
+  <div class="action-bar" id="actionBar">
+    <!-- Monitor Button (Left 50%) -->
+    <button class="start-btn" id="startBtn" onclick="toggleMon()" type="button" aria-label="实时监测分贝">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/>
       </svg>
-      <span class="start-btn-copy">
-        <span class="start-btn-title">开始实时监测</span>
-        <span class="start-btn-sub">（仅测分贝 · 不保存录音）</span>
+      <span class="btn-copy">
+        <span class="btn-title" id="startBtnTitle">开始实时监测</span>
+        <span class="btn-sub" id="startBtnSub">仅测分贝</span>
       </span>
     </button>
-    <div class="action-tools">
-    <!-- Record -->
-    <div class="rec-wrap" id="recWrap">
-      <div class="rec-ring" id="rring1"></div>
-      <div class="rec-ring2" id="rring2"></div>
-      <button class="rec-btn idle" id="recBtn" onclick="toggleRec()" title="录音/录像保存" data-autostart-recording="true" aria-label="开始录制证据">
-        <svg id="recIco" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
-          <circle cx="12" cy="12" r="7" stroke="currentColor"/>
-          <circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none" data-icon="recordDotNotPlay"/>
-        </svg>
-      </button>
-    </div>
-    <!-- Camera -->
-    <button class="icon-btn" id="camBtn" onclick="toggleCam()" disabled title="摄像头">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
-        <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/>
-      </svg>
+
+    <!-- Evidence Recording Button (Right 50%) -->
+    <button class="rec-action-btn idle" id="recActionBtn" onclick="toggleRecAction()" type="button" aria-label="开始录音存证">
+      <span class="rec-pulse-dot" id="recActionDot"></span>
+      <span class="btn-copy">
+        <span class="btn-title" id="recActionTitle">录音存证</span>
+        <span class="btn-sub" id="recActionSub">测分贝+留底录音</span>
+      </span>
     </button>
-    <!-- Location -->
-    <button class="icon-btn" id="locBtn" onclick="getLoc()" disabled title="获取位置">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
-        <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
-        <circle cx="12" cy="10" r="3"/>
-      </svg>
-    </button>
+
+    <div class="action-tools" style="display:none!important">
+      <!-- Hidden compatibility elements preserving IDs for background logic -->
+      <div class="rec-wrap" id="recWrap">
+        <div class="rec-ring" id="rring1"></div>
+        <div class="rec-ring2" id="rring2"></div>
+        <button class="rec-btn idle" id="recBtn" onclick="toggleRec()" title="录音/录像保存" data-autostart-recording="true" aria-label="开始录制证据">
+          <svg id="recIco" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="7" stroke="currentColor"/>
+            <circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none" data-icon="recordDotNotPlay"/>
+          </svg>
+        </button>
+      </div>
+      <button class="icon-btn" id="camBtn" onclick="toggleCam()" disabled title="摄像头"></button>
+      <button class="icon-btn" id="locBtn" onclick="getLoc()" disabled title="获取位置"></button>
     </div>
   </div>
 
-  <!-- Live monitor notice & convert banner -->
-  <div class="live-monitor-notice" id="liveMonitorNotice" style="display:none">
+  <!-- Live monitor notice permanently hidden in favor of dual buttons -->
+  <div class="live-monitor-notice" id="liveMonitorNotice" style="display:none!important" aria-hidden="true">
     <div class="lmn-inner">
       <div class="lmn-msg">
         <span class="lmn-badge">⚠️ 仅实时测声</span>
-        <span class="lmn-text" id="lmnText">当前未保存录音。若需留存维权证据并导出报告：</span>
+        <span class="lmn-text" id="lmnText">当前未保存录音。</span>
       </div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <button type="button" class="lmn-action-btn convert" id="lmnConvertBtn" onclick="primaryEvidenceAction()">
-          ● 立即转为录音存证
-        </button>
-        <button type="button" class="lmn-close" onclick="dismissLiveMonitorNotice(event)" aria-label="关闭提示">✕</button>
-      </div>
+      <button type="button" class="lmn-action-btn convert" id="lmnConvertBtn" onclick="primaryEvidenceAction()">● 立即转为录音存证</button>
+      <button type="button" class="lmn-close" onclick="dismissLiveMonitorNotice(event)" aria-label="关闭提示">✕</button>
     </div>
   </div>
 
@@ -3167,8 +3197,8 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 
 <script src="assets/jspdf.umd.min.js?v=20260823b" data-cfasync="false" async></script>
 <script src="assets/utils.js?v=20260823b" data-cfasync="false"></script>
-<script src="assets/i18n-data.js?v=20260823b" data-cfasync="false"></script>
-<script src="assets/lang-flags.js?v=20260823b" data-cfasync="false"></script>
+<script src="assets/i18n-data.js?v=20261003e" data-cfasync="false"></script>
+<script src="assets/lang-flags.js?v=20261003e" data-cfasync="false"></script>
 <script src="assets/pro-meter.js?v=20260823b" data-cfasync="false"></script>
 <script src="assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
@@ -3499,55 +3529,49 @@ function applySeoLanguage(){
   if(meta)meta.setAttribute('content',t('metaDescription'));
 }
 function setStartButtonText(){
-  const btn=document.getElementById('startBtn');if(!btn)return;
+  const startBtn=document.getElementById('startBtn');
+  const recActionBtn=document.getElementById('recActionBtn');
   const isZh = appLanguage === 'zh-CN';
-  if(isMon){
-    if(isRec){
-      btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="#07090F" stroke="none"/></svg> <span class="start-btn-copy"><span class="start-btn-title">' + (isZh ? '停止监测与录音' : 'Stop Monitor & Record') + '</span><span class="start-btn-sub">' + (isZh ? '（保存本次证据）' : '(Saving to Vault)') + '</span></span>';
+
+  // Left button: Live Monitor (50%)
+  if(startBtn){
+    if(isMon){
+      startBtn.className='start-btn stop';
+      startBtn.innerHTML='<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" stroke="none"/></svg><span class="btn-copy"><span class="btn-title">' + (isZh ? '停止监测' : t('ui.stopMeter','Stop Meter')) + '</span><span class="btn-sub">' + (isZh ? '正在测声' : t('ui.monitoringSub','Monitoring')) + '</span></span>';
     } else {
-      btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="#07090F" stroke="none"/></svg> <span class="start-btn-copy"><span class="start-btn-title">' + (isZh ? '停止实时测声' : 'Stop Live Meter') + '</span><span class="start-btn-sub">' + (isZh ? '（当前未录音存证）' : '(Not recording)') + '</span></span>';
+      startBtn.className='start-btn';
+      startBtn.innerHTML='<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/></svg><span class="btn-copy"><span class="btn-title">' + (isZh ? '开始实时监测' : t('ui.startMeter','Start Meter')) + '</span><span class="btn-sub">' + (isZh ? '仅测分贝' : t('ui.meterSub','Live dB Only')) + '</span></span>';
     }
+  }
+
+  // Right button: Evidence Recording (50%)
+  if(recActionBtn){
+    if(isRec){
+      recActionBtn.className='rec-action-btn recording';
+      recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + (isZh ? '停止并保存' : t('ui.stopRecord','Stop & Save')) + '</span><span class="btn-sub">' + (isZh ? '录音保全中' : t('ui.recordingSub','Recording...')) + '</span></span>';
+    } else {
+      recActionBtn.className='rec-action-btn idle';
+      recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + (isZh ? '录音存证' : t('ui.recordEvidence','Record Audio')) + '</span><span class="btn-sub">' + (isZh ? '测分贝+留底录音' : t('ui.recordSub','dB + Audio File')) + '</span></span>';
+    }
+  }
+}
+
+async function toggleRecAction(){
+  if(isRec){
+    await toggleRec();
   } else {
-    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/></svg> <span class="start-btn-copy"><span class="start-btn-title">' + (isZh ? '开始实时监测' : 'Start Live Meter') + '</span><span class="start-btn-sub">' + (isZh ? '（仅测分贝 · 不保存录音）' : '(Live only · Not recording)') + '</span></span>';
+    await primaryEvidenceAction();
   }
 }
 
 function updateLiveMonitorNotice(){
   const notice = document.getElementById('liveMonitorNotice');
-  if(!notice) return;
-  const isZh = appLanguage === 'zh-CN';
-  if(!isMon){
-    notice.style.display = 'none';
-    return;
-  }
-  notice.style.display = 'block';
-  const badge = notice.querySelector('.lmn-badge');
-  const text = document.getElementById('lmnText');
-  const btn = document.getElementById('lmnConvertBtn');
-  if(isRec){
-    notice.className = 'live-monitor-notice recording';
-    if(badge) badge.textContent = isZh ? '🔴 取证录制中' : '🔴 Recording Evidence';
-    if(text) text.textContent = isZh ? '声音与现场事实正加密保全至证据库，停止后可生成正式报告。' : 'Audio & metadata are being securely recorded to Evidence Vault.';
-    if(btn){
-      btn.textContent = isZh ? '查看证据库' : 'View Vault';
-      btn.onclick = () => sw('r');
-      btn.className = 'lmn-action-btn view-vault';
-    }
-  } else {
-    notice.className = 'live-monitor-notice monitoring';
-    if(badge) badge.textContent = isZh ? '⚠️ 仅实时测声' : '⚠️ Live Meter Only';
-    if(text) text.textContent = isZh ? '当前未保存录音。若需留存维权证据并导出报告：' : 'Audio is not being recorded. To save evidence:';
-    if(btn){
-      btn.textContent = isZh ? '● 立即转为录音存证' : '● Start Evidence Recording';
-      btn.onclick = () => primaryEvidenceAction();
-      btn.className = 'lmn-action-btn convert';
-    }
-  }
+  if(notice) notice.style.display = 'none';
 }
 function dismissLiveMonitorNotice(event){
   event?.stopPropagation();
   const n=document.getElementById('liveMonitorNotice');
-  if(n){n.classList.add('dismissed');setTimeout(()=>{n.style.display='none';n.classList.remove('dismissed');},500);}
+  if(n) n.style.display='none';
 }
 
 function setButtonTextWithSvg(id,text){
@@ -4104,10 +4128,15 @@ function setRecordingButtonsAvailability(){
   const recBtn=document.getElementById('recBtn');
   const videoBtn=document.getElementById('videoRecBtn');
   const modeBtn=document.getElementById('modePrimaryBtn');
+  const recActionBtn=document.getElementById('recActionBtn');
   const title=!supports.secure?secureContextHelp():!supports.media?(appLanguage!=='zh-CN'?'Microphone access is not supported.':'当前浏览器不支持麦克风 API'):!supports.recorder?(appLanguage!=='zh-CN'?'Recording is not supported.':'当前浏览器不支持录制'):(appLanguage!=='zh-CN'?'Starts monitoring first, then saves a recording.':'点击后会先请求麦克风权限，再开始录制');
   if(recBtn){
     recBtn.disabled=false;
     recBtn.title=title;
+  }
+  if(recActionBtn){
+    recActionBtn.disabled=false;
+    recActionBtn.title=title;
   }
   if(videoBtn){
     videoBtn.disabled=false;

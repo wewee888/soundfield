@@ -89,6 +89,7 @@ test('LangFlags maps primary languages and flag URLs correctly', () => {
   assert.match(langFlags.flagUrl('ja'), /jp\.png$/);
   assert.match(langFlags.flagUrl('ko'), /kr\.png$/);
   assert.match(langFlags.flagUrl('es'), /es\.png$/);
+  assert.equal(typeof langFlags.closeAll, 'function');
 });
 
 test('language routing prefers saved choice, then system language, then English', () => {
@@ -370,4 +371,16 @@ test('static website brand mark uses the shared tool icon', () => {
     assert.doesNotMatch(html, /<span class="brand-mark">SF<\/span>/, `${file} does not use text-only brand mark`);
     assert.match(html, /class="brand-mark" aria-hidden="true"/, `${file} has decorative shared brand mark`);
   }
+});
+
+test('action bar dual buttons and translation keys are configured', () => {
+  const soundtestHtml = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+  assert.match(soundtestHtml, /id="startBtn"/);
+  assert.match(soundtestHtml, /id="recActionBtn"/);
+  assert.match(soundtestHtml, /grid-template-columns:\s*1fr\s+1fr/);
+  assert.match(soundtestHtml, /\.live-monitor-notice\{display:none!important\}/);
+
+  const i18nCode = fs.readFileSync(path.join(__dirname, '..', 'assets', 'i18n-data.js'), 'utf8');
+  assert.match(i18nCode, /startMeter:/);
+  assert.match(i18nCode, /recordEvidence:/);
 });

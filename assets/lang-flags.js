@@ -50,13 +50,16 @@
   }
 
   function closeAllPickers(except) {
-    document.querySelectorAll('.lang-picker.is-open').forEach((node) => {
+    document.querySelectorAll('.lang-picker').forEach((node) => {
       if (node !== except) {
         node.classList.remove('is-open');
         const btn = node.querySelector('.lang-picker-btn');
         if (btn) btn.setAttribute('aria-expanded', 'false');
         const menu = node.querySelector('.lang-picker-menu');
-        if (menu) menu.hidden = true;
+        if (menu) {
+          menu.hidden = true;
+          menu.style.display = 'none';
+        }
       }
     });
   }
@@ -75,6 +78,7 @@
     const currentLabel = options.find((o) => o.value === value)?.label || LABELS[currentPrimary] || value;
 
     mount.classList.add('lang-picker');
+    mount.classList.remove('is-open');
     mount.innerHTML = '';
 
     const btn = document.createElement('button');
@@ -108,6 +112,7 @@
     menu.className = 'lang-picker-menu';
     menu.setAttribute('role', 'listbox');
     menu.hidden = true;
+    menu.style.display = 'none';
 
     options.forEach((opt) => {
       const primary = opt.primary || primaryFromValue(opt.value);
@@ -131,6 +136,11 @@
       item.append(img, text);
       item.addEventListener('click', (event) => {
         event.stopPropagation();
+        event.preventDefault();
+        mount.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        menu.hidden = true;
+        menu.style.display = 'none';
         closeAllPickers(null);
         if (typeof onChange === 'function') {
           onChange(opt.value);
@@ -141,10 +151,20 @@
 
     btn.addEventListener('click', (event) => {
       event.stopPropagation();
-      const open = mount.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      menu.hidden = !open;
-      if (open) closeAllPickers(mount);
+      event.preventDefault();
+      const willOpen = !mount.classList.contains('is-open');
+      if (willOpen) {
+        closeAllPickers(mount);
+        mount.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        menu.hidden = false;
+        menu.style.display = 'block';
+      } else {
+        mount.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        menu.hidden = true;
+        menu.style.display = 'none';
+      }
     });
 
     mount.append(btn, menu);
@@ -159,6 +179,7 @@
     };
     document.addEventListener('click', handleDismiss, true);
     document.addEventListener('pointerdown', handleDismiss, true);
+    document.addEventListener('touchstart', handleDismiss, { capture: true, passive: true });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' || event.key === 'Esc') {
         closeAllPickers(null);
@@ -172,5 +193,6 @@
     primaryFromValue,
     flagUrl,
     renderPicker,
+    closeAll: () => closeAllPickers(null),
   };
 })();
