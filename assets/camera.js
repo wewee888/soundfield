@@ -48,15 +48,30 @@
   const toastEl = document.getElementById('camToast');
   const galleryThumb = document.getElementById('galleryThumb');
 
-  // Detect language
-  if (document.documentElement.lang.startsWith('en')) {
-    lang = 'en-US';
-  } else if (location.pathname.includes('/en/')) {
+  // Detect language from document html lang or URL path
+  const htmlLang = (document.documentElement.lang || '').toLowerCase();
+  if (htmlLang.startsWith('zh') || location.pathname.includes('/zh/')) {
+    lang = 'zh-CN';
+  } else if (htmlLang.startsWith('es') || location.pathname.includes('/es/')) {
+    lang = 'es-ES';
+  } else if (htmlLang.startsWith('fr') || location.pathname.includes('/fr/')) {
+    lang = 'fr-FR';
+  } else if (htmlLang.startsWith('de') || location.pathname.includes('/de/')) {
+    lang = 'de-DE';
+  } else if (htmlLang.startsWith('ja') || location.pathname.includes('/ja/')) {
+    lang = 'ja-JP';
+  } else if (htmlLang.startsWith('ko') || location.pathname.includes('/ko/')) {
+    lang = 'ko-KR';
+  } else if (htmlLang.startsWith('vi') || location.pathname.includes('/vi/')) {
+    lang = 'vi-VN';
+  } else if (htmlLang.startsWith('th') || location.pathname.includes('/th/')) {
+    lang = 'th-TH';
+  } else {
     lang = 'en-US';
   }
 
   function t(zh, en) {
-    return lang === 'en-US' ? en : zh;
+    return lang === 'zh-CN' ? zh : en;
   }
 
   function showToast(msg, ms = 2200) {

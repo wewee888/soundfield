@@ -697,7 +697,7 @@ canvas.vcvs{width:100%;height:96px;min-height:96px;max-height:96px;border-radius
 
 /* ── App header: i18n + Neon Pro ── */
 .app-header-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;position:relative;z-index:3}
-.app-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;color:inherit}
+.app-brand{display:flex;align-items:center;gap:10px;min-width:max-content;flex-shrink:0;text-decoration:none;color:inherit}
 .app-brand-mark{
   width:32px;height:32px;border-radius:10px;
   display:inline-flex;align-items:center;justify-content:center;
@@ -707,9 +707,9 @@ canvas.vcvs{width:100%;height:96px;min-height:96px;max-height:96px;border-radius
   flex-shrink:0;
   padding:4px;
 }
-.app-brand-text{display:flex;flex-direction:column;gap:1px;min-width:0}
-.app-brand-name{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(120deg,#fff 0%,#b8f5ff 55%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;animation:brand-breathe 4.5s ease-in-out infinite;text-shadow:0 0 20px rgba(42,255,212,.15)}
-.app-brand-sub{font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:rgba(42,255,212,.62);text-transform:uppercase}
+.app-brand-text{display:flex;flex-direction:column;gap:1px;min-width:0;flex-shrink:0}
+.app-brand-name{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;background:linear-gradient(120deg,#fff 0%,#b8f5ff 55%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;animation:brand-breathe 4.5s ease-in-out infinite;text-shadow:0 0 20px rgba(42,255,212,.15)}
+.app-brand-sub{font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:rgba(42,255,212,.62);text-transform:uppercase;white-space:nowrap}
 @keyframes brand-breathe{0%,100%{filter:brightness(1)}50%{filter:brightness(1.08)}}
 .app-header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .app-lang-wrap{position:relative;display:inline-flex;align-items:center}
@@ -2506,9 +2506,6 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
           <option value="th">🇹🇭 TH</option>
         </select>
       </div>
-      <a href="camera.html" class="app-cam-nav-btn" title="打开声学存证相机" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;background:rgba(42,255,212,0.12);border:1px solid rgba(42,255,212,0.32);color:var(--accent);font-size:12px;font-weight:700;text-decoration:none;transition:all .15s ease;">
-        <span>📷 存证相机</span>
-      </a>
       <button class="app-pro-btn" type="button" onclick="showSubscriptionPlans()">★ Upgrade Pro</button>
     </div>
   </div>
@@ -3392,6 +3389,10 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>
     证据库
   </button>
+  <a class="nav-btn nav-btn-cam" id="nt-cam" href="camera.html" role="tab" title="存证相机">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    存证相机
+  </a>
   <button class="nav-btn" id="nt-map" onclick="sw('map')" role="tab">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
     地图
@@ -3464,7 +3465,8 @@ let micSourceNode=null,dummyMuteNode=null;
 let watermarkRecorderCanvas=null,watermarkRecorderCtx=null,watermarkRecorderStream=null,watermarkRecorderAnimId=null;
 let isMon=false,isRec=false,isCam=false;
 let micPermissionGranted=false;
-try{if(sessionStorage.getItem('sf_mic_granted')==='1')micPermissionGranted=true;}catch(_){}
+let cachedMicPermissionState='unknown';
+try{if(sessionStorage.getItem('sf_mic_granted')==='1'){micPermissionGranted=true;cachedMicPermissionState='granted';}}catch(_){}
 let animId,peak=0,mn=999,dbH=[],trendH=[],wBuf,fBuf;
 let sessStart,recStart,recTmr,monTmr,curDb=0,tickN=0,lastTick=0,lastAnalysisAt=0,lastVisualAt=0,lastOverlayAt=0;
 let leqEnergy=0,leqTime=0;
@@ -3977,10 +3979,17 @@ function applyTranslations(){
   translateStaticText();
   setButtonTextWithSvg('nt-m',t('ui.monitor'));
   setButtonTextWithSvg('nt-r',t('ui.evidenceLibrary'));
+  setButtonTextWithSvg('nt-cam',isZh?'存证相机':t('ui.evidenceCamera','Camera'));
   setButtonTextWithSvg('nt-map',t('ui.map'));
   setButtonTextWithSvg('nt-s',t('ui.settings','Settings'));
   const ntm=document.getElementById('nt-m');if(ntm)ntm.title=t('ui.monitor');
   const ntr=document.getElementById('nt-r');if(ntr)ntr.title=t('ui.evidenceLibrary');
+  const ntcam=document.getElementById('nt-cam');
+  if(ntcam){
+    ntcam.title=isZh?'存证相机':t('ui.evidenceCamera','Evidence Camera');
+    const primary=appLanguage.split('-')[0];
+    ntcam.href=primary==='zh'?'zh/camera.html':(primary==='en'?'camera.html':`${primary}/camera.html`);
+  }
   const ntmap=document.getElementById('nt-map');if(ntmap)ntmap.title=t('ui.map');
   const nts=document.getElementById('nt-s');if(nts)nts.title=t('ui.settings','Settings');
   const camBtn=document.getElementById('camBtn');if(camBtn)camBtn.title=t('ui.camera','Camera');
@@ -4222,6 +4231,11 @@ function initAppLanguage(){
   applySeoLanguage();
   syncLanguageSelectOptions();
   renderAppLangPickers();
+  applyTranslations();
+  setStartButtonText();
+  syncEvidenceModeUi();
+  renderSceneChips();
+  updateGeoDock();
 }
 const PHONE_LAN_HTTPS_REQUIRED='手机通过局域网 IP 访问普通 HTTP 页面时，浏览器会禁用麦克风；请部署到 HTTPS 域名，或使用 Cloudflare Tunnel / ngrok / Vercel 预览链接测试。';
 
@@ -5582,12 +5596,14 @@ async function requestStartupPermissions(){
     zh?'请在弹出的系统对话框中点击“允许”麦克风；数据仅在本机实时计算。':'Please choose "Allow" in the browser prompt — mic data is processed locally only.',
     'SETUP',9000);
   try{
-    dismissPermissionGuide();
-    markPermissionGuideSeen('authorized');
     if(!isMon){
       await toggleMon({fromAuthModal:true});
     }
-    if(isMon)getLoc();
+    if(isMon){
+      dismissPermissionGuide();
+      markPermissionGuideSeen('authorized');
+      getLoc();
+    }
   }catch(e){
     console.warn('[permGrant]',e);
     const isDenied=['NotAllowedError','PermissionDeniedError','SecurityError'].includes(e?.name);
@@ -6474,14 +6490,9 @@ async function toggleMon(opts={}){
     // Check authorization: if mic is explicitly denied in browser settings, show modal with recovery steps.
     // If unknown or prompt, do not block the user gesture; let getUserMedia trigger the native prompt!
     if(!opts?.fromAuthModal && !micPermissionGranted){
-      const micState=await queryPermissionState('microphone');
-      if(micState==='denied'){
+      if(cachedMicPermissionState==='denied'){
         openPermissionModal({denied:true});
         return;
-      }
-      if(micState==='granted'){
-        micPermissionGranted=true;
-        try{sessionStorage.setItem('sf_mic_granted','1');}catch(_){}
       }
     }
 
@@ -6491,8 +6502,10 @@ async function toggleMon(opts={}){
       await ensureAudioContextReady();
       micStream=await requestMicrophoneStream();
       micPermissionGranted=true;
+      cachedMicPermissionState='granted';
       try{sessionStorage.setItem('sf_mic_granted','1');}catch(_){}
       markPermissionGuideSeen('authorized');
+      dismissPermissionGuide();
       analyser=audioCtx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=analyserSmooth(smoothing);
       fftAn=audioCtx.createAnalyser();fftAn.fftSize=2048;fftAn.smoothingTimeConstant=.18;
       inputGainNode=audioCtx.createGain();updateMicGain();
@@ -6544,9 +6557,11 @@ async function toggleMon(opts={}){
       audioCtx=null;
       if(e?.name==='NotAllowedError'||e?.name==='PermissionDeniedError'||e?.name==='SecurityError'){
         micPermissionGranted=false;
+        cachedMicPermissionState='denied';
         try{sessionStorage.removeItem('sf_mic_granted');}catch(_){}
         openPermissionModal({denied:true});
       }
+      throw e;
     }finally{
       setButtonBusy('startBtn',false);
     }

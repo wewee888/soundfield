@@ -565,3 +565,28 @@ test('soundtest.html verifies microphone permission and pops up permission modal
   assert.match(soundtestHtml, /Safari 浏览器 ➔ 麦克风/);
 });
 
+test('dedicated camera exists in all 9 locales, header logo is protected, and bottom nav features 5 items including camera', () => {
+  const locales = ['zh', 'en', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'];
+  
+  // 1. Verify camera.html exists across all 9 locales + root
+  assert.ok(fs.existsSync(path.join(__dirname, '..', 'camera.html')), 'root camera.html exists');
+  locales.forEach((loc) => {
+    const locCam = path.join(__dirname, '..', loc, 'camera.html');
+    assert.ok(fs.existsSync(locCam), `${loc}/camera.html exists`);
+    const content = fs.readFileSync(locCam, 'utf8');
+    assert.match(content, /SOUNDTEST\.PRO/);
+    assert.match(content, /cam-stage/);
+    assert.match(content, /cam-watermark-overlay/);
+  });
+
+  // 2. Verify soundtest.html header does not crowd the brand logo
+  const soundtestHtml = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+  assert.doesNotMatch(soundtestHtml, /class="app-header-actions"[\s\S]*?class="app-cam-nav-btn"/, 'camera button removed from top header');
+  assert.match(soundtestHtml, /\.app-brand\{display:flex;align-items:center;gap:10px;min-width:max-content;flex-shrink:0;/);
+
+  // 3. Verify bottom nav has 5 items including nt-cam
+  assert.match(soundtestHtml, /id="nt-cam"/);
+  assert.match(soundtestHtml, /href="camera\.html"/);
+  assert.match(soundtestHtml, /setButtonTextWithSvg\('nt-cam'/);
+});
+

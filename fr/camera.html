@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="fr-FR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta http-equiv="Cache-Control" content="no-transform, no-siteapp">
   <meta name="applicable-device" content="pc,mobile">
   <meta name="theme-color" content="#03060c">
-  <title>在线声学存证相机｜自动压印实时分贝、精准定位与防篡改时间戳 · SOUNDTEST.PRO</title>
-  <meta name="description" content="无需下载 App 的在线声学存证相机。现场拍照与录像自动叠加实时分贝读数、GPS 经纬度位置、防篡改时间戳与 SHA-256 数字指纹，专为邻里噪音投诉、施工扰民巡检与租房维权设计。">
-  <meta name="keywords" content="声学水印相机, 噪音拍照取证, 现场分贝水印相机, 邻里纠纷拍照, 施工噪声存证">
-  <link rel="canonical" href="https://soundtest.pro/zh/camera.html">
+  <title>Caméra de preuve acoustique en ligne | Filigrane décibels en temps réel, GPS et horodatage · SOUNDTEST.PRO</title>
+  <meta name="description" content="Aucune application à télécharger. Caméra Web de constat sonore incrustant le niveau de décibels en temps réel, les coordonnées GPS et une empreinte SHA-256 infalsifiable.">
+  <meta name="keywords" content="caméra filigrane acoustique, preuve de bruit, constat sonore, litige voisinage">
+  <link rel="canonical" href="https://soundtest.pro/fr/camera.html">
   <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/camera.html">
   <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/camera.html">
   <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/camera.html">
@@ -27,11 +27,11 @@
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "SOUNDTEST.PRO 声学存证水印相机",
+    "name": "SOUNDTEST.PRO Caméra de Constat Acoustique",
     "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "Web browser",
-    "url": "https://soundtest.pro/zh/camera.html",
-    "description": "无需安装客户端的浏览器声学水印相机，支持现场拍照压印分贝、经纬度及防伪数字签名。",
+    "url": "https://soundtest.pro/fr/camera.html",
+    "description": "Caméra Web avec horodatage, niveau sonore et localisation pour la documentation des nuisances sonores.",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -55,18 +55,18 @@
 
     <!-- Top Navigation & Status Bar -->
     <header class="cam-top-bar">
-      <a href="../soundtest.html" class="cam-back-link" title="返回分贝仪">
+      <a href="../soundtest.html" class="cam-back-link" title="Retour au sonomètre">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        <span>返回分贝仪</span>
+        <span>Retour au sonomètre</span>
       </a>
 
       <div class="cam-live-indicator">
         <span class="cam-live-dot"></span>
-        <span>声学存证监控中</span>
+        <span>Surveillance acoustique active</span>
       </div>
 
       <div class="cam-tool-actions">
-        <button type="button" id="switchCamBtn" class="cam-tool-btn" title="切换前后摄像头" aria-label="切换前后摄像头">
+        <button type="button" id="switchCamBtn" class="cam-tool-btn" title="Changer de caméra" aria-label="Changer de caméra">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
         </button>
       </div>
@@ -77,7 +77,7 @@
       <div class="hud-header">
         <div class="hud-brand">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
-          <span>SOUNDTEST.PRO · 声学存证水印</span>
+          <span>SOUNDTEST.PRO · Filigrane de preuve</span>
         </div>
         <div class="hud-time" id="hudTime">--:--:--</div>
       </div>
@@ -85,28 +85,28 @@
       <div class="hud-main-reading">
         <div class="hud-db-number" id="hudDb">--</div>
         <span class="hud-db-unit">dB</span>
-        <div class="hud-level-desc" id="hudLevelDesc">正在采样现场分贝…</div>
+        <div class="hud-level-desc" id="hudLevelDesc">Échantillonnage dB en cours…</div>
       </div>
 
       <div class="hud-metrics-row">
         <div class="hud-metric-pill">
-          <small>PEAK 峰值</small>
+          <small>CRÊTE Max</small>
           <strong id="hudPeak">-- dB</strong>
         </div>
         <div class="hud-metric-pill">
-          <small>AVG 平均</small>
+          <small>MOY Moyenne</small>
           <strong id="hudAvg">-- dB</strong>
         </div>
       </div>
 
       <div class="hud-geo-row">
         <svg class="hud-geo-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-        <span id="hudGeo">正在获取现场 GPS 坐标与地址…</span>
+        <span id="hudGeo">Acquisition GPS et adresse…</span>
       </div>
 
       <div class="hud-footer">
-        <span id="hudHash">SHA-256 计算中…</span>
-        <span>防篡改本地优先存证</span>
+        <span id="hudHash">Calcul SHA-256…</span>
+        <span>Preuve locale infalsifiable</span>
       </div>
     </section>
 
@@ -114,17 +114,17 @@
     <footer class="cam-bottom-bar">
       <div class="cam-shutter-row">
         <!-- Gallery button -->
-        <button type="button" id="galleryThumb" class="cam-gallery-btn" title="查看最近证据照片" aria-label="查看最近证据照片">
+        <button type="button" id="galleryThumb" class="cam-gallery-btn" title="Voir les photos récentes" aria-label="Voir les photos récentes">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
         </button>
 
         <!-- Shutter Button -->
-        <button type="button" id="shutterBtn" class="cam-shutter-btn" title="拍照存证" aria-label="拍照存证">
+        <button type="button" id="shutterBtn" class="cam-shutter-btn" title="Capturer photo de preuve" aria-label="Capturer photo de preuve">
           <div class="cam-shutter-core"></div>
         </button>
 
         <!-- Switch Camera Button -->
-        <button type="button" class="cam-switch-btn" onclick="document.getElementById('switchCamBtn').click()" title="切换前后摄像头" aria-label="切换前后摄像头">
+        <button type="button" class="cam-switch-btn" onclick="document.getElementById('switchCamBtn').click()" title="Changer de caméra" aria-label="Changer de caméra">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4"/><path d="M4 8V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
       </div>
@@ -136,7 +136,7 @@
     <div class="cam-modal-head">
       <div class="cam-modal-title" id="modalTitle">
         <span>📸</span>
-        <span>声学证据照片已生成</span>
+        <span>Photo de preuve acoustique générée</span>
       </div>
       <button type="button" id="closePreviewBtn" class="cam-modal-close" aria-label="Close">✕</button>
     </div>
@@ -148,10 +148,10 @@
     <div class="cam-modal-actions">
       <button type="button" id="downloadPhotoBtn" class="cam-btn-primary">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        <span>保存高清存证照片到相册</span>
+        <span>Enregistrer la photo haute résolution</span>
       </button>
       <a href="auth.html" class="cam-btn-secondary">
-        <span>📄 前往证据库导出正式维权报告</span>
+        <span>📄 Accéder à la bibliothèque pour le rapport officiel</span>
       </a>
     </div>
   </div>
