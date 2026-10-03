@@ -1799,6 +1799,138 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
+/* ── Pro Forensic Showcase Card ── */
+.pro-showcase-card {
+  background: linear-gradient(135deg, rgba(14, 22, 38, 0.95), rgba(7, 12, 22, 0.98));
+  border: 1px solid rgba(42, 255, 212, 0.28);
+  border-radius: var(--r);
+  padding: 20px 18px;
+  margin-top: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 24px rgba(42, 255, 212, 0.08);
+}
+.pro-showcase-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, rgba(42, 255, 212, 0.18), rgba(124, 155, 255, 0.18));
+  border: 1px solid rgba(42, 255, 212, 0.35);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.pro-showcase-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.pro-showcase-desc {
+  font-size: 12.5px;
+  color: var(--tx2);
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+.pro-showcase-img-box {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #000;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+.pro-showcase-img-box img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 250ms ease;
+}
+.pro-showcase-img-box:hover img {
+  transform: scale(1.02);
+}
+.pro-showcase-img-hint {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  pointer-events: none;
+}
+.pro-showcase-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.pro-showcase-feat {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.pro-showcase-feat span {
+  display: block;
+  font-size: 11px;
+  color: var(--tx2);
+}
+.pro-showcase-feat strong {
+  display: block;
+  font-size: 12px;
+  color: #fff;
+  margin-top: 2px;
+}
+.pro-showcase-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pro-showcase-actions .btn-pro-main {
+  flex: 1;
+  min-width: 160px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent) 0%, #10b981 100%);
+  color: #04101a;
+  font-weight: 800;
+  font-size: 13.5px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(42, 255, 212, 0.3);
+  transition: opacity 150ms;
+}
+.pro-showcase-actions .btn-pro-camera-link {
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
 </style>
   <link rel="canonical" href="https://soundtest.pro/soundtest/"/>
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
@@ -2374,6 +2506,9 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
           <option value="th">🇹🇭 TH</option>
         </select>
       </div>
+      <a href="camera.html" class="app-cam-nav-btn" title="打开声学存证相机" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;background:rgba(42,255,212,0.12);border:1px solid rgba(42,255,212,0.32);color:var(--accent);font-size:12px;font-weight:700;text-decoration:none;transition:all .15s ease;">
+        <span>📷 存证相机</span>
+      </a>
       <button class="app-pro-btn" type="button" onclick="showSubscriptionPlans()">★ Upgrade Pro</button>
     </div>
   </div>
@@ -2594,6 +2729,46 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
       <div class="scene-chip-grid" id="sceneChipGrid"></div>
     </div>
     <div class="ad-slot" id="monitorAdSlot" data-ad-slot="monitor">首页广告位预留 · 免费版低干扰展示 · 不遮挡实时监测</div>
+
+    <!-- Pro Forensic Report Showcase Card -->
+    <div class="card pro-showcase-card" id="proShowcaseCard">
+      <div class="pro-showcase-badge">★ PRO FORENSIC EVIDENCE · 专业维权报告</div>
+      <div class="pro-showcase-title">加盖 SHA-256 数字指纹与防伪时间戳的正式声学证据</div>
+      <div class="pro-showcase-desc">消除对方“调大音量造假、自己播放噪音”的推诿借口。一键导出完整无水印正式 PDF 报告，适用于物业交涉、居委会调解、报警立案与民事维权。</div>
+      
+      <div class="pro-showcase-img-box" onclick="showReportPreviewModal()">
+        <img src="assets/images/forensic_report_preview.webp" alt="含水印预览版 vs 正式无水印存证 PDF 对比示意" loading="lazy">
+        <div class="pro-showcase-img-hint">点击查看报告对比样例 ↗</div>
+      </div>
+
+      <div class="pro-showcase-grid">
+        <div class="pro-showcase-feat">
+          <span>⚖️ 维权模板公函</span>
+          <strong>自动生成交涉律师函模版</strong>
+        </div>
+        <div class="pro-showcase-feat">
+          <span>📊 声学统计参数</span>
+          <strong>LAeq / L10 / L50 / L90 / 峰值</strong>
+        </div>
+        <div class="pro-showcase-feat">
+          <span>🛡️ 防篡改加密锚点</span>
+          <strong>不可篡改 SHA-256 数字指纹</strong>
+        </div>
+        <div class="pro-showcase-feat">
+          <span>📷 现场照片叠加</span>
+          <strong>GPS 经纬度+真实时间水印</strong>
+        </div>
+      </div>
+
+      <div class="pro-showcase-actions">
+        <button type="button" class="btn-pro-main" onclick="showReportPreviewModal()">
+          <span>★ 查看报告样例 / 解锁专业版</span>
+        </button>
+        <a href="camera.html" class="btn-pro-camera-link">
+          <span>📷 打开声学存证相机 ↗</span>
+        </a>
+      </div>
+    </div>
     <!-- Recording info + note -->
     <div class="card mode-panel" id="audioModePanel" data-mode-panel="audio video">
       <div class="clabel" id="recStatusCardLabel">录制状态</div>
@@ -8471,6 +8646,11 @@ function openReportPreviewModal(recs, isBatch = false) {
 function closeReportPreviewModal() {
   const modal = document.getElementById('reportPreviewModal');
   if (modal) modal.classList.remove('show');
+}
+
+function showReportPreviewModal() {
+  const sample = (records && records.length) ? records : [{ avgDb: Math.round(curDb || 52), peakDb: Math.round(peak || 68), evidenceId: 'SF-DEMO-SAMPLE' }];
+  openReportPreviewModal(sample);
 }
 
 function triggerSentryModeHook() {

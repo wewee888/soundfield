@@ -218,4 +218,35 @@ test('Privacy notice / cookie consent: excluded for China and non-GDPR regions, 
   assert.ok(experienceJs.includes('Privacy Notice'), 'has English localization');
 });
 
+test('Dedicated Camera standalone page, Pro showcase card, and SEO integration', () => {
+  const cameraHtml = fs.readFileSync(path.join(rootDir, 'camera.html'), 'utf8');
+  const zhCameraHtml = fs.readFileSync(path.join(rootDir, 'zh/camera.html'), 'utf8');
+  const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+  const sitemapXml = fs.readFileSync(path.join(rootDir, 'sitemap.xml'), 'utf8');
+  const indexHtml = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  const zhIndexHtml = fs.readFileSync(path.join(rootDir, 'zh/index.html'), 'utf8');
+
+  // camera.html standalone setup
+  assert.ok(cameraHtml.includes('assets/camera.css'), 'camera.html loads camera.css');
+  assert.ok(cameraHtml.includes('assets/camera.js'), 'camera.html loads camera.js');
+  assert.ok(cameraHtml.includes('LA.init({id:"281wblDNvub2tk9f"'), 'camera.html has 51.la analytics');
+  assert.ok(cameraHtml.includes('hudDb'), 'camera.html has real-time hudDb');
+  assert.ok(cameraHtml.includes('shutterBtn'), 'camera.html has shutter button');
+
+  // zh/camera.html localized setup
+  assert.ok(zhCameraHtml.includes('../assets/camera.css'), 'zh/camera.html loads relative camera.css');
+  assert.ok(zhCameraHtml.includes('../assets/camera.js'), 'zh/camera.html loads relative camera.js');
+
+  // Pro showcase card in core meter
+  assert.ok(soundtestHtml.includes('proShowcaseCard'), 'soundtest.html has Pro showcase card');
+  assert.ok(soundtestHtml.includes('forensic_report_preview.webp'), 'soundtest.html displays forensic report preview image');
+  assert.ok(soundtestHtml.includes('href="camera.html"'), 'soundtest.html links to dedicated camera page');
+
+  // SEO & sitemap integration
+  assert.ok(sitemapXml.includes('https://soundtest.pro/camera.html'), 'sitemap.xml contains camera.html URL');
+  assert.ok(indexHtml.includes('camera.html'), 'index.html footer links to camera');
+  assert.ok(zhIndexHtml.includes('camera.html'), 'zh/index.html footer links to camera');
+});
+
+
 

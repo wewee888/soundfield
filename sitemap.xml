@@ -44,6 +44,13 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/auth/"/>
   </url>
   <url>
+    <loc>https://soundtest.pro/camera.html</loc>
+    <lastmod>2026-10-04</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/camera.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/camera.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/camera.html"/>
+  </url>
+  <url>
     <loc>https://soundtest.pro/changelog/</loc>
     <lastmod>2026-09-05</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/changelog/"/>
