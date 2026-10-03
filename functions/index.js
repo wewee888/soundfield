@@ -182,6 +182,9 @@ function onRequestGet(context) {
     const dest = '/' + locale + '/' + search;
     headers.set('Location', dest);
     headers.append('Set-Cookie', 'sf_locale=' + locale + '; Path=/; Max-Age=31536000; SameSite=Lax');
+    if (countryHeader) {
+      headers.append('Set-Cookie', 'sf_country=' + encodeURIComponent(countryHeader.toUpperCase()) + '; Path=/; Max-Age=31536000; SameSite=Lax');
+    }
     return new Response(null, {
       status: 302,
       headers,
@@ -203,6 +206,9 @@ function onRequestGet(context) {
   headers.set('Location', dest);
   headers.append('Set-Cookie', 'sf_locale=en; Path=/; Max-Age=31536000; SameSite=Lax');
   headers.append('Set-Cookie', 'sf_variant=' + variant + '; Path=/; Max-Age=31536000; SameSite=Lax');
+  if (countryHeader) {
+    headers.append('Set-Cookie', 'sf_country=' + encodeURIComponent(countryHeader.toUpperCase()) + '; Path=/; Max-Age=31536000; SameSite=Lax');
+  }
 
   return new Response(null, {
     status: 302,

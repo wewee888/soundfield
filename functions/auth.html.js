@@ -23,6 +23,9 @@ export async function onRequestGet(context) {
     const headers = new Headers();
     headers.set('Location', dest);
     headers.append('Set-Cookie', 'sf_locale=' + locale + '; Path=/; Max-Age=31536000; SameSite=Lax');
+    if (countryHeader) {
+      headers.append('Set-Cookie', 'sf_country=' + encodeURIComponent(countryHeader.toUpperCase()) + '; Path=/; Max-Age=31536000; SameSite=Lax');
+    }
     return new Response(null, {
       status: 302,
       headers,

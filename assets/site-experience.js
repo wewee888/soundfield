@@ -782,30 +782,161 @@
     });
   }
 
+  const GDPR_COUNTRIES = [
+    'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR',
+    'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
+    'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB', 'IS', 'LI',
+    'NO', 'CH'
+  ];
+
+  const CONSENT_I18N = {
+    de: {
+      badge: 'Datenschutz',
+      body: 'Wir verwenden notwendige Cookies für Basisfunktionen und Analysen. Ihre Mikrofondaten werden <strong>ausschließlich lokal auf Ihrem Gerät verarbeitet</strong> und niemals in die Cloud übertragen. Weitere Details in unserer ',
+      policy: 'Datenschutzerklärung',
+      link: '/de/privacy.html',
+      btn: 'Verstanden',
+    },
+    fr: {
+      badge: 'Confidentialité',
+      body: 'Nous utilisons des cookies essentiels pour le fonctionnement local et l\'analyse. Vos données de microphone sont <strong>traitées localement sur votre appareil</strong> et jamais envoyées dans le cloud. En savoir plus dans notre ',
+      policy: 'Politique de confidentialité',
+      link: '/fr/privacy.html',
+      btn: 'J\'ai compris',
+    },
+    es: {
+      badge: 'Privacidad',
+      body: 'Utilizamos cookies esenciales para el funcionamiento local y métricas. Los datos de su micrófono se <strong>procesan solo en su dispositivo</strong> y nunca se suben a la nube. Más detalles en nuestra ',
+      policy: 'Política de privacidad',
+      link: '/es/privacy.html',
+      btn: 'Entendido',
+    },
+    en: {
+      badge: 'Privacy Notice',
+      body: 'We use essential cookies to provide local processing features and analytics. Your microphone data is <strong>processed locally and never uploaded to the cloud</strong>. By continuing to use SOUNDTEST.PRO, you agree to our ',
+      policy: 'Privacy Policy',
+      link: '/privacy.html',
+      btn: 'Got it',
+    },
+  };
+
+  function getCountryFromCookie() {
+    try {
+      const match = document.cookie?.match(/(?:^|;\s*)sf_country=([^;]+)/);
+      return match ? decodeURIComponent(match[1]).toUpperCase().trim() : '';
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function getCurrentLocale() {
+    const path = (window.location.pathname || '').toLowerCase();
+    const parts = path.split('/').filter(Boolean);
+    if (parts.length > 0 && ['zh', 'de', 'fr', 'es', 'ja', 'ko', 'vi', 'th', 'en'].includes(parts[0])) {
+      return parts[0];
+    }
+    const docLang = (document.documentElement.lang || '').toLowerCase();
+    if (docLang.startsWith('zh')) return 'zh';
+    if (docLang.startsWith('de')) return 'de';
+    if (docLang.startsWith('fr')) return 'fr';
+    if (docLang.startsWith('es')) return 'es';
+    if (docLang.startsWith('ja')) return 'ja';
+    if (docLang.startsWith('ko')) return 'ko';
+    if (docLang.startsWith('vi')) return 'vi';
+    if (docLang.startsWith('th')) return 'th';
+    return 'en';
+  }
+
+  function isChinaUser() {
+    // 1. Explicit country cookie
+    const country = getCountryFromCookie();
+    if (country === 'CN' || country === 'HK' || country === 'MO') return true;
+
+    // 2. Chinese path or language tag
+    const locale = getCurrentLocale();
+    if (locale === 'zh') return true;
+
+    // 3. Timezone detection (China mainland / HK / TW)
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      if (/^(Asia\/(Shanghai|Chongqing|Harbin|Urumqi|Beijing|Hong_Kong|Taipei|Macau)|PRC)$/i.test(tz)) {
+        return true;
+      }
+    } catch (_) {}
+
+    return false;
+  }
+
+  function shouldShowCookieConsent() {
+    // If user already acknowledged, do not show
+    if (localStorage.getItem('soundtest_cookie_consent')) return false;
+
+    // 1. China region NEVER shows privacy notice popup (per user instruction)
+    if (isChinaUser()) return false;
+
+    // 2. Non-GDPR regional editions (zh, ja, ko, vi, th) NEVER show privacy notice popup
+    const locale = getCurrentLocale();
+    if (['zh', 'ja', 'ko', 'vi', 'th'].includes(locale)) return false;
+
+    // 3. Explicit country code check
+    const country = getCountryFromCookie();
+    if (country) {
+      return GDPR_COUNTRIES.includes(country);
+    }
+
+    // 4. Timezone check when country cookie is not yet set
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      // Non-GDPR major continents (Asia, Americas, Australia, Africa) -> do NOT show
+      if (/^(Asia|America|Australia|Pacific|Africa)\//i.test(tz)) {
+        return false;
+      }
+      // Europe timezone -> GDPR region
+      if (/^Europe\//i.test(tz)) {
+        return true;
+      }
+    } catch (_) {}
+
+    // 5. European language pages (German, French) default to GDPR if timezone is not overseas
+    if (locale === 'de' || locale === 'fr') {
+      return true;
+    }
+
+    return false;
+  }
+
   function initCookieConsent() {
-    if (localStorage.getItem('soundtest_cookie_consent')) return;
-    
+    if (!shouldShowCookieConsent()) return;
+
+    const locale = getCurrentLocale();
+    const i18n = CONSENT_I18N[locale] || CONSENT_I18N.en;
+
     const banner = document.createElement('div');
+    banner.setAttribute('id', 'cookieConsentBanner');
+    banner.setAttribute('role', 'region');
+    banner.setAttribute('aria-label', i18n.badge);
     banner.style.cssText = `
       position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 9999;
       display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
-      padding: 18px 24px; border-radius: 16px; border: 1px solid rgba(44, 240, 193, 0.22);
+      padding: 16px 22px; border-radius: 16px; border: 1px solid rgba(44, 240, 193, 0.22);
       background: linear-gradient(180deg, rgba(13, 21, 37, 0.96), rgba(6, 10, 18, 0.96));
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.07);
       backdrop-filter: blur(20px); font-family: -apple-system, system-ui, sans-serif;
+      max-width: 960px; margin: 0 auto;
     `;
-    
+
     const text = document.createElement('div');
-    text.style.cssText = "color: #92a4b8; font-size: 13px; line-height: 1.5; flex: 1; min-width: 280px;";
-    text.innerHTML = `<strong>Privacy First:</strong> We use essential cookies to provide local processing features and analytics. Your microphone data is <strong>never uploaded to the cloud</strong>. By continuing to use SOUNDTEST.PRO, you agree to our <a href="/privacy.html" style="color: #2cf0c1; text-decoration: none;">Privacy Policy</a>.`;
-    
+    text.style.cssText = "color: #92a4b8; font-size: 13px; line-height: 1.5; flex: 1; min-width: 260px;";
+    text.innerHTML = `<strong>${i18n.badge}:</strong> ${i18n.body}<a href="${i18n.link}" style="color: #2cf0c1; text-decoration: underline; text-underline-offset: 3px;">${i18n.policy}</a>.`;
+
     const btn = document.createElement('button');
     btn.style.cssText = `
-      padding: 10px 20px; border-radius: 999px; border: none; font-weight: 700; font-size: 13px; cursor: pointer;
+      padding: 9px 20px; border-radius: 999px; border: none; font-weight: 700; font-size: 13px; cursor: pointer;
       background: linear-gradient(135deg, #2cf0c1, #0a9172); color: #071018; box-shadow: 0 0 22px rgba(42, 255, 212, 0.18);
+      white-space: nowrap; flex-shrink: 0;
     `;
-    btn.textContent = "Got it";
-    
+    btn.textContent = i18n.btn;
+
     btn.addEventListener('click', () => {
       localStorage.setItem('soundtest_cookie_consent', 'accepted');
       banner.style.opacity = '0';
@@ -813,11 +944,19 @@
       banner.style.transition = 'all 0.3s ease';
       setTimeout(() => banner.remove(), 300);
     });
-    
+
     banner.appendChild(text);
     banner.appendChild(btn);
     document.body.appendChild(banner);
   }
+
+  // Expose helpers for testing and runtime inspection
+  window.SoundtestExperience = window.SoundtestExperience || {};
+  window.SoundtestExperience.shouldShowCookieConsent = shouldShowCookieConsent;
+  window.SoundtestExperience.isChinaUser = isChinaUser;
+  window.SoundtestExperience.isGdprRegion = shouldShowCookieConsent;
+  window.SoundtestExperience.GDPR_COUNTRIES = GDPR_COUNTRIES;
+  window.SoundtestExperience.CONSENT_I18N = CONSENT_I18N;
 
   const MOBILE_NAV_I18N = {
     zh: {

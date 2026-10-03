@@ -178,3 +178,34 @@ test('Mobile anti-transcoding, interactive watermark camera, and multi-tier geo 
   assert.ok(geoData.lat && geoData.lng, 'IP geo returns lat and lng');
 });
 
+test('Privacy notice / cookie consent: excluded for China and non-GDPR regions, localized for EU', () => {
+  const experienceJs = fs.readFileSync(path.join(rootDir, 'assets/site-experience.js'), 'utf8');
+
+  // Verify GDPR country list exists and includes EU countries but excludes CN/US/JP/KR
+  const gdprMatch = experienceJs.match(/const GDPR_COUNTRIES = \[([\s\S]*?)\];/);
+  assert.ok(gdprMatch, 'GDPR_COUNTRIES array exists');
+  const gdprList = gdprMatch[1];
+  assert.ok(gdprList.includes("'DE'"), 'GDPR list includes Germany');
+  assert.ok(gdprList.includes("'FR'"), 'GDPR list includes France');
+  assert.ok(gdprList.includes("'GB'"), 'GDPR list includes UK');
+  assert.ok(!gdprList.includes("'CN'"), 'GDPR list excludes China');
+  assert.ok(!gdprList.includes("'JP'"), 'GDPR list excludes Japan');
+  assert.ok(!gdprList.includes("'US'"), 'GDPR list excludes United States');
+
+  // Verify China user exclusion logic
+  assert.ok(experienceJs.includes('function isChinaUser()'), 'defines isChinaUser check');
+  assert.ok(experienceJs.includes("if (country === 'CN'"), 'excludes CN country');
+  assert.ok(experienceJs.includes("if (locale === 'zh') return true;"), 'excludes zh locale');
+  assert.ok(experienceJs.includes('Shanghai'), 'checks Chinese timezones');
+
+  // Verify non-GDPR editions exclusion
+  assert.ok(experienceJs.includes("['zh', 'ja', 'ko', 'vi', 'th'].includes(locale)"), 'excludes non-GDPR Asian locales');
+
+  // Verify multi-language localization (not English for all)
+  assert.ok(experienceJs.includes('Datenschutz'), 'has German localization');
+  assert.ok(experienceJs.includes('Confidentialité'), 'has French localization');
+  assert.ok(experienceJs.includes('Privacidad'), 'has Spanish localization');
+  assert.ok(experienceJs.includes('Privacy Notice'), 'has English localization');
+});
+
+
