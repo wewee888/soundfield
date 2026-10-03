@@ -137,6 +137,20 @@ export async function onRequestPost(context) {
       sessionToken = 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2);
     }
 
+    // Persist session token in KV — 30-day TTL — enables cross-device validation
+    if (env.ab_test && sessionToken) {
+      const SESSION_TTL = 30 * 24 * 60 * 60; // 30 days in seconds
+      const sessPayload = JSON.stringify({
+        email: verifiedEmail,
+        plan: membership.active ? (membership.plan || 'pro') : 'free',
+        created_at: new Date().toISOString(),
+        expires_at: new Date(Date.now() + SESSION_TTL * 1000).toISOString(),
+      });
+      await env.ab_test.put(`sess:${sessionToken}`, sessPayload, {
+        expirationTtl: SESSION_TTL,
+      }).catch(err => console.error('Session KV write failed:', err));
+    }
+
     return json({
       ok: true,
       message: '登录成功 / Authentication successful',

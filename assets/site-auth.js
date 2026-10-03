@@ -25,6 +25,69 @@
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
   }
 
+  /* ── Cross-device session sync ─────────────────────────────────────────────
+   * Called silently on every page load. Sends the stored session_token to the
+   * server and gets back the current membership status from KV. This is what
+   * keeps "logged in on phone → also logged in on PC" working.
+   * ─────────────────────────────────────────────────────────────────────────*/
+  async function silentSessionRefresh() {
+    const session = loadSession();
+    if (!session?.token) return; // No token → nothing to refresh
+
+    try {
+      const resp = await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: session.token }),
+        // 4s timeout — fail fast, don't block UI
+        signal: AbortSignal.timeout ? AbortSignal.timeout(4000) : undefined,
+      });
+
+      if (resp.status === 401) {
+        // Token expired or invalidated server-side → force logout
+        saveSession(null);
+        return;
+      }
+
+      if (!resp.ok) return; // Server error — keep existing session, try again next visit
+
+      const data = await resp.json().catch(() => null);
+      if (!data?.valid) {
+        // Invalid but not 401 — e.g. KV unavailable in dev. Keep session.
+        return;
+      }
+
+      // Update local session with fresh membership from server
+      const freshPlan = data.membership?.active ? (data.membership.plan || 'pro') : 'free';
+      const updated = {
+        ...session,
+        plan: freshPlan,
+        email: data.email || session.email,
+        refreshedAt: new Date().toISOString(),
+      };
+      saveSession(updated);
+
+      // Also sync sf_membership_v1 so the app meter picks up Pro features
+      if (data.membership?.active) {
+        try {
+          localStorage.setItem('sf_membership_v1', JSON.stringify({
+            email: data.email,
+            active: true,
+            plan: data.membership.plan || 'pro',
+            provider: 'session_refresh',
+            status: data.membership.status || 'paid',
+            lastCheckedAt: new Date().toISOString(),
+          }));
+        } catch (_) {}
+      } else {
+        // Remove stale Pro from localStorage if server says inactive
+        try { localStorage.removeItem('sf_membership_v1'); } catch (_) {}
+      }
+    } catch (_) {
+      // Network error / timeout — silently ignore, keep existing session
+    }
+  }
+
   function loadRecords() {
     try {
       const authRecords = JSON.parse(localStorage.getItem(RECORDS_KEY) || '[]');
@@ -280,13 +343,17 @@
         } catch (_) {}
       }
 
-      const cleanUrl = window.location.pathname + (params.get('redirect_to') ? `?redirect_to=${encodeURIComponent(params.get('redirect_to'))}` : '');
+      const redirectTo = params.get('redirect_to');
+      const cleanUrl = window.location.pathname + (redirectTo ? `?redirect_to=${encodeURIComponent(redirectTo)}` : '');
       window.history.replaceState({}, document.title, cleanUrl);
 
-      showToast('🎉 魔法链接登录成功！欢迎回来。', 'success');
+      showToast(getNavAuthLang() === 'zh' ? '🎉 登录成功！欢迎回来。' : '🎉 Magic link verified! Welcome back.', 'success');
+      if (redirectTo) {
+        setTimeout(() => location.href = redirectTo, 800);
+      }
       return true;
     } catch (_) {
-      showToast('网络连接异常，请重试', 'err');
+      showToast(getNavAuthLang() === 'zh' ? '网络连接异常，请重试' : 'Network error, please retry.', 'err');
       return false;
     }
   }
@@ -401,66 +468,92 @@
       });
     }
 
-    // Send Magic Link Button
+    // Send Magic Link Button & Keyboard handlers
     const btnSendMagic = document.getElementById('btnSendMagicLink');
     const magicCodeSection = document.getElementById('magicCodeSection');
+    const magicEmailInput = document.getElementById('magicLoginEmail');
+    const magicCodeInput = document.getElementById('magicCodeInput');
+    let resendTimer = null;
+
+    if (magicEmailInput && btnSendMagic) {
+      magicEmailInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); btnSendMagic.click(); }
+      });
+    }
+
     if (btnSendMagic) {
       btnSendMagic.addEventListener('click', async () => {
         clearErrors();
-        const emailInput = document.getElementById('magicLoginEmail');
-        const email = String(emailInput?.value || '').trim().toLowerCase();
+        const email = String(magicEmailInput?.value || '').trim().toLowerCase();
         if (!email || !email.includes('@')) {
-          setFieldError('magicEmail', '请输入有效的邮箱地址 / Enter a valid email.');
+          setFieldError('magicEmail', getNavAuthLang() === 'zh' ? '请输入有效的邮箱地址' : 'Enter a valid email address.');
           return;
         }
 
         btnSendMagic.disabled = true;
-        btnSendMagic.textContent = '正在发送凭证… / Sending…';
+        btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '正在发送凭证…' : 'Sending…';
 
         try {
+          const redirectTo = new URLSearchParams(window.location.search).get('redirect_to') || '';
           const resp = await fetch('/api/auth/magic-link', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email }),
+            body: JSON.stringify({ email, redirect_to: redirectTo }),
           });
           const result = await resp.json().catch(() => ({}));
           if (!resp.ok || !result.ok) {
-            setFieldError('magicEmail', result.message || '发送失败，请稍后重试');
+            setFieldError('magicEmail', result.message || (getNavAuthLang() === 'zh' ? '发送失败，请稍后重试' : 'Failed to send, please retry.'));
             btnSendMagic.disabled = false;
-            btnSendMagic.textContent = '✨ 发送登录链接与验证码 / Send Magic Link';
+            btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '✨ 发送登录链接与验证码' : '✨ Send Magic Link & Code';
             return;
           }
 
-          showToast('📬 登录凭证已发送，请查收邮箱！', 'success');
+          showToast(getNavAuthLang() === 'zh' ? '📬 登录凭证已发送，请查收邮箱！' : '📬 Login credentials sent to your inbox!', 'success');
           if (magicCodeSection) magicCodeSection.style.display = 'block';
           btnSendMagic.style.display = 'none';
-          document.getElementById('magicCodeInput')?.focus();
+          if (magicCodeInput) {
+            magicCodeInput.value = '';
+            magicCodeInput.focus();
+          }
 
           if (result.simulated && result.code) {
             showToast(`[测试模式验证码]: ${result.code}`, 'info');
           }
         } catch (_) {
-          setFieldError('magicEmail', '网络错误，请稍后重试');
+          setFieldError('magicEmail', getNavAuthLang() === 'zh' ? '网络错误，请稍后重试' : 'Network error, please retry.');
           btnSendMagic.disabled = false;
-          btnSendMagic.textContent = '✨ 发送登录链接与验证码 / Send Magic Link';
+          btnSendMagic.textContent = getNavAuthLang() === 'zh' ? '✨ 发送登录链接与验证码' : '✨ Send Magic Link & Code';
         }
       });
     }
 
     // Verify 6-digit Code Button
     const btnVerifyCode = document.getElementById('btnVerifyCode');
+    if (magicCodeInput && btnVerifyCode) {
+      magicCodeInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); btnVerifyCode.click(); }
+      });
+      magicCodeInput.addEventListener('input', () => {
+        const val = magicCodeInput.value.replace(/\D/g, '').slice(0, 6);
+        magicCodeInput.value = val;
+        if (val.length === 6) {
+          btnVerifyCode.click();
+        }
+      });
+    }
+
     if (btnVerifyCode) {
       btnVerifyCode.addEventListener('click', async () => {
         clearErrors();
-        const email = String(document.getElementById('magicLoginEmail')?.value || '').trim().toLowerCase();
-        const code = String(document.getElementById('magicCodeInput')?.value || '').trim();
+        const email = String(magicEmailInput?.value || '').trim().toLowerCase();
+        const code = String(magicCodeInput?.value || '').trim();
         if (!code || code.length !== 6) {
-          setFieldError('magicCode', '请输入 6 位纯数字验证码');
+          setFieldError('magicCode', getNavAuthLang() === 'zh' ? '请输入 6 位纯数字验证码' : 'Enter the 6-digit verification code.');
           return;
         }
 
         btnVerifyCode.disabled = true;
-        btnVerifyCode.textContent = '正在核验… / Verifying…';
+        btnVerifyCode.textContent = getNavAuthLang() === 'zh' ? '正在核验…' : 'Verifying…';
 
         try {
           const resp = await fetch('/api/auth/verify-magic', {
@@ -470,9 +563,9 @@
           });
           const result = await resp.json().catch(() => ({}));
           if (!resp.ok || !result.ok) {
-            setFieldError('magicCode', result.message || '验证码错误或已失效');
+            setFieldError('magicCode', result.message || (getNavAuthLang() === 'zh' ? '验证码错误或已失效' : 'Invalid or expired code.'));
             btnVerifyCode.disabled = false;
-            btnVerifyCode.textContent = '验证并登录 / Verify & Sign In';
+            btnVerifyCode.textContent = getNavAuthLang() === 'zh' ? '验证并进入账户' : 'Verify & Sign In';
             return;
           }
 
@@ -515,15 +608,20 @@
             } catch (_) {}
           }
 
-          showToast('🎉 登录成功！欢迎回来。', 'success');
+          showToast(getNavAuthLang() === 'zh' ? '🎉 登录成功！欢迎回来。' : '🎉 Signed in successfully!', 'success');
           setTimeout(() => {
+            const redirectTo = new URLSearchParams(window.location.search).get('redirect_to');
+            if (redirectTo) {
+              location.href = redirectTo;
+              return;
+            }
             initAuthPage();
             renderNavAuth();
-          }, 500);
+          }, 600);
         } catch (_) {
-          setFieldError('magicCode', '核验服务出现异常，请稍后重试');
+          setFieldError('magicCode', getNavAuthLang() === 'zh' ? '核验服务出现异常，请稍后重试' : 'Verification failed, please retry.');
           btnVerifyCode.disabled = false;
-          btnVerifyCode.textContent = '验证并登录 / Verify & Sign In';
+          btnVerifyCode.textContent = getNavAuthLang() === 'zh' ? '验证并进入账户' : 'Verify & Sign In';
         }
       });
     }
@@ -799,9 +897,18 @@
   }
 
   function bindDashboardActions(session) {
-    // Logout
+    // Logout — clears local session immediately, revokes server token in background
     document.getElementById('dashboard-logout')?.addEventListener('click', () => {
+      const token = session?.token;
       saveSession(null);
+      // Revoke server-side KV token (fire-and-forget)
+      if (token) {
+        fetch('/api/auth/session', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        }).catch(() => {});
+      }
       showToast(getAuthMsg('signed_out'), 'success');
       setTimeout(() => location.href = getLocaleHomeHref(), 600);
     });
@@ -949,6 +1056,15 @@
 
   /* ── Panel close bindings ── */
   document.addEventListener('DOMContentLoaded', () => {
+    // Fire session refresh in background — no await so UI is never blocked
+    silentSessionRefresh().then(() => {
+      // Re-render nav & auth page after refresh so plan badge is current
+      renderNavAuth();
+      if (document.querySelector('[data-auth-page]')) {
+        initAuthPage();
+      }
+    }).catch(() => {});
+
     renderNavAuth();
     initAuthPage();
 

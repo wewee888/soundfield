@@ -4342,13 +4342,69 @@ function normalizeMembership(input={}){
   };
 }
 
+function getLocalizedAuthUrl(){
+  const lang = (appLanguage || 'zh-CN').toLowerCase();
+  const primary = lang.split('-')[0];
+  const supported = ['zh', 'de', 'es', 'fr', 'ja', 'ko', 'th', 'vi'];
+  if(supported.includes(primary)){
+    return `${primary}/auth.html`;
+  }
+  return 'auth.html';
+}
+
 function loadMembershipState(){
   try{
     const parsed=JSON.parse(localStorage.getItem(MEMBERSHIP_KEY)||'{}');
     membershipState=normalizeMembership(parsed);
+    // Sync from cross-device session if present
+    const sess=JSON.parse(localStorage.getItem('soundtest_session_v1')||'null');
+    if(sess?.email){
+      if(!membershipState.email)membershipState.email=sess.email;
+      if(sess.plan && sess.plan !== 'free'){
+        membershipState.active=true;
+        membershipState.plan=sess.plan;
+      }
+    }
   }catch(e){
     membershipState=normalizeMembership();
   }
+  // Silently sync session with backend
+  syncSessionWithCloud();
+}
+
+async function syncSessionWithCloud(){
+  try{
+    const sess=JSON.parse(localStorage.getItem('soundtest_session_v1')||'null');
+    if(!sess?.token)return;
+    const resp=await fetch('/api/auth/session',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({token:sess.token}),
+      signal:AbortSignal.timeout?AbortSignal.timeout(4000):undefined,
+    });
+    if(resp.status===401){
+      localStorage.removeItem('soundtest_session_v1');
+      return;
+    }
+    if(!resp.ok)return;
+    const data=await resp.json().catch(()=>null);
+    if(data?.valid){
+      const active=Boolean(data.membership?.active);
+      const plan=active?(data.membership.plan||'pro'):'free';
+      membershipState=normalizeMembership({
+        email:data.email||membershipState.email,
+        active,
+        plan,
+        provider:'cloud_sync',
+        status:data.membership?.status||'paid',
+        lastCheckedAt:new Date().toISOString(),
+      });
+      saveMembershipState();
+      applyMembershipToPlan();
+      renderPlanStatus();
+      renderMembershipPanel();
+    }
+  }catch(_){}
 }
 
 function saveMembershipState(){
@@ -4381,32 +4437,36 @@ async function fetchMembershipConfig(){
 }
 
 function renderMembershipPanel(){
-  const hint=document.getElementById('membershipStatusHint');
-  const input=document.getElementById('memberEmailInput');
-  const lookupBtn=document.getElementById('membershipLookupBtn');
-  const logoutBtn=document.getElementById('membershipLogoutBtn');
-  if(input)input.value=membershipState.email||'';
-  if(hint){
-    const checkedAt=membershipState.lastCheckedAt?` · ${new Date(membershipState.lastCheckedAt).toLocaleString(i18n().locale)}`:'';
+  const hints=document.querySelectorAll('#membershipStatusHint');
+  const inputs=document.querySelectorAll('#memberEmailInput');
+  const lookupBtns=document.querySelectorAll('#membershipLookupBtn');
+  const logoutBtns=document.querySelectorAll('#membershipLogoutBtn');
+  inputs.forEach(inp => { if(inp) inp.value = membershipState.email || ''; });
+  
+  const checkedAt=membershipState.lastCheckedAt?` · ${new Date(membershipState.lastCheckedAt).toLocaleString(i18n().locale)}`:'';
+  const authUrl=getLocalizedAuthUrl();
+
+  hints.forEach(hint => {
     if(!membershipState.active){
       hint.innerHTML=appLanguage!=='zh-CN'
-        ?`<strong>Membership:</strong> ${membershipConfig.enabled?'Not active':'Billing not configured'}${checkedAt}`
-        :`<strong>会员状态：</strong>${membershipConfig.enabled?'未激活':'收款未配置'}${checkedAt}`;
+        ?`<strong>Membership:</strong> Not logged in · <a href="${authUrl}?redirect_to=soundtest.html" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ Sign In / Cross-Device Sync</a>${checkedAt}`
+        :`<strong>会员状态：</strong>未登录 · <a href="${authUrl}?redirect_to=soundtest.html" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ 登录账户 / 手机与电脑多端互通</a>${checkedAt}`;
     }else{
+      const planName = membershipState.plan.toUpperCase();
       hint.innerHTML=appLanguage!=='zh-CN'
-        ?`<strong>Membership:</strong> ${membershipState.plan.toUpperCase()} · ${membershipState.status}${membershipState.renewsAt?` · renews ${membershipState.renewsAt}`:''}`
-        :`<strong>会员状态：</strong>${membershipState.plan.toUpperCase()} · ${membershipState.status}${membershipState.renewsAt?` · 续期 ${membershipState.renewsAt}`:''}`;
+        ?`<strong>Membership:</strong> <span style="color:var(--accent);font-weight:800">${planName}</span> · ${membershipState.email||'Active'}${membershipState.renewsAt?` · renews ${membershipState.renewsAt}`:''} · <a href="${authUrl}" target="_blank" style="color:var(--tx2);text-decoration:underline">Account</a>`
+        :`<strong>会员状态：</strong><span style="color:var(--accent);font-weight:800">${planName} 专业版</span> · ${membershipState.email||'已生效'}${membershipState.renewsAt?` · 续期 ${membershipState.renewsAt}`:''} · <a href="${authUrl}" target="_blank" style="color:var(--tx2);text-decoration:underline">管理账户</a>`;
     }
-  }
-  if(lookupBtn)lookupBtn.disabled=!membershipConfig.enabled;
-  if(logoutBtn)logoutBtn.disabled=!membershipState.email&&!membershipState.active;
+  });
+
+  lookupBtns.forEach(btn => { if(btn) btn.disabled=false; });
+  logoutBtns.forEach(btn => { if(btn) btn.disabled=!membershipState.email&&!membershipState.active; });
 }
 
 async function lookupMembership(){
   const input=document.getElementById('memberEmailInput');
   const email=(input?.value||membershipState.email||'').trim();
   if(!email)return toast(appLanguage!=='zh-CN'?'Enter your billing email first.':'请先输入购买时使用的邮箱。','warn');
-  if(!membershipConfig.enabled)return toast(appLanguage!=='zh-CN'?'Billing is not configured yet.':'收款接口尚未配置，请先设置 Lemon 环境变量。','warn');
   try{
     const response=await fetch(`${MEMBERSHIP_API_BASE}/lookup`,{
       method:'POST',
@@ -4439,13 +4499,22 @@ async function lookupMembership(){
 }
 
 function logoutMembership(){
+  const sess=JSON.parse(localStorage.getItem('soundtest_session_v1')||'null');
+  if(sess?.token){
+    fetch('/api/auth/session',{
+      method:'DELETE',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({token:sess.token}),
+    }).catch(()=>{});
+  }
+  localStorage.removeItem('soundtest_session_v1');
   membershipState=normalizeMembership();
   saveMembershipState();
   syncAutoRecProBadge();
   applyMembershipToPlan();
   renderPlanStatus();
   renderMembershipPanel();
-  toast(appLanguage!=='zh-CN'?'Membership session cleared.':'已退出会员状态。','info');
+  toast(appLanguage!=='zh-CN'?'Membership session cleared.':'已退出会员与账号。','info');
 }
 
 async function beginCheckout(plan){

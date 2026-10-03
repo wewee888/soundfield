@@ -65,8 +65,8 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
               </span>
               <div>
-                <strong>Subscription sync</strong>
-                <span>Pro, Team, and Lifetime plans unlock automatically after checkout using your billing email.</span>
+                <strong>Cross-device sync</strong>
+                <span>Sign in on your phone, tablet, or desktop — your Pro subscription, calibration profiles, and evidence records follow your account everywhere.</span>
               </div>
             </div>
           </div>
@@ -89,8 +89,53 @@
 
         <!-- Login form -->
         <div class="auth-form-wrap" id="auth-form-login" data-auth-form="login" role="tabpanel">
+          <!-- Subtabs: Magic Link vs Password -->
+          <div class="auth-subtabs" role="tablist" aria-label="Sign-in method">
+            <button type="button" id="tabLoginMagic" class="auth-subtab active" role="tab" aria-selected="true">✨ Instant Code / Magic Link</button>
+            <button type="button" id="tabLoginPassword" class="auth-subtab" role="tab" aria-selected="false">🔑 Password</button>
+          </div>
+
+          <!-- Magic link / 6-digit code form -->
+          <div id="magicLoginForm" style="display:block">
+            <p class="auth-sub-desc">Enter your email to receive a 6-digit verification code or instant sign-in link. No password required. Your Pro membership stays seamlessly synced across mobile and desktop.</p>
+            <div class="field-group">
+              <div class="field">
+                <input id="magicLoginEmail" name="magicEmail" type="email" autocomplete="email" required placeholder=" ">
+                <label for="magicLoginEmail">Account or billing email</label>
+              </div>
+              <div class="field-error" data-error="magicEmail"></div>
+            </div>
+            <button type="button" id="btnSendMagicLink" class="btn-primary btn-full">
+              <span>✨ Send Magic Link & Code</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <!-- 6-digit code verification section (unfolds smoothly) -->
+            <div id="magicCodeSection" style="display:none;margin-top:16px">
+              <div class="magic-code-box">
+                📬 Login credentials sent to your inbox (valid for 15 minutes).<br>
+                Click the <strong>magic button</strong> in your email, or enter the <strong>6-digit code</strong> below:
+              </div>
+              <div class="field-group">
+                <div class="field">
+                  <input id="magicCodeInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder=" " autocomplete="one-time-code" class="magic-code-input">
+                  <label for="magicCodeInput">6-digit verification code</label>
+                </div>
+                <div class="field-error" data-error="magicCode"></div>
+              </div>
+              <button type="button" id="btnVerifyCode" class="btn-primary btn-full">
+                <span>Verify & Enter Account</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+
+            <p class="auth-form-note" style="margin-top:20px">
+              <a href="auth.html?mode=register" data-switch-tab="register">New user? You can also register with password</a>
+            </p>
+          </div>
+
           <!-- Password subform -->
-          <form id="passwordLoginForm" novalidate autocomplete="on">
+          <form id="passwordLoginForm" style="display:none" novalidate autocomplete="on">
             <div class="field-group">
               <div class="field">
                 <input id="loginEmail" name="email" type="email" autocomplete="email" required placeholder=" ">
@@ -103,7 +148,7 @@
                 <input id="loginPassword" name="password" type="password" autocomplete="current-password" required placeholder=" ">
                 <label for="loginPassword">Password</label>
                 <button type="button" class="field-toggle" aria-label="Show password" data-toggle-password="loginPassword">
-                  <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                   <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                 </button>
               </div>
@@ -119,7 +164,7 @@
           </form>
         </div>
 
-        <!-- Register form -->
+        \2
         <div class="auth-form-wrap" id="auth-form-register" data-auth-form="register" role="tabpanel" hidden>
           <form novalidate autocomplete="on">
             <div class="field-group">

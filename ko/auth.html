@@ -47,26 +47,8 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               </span>
               <div>
-                <strong>Local-first privacy</strong>
-                <span>All recordings stay on your device. Only your email and a salted password hash are stored.</span>
-              </div>
-            </div>
-            <div class="auth-value-item">
-              <span class="auth-value-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              </span>
-              <div>
-                <strong>Evidence templates</strong>
-                <span>Save and reuse report layouts for repeated cases — landlord disputes, construction monitoring, workplace inspections.</span>
-              </div>
-            </div>
-            <div class="auth-value-item">
-              <span class="auth-value-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              </span>
-              <div>
-                <strong>Subscription sync</strong>
-                <span>Pro, Team, and Lifetime plans unlock automatically after checkout using your billing email.</span>
+                <strong>모바일 및 PC 멀티 디바이스 동기화</strong>
+                <span>스마트폰, 태블릿, PC 어디서나 로그인하면 Pro 회원 권한, 측정 기록 및 교정 프로필이 자동으로 유지됩니다.</span>
               </div>
             </div>
           </div>
@@ -89,6 +71,50 @@
 
         <!-- Login form -->
         <div class="auth-form-wrap" id="auth-form-login" data-auth-form="login" role="tabpanel">
+          <!-- Subtabs: Magic Link vs Password -->
+          <div class="auth-subtabs" role="tablist" aria-label="Sign-in method">
+            <button type="button" id="tabLoginMagic" class="auth-subtab active" role="tab" aria-selected="true">✨ 인증코드 간편 로그인</button>
+            <button type="button" id="tabLoginPassword" class="auth-subtab" role="tab" aria-selected="false">🔑 비밀번호</button>
+          </div>
+
+          <!-- Magic link / 6-digit code form -->
+          <div id="magicLoginForm" style="display:block">
+            <p class="auth-sub-desc">이메일을 입력하시면 6자리 인증코드 또는 매직 링크가 발송됩니다. 스마트폰과 PC 간에 Pro 회원 혜택이 자동으로 동기화됩니다.</p>
+            <div class="field-group">
+              <div class="field">
+                <input id="magicLoginEmail" name="magicEmail" type="email" autocomplete="email" required placeholder=" ">
+                <label for="magicLoginEmail">이메일 주소</label>
+              </div>
+              <div class="field-error" data-error="magicEmail"></div>
+            </div>
+            <button type="button" id="btnSendMagicLink" class="btn-primary btn-full">
+              <span>✨ 로그인 링크 및 인증코드 발송</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <!-- 6-digit code verification section -->
+            <div id="magicCodeSection" style="display:none;margin-top:16px">
+              <div class="magic-code-box">
+                📬 인증 정보가 이메일로 전송되었습니다 (15분간 유효).<br>이메일의 <strong>간편 로그인 버튼</strong>을 클릭하거나 아래에 <strong>6자리 인증코드</strong>를 입력하세요:
+              </div>
+              <div class="field-group">
+                <div class="field">
+                  <input id="magicCodeInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder=" " autocomplete="one-time-code" class="magic-code-input">
+                  <label for="magicCodeInput">6자리 인증코드</label>
+                </div>
+                <div class="field-error" data-error="magicCode"></div>
+              </div>
+              <button type="button" id="btnVerifyCode" class="btn-primary btn-full">
+                <span>인증하고 로그인</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+
+            <p class="auth-form-note" style="margin-top:20px">
+              <a href="auth.html?mode=register" data-switch-tab="register">새 계정이 필요하신가요? 비밀번호로 가입하기</a>
+            </p>
+          </div>
+
           <!-- Password subform -->
           <form id="passwordLoginForm" novalidate autocomplete="on">
             <div class="field-group">

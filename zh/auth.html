@@ -63,8 +63,8 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
               </span>
               <div>
-                <strong>会员权益自动同步</strong>
-                <span>升级 Pro、团队或终身版后，使用结账邮箱登录即可自动激活并解锁全部专业功能。</span>
+                <strong>手机与电脑多端互通</strong>
+                <span>在手机、平板或电脑上任意登录，您的 Pro 会员权益、声学存证底稿与校准参数随账号无缝同步。</span>
               </div>
             </div>
           </div>
@@ -87,7 +87,53 @@
 
         <!-- 登录表单 -->
         <div class="auth-form-wrap" id="auth-form-login" data-auth-form="login" role="tabpanel">
-          <form id="passwordLoginForm" novalidate autocomplete="on">
+          <!-- 登录方式子选项卡 -->
+          <div class="auth-subtabs" role="tablist" aria-label="登录模式">
+            <button type="button" id="tabLoginMagic" class="auth-subtab active" role="tab" aria-selected="true">✨ 邮箱免密登录（多端同步）</button>
+            <button type="button" id="tabLoginPassword" class="auth-subtab" role="tab" aria-selected="false">🔑 密码登录</button>
+          </div>
+
+          <!-- 邮箱免密登录（魔法链接与6位验证码） -->
+          <div id="magicLoginForm" style="display:block">
+            <p class="auth-sub-desc">输入邮箱即可获取 6 位数字验证码或一键登录链接。无需记忆密码，手机与电脑跨设备自动同步 VIP 会员权益与测声底稿。</p>
+            <div class="field-group">
+              <div class="field">
+                <input id="magicLoginEmail" name="magicEmail" type="email" autocomplete="email" required placeholder=" ">
+                <label for="magicLoginEmail">登录或购买会员时的邮箱地址</label>
+              </div>
+              <div class="field-error" data-error="magicEmail"></div>
+            </div>
+            <button type="button" id="btnSendMagicLink" class="btn-primary btn-full">
+              <span>✨ 发送登录链接与验证码</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <!-- 6位数字验证码核验区（点击发送后平滑展开） -->
+            <div id="magicCodeSection" style="display:none;margin-top:16px">
+              <div class="magic-code-box">
+                📬 登录凭证已发送至您的邮箱，15 分钟内有效。<br>
+                您可直接在邮箱内点击<strong>一键登录按钮</strong>，或在下方输入 <strong>6 位动态验证码</strong>：
+              </div>
+              <div class="field-group">
+                <div class="field">
+                  <input id="magicCodeInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder=" " autocomplete="one-time-code" class="magic-code-input">
+                  <label for="magicCodeInput">6 位数字验证码</label>
+                </div>
+                <div class="field-error" data-error="magicCode"></div>
+              </div>
+              <button type="button" id="btnVerifyCode" class="btn-primary btn-full">
+                <span>验证并进入账户</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+
+            <p class="auth-form-note" style="margin-top:20px">
+              <a href="auth.html?mode=register" data-switch-tab="register">新用户？也可以使用密码注册账号</a>
+            </p>
+          </div>
+
+          <!-- 传统密码登录表单 -->
+          <form id="passwordLoginForm" style="display:none" novalidate autocomplete="on">
             <div class="field-group">
               <div class="field">
                 <input id="loginEmail" name="email" type="email" autocomplete="email" required placeholder=" ">
@@ -116,7 +162,7 @@
           </form>
         </div>
 
-        <!-- 注册表单 -->
+        \2
         <div class="auth-form-wrap" id="auth-form-register" data-auth-form="register" role="tabpanel" hidden>
           <form novalidate autocomplete="on">
             <div class="field-group">

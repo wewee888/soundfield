@@ -212,6 +212,99 @@
   transform: translateX(100%);
 }
 
+/* ── Auth Subtabs (Magic link vs Password) ── */
+.auth-subtabs {
+  display: flex;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--ink-border);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 22px;
+  gap: 4px;
+}
+
+.auth-subtab {
+  flex: 1;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 200ms var(--ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.auth-subtab.active {
+  background: rgba(44, 240, 193, 0.14) !important;
+  color: var(--accent) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.auth-subtab:hover:not(.active) {
+  color: var(--text-strong);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.auth-sub-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+.magic-code-box {
+  background: rgba(14, 22, 38, 0.75);
+  border: 1px dashed rgba(44, 240, 193, 0.38);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  font-size: 12.5px;
+  color: #cbd5e1;
+  line-height: 1.55;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.magic-code-input {
+  font-family: var(--mono, "JetBrains Mono", Consolas, monospace) !important;
+  font-size: 24px !important;
+  letter-spacing: 8px !important;
+  text-align: center !important;
+  font-weight: 700 !important;
+  color: var(--accent) !important;
+}
+
+.magic-resend-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.magic-resend-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 150ms;
+}
+
+.magic-resend-btn:hover {
+  color: #fff;
+}
+
 /* Form */
 .auth-form-wrap {
   animation: formFadeIn 300ms var(--ease) both;
