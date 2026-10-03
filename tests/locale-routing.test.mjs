@@ -118,3 +118,15 @@ test('onRequestGet returns 302 redirect with variant for English', () => {
   assert.ok(res.headers.get('Set-Cookie').includes('sf_locale=en'));
   assert.ok(res.headers.get('Set-Cookie').includes('sf_variant=a'));
 });
+
+test('auth onRequestGet redirects non-English visitors to localized auth page', async () => {
+  const { onRequestGet: authGet } = await import('../functions/auth.js');
+  const req = new Request('https://soundtest.pro/auth', {
+    headers: { 'cf-ipcountry': 'CN' },
+  });
+  const res = await authGet({ request: req, next: () => new Response('ok') });
+  assert.strictEqual(res.status, 302);
+  assert.strictEqual(res.headers.get('Location'), '/zh/auth/');
+  assert.ok(res.headers.get('Set-Cookie').includes('sf_locale=zh'));
+});
+

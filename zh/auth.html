@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Manage your SOUNDTEST.PRO account: subscription, saved templates, evidence records, and profile settings.">
-  <title>Account · SOUNDTEST.PRO</title>
+  <meta name="description" content="管理您的 SOUNDTEST.PRO 账户：会员订阅权益、自定义报告模版、声学存证记录与本地安全设置。">
+  <title>账户与会员中心 · SOUNDTEST.PRO</title>
   <link rel="canonical" href="https://soundtest.pro/zh/auth/">
   <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/auth/"/>
   <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/auth/"/>
@@ -22,25 +22,22 @@
   <script src="../assets/site-i18n.js?v=7" defer></script>
   <script src="../assets/site-auth.js" defer></script>
   <script src="../assets/site-experience.js" defer></script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
-
   <script>LA.init({id:"281wblDNvub2tk9f",ck:"281wblDNvub2tk9f"})</script>
-
 </head>
 <body>
   <main class="site-shell">
 
-    <!-- ── Logged-out shell ── -->
+    <!-- ── 未登录界面 ── -->
     <section class="auth-layout" data-auth-page="unauthenticated">
 
-      <!-- Left brand panel -->
+      <!-- 左侧品牌与特性面板 -->
       <div class="auth-brand">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>SOUNDTEST.PRO</span></a>
         <div class="auth-brand-content">
           <div class="auth-brand-headline">
-            <h1>Your acoustic evidence, <em>secured</em>.</h1>
-            <p>One account to manage subscription, saved templates, and all your noise documentation records — with export history and tamper-evident timestamps.</p>
+            <h1>声学取证数据，<em>安全上锁</em></h1>
+            <p>一个账户统一管理您的 Pro 会员权益、自定义报告模版与噪声取证记录。本地优先存储，支持防篡改时间戳与数据备份导出。</p>
           </div>
           <div class="auth-value-props">
             <div class="auth-value-item">
@@ -48,8 +45,8 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               </span>
               <div>
-                <strong>Local-first privacy</strong>
-                <span>All recordings stay on your device. Only your email and a salted password hash are stored.</span>
+                <strong>本地优先隐私保护</strong>
+                <span>所有现场录音与视频均保留在您的本地设备中，仅邮箱与哈希密码用于同步会员凭证。</span>
               </div>
             </div>
             <div class="auth-value-item">
@@ -57,8 +54,8 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
               </span>
               <div>
-                <strong>Evidence templates</strong>
-                <span>Save and reuse report layouts for repeated cases — landlord disputes, construction monitoring, workplace inspections.</span>
+                <strong>取证报告与维权模版</strong>
+                <span>保存并复用定制化报告排版，针对邻里纠纷、施工扰民、职场噪音等场景快速生成标准证据。</span>
               </div>
             </div>
             <div class="auth-value-item">
@@ -66,50 +63,43 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
               </span>
               <div>
-                <strong>Subscription sync</strong>
-                <span>Pro, Team, and Lifetime plans unlock automatically after checkout using your billing email.</span>
+                <strong>会员权益自动同步</strong>
+                <span>升级 Pro、团队或终身版后，使用结账邮箱登录即可自动激活并解锁全部专业功能。</span>
               </div>
             </div>
           </div>
           <div class="auth-brand-footer">
-            <span>Already have an account?</span>
-            <a href="auth.html?mode=login" class="auth-brand-link">Sign in</a>
+            <span>已有账号？</span>
+            <a href="auth.html?mode=login" class="auth-brand-link">立即登录</a>
           </div>
         </div>
       </div>
 
-      <!-- Right form panel -->
+      <!-- 右侧登录/注册表单面板 -->
       <div class="auth-form-panel">
 
-        <!-- Tabs -->
-        <div class="auth-tabs" role="tablist" aria-label="Account mode">
-          <button class="auth-tab active" type="button" data-auth-tab="login" role="tab" aria-selected="true" aria-controls="auth-form-login">Sign in</button>
-          <button class="auth-tab" type="button" data-auth-tab="register" role="tab" aria-selected="false" aria-controls="auth-form-register">Create account</button>
+        <!-- 选项卡切换 -->
+        <div class="auth-tabs" role="tablist" aria-label="账户模式">
+          <button class="auth-tab active" type="button" data-auth-tab="login" role="tab" aria-selected="true" aria-controls="auth-form-login">登录账户</button>
+          <button class="auth-tab" type="button" data-auth-tab="register" role="tab" aria-selected="false" aria-controls="auth-form-register">注册新账号</button>
           <div class="auth-tab-indicator" aria-hidden="true"></div>
         </div>
 
-        <!-- Login form -->
+        <!-- 登录表单 -->
         <div class="auth-form-wrap" id="auth-form-login" data-auth-form="login" role="tabpanel">
-          <!-- Login subtabs -->
-          <div class="login-subtabs" style="display:flex;gap:6px;margin-bottom:18px;background:rgba(255,255,255,0.03);padding:4px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
-            <button type="button" class="login-subtab active" id="tabLoginPassword" data-login-mode="password" style="flex:1;padding:8px 12px;font-size:13px;font-weight:700;border:none;border-radius:8px;background:rgba(44,240,193,0.14);color:#2cf0c1;cursor:pointer;transition:all .2s ease;">🔑 密码登录</button>
-            <button type="button" class="login-subtab" id="tabLoginMagic" data-login-mode="magic" style="flex:1;padding:8px 12px;font-size:13px;font-weight:700;border:none;border-radius:8px;background:transparent;color:#94a3b8;cursor:pointer;transition:all .2s ease;">✨ 邮箱免密 / 动态验证码</button>
-          </div>
-
-          <!-- Password subform -->
           <form id="passwordLoginForm" novalidate autocomplete="on">
             <div class="field-group">
               <div class="field">
                 <input id="loginEmail" name="email" type="email" autocomplete="email" required placeholder=" ">
-                <label for="loginEmail">Email address</label>
+                <label for="loginEmail">邮箱地址</label>
               </div>
               <div class="field-error" data-error="email"></div>
             </div>
             <div class="field-group">
               <div class="field">
                 <input id="loginPassword" name="password" type="password" autocomplete="current-password" required placeholder=" ">
-                <label for="loginPassword">Password</label>
-                <button type="button" class="field-toggle" aria-label="Show password" data-toggle-password="loginPassword">
+                <label for="loginPassword">登录密码</label>
+                <button type="button" class="field-toggle" aria-label="显示/隐藏密码" data-toggle-password="loginPassword">
                   <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                   <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                 </button>
@@ -117,75 +107,38 @@
               <div class="field-error" data-error="password"></div>
             </div>
             <button type="submit" class="btn-primary btn-full">
-              <span>Sign in</span>
+              <span>立即登录</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
             <p class="auth-form-note">
-              <a href="auth.html?mode=register" data-switch-tab="register">No account yet? Create one free</a>
-            </p>
-          </form>
-
-          <!-- Magic Link subform -->
-          <form id="magicLoginForm" novalidate autocomplete="on" style="display:none;">
-            <div class="field-group">
-              <div class="field">
-                <input id="magicLoginEmail" name="magicEmail" type="email" autocomplete="email" required placeholder=" ">
-                <label for="magicLoginEmail">Email address</label>
-              </div>
-              <div class="field-error" data-error="magicEmail"></div>
-            </div>
-
-            <!-- 6-digit code box (revealed after sending link) -->
-            <div id="magicCodeSection" style="display:none;margin-top:14px;">
-              <div class="field-group">
-                <div class="field">
-                  <input id="magicCodeInput" name="magicCode" type="text" inputmode="numeric" maxlength="6" placeholder=" " style="font-family:'JetBrains Mono',monospace;letter-spacing:4px;font-size:18px;font-weight:700;text-align:center;">
-                  <label for="magicCodeInput">6 位动态验证码</label>
-                </div>
-                <div class="field-error" data-error="magicCode"></div>
-              </div>
-              <p style="font-size:12.5px;color:#94a3b8;line-height:1.55;margin:8px 0 16px;">
-                📬 登录凭证已发送！请查收您的邮箱，点击邮件中的<strong>一键安全登录</strong>链接，或直接在上方输入 <strong>6 位动态验证码</strong>完成登录。
-              </p>
-              <button type="button" id="btnVerifyCode" class="btn-primary btn-full" style="margin-bottom:12px;">
-                <span>验证并登录</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-              </button>
-            </div>
-
-            <button type="button" id="btnSendMagicLink" class="btn-primary btn-full">
-              <span>✨ 发送登录链接与验证码</span>
-            </button>
-
-            <p class="auth-form-note">
-              <a href="auth.html?mode=register" data-switch-tab="register">No account yet? Create one free</a>
+              <a href="auth.html?mode=register" data-switch-tab="register">还没有账号？免费注册一个</a>
             </p>
           </form>
         </div>
 
-        <!-- Register form -->
+        <!-- 注册表单 -->
         <div class="auth-form-wrap" id="auth-form-register" data-auth-form="register" role="tabpanel" hidden>
           <form novalidate autocomplete="on">
             <div class="field-group">
               <div class="field">
                 <input id="registerName" name="name" type="text" autocomplete="name" required placeholder=" " minlength="2" maxlength="48">
-                <label for="registerName">Display name</label>
+                <label for="registerName">用户昵称</label>
               </div>
               <div class="field-error" data-error="name"></div>
             </div>
             <div class="field-group">
               <div class="field">
                 <input id="registerEmail" name="email" type="email" autocomplete="email" required placeholder=" ">
-                <label for="registerEmail">Email address</label>
-                <span class="field-hint">Use your checkout billing email for automatic plan detection</span>
+                <label for="registerEmail">邮箱地址</label>
+                <span class="field-hint">升级会员时请填写相同邮箱，系统将自动识别并同步您的 VIP 权益</span>
               </div>
               <div class="field-error" data-error="email"></div>
             </div>
             <div class="field-group">
               <div class="field">
                 <input id="registerPassword" name="password" type="password" autocomplete="new-password" required placeholder=" " minlength="8">
-                <label for="registerPassword">Password</label>
-                <button type="button" class="field-toggle" aria-label="Show password" data-toggle-password="registerPassword">
+                <label for="registerPassword">设置登录密码</label>
+                <button type="button" class="field-toggle" aria-label="显示/隐藏密码" data-toggle-password="registerPassword">
                   <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                   <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                 </button>
@@ -204,23 +157,17 @@
             <div class="field-group">
               <div class="field">
                 <input id="registerConfirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required placeholder=" " minlength="8">
-                <label for="registerConfirmPassword">Confirm password</label>
+                <label for="registerConfirmPassword">确认登录密码</label>
               </div>
               <div class="field-error" data-error="confirmPassword"></div>
             </div>
 
-            <!-- Cloudflare Turnstile Captcha Widget -->
-            <div class="field-group" style="display:flex;flex-direction:column;align-items:center;margin:12px 0 16px;">
-              <div class="cf-turnstile" id="cfTurnstileWidget" data-sitekey="1x00000000000000000000AA" data-theme="dark"></div>
-              <div class="field-error" data-error="turnstile" style="text-align:center;"></div>
-            </div>
-
             <button type="submit" class="btn-primary btn-full">
-              <span>Create account</span>
+              <span>创建新账号</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
             <p class="auth-form-note">
-              <a href="auth.html?mode=login" data-switch-tab="login">Already have an account? Sign in</a>
+              <a href="auth.html?mode=login" data-switch-tab="login">已有账号？点击直接登录</a>
             </p>
           </form>
         </div>
@@ -229,12 +176,12 @@
 
         <p class="auth-mvp-note">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          本地优先安全：密码在本地哈希，支持 Cloudflare Turnstile 人机验证与邮箱安全免密登录。
+          本地优先安全：密码在本地客户端单向哈希加盐，您的噪声取证文件与测量数据默认完全保存在本地设备中。
         </p>
       </div>
     </section>
 
-    <!-- ── Logged-in dashboard ── -->
+    <!-- ── 已登录仪表盘 ── -->
     <section class="dashboard" data-auth-page="authenticated" hidden>
       <div class="dashboard-header">
         <div class="dashboard-header-inner">
@@ -242,11 +189,11 @@
           <div class="dashboard-header-right">
             <div class="dashboard-plan-badge" data-plan-badge>
               <span class="plan-dot"></span>
-              <span class="plan-name">Free</span>
+              <span class="plan-name">免费版</span>
             </div>
             <button class="btn-ghost btn-sm" id="dashboard-logout" type="button">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-              Sign out
+              退出登录
             </button>
           </div>
         </div>
@@ -254,7 +201,7 @@
 
       <div class="dashboard-body">
 
-        <!-- Profile card -->
+        <!-- 个人信息卡片 -->
         <div class="dash-profile-card">
           <div class="dash-profile-avatar" data-profile-avatar aria-hidden="true">
             <span data-avatar-initial></span>
@@ -264,46 +211,46 @@
             <p class="dash-profile-email" data-profile-email></p>
             <p class="dash-profile-since">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              Member since <span data-profile-since></span>
+              注册时间：<span data-profile-since></span>
             </p>
           </div>
           <button class="btn-outline btn-sm" id="edit-profile-btn" type="button">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Edit profile
+            编辑资料
           </button>
         </div>
 
-        <!-- Stats row -->
+        <!-- 数据统计行 -->
         <div class="dash-stats-row">
           <div class="dash-stat-card">
             <span class="dash-stat-value" data-stat="records">0</span>
-            <span class="dash-stat-label">Sessions recorded</span>
+            <span class="dash-stat-label">已记录测量会话</span>
           </div>
           <div class="dash-stat-card">
             <span class="dash-stat-value" data-stat="exports">0</span>
-            <span class="dash-stat-label">PDF/CSV exports</span>
+            <span class="dash-stat-label">已导出报告 (PDF/CSV)</span>
           </div>
           <div class="dash-stat-card">
             <span class="dash-stat-value" data-stat="photos">0</span>
-            <span class="dash-stat-label">Evidence photos</span>
+            <span class="dash-stat-label">现场取证照片</span>
           </div>
           <div class="dash-stat-card">
             <span class="dash-stat-value" data-stat="templates">0</span>
-            <span class="dash-stat-label">Saved templates</span>
+            <span class="dash-stat-label">已保存维权模版</span>
           </div>
         </div>
 
-        <!-- Main grid: plan + settings -->
+        <!-- 主面板：会员权益 + 安全设置 -->
         <div class="dash-grid">
 
-          <!-- Subscription card -->
+          <!-- 会员权益卡片 -->
           <div class="dash-card dash-subscription-card">
             <div class="dash-card-header">
               <h3>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                Subscription
+                当前会员权益
               </h3>
-              <span class="dash-card-badge" data-subscription-badge>Free plan</span>
+              <span class="dash-card-badge" data-subscription-badge>免费版</span>
             </div>
             <div class="dash-subscription-body">
               <div class="subscription-plan-display" data-plan-display>
@@ -311,21 +258,21 @@
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 </div>
                 <div class="plan-info">
-                  <p class="plan-tier">Free</p>
-                  <p class="plan-desc">Real-time dB meter, basic audio recording, manual screenshot, time &amp; location stamp</p>
+                  <p class="plan-tier">免费版</p>
+                  <p class="plan-desc">实时分贝监测、基础录音、手动截图、时间与位置水印</p>
                 </div>
               </div>
               <div class="subscription-upsell" data-subscription-upsell>
-                <p>Upgrade to unlock PDF evidence reports, premium templates, and metadata backup export.</p>
+                <p>升级到 Pro 专业版解锁防伪 PDF 取证报告、高级维权模版与数据批量备份导出功能。</p>
                 <a class="btn-primary btn-sm" href="index.html#pricing">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
-                  Upgrade to Pro
+                  升级为 Pro 专业版
                 </a>
               </div>
               <div class="subscription-prodactive" data-prodactive hidden>
                 <div class="prodactive-badge">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                  Active
+                  已激活
                 </div>
                 <p class="prodactive-tier" data-prodactive-tier></p>
                 <p class="prodactive-note">您可以通过付款后收到的邮件凭证或在当前面板管理您的订阅与权益。</p>
@@ -334,11 +281,11 @@
             </div>
           </div>
 
-          <!-- Settings card -->
+          <!-- 设置卡片 -->
           <div class="dash-card dash-settings-card">
             <div class="dash-card-header">
               <h3>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                 账户安全与数据管理
               </h3>
             </div>
@@ -353,7 +300,7 @@
               <div class="setting-row" id="setting-export">
                 <div class="setting-row-info">
                   <strong>导出全部数据备份</strong>
-                  <span>将您的测试记录、自建模版与账户配置导出为 JSON 备份</span>
+                  <span>将您的测试记录、自建模版与账户配置导出为 JSON 备份文件</span>
                 </div>
                 <button class="btn-outline btn-sm" type="button" id="export-all-data">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -371,32 +318,32 @@
           </div>
         </div>
 
-        <!-- Activity -->
+        <!-- 最近取证记录 -->
         <div class="dash-card dash-activity-card">
           <div class="dash-card-header">
             <h3>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              Recent activity
+              最近取证活动
             </h3>
-            <span class="dash-card-badge">Local only</span>
+            <span class="dash-card-badge">仅本地保存</span>
           </div>
           <div class="activity-list" data-activity-list>
             <div class="activity-empty">
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              <p>No sessions recorded yet. Open the recorder to start documenting noise events.</p>
-              <a class="btn-primary btn-sm" href="../soundtest.html">Open recorder</a>
+              <p>暂无声学记录。打开分贝仪开始记录与现场取证。</p>
+              <a class="btn-primary btn-sm" href="../soundtest.html">打开分贝仪</a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Password change panel (slide-in drawer) -->
+    <!-- 修改密码抽屉面板 -->
     <div class="panel-overlay" id="passwordPanelOverlay" style="display:none" onclick="closePanel('password')"></div>
-    <div class="panel-drawer" id="passwordPanel" role="dialog" aria-modal="true" aria-label="Change password" style="display:none">
+    <div class="panel-drawer" id="passwordPanel" role="dialog" aria-modal="true" aria-label="修改密码" style="display:none">
       <div class="panel-header">
-        <h3>Change password</h3>
-        <button class="panel-close" type="button" aria-label="Close" onclick="closePanel('password')">
+        <h3>修改登录密码</h3>
+        <button class="panel-close" type="button" aria-label="关闭" onclick="closePanel('password')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -404,38 +351,38 @@
         <div class="field-group">
           <div class="field">
             <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" required placeholder=" ">
-            <label for="currentPassword">Current password</label>
+            <label for="currentPassword">当前密码</label>
           </div>
           <div class="field-error" data-error="currentPassword"></div>
         </div>
         <div class="field-group">
           <div class="field">
             <input id="newPassword" name="newPassword" type="password" autocomplete="new-password" required placeholder=" " minlength="8">
-            <label for="newPassword">New password</label>
+            <label for="newPassword">新密码（至少 8 位）</label>
           </div>
           <div class="field-error" data-error="newPassword"></div>
         </div>
         <div class="field-group">
           <div class="field">
             <input id="confirmNewPassword" name="confirmNewPassword" type="password" autocomplete="new-password" required placeholder=" " minlength="8">
-            <label for="confirmNewPassword">Confirm new password</label>
+            <label for="confirmNewPassword">确认新密码</label>
           </div>
           <div class="field-error" data-error="confirmNewPassword"></div>
         </div>
         <p class="panel-global-error" data-panel-error></p>
         <div class="panel-actions">
-          <button type="button" class="btn-ghost" onclick="closePanel('password')">Cancel</button>
-          <button type="submit" class="btn-primary">Save password</button>
+          <button type="button" class="btn-ghost" onclick="closePanel('password')">取消</button>
+          <button type="submit" class="btn-primary">保存新密码</button>
         </div>
       </form>
     </div>
 
-    <!-- Edit profile panel -->
+    <!-- 编辑资料抽屉面板 -->
     <div class="panel-overlay" id="profilePanelOverlay" style="display:none" onclick="closePanel('profile')"></div>
-    <div class="panel-drawer" id="profilePanel" role="dialog" aria-modal="true" aria-label="Edit profile" style="display:none">
+    <div class="panel-drawer" id="profilePanel" role="dialog" aria-modal="true" aria-label="编辑个人资料" style="display:none">
       <div class="panel-header">
-        <h3>Edit profile</h3>
-        <button class="panel-close" type="button" aria-label="Close" onclick="closePanel('profile')">
+        <h3>编辑个人资料</h3>
+        <button class="panel-close" type="button" aria-label="关闭" onclick="closePanel('profile')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -443,31 +390,30 @@
         <div class="field-group">
           <div class="field">
             <input id="editName" name="name" type="text" autocomplete="name" required placeholder=" " minlength="2" maxlength="48">
-            <label for="editName">Display name</label>
+            <label for="editName">显示昵称</label>
           </div>
           <div class="field-error" data-error="name"></div>
         </div>
         <p class="panel-global-error" data-panel-error></p>
         <div class="panel-actions">
-          <button type="button" class="btn-ghost" onclick="closePanel('profile')">Cancel</button>
-          <button type="submit" class="btn-primary">Save changes</button>
+          <button type="button" class="btn-ghost" onclick="closePanel('profile')">取消</button>
+          <button type="submit" class="btn-primary">保存修改</button>
         </div>
       </form>
     </div>
 
-    <!-- Toast notifications -->
+    <!-- Toast 提示容器 -->
     <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
 
-
-<footer class="footer-deluxe" role="contentinfo">
+    <footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
-          <a class="brand brand-glow" href="index.html" aria-label="SOUNDTEST.PRO home">
+          <a class="brand brand-glow" href="index.html" aria-label="SOUNDTEST.PRO 首页">
             <span class="brand-mark" aria-hidden="true"></span>
             <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
           </a>
-          <p>Acoustic evidence aid for global noise documentation. Browser-native, local-first, multilingual. Formal measurements should be verified with a certified sound level meter.</p>
-          <div class="footer-flags" aria-label="Language matrix">
+          <p>全球声学证据与噪声存证辅助工具。浏览器免安装、本地优先存储、多语言适配。正式司法测量需以国家计量检定合格的声级计报告为准。</p>
+          <div class="footer-flags" aria-label="语言切换">
             <a class="footer-flag" href="../en/index.html" title="English">🇺🇸</a>
             <a class="footer-flag" href="../zh/index.html" title="中文">🇨🇳</a>
             <a class="footer-flag" href="../es/index.html" title="Español">🇪🇸</a>
@@ -531,11 +477,11 @@
       </div>
 
       <div class="footer-meta">
-        <span>© SOUNDTEST.PRO · Local-first acoustic evidence aid · Not a certified sound level meter.</span>
-        <div class="footer-social" aria-label="Social channels">
-          <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
-          <a href="changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
-          <a href="standards.html" aria-label="Standards"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
+        <span>© SOUNDTEST.PRO · 本地优先民用声学证据辅助工具 · 非法定校准声级计</span>
+        <div class="footer-social" aria-label="联系与支持">
+          <a href="mailto:hello@soundtest.pro" aria-label="邮箱支持"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="changelog.html" aria-label="更新日志"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
+          <a href="standards.html" aria-label="国家标准参考"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
         </div>
       </div>
     </footer>

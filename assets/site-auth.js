@@ -86,11 +86,97 @@
     th: { login: 'เข้าสู่ระบบ', register: 'ลงทะเบียน', account: 'บัญชี', logout: 'ออกจากระบบ' },
   };
 
+  const AUTH_MSGS = {
+    zh: {
+      name_len: '用户昵称至少需要 2 个字符',
+      email_valid: '请输入有效的邮箱地址',
+      email_req: '请输入邮箱地址',
+      pwd_len: '密码长度至少需要 8 位字符',
+      pwd_req: '请输入密码',
+      pwd_mismatch: '两次输入的密码不一致',
+      email_exists: '该邮箱已被注册，请直接登录',
+      no_account: '未找到该邮箱对应的账号，请先注册',
+      pwd_incorrect: '密码错误，请核对后重试',
+      turnstile_err: '请完成人机安全验证',
+      account_created: '账号创建成功！正在跳转…',
+      welcome_back: '欢迎回来！登录成功',
+      signed_out: '已安全退出登录',
+      data_exported: '数据备份已成功导出',
+      confirm_delete: '确定要注销此账户并清除所有本地声学记录吗？此操作无法撤销。',
+      account_deleted: '账户及相关记录已注销清除',
+      profile_updated: '个人资料已更新',
+      cur_pwd_req: '请输入当前密码',
+      new_pwd_len: '新密码长度至少需要 8 位字符',
+      cur_pwd_incorrect: '当前密码输入不正确',
+      pwd_updated: '密码已成功修改',
+    },
+    en: {
+      name_len: 'Name must be at least 2 characters.',
+      email_valid: 'Enter a valid email address.',
+      email_req: 'Email is required.',
+      pwd_len: 'Password must be at least 8 characters.',
+      pwd_req: 'Password is required.',
+      pwd_mismatch: 'Passwords do not match.',
+      email_exists: 'Email already registered. Please sign in.',
+      no_account: 'No account found with this email.',
+      pwd_incorrect: 'Incorrect password.',
+      turnstile_err: 'Please complete human verification.',
+      account_created: 'Account created successfully!',
+      welcome_back: 'Welcome back!',
+      signed_out: 'Signed out',
+      data_exported: 'Data exported successfully',
+      confirm_delete: 'Delete your account and all local data? This cannot be undone.',
+      account_deleted: 'Account deleted',
+      profile_updated: 'Profile updated',
+      cur_pwd_req: 'Current password is required.',
+      new_pwd_len: 'New password must be at least 8 characters.',
+      cur_pwd_incorrect: 'Current password is incorrect.',
+      pwd_updated: 'Password updated successfully',
+    }
+  };
+
   function getNavAuthLang() {
     const docLang = (document.documentElement.lang || '').slice(0, 2).toLowerCase();
     if (NAV_AUTH_I18N[docLang]) return docLang;
     const match = window.location.pathname.match(/\/(zh|en|es|fr|de|ja|ko|vi|th)\//);
-    return match ? match[1] : 'en';
+    if (match) return match[1];
+    try {
+      const cookieMatch = document.cookie?.match(/(?:^|; )sf_locale=([^;]*)/);
+      const cookieLocale = cookieMatch ? decodeURIComponent(cookieMatch[1]).slice(0, 2).toLowerCase() : '';
+      if (NAV_AUTH_I18N[cookieLocale]) return cookieLocale;
+      const storedLocale = (localStorage.getItem('soundtest_locale') || '').slice(0, 2).toLowerCase();
+      if (NAV_AUTH_I18N[storedLocale]) return storedLocale;
+    } catch (_) {}
+    return 'en';
+  }
+
+  function getAuthMsg(key) {
+    const lang = getNavAuthLang();
+    return (AUTH_MSGS[lang] && AUTH_MSGS[lang][key]) || AUTH_MSGS.en[key] || '';
+  }
+
+  function getLocaleAuthHref(mode) {
+    const isInLocaleDir = /\/(zh|en|es|fr|de|ja|ko|vi|th)\//.test(window.location.pathname);
+    if (isInLocaleDir) {
+      return mode ? `auth.html?mode=${mode}` : 'auth.html';
+    }
+    const lang = getNavAuthLang();
+    if (lang && lang !== 'en') {
+      return mode ? `${lang}/auth.html?mode=${mode}` : `${lang}/auth.html`;
+    }
+    return mode ? `auth.html?mode=${mode}` : 'auth.html';
+  }
+
+  function getLocaleHomeHref() {
+    const isInLocaleDir = /\/(zh|en|es|fr|de|ja|ko|vi|th)\//.test(window.location.pathname);
+    if (isInLocaleDir) {
+      return 'index.html';
+    }
+    const lang = getNavAuthLang();
+    if (lang && lang !== 'en') {
+      return `${lang}/index.html`;
+    }
+    return 'index.html';
   }
 
   function renderNavAuth() {
@@ -109,7 +195,7 @@
       const profile = document.createElement('a');
       profile.className = 'nav-auth-btn';
       profile.setAttribute('data-auth-ui', 'true');
-      profile.href = 'auth.html';
+      profile.href = getLocaleAuthHref();
       profile.textContent = t.account;
       utility.appendChild(profile);
       const logout = document.createElement('button');
@@ -117,19 +203,19 @@
       logout.type = 'button';
       logout.setAttribute('data-auth-ui', 'true');
       logout.textContent = t.logout;
-      logout.addEventListener('click', () => { saveSession(null); renderNavAuth(); location.href = 'index.html'; });
+      logout.addEventListener('click', () => { saveSession(null); renderNavAuth(); location.href = getLocaleHomeHref(); });
       utility.appendChild(logout);
       return;
     }
     const login = document.createElement('a');
     login.className = 'nav-auth-btn';
-    login.href = 'auth.html?mode=login';
+    login.href = getLocaleAuthHref('login');
     login.textContent = t.login;
     login.setAttribute('data-auth-ui', 'true');
     utility.appendChild(login);
     const register = document.createElement('a');
     register.className = 'nav-auth-btn';
-    register.href = 'auth.html?mode=register';
+    register.href = getLocaleAuthHref('register');
     register.textContent = t.register;
     register.setAttribute('data-auth-ui', 'true');
     utility.appendChild(register);
@@ -518,47 +604,51 @@
     const password = form.querySelector('input[name="password"]').value;
     const confirm  = form.querySelector('input[name="confirmPassword"]').value;
 
-    if (!name || name.length < 2)              { setFieldError('name', 'Name must be at least 2 characters.'); return; }
-    if (!email || !email.includes('@'))        { setFieldError('email', 'Enter a valid email address.'); return; }
-    if (!password || password.length < 8)     { setFieldError('password', 'Password must be at least 8 characters.'); return; }
-    if (password !== confirm)                  { setFieldError('confirmPassword', 'Passwords do not match.'); return; }
+    if (!name || name.length < 2)              { setFieldError('name', getAuthMsg('name_len')); return; }
+    if (!email || !email.includes('@'))        { setFieldError('email', getAuthMsg('email_valid')); return; }
+    if (!password || password.length < 8)     { setFieldError('password', getAuthMsg('pwd_len')); return; }
+    if (password !== confirm)                  { setFieldError('confirmPassword', getAuthMsg('pwd_mismatch')); return; }
 
     const users = loadUsers();
-    if (users.find(u => u.email === email)) { setFieldError('email', 'Email already registered. Please sign in.'); return; }
+    if (users.find(u => u.email === email)) { setFieldError('email', getAuthMsg('email_exists')); return; }
 
-    // Verify Cloudflare Turnstile token
-    let turnstileToken = '';
-    if (window.turnstile && typeof window.turnstile.getResponse === 'function') {
-      try { turnstileToken = window.turnstile.getResponse(); } catch (_) {}
-    }
-    if (!turnstileToken) {
-      const tsInput = form.querySelector('[name="cf-turnstile-response"]');
-      if (tsInput) turnstileToken = tsInput.value;
-    }
-
-    try {
-      const verifyResp = await fetch('/api/auth/verify-turnstile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: turnstileToken }),
-      });
-      const verifyData = await verifyResp.json().catch(() => ({}));
-      if (!verifyResp.ok || !verifyData.ok) {
-        setFieldError('turnstile', '请完成人机安全验证 / Please complete human verification.');
-        if (window.turnstile && typeof window.turnstile.reset === 'function') {
-          try { window.turnstile.reset(); } catch (_) {}
-        }
-        return;
+    // Verify Cloudflare Turnstile token only if widget is present in form/DOM
+    const turnstileEl = document.getElementById('cfTurnstileWidget') || form.querySelector('.cf-turnstile');
+    if (turnstileEl) {
+      let turnstileToken = '';
+      if (window.turnstile && typeof window.turnstile.getResponse === 'function') {
+        try { turnstileToken = window.turnstile.getResponse(); } catch (_) {}
       }
-    } catch (_) {
-      // Offline fallback
+      if (!turnstileToken) {
+        const tsInput = form.querySelector('[name="cf-turnstile-response"]');
+        if (tsInput) turnstileToken = tsInput.value;
+      }
+      if (turnstileToken) {
+        try {
+          const verifyResp = await fetch('/api/auth/verify-turnstile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: turnstileToken }),
+          });
+          const verifyData = await verifyResp.json().catch(() => ({}));
+          if (!verifyResp.ok || !verifyData.ok) {
+            setFieldError('turnstile', getAuthMsg('turnstile_err'));
+            if (window.turnstile && typeof window.turnstile.reset === 'function') {
+              try { window.turnstile.reset(); } catch (_) {}
+            }
+            return;
+          }
+        } catch (_) {
+          // Offline fallback
+        }
+      }
     }
 
     users.push({ name, email, passwordHash: await hashPassword(password), createdAt: new Date().toISOString() });
     saveUsers(users);
     saveSession({ name, email, signedAt: new Date().toISOString() });
-    showToast('Account created successfully!', 'success');
-    setTimeout(() => location.href = 'auth.html', 800);
+    showToast(getAuthMsg('account_created'), 'success');
+    setTimeout(() => location.href = getLocaleAuthHref(), 800);
   }
 
   /* ── Login ── */
@@ -569,21 +659,23 @@
     const email = form.querySelector('input[name="email"]').value.trim().toLowerCase();
     const password = form.querySelector('input[name="password"]').value;
 
-    if (!email)    { setFieldError('email', 'Email is required.'); return; }
-    if (!password) { setFieldError('password', 'Password is required.'); return; }
+    if (!email)    { setFieldError('email', getAuthMsg('email_req')); return; }
+    if (!password) { setFieldError('password', getAuthMsg('pwd_req')); return; }
 
     const users  = loadUsers();
     const target = users.find(u => u.email === email);
-    if (!target)    { setFieldError('email', 'No account found with this email.'); return; }
-    if (await hashPassword(password) !== target.passwordHash) { setFieldError('password', 'Incorrect password.'); return; }
+    if (!target)    { setFieldError('email', getAuthMsg('no_account')); return; }
+    if (await hashPassword(password) !== target.passwordHash) { setFieldError('password', getAuthMsg('pwd_incorrect')); return; }
 
     saveSession({ name: target.name, email: target.email, signedAt: new Date().toISOString() });
-    showToast('Welcome back!', 'success');
-    setTimeout(() => location.href = 'auth.html', 600);
+    showToast(getAuthMsg('welcome_back'), 'success');
+    setTimeout(() => location.href = getLocaleAuthHref(), 600);
   }
 
   /* ── Dashboard rendering ── */
   function renderDashboard(session) {
+    const lang = getNavAuthLang();
+
     // Avatar initial
     const avatarEl = document.querySelector('[data-avatar-initial]');
     if (avatarEl) avatarEl.textContent = (session.name || session.email || 'U').charAt(0).toUpperCase();
@@ -621,7 +713,7 @@
     } catch (_) {}
 
     if (sinceEl && user?.createdAt) {
-      sinceEl.textContent = new Date(user.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long' });
+      sinceEl.textContent = new Date(user.createdAt).toLocaleDateString(lang === 'zh' ? 'zh-CN' : undefined, { year: 'numeric', month: 'long' });
     }
 
     // Stats
@@ -644,7 +736,13 @@
       const plan = user?.plan || 'free';
       planBadge.setAttribute('data-plan', plan);
       const planName = planBadge.querySelector('.plan-name');
-      if (planName) planName.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+      if (planName) {
+        if (lang === 'zh') {
+          planName.textContent = plan === 'pro' ? 'Pro 专业版' : (plan === 'team' ? '团队版' : (plan === 'lifetime' ? '终身版' : '免费版'));
+        } else {
+          planName.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+        }
+      }
     }
 
     // Subscription card
@@ -660,12 +758,28 @@
     if (upsellEl)      upsellEl.hidden      = isPro;
     if (prodactiveEl)  prodactiveEl.hidden  = !isPro;
     if (planDisplay)   planDisplay.hidden    = isPro;
-    if (badgeEl)       badgeEl.textContent   = isPro ? `${user.plan} plan` : 'Free plan';
-    if (isPro && prodactiveTier) prodactiveTier.textContent = user.plan.charAt(0).toUpperCase() + user.plan.slice(1) + ' Plan';
+    if (badgeEl) {
+      if (lang === 'zh') {
+        badgeEl.textContent = isPro ? (user.plan === 'pro' ? 'Pro 专业版' : (user.plan === 'team' ? '团队版' : '终身版')) : '免费版';
+      } else {
+        badgeEl.textContent = isPro ? `${user.plan} plan` : 'Free plan';
+      }
+    }
+    if (isPro && prodactiveTier) {
+      if (lang === 'zh') {
+        prodactiveTier.textContent = (user.plan === 'pro' ? 'Pro 专业版' : (user.plan === 'team' ? 'Team 团队版' : '终身高级版')) + ' 会员权益生效中';
+      } else {
+        prodactiveTier.textContent = user.plan.charAt(0).toUpperCase() + user.plan.slice(1) + ' Plan';
+      }
+    }
 
-    if (!isPro && planTierEl) planTierEl.textContent = 'Free';
-    if (!isPro && planDescEl) planDescEl.textContent = 'Real-time dB meter, basic audio recording, manual screenshot, time & location stamp';
-    if (isPro && planTierEl) { planTierEl.textContent = user.plan.charAt(0).toUpperCase() + user.plan.slice(1); }
+    if (!isPro && planTierEl) planTierEl.textContent = lang === 'zh' ? '免费版' : 'Free';
+    if (!isPro && planDescEl && lang === 'zh') {
+      planDescEl.textContent = '实时分贝仪监测、基础录音、手动截图、时间与位置水印';
+    }
+    if (isPro && planTierEl) {
+      planTierEl.textContent = lang === 'zh' ? (user.plan === 'pro' ? 'Pro 专业版' : user.plan) : (user.plan.charAt(0).toUpperCase() + user.plan.slice(1));
+    }
 
     // Activity list
     renderActivity(records);
@@ -684,8 +798,8 @@
     // Logout
     document.getElementById('dashboard-logout')?.addEventListener('click', () => {
       saveSession(null);
-      showToast('Signed out', 'success');
-      setTimeout(() => location.href = 'index.html', 600);
+      showToast(getAuthMsg('signed_out'), 'success');
+      setTimeout(() => location.href = getLocaleHomeHref(), 600);
     });
 
     // Export all data
@@ -705,20 +819,20 @@
       const a    = Object.assign(document.createElement('a'), { href: url, download: `soundtest-pro-export-${Date.now()}.json` });
       a.click();
       URL.revokeObjectURL(url);
-      showToast('Data exported successfully', 'success');
+      showToast(getAuthMsg('data_exported'), 'success');
     });
 
     // Delete account
     document.getElementById('delete-account-btn')?.addEventListener('click', () => {
-      if (!confirm('Delete your account and all local data? This cannot be undone.')) return;
+      if (!confirm(getAuthMsg('confirm_delete'))) return;
       let users = loadUsers();
       users = users.filter(u => u.email !== session.email);
       saveUsers(users);
       localStorage.removeItem(RECORDS_KEY);
       localStorage.removeItem(TEMPLATES_KEY);
       saveSession(null);
-      showToast('Account deleted', 'success');
-      setTimeout(() => location.href = 'index.html', 800);
+      showToast(getAuthMsg('account_deleted'), 'success');
+      setTimeout(() => location.href = getLocaleHomeHref(), 800);
     });
 
     // Edit profile
@@ -731,7 +845,7 @@
       editProfileForm.addEventListener('submit', async e => {
         e.preventDefault();
         const newName = editProfileForm.querySelector('#editName').value.trim();
-        if (!newName || newName.length < 2) { setPanelError(editProfileForm, 'Name must be at least 2 characters.'); return; }
+        if (!newName || newName.length < 2) { setPanelError(editProfileForm, getAuthMsg('name_len')); return; }
         let users = loadUsers();
         const idx = users.findIndex(u => u.email === session.email);
         if (idx !== -1) { users[idx].name = newName; saveUsers(users); }
@@ -739,7 +853,7 @@
         closePanel('profile');
         initAuthPage();
         renderNavAuth();
-        showToast('Profile updated', 'success');
+        showToast(getAuthMsg('profile_updated'), 'success');
       });
     }
 
@@ -751,20 +865,20 @@
         const cur  = changePasswordForm.querySelector('#currentPassword').value;
         const neu  = changePasswordForm.querySelector('#newPassword').value;
         const con  = changePasswordForm.querySelector('#confirmNewPassword').value;
-        if (!cur) { setPanelError(changePasswordForm, 'Current password is required.'); return; }
-        if (!neu || neu.length < 8) { setPanelError(changePasswordForm, 'New password must be at least 8 characters.'); return; }
-        if (neu !== con) { setPanelError(changePasswordForm, 'New passwords do not match.'); return; }
+        if (!cur) { setPanelError(changePasswordForm, getAuthMsg('cur_pwd_req')); return; }
+        if (!neu || neu.length < 8) { setPanelError(changePasswordForm, getAuthMsg('new_pwd_len')); return; }
+        if (neu !== con) { setPanelError(changePasswordForm, getAuthMsg('pwd_mismatch')); return; }
 
         let users = loadUsers();
         const idx = users.findIndex(u => u.email === session.email);
-        if (idx === -1) { setPanelError(changePasswordForm, 'Account not found.'); return; }
-        if (await hashPassword(cur) !== users[idx].passwordHash) { setPanelError(changePasswordForm, 'Current password is incorrect.'); return; }
+        if (idx === -1) { setPanelError(changePasswordForm, getAuthMsg('no_account')); return; }
+        if (await hashPassword(cur) !== users[idx].passwordHash) { setPanelError(changePasswordForm, getAuthMsg('cur_pwd_incorrect')); return; }
 
         users[idx].passwordHash = await hashPassword(neu);
         saveUsers(users);
         closePanel('password');
         changePasswordForm.reset();
-        showToast('Password updated successfully', 'success');
+        showToast(getAuthMsg('pwd_updated'), 'success');
       });
     }
 
