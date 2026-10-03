@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SOUNDTEST.PRO privacy model: local microphone analysis, optional camera/location access, local browser storage, and user-controlled exports.">
-  <title>Privacy · SOUNDTEST.PRO</title>
+  <meta name="description" content="SOUNDTEST.PRO 本地优先隐私政策：麦克风实时分析、可选摄像头与位置授权、数据留存本地浏览器沙盒、用户完全自主掌控导出与物理销毁。">
+  <title>隐私政策 · SOUNDTEST.PRO</title>
   <link rel="canonical" href="https://soundtest.pro/zh/privacy/">
   <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/privacy/"/>
   <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/privacy/"/>
@@ -16,28 +16,6 @@
   <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/privacy/"/>
   <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/privacy/"/>
   <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/privacy/"/>
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
   <link rel="stylesheet" href="../assets/site.css">
   <script src="../assets/lang-flags.js" defer></script>
@@ -55,43 +33,43 @@
       <div class="site-nav-main">
         <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span><span>SOUNDTEST.PRO</span></a>
         <div class="nav-links">
-          <a href="index.html">Home</a>
+          <a href="index.html">首页</a>
           <a href="../soundtest.html">打开工具</a>
-          <a href="accuracy.html">Accuracy</a>
-          <a href="samples.html">Samples</a>
-          <a href="auth.html">账户</a>
+          <a href="accuracy.html">精度校准</a>
+          <a href="samples.html">存证样本</a>
+          <a href="auth.html">个人中心</a>
         </div>
       </div>
     </nav>
 
     <section class="hero">
       <div class="hero-stack reveal">
-        <span class="eyebrow">Trust center · Local-first</span>
-        <h1 class="hero-headline"><em>Local-first</em> privacy for sensitive noise records.</h1>
-        <p class="hero-lead">Noise evidence can include voices, people, private spaces, and precise locations. SOUNDTEST.PRO keeps the Stage 1 web beta on your device unless you explicitly export or save files.</p>
+        <span class="eyebrow">隐私与数据信任中心 · Local-First</span>
+        <h1 class="hero-headline"><em>本地优先</em>，守护高度敏感的声学取证隐私</h1>
+        <p class="hero-lead">噪声取证往往包含人声交谈、私人起居空间、精确家庭住址及邻里纠纷细节。SOUNDTEST.PRO 坚持在您的设备本地处理所有音频频谱与证据，绝不擅自上传云端，确保取证过程安全私密。</p>
       </div>
     </section>
 
     <section class="section grid">
-      <div class="card reveal"><div class="card-badge">Microphone</div><h3>Live, on-device analysis</h3><p>The microphone stream is processed in the browser for live dB analysis. Audio is saved only after you start audio or video recording.</p></div>
-      <div class="card reveal"><div class="card-badge">Camera</div><h3>Optional capture only</h3><p>Used only for preview, acoustic evidence photos, or watermarked video. You control when media is generated.</p></div>
-      <div class="card reveal"><div class="card-badge">Location</div><h3>You choose the granularity</h3><p>Used for GPS, map links, place labels, and report metadata. Reverse geocoding may send coordinates to the selected map provider.</p></div>
-      <div class="card reveal"><div class="card-badge">Storage</div><h3>localStorage + IndexedDB</h3><p>Settings and metadata use localStorage. Media clips use IndexedDB when supported. Browser cleanup may remove local data.</p></div>
-      <div class="card reveal"><div class="card-badge">Exports</div><h3>Only when you say so</h3><p>PDF, CSV, JSON manifest, images, audio, and video files are created only when you choose to export or save them.</p></div>
-      <div class="card reveal"><div class="card-badge">Beta scope</div><h3>No cloud in beta</h3><p>Stage 1 has no account sync, cloud backup, team sharing, or server-side evidence retention.</p></div>
+      <div class="card reveal"><div class="card-badge">麦克风</div><h3>设备端本地实时计算</h3><p>麦克风音频流仅在浏览器本地 Web Audio API 管道内计算实时分贝与 FFT 频谱。仅在您明确点击“录音/录像”后才会创建本地临时媒体切片。</p></div>
+      <div class="card reveal"><div class="card-badge">摄像头</div><h3>仅在取证时主动调用</h3><p>仅用于声学快照叠加分贝水印或现场视频录像。用户可完全自主控制何时开启画面或生成媒体，绝无后台偷录。</p></div>
+      <div class="card reveal"><div class="card-badge">位置标注</div><h3>自主选择精度级别</h3><p>用于在报告中标注 GPS 经纬度、城市区划及取证时间戳。逆地理编码仅向公开地图接口请求必要地名，不留存轨迹。</p></div>
+      <div class="card reveal"><div class="card-badge">本地存储</div><h3>localStorage + IndexedDB</h3><p>测量参数与文字记录保存在 localStorage，音视频证据保存在本地 IndexedDB 数据库中，完全受浏览器沙盒隔离保护。</p></div>
+      <div class="card reveal"><div class="card-badge">证据导出</div><h3>由您全权决定分发</h3><p>生成的 PDF 维权报告、CSV 数据表、音视频原文件与 JSON 摘要清单均由您主动点击下载保存至设备本地。</p></div>
+      <div class="card reveal"><div class="card-badge">零云端留存</div><h3>保护公民隐私不泄露</h3><p>不设中心化音视频服务器，不存在服务器端泄露或被第三方截获您的家庭隐私录音之风险，数据自主可控。</p></div>
     </section>
 
     <section class="section grid two">
       <div class="card reveal">
-        <div class="card-badge">User responsibilities</div>
-        <h2>Stay safe and respectful while recording.</h2>
+        <div class="card-badge">法律与取证提示</div>
+        <h2>请在合法合规框架内规范取证</h2>
         <ul class="check-list">
-          <li>Follow local audio/video recording consent laws.</li>
-          <li>Avoid sharing faces, private spaces, exact residential locations, or sensitive details without permission.</li>
-          <li>Save important media promptly because browser storage can be cleared.</li>
+          <li>严格遵守中国《民法典》第一千零三十二条关于隐私权的规定，取证应限于自身专有住宅或公共受扰空间。</li>
+          <li>避免在未经同意的情况下拍摄他人面部、私人居所内部或扩散包含他人非公开言论的敏感录音。</li>
+          <li>浏览器缓存可能随系统清理而失效，请在每次重要取证完成后及时导出 PDF 与音视频文件妥善本地备份。</li>
         </ul>
       </div>
-      <div class="notice reveal">Future account or cloud versions must add account deletion, cloud deletion, retention controls, regional compliance, and encrypted storage policies before paid global launch.</div>
+      <div class="notice reveal">我们的隐私承诺：少采集、全本地、不监控、明确提示。让维权者在依法收集受扰证据的同时，彻底免除个人隐私泄露的后顾之忧。</div>
     </section>
 
 <footer class="footer-deluxe" role="contentinfo">

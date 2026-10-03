@@ -756,65 +756,407 @@
     document.body.appendChild(banner);
   }
 
-  function initMobileNav() {
-    const nav = document.querySelector('.site-nav');
-    if (!nav) return;
-    const navMain = nav.querySelector('.site-nav-main');
-    if (!navMain) return;
+  const MOBILE_NAV_I18N = {
+    zh: {
+      home: '首页',
+      pricing: '价格权益',
+      measure: '测分贝',
+      scenarios: '维权场景',
+      more: '更多',
+      drawerTitle: '快捷导航与工具',
+      standards: '国家标准',
+      accuracy: '精度校准',
+      samples: '报告样例',
+      download: '安装应用',
+      changelog: '更新日志',
+      disclaimer: '免责声明',
+      privacy: '隐私政策',
+      compliance: '服务条款',
+      account: '个人中心',
+      login: '登录 / 注册',
+      proTag: '首发特惠中',
+      close: '关闭',
+    },
+    en: {
+      home: 'Home',
+      pricing: 'Pricing',
+      measure: 'Measure',
+      scenarios: 'Scenarios',
+      more: 'More',
+      drawerTitle: 'Quick Navigation & Tools',
+      standards: 'Standards',
+      accuracy: 'Accuracy',
+      samples: 'Samples',
+      download: 'Install App',
+      changelog: 'Changelog',
+      disclaimer: 'Disclaimer',
+      privacy: 'Privacy',
+      compliance: 'Compliance',
+      account: 'Account',
+      login: 'Login / Register',
+      proTag: 'Launch Special',
+      close: 'Close',
+    },
+    es: {
+      home: 'Inicio',
+      pricing: 'Precios',
+      measure: 'Medir dB',
+      scenarios: 'Casos',
+      more: 'Más',
+      drawerTitle: 'Navegación y Herramientas',
+      standards: 'Normas',
+      accuracy: 'Calibración',
+      samples: 'Muestras',
+      download: 'Instalar App',
+      changelog: 'Historial',
+      disclaimer: 'Aviso Legal',
+      privacy: 'Privacidad',
+      compliance: 'Términos',
+      account: 'Cuenta',
+      login: 'Acceso / Registro',
+      proTag: 'Oferta Especial',
+      close: 'Cerrar',
+    },
+    fr: {
+      home: 'Accueil',
+      pricing: 'Tarifs',
+      measure: 'Mesurer',
+      scenarios: 'Scénarios',
+      more: 'Plus',
+      drawerTitle: 'Navigation & Outils',
+      standards: 'Normes',
+      accuracy: 'Étalonnage',
+      samples: 'Échantillons',
+      download: 'Installer l’App',
+      changelog: 'Journal',
+      disclaimer: 'Mentions Légales',
+      privacy: 'Confidentialité',
+      compliance: 'Conditions',
+      account: 'Compte',
+      login: 'Connexion',
+      proTag: 'Offre Spéciale',
+      close: 'Fermer',
+    },
+    de: {
+      home: 'Start',
+      pricing: 'Preise',
+      measure: 'Messen',
+      scenarios: 'Szenarien',
+      more: 'Mehr',
+      drawerTitle: 'Navigation & Tools',
+      standards: 'Normen',
+      accuracy: 'Kalibrierung',
+      samples: 'Muster',
+      download: 'App laden',
+      changelog: 'Changelog',
+      disclaimer: 'Haftung',
+      privacy: 'Datenschutz',
+      compliance: 'Bedingungen',
+      account: 'Konto',
+      login: 'Anmelden',
+      proTag: 'Aktionspreis',
+      close: 'Schließen',
+    },
+    ja: {
+      home: 'ホーム',
+      pricing: '料金プラン',
+      measure: '騒音測定',
+      scenarios: '活用事例',
+      more: 'メニュー',
+      drawerTitle: 'クイックナビゲーション',
+      standards: '騒音基準',
+      accuracy: '校正精度',
+      samples: 'レポート例',
+      download: 'アプリ導入',
+      changelog: '更新履歴',
+      disclaimer: '免責事項',
+      privacy: 'プライバシー',
+      compliance: '利用規約',
+      account: 'アカウント',
+      login: 'ログイン',
+      proTag: '限定セール',
+      close: '閉じる',
+    },
+    ko: {
+      home: '홈',
+      pricing: '요금제',
+      measure: '소음측정',
+      scenarios: '활용사례',
+      more: '더보기',
+      drawerTitle: '빠른 메뉴 & 도구',
+      standards: '소음 기준',
+      accuracy: '정밀도 보정',
+      samples: '보고서 샘플',
+      download: '앱 설치',
+      changelog: '업데이트 로그',
+      disclaimer: '면책 조항',
+      privacy: '개인정보처리',
+      compliance: '이용약관',
+      account: '내 계정',
+      login: '로그인 / 가입',
+      proTag: '특가 할인',
+      close: '닫기',
+    },
+    vi: {
+      home: 'Trang chủ',
+      pricing: 'Bảng giá',
+      measure: 'Đo dB',
+      scenarios: 'Trường hợp',
+      more: 'Thêm',
+      drawerTitle: 'Điều hướng & Công cụ',
+      standards: 'Tiêu chuẩn',
+      accuracy: 'Hiệu chuẩn',
+      samples: 'Mẫu báo cáo',
+      download: 'Tải ứng dụng',
+      changelog: 'Lịch sử',
+      disclaimer: 'Miễn trừ',
+      privacy: 'Quyền riêng tư',
+      compliance: 'Điều khoản',
+      account: 'Tài khoản',
+      login: 'Đăng nhập',
+      proTag: 'Ưu đãi mở bán',
+      close: 'Đóng',
+    },
+    th: {
+      home: 'หน้าแรก',
+      pricing: 'ราคา',
+      measure: 'วัดเสียง',
+      scenarios: 'กรณีใช้งาน',
+      more: 'เพิ่มเติม',
+      drawerTitle: 'เมนูทางลัดและเครื่องมือ',
+      standards: 'มาตรฐาน',
+      accuracy: 'การสอบเทียบ',
+      samples: 'ตัวอย่างรายงาน',
+      download: 'ติดตั้งแอป',
+      changelog: 'ประวัติอัปเดต',
+      disclaimer: 'ข้อจำกัดสิทธิ',
+      privacy: 'ความเป็นส่วนตัว',
+      compliance: 'ข้อกำหนด',
+      account: 'บัญชีผู้ใช้',
+      login: 'เข้าสู่ระบบ',
+      proTag: 'โปรโมชั่นพิเศษ',
+      close: 'ปิด',
+    },
+  };
 
-    let toggleBtn = nav.querySelector('.site-nav-toggle');
-    if (!toggleBtn) {
-      toggleBtn = document.createElement('button');
-      toggleBtn.type = 'button';
-      toggleBtn.className = 'site-nav-toggle';
-      toggleBtn.setAttribute('aria-label', 'Toggle menu');
-      toggleBtn.setAttribute('aria-expanded', 'false');
-      toggleBtn.innerHTML = `
-        <svg class="icon-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-        <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      `;
-      navMain.appendChild(toggleBtn);
+  function getMobileNavLang() {
+    const docLang = (document.documentElement.lang || '').slice(0, 2).toLowerCase();
+    if (MOBILE_NAV_I18N[docLang]) return docLang;
+    const match = window.location.pathname.match(/\/(zh|en|es|fr|de|ja|ko|vi|th)\//);
+    return match ? match[1] : (docLang === 'zh' ? 'zh' : 'en');
+  }
+
+  function getMobileNavUrls(lang) {
+    const path = window.location.pathname;
+    const isUseCase = path.includes('/use-cases/');
+    const isLocaleSubdir = /\/(zh|en|es|fr|de|ja|ko|vi|th)\//.test(path);
+
+    let base = '';
+    let meterUrl = 'soundtest.html';
+
+    if (isUseCase) {
+      base = `../../${lang}/`;
+      meterUrl = '../../soundtest.html';
+    } else if (isLocaleSubdir) {
+      base = '';
+      meterUrl = '../soundtest.html';
+    } else {
+      base = `${lang}/`;
+      meterUrl = 'soundtest.html';
     }
 
-    toggleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isExpanded = nav.classList.toggle('is-expanded');
-      toggleBtn.setAttribute('aria-expanded', String(isExpanded));
-      const iconMenu = toggleBtn.querySelector('.icon-menu');
-      const iconClose = toggleBtn.querySelector('.icon-close');
-      if (iconMenu && iconClose) {
-        iconMenu.style.display = isExpanded ? 'none' : 'block';
-        iconClose.style.display = isExpanded ? 'block' : 'none';
+    const homeUrl = base ? `${base}index.html` : 'index.html';
+    return {
+      home: homeUrl,
+      pricing: `${homeUrl}#pricing`,
+      scenarios: `${homeUrl}#scenarios`,
+      meter: meterUrl,
+      standards: base ? `${base}standards.html` : 'standards.html',
+      accuracy: base ? `${base}accuracy.html` : 'accuracy.html',
+      samples: base ? `${base}samples.html` : 'samples.html',
+      download: base ? `${base}download.html` : 'download.html',
+      changelog: base ? `${base}changelog.html` : 'changelog.html',
+      disclaimer: base ? `${base}disclaimer.html` : 'disclaimer.html',
+      privacy: base ? `${base}privacy.html` : 'privacy.html',
+      compliance: base ? `${base}compliance.html` : 'compliance.html',
+      auth: base ? `${base}auth.html` : 'auth.html',
+    };
+  }
+
+  function initMobileBottomNav() {
+    if (document.querySelector('.mobile-bottom-bar')) return;
+
+    const lang = getMobileNavLang();
+    const t = MOBILE_NAV_I18N[lang] || MOBILE_NAV_I18N.en;
+    const urls = getMobileNavUrls(lang);
+
+    // 1. Build Mobile Bottom Bar
+    const bar = document.createElement('nav');
+    bar.className = 'mobile-bottom-bar';
+    bar.setAttribute('aria-label', 'Mobile Navigation');
+    bar.innerHTML = `
+      <a href="${urls.home}" class="mobile-nav-tab" data-nav="home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>${t.home}</span>
+      </a>
+      <a href="${urls.pricing}" class="mobile-nav-tab" data-nav="pricing">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span>${t.pricing}</span>
+      </a>
+      <a href="${urls.meter}" class="mobile-nav-cta" title="${t.measure}">
+        <div class="mobile-nav-cta-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </div>
+        <span class="mobile-nav-cta-label">${t.measure}</span>
+      </a>
+      <a href="${urls.scenarios}" class="mobile-nav-tab" data-nav="scenarios">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        <span>${t.scenarios}</span>
+      </a>
+      <button type="button" class="mobile-nav-tab" data-mobile-drawer-trigger aria-label="${t.more}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/><circle cx="5" cy="12" r="1.5"/></svg>
+        <span>${t.more}</span>
+      </button>
+    `;
+
+    // 2. Build Slide-up Drawer & Overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-drawer-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+
+    const drawer = document.createElement('div');
+    drawer.className = 'mobile-drawer';
+    drawer.setAttribute('role', 'dialog');
+    drawer.setAttribute('aria-modal', 'true');
+    drawer.setAttribute('aria-label', t.drawerTitle);
+    drawer.innerHTML = `
+      <div class="mobile-drawer-handle" aria-hidden="true"></div>
+      <div class="mobile-drawer-header">
+        <span class="mobile-drawer-title">${t.drawerTitle}</span>
+        <button type="button" class="mobile-drawer-close" aria-label="${t.close}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <a href="${urls.pricing}" class="mobile-drawer-upgrade">
+        <div>
+          <strong>★ SOUNDTEST.PRO PRO</strong>
+          <span>${t.proTag} · 点击查看全部特权权益</span>
+        </div>
+        <span class="upgrade-arrow">›</span>
+      </a>
+      <div class="mobile-drawer-grid">
+        <a href="${urls.standards}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+          </div>
+          <span>${t.standards}</span>
+        </a>
+        <a href="${urls.accuracy}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/></svg>
+          </div>
+          <span>${t.accuracy}</span>
+        </a>
+        <a href="${urls.samples}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          </div>
+          <span>${t.samples}</span>
+        </a>
+        <a href="${urls.download}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+          <span>${t.download}</span>
+        </a>
+        <a href="${urls.changelog}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <span>${t.changelog}</span>
+        </a>
+        <a href="${urls.disclaimer}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <span>${t.disclaimer}</span>
+        </a>
+        <a href="${urls.privacy}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span>${t.privacy}</span>
+        </a>
+        <a href="${urls.compliance}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <span>${t.compliance}</span>
+        </a>
+        <a href="${urls.auth}" class="mobile-drawer-item">
+          <div class="mobile-drawer-item-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span>${t.account}</span>
+        </a>
+      </div>
+      <div class="mobile-drawer-auth">
+        <a href="${urls.auth}" class="auth-primary">${t.login}</a>
+      </div>
+    `;
+
+    document.body.appendChild(bar);
+    document.body.appendChild(overlay);
+    document.body.appendChild(drawer);
+
+    function openDrawer() {
+      overlay.classList.add('is-active');
+      drawer.classList.add('is-active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      overlay.classList.remove('is-active');
+      drawer.classList.remove('is-active');
+      document.body.style.overflow = '';
+    }
+
+    bar.querySelector('[data-mobile-drawer-trigger]')?.addEventListener('click', openDrawer);
+    drawer.querySelector('.mobile-drawer-close')?.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+
+    drawer.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('is-active')) {
+        closeDrawer();
       }
     });
 
-    nav.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        if (nav.classList.contains('is-expanded')) {
-          nav.classList.remove('is-expanded');
-          toggleBtn.setAttribute('aria-expanded', 'false');
-          const iconMenu = toggleBtn.querySelector('.icon-menu');
-          const iconClose = toggleBtn.querySelector('.icon-close');
-          if (iconMenu && iconClose) {
-            iconMenu.style.display = 'block';
-            iconClose.style.display = 'none';
-          }
+    // Also wire up top nav toggle button to open the bottom drawer
+    const nav = document.querySelector('.site-nav');
+    if (nav) {
+      const navMain = nav.querySelector('.site-nav-main');
+      if (navMain) {
+        let toggleBtn = nav.querySelector('.site-nav-toggle');
+        if (!toggleBtn) {
+          toggleBtn = document.createElement('button');
+          toggleBtn.type = 'button';
+          toggleBtn.className = 'site-nav-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle menu');
+          toggleBtn.innerHTML = `
+            <svg class="icon-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          `;
+          navMain.appendChild(toggleBtn);
         }
-      });
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!nav.contains(e.target) && nav.classList.contains('is-expanded')) {
-        nav.classList.remove('is-expanded');
-        toggleBtn.setAttribute('aria-expanded', 'false');
-        const iconMenu = toggleBtn.querySelector('.icon-menu');
-        const iconClose = toggleBtn.querySelector('.icon-close');
-        if (iconMenu && iconClose) {
-          iconMenu.style.display = 'block';
-          iconClose.style.display = 'none';
-        }
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openDrawer();
+        });
       }
-    });
+    }
   }
 
   function ready(fn) {
@@ -830,7 +1172,7 @@
     renderRecent();
     initHero();
     initScenarioWorkbench();
-    initMobileNav();
+    initMobileBottomNav();
     initCookieConsent();
   });
 })();

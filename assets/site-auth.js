@@ -74,10 +74,31 @@
     return utility;
   }
 
+  const NAV_AUTH_I18N = {
+    zh: { login: '登录', register: '注册', account: '个人中心', logout: '退出' },
+    en: { login: 'Login', register: 'Register', account: 'Account', logout: 'Logout' },
+    es: { login: 'Acceso', register: 'Registro', account: 'Cuenta', logout: 'Salir' },
+    fr: { login: 'Connexion', register: 'S’inscrire', account: 'Compte', logout: 'Déconnexion' },
+    de: { login: 'Anmelden', register: 'Registrieren', account: 'Konto', logout: 'Abmelden' },
+    ja: { login: 'ログイン', register: '登録', account: 'アカウント', logout: 'ログアウト' },
+    ko: { login: '로그인', register: '회원가입', account: '계정', logout: '로그아웃' },
+    vi: { login: 'Đăng nhập', register: 'Đăng ký', account: 'Tài khoản', logout: 'Đăng xuất' },
+    th: { login: 'เข้าสู่ระบบ', register: 'ลงทะเบียน', account: 'บัญชี', logout: 'ออกจากระบบ' },
+  };
+
+  function getNavAuthLang() {
+    const docLang = (document.documentElement.lang || '').slice(0, 2).toLowerCase();
+    if (NAV_AUTH_I18N[docLang]) return docLang;
+    const match = window.location.pathname.match(/\/(zh|en|es|fr|de|ja|ko|vi|th)\//);
+    return match ? match[1] : 'en';
+  }
+
   function renderNavAuth() {
     const utility = ensureNavUtility();
     if (!utility) return;
     [...utility.querySelectorAll('[data-auth-ui]')].forEach(el => el.remove());
+    const lang = getNavAuthLang();
+    const t = NAV_AUTH_I18N[lang] || NAV_AUTH_I18N.en;
     const session = loadSession();
     if (session?.email) {
       const info = document.createElement('span');
@@ -89,13 +110,13 @@
       profile.className = 'nav-auth-btn';
       profile.setAttribute('data-auth-ui', 'true');
       profile.href = 'auth.html';
-      profile.textContent = 'Account';
+      profile.textContent = t.account;
       utility.appendChild(profile);
       const logout = document.createElement('button');
       logout.className = 'nav-auth-btn';
       logout.type = 'button';
       logout.setAttribute('data-auth-ui', 'true');
-      logout.textContent = 'Logout';
+      logout.textContent = t.logout;
       logout.addEventListener('click', () => { saveSession(null); renderNavAuth(); location.href = 'index.html'; });
       utility.appendChild(logout);
       return;
@@ -103,13 +124,13 @@
     const login = document.createElement('a');
     login.className = 'nav-auth-btn';
     login.href = 'auth.html?mode=login';
-    login.textContent = 'Login';
+    login.textContent = t.login;
     login.setAttribute('data-auth-ui', 'true');
     utility.appendChild(login);
     const register = document.createElement('a');
     register.className = 'nav-auth-btn';
     register.href = 'auth.html?mode=register';
-    register.textContent = 'Register';
+    register.textContent = t.register;
     register.setAttribute('data-auth-ui', 'true');
     utility.appendChild(register);
   }
