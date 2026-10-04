@@ -1667,7 +1667,7 @@ a.card:hover h3 { color: var(--text-strong); }
   margin: 6px auto 14px;
   background: url("echo-mascot.webp") center center / contain no-repeat;
   border-radius: 22px;
-  animation: mascot-float 6s ease-in-out infinite;
+  animation: mascot-float 8s ease-in-out infinite;
   position: relative;
   z-index: 2;
   filter: drop-shadow(0 14px 28px rgba(44, 240, 193, 0.22));
@@ -1694,13 +1694,13 @@ a.card:hover h3 { color: var(--text-strong); }
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(44, 240, 193, 0.38) 0%, rgba(77, 171, 247, 0.18) 50%, transparent 75%);
-  filter: blur(16px);
-  animation: echo-core-ping 2.8s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(44, 240, 193, 0.30) 0%, rgba(77, 171, 247, 0.14) 50%, transparent 75%);
+  filter: blur(18px);
+  animation: echo-core-ping 6.0s ease-in-out infinite;
   pointer-events: none;
 }
 
-/* Real-time acoustic heart/equalizer pulse */
+/* Real-time acoustic heart/equalizer pulse - calm breathing pace */
 .echo-waveform-rings::after {
   content: "";
   position: absolute;
@@ -1710,13 +1710,13 @@ a.card:hover h3 { color: var(--text-strong); }
   width: 86px;
   height: 74px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(44, 240, 193, 0.55) 0%, rgba(66, 211, 255, 0.3) 45%, transparent 75%);
-  filter: blur(10px);
-  animation: echo-chest-pulse 1.4s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(44, 240, 193, 0.45) 0%, rgba(66, 211, 255, 0.24) 45%, transparent 75%);
+  filter: blur(12px);
+  animation: echo-chest-pulse 3.4s ease-in-out infinite alternate;
   pointer-events: none;
 }
 
-/* Real-time acoustic wavefront rings */
+/* Real-time acoustic wavefront rings - gentle serene propagation */
 .echo-waveform-rings span {
   position: absolute;
   top: calc(50% - 10px);
@@ -1725,84 +1725,84 @@ a.card:hover h3 { color: var(--text-strong); }
   height: 440px;
   border-radius: 50%;
   box-sizing: border-box;
-  transform: translate(-50%, -50%) scale(0.15);
+  transform: translate(-50%, -50%) scale(0.2);
   opacity: 0;
-  animation: echo-acoustic-wave 2.8s cubic-bezier(0.16, 0.8, 0.35, 1) infinite;
+  animation: echo-acoustic-wave 6.0s cubic-bezier(0.2, 0.7, 0.35, 1) infinite;
   pointer-events: none;
-  background: radial-gradient(circle, transparent 65%, rgba(44, 240, 193, 0.05) 85%, rgba(44, 240, 193, 0.16) 100%);
+  background: radial-gradient(circle, transparent 65%, rgba(44, 240, 193, 0.03) 85%, rgba(44, 240, 193, 0.10) 100%);
 }
 
 /* Wavefront 1: Primary Emerald/Cyan Acoustic Wave */
 .echo-waveform-rings span:nth-child(1) {
-  border: 2px solid rgba(44, 240, 193, 0.95);
-  box-shadow: 0 0 16px rgba(44, 240, 193, 0.65), inset 0 0 8px rgba(44, 240, 193, 0.25);
+  border: 1.5px solid rgba(44, 240, 193, 0.75);
+  box-shadow: 0 0 14px rgba(44, 240, 193, 0.45), inset 0 0 6px rgba(44, 240, 193, 0.18);
   animation-delay: 0s;
 }
 
 /* Wavefront 2: Harmonic Electric Cyan Wave */
 .echo-waveform-rings span:nth-child(2) {
-  border: 2px solid rgba(66, 211, 255, 0.9);
-  box-shadow: 0 0 16px rgba(66, 211, 255, 0.6), inset 0 0 8px rgba(66, 211, 255, 0.25);
-  background: radial-gradient(circle, transparent 65%, rgba(66, 211, 255, 0.05) 85%, rgba(66, 211, 255, 0.15) 100%);
-  animation-delay: 0.7s;
+  border: 1.5px solid rgba(66, 211, 255, 0.7);
+  box-shadow: 0 0 14px rgba(66, 211, 255, 0.4), inset 0 0 6px rgba(66, 211, 255, 0.18);
+  background: radial-gradient(circle, transparent 65%, rgba(66, 211, 255, 0.03) 85%, rgba(66, 211, 255, 0.10) 100%);
+  animation-delay: 1.5s;
 }
 
 /* Wavefront 3: High-Frequency Sentinel Indigo Wave */
 .echo-waveform-rings span:nth-child(3) {
-  border: 2px solid rgba(138, 160, 255, 0.85);
-  box-shadow: 0 0 16px rgba(138, 160, 255, 0.55), inset 0 0 8px rgba(138, 160, 255, 0.2);
-  background: radial-gradient(circle, transparent 65%, rgba(138, 160, 255, 0.04) 85%, rgba(138, 160, 255, 0.14) 100%);
-  animation-delay: 1.4s;
+  border: 1.5px solid rgba(138, 160, 255, 0.65);
+  box-shadow: 0 0 14px rgba(138, 160, 255, 0.35), inset 0 0 6px rgba(138, 160, 255, 0.15);
+  background: radial-gradient(circle, transparent 65%, rgba(138, 160, 255, 0.03) 85%, rgba(138, 160, 255, 0.08) 100%);
+  animation-delay: 3.0s;
 }
 
 /* Wavefront 4: Deep Ambient Soundwave */
 .echo-waveform-rings span:nth-child(4) {
-  border: 2px solid rgba(44, 240, 193, 0.8);
-  box-shadow: 0 0 16px rgba(44, 240, 193, 0.5), inset 0 0 8px rgba(44, 240, 193, 0.2);
-  animation-delay: 2.1s;
+  border: 1.5px solid rgba(44, 240, 193, 0.6);
+  box-shadow: 0 0 14px rgba(44, 240, 193, 0.3), inset 0 0 6px rgba(44, 240, 193, 0.12);
+  animation-delay: 4.5s;
 }
 
 @keyframes echo-acoustic-wave {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.18);
+    transform: translate(-50%, -50%) scale(0.22);
   }
-  12% {
-    opacity: 0.95;
+  20% {
+    opacity: 0.70;
   }
-  35% {
-    opacity: 0.8;
+  50% {
+    opacity: 0.40;
   }
-  65% {
-    opacity: 0.45;
+  80% {
+    opacity: 0.12;
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(1.22);
+    transform: translate(-50%, -50%) scale(1.18);
   }
 }
 
 @keyframes echo-core-ping {
   0%, 100% {
-    opacity: 0.45;
-    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(0.9);
   }
   50% {
-    opacity: 0.95;
-    transform: translate(-50%, -50%) scale(1.22);
+    opacity: 0.75;
+    transform: translate(-50%, -50%) scale(1.15);
     filter: blur(20px);
   }
 }
 
 @keyframes echo-chest-pulse {
   0% {
-    opacity: 0.35;
-    transform: translate(-50%, -50%) scale(0.88);
+    opacity: 0.30;
+    transform: translate(-50%, -50%) scale(0.92);
   }
   100% {
-    opacity: 0.9;
-    transform: translate(-50%, -50%) scale(1.16);
-    filter: blur(13px);
+    opacity: 0.75;
+    transform: translate(-50%, -50%) scale(1.12);
+    filter: blur(14px);
   }
 }
 
@@ -1948,7 +1948,7 @@ a.card:hover h3 { color: var(--text-strong); }
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 8px rgba(44, 240, 193, 0.85);
-  animation: pulse 1.4s ease-in-out infinite;
+  animation: pulse 2.4s ease-in-out infinite;
   transition: background-color 0.5s ease, box-shadow 0.5s ease;
 }
 
