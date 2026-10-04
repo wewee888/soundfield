@@ -8715,9 +8715,9 @@ function openReportPreviewModal(recs, isBatch = false) {
     }
   }
 
-  dlBtn = dlBtn || document.getElementById('rpmDownloadFreeBtn');
-  if (dlBtn) {
-    dlBtn.onclick = () => {
+  const freeDlBtn = dlBtn || document.getElementById('rpmDownloadFreeBtn');
+  if (freeDlBtn) {
+    freeDlBtn.onclick = () => {
       closeReportPreviewModal();
       try {
         const doc = buildPDF(recs, true);
@@ -8739,7 +8739,9 @@ function closeReportPreviewModal() {
 }
 
 function showReportPreviewModal() {
-  const sample = (records && records.length) ? records : [{ avgDb: Math.round(curDb || 52), peakDb: Math.round(peak || 68), evidenceId: 'SF-DEMO-SAMPLE' }];
+  const sample = (window.DB && Array.isArray(DB.records) && DB.records.length)
+    ? DB.records
+    : [{ avgDb: Math.round(curDb || 52), peakDb: Math.round(peak || 68), evidenceId: 'SF-DEMO-SAMPLE' }];
   openReportPreviewModal(sample);
 }
 
