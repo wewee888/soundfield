@@ -23,7 +23,7 @@
   <script src="assets/lang-flags.js" defer></script>
   <script src="assets/site-i18n.js?v=7" defer></script>
   <script src="assets/site-auth.js" defer></script>
-  <script src="assets/site-experience.js" defer></script>
+  <script src="assets/site-experience.js?v=20261005" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -379,11 +379,11 @@
 
       <div class="billing-toggle-wrap reveal">
         <div class="billing-toggle" role="radiogroup" aria-label="Billing cycle selection">
-          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true">
+          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true" onclick="setPricingBillingCycle('yearly')">
             <span>Billed Yearly</span>
             <span class="billing-discount-badge">Save $35 · ~$2.08/mo 🔥</span>
           </button>
-          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false">
+          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false" onclick="setPricingBillingCycle('monthly')">
             <span>Billed Monthly</span>
           </button>
         </div>

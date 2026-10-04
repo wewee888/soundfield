@@ -1665,38 +1665,51 @@
     });
   }
 
+  window.setPricingBillingCycle = function(targetCycle) {
+    const cycle = targetCycle === 'monthly' ? 'monthly' : 'yearly';
+    const toggleBtns = document.querySelectorAll('.billing-toggle-btn');
+    toggleBtns.forEach((b) => {
+      const bCycle = b.getAttribute('data-billing') || b.getAttribute('data-billing-toggle') || 'yearly';
+      const isActive = bCycle === cycle;
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    });
+
+    const yearlyEls = document.querySelectorAll('.billing-period-yearly');
+    const monthlyEls = document.querySelectorAll('.billing-period-monthly');
+
+    if (cycle === 'yearly') {
+      yearlyEls.forEach((el) => {
+        el.style.display = el.tagName === 'A' ? 'inline-flex' : (el.classList.contains('price-tag') ? 'flex' : '');
+      });
+      monthlyEls.forEach((el) => {
+        el.style.display = 'none';
+      });
+    } else {
+      yearlyEls.forEach((el) => {
+        el.style.display = 'none';
+      });
+      monthlyEls.forEach((el) => {
+        el.style.display = el.tagName === 'A' ? 'inline-flex' : (el.classList.contains('price-tag') ? 'flex' : '');
+      });
+    }
+  };
+
   function initPricingBillingToggle() {
     const toggleBtns = document.querySelectorAll('.billing-toggle-btn');
     if (!toggleBtns.length) return;
 
     toggleBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const targetCycle = btn.getAttribute('data-billing') || 'yearly';
-        toggleBtns.forEach((b) => {
-          const isActive = b === btn;
-          b.classList.toggle('active', isActive);
-          b.setAttribute('aria-checked', isActive ? 'true' : 'false');
-        });
+      const handler = (e) => {
+        const targetCycle = btn.getAttribute('data-billing') || btn.getAttribute('data-billing-toggle') || 'yearly';
+        window.setPricingBillingCycle(targetCycle);
+      };
 
-        const yearlyEls = document.querySelectorAll('.billing-period-yearly');
-        const monthlyEls = document.querySelectorAll('.billing-period-monthly');
-
-        if (targetCycle === 'yearly') {
-          yearlyEls.forEach((el) => {
-            el.style.display = el.tagName === 'A' ? 'inline-flex' : (el.classList.contains('price-tag') ? 'flex' : '');
-          });
-          monthlyEls.forEach((el) => {
-            el.style.display = 'none';
-          });
-        } else {
-          yearlyEls.forEach((el) => {
-            el.style.display = 'none';
-          });
-          monthlyEls.forEach((el) => {
-            el.style.display = el.tagName === 'A' ? 'inline-flex' : (el.classList.contains('price-tag') ? 'flex' : '');
-          });
-        }
-      });
+      btn.addEventListener('click', handler);
+      btn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        handler(e);
+      }, { passive: false });
     });
   }
 

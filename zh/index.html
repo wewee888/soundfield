@@ -23,7 +23,7 @@
   <script src="../assets/lang-flags.js" defer></script>
   <script src="../assets/site-i18n.js?v=7" defer></script>
   <script src="../assets/site-auth.js" defer></script>
-  <script src="../assets/site-experience.js" defer></script>
+  <script src="../assets/site-experience.js?v=20261005" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -379,11 +379,11 @@
 
       <div class="billing-toggle-wrap reveal">
         <div class="billing-toggle" role="radiogroup" aria-label="计费周期选择">
-          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true">
+          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true" onclick="setPricingBillingCycle('yearly')">
             <span>按年付</span>
             <span class="billing-discount-badge">立省 ¥40 · 仅 ¥1.6/月 🔥</span>
           </button>
-          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false">
+          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false" onclick="setPricingBillingCycle('monthly')">
             <span>按月付</span>
           </button>
         </div>
