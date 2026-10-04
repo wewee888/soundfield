@@ -166,6 +166,21 @@
         menu.hidden = true;
         menu.style.display = 'none';
         closeAllPickers(null);
+
+        // Immediate visual update to eliminate any possible UI lag
+        const flag = btn.querySelector('.lang-picker-flag');
+        if (flag) flag.src = flagUrl(primary);
+        const label = btn.querySelector('.lang-picker-label');
+        if (label) label.textContent = opt.label || LABELS[primary] || opt.value;
+
+        menu.querySelectorAll('.lang-picker-option').forEach((optEl) => {
+          if (optEl === item) {
+            optEl.setAttribute('aria-selected', 'true');
+          } else {
+            optEl.removeAttribute('aria-selected');
+          }
+        });
+
         if (typeof onChange === 'function') {
           onChange(opt.value);
         }

@@ -2015,10 +2015,10 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
 
     <div class="rpm-desc" id="rpmDesc">别再用无法证明真伪的普通手机录音去争论。免费版带有全页防伪水印，极易被物业或邻居以“音量造假、自己调大”为由推诿驳回；解锁正式版，加盖 SHA-256 唯一数字指纹与 GPS 坐标锚点，让对方无法以任何借口敷衍你。</div>
     <div class="rpm-stats-grid" id="rpmMetrics">
-      <div class="rpm-stat"><span>平均声级</span><strong id="rpmAvg">-- dB</strong></div>
-      <div class="rpm-stat"><span>峰值声级</span><strong id="rpmPeak">-- dB</strong></div>
-      <div class="rpm-stat"><span>记录条数</span><strong id="rpmCount">1</strong></div>
-      <div class="rpm-stat"><span>防篡改 ID</span><strong id="rpmId">SF-VERIFIED</strong></div>
+      <div class="rpm-stat"><span id="rpmAvgLabel">平均声级</span><strong id="rpmAvg">-- dB</strong></div>
+      <div class="rpm-stat"><span id="rpmPeakLabel">峰值声级</span><strong id="rpmPeak">-- dB</strong></div>
+      <div class="rpm-stat"><span id="rpmCountLabel">记录条数</span><strong id="rpmCount">1</strong></div>
+      <div class="rpm-stat"><span id="rpmIdLabel">防篡改 ID</span><strong id="rpmId">SF-VERIFIED</strong></div>
     </div>
     <div class="rpm-comparison">
       <div class="rpm-comp-row">
@@ -2729,39 +2729,39 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
 
     <!-- Pro Forensic Report Showcase Card -->
     <div class="card pro-showcase-card" id="proShowcaseCard">
-      <div class="pro-showcase-badge">★ PRO FORENSIC EVIDENCE · 专业维权报告</div>
-      <div class="pro-showcase-title">加盖 SHA-256 数字指纹与防伪时间戳的正式声学证据</div>
-      <div class="pro-showcase-desc">消除对方“调大音量造假、自己播放噪音”的推诿借口。一键导出完整无水印正式 PDF 报告，适用于物业交涉、居委会调解、报警立案与民事维权。</div>
+      <div class="pro-showcase-badge" id="pscBadge">★ PRO FORENSIC EVIDENCE · 专业维权报告</div>
+      <div class="pro-showcase-title" id="pscTitle">加盖 SHA-256 数字指纹与防伪时间戳的正式声学证据</div>
+      <div class="pro-showcase-desc" id="pscDesc">消除对方“调大音量造假、自己播放噪音”的推诿借口。一键导出完整无水印正式 PDF 报告，适用于物业交涉、居委会调解、报警立案与民事维权。</div>
       
       <div class="pro-showcase-img-box" onclick="showReportPreviewModal()">
         <img src="assets/images/forensic_report_preview.webp" alt="含水印预览版 vs 正式无水印存证 PDF 对比示意" loading="lazy">
-        <div class="pro-showcase-img-hint">点击查看报告对比样例 ↗</div>
+        <div class="pro-showcase-img-hint" id="pscImgHint">点击查看报告对比样例 ↗</div>
       </div>
 
       <div class="pro-showcase-grid">
         <div class="pro-showcase-feat">
-          <span>⚖️ 维权模板公函</span>
-          <strong>自动生成交涉律师函模版</strong>
+          <span id="pscFeat1T">⚖️ 维权模板公函</span>
+          <strong id="pscFeat1D">自动生成交涉律师函模版</strong>
         </div>
         <div class="pro-showcase-feat">
-          <span>📊 声学统计参数</span>
-          <strong>LAeq / L10 / L50 / L90 / 峰值</strong>
+          <span id="pscFeat2T">📊 声学统计参数</span>
+          <strong id="pscFeat2D">LAeq / L10 / L50 / L90 / 峰值</strong>
         </div>
         <div class="pro-showcase-feat">
-          <span>🛡️ 防篡改加密锚点</span>
-          <strong>不可篡改 SHA-256 数字指纹</strong>
+          <span id="pscFeat3T">🛡️ 防篡改加密锚点</span>
+          <strong id="pscFeat3D">不可篡改 SHA-256 数字指纹</strong>
         </div>
         <div class="pro-showcase-feat">
-          <span>📷 现场照片叠加</span>
-          <strong>GPS 经纬度+真实时间水印</strong>
+          <span id="pscFeat4T">📷 现场照片叠加</span>
+          <strong id="pscFeat4D">GPS 经纬度+真实时间水印</strong>
         </div>
       </div>
 
       <div class="pro-showcase-actions">
-        <button type="button" class="btn-pro-main" onclick="showReportPreviewModal()">
+        <button type="button" class="btn-pro-main" onclick="showReportPreviewModal()" id="pscMainBtn">
           <span>★ 查看报告样例 / 解锁专业版</span>
         </button>
-        <a href="camera.html" class="btn-pro-camera-link">
+        <a href="camera.html" class="btn-pro-camera-link" id="pscCamLink">
           <span>📷 打开声学存证相机 ↗</span>
         </a>
       </div>
@@ -4212,19 +4212,28 @@ function setAppLanguage(lang,{persist=true,notify=true}={}){
       }
     }catch(_){}
   }
+  // 1. Immediately sync pickers so header responds without delay
+  renderAppLangPickers();
+  const hsel=document.getElementById('headerLanguageSelect');
+  if(hsel)hsel.value=appLanguage;
+  syncLanguageSelectOptions();
+
+  // 2. Main translation
   applyTranslations();
+
+  // 3. Right panel, pro cards, and scene chips
+  syncEvidenceModeUi();
+  if(typeof translateProShowcaseCard==='function')translateProShowcaseCard();
+  if(typeof translateReportPreviewModal==='function')translateReportPreviewModal();
+  renderSceneChips();
+  updateGeoDock();
+  setStartButtonText();
+
+  // 4. Secondary hub & settings
   const activeSettings=document.querySelector('[data-settings-nav].active')?.dataset.settingsNav||'measure';
   setSettingsSection(activeSettings);
   applyAdminMode();
   renderRecs();drawMap();
-  const hsel=document.getElementById('headerLanguageSelect');
-  if(hsel)hsel.value=appLanguage;
-  syncLanguageSelectOptions();
-  renderAppLangPickers();
-  renderSceneChips();
-  updateGeoDock();
-  syncEvidenceModeUi();
-  setStartButtonText();
   if(notify)toast(t('messages.languageSaved'),'info');
 }
 function initAppLanguage(){
@@ -4235,6 +4244,8 @@ function initAppLanguage(){
   applyTranslations();
   setStartButtonText();
   syncEvidenceModeUi();
+  if(typeof translateProShowcaseCard==='function')translateProShowcaseCard();
+  if(typeof translateReportPreviewModal==='function')translateReportPreviewModal();
   renderSceneChips();
   updateGeoDock();
 }
@@ -4455,9 +4466,9 @@ function setRecordingButtonsAvailability(){
 
 function modeCopy(mode=evidenceMode){
   const enFallback={
-    audio:{label:'Audio',short:'Audio',tagline:'Low-power audio log',title:'Audio mode',desc:'Best for long sessions. Uses the mic only and keeps power use low.',primary:'Start audio',stop:'Stop & save'},
-    video:{label:'Video',short:'Video',tagline:'Video + microphone',title:'Evidence video',desc:'Capture the scene, microphone audio, and burned-in evidence watermark in the full-screen camera.',primary:'Start evidence video',stop:'Stop & save'},
-    photo:{label:'Photo',short:'Photo',tagline:'dB-stamped photo',title:'Photo mode',desc:'Capture a photo with dB, GPS, address, and calibration details.',primary:'Capture photo',stop:'Capture photo'},
+    audio:{label:'Audio',short:'Audio',tagline:'Low-power audio log',title:'Audio mode',desc:'Best for long sessions. Uses the mic only and keeps power use low.',primary:'● Start Audio Evidence',stop:'⏹ Stop & Save Evidence'},
+    video:{label:'Video',short:'Video',tagline:'Video + microphone',title:'Evidence video',desc:'Capture the scene, microphone audio, and burned-in evidence watermark in the full-screen camera.',primary:'📹 Start Evidence Video',stop:'⏹ Stop & Save Evidence'},
+    photo:{label:'Photo',short:'Photo',tagline:'dB-stamped photo',title:'Photo mode',desc:'Capture a photo with dB, GPS, address, and calibration details.',primary:'📷 Capture Evidence Photo',stop:'📷 Capture Evidence Photo'},
   };
   const zhFallback={
     audio:{label:'录音存证',short:'录音',tagline:'低耗电 · 自动加密入库',title:'取证录音模式',desc:'录制完整音频与分贝时间序列，自动保全入库并支持导出正式 PDF 维权报告。',primary:'● 开始取证录音（入库保全）',stop:'⏹ 停止录音并保存证据'},
@@ -4487,6 +4498,7 @@ function setEvidenceMode(mode,{save=true}={}){
 }
 
 function syncEvidenceModeUi(){
+  const isZh=appLanguage==='zh-CN';
   ['audio','video','photo'].forEach(mode=>{
     const btn=document.getElementById(`mode${mode[0].toUpperCase()}${mode.slice(1)}Btn`);
     if(!btn)return;
@@ -4501,9 +4513,13 @@ function syncEvidenceModeUi(){
     sentryBtn.classList.toggle('active', !!autoRecOnThreshold);
     const sentryCopy = t('modes.sentry', {});
     if (autoRecOnThreshold) {
-      sentryBtn.innerHTML = `<strong>🌙 ${sentryCopy.activeLabel || 'Sentry Active'}</strong><span>${sentryCopy.activeTagline || 'Auto-record engaged'}</span>`;
+      const activeLabel = sentryCopy.activeLabel || (isZh ? '哨兵已开启' : 'Sentry Active');
+      const activeTag = sentryCopy.activeTagline || (isZh ? '超标自动录制中' : 'Auto-record engaged');
+      sentryBtn.innerHTML = `<strong>🌙 ${activeLabel}</strong><span>${activeTag}</span>`;
     } else {
-      sentryBtn.innerHTML = `<strong>🌙 ${sentryCopy.label || 'Sentry Mode'} <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>${sentryCopy.tagline || 'Overnight auto-capture'}</span>`;
+      const label = sentryCopy.label || (isZh ? '哨兵模式' : 'Sentry Mode');
+      const tag = sentryCopy.tagline || (isZh ? '夜间静默待命 · 超标自动抓现行' : 'Overnight auto-capture on exceedance');
+      sentryBtn.innerHTML = `<strong>🌙 ${label} <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>${tag}</span>`;
     }
   }
   const heroSentry = document.getElementById('heroSentryBtn');
@@ -4512,7 +4528,7 @@ function syncEvidenceModeUi(){
     const textEl = document.getElementById('heroSentryBtnText');
     const sentryCopy = t('modes.sentry', {});
     if (textEl) {
-      textEl.textContent = autoRecOnThreshold ? (sentryCopy.on || 'Sentry On') : (sentryCopy.label || 'Sentry Mode');
+      textEl.textContent = autoRecOnThreshold ? (sentryCopy.on || (isZh ? '哨兵已开' : 'Sentry On')) : (sentryCopy.label || (isZh ? '哨兵模式' : 'Sentry Mode'));
     }
   }
   document.querySelectorAll('[data-mode-panel]').forEach(panel=>{
@@ -4520,13 +4536,13 @@ function syncEvidenceModeUi(){
     panel.hidden=!modes.includes(evidenceMode);
   });
   const copy=modeCopy();
-  setText('modeCardLabel',t('modes.cardLabel','证据模式'));
+  setText('modeCardLabel',t('modes.cardLabel',isZh?'取证存证模式（自动入库 · 生成法律报告）':'Evidence Mode (Auto-Vault & Formal Report)'));
   setText('modeTitle',copy.title);
   setText('modeDesc',copy.desc);
-  setText('modeLocationBtn',t('modes.locationAction','获取/刷新地址'));
-  setText('modeRecordsBtn',t('modes.recordsAction','查看记录'));
-  setText('cameraCloseHint',t('modes.cameraCloseHint','摄像头打开后，可在这里直接关闭预览。'));
-  setText('cameraCloseBtn',t('modes.closeCamera','关闭摄像头'));
+  setText('modeLocationBtn',t('modes.locationAction',isZh?'获取/刷新地址':'Update Address'));
+  setText('modeRecordsBtn',t('modes.recordsAction',isZh?'查看证据库':'Records'));
+  setText('cameraCloseHint',t('modes.cameraCloseHint',isZh?'摄像头打开后，可在这里直接关闭预览。':'Close camera preview directly here.'));
+  setText('cameraCloseBtn',t('modes.closeCamera',isZh?'关闭摄像头':'Close Camera'));
   const primary=document.getElementById('modePrimaryBtn');
   if(primary){
     primary.textContent=isRec&&evidenceMode!=='photo'?copy.stop:copy.primary;
@@ -4544,6 +4560,63 @@ function syncEvidenceModeUi(){
   const photoBtn=document.getElementById('photoBtn');
   if(photoBtn)photoBtn.style.display=evidenceMode==='photo'?'inline-flex':'none';
   syncWatermarkCameraUi();
+  translateProShowcaseCard();
+}
+
+function translateProShowcaseCard(){
+  const isZh = appLanguage === 'zh-CN';
+  setText('pscBadge', isZh ? '★ PRO FORENSIC EVIDENCE · 专业维权报告' : '★ PRO FORENSIC EVIDENCE · Professional Noise Report');
+  setText('pscTitle', isZh ? '加盖 SHA-256 数字指纹与防伪时间戳的正式声学证据' : 'Formal Acoustic Evidence with SHA-256 Digital Fingerprint');
+  setText('pscDesc', isZh ? '消除对方“调大音量造假、自己播放噪音”的推诿借口。一键导出完整无水印正式 PDF 报告，适用于物业交涉、居委会调解、报警立案与民事维权。' : 'Eliminate excuses like "the volume was rigged or noise was played on purpose". Export full unwatermarked formal PDF reports for property management, neighborhood mediation, police reports, and legal claims.');
+  setText('pscImgHint', isZh ? '点击查看报告对比样例 ↗' : 'Click to view sample report comparison ↗');
+  setText('pscFeat1T', isZh ? '⚖️ 维权模板公函' : '⚖️ Legal Templates');
+  setText('pscFeat1D', isZh ? '自动生成交涉律师函模版' : 'Formal Mediation & Demand Letters');
+  setText('pscFeat2T', isZh ? '📊 声学统计参数' : '📊 Acoustic Parameters');
+  setText('pscFeat2D', isZh ? 'LAeq / L10 / L50 / L90 / 峰值' : 'LAeq / L10 / L50 / L90 / Peak dB');
+  setText('pscFeat3T', isZh ? '🛡️ 防篡改加密锚点' : '🛡️ Anti-Tamper Anchor');
+  setText('pscFeat3D', isZh ? '不可篡改 SHA-256 数字指纹' : 'Immutable SHA-256 Hash');
+  setText('pscFeat4T', isZh ? '📷 现场照片叠加' : '📷 On-Site Photo Stamping');
+  setText('pscFeat4D', isZh ? 'GPS 经纬度+真实时间水印' : 'GPS Coordinates & Real-Time Stamp');
+  const mainBtn = document.getElementById('pscMainBtn');
+  if(mainBtn) {
+    const span = mainBtn.querySelector('span') || mainBtn;
+    span.textContent = isZh ? '★ 查看报告样例 / 解锁专业版' : '★ View Sample Report / Unlock Pro';
+  }
+  const camLink = document.getElementById('pscCamLink');
+  if(camLink) {
+    const span = camLink.querySelector('span') || camLink;
+    span.textContent = isZh ? '📷 打开声学存证相机 ↗' : '📷 Open Evidence Camera ↗';
+    const primary = appLanguage.split('-')[0];
+    camLink.href = primary === 'zh' ? 'zh/camera.html' : (primary === 'en' ? 'camera.html' : `${primary}/camera.html`);
+  }
+}
+
+function translateReportPreviewModal(){
+  const isZh = appLanguage === 'zh-CN';
+  setText('rpmTitle', isZh ? '📄 现场声学取证报告已生成' : '📄 Acoustic Evidence Report Generated');
+  setText('rpmBadge', isZh ? '预览模式 (含防伪水印)' : 'Preview Mode (Watermarked)');
+  setText('rpmDesc', isZh
+    ? '别再用无法证明真伪的普通手机录音去争论。免费版带有全页防伪水印，极易被物业或邻居以“音量造假、自己调大”为由推诿驳回；解锁正式版，加盖 SHA-256 唯一数字指纹与 GPS 坐标锚点，让对方无法以任何借口敷衍你。'
+    : 'Stop arguing with plain voice memos that anyone can dispute. Free reports include full-page security watermarks that landlords or property managers easily dismiss. Unlock the official report with unique SHA-256 digital fingerprint and GPS coordinates.');
+  setText('rpmAvgLabel', isZh ? '平均声级' : 'Average dB');
+  setText('rpmPeakLabel', isZh ? '峰值声级' : 'Peak dB');
+  setText('rpmCountLabel', isZh ? '记录条数' : 'Record count');
+  setText('rpmIdLabel', isZh ? '防篡改 ID' : 'Verification ID');
+  const badEl = document.getElementById('rpmCompBadText');
+  if(badEl) badEl.innerHTML = isZh
+    ? '<strong>当前预览版 (带全页水印)：</strong>仅供个人参考初筛，极易被物业或房东以“证据可被私自调大音量篡改”为由推诿不予采信。'
+    : '<strong>Current Preview (Watermarked):</strong> For personal reference only; easily dismissed by landlords claiming volume was manipulated.';
+  const goodEl = document.getElementById('rpmCompGoodText');
+  if(goodEl) goodEl.innerHTML = isZh
+    ? '<strong>正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一防伪指纹</strong>与 <strong>GPS 经纬度锚点</strong>，彻底杜绝对方以造假为由推诿。'
+    : '<strong>Official Forensic Report (No Watermark):</strong> Clean legal-grade document with <strong>SHA-256 unique digital fingerprint</strong> and <strong>GPS anchor</strong>.';
+  setText('rpmUpgradeBtnText', isZh
+    ? '★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限次无水印 + 长期纠纷档案 + 夜间哨兵'
+    : '★ Upgrade to Pro ($9.9/yr) · Unlimited Clean Reports + Vault Storage + Sentry Mode');
+  setText('rpmUnlockSingleBtnText', isZh
+    ? '⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去除全页水印 + 加盖防伪存证ID'
+    : '⚡ Unlock Single Report ($1.99) · Remove Watermark + Digital Verification ID');
+  setText('rpmDownloadFreeBtn', isZh ? '先下载带水印预览版 (仅供个人自查)' : 'Download Watermarked Preview (Personal Reference Only)');
 }
 
 async function primaryEvidenceAction(){

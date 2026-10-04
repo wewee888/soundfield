@@ -266,5 +266,43 @@ test('Runtime script safety: declarations, 51.la guarding, and permission modal 
   assert.ok(soundtestHtml.includes('if(opts?.rethrow)throw e;'), 'toggleMon guards rethrowing with opts.rethrow');
 });
 
+test('Language switching: immediate flag/label sync and complete bilingual translation of evidence mode and Pro cards', () => {
+  const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+  const langFlagsJs = fs.readFileSync(path.join(rootDir, 'assets/lang-flags.js'), 'utf8');
+
+  // 1. Immediate visual feedback in lang-flags.js
+  assert.ok(langFlagsJs.includes('// Immediate visual update to eliminate any possible UI lag'), 'lang-flags updates immediately');
+  assert.ok(langFlagsJs.includes("btn.querySelector('.lang-picker-flag')"), 'updates flag img element');
+  assert.ok(langFlagsJs.includes("btn.querySelector('.lang-picker-label')"), 'updates label text element');
+
+  // 2. setAppLanguage prioritizes picker update and translates Pro cards
+  assert.ok(soundtestHtml.includes('// 1. Immediately sync pickers so header responds without delay'), 'picker synced first');
+  assert.ok(soundtestHtml.includes('translateProShowcaseCard();'), 'calls translateProShowcaseCard');
+  assert.ok(soundtestHtml.includes('translateReportPreviewModal();'), 'calls translateReportPreviewModal');
+
+  // 3. Pro showcase card IDs and bilingual translation
+  const proCardIds = [
+    'pscBadge', 'pscTitle', 'pscDesc', 'pscImgHint',
+    'pscFeat1T', 'pscFeat1D', 'pscFeat2T', 'pscFeat2D',
+    'pscFeat3T', 'pscFeat3D', 'pscFeat4T', 'pscFeat4D',
+    'pscMainBtn', 'pscCamLink'
+  ];
+  proCardIds.forEach(id => {
+    assert.ok(soundtestHtml.includes(`id="${id}"`), `soundtest.html contains element #${id}`);
+  });
+  assert.ok(soundtestHtml.includes('★ PRO FORENSIC EVIDENCE · Professional Noise Report'), 'has English pro badge');
+  assert.ok(soundtestHtml.includes('Formal Acoustic Evidence with SHA-256 Digital Fingerprint'), 'has English pro title');
+  assert.ok(soundtestHtml.includes('★ View Sample Report / Unlock Pro'), 'has English pro cta button');
+  assert.ok(soundtestHtml.includes('📷 Open Evidence Camera ↗'), 'has English pro camera link');
+
+  // 4. Evidence mode copy and language-aware fallbacks
+  assert.ok(soundtestHtml.includes('● Start Audio Evidence'), 'modeCopy has English audio start');
+  assert.ok(soundtestHtml.includes('📹 Start Evidence Video'), 'modeCopy has English video start');
+  assert.ok(soundtestHtml.includes('📷 Capture Evidence Photo'), 'modeCopy has English photo start');
+  assert.ok(soundtestHtml.includes("isZh?'取证存证模式（自动入库 · 生成法律报告）':'Evidence Mode (Auto-Vault & Formal Report)'"), 'modeCardLabel fallback is bilingual');
+  assert.ok(soundtestHtml.includes("isZh?'获取/刷新地址':'Update Address'"), 'modeLocationBtn fallback is bilingual');
+  assert.ok(soundtestHtml.includes("isZh?'查看证据库':'Records'"), 'modeRecordsBtn fallback is bilingual');
+});
+
 
 
