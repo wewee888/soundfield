@@ -19,13 +19,19 @@
           }
         });
       },
-      { threshold: 0.16, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.01, rootMargin: '0px 0px 240px 0px' }
     );
+    const lookahead = (window.innerHeight || 800) + 240;
     document.querySelectorAll('.reveal').forEach((el, index) => {
       if (!el.style.getPropertyValue('--reveal-delay')) {
-        el.style.setProperty('--reveal-delay', `${Math.min(index, 12) * 60}ms`);
+        el.style.setProperty('--reveal-delay', `${Math.min(index, 8) * 35}ms`);
       }
-      observer.observe(el);
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= lookahead && rect.bottom >= 0) {
+        el.classList.add('is-visible');
+      } else {
+        observer.observe(el);
+      }
     });
   }
 
