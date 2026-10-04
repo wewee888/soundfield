@@ -671,7 +671,8 @@ canvas.vcvs{width:100%;height:96px;min-height:96px;max-height:96px;border-radius
 .seg-btn{flex:1;border:none;background:transparent;color:var(--tx2);font-family:var(--mono);font-size:10px;letter-spacing:.04em;padding:8px 6px;cursor:pointer;transition:background-color .13s,color .13s,box-shadow .13s}
 .seg-btn.active{background:var(--surf3);color:var(--accent);box-shadow:inset 0 0 0 .5px rgba(42,255,212,.25)}
 .seg-btn:focus-visible{outline:2px solid rgba(42,255,212,.45);outline-offset:-2px}
-.mode-switcher{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:10px}
+.mode-switcher{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:10px}
+@media(max-width:640px){.mode-switcher{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}}
 .mode-pill{min-height:54px;border:.5px solid var(--bdr2);border-radius:var(--rs);background:var(--surf2);color:var(--tx2);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;padding:8px 10px;cursor:pointer;transition:border-color .14s,background .14s,color .14s,transform .14s}
 .mode-pill:active{transform:scale(.98)}
 .mode-pill.active{border-color:rgba(42,255,212,.48);background:linear-gradient(180deg,rgba(42,255,212,.14),rgba(42,255,212,.045));color:var(--accent);box-shadow:0 0 18px rgba(42,255,212,.08)}
@@ -818,23 +819,39 @@ canvas.vcvs{width:100%;height:96px;min-height:96px;max-height:96px;border-radius
 }
 .start-btn.stop:active{box-shadow:0 8px 20px rgba(255,63,80,.18),inset 0 3px 10px rgba(0,0,0,.32)!important}
 
-/* ── Mode glass + breathing record CTA ── */
-.mode-pill{border-width:0!important;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(13,21,37,.62))!important;backdrop-filter:blur(14px);box-shadow:0 16px 36px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.06)}
-.mode-pill.active{border:1px solid rgba(42,255,212,.42)!important;box-shadow:0 0 0 1px rgba(42,255,212,.12),0 0 28px rgba(42,255,212,.14),inset 0 1px 0 rgba(255,255,255,.08)!important}
+/* ── Mode glass + breathing record CTA (Stitch style) ── */
+.mode-pill{
+  border-radius:12px!important;
+  background:rgba(18,23,36,0.75)!important;
+  border:1px solid rgba(30,41,59,0.85)!important;
+  backdrop-filter:blur(14px);
+  box-shadow:0 10px 24px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.mode-pill:hover{background:#1a2234!important;border-color:#334155!important}
+.mode-pill.active{
+  background:linear-gradient(180deg,rgba(6,182,212,0.18),rgba(18,23,36,0.95))!important;
+  border:1px solid rgba(6,182,212,0.55)!important;
+  box-shadow:0 0 18px rgba(6,182,212,0.2),inset 0 1px 0 rgba(255,255,255,0.1)!important;
+}
 .mode-primary-btn{position:relative;isolation:isolate;animation:record-breathe 3.2s ease-in-out infinite}
 .mode-primary-btn:not(.recording)::before{content:'';position:absolute;inset:-3px;border-radius:inherit;background:radial-gradient(60% 70% at 50% 50%,rgba(42,255,212,.35),transparent 72%);opacity:.55;z-index:-1;animation:record-breathe 3.2s ease-in-out infinite}
 @keyframes record-breathe{0%,100%{box-shadow:0 8px 26px rgba(42,255,212,.18),0 0 0 0 rgba(42,255,212,0)}50%{box-shadow:0 12px 34px rgba(42,255,212,.32),0 0 0 6px rgba(42,255,212,.08)}}
 
-/* ── Wider waveform + glow canvas ── */
+/* ── Wider waveform + glow canvas & segmented dock (Stitch style) ── */
 .viz-card{padding:14px!important;border-width:0!important;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(11,18,31,.78))!important;box-shadow:0 24px 48px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.06)!important}
+.vtabs{display:flex;background:#0c101a;border:1px solid #1e293b;border-radius:10px;padding:3px;gap:3px;margin-bottom:10px}
+.vtab{flex:1;padding:6px 4px;text-align:center;font-size:11px;font-weight:600;font-family:var(--sans);border-radius:7px;cursor:pointer;border:none;background:transparent;color:#94a3b8;transition:all .15s ease}
+.vtab:hover{color:#f1f5f9;background:rgba(255,255,255,0.05)}
+.vtab.active{background:rgba(6,182,212,0.2)!important;color:#22d3ee!important;border:1px solid rgba(6,182,212,0.4);box-shadow:0 0 12px rgba(6,182,212,0.2);font-weight:700}
 canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!important;background:linear-gradient(180deg,rgba(4,8,16,.85),rgba(17,30,48,.72))!important;border:0!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05),0 0 32px rgba(42,255,212,.06);filter:drop-shadow(0 8px 24px rgba(42,255,212,.08))}
 
-/* ── Quick scene chips (replaces static reference list) ── */
-.scene-chip-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.scene-chip{display:inline-flex;align-items:center;gap:7px;padding:9px 13px;border-radius:999px;border:1px solid rgba(168,196,255,.14);background:rgba(255,255,255,.04);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);color:var(--tx1);font-size:12.5px;font-weight:600;cursor:pointer;transition:transform .2s,border-color .2s,background .2s,box-shadow .2s;font-family:var(--sans)}
-.scene-chip:hover{border-color:rgba(42,255,212,.55);background:linear-gradient(180deg,rgba(42,255,212,.15),rgba(42,255,212,.05));box-shadow:0 6px 16px rgba(42,255,212,.25),inset 0 1px 0 rgba(255,255,255,.2);transform:translateY(-2px)}
-.scene-chip .emoji{font-size:14px;line-height:1}
-.scene-chip-hint{margin:0 0 8px;font-size:11.5px;line-height:1.45;color:var(--tx2)}
+/* ── Quick scene chips (Stitch compact tag style) ── */
+.scene-chip-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+.scene-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:9px;border:1px solid #1e293b;background:#121724;color:#cbd5e1;font-size:11.5px;font-weight:500;cursor:pointer;transition:all .16s ease;font-family:var(--sans)}
+.scene-chip:hover{background:#1a2234;border-color:#334155;color:#f8fafc;transform:translateY(-1px)}
+.scene-chip.active{background:rgba(6,182,212,0.18)!important;border-color:rgba(6,182,212,0.55)!important;color:#22d3ee!important;font-weight:600;box-shadow:0 0 12px rgba(6,182,212,0.22)}
+.scene-chip .emoji{font-size:13px;line-height:1}
+.scene-chip-hint{margin:0 0 8px;font-size:11px;line-height:1.45;color:var(--tx2)}
 .hero .app-header-row{order:1;margin-bottom:4px}
 .hero .subscription-banner{order:2;margin:4px 0 8px;width:100%}
 .hero .alert{order:3;width:100%}
@@ -2766,8 +2783,8 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
         </a>
       </div>
     </div>
-    <!-- Recording info + note -->
-    <div class="card mode-panel" id="audioModePanel" data-mode-panel="audio video">
+    <!-- Recording info + note (hidden by default on free view; only shows during active recording or Sentry) -->
+    <div class="card mode-panel" id="audioModePanel" data-mode-panel="audio video" style="display:none;">
       <div class="clabel" id="recStatusCardLabel">录制状态</div>
       <div class="rec-info-row">
         <div style="width:10px;height:10px;border-radius:50%;background:var(--tx3);flex-shrink:0;transition:background .3s;box-shadow:none" id="recDot"></div>
@@ -2778,7 +2795,7 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
       </div>
       <button class="video-rec-btn" id="videoRecBtn" onclick="toggleVideoRec()" data-autostart-recording="true" style="display:none">开始录像（含麦克风）</button>
       <div class="recording-consent-notice" id="recordingConsentNotice" data-legal="recordingLegalNotice">录制会保存声音；开启摄像头后会同时保存画面。请在录制前遵守当地录音、录像和隐私法律，避免公开他人面部、儿童信息和精确住址。</div>
-      <div class="recording-consent-notice" data-long-monitor="webTaskControls">
+      <div class="recording-consent-notice" data-long-monitor="webTaskControls" style="display:none;">
         <strong id="longMonitorTaskTitle">长时监测任务</strong>
         <div class="place-correct" style="margin-top:7px">
           <input class="place-input" id="autoStopMinutes" type="number" min="1" max="4320" inputmode="numeric" placeholder="自动停止分钟">
@@ -2790,8 +2807,8 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
       </div>
       <input class="note-input" id="ann" type="text" placeholder="添加备注（如：施工现场旁、夜间路边）" style="margin-top:8px">
     </div>
-    <!-- Camera preview -->
-    <div class="card mode-panel" id="cameraModePanel" data-mode-panel="video photo">
+    <!-- Camera preview (decoupled: dedicated standalone camera at camera.html) -->
+    <div class="card mode-panel" id="cameraModePanel" data-mode-panel="video photo" style="display:none!important;">
       <div class="clabel" id="camPreviewCardLabel">摄像头预览</div>
       <div class="cam-stage" data-camera="cameraOverlayDashboard">
         <div class="cam-ph" id="camPh" role="button" tabindex="0" onclick="openCameraFromPreview()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCameraFromPreview();}" data-action="cameraPreviewOpen">
@@ -4119,12 +4136,15 @@ function renderSceneChips(){
   if(!grid)return;
   grid.innerHTML=SCENE_CHIP_DEFS.map(c=>{
     const label=t(`sceneChips.${c.id}.label`,appLanguage==='zh-CN'?c.zh:c.en);
-    return `<button type="button" class="scene-chip" onclick="fillSceneChip('${c.id}')"><span class="emoji">${c.emoji}</span><span>${label}</span></button>`;
+    return `<button type="button" class="scene-chip" data-chip-id="${c.id}" onclick="fillSceneChip('${c.id}',event)"><span class="emoji">${c.emoji}</span><span>${label}</span></button>`;
   }).join('');
 }
-function fillSceneChip(id){
+function fillSceneChip(id, evt){
   const chip=SCENE_CHIP_DEFS.find(c=>c.id===id);
   if(!chip)return;
+  document.querySelectorAll('.scene-chip').forEach(el=>el.classList.remove('active'));
+  const btn = evt?.currentTarget || document.querySelector(`.scene-chip[data-chip-id="${id}"]`);
+  if(btn) btn.classList.add('active');
   const label=t(`sceneChips.${id}.label`,appLanguage==='zh-CN'?chip.zh:chip.en);
   const note=t(`sceneChips.${id}.note`,appLanguage==='zh-CN'?chip.noteZh:chip.noteEn);
   const ann=document.getElementById('ann');
@@ -4479,9 +4499,21 @@ function modeCopy(mode=evidenceMode){
   return t(`modes.${mode}`,fallback);
 }
 
+function getDedicatedCameraUrl(){
+  const primary=(appLanguage||'en').split('-')[0];
+  const supported=['en','zh','es','fr','de','ja','ko','vi','th'];
+  if(primary==='zh')return 'zh/camera.html';
+  if(primary==='en')return 'camera.html';
+  return supported.includes(primary)?`${primary}/camera.html`:'camera.html';
+}
+
 function setEvidenceMode(mode,{save=true}={}){
   if(isRec&&mode!==evidenceMode){
     toast(appLanguage!=='zh-CN'?'Stop the recording before switching modes.':'请先停止当前录制，再切换模式。','warn');
+    return;
+  }
+  if(mode==='video'||mode==='photo'){
+    window.location.href=getDedicatedCameraUrl();
     return;
   }
   evidenceMode=['audio','video','photo'].includes(mode)?mode:'audio';
@@ -4489,12 +4521,8 @@ function setEvidenceMode(mode,{save=true}={}){
     closeWatermarkCamera();
     if(isCam&&!isRec)stopCameraPreview({silent:true});
   }
-  if(evidenceMode==='video')setCameraMode('video');
-  else if(evidenceMode==='photo')setCameraMode('photo');
-  else setCameraMode('preview');
   syncEvidenceModeUi();
   if(save)saveState();
-  if(evidenceMode==='video'||evidenceMode==='photo')openWatermarkCamera(evidenceMode);
 }
 
 function syncEvidenceModeUi(){
@@ -4531,10 +4559,24 @@ function syncEvidenceModeUi(){
       textEl.textContent = autoRecOnThreshold ? (sentryCopy.on || (isZh ? '哨兵已开' : 'Sentry On')) : (sentryCopy.label || (isZh ? '哨兵模式' : 'Sentry Mode'));
     }
   }
-  document.querySelectorAll('[data-mode-panel]').forEach(panel=>{
-    const modes=(panel.getAttribute('data-mode-panel')||'').split(/\s+/);
-    panel.hidden=!modes.includes(evidenceMode);
-  });
+  // Decoupled camera panel: permanently hidden in soundtest.html to keep core tool clean & uncluttered
+  const camPanel = document.getElementById('cameraModePanel');
+  if (camPanel) {
+    camPanel.style.display = 'none';
+    camPanel.hidden = true;
+  }
+  // Audio panel: hidden when idle in free default view; displayed only when recording is active or Sentry is enabled
+  const audioPanel = document.getElementById('audioModePanel');
+  if (audioPanel) {
+    const showAudio = isRec || autoRecOnThreshold;
+    audioPanel.style.display = showAudio ? 'block' : 'none';
+    audioPanel.hidden = !showAudio;
+  }
+  // Long-monitor / Sentry task controls: only visible when Sentry mode is enabled
+  const sentryControls = document.querySelector('[data-long-monitor="webTaskControls"]');
+  if (sentryControls) {
+    sentryControls.style.display = autoRecOnThreshold ? 'block' : 'none';
+  }
   const copy=modeCopy();
   setText('modeCardLabel',t('modes.cardLabel',isZh?'取证存证模式（自动入库 · 生成法律报告）':'Evidence Mode (Auto-Vault & Formal Report)'));
   setText('modeTitle',copy.title);
