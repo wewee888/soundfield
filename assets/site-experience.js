@@ -985,6 +985,7 @@
       login: '登录 / 注册',
       proTag: '首发特惠中',
       close: '关闭',
+      language: '界面语言',
     },
     en: {
       home: 'Home',
@@ -1006,6 +1007,7 @@
       login: 'Login / Register',
       proTag: 'Launch Special',
       close: 'Close',
+      language: 'Language',
     },
     es: {
       home: 'Inicio',
@@ -1027,6 +1029,7 @@
       login: 'Acceso / Registro',
       proTag: 'Oferta Especial',
       close: 'Cerrar',
+      language: 'Idioma',
     },
     fr: {
       home: 'Accueil',
@@ -1048,6 +1051,7 @@
       login: 'Connexion',
       proTag: 'Offre Spéciale',
       close: 'Fermer',
+      language: 'Langue',
     },
     de: {
       home: 'Start',
@@ -1069,6 +1073,7 @@
       login: 'Anmelden',
       proTag: 'Aktionspreis',
       close: 'Schließen',
+      language: 'Sprache',
     },
     ja: {
       home: 'ホーム',
@@ -1090,6 +1095,7 @@
       login: 'ログイン',
       proTag: '限定セール',
       close: '閉じる',
+      language: '表示言語',
     },
     ko: {
       home: '홈',
@@ -1111,6 +1117,7 @@
       login: '로그인 / 가입',
       proTag: '특가 할인',
       close: '닫기',
+      language: '언어 설정',
     },
     vi: {
       home: 'Trang chủ',
@@ -1132,6 +1139,7 @@
       login: 'Đăng nhập',
       proTag: 'Ưu đãi mở bán',
       close: 'Đóng',
+      language: 'Ngôn ngữ',
     },
     th: {
       home: 'หน้าแรก',
@@ -1153,6 +1161,7 @@
       login: 'เข้าสู่ระบบ',
       proTag: 'โปรโมชั่นพิเศษ',
       close: 'ปิด',
+      language: 'เปลี่ยนภาษา',
     },
   };
 
@@ -1368,6 +1377,23 @@
           <span>${t.account}</span>
         </a>
       </div>
+      <div class="mobile-drawer-lang">
+        <label for="mobileDrawerLangSelect" class="mobile-drawer-lang-label">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          <span>${t.language || 'Language'}</span>
+        </label>
+        <select id="mobileDrawerLangSelect" class="mobile-drawer-lang-select" aria-label="${t.language || 'Language'}">
+          <option value="zh" ${lang === 'zh' ? 'selected' : ''}>🇨🇳 简体中文</option>
+          <option value="en" ${lang === 'en' ? 'selected' : ''}>🇺🇸 English</option>
+          <option value="es" ${lang === 'es' ? 'selected' : ''}>🇪🇸 Español</option>
+          <option value="fr" ${lang === 'fr' ? 'selected' : ''}>🇫🇷 Français</option>
+          <option value="de" ${lang === 'de' ? 'selected' : ''}>🇩🇪 Deutsch</option>
+          <option value="ja" ${lang === 'ja' ? 'selected' : ''}>🇯🇵 日本語</option>
+          <option value="ko" ${lang === 'ko' ? 'selected' : ''}>🇰🇷 한국어</option>
+          <option value="vi" ${lang === 'vi' ? 'selected' : ''}>🇻🇳 Tiếng Việt</option>
+          <option value="th" ${lang === 'th' ? 'selected' : ''}>🇹🇭 ไทย</option>
+        </select>
+      </div>
       <div class="mobile-drawer-auth">
         <a href="${urls.auth}" class="auth-primary">${t.login}</a>
       </div>
@@ -1392,6 +1418,27 @@
     bar.querySelector('[data-mobile-drawer-trigger]')?.addEventListener('click', openDrawer);
     drawer.querySelector('.mobile-drawer-close')?.addEventListener('click', closeDrawer);
     overlay.addEventListener('click', closeDrawer);
+
+    const langSelect = drawer.querySelector('#mobileDrawerLangSelect');
+    if (langSelect) {
+      langSelect.addEventListener('change', () => {
+        const next = langSelect.value;
+        if (!next || next === lang) return;
+        if (window.SoundtestI18n && window.SoundtestI18n.saveLocale) {
+          window.SoundtestI18n.saveLocale(next);
+        } else {
+          try {
+            localStorage.setItem('soundtest_locale', next);
+            document.cookie = 'sf_locale=' + next + '; Path=/; Max-Age=31536000; SameSite=Lax';
+          } catch (_) {}
+        }
+        const currentPath = window.location.pathname;
+        let pageName = currentPath.split('/').filter(Boolean).pop() || 'index.html';
+        if (!pageName.includes('.html')) pageName = 'index.html';
+        const targetUrl = next === 'en' ? (pageName === 'index.html' ? '/' : `/${pageName}`) : `/${next}/${pageName}`;
+        window.location.href = targetUrl;
+      });
+    }
 
     drawer.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', closeDrawer);
