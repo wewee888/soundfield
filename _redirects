@@ -15,6 +15,17 @@
 /app.html /soundtest.html 302
 /app /soundtest.html 302
 
+# --- Asset fallback for localized subpaths (prevent 404/HTML mime error) ---
+/zh/assets/* /assets/:splat 301
+/en/assets/* /assets/:splat 301
+/de/assets/* /assets/:splat 301
+/es/assets/* /assets/:splat 301
+/fr/assets/* /assets/:splat 301
+/ja/assets/* /assets/:splat 301
+/ko/assets/* /assets/:splat 301
+/th/assets/* /assets/:splat 301
+/vi/assets/* /assets/:splat 301
+
 # --- Doc pages: .html → clean URL (no more 308 chain) ---
 # Cloudflare Pages auto-strips .html via 308, which feels broken to users.
 # Explicit 302 lets us serve the canonical URL directly.
