@@ -370,17 +370,22 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
 .day-badge{background:rgba(255,200,50,.15);color:#ffc832;border:1px solid rgba(255,200,50,.4);padding:0px 6px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;vertical-align:middle;margin-left:6px}
 .night-badge{background:rgba(80,130,255,.15);color:#80a8ff;border:1px solid rgba(80,130,255,.4);padding:0px 6px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.04em;vertical-align:middle;margin-left:6px}
 .cap-card{
-  display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;
-  padding:9px 11px;border-radius:var(--rs);border:.5px solid var(--bdr);
-  background:linear-gradient(180deg,rgba(42,255,212,.055),rgba(13,21,37,.74));
-  transition:max-height .5s cubic-bezier(0.16,1,0.3,1),opacity .45s ease,padding .4s ease,margin .4s ease,border-color .2s,background .2s;
-  max-height:110px;overflow:hidden;
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:12px;border:1px solid rgba(42,255,212,.22);
+  background:linear-gradient(180deg,rgba(42,255,212,.08),rgba(13,21,37,.92));
+  backdrop-filter:blur(8px);
+  margin-bottom:8px;
+  width:100%;
 }
-.cap-card.collapsed{max-height:0;opacity:0;padding-top:0;padding-bottom:0;margin:0;border-width:0;pointer-events:none}
-.cap-icon{width:22px;height:22px;border-radius:7px;background:var(--accent-d);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:var(--mono);font-size:12px;font-weight:800}
-.cap-title{font-size:12px;font-weight:700;color:var(--tx1);line-height:1.25}
-.cap-desc{font-size:10.5px;color:var(--tx2);line-height:1.35;margin-top:1px}
-.cap-badge{font-family:var(--mono);font-size:8px;letter-spacing:.08em;padding:3px 7px;border-radius:20px;background:rgba(42,255,212,.09);border:.5px solid rgba(42,255,212,.28);color:var(--accent);white-space:nowrap}
+.cap-card.collapsed{
+  display:none!important;
+  max-height:0!important;opacity:0!important;
+  padding:0!important;margin:0!important;border:none!important;pointer-events:none!important;
+}
+.cap-icon{width:22px;height:22px;border-radius:7px;background:var(--accent-d);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:var(--mono);font-size:12px;font-weight:800;flex-shrink:0}
+.cap-title{font-size:12px;font-weight:700;color:var(--tx1);line-height:1.3}
+.cap-desc{font-size:11px;color:var(--tx2);line-height:1.4;margin-top:2px}
+.cap-badge{font-family:var(--mono);font-size:8px;letter-spacing:.08em;padding:3px 7px;border-radius:20px;background:rgba(42,255,212,.09);border:.5px solid rgba(42,255,212,.28);color:var(--accent);white-space:nowrap;flex-shrink:0}
 .cap-card.warn{background:var(--amber-d);border-color:rgba(255,181,32,.35)}
 .cap-card.warn .cap-icon{background:rgba(255,181,32,.16);color:var(--amber)}
 .cap-card.warn .cap-badge{background:rgba(255,181,32,.12);border-color:rgba(255,181,32,.38);color:var(--amber)}
@@ -1139,6 +1144,88 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .stitch-cell-sub{font-size:8.5px;color:#10b981}
 .stitch-cell-sub.text-cyan{color:#00f2fe}
 
+/* Unified Custody Card Location Row */
+.stitch-custody-loc-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #1a2030; border-radius: 10px;
+  padding: 8px 10px;
+}
+.stitch-custody-loc-info { flex: 1; min-width: 0; }
+.stitch-custody-place {
+  font-size: 11.5px; font-weight: 700; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3;
+}
+.stitch-custody-subplace {
+  font-size: 9.5px; color: #8c95a4;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;
+}
+.stitch-custody-loc-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.btn-custody-mini {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 9px; border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid #2d3748;
+  color: #e2e8f0; font-size: 10.5px; font-weight: 600; cursor: pointer;
+  transition: all .15s ease;
+}
+.btn-custody-mini:hover { background: rgba(255, 255, 255, 0.12); border-color: #4a5568; color: #fff; }
+.btn-custody-mini.pro-tag {
+  background: rgba(202, 243, 0, 0.08); border-color: rgba(202, 243, 0, 0.35); color: #caf300;
+}
+.btn-custody-mini.pro-tag:hover { background: rgba(202, 243, 0, 0.16); border-color: #caf300; }
+.mini-pro-pill {
+  font-size: 8px; background: #caf300; color: #060709;
+  font-weight: 900; padding: 0 3px; border-radius: 3px; line-height: 1.2;
+}
+.spin-icon { display: inline-block; transition: transform .3s; }
+.spin-icon.spinning { animation: spin 0.8s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* Location Correction Modal (PRO) */
+.location-correction-modal {
+  position: fixed; inset: 0; z-index: 235;
+  display: none; align-items: center; justify-content: center;
+  padding: 16px; background: rgba(3, 7, 14, 0.85); backdrop-filter: blur(24px);
+}
+.location-correction-modal.show { display: flex; }
+.location-correction-card {
+  width: min(100%, 460px); box-sizing: border-box; border-radius: 20px;
+  border: 1px solid rgba(202, 243, 0, 0.35);
+  background: linear-gradient(180deg, #10141d, #090c13);
+  box-shadow: 0 25px 80px rgba(0,0,0,0.8), 0 0 30px rgba(202,243,0,0.12);
+  padding: 22px; position: relative;
+}
+.lcm-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; border-bottom: 1px solid #1a2233; padding-bottom: 12px;
+}
+.lcm-title { font-size: 15px; font-weight: 800; color: #fff; margin: 0; }
+.lcm-sub { font-size: 11px; color: #8c95a4; margin-top: 2px; }
+.lcm-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: none;
+  color: #8c95a4; cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.lcm-body { display: flex; flex-direction: column; gap: 12px; }
+.lcm-field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.lcm-field label { font-size: 11.5px; font-weight: 700; color: #cbd5e1; }
+.lcm-field input {
+  height: 38px; width: 100%; box-sizing: border-box; border-radius: 8px; border: 1px solid #242c3d;
+  background: #0d121c; color: #fff; padding: 0 12px; font-size: 13px;
+  font-family: var(--sans);
+}
+.lcm-field input:focus {
+  outline: none; border-color: #caf300; box-shadow: 0 0 0 1px #caf300;
+}
+.lcm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; min-width: 0; }
+.lcm-actions { display: flex; gap: 10px; margin-top: 18px; }
+.lcm-actions button { flex: 1; height: 42px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; }
+
+/* Hide redundant elements */
+.geo-dock { display: none !important; }
+#locCard { display: none !important; }
+
 .wx-pay-modal{position:fixed;inset:0;z-index:230;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,7,14,.86);backdrop-filter:blur(24px)}
 .wx-pay-modal.show{display:flex}
 .wx-pay-card{width:min(100%,420px);border-radius:24px;border:.5px solid rgba(7,193,96,.4);background:linear-gradient(180deg,rgba(10,22,28,.98),rgba(6,12,18,.98));box-shadow:0 30px 90px rgba(0,0,0,.75),0 0 40px rgba(7,193,96,.15);padding:24px;position:relative;text-align:center}
@@ -1637,8 +1724,9 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   .ri-act{width:100%;flex-direction:row;justify-content:flex-end}
   .card{padding:11px 12px}
   .panel{gap:8px;padding:8px 12px calc(12px + var(--safe-b))}
-  .cap-card{grid-template-columns:auto 1fr;padding:8px 10px}
-  .cap-badge{grid-column:2;justify-self:start}
+  .cap-card{display:flex;align-items:flex-start;padding:8px 10px;gap:8px}
+  .cap-desc{word-break:break-word;overflow-wrap:break-word}
+  .cap-badge{margin-left:auto}
   .promo-card{flex-direction:column}
   .promo-card .btn{width:100%;justify-content:center}
   .settings-hub{grid-template-columns:1fr}
@@ -2620,6 +2708,50 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
   </div>
 </div>
 
+<!-- Location Correction & Measurement Point Watermark Modal (PRO Feature) -->
+<div class="location-correction-modal" id="locationCorrectionModal" role="dialog" aria-modal="true" aria-labelledby="lcmTitle">
+  <div class="location-correction-card">
+    <div class="lcm-header">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">📍</span>
+        <div>
+          <h3 class="lcm-title" id="lcmTitle">位置修正与专属测点水印</h3>
+          <p class="lcm-sub" id="lcmSub">PRO 专业版专属 · 自定义地点将印刻至法律存证底稿与证据照片</p>
+        </div>
+      </div>
+      <button class="lcm-close" type="button" onclick="closeLocationCorrectionModal()" aria-label="关闭">×</button>
+    </div>
+    <div class="lcm-body">
+      <div class="lcm-field">
+        <label id="lcmPlaceLabel">小区 / 建筑物 / 机构名称</label>
+        <input type="text" id="lcmPlaceInput" placeholder="如：保利天汇 / 万科金色家园 / 某某商务中心">
+      </div>
+      <div class="lcm-grid-2">
+        <div class="lcm-field">
+          <label id="lcmBuildingLabel">楼栋 / 单元</label>
+          <input type="text" id="lcmBuildingInput" placeholder="如：3栋2单元">
+        </div>
+        <div class="lcm-field">
+          <label id="lcmFloorLabel">楼层 / 房号</label>
+          <input type="text" id="lcmRoomInput" placeholder="如：1202室">
+        </div>
+      </div>
+      <div class="lcm-field">
+        <label id="lcmPointLabel">具体室内测点 (专属水印标记)</label>
+        <input type="text" id="lcmPointInput" placeholder="如：主卧临街飘窗前1米 / 客厅正中 / 次卧床头">
+      </div>
+      <div class="lcm-field">
+        <label id="lcmNoteLabel">现场环境备注</label>
+        <input type="text" id="lcmNoteInput" placeholder="如：门窗紧闭 / 开启双层隔音窗">
+      </div>
+    </div>
+    <div class="lcm-actions">
+      <button type="button" class="btn b-cyan" id="lcmSaveBtn" onclick="saveLocationCorrection()">保存并印刻测点水印</button>
+      <button type="button" class="btn" style="background:rgba(255,255,255,0.06);border:1px solid #334155;color:#94a3b8;" onclick="resetLocationCorrection()">恢复 GPS 默认</button>
+    </div>
+  </div>
+</div>
+
 <div class="wx-pay-modal" id="wxPayModal" role="dialog" aria-modal="true" aria-labelledby="wxPayTitle">
   <div class="wx-pay-card">
     <button class="wx-pay-close" type="button" onclick="closeWeChatPayModal()" aria-label="关闭">×</button>
@@ -3093,11 +3225,12 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
 
   <div class="cap-card collapsed" id="capCard" role="status" aria-live="polite">
     <div class="cap-icon" id="capIcon">i</div>
-    <div>
+    <div style="flex:1;min-width:0;">
       <div class="cap-title" id="capTitle">本地专业声级计</div>
       <div class="cap-desc" id="capDesc">点击下方“开始监测”按钮后，浏览器会请求麦克风权限。</div>
     </div>
     <div class="cap-badge" id="capBadge">READY</div>
+    <button type="button" onclick="document.getElementById('capCard')?.classList.add('collapsed')" style="background:none;border:none;color:#8c95a4;font-size:16px;cursor:pointer;padding:2px 6px;line-height:1;margin-left:4px;" aria-label="关闭提示">×</button>
   </div>
 
   <!-- Big dB number with integrated Ready pill & Sentry button -->
@@ -3336,21 +3469,12 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
     </div>
   </div>
 
-  <!-- Permanent Location Dock on Left Column -->
-  <div class="geo-dock" id="geoDock" onclick="openOrRefreshLocation()" title="点击刷新或查看定位 / Click to refresh or view GPS location" role="button" tabindex="0">
-    <div class="geo-thumb" aria-hidden="true">📍</div>
-    <div class="geo-copy">
-      <div class="geo-kicker" id="geoKicker">Live GEO</div>
-      <div class="geo-place" id="geoPlace">尚未获取位置</div>
-      <div class="geo-meta" id="geoMeta">—</div>
-    </div>
-    <div class="geo-privacy">
-      <span class="privacy-lock" id="geoPrivacyLock">Data processed locally</span>
-      <span class="geo-time" id="geoTime">—</span>
-    </div>
+  <!-- Hidden legacy compatibility dock -->
+  <div id="geoDock" style="display:none!important;" aria-hidden="true">
+    <span id="geoPlace"></span><span id="geoMeta"></span><span id="geoKicker"></span><span id="geoPrivacyLock"></span><span id="geoTime"></span>
   </div>
 
-  <!-- Chain of Custody Reference Card -->
+  <!-- Chain of Custody Reference Card (Unified Location & Digital Proof) -->
   <section class="stitch-custody-card" id="stitchCustodyCard">
     <div class="stitch-custody-header">
       <div class="stitch-custody-title-box">
@@ -3358,20 +3482,40 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
         </div>
         <div>
-          <h4 class="stitch-custody-title">声学现场存证链 (Chain of Custody)</h4>
-          <p class="stitch-custody-sub">防伪可信电子凭据 · 自动记录取证环境</p>
+          <h4 class="stitch-custody-title" id="custodyTitleText">声学现场存证链 (Chain of Custody)</h4>
+          <p class="stitch-custody-sub" id="custodySubText">防伪可信电子凭据 · 自动记录取证环境</p>
         </div>
       </div>
       <span class="stitch-sha-pill">SHA-256</span>
     </div>
+
+    <!-- Integrated Location & Refresh / Pro Amendment Row -->
+    <div class="stitch-custody-loc-row">
+      <div class="stitch-custody-loc-info">
+        <div class="stitch-custody-place" id="custodyPlace">现场声学监测站点 (待刷新)</div>
+        <div class="stitch-custody-subplace" id="custodySubPlace">正在自动获取高精经纬度…</div>
+      </div>
+      <div class="stitch-custody-loc-actions">
+        <button type="button" class="btn-custody-mini" id="custodyRefreshGpsBtn" onclick="triggerLocationRefresh()" title="重新获取/刷新GPS">
+          <span class="spin-icon" id="custodyGpsSpin">🔄</span>
+          <span id="custodyRefreshText">刷新</span>
+        </button>
+        <button type="button" class="btn-custody-mini pro-tag" id="custodyEditPlaceBtn" onclick="openLocationCorrectionModal()" title="修正位置/测点水印 (PRO专属)">
+          <span>📍</span>
+          <span id="custodyEditText">位置修正</span>
+          <span class="mini-pro-pill">PRO</span>
+        </button>
+      </div>
+    </div>
+
     <div class="stitch-custody-grid">
       <div class="stitch-custody-cell">
-        <div class="stitch-cell-lbl">WGS-84 地理坐标</div>
+        <div class="stitch-cell-lbl" id="custodyGpsLbl">WGS-84 地理坐标</div>
         <div class="stitch-cell-val" id="custodyGpsCoord">等待刷新定位...</div>
         <div class="stitch-cell-sub" id="custodyGpsAcc">精度: --</div>
       </div>
       <div class="stitch-custody-cell">
-        <div class="stitch-cell-lbl">权威时间戳 NTP</div>
+        <div class="stitch-cell-lbl" id="custodyNtpLbl">权威时间戳 NTP</div>
         <div class="stitch-cell-val" id="custodyNtpTime">--:--:--</div>
         <div class="stitch-cell-sub text-cyan" id="custodyNtpStatus">本地高精时钟</div>
       </div>
@@ -3445,8 +3589,8 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
           <strong id="pscFeat3D">不可篡改 SHA-256 数字指纹</strong>
         </div>
         <div class="pro-showcase-feat">
-          <span id="pscFeat4T">📷 现场照片叠加</span>
-          <strong id="pscFeat4D">GPS 经纬度+真实时间水印</strong>
+          <span id="pscFeat4T">📍 测点修正与专属水印</span>
+          <strong id="pscFeat4D">自由标记小区/楼栋/房号/窗台</strong>
         </div>
       </div>
 
@@ -3992,6 +4136,18 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
       <div class="srow">
         <div><div class="slabel">组织/项目名</div><div class="sdesc">会显示在 PDF 报告中，可填写小区、公司、项目或客户名。</div></div>
         <div class="sctrl"><input class="setting-input" id="organizationNameInput" type="text" placeholder="可选" onchange="setReportTemplate()"></div>
+      </div>
+      <div class="srow">
+        <div>
+          <div class="slabel">
+            位置修正与测点水印
+            <span class="pro-feature-badge">PRO</span>
+          </div>
+          <div class="sdesc" id="settingsLcmDesc">自定义小区、楼栋房号与具体测点（如主卧飘窗前1米），印刻至正式存证底稿。</div>
+        </div>
+        <div class="sctrl">
+          <button type="button" class="btn b-cyan" style="font-size:11px;padding:0 12px;height:32px;" onclick="openLocationCorrectionModal()" id="settingsLcmBtn">配置专属水印</button>
+        </div>
       </div>
     </div>
     <div class="card admin-only layout-settings-admin" id="releaseChecklistCard" data-settings-section="admin">
@@ -4689,6 +4845,46 @@ function applyTranslations(){
   if(gpsBtn)gpsBtn.textContent=isZh?'刷新 GPS 定位':'Refresh GPS';
   const vaultBtn=document.getElementById('stitchVaultBtnText');
   if(vaultBtn)vaultBtn.textContent=isZh?'进入证据库':'Evidence Vault';
+  const custodyTitle=document.getElementById('custodyTitleText');
+  if(custodyTitle)custodyTitle.textContent=isZh?'声学现场存证链 (Chain of Custody)':'Chain of Custody Acoustic Proof';
+  const custodySub=document.getElementById('custodySubText');
+  if(custodySub)custodySub.textContent=isZh?'防伪可信电子凭据 · 自动记录取证环境':'Tamper-evident digital proof · Sealed environment';
+  const custodyRefresh=document.getElementById('custodyRefreshText');
+  if(custodyRefresh)custodyRefresh.textContent=isZh?'刷新':'Refresh';
+  const custodyEdit=document.getElementById('custodyEditText');
+  if(custodyEdit)custodyEdit.textContent=isZh?'位置修正':'Edit Location';
+  const custodyGpsLbl=document.getElementById('custodyGpsLbl');
+  if(custodyGpsLbl)custodyGpsLbl.textContent=isZh?'WGS-84 地理坐标':'WGS-84 Geographic Coords';
+  const custodyNtpLbl=document.getElementById('custodyNtpLbl');
+  if(custodyNtpLbl)custodyNtpLbl.textContent=isZh?'权威时间戳 NTP':'NTP Atomic Timestamp';
+  const custodyNtpStatus=document.getElementById('custodyNtpStatus');
+  if(custodyNtpStatus)custodyNtpStatus.textContent=isZh?'本地高精时钟':'Precision High-Res Clock';
+
+  const lcmTitle=document.getElementById('lcmTitle');
+  if(lcmTitle)lcmTitle.textContent=isZh?'位置修正与专属测点水印':'Location Correction & Point Watermark';
+  const lcmSub=document.getElementById('lcmSub');
+  if(lcmSub)lcmSub.textContent=isZh?'PRO 专业版专属 · 自定义地点将印刻至法律存证底稿与证据照片':'PRO Exclusive · Custom place & point sealed into legal certificates and photos';
+  const lcmPlaceLabel=document.getElementById('lcmPlaceLabel');
+  if(lcmPlaceLabel)lcmPlaceLabel.textContent=isZh?'小区 / 建筑物 / 机构名称':'Building / Complex / Facility Name';
+  const lcmBuildingLabel=document.getElementById('lcmBuildingLabel');
+  if(lcmBuildingLabel)lcmBuildingLabel.textContent=isZh?'楼栋 / 单元':'Building / Unit';
+  const lcmFloorLabel=document.getElementById('lcmFloorLabel');
+  if(lcmFloorLabel)lcmFloorLabel.textContent=isZh?'楼层 / 房号':'Floor / Room No.';
+  const lcmPointLabel=document.getElementById('lcmPointLabel');
+  if(lcmPointLabel)lcmPointLabel.textContent=isZh?'具体室内测点 (专属水印标记)':'Indoor Measurement Point (Custom Watermark)';
+  const lcmNoteLabel=document.getElementById('lcmNoteLabel');
+  if(lcmNoteLabel)lcmNoteLabel.textContent=isZh?'现场环境备注':'Site Environment Notes';
+  const lcmSaveBtn=document.getElementById('lcmSaveBtn');
+  if(lcmSaveBtn)lcmSaveBtn.textContent=isZh?'保存并印刻测点水印':'Save & Seal Point Watermark';
+  const setLcmDesc=document.getElementById('settingsLcmDesc');
+  if(setLcmDesc)setLcmDesc.textContent=isZh?'自定义小区、楼栋房号与具体测点（如主卧飘窗前1米），印刻至正式存证底稿。':'Configure custom complex, building/room and indoor point (e.g. Master Bedroom window sill).';
+  const setLcmBtn=document.getElementById('settingsLcmBtn');
+  if(setLcmBtn)setLcmBtn.textContent=isZh?'配置专属水印':'Configure Watermark';
+  setPlaceholder('lcmPlaceInput',isZh?'如：保利天汇 / 万科金色家园 / 某某商务中心':'e.g. Skyline Plaza / Tower 2');
+  setPlaceholder('lcmBuildingInput',isZh?'如：3栋2单元':'e.g. Bldg 3, Unit 2');
+  setPlaceholder('lcmRoomInput',isZh?'如：1202室':'e.g. Room 1202');
+  setPlaceholder('lcmPointInput',isZh?'如：主卧临街飘窗前1米 / 客厅正中 / 次卧床头':'e.g. Master Bedroom Window 1m / Center Living Room');
+  setPlaceholder('lcmNoteInput',isZh?'如：门窗紧闭 / 开启双层隔音窗':'e.g. Windows closed / Double glazing');
   updateLiveMonitorNotice();
   translateStaticText();
   setButtonTextWithSvg('nt-m',t('ui.monitor'));
@@ -4838,49 +5034,90 @@ function renderSceneChips(){
     return `<button type="button" class="scene-chip" data-chip-id="${c.id}" onclick="fillSceneChip('${c.id}',event)"><span class="emoji">${c.emoji}</span><span>${label}</span></button>`;
   }).join('');
 }
+let currentSceneId = 'general';
+let currentSceneLabel = '';
+let currentSceneNote = '';
+
 function fillSceneChip(id, evt){
   const chip=SCENE_CHIP_DEFS.find(c=>c.id===id);
   if(!chip)return;
+  currentSceneId = id;
+  currentSceneLabel = t(`sceneChips.${id}.label`,appLanguage==='zh-CN'?chip.zh:chip.en);
+  currentSceneNote = t(`sceneChips.${id}.note`,appLanguage==='zh-CN'?chip.noteZh:chip.noteEn);
   document.querySelectorAll('.scene-chip').forEach(el=>el.classList.remove('active'));
   const btn = evt?.currentTarget || document.querySelector(`.scene-chip[data-chip-id="${id}"]`);
   if(btn) btn.classList.add('active');
-  const label=t(`sceneChips.${id}.label`,appLanguage==='zh-CN'?chip.zh:chip.en);
-  const note=t(`sceneChips.${id}.note`,appLanguage==='zh-CN'?chip.noteZh:chip.noteEn);
   const ann=document.getElementById('ann');
-  if(ann)ann.value=note;
+  if(ann)ann.value=currentSceneNote;
   const sel=document.getElementById('reportTemplate');
   if(sel&&reportTemplates[id]){sel.value=id;setReportTemplate();}
   updateGeoDock();
-  const msg=appLanguage==='zh-CN'?`已填入「${label}」场景`:`Applied “${label}” scene`;
+  const msg=appLanguage==='zh-CN'?`已生效「${currentSceneLabel}」场景模板`:`Applied “${currentSceneLabel}” scene template`;
   toast(msg,'info',2200);
 }
+
 function updateGeoDock(){
+  const isZh = appLanguage === 'zh-CN';
   const place=document.getElementById('geoPlace');
   const meta=document.getElementById('geoMeta');
   const time=document.getElementById('geoTime');
   const kicker=document.getElementById('geoKicker');
   const lock=document.getElementById('geoPrivacyLock');
-  if(!place)return;
-  if(kicker)kicker.textContent=appLanguage==='zh-CN'?'实时定位 · SEO/GEO':'Live GEO · SEO';
-  if(curLoc){
-    place.textContent=locPlaceText(curLoc)||(appLanguage==='zh-CN'?'坐标已获取':'Coordinates ready');
-    meta.textContent=`${Number(curLoc.lat).toFixed(5)}, ${Number(curLoc.lng).toFixed(5)} · ±${curLoc.acc||'?'}m`;
-  }else{
-    place.textContent=t('ui.noLocation');
-    meta.textContent=appLanguage==='zh-CN'?'开始监测后可刷新 GPS':'Refresh GPS after monitoring starts';
+
+  let customLoc = null;
+  try {
+    const raw = localStorage.getItem('sf_custom_location_v1');
+    if (raw) customLoc = JSON.parse(raw);
+  } catch(_) {}
+
+  const custodyPlace = document.getElementById('custodyPlace');
+  const custodySubPlace = document.getElementById('custodySubPlace');
+
+  if(custodyPlace){
+    if (customLoc && (customLoc.place || customLoc.point)) {
+      const parts = [customLoc.place, customLoc.building, customLoc.room].filter(Boolean);
+      custodyPlace.textContent = parts.length ? '【' + parts.join(' · ') + '】' : (isZh ? '【专属测点水印已生效】' : '[Custom Watermark Active]');
+      if (custodySubPlace) {
+        const ptStr = customLoc.point ? `${isZh ? '测点: ' : 'Point: '}${customLoc.point}` : '';
+        const coordStr = curLoc ? `${Number(curLoc.lat).toFixed(4)}° N, ${Number(curLoc.lng).toFixed(4)}° E` : (isZh ? 'GPS 已固化' : 'GPS Secured');
+        custodySubPlace.textContent = [ptStr, coordStr].filter(Boolean).join(' · ');
+      }
+    } else if(curLoc){
+      custodyPlace.textContent = locPlaceText(curLoc) || (isZh ? '现场声学监测站点 (GPS 锚定)' : 'Acoustic Site (GPS Anchored)');
+      if (custodySubPlace) {
+        custodySubPlace.textContent = `${Number(curLoc.lat).toFixed(4)}° N, ${Number(curLoc.lng).toFixed(4)}° E · ${isZh ? '精度' : 'Acc'} ±${curLoc.acc||5}m · ${curLoc.source||'GPS'}`;
+      }
+    } else {
+      custodyPlace.textContent = isZh ? '现场声学监测站点 (待刷新)' : 'Acoustic Site (Pending GPS)';
+      if (custodySubPlace) {
+        custodySubPlace.textContent = isZh ? '正在自动获取高精经纬度…' : 'Acquiring GPS coordinates…';
+      }
+    }
   }
-  if(time)time.textContent=formatLocaleDate(new Date(),{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  if(lock)lock.textContent=t('ui.dataProcessedLocally');
+
+  if(place){
+    if(kicker)kicker.textContent=isZh?'实时定位 · SEO/GEO':'Live GEO · SEO';
+    if(curLoc){
+      place.textContent=locPlaceText(curLoc)||(isZh?'坐标已获取':'Coordinates ready');
+      if(meta)meta.textContent=`${Number(curLoc.lat).toFixed(5)}, ${Number(curLoc.lng).toFixed(5)} · ±${curLoc.acc||'?'}m`;
+    }else{
+      place.textContent=t('ui.noLocation');
+      if(meta)meta.textContent=isZh?'开始监测后可刷新 GPS':'Refresh GPS after monitoring starts';
+    }
+    if(time)time.textContent=formatLocaleDate(new Date(),{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    if(lock)lock.textContent=t('ui.dataProcessedLocally');
+  }
+
   const custodyGps=document.getElementById('custodyGpsCoord');
   const custodyAcc=document.getElementById('custodyGpsAcc');
   const custodyNtp=document.getElementById('custodyNtpTime');
   if(custodyGps){
     if(curLoc){
       custodyGps.textContent=`${Number(curLoc.lat).toFixed(4)}° N, ${Number(curLoc.lng).toFixed(4)}° E`;
-      if(custodyAcc)custodyAcc.textContent=appLanguage==='zh-CN'?`精度: ±${curLoc.acc||5}m (高精度)`:`Acc: ±${curLoc.acc||5}m (High Prec)`;
+      if(custodyAcc)custodyAcc.textContent=isZh?`精度: ±${curLoc.acc||5}m (高精度)`:`Acc: ±${curLoc.acc||5}m (High Prec)`;
     }else{
-      custodyGps.textContent=appLanguage==='zh-CN'?'等待刷新定位...':'Awaiting GPS lock...';
-      if(custodyAcc)custodyAcc.textContent=appLanguage==='zh-CN'?'精度: --':'Accuracy: --';
+      custodyGps.textContent=isZh?'等待刷新定位...':'Awaiting GPS lock...';
+      if(custodyAcc)custodyAcc.textContent=isZh?'精度: --':'Accuracy: --';
     }
   }
   if(custodyNtp){
@@ -4889,12 +5126,90 @@ function updateGeoDock(){
     custodyNtp.textContent=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
   }
 }
-function openOrRefreshLocation(){
+
+function triggerLocationRefresh(){
+  const spin = document.getElementById('custodyGpsSpin');
+  if(spin) spin.classList.add('spinning');
+  const sub = document.getElementById('custodySubPlace');
+  if(sub) sub.textContent = appLanguage === 'zh-CN' ? '正在刷新高精 GPS 坐标…' : 'Refreshing precision GPS…';
   getLoc();
-  const locCard=document.getElementById('locCard')||document.querySelector('[data-location-details="structuredPoint"]')?.closest('.card');
-  if(locCard && window.innerWidth >= 768){
-    locCard.scrollIntoView({behavior:'smooth',block:'center'});
+  toast(appLanguage === 'zh-CN' ? '正在获取高精 GPS 定位…' : 'Acquiring high-precision GPS…', 'info', 2000);
+  setTimeout(()=>{
+    if(spin) spin.classList.remove('spinning');
+    updateGeoDock();
+  }, 2500);
+}
+
+function openLocationCorrectionModal(){
+  if (!isProActive()) {
+    showPaywall(appLanguage === 'zh-CN' ? '位置修正与专属测点水印' : 'Custom Location & Measurement Point Watermark');
+    return;
   }
+  try {
+    const saved = JSON.parse(localStorage.getItem('sf_custom_location_v1') || '{}');
+    const plInput = document.getElementById('lcmPlaceInput');
+    if (plInput) plInput.value = saved.place || (curLoc?.place?.name || '');
+    const bldgInput = document.getElementById('lcmBuildingInput');
+    if (bldgInput) bldgInput.value = saved.building || '';
+    const roomInput = document.getElementById('lcmRoomInput');
+    if (roomInput) roomInput.value = saved.room || '';
+    const ptInput = document.getElementById('lcmPointInput');
+    if (ptInput) ptInput.value = saved.point || '';
+    const noteInput = document.getElementById('lcmNoteInput');
+    if (noteInput) noteInput.value = saved.note || '';
+  } catch(_) {}
+  document.getElementById('locationCorrectionModal')?.classList.add('show');
+}
+
+function closeLocationCorrectionModal(){
+  document.getElementById('locationCorrectionModal')?.classList.remove('show');
+}
+
+function saveLocationCorrection(){
+  if (!isProActive()) {
+    showPaywall('位置修正与专属测点水印');
+    return;
+  }
+  const place = document.getElementById('lcmPlaceInput')?.value.trim() || '';
+  const building = document.getElementById('lcmBuildingInput')?.value.trim() || '';
+  const room = document.getElementById('lcmRoomInput')?.value.trim() || '';
+  const point = document.getElementById('lcmPointInput')?.value.trim() || '';
+  const note = document.getElementById('lcmNoteInput')?.value.trim() || '';
+
+  const customLoc = { place, building, room, point, note, updatedAt: Date.now() };
+  localStorage.setItem('sf_custom_location_v1', JSON.stringify(customLoc));
+
+  const bldgEl = document.getElementById('buildingInput');
+  if (bldgEl) bldgEl.value = building;
+  const roomEl = document.getElementById('roomInput');
+  if (roomEl) roomEl.value = room;
+  const pointEl = document.getElementById('pointNameInput');
+  if (pointEl) pointEl.value = point;
+  const envEl = document.getElementById('envNotesInput');
+  if (envEl) envEl.value = note;
+
+  closeLocationCorrectionModal();
+  updateGeoDock();
+  toast(appLanguage === 'zh-CN' ? '专属测点与位置水印已保存并应用！' : 'Custom location watermark saved and applied!', 'info', 3000);
+}
+
+function resetLocationCorrection(){
+  localStorage.removeItem('sf_custom_location_v1');
+  const bldgEl = document.getElementById('buildingInput');
+  if (bldgEl) bldgEl.value = '';
+  const roomEl = document.getElementById('roomInput');
+  if (roomEl) roomEl.value = '';
+  const pointEl = document.getElementById('pointNameInput');
+  if (pointEl) pointEl.value = '';
+  const envEl = document.getElementById('envNotesInput');
+  if (envEl) envEl.value = '';
+  closeLocationCorrectionModal();
+  updateGeoDock();
+  toast(appLanguage === 'zh-CN' ? '已恢复为 GPS 原始定位数据' : 'Reset to default GPS location', 'info', 2500);
+}
+
+function openOrRefreshLocation(){
+  triggerLocationRefresh();
 }
 function animateDbNumber(target){
   const dbEl=document.getElementById('dbNum');
@@ -5333,8 +5648,8 @@ function translateProShowcaseCard(){
   setText('pscFeat2D', isZh ? 'LAeq / L10 / L50 / L90 / 峰值' : 'LAeq / L10 / L50 / L90 / Peak dB');
   setText('pscFeat3T', isZh ? '🛡️ 防篡改加密锚点' : '🛡️ Anti-Tamper Anchor');
   setText('pscFeat3D', isZh ? '不可篡改 SHA-256 数字指纹' : 'Immutable SHA-256 Hash');
-  setText('pscFeat4T', isZh ? '📷 现场照片叠加' : '📷 On-Site Photo Stamping');
-  setText('pscFeat4D', isZh ? 'GPS 经纬度+真实时间水印' : 'GPS Coordinates & Real-Time Stamp');
+  setText('pscFeat4T', isZh ? '📍 测点修正与专属水印' : '📍 Point Watermark & Correction');
+  setText('pscFeat4D', isZh ? '自由标记小区/楼栋/房号/窗台' : 'Mark building/unit/room/window sill');
   const mainBtn = document.getElementById('pscMainBtn');
   if(mainBtn) {
     const span = mainBtn.querySelector('span') || mainBtn;
@@ -9419,7 +9734,8 @@ function buildProCertificateCanvas(stats, isWatermarked = false){
 
   ctx.font = '15px system-ui, -apple-system, sans-serif';
   ctx.fillStyle = '#8c95a4';
-  ctx.fillText(isZh ? '声学现场测定与环境噪音取证报告' : 'Acoustic Field Audit & Noise Certificate', 114, 145);
+  const sceneTitle = stats.sceneLabel ? (isZh ? ` · 【${stats.sceneLabel}】专项存证` : ` · [${stats.sceneLabel}] Evidence`) : '';
+  ctx.fillText((isZh ? '声学现场测定与环境噪音取证报告' : 'Acoustic Field Audit & Noise Certificate') + sceneTitle, 114, 145);
 
   // Standard Pill
   roundRect(ctx, 940, 96, 210, 28, 6);
@@ -9485,7 +9801,8 @@ function buildProCertificateCanvas(stats, isWatermarked = false){
   ctx.fillText('BASELINE METRIC / ', 70, 236);
   ctx.fillStyle = '#c2c8d2';
   ctx.font = '15px system-ui, sans-serif';
-  ctx.fillText(standardText, 215, 236);
+  const baselinePrefix = stats.sceneLabel ? `${stats.sceneLabel} · ` : '';
+  ctx.fillText(baselinePrefix + standardText, 215, 236);
 
   // Status Pill
   roundRect(ctx, 960, 218, 170, 28, 6);
@@ -9761,8 +10078,20 @@ function buildProCertificateCanvas(stats, isWatermarked = false){
   ctx.fillText('RTK ±5M', 1114, geoY + 26);
   ctx.textAlign = 'left';
 
-  const placeTitle = stats.loc?.place || (typeof locPlaceText === 'function' ? locPlaceText(stats.loc) : '') || (isZh ? '现场声学监测站点 (GPS 坐标锚定)' : 'Acoustic Monitoring Site (GPS Anchored)');
-  const placeAddr = stats.loc?.addr || (isZh ? '经纬度定位已加密固化' : 'Geographic coordinates anchored');
+  let placeTitle = stats.loc?.place || (typeof locPlaceText === 'function' ? locPlaceText(stats.loc) : '') || (isZh ? '现场声学监测站点 (GPS 坐标锚定)' : 'Acoustic Monitoring Site (GPS Anchored)');
+  let placeAddr = stats.loc?.addr || (isZh ? '经纬度定位已加密固化' : 'Geographic coordinates anchored');
+
+  const cLoc = stats.customLoc;
+  if (cLoc && (cLoc.place || cLoc.point)) {
+    const parts = [cLoc.place, cLoc.building, cLoc.room].filter(Boolean);
+    if (parts.length) placeTitle = '【' + parts.join(' · ') + '】';
+    if (cLoc.point) {
+      placeAddr = (isZh ? '专属测点: ' : 'Point: ') + cLoc.point + (cLoc.note ? ` (${cLoc.note})` : '') + ' · ' + placeAddr;
+    }
+  }
+  if (stats.sceneNote) {
+    placeAddr += (isZh ? ' · 场景: ' : ' · Scene: ') + stats.sceneNote;
+  }
   ctx.font = '700 15px system-ui, sans-serif';
   ctx.fillStyle = '#ffffff';
   ctx.fillText(placeTitle, 86, geoY + 54);
@@ -9998,6 +10327,16 @@ function buildStatsFromRecord(r) {
   const docId = r.evidenceId ? (r.evidenceId.startsWith('DOC:') ? r.evidenceId : `DOC: ${r.evidenceId}`) : `DOC: ST-${String(r.id || '8902').slice(-4)}-LA`;
   const sha256 = r.hashes?.metadataSha256 || r.hashes?.mediaSha256 || 'e8b94f92d4710ca8b0051e86337a3d1b712c94318e8d';
 
+  let customLoc = null;
+  try {
+    const raw = localStorage.getItem('sf_custom_location_v1');
+    if (raw) customLoc = JSON.parse(raw);
+  } catch(_) {}
+
+  const activeSceneId = r.sceneId || (typeof currentSceneId !== 'undefined' ? currentSceneId : (typeof reportTemplate !== 'undefined' ? reportTemplate : 'general'));
+  const activeSceneLabel = r.sceneLabel || (typeof currentSceneLabel !== 'undefined' && currentSceneLabel ? currentSceneLabel : (typeof reportTemplates !== 'undefined' && reportTemplates[activeSceneId] ? (appLanguage === 'zh-CN' ? reportTemplates[activeSceneId].label : reportTemplates[activeSceneId].title) : ''));
+  const activeSceneNote = r.note || r.sceneNote || (typeof currentSceneNote !== 'undefined' ? currentSceneNote : '') || (document.getElementById('ann')?.value.trim() || '');
+
   return {
     avg: activeDb,
     peak: peakVal,
@@ -10007,6 +10346,10 @@ function buildStatsFromRecord(r) {
     snap: (r.snap && r.snap.length >= 2) ? r.snap : [Math.max(30, activeDb - 6), activeDb - 2, activeDb + 4, peakVal, activeDb],
     time: timeStr,
     loc: r.loc ? { ...r.loc } : (curLoc ? { ...curLoc } : null),
+    customLoc,
+    sceneId: activeSceneId,
+    sceneLabel: activeSceneLabel,
+    sceneNote: activeSceneNote,
     weighting: r.weighting || (typeof weightLabel === 'function' ? weightLabel() : 'dBA'),
     timeWeight: r.timeWeight || (typeof timeLabel === 'function' ? timeLabel() : 'FAST'),
     calOffset: calOff,
@@ -10036,6 +10379,16 @@ function exportSessionSummaryImage(){
     }
   } catch(_) {}
 
+  let customLoc = null;
+  try {
+    const raw = localStorage.getItem('sf_custom_location_v1');
+    if (raw) customLoc = JSON.parse(raw);
+  } catch(_) {}
+
+  const activeSceneId = typeof currentSceneId !== 'undefined' ? currentSceneId : (typeof reportTemplate !== 'undefined' ? reportTemplate : 'general');
+  const activeSceneLabel = typeof currentSceneLabel !== 'undefined' && currentSceneLabel ? currentSceneLabel : (typeof reportTemplates !== 'undefined' && reportTemplates[activeSceneId] ? (isZh ? reportTemplates[activeSceneId].label : reportTemplates[activeSceneId].title) : '');
+  const activeSceneNote = (typeof currentSceneNote !== 'undefined' ? currentSceneNote : '') || (document.getElementById('ann')?.value.trim() || '');
+
   const stats = {
     avg: Math.round(avg),
     peak: Math.round(peak),
@@ -10046,6 +10399,10 @@ function exportSessionSummaryImage(){
     snap: trendH && trendH.length >= 2 ? [...trendH] : [Math.round(avg), Math.round(peak), Math.round(avg)],
     time: timeStr,
     loc: curLoc ? { ...curLoc } : null,
+    customLoc,
+    sceneId: activeSceneId,
+    sceneLabel: activeSceneLabel,
+    sceneNote: activeSceneNote,
     weighting: weightLabel(),
     timeWeight: timeLabel(),
     calOffset: typeof calOffset !== 'undefined' ? calOffset : -12.0,
@@ -10249,7 +10606,14 @@ function renderCertificateData(r) {
     elStatusPill.innerHTML = `<span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:${statusColor};margin-right:4px;"></span>${statusText}`;
     elStatusPill.style.color = statusColor;
   }
-  if (elStandardHint) elStandardHint.textContent = standardText;
+  const activeSceneLabel = r.sceneLabel || (typeof currentSceneLabel !== 'undefined' && currentSceneLabel ? currentSceneLabel : (typeof reportTemplates !== 'undefined' && reportTemplates[r.sceneId || reportTemplate] ? (isZh ? reportTemplates[r.sceneId || reportTemplate].label : reportTemplates[r.sceneId || reportTemplate].title) : ''));
+  if (elStandardHint) elStandardHint.textContent = activeSceneLabel ? `${activeSceneLabel} · ${standardText}` : standardText;
+  const certSubtitle = document.getElementById('certSubtitle');
+  if (certSubtitle) {
+    certSubtitle.textContent = activeSceneLabel
+      ? (isZh ? `声学现场测定与环境噪音取证报告 · 【${activeSceneLabel}】专项存证` : `Acoustic Field Audit & Noise Certificate · [${activeSceneLabel}] Evidence`)
+      : (isZh ? '声学现场测定与环境噪音取证报告' : 'Acoustic Field Audit & Noise Certificate');
+  }
   if (elGaugeText) elGaugeText.textContent = gaugeText;
 
   const pct = Math.min(100, Math.max(0, (activeDb / 120) * 100));
@@ -10310,15 +10674,31 @@ function renderCertificateData(r) {
   const elLocTitle = document.getElementById('certLocTitle');
   const elLocSub = document.getElementById('certLocSub');
   const elGpsCoord = document.getElementById('certGpsCoord');
-  if (r.loc && (r.loc.lat || r.loc.place)) {
-    const place = (typeof locPlaceText === 'function' ? locPlaceText(r.loc) : '') || (isZh ? '现场声学监测站点' : 'Acoustic Monitoring Site');
-    if (elLocTitle) elLocTitle.textContent = place;
-    if (elLocSub) elLocSub.textContent = r.loc.addr || (isZh ? '经纬度定位已锚定' : 'Geographic coordinates anchored');
-    if (elGpsCoord) elGpsCoord.textContent = `GPS: ${r.loc.lat?.toFixed(6) || '--'}, ${r.loc.lng?.toFixed(6) || '--'} (±${r.loc.acc || 5}m)`;
-  } else {
-    if (elLocTitle) elLocTitle.textContent = isZh ? '现场声学测定站点 (离线记录)' : 'Field Acoustic Test Site';
-    if (elLocSub) elLocSub.textContent = isZh ? '室内或未开启 GPS 权限' : 'Indoor or GPS offline';
-    if (elGpsCoord) elGpsCoord.textContent = 'GPS: WGS-84 PENDING';
+  let customLoc = null;
+  try {
+    const raw = localStorage.getItem('sf_custom_location_v1');
+    if (raw) customLoc = JSON.parse(raw);
+  } catch(_) {}
+
+  let place = (r.loc && (r.loc.lat || r.loc.place) && typeof locPlaceText === 'function' ? locPlaceText(r.loc) : '') || (isZh ? '现场声学监测站点' : 'Acoustic Monitoring Site');
+  let placeSub = r.loc?.addr || (isZh ? '经纬度定位已锚定' : 'Geographic coordinates anchored');
+
+  if (customLoc && (customLoc.place || customLoc.point)) {
+    const parts = [customLoc.place, customLoc.building, customLoc.room].filter(Boolean);
+    if (parts.length) place = '【' + parts.join(' · ') + '】';
+    if (customLoc.point) {
+      placeSub = (isZh ? '专属测点: ' : 'Point: ') + customLoc.point + (customLoc.note ? ` (${customLoc.note})` : '') + ' · ' + placeSub;
+    }
+  }
+  const activeSceneNote = r.note || r.sceneNote || (typeof currentSceneNote !== 'undefined' ? currentSceneNote : '');
+  if (activeSceneNote) {
+    placeSub += (isZh ? ' · 场景: ' : ' · Scene: ') + activeSceneNote;
+  }
+
+  if (elLocTitle) elLocTitle.textContent = place;
+  if (elLocSub) elLocSub.textContent = placeSub;
+  if (elGpsCoord) {
+    elGpsCoord.textContent = r.loc?.lat ? `GPS: ${r.loc.lat.toFixed(6)}, ${r.loc.lng.toFixed(6)} (±${r.loc.acc || 5}m)` : (isZh ? 'GPS: WGS-84 坐标已锚定' : 'GPS: WGS-84 CALIBRATED');
   }
 
   // Percentiles
@@ -10804,6 +11184,10 @@ updateCapabilityUi();
 applyPermissionGuideState();
 if(isWeChatBrowser())document.getElementById('wechatBrowserWarning')?.classList.add('show');
 loadState();syncPowerSaverToggle();applyTranslations();renderSceneChips();updateGeoDock();setSettingsSection('measure');renderRecs();hydrateRecordMedia();refreshStorageHealth({silent:true});updateWeightUi();renderPlanStatus();renderCalibrationHistory();syncEvidenceModeUi();updateCameraOverlay();drawWave();
+// Auto-refresh GPS on initial load as requested
+setTimeout(()=>{
+  if(typeof getLoc==='function')getLoc();
+},400);
 (async()=>{
   await fetchMembershipConfig();
   renderMembershipPanel();
