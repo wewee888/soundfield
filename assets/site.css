@@ -3626,6 +3626,9 @@ a.card:hover h3 { color: var(--text-strong); }
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  touch-action: manipulation;
 }
 
 .lightbox-btn:hover {
@@ -3678,6 +3681,58 @@ a.card:hover h3 { color: var(--text-strong); }
   max-width: none;
   max-height: none;
   transform: scale(2);
+}
+
+@media (max-width: 640px) {
+  .lightbox-topbar {
+    padding: 8px 12px !important;
+    gap: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .lightbox-title {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    max-width: 140px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex-shrink: 1 !important;
+    gap: 4px !important;
+  }
+  .lightbox-title span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  .lightbox-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    flex-shrink: 0 !important;
+  }
+  .lightbox-btn {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    padding: 5px 8px !important;
+    font-size: 11.5px !important;
+    height: 30px !important;
+    line-height: 1 !important;
+    border-radius: 6px !important;
+    touch-action: manipulation !important;
+  }
+  .lightbox-btn-close {
+    width: 30px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+  }
+  .lightbox-viewport {
+    padding: 10px !important;
+  }
 }
 
 /* ─── Comparison Table Styling ─── */

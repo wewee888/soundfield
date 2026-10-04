@@ -1,6 +1,19 @@
 (function () {
   'use strict';
 
+  /* ── Local HTML escaping helper (safe fallback when utils.js is not loaded) ── */
+  function escHtml(str) {
+    if (typeof window !== 'undefined' && window.__sfUtils?.escHtml) {
+      return window.__sfUtils.escHtml(str);
+    }
+    return String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   /* ── Storage keys ── */
   const USERS_KEY    = 'soundtest_users_v1';
   const SESSION_KEY   = 'soundtest_session_v1';
@@ -13,7 +26,13 @@
     catch (_) { return []; }
   }
 
-  function saveUsers(users) { localStorage.setItem(USERS_KEY, JSON.stringify(users)); }
+  function saveUsers(users) {
+    try {
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    } catch (e) {
+      console.warn('Failed to save users to localStorage:', e);
+    }
+  }
 
   function loadSession() {
     try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); }
@@ -21,8 +40,15 @@
   }
 
   function saveSession(session) {
-    if (!session) { localStorage.removeItem(SESSION_KEY); return; }
-    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    if (!session) {
+      try { localStorage.removeItem(SESSION_KEY); } catch (_) {}
+      return;
+    }
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    } catch (e) {
+      console.warn('Failed to save session to localStorage:', e);
+    }
   }
 
   /* ── Cross-device session sync ─────────────────────────────────────────────
@@ -253,7 +279,7 @@
       const info = document.createElement('span');
       info.className = 'nav-auth-pill';
       info.setAttribute('data-auth-ui', 'true');
-      info.innerHTML = `<strong>${window.__sfUtils.escHtml(session.name || 'User')}</strong><span>${window.__sfUtils.escHtml(session.email)}</span>`;
+      info.innerHTML = `<strong>${escHtml(session.name || 'User')}</strong><span>${escHtml(session.email)}</span>`;
       utility.appendChild(info);
       const profile = document.createElement('a');
       profile.className = 'nav-auth-btn';
@@ -569,6 +595,7 @@
     }
 
     // Verify 6-digit Code Button
+    let isVerifyingCode = false;
     const btnVerifyCode = document.getElementById('btnVerifyCode');
     if (magicCodeInput && btnVerifyCode) {
       magicCodeInput.addEventListener('keydown', e => {
@@ -577,7 +604,7 @@
       magicCodeInput.addEventListener('input', () => {
         const val = magicCodeInput.value.replace(/\D/g, '').slice(0, 6);
         magicCodeInput.value = val;
-        if (val.length === 6) {
+        if (val.length === 6 && !isVerifyingCode) {
           btnVerifyCode.click();
         }
       });
@@ -585,6 +612,7 @@
 
     if (btnVerifyCode) {
       btnVerifyCode.addEventListener('click', async () => {
+        if (isVerifyingCode) return;
         clearErrors();
         const email = String(magicEmailInput?.value || '').trim().toLowerCase();
         const code = String(magicCodeInput?.value || '').trim();
@@ -593,9 +621,11 @@
           return;
         }
 
+        isVerifyingCode = true;
         btnVerifyCode.disabled = true;
         btnVerifyCode.textContent = getNavAuthLang() === 'zh' ? '正在核验…' : 'Verifying…';
 
+        let verificationSucceeded = false;
         try {
           const resp = await fetch('/api/auth/verify-magic', {
             method: 'POST',
@@ -607,8 +637,11 @@
             setFieldError('magicCode', result.message || (getNavAuthLang() === 'zh' ? '验证码错误或已失效' : 'Invalid or expired code.'));
             btnVerifyCode.disabled = false;
             btnVerifyCode.textContent = getNavAuthLang() === 'zh' ? '验证并进入账户' : 'Verify & Sign In';
+            isVerifyingCode = false;
             return;
           }
+
+          verificationSucceeded = true;
 
           const isSuperAdmin = (email.toLowerCase() === 'wewee1@gmail.com') || (result.membership?.role === 'admin');
           const users = loadUsers();
@@ -655,6 +688,19 @@
           }
 
           showToast(getNavAuthLang() === 'zh' ? '🎉 登录成功！欢迎回来。' : '🎉 Signed in successfully!', 'success');
+
+          // Immediately update DOM shells to authenticated state
+          const unauth = document.querySelector('[data-auth-page="unauthenticated"]');
+          const auth = document.querySelector('[data-auth-page="authenticated"]');
+          if (unauth && auth) {
+            unauth.hidden = true;
+            unauth.style.display = 'none';
+            auth.hidden = false;
+            auth.style.display = 'block';
+            renderDashboard(user);
+            renderNavAuth();
+          }
+
           setTimeout(() => {
             const redirectTo = new URLSearchParams(window.location.search).get('redirect_to');
             if (redirectTo && !redirectTo.includes('auth.html')) {
@@ -664,10 +710,14 @@
             initAuthPage();
             renderNavAuth();
           }, 600);
-        } catch (_) {
-          setFieldError('magicCode', getNavAuthLang() === 'zh' ? '核验服务出现异常，请稍后重试' : 'Verification failed, please retry.');
-          btnVerifyCode.disabled = false;
-          btnVerifyCode.textContent = getNavAuthLang() === 'zh' ? '验证并进入账户' : 'Verify & Sign In';
+        } catch (err) {
+          console.error('Magic code verify error:', err);
+          if (!verificationSucceeded) {
+            setFieldError('magicCode', getNavAuthLang() === 'zh' ? '核验服务出现异常，请稍后重试' : 'Verification failed, please retry.');
+            btnVerifyCode.disabled = false;
+            btnVerifyCode.textContent = getNavAuthLang() === 'zh' ? '验证并进入账户' : 'Verify & Sign In';
+            isVerifyingCode = false;
+          }
         }
       });
     }
@@ -1928,7 +1978,7 @@
           : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
         }
       </span>
-      <span>${window.__sfUtils.escHtml(message)}</span>
+      <span>${escHtml(message)}</span>
     `;
     stack.appendChild(toast);
     setTimeout(() => toast.remove(), 3200);
