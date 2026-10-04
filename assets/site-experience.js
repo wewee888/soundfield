@@ -1701,6 +1701,8 @@
   }
 
   function initBookmarkQuickAccess() {
+    // Disabled per user design request
+    return;
     const triggers = document.querySelectorAll('[data-bookmark-trigger]');
     const keyLabels = document.querySelectorAll('[data-bookmark-key]');
 

@@ -1051,11 +1051,6 @@
       </span>
     </a>
     <div class="app-header-actions">
-      <button class="app-bookmark-btn" id="appBookmarkBtn" type="button" onclick="openAppBookmarkModal()" title="快捷收藏">
-        <span aria-hidden="true">⭐</span>
-        <span class="app-bm-text" id="appBmText">收藏</span>
-        <kbd class="app-bm-key" id="appBmKey">Ctrl+D</kbd>
-      </button>
       <div class="app-lang-wrap">
         <div id="headerLangPickerMount" data-lang-picker-mount></div>
         <select class="app-lang-select-hidden" id="headerLanguageSelect" aria-hidden="true" tabindex="-1" onchange="setAppLanguage(this.value)">
@@ -9335,154 +9330,9 @@ try {
     }
   }
 } catch (_) {}
-// Quick Bookmark & Shortcut Modal
-function initAppBookmarkSystem() {
-  const isMac = /(Macintosh|Mac OS X)/i.test(navigator.userAgent || '') && !('ontouchend' in document);
-  const isIOS = /(iPad|iPhone|iPod)/i.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const isAndroid = /Android/i.test(navigator.userAgent || '');
-  const keyEl = document.getElementById('appBmKey');
+function initAppBookmarkSystem() {}
+function openAppBookmarkModal() {}
 
-  if (keyEl) {
-    if (isMac) keyEl.textContent = '⌘+D';
-    else if (isIOS) keyEl.textContent = '⎋';
-    else if (isAndroid) keyEl.textContent = '⫶';
-    else keyEl.textContent = 'Ctrl+D';
-  }
-
-  window.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D')) {
-      showAppBookmarkToast('⭐ 已按下快捷键！存入书签后，突发噪音随时调取');
-    }
-  });
-}
-
-function showAppBookmarkToast(msg) {
-  let toast = document.getElementById('appBookmarkToast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'appBookmarkToast';
-    toast.className = 'app-bookmark-toast';
-    document.body.appendChild(toast);
-  }
-  toast.textContent = msg;
-  toast.classList.add('is-active');
-  clearTimeout(toast._timer);
-  toast._timer = setTimeout(() => {
-    toast.classList.remove('is-active');
-  }, 3000);
-}
-
-function openAppBookmarkModal() {
-  if (document.getElementById('appBookmarkModal')) return;
-  const isMac = /(Macintosh|Mac OS X)/i.test(navigator.userAgent || '') && !('ontouchend' in document);
-  const isIOS = /(iPad|iPhone|iPod)/i.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const isAndroid = /Android/i.test(navigator.userAgent || '');
-  const isZh = (document.documentElement.lang || 'zh').toLowerCase().includes('zh');
-
-  let title = '';
-  let subtitle = '';
-  let keyBadge = '';
-  let steps = [];
-
-  if (isIOS) {
-    title = isZh ? '添加到 iPhone / iPad 主屏幕' : 'Add to Home Screen (iOS)';
-    subtitle = isZh ? '突发噪音随时一键全屏调取，如同原生 App 般稳定。' : '1-Tap instant access from your home screen during sudden disruptions.';
-    keyBadge = `<div class="app-bookmark-key-box"><span style="font-size:22px;">📱</span><strong>Safari 浏览器</strong></div>`;
-    steps = isZh ? [
-      { num: '1', title: '点击 Safari 底部中央的「分享」图标', desc: '在屏幕底端工具栏，点击带有向上箭头的正方形分享按钮 ⎋。' },
-      { num: '2', title: '向上滑动菜单，选择「添加到主屏幕」', desc: '在弹出面板中微向上滑，找到带有 ➕ 号的“添加到主屏幕”。' },
-      { num: '3', title: '点击右上角「添加」即刻生成桌面图标', desc: '手机桌面生成 App 图标，突发邻里扰民一键即开即测！' }
-    ] : [
-      { num: '1', title: 'Tap the Share icon in Safari', desc: 'In Safari bottom bar, tap the share icon ⎋ (square with up arrow).' },
-      { num: '2', title: 'Select "Add to Home Screen"', desc: 'Scroll down and tap "Add to Home Screen" with ➕ icon.' },
-      { num: '3', title: 'Tap "Add" in top-right', desc: 'A dedicated icon appears on your home screen for rapid launch.' }
-    ];
-  } else if (isAndroid) {
-    title = isZh ? '添加到 Android 手机桌面' : 'Add to Home Screen (Android)';
-    subtitle = isZh ? '随时调取分贝仪与防伪录音，无需反复输入网址。' : 'Keep SOUNDTEST.PRO on your home screen for rapid emergency noise capture.';
-    keyBadge = `<div class="app-bookmark-key-box"><span style="font-size:22px;">📱</span><strong>Chrome / 手机自带浏览器</strong></div>`;
-    steps = isZh ? [
-      { num: '1', title: '点击浏览器右上角的「更多菜单」', desc: '点击右上角竖排三点图标 (⫶) 打开功能面板。' },
-      { num: '2', title: '选择「添加到主屏幕」或「安装应用」', desc: '在菜单列表中点击“添加到主屏幕”。' },
-      { num: '3', title: '确认添加，桌面立即可见', desc: '遇到突发扰民随时在手机主屏幕一键秒开，取证快人一步。' }
-    ] : [
-      { num: '1', title: 'Tap the browser menu (⫶)', desc: 'Tap the three-dot menu in the upper right corner.' },
-      { num: '2', title: 'Select "Add to Home screen"', desc: 'Tap "Add to Home screen" or "Install App".' },
-      { num: '3', title: 'Confirm addition', desc: 'Launch directly from home screen anytime noise strikes.' }
-    ];
-  } else if (isMac) {
-    title = isZh ? '按快捷键存入 Mac 个人收藏' : 'Bookmark on macOS';
-    subtitle = isZh ? '突发邻里噪音或深夜机械轰鸣，书签栏 1 秒调取取证。' : 'Save to bookmarks bar for 1-click emergency verification.';
-    keyBadge = `<div class="app-bookmark-key-box"><kbd>⌘</kbd><span>+</span><kbd>D</kbd></div>`;
-    steps = isZh ? [
-      { num: '1', title: '直接按下键盘 ⌘ + D 快捷键', desc: '或点击浏览器顶部菜单【书签】➔【添加书签】。' },
-      { num: '2', title: '保存位置建议选择「书签栏」', desc: '保留名称为 SOUNDTEST.PRO，便于顶栏直观看见。' },
-      { num: '3', title: '突发扰民随时一键启动', desc: '无需临时搜索网址，1秒进入高灵敏现场声学记录。' }
-    ] : [
-      { num: '1', title: 'Press ⌘ Command + D', desc: 'Or click browser Bookmarks menu and choose "Add Bookmark".' },
-      { num: '2', title: 'Save to Bookmarks Bar', desc: 'Keep name as SOUNDTEST.PRO for immediate visibility.' },
-      { num: '3', title: 'Instant 1-second launch', desc: 'No more frantically searching for URL when disturbance begins.' }
-    ];
-  } else {
-    title = isZh ? '按 Ctrl+D 快速存入书签栏' : 'Bookmark with Ctrl+D';
-    subtitle = isZh ? '楼上震楼或窗外施工往往突发发生，存入书签栏随时调取维权！' : 'Save to your browser bookmarks bar for instant access when noise spikes occur.';
-    keyBadge = `<div class="app-bookmark-key-box"><kbd>Ctrl</kbd><span>+</span><kbd>D</kbd></div>`;
-    steps = isZh ? [
-      { num: '1', title: '按下键盘快捷键 Ctrl + D', desc: '或点击浏览器地址栏右侧的【⭐ 收藏此标签页】星标。' },
-      { num: '2', title: '文件夹建议选择「书签栏」', desc: '名称保留为 SOUNDTEST.PRO，确保在浏览器顶部常驻可见。' },
-      { num: '3', title: '突发扰民无需搜索，书签栏 1 秒秒开', desc: '即开即测，第一时间锁定现场分贝、录音与 GPS 防伪时间戳。' }
-    ] : [
-      { num: '1', title: 'Press Ctrl + D on your keyboard', desc: 'Or click the star icon (⭐) at the right end of the address bar.' },
-      { num: '2', title: 'Select "Bookmarks bar" folder', desc: 'Keep SOUNDTEST.PRO pinned to your browser top bar.' },
-      { num: '3', title: 'Instant emergency launch', desc: 'Capture decibels, audio, and tamper-proof timestamps with zero delay.' }
-    ];
-  }
-
-  const overlay = document.createElement('div');
-  overlay.id = 'appBookmarkModal';
-  overlay.className = 'app-bookmark-modal-overlay';
-  overlay.setAttribute('role', 'dialog');
-  overlay.setAttribute('aria-modal', 'true');
-
-  overlay.innerHTML = `
-    <div class="app-bookmark-modal-card">
-      <button type="button" class="close-btn" id="appBookmarkCloseBtn" aria-label="关闭">×</button>
-      <div style="font-size:30px;margin-bottom:6px;">⭐</div>
-      <h3>${title}</h3>
-      <p>${subtitle}</p>
-      ${keyBadge}
-      <div class="app-bookmark-steps">
-        ${steps.map(s => `
-          <div class="app-bookmark-step">
-            <span class="s-num">${s.num}</span>
-            <div>
-              <strong style="color:var(--tx1);display:block;margin-bottom:2px;">${s.title}</strong>
-              <span>${s.desc}</span>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-      <button type="button" class="app-bm-confirm-btn" id="appBookmarkDoneBtn">${isZh ? '我知道了' : 'Got it'}</button>
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-
-  const closeModal = () => {
-    overlay.remove();
-    document.removeEventListener('keydown', handleEsc);
-  };
-  const handleEsc = (e) => {
-    if (e.key === 'Escape') closeModal();
-  };
-  document.addEventListener('keydown', handleEsc);
-  overlay.querySelector('#appBookmarkCloseBtn')?.addEventListener('click', closeModal);
-  overlay.querySelector('#appBookmarkDoneBtn')?.addEventListener('click', closeModal);
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) closeModal();
-  });
-}
-try { initAppBookmarkSystem(); } catch (_) {}
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(e=>console.log('SW reg failed',e)))}
 </script>
 </body>

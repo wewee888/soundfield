@@ -1487,38 +1487,41 @@ a.card:hover h3 { color: var(--text-strong); }
   letter-spacing: -0.025em;
   margin: 0;
   font-weight: 800;
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
 }
 
 .hero-title-main {
-  display: inline-block;
-  white-space: nowrap;
+  display: inline;
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
 }
 
+.hero-headline em,
 .hero-split .hero-headline em {
   font-style: normal;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 55%, var(--accent-3) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  background: linear-gradient(135deg, #2AFFD4 0%, #2cf0c1 45%, #62e5ff 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
   display: inline-block;
   white-space: nowrap;
-  text-shadow: 0 0 28px rgba(44, 240, 193, 0.28);
+  text-shadow: 0 0 24px rgba(42, 255, 212, 0.45);
+  filter: drop-shadow(0 0 16px rgba(42, 255, 212, 0.4));
 }
 
+.hero-subhead,
 .hero-split .hero-subhead {
   display: block;
-  margin-top: 8px;
-  font-size: clamp(16px, 1.3vw, 20px);
+  margin-top: 10px;
+  font-size: clamp(16px, 1.35vw, 20px);
   font-weight: 700;
-  line-height: 1.38;
+  line-height: 1.4;
   letter-spacing: -0.01em;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 55%, var(--accent-3) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  text-shadow: 0 0 28px rgba(44, 240, 193, 0.28);
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
 }
 
 .hero-eyebrow-cluster {
@@ -1574,12 +1577,16 @@ a.card:hover h3 { color: var(--text-strong); }
 .echo-stage {
   position: relative;
   border-radius: 32px;
-  padding: 24px;
+  padding: 20px 22px 22px;
   background-color: #060a14;
   border: 1px solid var(--ink-border);
   box-shadow: var(--shadow-lg), inset 0 1px 0 var(--ink-rim);
   overflow: hidden;
   isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 410px;
 }
 
 .echo-stage::before {
@@ -1613,9 +1620,9 @@ a.card:hover h3 { color: var(--text-strong); }
 
 .echo-mascot {
   width: 100%;
-  max-width: 330px;
+  max-width: 320px;
   aspect-ratio: 3 / 2;
-  margin: 14px auto;
+  margin: 6px auto 14px;
   background: url("echo-mascot.webp") center center / contain no-repeat;
   border-radius: 22px;
   animation: mascot-float 6s ease-in-out infinite;
@@ -1921,29 +1928,34 @@ a.card:hover h3 { color: var(--text-strong); }
 }
 
 .echo-stage-tags {
-  position: absolute;
-  left: 14px;
-  top: 14px;
+  position: relative;
+  top: auto;
+  left: auto;
   display: flex;
-  flex-direction: column;
-  gap: 7px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
   z-index: 10;
   pointer-events: none;
+  width: 100%;
+  margin-bottom: 8px;
 }
 
 .echo-stage-tag {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 5px 11px;
+  gap: 6px;
+  padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(4, 8, 16, 0.85);
+  background: rgba(4, 8, 16, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.14);
   font-size: 11px;
+  font-weight: 600;
   color: #e2e8f0;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
   white-space: nowrap;
 }
 
@@ -2832,35 +2844,42 @@ a.card:hover h3 { color: var(--text-strong); }
     margin-top: 10px;
   }
 
-  /* Mobile Echo Mascot & Translucent Sentinel Tags */
+  /* Mobile Echo Mascot & Sentinel Tags */
   .echo-stage {
-    padding: 14px 12px 18px;
+    padding: 16px 14px 20px;
     border-radius: 22px;
-    min-height: 280px;
+    min-height: 320px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: stretch;
+    justify-content: space-between;
     margin-bottom: 20px;
   }
   .echo-mascot {
-    max-width: 240px;
-    margin: 24px auto 12px;
+    max-width: 250px;
+    margin: 6px auto 16px;
   }
   .echo-stage-tags {
-    top: 10px;
-    left: 10px;
-    gap: 4px;
+    position: relative;
+    top: auto;
+    left: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    margin-bottom: 6px;
   }
   .echo-stage-tag {
-    padding: 2.5px 7px;
-    font-size: 9.5px;
+    padding: 3px 8px;
+    font-size: 10px;
     gap: 4px;
-    background: rgba(4, 8, 16, 0.38);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(4, 8, 16, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   }
   .echo-stage-tag .dot {
     width: 4.5px;
@@ -4195,227 +4214,13 @@ a.card:hover h3 { color: var(--text-strong); }
   color: #fff;
 }
 
-/* ─── Universal Bookmark & Ctrl+D System ─── */
-.nav-bookmark-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 36px;
-  padding: 0 12px;
-  border-radius: 999px;
-  border: 1px solid var(--ink-border);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-soft);
-  font: inherit;
-  font-size: 12.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 200ms var(--ease);
-}
-
-.nav-bookmark-btn:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(44, 240, 193, 0.35);
-  color: var(--text-strong);
-}
-
-.nav-bookmark-btn kbd {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  padding: 1.5px 5.5px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--accent);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.hero-bookmark-bar {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  padding: 7px 15px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  font-size: 12.5px;
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 200ms var(--ease);
-  width: fit-content;
-}
-
-.hero-bookmark-bar:hover {
-  border-color: rgba(44, 240, 193, 0.4);
-  background: rgba(44, 240, 193, 0.06);
-  color: var(--text-strong);
-  transform: translateY(-1px);
-}
-
-.hero-bookmark-bar kbd {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 1.5px 6px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--accent);
-  border: 1px solid rgba(44, 240, 193, 0.3);
-}
-
-.hero-bookmark-bar .action-arrow {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-/* Bookmark Smart Modal */
-.bookmark-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(4, 7, 16, 0.78);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  animation: modal-fade-in 240ms var(--ease);
-}
-
-.bookmark-modal-card {
-  position: relative;
-  width: min(100%, 460px);
-  padding: 28px 24px;
-  border-radius: 24px;
-  background: linear-gradient(180deg, rgba(20, 28, 48, 0.96), rgba(12, 16, 30, 0.98));
-  border: 1px solid rgba(44, 240, 193, 0.35);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  color: var(--text-strong);
-  text-align: center;
-}
-
-.bookmark-modal-card h3 {
-  font-size: 20px;
-  margin: 8px 0 6px;
-  letter-spacing: -0.01em;
-}
-
-.bookmark-modal-card p {
-  font-size: 13.5px;
-  color: var(--soft);
-  line-height: 1.55;
-  margin-bottom: 18px;
-}
-
-.bookmark-key-display {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 24px;
-  border-radius: 16px;
-  background: rgba(44, 240, 193, 0.08);
-  border: 1px solid rgba(44, 240, 193, 0.25);
-  margin-bottom: 18px;
-}
-
-.bookmark-key-display kbd {
-  font-family: var(--mono);
-  font-size: 18px;
-  font-weight: 800;
-  padding: 6px 14px;
-  border-radius: 8px;
-  background: #0f172a;
-  color: var(--accent);
-  border: 1px solid rgba(44, 240, 193, 0.45);
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
-}
-
-.bookmark-steps-list {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding: 14px 16px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.bookmark-step-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 13px;
-  color: var(--text-soft);
-  line-height: 1.45;
-}
-
-.bookmark-step-item .step-num {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: rgba(44, 240, 193, 0.15);
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.bookmark-modal-card .close-btn {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--muted);
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.bookmark-modal-card .close-btn:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-}
-
+/* ─── Universal Bookmark & Ctrl+D System (Disabled per user request) ─── */
+.nav-bookmark-btn,
+.hero-bookmark-bar,
+.app-bookmark-btn,
+.bookmark-modal-overlay,
 .bookmark-toast {
-  position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-10px);
-  padding: 10px 20px;
-  border-radius: 999px;
-  background: rgba(14, 22, 38, 0.94);
-  border: 1px solid rgba(44, 240, 193, 0.45);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 16px rgba(44, 240, 193, 0.25);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 10000;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 260ms var(--ease);
-}
-
-.bookmark-toast.is-active {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  display: none !important;
 }
 
 /* ═════════════════════════════════════════════════════════════════
