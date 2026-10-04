@@ -1501,6 +1501,8 @@
     initMobileBottomNav();
     initCookieConsent();
     initPricingNavigation();
+    initPricingBillingToggle();
+    initBookmarkQuickAccess();
     initPwaInstallBanner();
     initEchoHudLiveSimulator();
   });
@@ -1659,6 +1661,207 @@
         if (window.history && window.history.replaceState) {
           window.history.replaceState(null, '', '#pricing');
         }
+      }
+    });
+  }
+
+  function initPricingBillingToggle() {
+    const toggleBtns = document.querySelectorAll('.billing-toggle-btn');
+    if (!toggleBtns.length) return;
+
+    toggleBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetCycle = btn.getAttribute('data-billing') || 'yearly';
+        toggleBtns.forEach((b) => {
+          const isActive = b === btn;
+          b.classList.toggle('active', isActive);
+          b.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        });
+
+        const yearlyEls = document.querySelectorAll('.billing-period-yearly');
+        const monthlyEls = document.querySelectorAll('.billing-period-monthly');
+
+        if (targetCycle === 'yearly') {
+          yearlyEls.forEach((el) => {
+            el.style.display = el.tagName === 'A' ? 'inline-flex' : (el.classList.contains('price-tag') ? 'flex' : '');
+          });
+          monthlyEls.forEach((el) => {
+            el.style.display = 'none';
+          });
+        } else {
+          yearlyEls.forEach((el) => {
+            el.style.display = 'none';
+          });
+          monthlyEls.forEach((el) => {
+            el.style.display = el.tagName === 'A' ? 'inline-flex' : (el.classList.contains('price-tag') ? 'flex' : '');
+          });
+        }
+      });
+    });
+  }
+
+  function initBookmarkQuickAccess() {
+    const triggers = document.querySelectorAll('[data-bookmark-trigger]');
+    const keyLabels = document.querySelectorAll('[data-bookmark-key]');
+
+    const isMac = /(Macintosh|Mac OS X)/i.test(navigator.userAgent || '') && !('ontouchend' in document);
+    const isIOS = /(iPad|iPhone|iPod)/i.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/i.test(navigator.userAgent || '');
+    const lang = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
+    const isZh = lang === 'zh';
+
+    if (keyLabels.length) {
+      keyLabels.forEach((el) => {
+        if (isMac) {
+          el.textContent = '⌘+D';
+        } else if (isIOS) {
+          el.textContent = isZh ? '分享 ⎋' : 'Share ⎋';
+        } else if (isAndroid) {
+          el.textContent = isZh ? '菜单 ⫶' : 'Menu ⫶';
+        } else {
+          el.textContent = 'Ctrl+D';
+        }
+      });
+    }
+
+    function showBookmarkToast(message) {
+      let toast = document.getElementById('sf-bookmark-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'sf-bookmark-toast';
+        toast.className = 'bookmark-toast';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<span aria-hidden="true">⭐</span><span>${message}</span>`;
+      toast.classList.add('is-active');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.classList.remove('is-active');
+      }, 3200);
+    }
+
+    function openBookmarkModal() {
+      if (document.getElementById('sf-bookmark-modal')) return;
+
+      const overlay = document.createElement('div');
+      overlay.id = 'sf-bookmark-modal';
+      overlay.className = 'bookmark-modal-overlay';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+
+      let title = '';
+      let subtitle = '';
+      let keyBadgeHtml = '';
+      let steps = [];
+
+      if (isIOS) {
+        title = isZh ? '添加到 iPhone / iPad 主屏幕' : 'Add to Home Screen (iOS)';
+        subtitle = isZh ? '突发噪音随时一键全屏调取，如同原生 App 般稳定可靠。' : '1-Tap instant access from your home screen during unexpected disturbances.';
+        keyBadgeHtml = `<div class="bookmark-key-display"><span style="font-size:24px;">📱</span><span style="font-weight:700;">Safari 浏览器</span></div>`;
+        steps = isZh ? [
+          { num: '1', title: '点击 Safari 底部中央的「分享」图标', desc: '在屏幕最下方工具栏，点击带有向上箭头的正方形分享按钮 ⎋。' },
+          { num: '2', title: '滑动菜单，选择「添加到主屏幕」', desc: '在弹出面板中向下微滑动，找到带有 ➕ 号的“添加到主屏幕 (Add to Home Screen)”。' },
+          { num: '3', title: '点击右上角「添加」即刻生成桌面图标', desc: '下次遇到邻居跺脚或夜间噪音，桌面秒开即测，无需重新搜索网址。' }
+        ] : [
+          { num: '1', title: 'Tap the Share icon in Safari', desc: 'In Safari bottom bar, tap the share icon ⎋ (square with an up arrow).' },
+          { num: '2', title: 'Scroll and select "Add to Home Screen"', desc: 'In the share sheet, find the "Add to Home Screen" option with a ➕ icon.' },
+          { num: '3', title: 'Tap "Add" in the top right', desc: 'Your home screen gets a dedicated app icon for 1-tap rapid noise recording.' }
+        ];
+      } else if (isAndroid) {
+        title = isZh ? '添加到 Android 手机桌面' : 'Add to Home Screen (Android)';
+        subtitle = isZh ? '随时调取分贝仪与防伪录音，免去在浏览器反复输入网址。' : 'Keep SOUNDTEST.PRO on your home screen for rapid emergency noise capture.';
+        keyBadgeHtml = `<div class="bookmark-key-display"><span style="font-size:24px;">📱</span><span style="font-weight:700;">Chrome / 系统浏览器</span></div>`;
+        steps = isZh ? [
+          { num: '1', title: '点击浏览器右上角的「更多菜单」', desc: '点击右上角竖排三点图标 (⫶) 打开浏览器功能面板。' },
+          { num: '2', title: '选择「添加到主屏幕」或「安装应用」', desc: '在菜单列表中点击“添加到主屏幕 (Add to Home screen)”。' },
+          { num: '3', title: '确认添加，桌面立即可见', desc: '遇到突发扰民随时在手机主屏幕一键秒开，取证快人一步。' }
+        ] : [
+          { num: '1', title: 'Tap the browser menu icon (⫶)', desc: 'Tap the three-dot menu in the upper right corner of Chrome.' },
+          { num: '2', title: 'Select "Add to Home screen"', desc: 'Tap "Add to Home screen" or "Install App".' },
+          { num: '3', title: 'Confirm addition', desc: 'The icon appears on your home screen ready for instant dB documentation.' }
+        ];
+      } else if (isMac) {
+        title = isZh ? '按快捷键存入 Mac 个人收藏' : 'Bookmark on macOS';
+        subtitle = isZh ? '突发邻里噪音或深夜机械轰鸣，书签栏 1 秒调取取证。' : 'Save SOUNDTEST.PRO to your bookmarks bar for 1-click emergency verification.';
+        keyBadgeHtml = `<div class="bookmark-key-display"><kbd>⌘</kbd><span style="font-weight:700;color:var(--muted);">+</span><kbd>D</kbd></div>`;
+        steps = isZh ? [
+          { num: '1', title: '直接按下键盘 ⌘ + D 快捷键', desc: '或点击 Safari / Chrome 顶部菜单【书签】➔【添加书签】。' },
+          { num: '2', title: '保存位置建议选择「书签栏」或「个人收藏」', desc: '将名称保留为 SOUNDTEST.PRO，便于在浏览器顶栏直观看见。' },
+          { num: '3', title: '深夜或突发噪音随时一键启动', desc: '无需百度搜索或重新翻查历史记录，1秒进入高灵敏监听。' }
+        ] : [
+          { num: '1', title: 'Press ⌘ Command + D on your keyboard', desc: 'Or click the Bookmarks menu in your browser and select "Add Bookmark".' },
+          { num: '2', title: 'Save to Bookmarks Bar / Favorites', desc: 'Keep the name as SOUNDTEST.PRO for immediate one-click visibility.' },
+          { num: '3', title: 'One-click launch during noise spikes', desc: 'Instant access during late-night disruptions without typing URLs.' }
+        ];
+      } else {
+        title = isZh ? '按 Ctrl+D 快速存入书签栏' : 'Bookmark with Ctrl+D';
+        subtitle = isZh ? '楼上震楼或窗外施工往往突发发生，存入书签栏随时调取维权！' : 'Save to your browser bookmarks bar for instant access when noise spikes occur.';
+        keyBadgeHtml = `<div class="bookmark-key-display"><kbd>Ctrl</kbd><span style="font-weight:700;color:var(--muted);">+</span><kbd>D</kbd></div>`;
+        steps = isZh ? [
+          { num: '1', title: '按下键盘快捷键 Ctrl + D', desc: '或点击浏览器地址栏右侧的【⭐ 收藏此标签页】星标。' },
+          { num: '2', title: '文件夹建议选择「书签栏」', desc: '名称保留为 SOUNDTEST.PRO，确保在浏览器顶部常驻可见。' },
+          { num: '3', title: '突发扰民无需搜索，书签栏 1 秒秒开', desc: '即开即测，第一时间锁定现场分贝、录音与 GPS 防伪时间戳。' }
+        ] : [
+          { num: '1', title: 'Press Ctrl + D on your keyboard', desc: 'Or click the star icon (⭐) at the right end of your address bar.' },
+          { num: '2', title: 'Select "Bookmarks bar" folder', desc: 'Keep SOUNDTEST.PRO pinned to your browser top bar for immediate access.' },
+          { num: '3', title: 'Instant 1-second launch when disturbance strikes', desc: 'Capture decibels, audio, and GPS tamper-proof timestamps with zero delay.' }
+        ];
+      }
+
+      overlay.innerHTML = `
+        <div class="bookmark-modal-card">
+          <button type="button" class="close-btn" id="sfBookmarkCloseBtn" aria-label="${isZh ? '关闭' : 'Close'}">×</button>
+          <div style="font-size:32px;margin-bottom:6px;">⭐</div>
+          <h3>${title}</h3>
+          <p>${subtitle}</p>
+          ${keyBadgeHtml}
+          <div class="bookmark-steps-list">
+            ${steps.map((s) => `
+              <div class="bookmark-step-item">
+                <span class="step-num">${s.num}</span>
+                <div>
+                  <strong style="color:var(--text-strong);display:block;margin-bottom:2px;">${s.title}</strong>
+                  <span>${s.desc}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <button type="button" class="button primary" id="sfBookmarkDoneBtn" style="width:100%;">${isZh ? '我知道了' : 'Got it'}</button>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const closeModal = () => {
+        overlay.remove();
+        document.removeEventListener('keydown', handleEsc);
+      };
+
+      const handleEsc = (e) => {
+        if (e.key === 'Escape') closeModal();
+      };
+
+      document.addEventListener('keydown', handleEsc);
+      overlay.querySelector('#sfBookmarkCloseBtn')?.addEventListener('click', closeModal);
+      overlay.querySelector('#sfBookmarkDoneBtn')?.addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+      });
+    }
+
+    triggers.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openBookmarkModal();
+      });
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D')) {
+        const toastMsg = isZh
+          ? '已按下快捷键！正在存入书签栏… 突发噪音随时秒开'
+          : 'Shortcut pressed! Bookmark added for instant emergency noise checks.';
+        showBookmarkToast(toastMsg);
       }
     });
   }

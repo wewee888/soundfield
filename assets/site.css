@@ -4056,4 +4056,350 @@ a.card:hover h3 { color: var(--text-strong); }
   justify-content: flex-end;
 }
 
+/* ─── Pricing Scheme A: 3 Cards + Billing Toggle ─── */
+.billing-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 28px;
+}
+
+.billing-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ink-border);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  gap: 6px;
+}
+
+.billing-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 220ms var(--ease);
+}
+
+.billing-toggle-btn:hover {
+  color: var(--text-strong);
+}
+
+.billing-toggle-btn.active {
+  background: linear-gradient(135deg, rgba(44, 240, 193, 0.20), rgba(124, 155, 255, 0.20));
+  border-color: rgba(44, 240, 193, 0.45);
+  color: var(--text-strong);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.billing-discount-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(44, 240, 193, 0.2);
+  color: var(--accent);
+  border: 1px solid rgba(44, 240, 193, 0.4);
+}
+
+.pricing-row.pricing-three-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 1180px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.pricing-row.pricing-three-cards .price-card {
+  padding: 28px 24px;
+}
+
+.pricing-row.pricing-three-cards .price-card.pro {
+  border-color: rgba(44, 240, 193, 0.45);
+  background:
+    linear-gradient(180deg, rgba(14, 28, 44, 0.92), rgba(10, 18, 30, 0.95)),
+    radial-gradient(70% 60% at 50% 0%, rgba(44, 240, 193, 0.18), transparent 75%);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 28px rgba(44, 240, 193, 0.12);
+  transform: translateY(-4px);
+}
+
+@media (max-width: 1040px) and (min-width: 769px) {
+  .pricing-row.pricing-three-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .pricing-row.pricing-three-cards .price-card {
+    padding: 22px 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-row.pricing-three-cards {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    gap: 16px;
+  }
+  .pricing-row.pricing-three-cards .price-card.pro {
+    transform: none;
+  }
+}
+
+.single-report-link-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.single-report-link-bar .single-link {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.single-report-link-bar .single-link:hover {
+  color: #fff;
+}
+
+/* ─── Universal Bookmark & Ctrl+D System ─── */
+.nav-bookmark-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--ink-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-soft);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms var(--ease);
+}
+
+.nav-bookmark-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(44, 240, 193, 0.35);
+  color: var(--text-strong);
+}
+
+.nav-bookmark-btn kbd {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 1.5px 5.5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.hero-bookmark-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  font-size: 12.5px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 200ms var(--ease);
+  width: fit-content;
+}
+
+.hero-bookmark-bar:hover {
+  border-color: rgba(44, 240, 193, 0.4);
+  background: rgba(44, 240, 193, 0.06);
+  color: var(--text-strong);
+  transform: translateY(-1px);
+}
+
+.hero-bookmark-bar kbd {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1.5px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(44, 240, 193, 0.3);
+}
+
+.hero-bookmark-bar .action-arrow {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Bookmark Smart Modal */
+.bookmark-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 16, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modal-fade-in 240ms var(--ease);
+}
+
+.bookmark-modal-card {
+  position: relative;
+  width: min(100%, 460px);
+  padding: 28px 24px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(20, 28, 48, 0.96), rgba(12, 16, 30, 0.98));
+  border: 1px solid rgba(44, 240, 193, 0.35);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  color: var(--text-strong);
+  text-align: center;
+}
+
+.bookmark-modal-card h3 {
+  font-size: 20px;
+  margin: 8px 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.bookmark-modal-card p {
+  font-size: 13.5px;
+  color: var(--soft);
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+
+.bookmark-key-display {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 16px;
+  background: rgba(44, 240, 193, 0.08);
+  border: 1px solid rgba(44, 240, 193, 0.25);
+  margin-bottom: 18px;
+}
+
+.bookmark-key-display kbd {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: #0f172a;
+  color: var(--accent);
+  border: 1px solid rgba(44, 240, 193, 0.45);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.bookmark-steps-list {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.bookmark-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-soft);
+  line-height: 1.45;
+}
+
+.bookmark-step-item .step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(44, 240, 193, 0.15);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.bookmark-modal-card .close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bookmark-modal-card .close-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.bookmark-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: rgba(14, 22, 38, 0.94);
+  border: 1px solid rgba(44, 240, 193, 0.45);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 16px rgba(44, 240, 193, 0.25);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 260ms var(--ease);
+}
+
+.bookmark-toast.is-active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 

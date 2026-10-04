@@ -75,6 +75,11 @@
         </div>
       </div>
       <div class="nav-utility">
+        <button type="button" class="nav-bookmark-btn" data-bookmark-trigger title="按 Ctrl+D 快速收藏">
+          <span aria-hidden="true">⭐</span>
+          <span class="nav-bm-text">收藏</span>
+          <kbd data-bookmark-key>Ctrl+D</kbd>
+        </button>
         <a class="nav-upgrade" href="#pricing">
           <span class="star" aria-hidden="true">★</span>
           <span>升级 Pro</span>
@@ -96,6 +101,11 @@
             <a class="button primary" href="../soundtest.html">开始监测</a>
             <a class="button" href="samples.html">查看报告样例</a>
             <a class="button ghost" href="standards.html">查阅噪声标准</a>
+          </div>
+          <div class="hero-bookmark-bar" data-bookmark-trigger title="点击查看快捷收藏与桌面启动指南">
+            <span class="star-icon" aria-hidden="true">⭐</span>
+            <span>备用提醒：建议按 <kbd data-bookmark-key>Ctrl+D</kbd> 存入书签栏（手机可添加至桌面），突发噪音随时调取</span>
+            <span class="action-arrow" aria-hidden="true">→</span>
           </div>
         </div>
 
@@ -377,7 +387,19 @@
         <span>新站上线特别特惠：当前均为首发早鸟优惠价，首发优惠期结束后将逐步上调恢复原价（单次 ¥9.9 / 月度 ¥19.9 / 年度 ¥59.9 / 终身 ¥199），当前下单即享永久价格保护！</span>
       </div>
 
-      <div class="pricing-row">
+      <div class="billing-toggle-wrap reveal">
+        <div class="billing-toggle" role="radiogroup" aria-label="计费周期选择">
+          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true">
+            <span>按年付</span>
+            <span class="billing-discount-badge">立省 ¥40 · 仅 ¥1.6/月 🔥</span>
+          </button>
+          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false">
+            <span>按月付</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="pricing-row pricing-three-cards">
         <!-- 免费版 -->
         <div class="price-card reveal">
           <span class="price-pill">免费初筛版</span>
@@ -394,68 +416,37 @@
           <a class="button" href="../soundtest.html">立即免费体验</a>
         </div>
 
-        <!-- 单次版 -->
-        <div class="price-card single-report reveal">
-          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
-            <img src="../assets/images/forensic_report_preview.webp" alt="正式存证报告示意" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center top;display:block;">
-          </div>
-          <span class="price-pill">单次官方存证</span>
-          <span class="price-name">单次防篡改报告</span>
-          <div class="price-tag">
-            <del class="price-del">¥9.9</del>¥3.9
-            <span class="price-discount-tag">开站特惠 4 折</span>
-          </div>
-          <div class="price-compare-hint">一次性买断单次报告 · 消除对方“调大音量造假”借口</div>
-          <ul class="check-list">
-            <li>导出 1 份完整<strong>无水印正式 PDF 存证报告</strong></li>
-            <li>加盖<strong>SHA-256 唯一防伪数字指纹</strong>与防伪时间戳</li>
-            <li>标准声学统计指标 (LAeq, L10, L90, 峰值)</li>
-            <li>现场照片+经纬度防抵赖存证页</li>
-            <li>适用于物业交涉、居委会调解或报警立案</li>
-          </ul>
-          <a class="button" href="../soundtest.html?pay=single">微信支付解锁 · ¥3.9</a>
-        </div>
-
-        <!-- 月度专业版 -->
-        <div class="price-card monthly reveal">
-          <span class="price-pill">Pro 月度灵动版</span>
-          <span class="price-name">Pro 月度维权卡</span>
-          <div class="price-tag">
-            <del class="price-del">¥19.9</del>¥9.9<small style="font-size:13px;color:var(--soft);">/月</small>
-            <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">开站特惠 5 折</span>
-          </div>
-          <div class="price-compare-hint">适合短租期维权、突发装修扰民或短期纠纷取证</div>
-          <ul class="check-list">
-            <li><strong>30天内无限次</strong>导出正式无水印防伪报告</li>
-            <li>🌙 <strong>夜间噪音哨兵模式</strong>：超标抓现行自动打标</li>
-            <li>📊 <strong>《连续噪音滋扰评估档案》</strong>：30天声学走势图</li>
-            <li>⚖️ <strong>专属维权文书与起诉模板</strong>：一键生成事实函件</li>
-            <li>☁️ <strong>云端加密存证</strong>：清微信缓存换机证据不丢失</li>
-          </ul>
-          <a class="button" href="../soundtest.html?pay=pro" style="border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">微信支付开通月卡 · ¥9.9</a>
-        </div>
-
-        <!-- 年度专业版 (极度推荐) -->
+        <!-- Pro 专业版 (年付/月付无缝切换 + 单次快捷入口) -->
         <div class="price-card pro reveal">
           <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
             <img src="../assets/images/sentry_night_monitor.webp" alt="夜间哨兵模式示意" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center 40%;display:block;">
           </div>
-          <span class="price-badge-popular">★ 最具性价比 · 仅合 ¥1.6/月</span>
-          <span class="price-pill">Pro 年度高级版</span>
-          <span class="price-name">Pro 长期维权案卷</span>
-          <div class="price-tag">
+          <span class="price-badge-popular">★ 维权首选 · 推荐方案</span>
+          <span class="price-pill">Pro 高级版</span>
+          <span class="price-name">Pro 专业维权管家</span>
+          <div class="price-tag billing-period-yearly">
             <del class="price-del">¥59.9</del>¥19.9<small style="font-size:13px;color:var(--soft);">/年</small>
-            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">开站特惠 立省 ¥40</span>
+            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">开站特惠 立省 ¥40 (折合仅 ¥1.6/月)</span>
           </div>
-          <div class="price-compare-hint">仅比月度多花10元 · 365天全场景覆盖，彻底释放盯守精力</div>
+          <div class="price-tag billing-period-monthly" style="display:none;">
+            <del class="price-del">¥19.9</del>¥9.9<small style="font-size:13px;color:var(--soft);">/月</small>
+            <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">开站特惠 5 折</span>
+          </div>
+          <div class="price-compare-hint billing-period-yearly">仅比月度多花10元 · 365天全场景覆盖，彻底释放盯守精力</div>
+          <div class="price-compare-hint billing-period-monthly" style="display:none;">适合短租期维权、突发装修扰民或短期纠纷取证</div>
           <ul class="check-list">
-            <li><strong>365天无限次</strong>导出正式无水印防伪报告</li>
-            <li>🌙 <strong>夜间噪音哨兵模式</strong>：超标自动抓现行打标</li>
-            <li>📊 <strong>《连续噪音滋扰评估档案》</strong>：自动聚合跨月走势图</li>
-            <li>⚖️ <strong>专属维权文书与起诉模板</strong>：一键生成交涉与事实函件</li>
-            <li>☁️ <strong>云端加密存证</strong>：多设备账号同步与永久云备份</li>
+            <li><strong>无限次</strong>导出正式<strong>无水印防伪 PDF 报告</strong> (含防伪指纹)</li>
+            <li>🌙 <strong>夜间噪音哨兵模式</strong>：超标抓现行自动打标</li>
+            <li>📊 <strong>《连续噪音滋扰评估档案》</strong>：多日声学走势图</li>
+            <li>⚖️ <strong>专属维权文书与起诉模板</strong>：一键生成事实函件</li>
+            <li>☁️ <strong>云端加密存证</strong>：多端同步，证据底稿永不丢失</li>
           </ul>
-          <a class="button primary" href="../soundtest.html?pay=yearly">微信支付开通年卡 · ¥19.9</a>
+          <a class="button primary billing-period-yearly" href="../soundtest.html?pay=yearly">微信支付开通年卡 · ¥19.9</a>
+          <a class="button primary billing-period-monthly" href="../soundtest.html?pay=pro" style="display:none;border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">微信支付开通月卡 · ¥9.9</a>
+          <div class="single-report-link-bar">
+            <span>只需要单份报告？</span>
+            <a class="single-link" href="../soundtest.html?pay=single">开通单次无水印存证 ¥3.9 →</a>
+          </div>
           <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">已有账号？登录同步权益</a>
         </div>
 
@@ -470,7 +461,7 @@
           <div class="price-compare-hint">一次付费终身受用 · 租房买房长久维权底气，永无续费</div>
           <ul class="check-list">
             <li><strong>终身永久授权买断</strong>，彻底告别后续任何订阅扣费</li>
-            <li>包含年度版全部哨兵巡检、档案走势与法务模板特权</li>
+            <li>包含 Pro 全部哨兵巡检、档案走势与法务模板特权</li>
             <li>多端设备账号随时同步与无限量云存证底稿</li>
             <li>专属 VIP 优先通道与未来全部高级功能免费升级</li>
             <li>遇到邻里/施工纠纷随时取证，随时输出法务材料</li>
