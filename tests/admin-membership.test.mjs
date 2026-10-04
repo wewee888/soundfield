@@ -304,5 +304,42 @@ test('Language switching: immediate flag/label sync and complete bilingual trans
   assert.ok(soundtestHtml.includes("isZh?'查看证据库':'Records'"), 'modeRecordsBtn fallback is bilingual');
 });
 
+test('Membership lookup endpoint /api/membership/lookup and soundtest.html auto-grant wewee1@gmail.com', async () => {
+  const lookupPath = path.join(rootDir, 'functions/api/membership/lookup.js');
+  assert.ok(fs.existsSync(lookupPath), 'lookup.js must exist');
+
+  const lookupModule = await import(`file://${lookupPath.replace(/\\/g, '/')}`);
+
+  const kv = new Map();
+  const mockEnv = {
+    ab_test: {
+      get: async (k) => kv.get(k) || null,
+      put: async (k, v) => kv.set(k, v),
+      delete: async (k) => kv.delete(k),
+    },
+  };
+
+  // Test wewee1@gmail.com lookup auto-grant
+  const lookupReq = new Request('https://soundtest.pro/api/membership/lookup', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ email: 'wewee1@gmail.com' }),
+  });
+  const lookupRes = await lookupModule.onRequestPost({ request: lookupReq, env: mockEnv });
+  assert.equal(lookupRes.status, 200);
+  const lookupData = await lookupRes.json();
+  assert.equal(lookupData.active, true);
+  assert.equal(lookupData.plan, 'team');
+  assert.equal(lookupData.role, 'admin');
+  assert.equal(lookupData.status, 'paid');
+  assert.ok(kv.has('member:wewee1@gmail.com'));
+
+  // Test soundtest.html contains currentPlanLabel dynamic update and superadmin bypass
+  const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+  assert.ok(soundtestHtml.includes("isSuperAdmin = email.toLowerCase() === 'wewee1@gmail.com'"), 'soundtest.html has isSuperAdmin check');
+  assert.ok(soundtestHtml.includes("planLabel.textContent = membershipState.plan.toUpperCase()"), 'soundtest.html updates planLabel');
+  assert.ok(soundtestHtml.includes("email.toLowerCase() === 'wewee1@gmail.com'"), 'soundtest.html lookupMembership has superadmin bypass');
+});
+
 
 

