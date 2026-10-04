@@ -1542,7 +1542,7 @@ a.card:hover h3 { color: var(--text-strong); }
   position: relative;
   border-radius: 32px;
   padding: 24px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  background-color: #060a14;
   border: 1px solid var(--ink-border);
   box-shadow: var(--shadow-lg), inset 0 1px 0 var(--ink-rim);
   overflow: hidden;
@@ -1561,23 +1561,21 @@ a.card:hover h3 { color: var(--text-strong); }
   -webkit-mask-composite: xor;
           mask-composite: exclude;
   pointer-events: none;
+  z-index: 2;
 }
 
 .echo-stage::after {
   content: "";
   position: absolute;
-  inset: -20%;
+  inset: 0;
   background:
-    radial-gradient(50% 50% at 30% 40%, rgba(44, 240, 193, 0.22), transparent 70%),
-    radial-gradient(45% 45% at 75% 60%, rgba(124, 155, 255, 0.22), transparent 70%);
-  filter: blur(36px);
-  z-index: -1;
-  animation: stage-breath 8s ease-in-out infinite alternate;
-}
-
-@keyframes stage-breath {
-  from { transform: translateY(0) scale(1); opacity: 0.85; }
-  to   { transform: translateY(-2%) scale(1.04); opacity: 1; }
+    linear-gradient(180deg, rgba(6, 12, 24, 0.48) 0%, rgba(4, 7, 16, 0.78) 100%),
+    url("images/echo_stage_night_sentry.webp") center center / cover no-repeat;
+  opacity: 0.58;
+  filter: saturate(1.2) brightness(0.95);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.5s ease;
 }
 
 .echo-mascot {
@@ -1589,7 +1587,7 @@ a.card:hover h3 { color: var(--text-strong); }
   border-radius: 22px;
   animation: mascot-float 6s ease-in-out infinite;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   filter: drop-shadow(0 14px 28px rgba(44, 240, 193, 0.22));
 }
 
@@ -1600,7 +1598,7 @@ a.card:hover h3 { color: var(--text-strong); }
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
 }
 
