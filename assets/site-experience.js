@@ -1429,6 +1429,64 @@
     }
   }
 
+  /* Ambient decibel live simulator for hero owl HUD badge */
+  function initEchoHudLiveSimulator() {
+    const hud = document.querySelector('.echo-hud');
+    if (!hud) return;
+    const valEl = hud.querySelector('.echo-hud-value');
+    const dotEl = hud.querySelector('.echo-hud-dot');
+    if (!valEl) return;
+
+    // Realistic indoor ambient noise range (30.4 dB ~ 35.8 dB)
+    let currentDb = 32.4;
+    let targetDb = 32.4;
+
+    const colorSteps = [
+      { max: 31.4, color: '#2cf0c1', glow: 'rgba(44, 240, 193, 0.75)', border: 'rgba(44, 240, 193, 0.45)' },
+      { max: 33.2, color: '#38bdf8', glow: 'rgba(56, 189, 248, 0.75)', border: 'rgba(56, 189, 248, 0.45)' },
+      { max: 34.8, color: '#818cf8', glow: 'rgba(129, 140, 248, 0.75)', border: 'rgba(129, 140, 248, 0.45)' },
+      { max: 40.0, color: '#a78bfa', glow: 'rgba(167, 139, 250, 0.75)', border: 'rgba(167, 139, 250, 0.45)' }
+    ];
+
+    function applyDb(db) {
+      valEl.textContent = db.toFixed(1) + ' dB';
+      const step = colorSteps.find((s) => db <= s.max) || colorSteps[colorSteps.length - 1];
+      valEl.style.color = step.color;
+      valEl.style.textShadow = `0 0 10px ${step.glow}`;
+      if (dotEl) {
+        dotEl.style.backgroundColor = step.color;
+        dotEl.style.boxShadow = `0 0 8px ${step.glow}`;
+      }
+      hud.style.borderColor = step.border;
+    }
+
+    function pickNextTarget() {
+      const delta = (Math.random() - 0.48) * 3.2;
+      let next = currentDb + delta;
+      if (next < 30.2) next = 30.6 + Math.random() * 1.2;
+      if (next > 35.8) next = 34.2 - Math.random() * 1.2;
+      return parseFloat(next.toFixed(1));
+    }
+
+    applyDb(currentDb);
+
+    let nextSwitchTime = performance.now() + 1100 + Math.random() * 800;
+
+    function loop(now) {
+      if (now >= nextSwitchTime) {
+        targetDb = pickNextTarget();
+        nextSwitchTime = now + 1000 + Math.random() * 1200;
+      }
+      const diff = targetDb - currentDb;
+      if (Math.abs(diff) > 0.04) {
+        currentDb += diff * 0.07;
+        applyDb(currentDb);
+      }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  }
+
   ready(() => {
     initRevealAnimations();
     renderRecent();
@@ -1438,6 +1496,7 @@
     initCookieConsent();
     initPricingNavigation();
     initPwaInstallBanner();
+    initEchoHudLiveSimulator();
   });
 
   function initPwaInstallBanner() {
