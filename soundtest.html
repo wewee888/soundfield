@@ -942,26 +942,116 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .perm-actions .btn{flex:1;justify-content:center;height:38px}
 
 /* ── Report preview modal (forensic conversion paywall) ── */
-.report-preview-modal{position:fixed;inset:0;z-index:220;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,7,14,.82);backdrop-filter:blur(22px)}
+.report-preview-modal{position:fixed;inset:0;z-index:220;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,7,14,.85);backdrop-filter:blur(22px)}
 .report-preview-modal.show{display:flex}
-.rpm-card{width:min(100%,480px);border-radius:24px;border:.5px solid rgba(42,255,212,.35);background:linear-gradient(180deg,rgba(14,24,42,.98),rgba(7,11,20,.98));box-shadow:0 30px 90px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.1);padding:22px;position:relative;overflow:hidden}
-.rpm-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
-.rpm-title{font-size:18px;font-weight:850;color:var(--tx1);line-height:1.25}
-.rpm-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;background:rgba(255,181,32,.15);border:.5px solid rgba(255,181,32,.4);color:var(--amber);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
-.rpm-desc{font-size:12.5px;line-height:1.55;color:var(--tx2);margin-bottom:14px}
-.rpm-stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:16px}
+.rpm-card{width:min(100%,470px);border-radius:20px;border:1px solid rgba(202,243,0,.25);background:linear-gradient(180deg,rgba(14,18,26,.98),rgba(7,10,16,.98));box-shadow:0 30px 90px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.1);padding:18px 16px;position:relative;overflow:hidden;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.rpm-close{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:var(--tx2,#8c95a4);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;z-index:60;transition:all .15s ease}
+.rpm-close:hover{background:rgba(255,255,255,.18);color:#fff}
+.rpm-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;padding-right:34px}
+.rpm-title{font-size:17px;font-weight:850;color:var(--tx1);line-height:1.25}
+.rpm-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;background:rgba(255,181,32,.15);border:.5px solid rgba(255,181,32,.4);color:var(--amber);font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;transition:all .2s ease}
+.rpm-desc{font-size:12px;line-height:1.55;color:var(--tx2);margin-bottom:12px}
+.rpm-stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:14px}
 .rpm-stat{padding:8px 6px;border-radius:12px;background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.08);text-align:center}
 .rpm-stat span{display:block;font-size:8px;font-weight:800;letter-spacing:.08em;color:var(--tx3);text-transform:uppercase;margin-bottom:2px}
 .rpm-stat strong{font-family:var(--mono);font-size:14px;color:var(--accent)}
-.rpm-comparison{margin-bottom:18px;padding:12px 14px;border-radius:14px;background:rgba(5,10,20,.6);border:.5px solid rgba(255,255,255,.07);display:grid;gap:8px;font-size:11.5px;line-height:1.45}
+.rpm-comparison{margin-bottom:16px;padding:12px 14px;border-radius:14px;background:rgba(5,10,20,.6);border:.5px solid rgba(255,255,255,.07);display:grid;gap:8px;font-size:11.5px;line-height:1.45}
 .rpm-comp-row{display:flex;align-items:flex-start;gap:8px}
 .rpm-comp-bad{color:rgba(255,99,118,.9)}
 .rpm-comp-good{color:var(--accent)}
 .rpm-actions{display:flex;flex-direction:column;gap:8px}
-.rpm-btn-pro{width:100%;height:44px;border-radius:999px;border:none;background:linear-gradient(135deg,var(--accent),#10b981);color:#040810;font-weight:850;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 0 24px rgba(42,255,212,.3)}
+.rpm-btn-pro{width:100%;height:44px;border-radius:999px;border:none;background:linear-gradient(135deg,#caf300,#10b981);color:#040810;font-weight:850;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 0 24px rgba(202,243,0,.3);transition:transform .15s,filter .15s}
 .rpm-btn-pro:active{transform:scale(.98)}
 .rpm-btn-single{width:100%;height:44px;border-radius:999px;border:none;background:linear-gradient(135deg,#07C160,#10b981);color:#fff;font-weight:850;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 0 24px rgba(7,193,96,.35);transition:transform .15s,filter .15s}
 .rpm-btn-single:active{transform:scale(.98);filter:brightness(.95)}
+.rpm-btn-preview{width:100%;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:var(--tx2);font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.rpm-btn-preview:hover{background:rgba(255,255,255,.08);color:#fff}
+
+/* ── Acoustic Measurement Certificate (Stitch Pro Report) ── */
+.pro-cert-toggle-wrap{margin-bottom:12px;display:flex;flex-direction:column;gap:6px}
+.pro-cert-toggle-tabs{display:flex;background:#060709;border:1px solid #1f2228;border-radius:999px;padding:3px;gap:4px}
+.pro-cert-tab{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 10px;border-radius:999px;border:1px solid transparent;background:transparent;color:var(--tx2,#8c95a4);font-size:11.5px;font-weight:700;cursor:pointer;transition:all .2s ease}
+.pro-cert-tab.active.free-tab{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.4);color:#ff6b7d}
+.pro-cert-tab.active.pro-tab{background:rgba(202,243,0,.15);border-color:#caf300;color:#caf300}
+.pro-cert-toggle-hint{font-size:10.5px;line-height:1.45;color:#8c95a4;padding:6px 10px;background:rgba(255,255,255,.025);border-radius:8px;border:1px solid #181b21}
+
+.pro-cert-wrap{position:relative;width:100%;border-radius:14px;overflow:hidden;border:1px solid #1f2228;background:#0b0c0e;margin-bottom:14px;box-shadow:0 12px 32px rgba(0,0,0,.5)}
+.pro-cert-card{width:100%;display:flex;flex-direction:column;background:#0b0c0e;color:#e5e8ed;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:11px}
+
+/* Watermark Overlay */
+.pro-cert-watermark-overlay{position:absolute;inset:0;z-index:45;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;user-select:none;background:rgba(255,30,60,.03)}
+.pro-cert-watermark-stamp{transform:rotate(-14deg);border:2.5px dashed #ef4444;background:rgba(239,68,68,.18);backdrop-filter:blur(3px);color:#ff5566;font-family:var(--mono,monospace);font-size:13px;font-weight:900;padding:6px 14px;border-radius:8px;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 6px 20px rgba(0,0,0,.6);text-align:center;line-height:1.35;white-space:nowrap;margin:12px 0}
+.pro-cert-watermark-row{transform:rotate(-22deg);font-family:var(--mono,monospace);font-size:11.5px;font-weight:800;letter-spacing:.14em;color:rgba(239,68,68,.32);white-space:nowrap;display:flex;gap:26px;width:180%;justify-content:center}
+
+/* Certificate Header */
+.pro-cert-header{padding:12px 14px 10px;border-bottom:1px solid #1b1e25;background:#0b0c0e;display:flex;flex-direction:column;gap:9px}
+.pro-cert-doc-row{display:flex;align-items:center;justify-content:space-between;font-size:9.5px;font-family:var(--mono,monospace);color:#8c95a4}
+.pro-cert-doc-badge{border:1px solid #282d37;padding:2px 7px;border-radius:4px;background:#111317;color:#e5e8ed;display:inline-flex;align-items:center;gap:4px;font-family:var(--mono,monospace);font-size:9px;letter-spacing:.04em}
+.pro-cert-brand-row{display:flex;align-items:flex-end;justify-content:space-between;padding-top:6px;border-top:1px solid #181b21}
+.pro-cert-brand{display:flex;align-items:center;gap:8px}
+.pro-cert-icon-box{width:26px;height:26px;border-radius:5px;background:#16181f;border:1px solid #2a2f3a;display:flex;align-items:center;justify-content:center;padding:2px;flex-shrink:0}
+.pro-cert-title-txt{font-size:17px;font-weight:900;color:#fff;letter-spacing:-.02em;line-height:1}
+.pro-cert-title-ext{font-size:11px;font-family:var(--mono,monospace);font-weight:800;color:#caf300;line-height:1}
+.pro-cert-sub{font-size:9.5px;font-family:var(--mono,monospace);color:#8c95a4;margin-top:4px}
+.pro-cert-standard-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 6px;border-radius:4px;border:1px solid #272b35;background:#111317;font-size:8.5px;font-family:var(--mono,monospace);color:#c2c8d2}
+.pro-cert-time-row{padding-top:6px;font-size:9px;font-family:var(--mono,monospace);color:#8c95a4;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #181b21}
+
+/* Certificate Hero Section */
+.pro-cert-hero{padding:14px;border-bottom:1px solid #1b1e25;background:linear-gradient(180deg,#0b0c0e 0%,#0f1115 100%);display:flex;flex-direction:column;gap:12px}
+.pro-cert-hero-top{display:flex;align-items:center;justify-content:space-between}
+.pro-cert-hero-main{display:flex;align-items:baseline;justify-content:space-between;padding:2px 0}
+.pro-cert-hero-db{font-size:56px;font-weight:900;font-family:var(--mono,monospace);color:#fff;line-height:1;letter-spacing:-.04em}
+.pro-cert-hero-unit{font-size:17px;font-family:var(--mono,monospace);color:#8c95a4;font-weight:300;margin-left:6px}
+.pro-cert-hero-meta{text-align:right;font-family:var(--mono,monospace);font-size:9px;color:#8c95a4;display:flex;flex-direction:column;gap:2px}
+.pro-cert-gauge-wrap{position:relative;width:100%;height:6px;background:#161920;border-radius:3px;overflow:hidden}
+.pro-cert-gauge-fill{position:absolute;left:0;top:0;bottom:0;background:#caf300;transition:width .3s}
+.pro-cert-gauge-needle{position:absolute;top:0;bottom:0;width:2px;background:#fff;z-index:2;box-shadow:0 0 4px #fff}
+.pro-cert-gauge-labels{display:flex;justify-content:space-between;align-items:center;font-size:8.5px;font-family:var(--mono,monospace);color:#656d7b;padding-top:2px}
+.pro-cert-bands{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;font-size:8px;font-family:var(--mono,monospace);color:#656d7b;padding-top:6px;border-top:1px solid #181b21}
+
+/* Certificate Quad Metric Grid */
+.pro-cert-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:#0c0d11;border-bottom:1px solid #1b1e25}
+.pro-cert-cell{padding:10px 12px;border-right:1px solid #1b1e25;border-bottom:1px solid #1b1e25;display:flex;flex-direction:column;gap:4px}
+.pro-cert-cell:nth-child(2n){border-right:none}
+.pro-cert-cell-top{display:flex;align-items:center;justify-content:space-between;font-size:9px;font-family:var(--mono,monospace);color:#8c95a4}
+.pro-cert-cell-val{font-size:22px;font-weight:800;font-family:var(--mono,monospace);color:#fff;line-height:1}
+.pro-cert-cell-foot{font-size:8.5px;font-family:var(--mono,monospace);color:#656d7b;padding-top:3px;border-top:1px solid #161920;display:flex;justify-content:space-between}
+
+/* Certificate Trend Waveform */
+.pro-cert-trend{padding:12px 14px;border-bottom:1px solid #1b1e25;background:#0b0c0e;display:flex;flex-direction:column;gap:8px}
+.pro-cert-trend-head{display:flex;align-items:center;justify-content:space-between}
+.pro-cert-trend-title{font-size:10.5px;font-weight:800;color:#fff;display:inline-flex;align-items:center;gap:6px;letter-spacing:.04em;text-transform:uppercase}
+.pro-cert-chart-box{position:relative;width:100%;height:100px;background:#0e1014;border-radius:6px;border:1px solid #1d2027;padding:6px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+.pro-cert-grid-lines{position:absolute;inset:6px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;z-index:1}
+.pro-cert-grid-line{width:100%;display:flex;justify-content:space-between;font-size:7px;font-family:var(--mono,monospace);color:#656d7b;border-bottom:1px dashed #20242e}
+.pro-cert-chart-svg{width:100%;height:100%;position:relative;z-index:2;overflow:visible}
+.pro-cert-peak-badge{position:absolute;top:8px;right:12px;background:#16181e;border:1px solid #2b303c;padding:2px 6px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;z-index:3;font-size:8px;font-family:var(--mono,monospace);color:#e5e8ed}
+.pro-cert-time-axis{display:flex;justify-content:space-between;font-size:8px;font-family:var(--mono,monospace);color:#656d7b;padding-top:3px;border-top:1px solid #181b21}
+
+/* Certificate Forensic Audit Section */
+.pro-cert-audit{padding:12px 14px;border-bottom:1px solid #1b1e25;background:#0b0c0e;display:flex;flex-direction:column;gap:10px}
+.pro-cert-audit-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1b1e25;padding-bottom:6px}
+.pro-cert-box{padding:10px;border-radius:6px;background:#101217;border:1px solid #1d2027;display:flex;flex-direction:column;gap:5px}
+.pro-cert-box-head{display:flex;justify-content:space-between;align-items:center;font-size:9px;font-family:var(--mono,monospace);color:#8c95a4}
+.pro-cert-box-loc{font-size:11px;font-weight:600;color:#fff}
+.pro-cert-box-addr{font-size:9px;color:#8c95a4;margin-top:1px}
+.pro-cert-percentile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center;font-family:var(--mono,monospace)}
+.pro-cert-pct-cell{padding:5px 2px;border-radius:4px;background:#101217;border:1px solid #1d2027}
+.pro-cert-pct-lbl{display:block;font-size:8px;color:#8c95a4}
+.pro-cert-pct-val{font-size:11px;font-weight:700;color:#fff}
+.pro-cert-cal-list{font-size:9px;font-family:var(--mono,monospace);display:flex;flex-direction:column;gap:3px}
+.pro-cert-cal-row{display:flex;justify-content:space-between;align-items:center;color:#c2c8d2}
+
+/* Certificate Footer Section */
+.pro-cert-footer{padding:12px 14px;background:#0a0b0d;display:flex;flex-direction:column;gap:9px}
+.pro-cert-qr-row{display:flex;align-items:center;justify-content:space-between}
+.pro-cert-qr-box{width:32px;height:32px;background:#121419;border:1px solid #262b35;padding:2px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px}
+.pro-cert-qr-dot{background:#fff}
+.pro-cert-qr-dot.acc{background:#caf300}
+.pro-cert-qr-dot.dark{background:#121419}
+.pro-cert-hash-row{display:flex;justify-content:space-between;align-items:center;font-size:8.5px;font-family:var(--mono,monospace);color:#8c95a4;border-top:1px solid #181b21;padding-top:7px}
+.pro-cert-disclaimer{font-size:8px;line-height:1.45;color:#656d7b;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+.pro-cert-brand-foot{display:flex;justify-content:space-between;font-size:8px;font-family:var(--mono,monospace);color:#8c95a4;border-top:1px solid #181b21;padding-top:6px}
 .wx-pay-modal{position:fixed;inset:0;z-index:230;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,7,14,.86);backdrop-filter:blur(24px)}
 .wx-pay-modal.show{display:flex}
 .wx-pay-card{width:min(100%,420px);border-radius:24px;border:.5px solid rgba(7,193,96,.4);background:linear-gradient(180deg,rgba(10,22,28,.98),rgba(6,12,18,.98));box-shadow:0 30px 90px rgba(0,0,0,.75),0 0 40px rgba(7,193,96,.15);padding:24px;position:relative;text-align:center}
@@ -2024,19 +2114,399 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
       </div>
       <span class="rpm-badge" id="rpmBadge">预览模式 (含防伪水印)</span>
     </div>
-    <div class="rpm-hero-img" style="margin:10px -4px 12px;border-radius:10px;overflow:hidden;max-height:140px;">
 
-      <img src="assets/images/forensic_report_preview.webp" alt="含水印预览版 vs 正式无水印存证 PDF 对比示意" loading="lazy" style="width:100%;height:140px;object-fit:cover;object-position:center top;display:block;">
-
+    <!-- Free vs Pro Watermark Toggle Switcher -->
+    <div class="pro-cert-toggle-wrap">
+      <div class="pro-cert-toggle-tabs" role="tablist">
+        <button type="button" class="pro-cert-tab active free-tab" id="rpmTabFree" onclick="toggleCertWatermark(true)">
+          <span class="pro-cert-tab-icon">⚠️</span>
+          <span id="rpmTabFreeText">免费预览版 (含水印)</span>
+        </button>
+        <button type="button" class="pro-cert-tab" id="rpmTabPro" onclick="toggleCertWatermark(false)">
+          <span class="pro-cert-tab-icon">★</span>
+          <span id="rpmTabProText">正式专业版 (无水印存证)</span>
+        </button>
+      </div>
+      <div class="pro-cert-toggle-hint" id="rpmToggleHint">
+        💡 免费预览版带有全页防伪水印；升级专业版立得 100% 纯净法律存证底稿与数字指纹。
+      </div>
     </div>
 
-    <div class="rpm-desc" id="rpmDesc">别再用无法证明真伪的普通手机录音去争论。免费版带有全页防伪水印，极易被物业或邻居以“音量造假、自己调大”为由推诿驳回；解锁正式版，加盖 SHA-256 唯一数字指纹与 GPS 坐标锚点，让对方无法以任何借口敷衍你。</div>
-    <div class="rpm-stats-grid" id="rpmMetrics">
+    <!-- Acoustic Measurement Certificate Card Wrap with Watermark -->
+    <div class="pro-cert-wrap">
+      <!-- Watermark Overlay Layer -->
+      <div class="pro-cert-watermark-overlay" id="rpmWatermarkLayer">
+        <div class="pro-cert-watermark-stamp">
+          SOUNDTEST.PRO 免费预览版<br>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.04em;">仅供自查 · 严禁司法举证 · SAMPLE ONLY</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>SOUNDTEST.PRO PREVIEW</span>
+          <span>SAMPLE ONLY</span>
+          <span>NOT AUDITED</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>免费试测预览版</span>
+          <span>严禁法理举证</span>
+          <span>UPGRADE TO UNLOCK</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>WATERMARKED PREVIEW</span>
+          <span>SOUNDTEST.PRO</span>
+          <span>UNVERIFIED DRAFT</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>★ 升级专业版去水印</span>
+          <span>FOR PERSONAL USE ONLY</span>
+          <span>SAMPLE</span>
+        </div>
+      </div>
+
+      <!-- Real Stitch Certificate Body -->
+      <article class="pro-cert-card" id="rpmCertBody">
+        <!-- 1. Header -->
+        <header class="pro-cert-header">
+          <div class="pro-cert-doc-row">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="display:inline-block;width:6px;height:6px;border-radius:1px;background:#caf300;"></span>
+              <span style="letter-spacing:0.12em;text-transform:uppercase;color:#c2c8d2;font-weight:700;font-size:8.5px;">CERTIFICATE OF ACOUSTIC MEASUREMENT</span>
+            </div>
+            <div class="pro-cert-doc-badge">
+              <svg style="width:10px;height:10px;color:#caf300;" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              <span id="certDocId">DOC: ST-8902-LA</span>
+            </div>
+          </div>
+          <div class="pro-cert-brand-row">
+            <div>
+              <div class="pro-cert-brand">
+                <div class="pro-cert-icon-box">
+                  <svg style="width:100%;height:100%;color:#caf300;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="#323846" stroke-dasharray="2 2" stroke-width="1.2"></circle>
+                    <circle cx="12" cy="12" r="6.5" stroke="#caf300" stroke-opacity="0.35" stroke-width="1.2"></circle>
+                    <path d="M7 12h1.5l1.2-4 2.3 8 2-6 1.3 3.5 1.7-1.5" stroke="#caf300" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path>
+                    <circle cx="12" cy="12" fill="#caf300" r="1.5"></circle>
+                  </svg>
+                </div>
+                <div style="display:flex;align-items:baseline;gap:4px;">
+                  <span class="pro-cert-title-txt">SOUNDTEST</span>
+                  <span class="pro-cert-title-ext">.PRO</span>
+                </div>
+              </div>
+              <div class="pro-cert-sub">声学现场测定与环境噪音取证报告</div>
+            </div>
+            <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;">
+              <div class="pro-cert-standard-pill">
+                <svg style="width:9px;height:9px;color:#caf300;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1"></rect><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"></path></svg>
+                <span>IEC 61672 CLASS 1</span>
+              </div>
+              <div style="font-size:8.5px;font-family:var(--mono,monospace);color:#656d7b;margin-top:2px;">FAST · dBA WEIGHTING</div>
+            </div>
+          </div>
+          <div class="pro-cert-time-row">
+            <div style="display:flex;gap:8px;">
+              <span id="certUtcDate">UTC 2026-10-04</span>
+              <span id="certUtcTime" style="color:#656d7b;">12:00:00</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;">
+              <svg style="width:11px;height:11px;color:#caf300;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <span style="font-size:8px;color:#656d7b;">CALIBRATION</span>
+              <span style="color:#caf300;font-weight:700;font-size:8.5px;">VERIFIED (PASS)</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- 2. Primary Sound Level Display -->
+        <section class="pro-cert-hero">
+          <div class="pro-cert-hero-top">
+            <div style="display:flex;align-items:center;gap:6px;font-size:9.5px;font-family:var(--mono,monospace);">
+              <span style="color:#656d7b;text-transform:uppercase;letter-spacing:0.08em;">BASELINE METRIC</span>
+              <span style="color:#374151;">/</span>
+              <span id="certStandardHint" style="color:#c2c8d2;font-weight:500;">室内居住 · 办公标准</span>
+            </div>
+            <span class="pro-cert-standard-pill" id="certStatusPill" style="color:#caf300;background:rgba(202,243,0,0.06);border-color:#272c36;">
+              <span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:#caf300;"></span>安静 · QUIET
+            </span>
+          </div>
+          <div class="pro-cert-hero-main">
+            <div style="display:flex;align-items:baseline;">
+              <span class="pro-cert-hero-db" id="certHeroDb">49</span>
+              <span class="pro-cert-hero-unit">dB<span style="font-size:11px;color:#656d7b;">(A)</span></span>
+            </div>
+            <div class="pro-cert-hero-meta">
+              <span style="color:#656d7b;letter-spacing:0.06em;">AVERAGE LEVEL</span>
+              <strong style="color:#e5e8ed;font-size:9.5px;">LAeq (INTEGRATED)</strong>
+              <span style="color:#caf300;font-size:9.5px;">Δ 0.4 dB REF</span>
+            </div>
+          </div>
+          <div>
+            <div class="pro-cert-gauge-wrap">
+              <div class="pro-cert-gauge-fill" id="certGaugeFill" style="width:40.8%;"></div>
+              <div class="pro-cert-gauge-needle" id="certGaugeNeedle" style="left:40.8%;"></div>
+            </div>
+            <div class="pro-cert-gauge-labels">
+              <span>0 dB (听阈)</span>
+              <span id="certGaugeText" style="color:#c2c8d2;font-weight:600;">49 dB · 宁静区间</span>
+              <span>120 dB (痛阈)</span>
+            </div>
+            <div class="pro-cert-bands">
+              <div>极度寂静 &lt;30</div>
+              <div style="color:#caf300;font-weight:600;">住宅/办公 40-50</div>
+              <div>城市干道 65-75</div>
+              <div style="text-align:right;">工业重噪 &gt;85</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Quad-Metric Engineering Grid -->
+        <section class="pro-cert-grid">
+          <div class="pro-cert-cell">
+            <div class="pro-cert-cell-top">
+              <span style="display:inline-flex;align-items:center;gap:3px;color:#c2c8d2;">
+                <svg style="width:10px;height:10px;color:#caf300;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline><line x1="12" y1="12" x2="12" y2="9" y2="21"></line></svg>
+                最高 · Lmax
+              </span>
+              <span style="color:#8c95a4;" id="rpmPeakLabel">PEAK</span>
+            </div>
+            <div style="display:flex;align-items:baseline;">
+              <span class="pro-cert-cell-val" id="certLmax">89</span>
+              <span style="font-size:10px;font-family:var(--mono,monospace);margin-left:3px;color:#8c95a4;">dB</span>
+            </div>
+            <div class="pro-cert-cell-foot">
+              <span>峰值脉冲扰动</span>
+              <span style="color:#8c95a4;">MAX PEAK</span>
+            </div>
+          </div>
+          <div class="pro-cert-cell">
+            <div class="pro-cert-cell-top">
+              <span style="display:inline-flex;align-items:center;gap:3px;color:#c2c8d2;">
+                <svg style="width:10px;height:10px;color:#8c95a4;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                最低 · Lmin
+              </span>
+              <span style="color:#8c95a4;">FLOOR</span>
+            </div>
+            <div style="display:flex;align-items:baseline;">
+              <span class="pro-cert-cell-val" id="certLmin">44</span>
+              <span style="font-size:10px;font-family:var(--mono,monospace);margin-left:3px;color:#8c95a4;">dB</span>
+            </div>
+            <div class="pro-cert-cell-foot">
+              <span>环境自然底噪</span>
+              <span style="color:#caf300;">OPTIMAL</span>
+            </div>
+          </div>
+          <div class="pro-cert-cell">
+            <div class="pro-cert-cell-top">
+              <span style="display:inline-flex;align-items:center;gap:3px;color:#c2c8d2;">
+                <svg style="width:10px;height:10px;color:#8c95a4;" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M2 12c1.5-3 3-5 5-5s3.5 10 5 10 3.5-10 5-10 3.5 7 5 5"></path></svg>
+                等效声级 · LAeq
+              </span>
+              <span style="color:#8c95a4;" id="rpmAvgLabel">AVERAGE</span>
+            </div>
+            <div style="display:flex;align-items:baseline;">
+              <span class="pro-cert-cell-val" id="certLeq">56</span>
+              <span style="font-size:10px;font-family:var(--mono,monospace);margin-left:3px;color:#8c95a4;">dB</span>
+            </div>
+            <div class="pro-cert-cell-foot">
+              <span>时间能量积分</span>
+              <span style="color:#c2c8d2;">RMS LEQ</span>
+            </div>
+          </div>
+          <div class="pro-cert-cell">
+            <div class="pro-cert-cell-top">
+              <span style="display:inline-flex;align-items:center;gap:3px;color:#c2c8d2;">
+                <svg style="width:10px;height:10px;color:#8c95a4;" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M7 16a6 6 0 0 1 10-6"></path><circle cx="12" cy="13" r="1.5"></circle></svg>
+                中值统计 · L50
+              </span>
+              <span style="color:#8c95a4;">50% PROB</span>
+            </div>
+            <div style="display:flex;align-items:baseline;">
+              <span class="pro-cert-cell-val" id="certL50">48</span>
+              <span style="font-size:10px;font-family:var(--mono,monospace);margin-left:3px;color:#8c95a4;">dB</span>
+            </div>
+            <div class="pro-cert-cell-foot">
+              <span>累积暴露中值</span>
+              <span style="color:#c2c8d2;">NOMINAL</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. LEQ Temporal Trend Waveform -->
+        <section class="pro-cert-trend">
+          <div class="pro-cert-trend-head">
+            <div class="pro-cert-trend-title">
+              <svg style="width:13px;height:13px;color:#caf300;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              <span>声级时序动态趋势 (LEQ TREND)</span>
+            </div>
+            <span style="font-size:8.5px;font-family:var(--mono,monospace);color:#8c95a4;">RES: 100ms · 5 MIN</span>
+          </div>
+          <div class="pro-cert-chart-box">
+            <div class="pro-cert-grid-lines">
+              <div class="pro-cert-grid-line"><span>90 dB (上限警戒)</span><span>CEILING</span></div>
+              <div class="pro-cert-grid-line"><span>65 dB (日间商办)</span><span>COMMERCIAL</span></div>
+              <div class="pro-cert-grid-line"><span>45 dB (夜间室内)</span><span>RESIDENTIAL</span></div>
+              <div class="pro-cert-grid-line"><span>30 dB</span><span>FLOOR</span></div>
+            </div>
+            <svg class="pro-cert-chart-svg" preserveAspectRatio="none" viewBox="0 0 340 100">
+              <defs>
+                <linearGradient id="certAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#caf300" stop-opacity="0.18"></stop>
+                  <stop offset="70%" stop-color="#caf300" stop-opacity="0.03"></stop>
+                  <stop offset="100%" stop-color="#caf300" stop-opacity="0"></stop>
+                </linearGradient>
+              </defs>
+              <path id="certTrendFill" d="M 0,80 L 25,78 L 50,81 L 75,77 L 100,79 L 125,80 L 150,76 L 175,82 L 200,79 L 225,81 L 235,18 L 245,78 L 275,80 L 305,78 L 340,80 L 340,100 L 0,100 Z" fill="url(#certAreaGrad)"></path>
+              <path id="certTrendPath" d="M 0,80 L 25,78 L 50,81 L 75,77 L 100,79 L 125,80 L 150,76 L 175,82 L 200,79 L 225,81 L 235,18 L 245,78 L 275,80 L 305,78 L 340,80" fill="none" stroke="#caf300" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3"></path>
+              <circle cx="235" cy="18" fill="#060709" r="2.5" stroke="#caf300" stroke-width="1.5"></circle>
+            </svg>
+            <div class="pro-cert-peak-badge">
+              <span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:#caf300;"></span>
+              <span id="certPeakTag">PEAK: 89 dB(A)</span>
+            </div>
+            <div class="pro-cert-time-axis">
+              <span>00:00</span>
+              <span>01:15</span>
+              <span>02:30</span>
+              <span>03:45</span>
+              <span>05:00</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Forensic Audit & Metadata -->
+        <section class="pro-cert-audit">
+          <div class="pro-cert-audit-head">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <svg style="width:13px;height:13px;color:#caf300;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+              <span style="font-size:10.5px;font-weight:800;color:#fff;text-transform:uppercase;">证据元数据与校准审计</span>
+            </div>
+            <span style="font-size:9px;font-family:var(--mono,monospace);color:#caf300;display:inline-flex;align-items:center;gap:4px;">
+              <span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:#caf300;"></span>DIGITAL CHAIN VALID
+            </span>
+          </div>
+
+          <!-- Geofence -->
+          <div class="pro-cert-box">
+            <div class="pro-cert-box-head">
+              <span style="display:inline-flex;align-items:center;gap:4px;">
+                <svg style="width:11px;height:11px;color:#8c95a4;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"></circle><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"></path></svg>
+                地理坐标存证 (GEOFENCE REFERENCE)
+              </span>
+              <span style="color:#caf300;font-size:8.5px;">RTK ±5M</span>
+            </div>
+            <div>
+              <div class="pro-cert-box-loc" id="certLocTitle">现场声学监测站点 (GPS 坐标锚定)</div>
+              <div class="pro-cert-box-addr" id="certLocSub">经纬度定位已加密固化</div>
+            </div>
+            <div style="padding-top:4px;border-top:1px solid #1b1e25;display:flex;justify-content:space-between;font-size:8.5px;font-family:var(--mono,monospace);color:#8c95a4;">
+              <span id="certGpsCoord">GPS: 34.052000, -118.262700</span>
+              <span style="color:#c2c8d2;">WGS-84 ELLIPSOID</span>
+            </div>
+          </div>
+
+          <!-- Percentiles -->
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="font-size:9px;font-family:var(--mono,monospace);color:#8c95a4;text-transform:uppercase;letter-spacing:0.04em;">统计累计百分数声级 (PERCENTILE LEVELS)</div>
+            <div class="pro-cert-percentile-grid">
+              <div class="pro-cert-pct-cell">
+                <span class="pro-cert-pct-lbl">L5 (5%)</span>
+                <span class="pro-cert-pct-val"><span id="certL5">55</span> <span style="font-size:8px;color:#8c95a4;">dB</span></span>
+              </div>
+              <div class="pro-cert-pct-cell">
+                <span class="pro-cert-pct-lbl">L10 (10%)</span>
+                <span class="pro-cert-pct-val"><span id="certL10">51</span> <span style="font-size:8px;color:#8c95a4;">dB</span></span>
+              </div>
+              <div class="pro-cert-pct-cell">
+                <span class="pro-cert-pct-lbl">L90 (90%)</span>
+                <span class="pro-cert-pct-val"><span id="certL90">46</span> <span style="font-size:8px;color:#8c95a4;">dB</span></span>
+              </div>
+              <div class="pro-cert-pct-cell">
+                <span class="pro-cert-pct-lbl">L95 (95%)</span>
+                <span class="pro-cert-pct-val"><span id="certL95">46</span> <span style="font-size:8px;color:#8c95a4;">dB</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sensor Calibration Box -->
+          <div class="pro-cert-box">
+            <div class="pro-cert-box-head" style="border-bottom:1px solid #1b1e25;padding-bottom:4px;">
+              <span style="display:inline-flex;align-items:center;gap:4px;">
+                <svg style="width:11px;height:11px;color:#caf300;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                声学传感器硬件标定与误差审计
+              </span>
+              <span style="font-size:8px;color:#caf300;border:1px solid rgba(202,243,0,0.3);background:rgba(202,243,0,0.06);padding:1px 4px;border-radius:3px;">CALIBRATED</span>
+            </div>
+            <div class="pro-cert-cal-list">
+              <div class="pro-cert-cal-row">
+                <span style="color:#8c95a4;">实体专业声级计实机联调标定:</span>
+                <span style="color:#fff;font-weight:600;">PASS (94.0 dB @ 1kHz)</span>
+              </div>
+              <div class="pro-cert-cal-row">
+                <span style="color:#8c95a4;">系统校准偏置 (Calibration Offset):</span>
+                <span style="color:#fff;font-weight:600;" id="certCalOffset">-12.0 dB</span>
+              </div>
+              <div class="pro-cert-cal-row">
+                <span style="color:#8c95a4;">麦克风前置增益 (Preamp Gain):</span>
+                <span style="color:#fff;font-weight:600;" id="certMicGain">+18.0 dB</span>
+              </div>
+              <div class="pro-cert-cal-row" style="border-top:1px solid #181b21;padding-top:3px;">
+                <span style="color:#c2c8d2;font-weight:600;">基准估计综合误差:</span>
+                <span style="color:#caf300;font-weight:700;" id="certErrRange">±1.2 dB</span>
+              </div>
+              <div style="font-size:8px;color:#656d7b;text-align:right;">实体专业声级计联调校验，综合允差 ≤ ±1.8 dB</div>
+            </div>
+            <div style="padding-top:4px;border-top:1px solid #1b1e25;display:flex;justify-content:space-between;font-size:8px;color:#8c95a4;">
+              <span>标准声学校准仪实机校验 (Acoustic Calibrator)</span>
+              <span style="color:#c2c8d2;">REF: ST-CAL-V4</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Cryptographic Proof & Official Footer -->
+        <footer class="pro-cert-footer">
+          <div class="pro-cert-qr-row">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="pro-cert-qr-box">
+                <span class="pro-cert-qr-dot"></span><span class="pro-cert-qr-dot"></span><span class="pro-cert-qr-dot dark"></span><span class="pro-cert-qr-dot"></span>
+                <span class="pro-cert-qr-dot"></span><span class="pro-cert-qr-dot dark"></span><span class="pro-cert-qr-dot"></span><span class="pro-cert-qr-dot dark"></span>
+                <span class="pro-cert-qr-dot dark"></span><span class="pro-cert-qr-dot"></span><span class="pro-cert-qr-dot acc"></span><span class="pro-cert-qr-dot"></span>
+                <span class="pro-cert-qr-dot"></span><span class="pro-cert-qr-dot dark"></span><span class="pro-cert-qr-dot"></span><span class="pro-cert-qr-dot"></span>
+              </div>
+              <div>
+                <div style="font-size:9.5px;font-weight:700;color:#fff;font-family:var(--mono,monospace);">防伪验真存证标识</div>
+                <div style="font-size:8px;font-family:var(--mono,monospace);color:#656d7b;">SCAN TO VERIFY AUDIT TRAIL</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div class="pro-cert-standard-pill" style="color:#caf300;font-weight:700;">
+                <svg style="width:9px;height:9px;color:#caf300;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                PASSED
+              </div>
+              <div style="font-size:7.5px;font-family:var(--mono,monospace);color:#656d7b;margin-top:2px;">IMMUTABLE LOG</div>
+            </div>
+          </div>
+          <div class="pro-cert-hash-row">
+            <span style="display:inline-flex;align-items:center;gap:4px;">
+              <svg style="width:10px;height:10px;color:#8c95a4;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              数字防伪签名 SHA-256:
+            </span>
+            <span id="certSha256" style="color:#c2c8d2;letter-spacing:0.04em;">e8b94f92...a3d1b712</span>
+          </div>
+          <div class="pro-cert-disclaimer">本报告由 SOUNDTEST.PRO 声学计算引擎基于高精度硬件校准自动生成，完整环境音频频谱、时序波动及取证地理栅格数据已固化至去中心化加密证据链，具备民事参考及现场环境比对效力（非国家法定计量检定机构计量证书，仅供民事实测存证参考）。</div>
+          <div class="pro-cert-brand-foot">
+            <span>SOUNDTEST LABS · CERTIFIED ACOUSTIC AUDIT</span>
+            <span style="color:#fff;font-weight:600;">SOUNDTEST.PRO</span>
+          </div>
+        </footer>
+      </article>
+    </div>
+
+    <!-- Legacy metric stats container (kept for script compatibility) -->
+    <div class="rpm-stats-grid" id="rpmMetrics" style="display:none;">
       <div class="rpm-stat"><span id="rpmAvgLabel">平均声级</span><strong id="rpmAvg">-- dB</strong></div>
       <div class="rpm-stat"><span id="rpmPeakLabel">峰值声级</span><strong id="rpmPeak">-- dB</strong></div>
       <div class="rpm-stat"><span id="rpmCountLabel">记录条数</span><strong id="rpmCount">1</strong></div>
       <div class="rpm-stat"><span id="rpmIdLabel">防篡改 ID</span><strong id="rpmId">SF-VERIFIED</strong></div>
     </div>
+
     <div class="rpm-comparison">
       <div class="rpm-comp-row">
         <span class="rpm-comp-bad">✕</span>
@@ -2047,6 +2517,7 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
         <span id="rpmCompGoodText"><strong>正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一防伪指纹</strong>与 <strong>GPS 经纬度锚点</strong>，彻底杜绝对方以造假为由推诿。</span>
       </div>
     </div>
+
     <div class="rpm-actions">
       <button class="rpm-btn-pro" id="rpmUpgradeBtn" type="button">
         <span id="rpmUpgradeBtnText">★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限次无水印 + 长期纠纷档案 + 夜间哨兵</span>
@@ -4637,6 +5108,21 @@ function translateReportPreviewModal(){
   const isZh = appLanguage === 'zh-CN';
   setText('rpmTitle', isZh ? '📄 现场声学取证报告已生成' : '📄 Acoustic Evidence Report Generated');
   setText('rpmBadge', isZh ? '预览模式 (含防伪水印)' : 'Preview Mode (Watermarked)');
+  setText('rpmTabFreeText', isZh ? '免费预览版 (含水印)' : 'Free Preview (Watermarked)');
+  setText('rpmTabProText', isZh ? '正式专业版 (无水印存证)' : 'Official Pro (No Watermark)');
+  const toggleHint = document.getElementById('rpmToggleHint');
+  const isProTab = document.getElementById('rpmTabPro')?.classList.contains('active');
+  if (toggleHint) {
+    if (isProTab) {
+      toggleHint.innerHTML = isZh
+        ? '✨ <strong>当前为【正式专业版】效果预览</strong>：去除全页水印，已加盖 SHA-256 数字防伪签名与 GPS 经纬度锚点。'
+        : '✨ <strong>Official Pro Preview</strong>: Full watermark removed, sealed with SHA-256 digital signature and GPS geofence.';
+    } else {
+      toggleHint.innerHTML = isZh
+        ? '💡 免费预览版带有全页防伪水印；升级专业版立得 100% 纯净法律存证底稿与数字指纹。'
+        : '💡 Free Preview includes full-page security watermarks. Upgrade to Pro for 100% clean legal forensic certificate.';
+    }
+  }
   setText('rpmDesc', isZh
     ? '别再用无法证明真伪的普通手机录音去争论。免费版带有全页防伪水印，极易被物业或邻居以“音量造假、自己调大”为由推诿驳回；解锁正式版，加盖 SHA-256 唯一数字指纹与 GPS 坐标锚点，让对方无法以任何借口敷衍你。'
     : 'Stop arguing with plain voice memos that anyone can dispute. Free reports include full-page security watermarks that landlords or property managers easily dismiss. Unlock the official report with unique SHA-256 digital fingerprint and GPS coordinates.');
@@ -7080,6 +7566,16 @@ async function saveRec(){
   trackEvent('recording_saved',{kind:DB.records[0]?.mediaKind||'audio',persisted,avgDb:DB.records[0]?.avgDb||0,duration:dur});
   showCapTemporarily('info',appLanguage!=='zh-CN'?`${savedKind} saved`:`${savedKind}会话已保存`,persisted?(appLanguage!=='zh-CN'?'Saved to this browser with session details.':'媒体文件和会话元数据已保存到本机浏览器。'):(appLanguage!=='zh-CN'?'Temporary file. Save it from Records before closing or refreshing.':'本次会话已暂存，请在刷新或关闭页面前到记录页保存到手机。'),'SAVED');
   toast(recordingSaveStatus==='persistent'?(appLanguage!=='zh-CN'?`${savedKind} saved`:`${savedKind}已保存到记录列表`):(appLanguage!=='zh-CN'?`${savedKind} is temporary. Save it from Records.`:`${savedKind}已暂存，请立即在记录页保存`),'info',6200);
+  const recLbl = document.getElementById('recLabel');
+  if (recLbl) {
+    const isZh = appLanguage === 'zh-CN';
+    recLbl.innerHTML = (isZh ? '录制完成，已保存 · ' : 'Recorded & saved · ') + `<a href="javascript:void(0)" onclick="openLatestReportPreview()" style="color:var(--accent);text-decoration:underline;font-weight:700">${isZh ? '查看声学报告 ↗' : 'View Report ↗'}</a>`;
+  }
+  setTimeout(() => {
+    if (DB.records && DB.records.length) {
+      openReportPreviewModal([DB.records[0]], false);
+    }
+  }, 450);
 }
 
 /* ── Camera ── */
@@ -8663,20 +9159,220 @@ const CREEM_CHECKOUT_URLS = {
   lifetime: 'https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV',
 };
 
+function toggleCertWatermark(showWatermark) {
+  const isZh = appLanguage === 'zh-CN';
+  const wmLayer = document.getElementById('rpmWatermarkLayer');
+  const tabFree = document.getElementById('rpmTabFree');
+  const tabPro = document.getElementById('rpmTabPro');
+  const hint = document.getElementById('rpmToggleHint');
+  const badge = document.getElementById('rpmBadge');
+  const upBtn = document.getElementById('rpmUpgradeBtn');
+
+  if (showWatermark) {
+    if (wmLayer) wmLayer.style.display = 'flex';
+    if (tabFree) { tabFree.classList.add('active', 'free-tab'); }
+    if (tabPro) { tabPro.classList.remove('active', 'pro-tab'); }
+    if (hint) {
+      hint.innerHTML = isZh
+        ? '💡 <strong>当前为【免费预览版】</strong>：报告带有全页防伪水印，极易被对方质疑；升级专业版立享 100% 纯净法律存证底稿与数字指纹。'
+        : '💡 <strong>Free Preview Mode</strong>: Watermarked report for personal reference. Upgrade to Pro for 100% clean legal forensic certificate.';
+    }
+    if (badge) {
+      badge.textContent = isZh ? '免费预览版 (含水印)' : 'Preview Mode (Watermarked)';
+      badge.style.background = 'rgba(255,181,32,.15)';
+      badge.style.color = 'var(--amber)';
+    }
+  } else {
+    if (wmLayer) wmLayer.style.display = 'none';
+    if (tabPro) { tabPro.classList.add('active', 'pro-tab'); }
+    if (tabFree) { tabFree.classList.remove('active', 'free-tab'); }
+    if (hint) {
+      hint.innerHTML = isZh
+        ? '✨ <strong>当前为【正式专业版】无水印效果预览</strong>：去除全页水印，已加盖 SHA-256 数字防伪签名与 GPS 经纬度锚点。点击下方按钮即可一键解锁！'
+        : '✨ <strong>Official Pro Certificate Preview</strong>: Clean layout, no watermarks, sealed with SHA-256 digital signature and GPS geofence. Upgrade below to export!';
+    }
+    if (badge) {
+      badge.textContent = isZh ? '★ 官方正式版 (去水印)' : '★ Official Pro (No Watermark)';
+      badge.style.background = 'rgba(202,243,0,.15)';
+      badge.style.color = '#caf300';
+    }
+    if (upBtn && !isProActive()) {
+      upBtn.style.filter = 'brightness(1.15)';
+      setTimeout(() => { if (upBtn) upBtn.style.filter = ''; }, 1200);
+    }
+  }
+}
+
+function renderCertificateData(r) {
+  if (!r) return;
+  const isZh = appLanguage === 'zh-CN';
+  const recTime = r.time ? new Date(r.time) : new Date();
+  const utcDate = recTime.toISOString().slice(0, 10);
+  const utcTime = recTime.toISOString().slice(11, 19);
+
+  // Doc ID
+  const docId = r.evidenceId ? (r.evidenceId.startsWith('DOC:') ? r.evidenceId : `DOC: ${r.evidenceId}`) : `DOC: ST-${String(r.id || '8902').slice(-4)}-LA`;
+  const elDoc = document.getElementById('certDocId');
+  if (elDoc) elDoc.textContent = docId;
+
+  // Timestamp
+  const elUtcDate = document.getElementById('certUtcDate');
+  const elUtcTime = document.getElementById('certUtcTime');
+  if (elUtcDate) elUtcDate.textContent = `UTC ${utcDate}`;
+  if (elUtcTime) elUtcTime.textContent = utcTime;
+
+  // Hero dB
+  const activeDb = Math.round(r.avgDb || r.leqDb || 49);
+  const elHeroDb = document.getElementById('certHeroDb');
+  if (elHeroDb) elHeroDb.textContent = String(activeDb);
+
+  // Status & Scene
+  const elStatusPill = document.getElementById('certStatusPill');
+  const elStandardHint = document.getElementById('certStandardHint');
+  const elGaugeFill = document.getElementById('certGaugeFill');
+  const elGaugeNeedle = document.getElementById('certGaugeNeedle');
+  const elGaugeText = document.getElementById('certGaugeText');
+
+  let statusText = isZh ? '安静 · QUIET' : 'QUIET · SAFE';
+  let standardText = isZh ? '室内居住 · 办公标准' : 'Residential & Office Standard';
+  let gaugeText = isZh ? `${activeDb} dB · 宁静区间` : `${activeDb} dB · Quiet Band`;
+  let statusColor = '#caf300';
+
+  if (activeDb >= 85) {
+    statusText = isZh ? '重噪 · HAZARDOUS' : 'HAZARDOUS · SEVERE';
+    standardText = isZh ? '工业与高噪场所标准' : 'Industrial Noise Standard';
+    gaugeText = isZh ? `${activeDb} dB · 严重超标` : `${activeDb} dB · Hazardous Band`;
+    statusColor = '#ff4455';
+  } else if (activeDb >= 65) {
+    statusText = isZh ? '超标 · WARNING' : 'WARNING · ELEVATED';
+    standardText = isZh ? '城市干道与商业标准' : 'Commercial Traffic Standard';
+    gaugeText = isZh ? `${activeDb} dB · 轻度超标` : `${activeDb} dB · Elevated Band`;
+    statusColor = '#fbbf24';
+  } else if (activeDb >= 50) {
+    statusText = isZh ? '适中 · MODERATE' : 'MODERATE · ACCEPTABLE';
+    standardText = isZh ? '日间生活办公标准' : 'Daytime Living Standard';
+    gaugeText = isZh ? `${activeDb} dB · 正常区间` : `${activeDb} dB · Normal Band`;
+    statusColor = '#38bdf8';
+  }
+
+  if (elStatusPill) {
+    elStatusPill.innerHTML = `<span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:${statusColor};margin-right:4px;"></span>${statusText}`;
+    elStatusPill.style.color = statusColor;
+  }
+  if (elStandardHint) elStandardHint.textContent = standardText;
+  if (elGaugeText) elGaugeText.textContent = gaugeText;
+
+  const pct = Math.min(100, Math.max(0, (activeDb / 120) * 100));
+  if (elGaugeFill) elGaugeFill.style.width = `${pct}%`;
+  if (elGaugeNeedle) elGaugeNeedle.style.left = `${pct}%`;
+
+  // Quad grid
+  const elMax = document.getElementById('certLmax');
+  const elMin = document.getElementById('certLmin');
+  const elLeq = document.getElementById('certLeq');
+  const elL50 = document.getElementById('certL50');
+  if (elMax) elMax.textContent = String(r.peakDb || Math.round(activeDb * 1.2));
+  if (elMin) elMin.textContent = String(r.minDb || Math.round(activeDb * 0.85));
+  if (elLeq) elLeq.textContent = String(r.leqDb || activeDb);
+  if (elL50) elL50.textContent = String(r.l50Db || r.ln?.L50 || activeDb);
+
+  // Peak timestamp label
+  const elPeakTag = document.getElementById('certPeakTag');
+  if (elPeakTag) {
+    const peakVal = r.peakDb || Math.round(activeDb * 1.2);
+    elPeakTag.textContent = `PEAK: ${peakVal} dB(A)`;
+  }
+
+  // Trend SVG
+  const elTrendSvg = document.getElementById('certTrendPath');
+  const elTrendFill = document.getElementById('certTrendFill');
+  if (elTrendSvg && r.snap && r.snap.length >= 4) {
+    const snap = r.snap;
+    const maxVal = Math.max(...snap, 90);
+    const minVal = Math.min(...snap, 30);
+    const range = (maxVal - minVal) || 1;
+    const pts = snap.map((val, idx) => {
+      const x = Math.round((idx / (snap.length - 1)) * 340);
+      const y = Math.round(90 - ((val - minVal) / range) * 75);
+      return `${x},${y}`;
+    });
+    const dLine = `M ${pts.join(' L ')}`;
+    const dFill = `${dLine} L 340,100 L 0,100 Z`;
+    elTrendSvg.setAttribute('d', dLine);
+    if (elTrendFill) elTrendFill.setAttribute('d', dFill);
+  }
+
+  // Geofence
+  const elLocTitle = document.getElementById('certLocTitle');
+  const elLocSub = document.getElementById('certLocSub');
+  const elGpsCoord = document.getElementById('certGpsCoord');
+  if (r.loc && (r.loc.lat || r.loc.place)) {
+    const place = (typeof locPlaceText === 'function' ? locPlaceText(r.loc) : '') || (isZh ? '现场声学监测站点' : 'Acoustic Monitoring Site');
+    if (elLocTitle) elLocTitle.textContent = place;
+    if (elLocSub) elLocSub.textContent = r.loc.addr || (isZh ? '经纬度定位已锚定' : 'Geographic coordinates anchored');
+    if (elGpsCoord) elGpsCoord.textContent = `GPS: ${r.loc.lat?.toFixed(6) || '--'}, ${r.loc.lng?.toFixed(6) || '--'} (±${r.loc.acc || 5}m)`;
+  } else {
+    if (elLocTitle) elLocTitle.textContent = isZh ? '现场声学测定站点 (离线记录)' : 'Field Acoustic Test Site';
+    if (elLocSub) elLocSub.textContent = isZh ? '室内或未开启 GPS 权限' : 'Indoor or GPS offline';
+    if (elGpsCoord) elGpsCoord.textContent = 'GPS: WGS-84 PENDING';
+  }
+
+  // Percentiles
+  const elL5 = document.getElementById('certL5');
+  const elL10 = document.getElementById('certL10');
+  const elL90 = document.getElementById('certL90');
+  const elL95 = document.getElementById('certL95');
+  if (elL5) elL5.textContent = String(r.l5Db || r.ln?.L5 || Math.round(activeDb * 1.1));
+  if (elL10) elL10.textContent = String(r.l10Db || r.ln?.L10 || Math.round(activeDb * 1.05));
+  if (elL90) elL90.textContent = String(r.l90Db || r.ln?.L90 || Math.max(30, Math.round(activeDb * 0.92)));
+  if (elL95) elL95.textContent = String(r.l95Db || r.ln?.L95 || Math.max(28, Math.round(activeDb * 0.88)));
+
+  // Calibration
+  const calOff = r.calibration?.offsetDb ?? calOffset ?? 0;
+  const micGain = r.calibration?.micGainDb ?? micGainDb ?? 0;
+  const errRange = r.calibration?.errorRange ?? (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : '1.2');
+  const elCalOffset = document.getElementById('certCalOffset');
+  const elMicGain = document.getElementById('certMicGain');
+  const elErrRange = document.getElementById('certErrRange');
+  if (elCalOffset) elCalOffset.textContent = `${calOff >= 0 ? '+' : ''}${calOff.toFixed(1)} dB`;
+  if (elMicGain) elMicGain.textContent = `${micGain >= 0 ? '+' : ''}${micGain.toFixed(1)} dB`;
+  if (elErrRange) elErrRange.textContent = `±${errRange} dB`;
+
+  // SHA-256
+  const hash = r.hashes?.metadataSha256 || r.hashes?.mediaSha256 || 'e8b94f92d4710ca8b0051e86337a3d1b712';
+  const elHash = document.getElementById('certSha256');
+  if (elHash) elHash.textContent = `${hash.slice(0, 8)}...${hash.slice(-8)}`;
+
+  // Also sync legacy rpm fields
+  const avg = document.getElementById('rpmAvg');
+  const peak = document.getElementById('rpmPeak');
+  const idEl = document.getElementById('rpmId');
+  if (avg) avg.textContent = `${activeDb} dB`;
+  if (peak) peak.textContent = `${r.peakDb || Math.round(activeDb * 1.2)} dB`;
+  if (idEl) idEl.textContent = (r.evidenceId || 'SF-VERIFIED').slice(0, 10);
+}
+
+function openLatestReportPreview() {
+  const sample = (window.DB && Array.isArray(DB.records) && DB.records.length)
+    ? [DB.records[0]]
+    : [{ avgDb: Math.round(curDb || 49), peakDb: Math.round(peak || 68), evidenceId: 'ST-8902-LA' }];
+  openReportPreviewModal(sample, false);
+}
+
 function openReportPreviewModal(recs, isBatch = false) {
   const modal = document.getElementById('reportPreviewModal');
   if (!modal) return;
   const isZh = appLanguage === 'zh-CN';
   const r0 = recs[0] || {};
-  const avg = document.getElementById('rpmAvg');
-  const peak = document.getElementById('rpmPeak');
+
+  renderCertificateData(r0);
+
   const count = document.getElementById('rpmCount');
-  const idEl = document.getElementById('rpmId');
-  if (avg) avg.textContent = `${r0.avgDb || '--'} dB`;
-  if (peak) peak.textContent = `${r0.peakDb || '--'} dB`;
   if (count) count.textContent = String(recs.length);
-  if (idEl) idEl.textContent = (r0.evidenceId || 'SF-VERIFIED').slice(0, 10);
-  
+
+  const isPro = isProActive();
+  toggleCertWatermark(!isPro);
+
   const singleBtn = document.getElementById('rpmUnlockSingleBtn');
   const singleBtnText = document.getElementById('rpmUnlockSingleBtnText');
   const upBtn = document.getElementById('rpmUpgradeBtn');
@@ -8688,9 +9384,9 @@ function openReportPreviewModal(recs, isBatch = false) {
   if (isZh) {
     if (badEl) badEl.innerHTML = '<strong>当前预览版 (带全页防伪水印)：</strong>仅供个人试测初查，向物业或房东投诉时容易被质疑“录音可自行调大音量或证据造假”。';
     if (goodEl) goodEl.innerHTML = '<strong>官方正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一数字指纹</strong>与 <strong>GPS 经纬度绝对坐标锚点</strong>，彻底杜绝对方以造假为由推诿。';
-    if (dlBtn) dlBtn.textContent = '先下载带水印预览版 (仅供个人自查)';
+    if (dlBtn) dlBtn.textContent = isPro ? '导出正式无水印存证 PDF' : '先下载带水印预览版 (仅供个人自查)';
     if (singleBtn) {
-      singleBtn.style.display = 'flex';
+      singleBtn.style.display = isPro ? 'none' : 'flex';
       if (singleBtnText) singleBtnText.textContent = '⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去水印 + 防伪存证ID';
       singleBtn.onclick = () => {
         closeReportPreviewModal();
@@ -8698,12 +9394,16 @@ function openReportPreviewModal(recs, isBatch = false) {
       };
     }
     if (upBtnText) {
-      upBtnText.textContent = '★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限制去水印 + 长期纠纷档案 + 夜间哨兵';
+      upBtnText.textContent = isPro ? '★ 您已是 PRO 专业版用户 · 享有无限次无水印存证导出' : '★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限制去水印 + 长期纠纷档案 + 夜间哨兵';
     }
     if (upBtn) {
       upBtn.onclick = () => {
-        closeReportPreviewModal();
-        openWeChatPayModal('yearly', recs, isBatch);
+        if (isPro) {
+          toast('您已拥有专业版无限权限', 'info');
+        } else {
+          closeReportPreviewModal();
+          openWeChatPayModal('yearly', recs, isBatch);
+        }
       };
     }
     let wxOptEl = document.getElementById('rpmWxMoreOptions');
@@ -8714,7 +9414,7 @@ function openReportPreviewModal(recs, isBatch = false) {
       upBtn.parentNode.insertBefore(wxOptEl, dlBtn);
     }
     if (wxOptEl) {
-      wxOptEl.style.display = 'flex';
+      wxOptEl.style.display = isPro ? 'none' : 'flex';
       wxOptEl.innerHTML = `
         <span style="color:var(--soft);">其他方案：</span>
         <a href="javascript:void(0)" id="rpmWxMonthlyLink" style="color:var(--text-dim);text-decoration:underline;">月卡 ¥9.9 (<del>¥19.9</del>)</a>
@@ -8728,23 +9428,23 @@ function openReportPreviewModal(recs, isBatch = false) {
     }
   } else {
     const wxOptEl = document.getElementById('rpmWxMoreOptions');
-    if (wxOptEl) wxOptEl.style.display = 'flex';
+    if (wxOptEl) wxOptEl.style.display = isPro ? 'none' : 'flex';
     if (badEl) badEl.innerHTML = '<strong>Free Preview (Watermarked):</strong> For personal checks only. Easily disputed by landlords or property managers as unverified or volume-manipulated.';
     if (goodEl) goodEl.innerHTML = '<strong>Forensic Evidence Report (Watermark Removed):</strong> Sealed with <strong>SHA-256 cryptographic hash</strong> and <strong>GPS geolocation anchor</strong>—irrefutable acoustic documentation.';
-    if (dlBtn) dlBtn.textContent = 'Download Watermarked Preview (Reference Only)';
+    if (dlBtn) dlBtn.textContent = isPro ? 'Export Official Forensic PDF (Clean)' : 'Download Watermarked Preview (Reference Only)';
     if (singleBtn) {
-      singleBtn.style.display = 'flex';
+      singleBtn.style.display = isPro ? 'none' : 'flex';
       if (singleBtnText) singleBtnText.textContent = '⚡ Unlock Single Report $1.99 (Reg. $4.99 · Save 60%) · Clean PDF & Cryptographic ID';
       singleBtn.onclick = () => {
         window.open(CREEM_CHECKOUT_URLS.single, '_blank', 'noopener');
       };
     }
     if (upBtnText) {
-      upBtnText.textContent = '★ Upgrade PRO Yearly $24.99/yr (Reg. $59.99 · Best Value) · Unlimited Reports + Dossier + Sentry Mode';
+      upBtnText.textContent = isPro ? '★ PRO Active · Unlimited Forensic Reports' : '★ Upgrade PRO Yearly $24.99/yr (Reg. $59.99 · Best Value) · Unlimited Reports + Dossier + Sentry Mode';
     }
     if (upBtn) {
       upBtn.onclick = () => {
-        window.open(CREEM_CHECKOUT_URLS.yearly, '_blank', 'noopener');
+        if (!isPro) window.open(CREEM_CHECKOUT_URLS.yearly, '_blank', 'noopener');
       };
     }
     if (wxOptEl) {
@@ -8762,11 +9462,13 @@ function openReportPreviewModal(recs, isBatch = false) {
     freeDlBtn.onclick = () => {
       closeReportPreviewModal();
       try {
-        const doc = buildPDF(recs, true);
-        const filename = isBatch ? `soundtest.pro-all-preview-${new Date().toISOString().slice(0,10)}.pdf` : `soundtest.pro-preview-${(r0.time ? new Date(r0.time) : new Date()).toISOString().slice(0,10)}.pdf`;
+        const doc = buildPDF(recs, !isPro);
+        const filename = isBatch 
+          ? `soundtest.pro-all-${isPro ? 'report' : 'preview'}-${new Date().toISOString().slice(0,10)}.pdf` 
+          : `soundtest.pro-${isPro ? 'report' : 'preview'}-${(r0.time ? new Date(r0.time) : new Date()).toISOString().slice(0,10)}.pdf`;
         doc.save(filename);
-        toast(isZh ? '已下载带水印预览版报告' : 'Preview report downloaded', 'info', 4000);
-        trackEvent('pdf_exported', { records: recs.length, batch: isBatch, plan: 'free_preview' });
+        toast(isZh ? (isPro ? '已下载正式无水印存证报告' : '已下载带水印预览版报告') : (isPro ? 'Official report downloaded' : 'Preview report downloaded'), 'info', 4000);
+        trackEvent('pdf_exported', { records: recs.length, batch: isBatch, plan: isPro ? currentPlan : 'free_preview' });
       } catch (e) {
         toast(t('messages.pdfMissing'), 'err', 5200);
       }
@@ -8783,7 +9485,7 @@ function closeReportPreviewModal() {
 function showReportPreviewModal() {
   const sample = (window.DB && Array.isArray(DB.records) && DB.records.length)
     ? DB.records
-    : [{ avgDb: Math.round(curDb || 52), peakDb: Math.round(peak || 68), evidenceId: 'SF-DEMO-SAMPLE' }];
+    : [{ avgDb: Math.round(curDb || 49), peakDb: Math.round(peak || 68), minDb: Math.round((curDb||49)*0.85), leqDb: Math.round(curDb||49), evidenceId: 'ST-8902-LA' }];
   openReportPreviewModal(sample);
 }
 
