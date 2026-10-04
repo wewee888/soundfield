@@ -1708,16 +1708,380 @@
     const isIOS = /(iPad|iPhone|iPod)/i.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     const isAndroid = /Android/i.test(navigator.userAgent || '');
     const lang = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
-    const isZh = lang === 'zh';
+
+    const I18N_BM = {
+      zh: {
+        iosKey: '分享 ⎋', androidKey: '菜单 ⫶', btnDone: '我知道了',
+        toast: '已按下快捷键！正在存入书签栏… 突发噪音随时秒开',
+        ios: {
+          title: '添加到 iPhone / iPad 主屏幕',
+          sub: '突发噪音随时一键全屏调取，如同原生 App 般稳定可靠。',
+          steps: [
+            { num: '1', title: '点击 Safari 底部中央的「分享」图标', desc: '在屏幕最下方工具栏，点击带有向上箭头的正方形分享按钮 ⎋。' },
+            { num: '2', title: '滑动菜单，选择「添加到主屏幕」', desc: '在弹出面板中向下微滑动，找到带有 ➕ 号的“添加到主屏幕 (Add to Home Screen)”。' },
+            { num: '3', title: '点击右上角「添加」即刻生成桌面图标', desc: '下次遇到邻居跺脚或夜间噪音，桌面秒开即测，无需重新搜索网址。' }
+          ]
+        },
+        android: {
+          title: '添加到 Android 手机桌面',
+          sub: '随时调取分贝仪与防伪录音，免去在浏览器反复输入网址。',
+          steps: [
+            { num: '1', title: '点击浏览器右上角的「更多菜单」', desc: '点击右上角竖排三点图标 (⫶) 打开浏览器功能面板。' },
+            { num: '2', title: '选择「添加到主屏幕」或「安装应用」', desc: '在菜单列表中点击“添加到主屏幕 (Add to Home screen)”。' },
+            { num: '3', title: '确认添加，桌面立即可见', desc: '遇到突发扰民随时在手机主屏幕一键秒开，取证快人一步。' }
+          ]
+        },
+        mac: {
+          title: '按快捷键存入 Mac 个人收藏',
+          sub: '突发邻里噪音或深夜机械轰鸣，书签栏 1 秒调取取证。',
+          steps: [
+            { num: '1', title: '直接按下键盘 ⌘ + D 快捷键', desc: '或点击 Safari / Chrome 顶部菜单【书签】➔【添加书签】。' },
+            { num: '2', title: '保存位置建议选择「书签栏」或「个人收藏」', desc: '将名称保留为 SOUNDTEST.PRO，便于在浏览器顶栏直观看见。' },
+            { num: '3', title: '深夜或突发噪音随时一键启动', desc: '无需百度搜索或重新翻查历史记录，1秒进入高灵敏监听。' }
+          ]
+        },
+        win: {
+          title: '按 Ctrl+D 快速存入书签栏',
+          sub: '楼上震楼或窗外施工往往突发发生，存入书签栏随时调取维权！',
+          steps: [
+            { num: '1', title: '按下键盘快捷键 Ctrl + D', desc: '或点击浏览器地址栏右侧的【⭐ 收藏此标签页】星标。' },
+            { num: '2', title: '文件夹建议选择「书签栏」', desc: '名称保留为 SOUNDTEST.PRO，确保在浏览器顶部常驻可见。' },
+            { num: '3', title: '突发扰民无需搜索，书签栏 1 秒秒开', desc: '即开即测，第一时间锁定现场分贝、录音与 GPS 防伪时间戳。' }
+          ]
+        }
+      },
+      en: {
+        iosKey: 'Share ⎋', androidKey: 'Menu ⫶', btnDone: 'Got it',
+        toast: 'Shortcut pressed! Bookmark added for instant emergency noise checks.',
+        ios: {
+          title: 'Add to Home Screen (iOS)',
+          sub: '1-Tap instant access from your home screen during unexpected disturbances.',
+          steps: [
+            { num: '1', title: 'Tap the Share icon in Safari', desc: 'In Safari bottom bar, tap the share icon ⎋ (square with an up arrow).' },
+            { num: '2', title: 'Scroll and select "Add to Home Screen"', desc: 'In the share sheet, find the "Add to Home Screen" option with a ➕ icon.' },
+            { num: '3', title: 'Tap "Add" in the top right', desc: 'Your home screen gets a dedicated app icon for 1-tap rapid noise recording.' }
+          ]
+        },
+        android: {
+          title: 'Add to Home Screen (Android)',
+          sub: 'Keep SOUNDTEST.PRO on your home screen for rapid emergency noise capture.',
+          steps: [
+            { num: '1', title: 'Tap the browser menu icon (⫶)', desc: 'Tap the three-dot menu in the upper right corner of Chrome.' },
+            { num: '2', title: 'Select "Add to Home screen"', desc: 'Tap "Add to Home screen" or "Install App".' },
+            { num: '3', title: 'Confirm addition', desc: 'The icon appears on your home screen ready for instant dB documentation.' }
+          ]
+        },
+        mac: {
+          title: 'Bookmark on macOS',
+          sub: 'Save SOUNDTEST.PRO to your bookmarks bar for 1-click emergency verification.',
+          steps: [
+            { num: '1', title: 'Press ⌘ Command + D on your keyboard', desc: 'Or click the Bookmarks menu in your browser and select "Add Bookmark".' },
+            { num: '2', title: 'Save to Bookmarks Bar / Favorites', desc: 'Keep the name as SOUNDTEST.PRO for immediate one-click visibility.' },
+            { num: '3', title: 'One-click launch during noise spikes', desc: 'Instant access during late-night disruptions without typing URLs.' }
+          ]
+        },
+        win: {
+          title: 'Bookmark with Ctrl+D',
+          sub: 'Save to your browser bookmarks bar for instant access when noise spikes occur.',
+          steps: [
+            { num: '1', title: 'Press Ctrl + D on your keyboard', desc: 'Or click the star icon (⭐) at the right end of your address bar.' },
+            { num: '2', title: 'Select "Bookmarks bar" folder', desc: 'Keep SOUNDTEST.PRO pinned to your browser top bar for immediate access.' },
+            { num: '3', title: 'Instant 1-second launch when disturbance strikes', desc: 'Capture decibels, audio, and GPS tamper-proof timestamps with zero delay.' }
+          ]
+        }
+      },
+      de: {
+        iosKey: 'Teilen ⎋', androidKey: 'Menü ⫶', btnDone: 'Verstanden',
+        toast: 'Tastenkombination gedrückt! Lesezeichen hinzugefügt.',
+        ios: {
+          title: 'Zum Startbildschirm hinzufügen (iOS)',
+          sub: '1-Klick-Sofortzugriff bei unerwartetem Lärm direkt vom Home-Bildschirm.',
+          steps: [
+            { num: '1', title: 'Tippen Sie auf das Teilen-Symbol in Safari', desc: 'Tippen Sie in der unteren Leiste auf das Quadrat mit dem Pfeil nach oben ⎋.' },
+            { num: '2', title: 'Wählen Sie „Zum Home-Bildschirm“', desc: 'Scrollen Sie im Teilen-Menü zur Option mit dem ➕-Symbol.' },
+            { num: '3', title: 'Tippen Sie oben rechts auf „Hinzufügen“', desc: 'SOUNDTEST.PRO ist nun als App-Symbol für schnelle Lärmmessungen bereit.' }
+          ]
+        },
+        android: {
+          title: 'Zum Startbildschirm hinzufügen (Android)',
+          sub: 'Halten Sie SOUNDTEST.PRO griffbereit für sofortige Lärmprotokolle.',
+          steps: [
+            { num: '1', title: 'Tippen Sie auf das Menü-Symbol (⫶)', desc: 'Tippen Sie oben rechts in Chrome auf die drei Punkte.' },
+            { num: '2', title: 'Wählen Sie „Zum Startbildschirm hinzufügen“', desc: 'Wählen Sie im Menü „App installieren“ oder „Zum Startbildschirm“.' },
+            { num: '3', title: 'Hinzufügen bestätigen', desc: 'Das Symbol erscheint sofort auf Ihrem Bildschirm für sekundenschnelle Messung.' }
+          ]
+        },
+        mac: {
+          title: 'Als Lesezeichen speichern (macOS)',
+          sub: 'SOUNDTEST.PRO in der Favoritenleiste sichern für Sofortstart bei Ruhestörung.',
+          steps: [
+            { num: '1', title: 'Drücken Sie ⌘ Command + D', desc: 'Oder wählen Sie im Menü „Lesezeichen“ ➔ „Lesezeichen hinzufügen“.' },
+            { num: '2', title: 'Speicherort „Favoriten / Lesezeichenleiste“ wählen', desc: 'Behalten Sie den Namen SOUNDTEST.PRO für optimale Auffindbarkeit bei.' },
+            { num: '3', title: 'Sofortstart bei nächtlichem Lärm', desc: 'Kein langes Suchen nach URLs – ein Klick genügt.' }
+          ]
+        },
+        win: {
+          title: 'Mit Ctrl+D als Lesezeichen speichern',
+          sub: 'In der Lesezeichenleiste anheften für Sofortzugriff bei akuter Lärmbelästigung.',
+          steps: [
+            { num: '1', title: 'Drücken Sie Strg + D (Ctrl + D)', desc: 'Oder klicken Sie auf das Sternsymbol (⭐) in der Adressleiste.' },
+            { num: '2', title: 'Ordner „Lesezeichenleiste“ auswählen', desc: 'Speichern Sie die Seite für direkten Zugriff oben im Browser.' },
+            { num: '3', title: '1-Sekunden-Start bei Störgeräuschen', desc: 'Dezibel, Audionachweis und GPS-Zeitstempel ohne Zeitverlust festhalten.' }
+          ]
+        }
+      },
+      es: {
+        iosKey: 'Compartir ⎋', androidKey: 'Menú ⫶', btnDone: 'Entendido',
+        toast: '¡Atajo presionado! Marcador guardado para acceso rápido.',
+        ios: {
+          title: 'Añadir a la pantalla de inicio (iOS)',
+          sub: 'Acceso en 1 toque desde tu pantalla de inicio ante cualquier ruido imprevisto.',
+          steps: [
+            { num: '1', title: 'Toca el icono Compartir en Safari', desc: 'En la barra inferior de Safari, pulsa el icono cuadrado con flecha hacia arriba ⎋.' },
+            { num: '2', title: 'Selecciona "Añadir a pantalla de inicio"', desc: 'En el menú emergente, localiza la opción con el símbolo ➕.' },
+            { num: '3', title: 'Pulsa "Añadir" en la esquina superior', desc: 'Tendrás un icono directo en tu pantalla para medir decibelios al instante.' }
+          ]
+        },
+        android: {
+          title: 'Añadir a la pantalla de inicio (Android)',
+          sub: 'Ten SOUNDTEST.PRO a mano para registrar pruebas de ruido sin demoras.',
+          steps: [
+            { num: '1', title: 'Toca el menú de tres puntos (⫶)', desc: 'Pulsa en la esquina superior derecha del navegador Chrome.' },
+            { num: '2', title: 'Elige "Añadir a pantalla de inicio"', desc: 'Selecciona "Añadir a pantalla de inicio" o "Instalar aplicación".' },
+            { num: '3', title: 'Confirma la adición', desc: 'El icono aparecerá en tu escritorio móvil listo para documentar ruidos.' }
+          ]
+        },
+        mac: {
+          title: 'Guardar en Marcadores (macOS)',
+          sub: 'Guarda SOUNDTEST.PRO en tu barra de favoritos para emergencias acústicas.',
+          steps: [
+            { num: '1', title: 'Presiona ⌘ Command + D', desc: 'O haz clic en el menú Marcadores ➔ "Añadir marcador".' },
+            { num: '2', title: 'Selecciona "Barra de favoritos"', desc: 'Conserva el nombre SOUNDTEST.PRO para verlo siempre arriba.' },
+            { num: '3', title: 'Acceso en 1 clic ante ruidos molestos', desc: 'Sin necesidad de teclear direcciones web ni buscar en historiales.' }
+          ]
+        },
+        win: {
+          title: 'Guardar en marcadores con Ctrl+D',
+          sub: 'Ancla la herramienta en tu barra de marcadores para medir ruidos al momento.',
+          steps: [
+            { num: '1', title: 'Presiona Ctrl + D en tu teclado', desc: 'O pulsa la estrella (⭐) al final de la barra de direcciones.' },
+            { num: '2', title: 'Elige la carpeta "Barra de marcadores"', desc: 'Fija el acceso en la parte superior del navegador.' },
+            { num: '3', title: 'Inicio en 1 segundo cuando surge el ruido', desc: 'Registra decibelios, audio y coordenadas GPS con valor probatorio.' }
+          ]
+        }
+      },
+      fr: {
+        iosKey: 'Partager ⎋', androidKey: 'Menu ⫶', btnDone: 'Compris',
+        toast: 'Raccourci activé ! Page ajoutée aux favoris.',
+        ios: {
+          title: 'Ajouter à l\'écran d\'accueil (iOS)',
+          sub: 'Accès instantané en 1 toucher dès qu\'une nuisance sonore se produit.',
+          steps: [
+            { num: '1', title: 'Touchez le bouton Partager dans Safari', desc: 'Dans la barre en bas de Safari, appuyez sur l\'icône carrée avec la flèche ⎋.' },
+            { num: '2', title: 'Choisissez "Sur l\'écran d\'accueil"', desc: 'Faites défiler le menu pour trouver l\'icône ➕ "Sur l\'écran d\'accueil".' },
+            { num: '3', title: 'Touchez "Ajouter" en haut à droite', desc: 'L\'icône est créée sur votre écran pour lancer l\'enregistrement sans délai.' }
+          ]
+        },
+        android: {
+          title: 'Ajouter à l\'écran d\'accueil (Android)',
+          sub: 'Gardez le sonomètre à portée de main en cas de tapage nocturne.',
+          steps: [
+            { num: '1', title: 'Touchez le menu à trois points (⫶)', desc: 'Appuyez en haut à droite de votre navigateur Chrome.' },
+            { num: '2', title: 'Sélectionnez "Ajouter à l\'écran d\'accueil"', desc: 'Ou "Installer l\'application" selon votre version.' },
+            { num: '3', title: 'Confirmez l\'ajout', desc: 'L\'icône est prête sur votre mobile pour constater le niveau sonore.' }
+          ]
+        },
+        mac: {
+          title: 'Ajouter aux favoris (macOS)',
+          sub: 'Épinglez SOUNDTEST.PRO dans vos favoris pour un accès immédiat.',
+          steps: [
+            { num: '1', title: 'Appuyez sur ⌘ Command + D', desc: 'Ou cliquez sur le menu Favoris ➔ "Ajouter aux favoris".' },
+            { num: '2', title: 'Choisissez l\'emplacement "Barre des favoris"', desc: 'Gardez le nom SOUNDTEST.PRO pour une visibilité directe.' },
+            { num: '3', title: 'Activation en un clic lors d\'un tapage', desc: 'Plus besoin de chercher le site web au milieu de la nuit.' }
+          ]
+        },
+        win: {
+          title: 'Ajouter aux favoris avec Ctrl+D',
+          sub: 'Enregistrez dans votre barre de favoris pour lancer la mesure instantanément.',
+          steps: [
+            { num: '1', title: 'Appuyez sur Ctrl + D au clavier', desc: 'Ou cliquez sur l\'étoile (⭐) à droite de la barre d\'adresse.' },
+            { num: '2', title: 'Sélectionnez le dossier "Barre de favoris"', desc: 'Gardez SOUNDTEST.PRO toujours visible en haut du navigateur.' },
+            { num: '3', title: 'Démarrage en 1 seconde en cas de litige', desc: 'Capturez les dB, l\'audio et l\'horodatage certifié sans perte de temps.' }
+          ]
+        }
+      },
+      ja: {
+        iosKey: '共有 ⎋', androidKey: 'メニュー ⫶', btnDone: '了解',
+        toast: 'ショートカット検知！ ブックマークに登録して騒音時に即座に測定可能。',
+        ios: {
+          title: 'iPhone / iPad のホーム画面に追加',
+          sub: '突発的な騒音トラブル時もホーム画面から1タップで全画面起動できます。',
+          steps: [
+            { num: '1', title: 'Safari 下部の「共有」アイコンをタップ', desc: '画面最下部の中央にある四角と矢印の共有ボタン ⎋ をタップします。' },
+            { num: '2', title: 'メニューから「ホーム画面に追加」を選択', desc: '下へスクロールし、➕ アイコンの「ホーム画面に追加」を選びます。' },
+            { num: '3', title: '右上の「追加」をタップ', desc: '次回からアプリアイコンをタップするだけで瞬時に騒音測定を開始できます。' }
+          ]
+        },
+        android: {
+          title: 'Android のホーム画面に追加',
+          sub: '騒音発生時にすぐ起動できるようホーム画面にショートカットを配置します。',
+          steps: [
+            { num: '1', title: 'ブラウザ右上のメニュー（⫶）をタップ', desc: 'Chrome 右上の縦の3点リーダーアイコンをタップします。' },
+            { num: '2', title: '「ホーム画面に追加」または「アプリをインストール」を選択', desc: 'メニュー一覧から該当項目をタップします。' },
+            { num: '3', title: '追加を確認して完了', desc: 'スマホのホーム画面にアイコンが作成され、1秒で測定画面に入れます。' }
+          ]
+        },
+        mac: {
+          title: 'ショートカットキーで Mac にブックマーク',
+          sub: '深夜の騒音や上階の足音に備え、ブックマークバーに常駐させます。',
+          steps: [
+            { num: '1', title: 'キーボードで ⌘ Command + D を押す', desc: 'またはブラウザ上部メニューの【ブックマーク】➔【ブックマークを追加】を選択。' },
+            { num: '2', title: '保存先を「お気に入り」または「ブックマークバー」に指定', desc: '名前を SOUNDTEST.PRO にしておくと視認性が高まります。' },
+            { num: '3', title: '騒音発生時にワンクリックで即起動', desc: '検索やURL入力の手間なく、直ちにデシベル測定と録音を開始できます。' }
+          ]
+        },
+        win: {
+          title: 'Ctrl+D でブックマークバーに素早く登録',
+          sub: '突発的な工事や隣人トラブル時、ブックマークバーから1秒で証拠採取を開始！',
+          steps: [
+            { num: '1', title: 'キーボードの Ctrl + D を押す', desc: 'またはアドレスバー右端の星型アイコン（⭐）をクリックします。' },
+            { num: '2', title: 'フォルダを「ブックマークバー」に指定', desc: 'ブラウザの上部に常に表示されるように設定します。' },
+            { num: '3', title: '騒音が発生したら1秒で起動', desc: '即座に現場の音圧デシベル、録音、GPS改ざん防止タイムスタンプを確保。' }
+          ]
+        }
+      },
+      ko: {
+        iosKey: '공유 ⎋', androidKey: '메뉴 ⫶', btnDone: '확인',
+        toast: '단축키 입력 확인! 북마크에 추가되었습니다.',
+        ios: {
+          title: 'iPhone / iPad 홈 화면에 추가',
+          sub: '돌발 소음 발생 시 홈 화면에서 1초 만에 전체 화면으로 즉시 실행 가능합니다.',
+          steps: [
+            { num: '1', title: 'Safari 하단 중앙의 [공유] 아이콘 터치', desc: '화면 맨 아래 툴바에서 위쪽 화살표가 있는 사각형 아이콘 ⎋을 누릅니다.' },
+            { num: '2', title: '메뉴를 스크롤하여 [홈 화면에 추가] 선택', desc: '팝업 시트에서 ➕ 기호가 표시된 "홈 화면에 추가" 항목을 선택합니다.' },
+            { num: '3', title: '우측 상단 [추가] 터치', desc: '홈 화면에 앱 아이콘이 생성되어 층간소음 발생 시 즉시 측정할 수 있습니다.' }
+          ]
+        },
+        android: {
+          title: 'Android 휴대폰 홈 화면에 추가',
+          sub: 'URL 검색 없이 바탕화면에서 즉시 데시벨 측정 및 녹음을 시작합니다.',
+          steps: [
+            { num: '1', title: '브라우저 우측 상단 더보기 메뉴(⫶) 터치', desc: 'Chrome 브라우저 오른쪽 위의 점 세 개 아이콘을 누릅니다.' },
+            { num: '2', title: '[홈 화면에 추가] 또는 [앱 설치] 선택', desc: '메뉴 목록에서 "홈 화면에 추가"를 선택합니다.' },
+            { num: '3', title: '추가 확인 완료', desc: '홈 화면에 바로가기가 생성되어 소음 발생 즉시 원터치로 증거를 수집합니다.' }
+          ]
+        },
+        mac: {
+          title: 'Mac 책갈피에 바로 저장하기',
+          sub: '즐겨찾기 바에 저장해 두면 심야 소음 발생 시 1초 만에 실행할 수 있습니다.',
+          steps: [
+            { num: '1', title: '키보드에서 ⌘ Command + D 누르기', desc: '또는 브라우저 상단 메뉴 [책갈피] ➔ [책갈피 추가]를 클릭합니다.' },
+            { num: '2', title: '저장 위치를 "즐겨찾기 막대"로 설정', desc: '이름을 SOUNDTEST.PRO로 유지하여 항상 상단에 보이도록 합니다.' },
+            { num: '3', title: '돌발 소음 시 원클릭 측정 시작', desc: '검색 엔진을 거치지 않고 즉시 고감도 소음 감시 화면으로 진입합니다.' }
+          ]
+        },
+        win: {
+          title: 'Ctrl+D 로 북마크바에 빠른 저장',
+          sub: '윗집 쿵쿵거림이나 야간 소음 발생 시 북마크바에서 1초 만에 증거 포착!',
+          steps: [
+            { num: '1', title: '키보드 단축키 Ctrl + D 누르기', desc: '또는 주소창 오른쪽 끝의 별표(⭐) 아이콘을 클릭합니다.' },
+            { num: '2', title: '폴더를 "북마크바"로 지정', desc: '브라우저 상단에 고정 표시되도록 설정합니다.' },
+            { num: '3', title: '소음 발생 시 즉시 실행', desc: '지연 없이 현장 데시벨 수치, 음성 녹음 및 GPS 타임스탬프를 잠금 보관합니다.' }
+          ]
+        }
+      },
+      th: {
+        iosKey: 'แชร์ ⎋', androidKey: 'เมนู ⫶', btnDone: 'เข้าใจแล้ว',
+        toast: 'ตรวจพบคีย์ลัด! บันทึกหน้าเว็บลงในบุ๊กมาร์กเรียบร้อยแล้ว',
+        ios: {
+          title: 'เพิ่มลงในหน้าจอหลัก (iOS)',
+          sub: 'เปิดใช้งานเต็มหน้าจอได้ใน 1 แตะทันทีที่เกิดเสียงรบกวนฉุกเฉิน',
+          steps: [
+            { num: '1', title: 'แตะไอคอนแชร์ที่ด้านล่างของ Safari', desc: 'บนแถบเครื่องมือด้านล่าง ให้แตะปุ่มสี่เหลี่ยมพร้อมลูกศรชี้ขึ้น ⎋' },
+            { num: '2', title: 'เลื่อนเมนูแล้วเลือก "เพิ่มไปยังหน้าจอโฮม"', desc: 'ค้นหาตัวเลือกที่มีเครื่องหมาย ➕ "เพิ่มไปยังหน้าจอโฮม"' },
+            { num: '3', title: 'แตะ "เพิ่ม" ที่มุมขวาบน', desc: 'ไอคอนแอปจะปรากฏบนหน้าจอหลักพร้อมเปิดตรวจวัดเดซิเบลได้ทันที' }
+          ]
+        },
+        android: {
+          title: 'เพิ่มลงในหน้าจอหลัก (Android)',
+          sub: 'เก็บ SOUNDTEST.PRO ไว้บนหน้าจอหลักเพื่อความรวดเร็วในการบันทึกหลักฐาน',
+          steps: [
+            { num: '1', title: 'แตะไอคอนเมนู 3 จุด (⫶)', desc: 'แตะที่มุมขวาบนของเบราว์เซอร์ Chrome' },
+            { num: '2', title: 'เลือก "เพิ่มลงในหน้าจอหลัก"', desc: 'เลือก "เพิ่มลงในหน้าจอหลัก" หรือ "ติดตั้งแอป"' },
+            { num: '3', title: 'ยืนยันการเพิ่มไอคอน', desc: 'ไอคอนจะปรากฏบนหน้าจอพร้อมเปิดวัดเสียงรบกวนได้ทันท่วงที' }
+          ]
+        },
+        mac: {
+          title: 'บันทึกเป็นบุ๊กมาร์กบน macOS',
+          sub: 'ปักหมุดบนแถบรายการโปรดเพื่อให้พร้อมเปิดใช้งานใน 1 วินาที',
+          steps: [
+            { num: '1', title: 'กดแป้น ⌘ Command + D', desc: 'หรือคลิกเมนู บุ๊กมาร์ก ➔ "เพิ่มบุ๊กมาร์ก"' },
+            { num: '2', title: 'เลือกโฟลเดอร์ "แถบรายการโปรด"', desc: 'ตั้งชื่อเป็น SOUNDTEST.PRO เพื่อให้มองเห็นได้ง่ายที่แถบด้านบน' },
+            { num: '3', title: 'คลิกเปิดใช้งานทันทีเมื่อมีเสียงรบกวน', desc: 'ไม่ต้องเสียเวลาพิมพ์ URL เมื่อเกิดเสียงก่อสร้างหรือเสียงเพื่อนบ้านยามดึก' }
+          ]
+        },
+        win: {
+          title: 'กด Ctrl+D เพื่อบันทึกเป็นบุ๊กมาร์ก',
+          sub: 'บันทึกไว้บนแถบบุ๊กมาร์กเพื่อเรียกใช้เครื่องมือวัดเสียงได้ทันที!',
+          steps: [
+            { num: '1', title: 'กดแป้นพิมพ์ Ctrl + D', desc: 'หรือคลิกไอคอนรูปดาว (⭐) ทางด้านขวาของแถบที่อยู่' },
+            { num: '2', title: 'เลือกโฟลเดอร์ "แถบบุ๊กมาร์ก"', desc: 'เพื่อให้ลิงก์แสดงอยู่ด้านบนสุดของเบราว์เซอร์ตลอดเวลา' },
+            { num: '3', title: 'เปิดใช้งานใน 1 วินาทีเมื่อมีเสียงรบกวน', desc: 'บันทึกค่าเดซิเบล เสียง และพิกัด GPS ป้องกันการแก้ไขได้ทันที' }
+          ]
+        }
+      },
+      vi: {
+        iosKey: 'Chia sẻ ⎋', androidKey: 'Menu ⫶', btnDone: 'Đã hiểu',
+        toast: 'Đã nhận phím tắt! Đang lưu trang vào dấu trang...',
+        ios: {
+          title: 'Thêm vào màn hình chính (iOS)',
+          sub: 'Truy cập tức thì bằng 1 chạm từ màn hình chính khi có tiếng ồn bất ngờ.',
+          steps: [
+            { num: '1', title: 'Nhấn vào biểu tượng Chia sẻ trên Safari', desc: 'Ở thanh công cụ dưới cùng, chạm vào biểu tượng hình vuông có mũi tên ⎋.' },
+            { num: '2', title: 'Cuộn menu và chọn "Thêm vào MH chính"', desc: 'Tìm tùy chọn có biểu tượng dấu ➕ "Thêm vào MH chính".' },
+            { num: '3', title: 'Chạm "Thêm" ở góc trên bên phải', desc: 'Biểu tượng ứng dụng sẽ xuất hiện trên màn hình sẵn sàng đo âm thanh.' }
+          ]
+        },
+        android: {
+          title: 'Thêm vào màn hình chính (Android)',
+          sub: 'Lưu SOUNDTEST.PRO trên màn hình để khởi động ngay khi cần chứng cứ.',
+          steps: [
+            { num: '1', title: 'Chạm vào menu 3 chấm (⫶)', desc: 'Nhấn vào góc trên bên phải của trình duyệt Chrome.' },
+            { num: '2', title: 'Chọn "Thêm vào màn hình chính"', desc: 'Chọn "Thêm vào màn hình chính" hoặc "Cài đặt ứng dụng".' },
+            { num: '3', title: 'Xác nhận thêm', desc: 'Biểu tượng sẽ hiển thị trên điện thoại giúp bạn đo decibel trong tích tắc.' }
+          ]
+        },
+        mac: {
+          title: 'Lưu dấu trang trên macOS',
+          sub: 'Ghim vào thanh dấu trang để mở ngay khi xảy ra tiếng ồn đêm khuya.',
+          steps: [
+            { num: '1', title: 'Nhấn phím ⌘ Command + D trên bàn phím', desc: 'Hoặc chọn menu Dấu trang ➔ "Thêm dấu trang".' },
+            { num: '2', title: 'Chọn thư mục "Thanh dấu trang / Mục ưa thích"', desc: 'Giữ tên SOUNDTEST.PRO để hiển thị rõ ràng trên thanh công cụ.' },
+            { num: '3', title: 'Khởi chạy 1 chạm khi có tiếng ồn', desc: 'Không cần gõ lại địa chỉ web hay tìm kiếm lịch sử.' }
+          ]
+        },
+        win: {
+          title: 'Lưu vào thanh dấu trang bằng Ctrl+D',
+          sub: 'Lưu cố định trên thanh dấu trang để kịp thời ghi nhận bằng chứng tiếng ồn!',
+          steps: [
+            { num: '1', title: 'Nhấn phím tắt Ctrl + D trên bàn phím', desc: 'Hoặc nhấn vào biểu tượng ngôi sao (⭐) ở cuối thanh địa chỉ.' },
+            { num: '2', title: 'Chọn thư mục "Thanh dấu trang"', desc: 'Giữ SOUNDTEST.PRO luôn xuất hiện ở thanh trên cùng của trình duyệt.' },
+            { num: '3', title: 'Khởi động trong 1 giây khi có quấy nhiễu', desc: 'Đo ngay mức decibel, ghi âm và gắn tọa độ GPS chống sửa đổi.' }
+          ]
+        }
+      }
+    };
+
+    const curI18n = I18N_BM[lang] || I18N_BM['en'];
 
     if (keyLabels.length) {
       keyLabels.forEach((el) => {
         if (isMac) {
           el.textContent = '⌘+D';
         } else if (isIOS) {
-          el.textContent = isZh ? '分享 ⎋' : 'Share ⎋';
+          el.textContent = curI18n.iosKey || 'Share ⎋';
         } else if (isAndroid) {
-          el.textContent = isZh ? '菜单 ⫶' : 'Menu ⫶';
+          el.textContent = curI18n.androidKey || 'Menu ⫶';
         } else {
           el.textContent = 'Ctrl+D';
         }
@@ -1749,74 +2113,32 @@
       overlay.setAttribute('role', 'dialog');
       overlay.setAttribute('aria-modal', 'true');
 
-      let title = '';
-      let subtitle = '';
+      let modalData;
       let keyBadgeHtml = '';
-      let steps = [];
 
       if (isIOS) {
-        title = isZh ? '添加到 iPhone / iPad 主屏幕' : 'Add to Home Screen (iOS)';
-        subtitle = isZh ? '突发噪音随时一键全屏调取，如同原生 App 般稳定可靠。' : '1-Tap instant access from your home screen during unexpected disturbances.';
-        keyBadgeHtml = `<div class="bookmark-key-display"><span style="font-size:24px;">📱</span><span style="font-weight:700;">Safari 浏览器</span></div>`;
-        steps = isZh ? [
-          { num: '1', title: '点击 Safari 底部中央的「分享」图标', desc: '在屏幕最下方工具栏，点击带有向上箭头的正方形分享按钮 ⎋。' },
-          { num: '2', title: '滑动菜单，选择「添加到主屏幕」', desc: '在弹出面板中向下微滑动，找到带有 ➕ 号的“添加到主屏幕 (Add to Home Screen)”。' },
-          { num: '3', title: '点击右上角「添加」即刻生成桌面图标', desc: '下次遇到邻居跺脚或夜间噪音，桌面秒开即测，无需重新搜索网址。' }
-        ] : [
-          { num: '1', title: 'Tap the Share icon in Safari', desc: 'In Safari bottom bar, tap the share icon ⎋ (square with an up arrow).' },
-          { num: '2', title: 'Scroll and select "Add to Home Screen"', desc: 'In the share sheet, find the "Add to Home Screen" option with a ➕ icon.' },
-          { num: '3', title: 'Tap "Add" in the top right', desc: 'Your home screen gets a dedicated app icon for 1-tap rapid noise recording.' }
-        ];
+        modalData = curI18n.ios;
+        keyBadgeHtml = `<div class="bookmark-key-display"><span style="font-size:24px;">📱</span><span style="font-weight:700;">Safari</span></div>`;
       } else if (isAndroid) {
-        title = isZh ? '添加到 Android 手机桌面' : 'Add to Home Screen (Android)';
-        subtitle = isZh ? '随时调取分贝仪与防伪录音，免去在浏览器反复输入网址。' : 'Keep SOUNDTEST.PRO on your home screen for rapid emergency noise capture.';
-        keyBadgeHtml = `<div class="bookmark-key-display"><span style="font-size:24px;">📱</span><span style="font-weight:700;">Chrome / 系统浏览器</span></div>`;
-        steps = isZh ? [
-          { num: '1', title: '点击浏览器右上角的「更多菜单」', desc: '点击右上角竖排三点图标 (⫶) 打开浏览器功能面板。' },
-          { num: '2', title: '选择「添加到主屏幕」或「安装应用」', desc: '在菜单列表中点击“添加到主屏幕 (Add to Home screen)”。' },
-          { num: '3', title: '确认添加，桌面立即可见', desc: '遇到突发扰民随时在手机主屏幕一键秒开，取证快人一步。' }
-        ] : [
-          { num: '1', title: 'Tap the browser menu icon (⫶)', desc: 'Tap the three-dot menu in the upper right corner of Chrome.' },
-          { num: '2', title: 'Select "Add to Home screen"', desc: 'Tap "Add to Home screen" or "Install App".' },
-          { num: '3', title: 'Confirm addition', desc: 'The icon appears on your home screen ready for instant dB documentation.' }
-        ];
+        modalData = curI18n.android;
+        keyBadgeHtml = `<div class="bookmark-key-display"><span style="font-size:24px;">📱</span><span style="font-weight:700;">Chrome</span></div>`;
       } else if (isMac) {
-        title = isZh ? '按快捷键存入 Mac 个人收藏' : 'Bookmark on macOS';
-        subtitle = isZh ? '突发邻里噪音或深夜机械轰鸣，书签栏 1 秒调取取证。' : 'Save SOUNDTEST.PRO to your bookmarks bar for 1-click emergency verification.';
+        modalData = curI18n.mac;
         keyBadgeHtml = `<div class="bookmark-key-display"><kbd>⌘</kbd><span style="font-weight:700;color:var(--muted);">+</span><kbd>D</kbd></div>`;
-        steps = isZh ? [
-          { num: '1', title: '直接按下键盘 ⌘ + D 快捷键', desc: '或点击 Safari / Chrome 顶部菜单【书签】➔【添加书签】。' },
-          { num: '2', title: '保存位置建议选择「书签栏」或「个人收藏」', desc: '将名称保留为 SOUNDTEST.PRO，便于在浏览器顶栏直观看见。' },
-          { num: '3', title: '深夜或突发噪音随时一键启动', desc: '无需百度搜索或重新翻查历史记录，1秒进入高灵敏监听。' }
-        ] : [
-          { num: '1', title: 'Press ⌘ Command + D on your keyboard', desc: 'Or click the Bookmarks menu in your browser and select "Add Bookmark".' },
-          { num: '2', title: 'Save to Bookmarks Bar / Favorites', desc: 'Keep the name as SOUNDTEST.PRO for immediate one-click visibility.' },
-          { num: '3', title: 'One-click launch during noise spikes', desc: 'Instant access during late-night disruptions without typing URLs.' }
-        ];
       } else {
-        title = isZh ? '按 Ctrl+D 快速存入书签栏' : 'Bookmark with Ctrl+D';
-        subtitle = isZh ? '楼上震楼或窗外施工往往突发发生，存入书签栏随时调取维权！' : 'Save to your browser bookmarks bar for instant access when noise spikes occur.';
+        modalData = curI18n.win;
         keyBadgeHtml = `<div class="bookmark-key-display"><kbd>Ctrl</kbd><span style="font-weight:700;color:var(--muted);">+</span><kbd>D</kbd></div>`;
-        steps = isZh ? [
-          { num: '1', title: '按下键盘快捷键 Ctrl + D', desc: '或点击浏览器地址栏右侧的【⭐ 收藏此标签页】星标。' },
-          { num: '2', title: '文件夹建议选择「书签栏」', desc: '名称保留为 SOUNDTEST.PRO，确保在浏览器顶部常驻可见。' },
-          { num: '3', title: '突发扰民无需搜索，书签栏 1 秒秒开', desc: '即开即测，第一时间锁定现场分贝、录音与 GPS 防伪时间戳。' }
-        ] : [
-          { num: '1', title: 'Press Ctrl + D on your keyboard', desc: 'Or click the star icon (⭐) at the right end of your address bar.' },
-          { num: '2', title: 'Select "Bookmarks bar" folder', desc: 'Keep SOUNDTEST.PRO pinned to your browser top bar for immediate access.' },
-          { num: '3', title: 'Instant 1-second launch when disturbance strikes', desc: 'Capture decibels, audio, and GPS tamper-proof timestamps with zero delay.' }
-        ];
       }
 
       overlay.innerHTML = `
         <div class="bookmark-modal-card">
-          <button type="button" class="close-btn" id="sfBookmarkCloseBtn" aria-label="${isZh ? '关闭' : 'Close'}">×</button>
+          <button type="button" class="close-btn" id="sfBookmarkCloseBtn" aria-label="Close">×</button>
           <div style="font-size:32px;margin-bottom:6px;">⭐</div>
-          <h3>${title}</h3>
-          <p>${subtitle}</p>
+          <h3>${modalData.title}</h3>
+          <p>${modalData.sub}</p>
           ${keyBadgeHtml}
           <div class="bookmark-steps-list">
-            ${steps.map((s) => `
+            ${modalData.steps.map((s) => `
               <div class="bookmark-step-item">
                 <span class="step-num">${s.num}</span>
                 <div>
@@ -1826,7 +2148,7 @@
               </div>
             `).join('')}
           </div>
-          <button type="button" class="button primary" id="sfBookmarkDoneBtn" style="width:100%;">${isZh ? '我知道了' : 'Got it'}</button>
+          <button type="button" class="button primary" id="sfBookmarkDoneBtn" style="width:100%;">${curI18n.btnDone}</button>
         </div>
       `;
 
@@ -1858,10 +2180,7 @@
 
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D')) {
-        const toastMsg = isZh
-          ? '已按下快捷键！正在存入书签栏… 突发噪音随时秒开'
-          : 'Shortcut pressed! Bookmark added for instant emergency noise checks.';
-        showBookmarkToast(toastMsg);
+        showBookmarkToast(curI18n.toast);
       }
     });
   }

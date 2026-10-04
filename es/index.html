@@ -75,6 +75,11 @@
         </div>
       </div>
       <div class="nav-utility">
+        <button type="button" class="nav-bookmark-btn" data-bookmark-trigger title="Guardar en marcadores o añadir a inicio">
+          <span class="star" aria-hidden="true">⭐</span>
+          <span class="nav-bm-text">Marcador</span>
+          <kbd data-bookmark-key>Ctrl+D</kbd>
+        </button>
         <a class="nav-upgrade" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">
           <span class="star" aria-hidden="true">★</span>
           <span>Pro</span>
@@ -94,6 +99,11 @@
             <a class="button primary" href="../soundtest.html">Iniciar Monitoreo</a>
             <a class="button" href="../samples.html">Ver muestras de informes</a>
             <a class="button ghost" href="../accuracy.html">Leer límites de precisión</a>
+          </div>
+          <div class="hero-bookmark-bar" data-bookmark-trigger title="Añadir a marcadores y acceso rápido">
+            <span class="star-icon" aria-hidden="true">⭐</span>
+            <span>Consejo: Guarda con <kbd data-bookmark-key>Ctrl+D</kbd> en marcadores (en móvil: añadir a inicio) para medir ruidos repentinos</span>
+            <span class="action-arrow" aria-hidden="true">→</span>
           </div>
 
           <form class="hero-search" data-hero-form aria-label="Try the noise evidence workflow">
@@ -404,106 +414,90 @@
         <span>Oferta especial de lanzamiento: Precios reducidos de acceso anticipado. Posteriormente se restablecerán los precios estándar (4,99 $ Único / 9,99 $ Mensual / 59,99 $ Anual / 199 $ De por vida). ¡Asegure su tarifa hoy!</span>
       </div>
 
-      <div class="pricing-row">
+      <!-- Interactive Billing Toggle -->
+      <div class="billing-toggle-wrap reveal">
+        <div class="billing-toggle" role="group" aria-label="Billing cycle selector">
+          <button type="button" class="billing-toggle-btn active" data-billing-toggle="yearly">
+            <span>Facturación Anual</span>
+            <span class="billing-discount-badge">Ahorra 58%</span>
+          </button>
+          <button type="button" class="billing-toggle-btn" data-billing-toggle="monthly">
+            <span>Facturación Mensual</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="pricing-row pricing-three-cards">
         <!-- Free Tier -->
         <div class="price-card reveal">
-          <span class="price-pill">Versión Gratuita</span>
-          <span class="price-name">Medición Web Inmediata</span>
-          <div class="price-tag">$0</div>
-          <div class="price-compare-hint">Comprobación rápida para verificar si el ruido supera los límites legales</div>
+          <span class="price-pill">Nivel Gratuito</span>
+          <span class="price-name">Versión Gratuita</span>
+          <div class="price-tag">$0<small style="font-size:13px;color:var(--soft);">/forever</small></div>
+          <div class="price-compare-hint">Chequeo rápido de nivel de ruido y estimación de dB en tiempo real</div>
           <ul class="check-list">
-            <li>Sonómetro en tiempo real (ponderación A/C)</li>
-            <li>Grabación de audio y visualización de onda</li>
-            <li>Estampado automático de fecha y GPS</li>
-            <li>Informe con marca de agua (uso orientativo)</li>
-            <li>Almacenamiento temporal en el navegador</li>
+            <li>Monitoreo de decibelios en tiempo real (Ponderación A)</li>
+            <li>Espectro de frecuencia FFT dinámico</li>
+            <li>Grabación breve de audio y fotografías con marca de agua</li>
+            <li>Etiquetado automático con marca temporal y geolocalización GPS</li>
+            <li>Informe preliminar para comprobación personal</li>
           </ul>
-          <a class="button" href="../soundtest.html">Probar sonómetro gratis</a>
+          <a class="button" href="../soundtest.html">Comenzar Gratis</a>
         </div>
 
-        <!-- Single Official Report -->
-        <div class="price-card single-report reveal">
-          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
-            <img src="../assets/images/forensic_report_preview.webp" alt="Official forensic PDF vs watermarked preview comparison" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center top;display:block;">
-          </div>
-          <span class="price-pill">Informe Único</span>
-          <span class="price-name">Informe Pericial Oficial</span>
-          <div class="price-tag">
-            <del class="price-del">4,99 $</del>1,99 $
-            <span class="price-discount-tag">60% DTO.</span>
-          </div>
-          <div class="price-compare-hint">Pago único · Desmonta acusaciones de haber subido el volumen</div>
-          <ul class="check-list">
-            <li>1 <strong>Informe PDF probatorio completo sin marcas de agua</strong></li>
-            <li><strong>Firma criptográfica SHA-256</strong> y anclaje GPS</li>
-            <li>Métricas acústicas oficiales (LAeq, L10, L90, pico en dB)</li>
-            <li>Anexo de evidencias con fotos y coordenadas estampadas</li>
-            <li>Documentación formal para administradores, caseros o mediación</li>
-          </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Desbloquear informe · 1,99 $</a>
-        </div>
-
-        <!-- Pro Monthly -->
-        <div class="price-card monthly reveal">
-          <span class="price-pill">Pro Mensual Flexible</span>
-          <span class="price-name">Acceso Pro Mensual</span>
-          <div class="price-tag">
-            <del class="price-del">9,99 $</del>4,99 $<small style="font-size:13px;color:var(--soft);">/mes</small>
-            <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% DTO.</span>
-          </div>
-          <div class="price-compare-hint">Ideal para disputas breves, reformas temporales o inspecciones de alquiler</div>
-          <ul class="check-list">
-            <li><strong>30 días de informes PDF ilimitados</strong> sin marcas de agua</li>
-            <li>🌙 <strong>Modo Centinela Nocturno</strong>: Grabación automática al superar el límite</li>
-            <li>📊 <strong>Dossier de Nuisances Multi-Días</strong>: Gráficos agregados de 30 días</li>
-            <li>⚖️ <strong>Plantillas de Reclamación Jurídica</strong>: Notificaciones formales y requerimientos</li>
-            <li>☁️ <strong>Sincronización en la Nube Cifrada</strong>: Conservación segura entre dispositivos</li>
-          </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">Obtener Pro Mensual · 4,99 $</a>
-        </div>
-
-        <!-- Pro Yearly (Recommended) -->
+        <!-- Pro Tier (Interactive Toggle Yearly vs Monthly) -->
         <div class="price-card pro reveal">
           <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
             <img src="../assets/images/sentry_night_monitor.webp" alt="Overnight Sentry Mode illustration" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center 40%;display:block;">
           </div>
-          <span class="price-badge-popular">★ Más Popular · Solo ~2,08 $/mes</span>
-          <span class="price-pill">Pro Premium Anual</span>
-          <span class="price-name">Dossier de Conflicto Continuo</span>
+          <span class="price-badge-popular">★ Opción Más Popular</span>
+          <span class="price-pill">Pro Versión Anual</span>
+          <span class="price-name">Expediente Legal Pro</span>
           <div class="price-tag">
-            <del class="price-del">59,99 $</del>24,99 $<small style="font-size:13px;color:var(--soft);">/año</small>
-            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Ahorra 35 $</span>
+            <span class="billing-period-yearly">
+              <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
+              <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35</span>
+            </span>
+            <span class="billing-period-monthly" style="display:none;">
+              <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
+              <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
+            </span>
           </div>
-          <div class="price-compare-hint">365 días de monitorización desatendida · Olvídese de vigilar manualmente</div>
+          <div class="price-compare-hint billing-period-yearly">365 días de monitorización continua · Libérate del insomnio de registrar a mano</div>
+          <div class="price-compare-hint billing-period-monthly" style="display:none;">Perfecto para conflictos de alquiler, ruidos de reformas u obras inmediatas</div>
           <ul class="check-list">
-            <li><strong>365 días de generación ilimitada</strong> de informes probatorios</li>
-            <li>🌙 <strong>Modo Centinela Nocturno</strong>: Detección automática de perturbaciones</li>
-            <li>📊 <strong>Dossier de Nuisances Multi-Días</strong>: Mapas históricos y curvas periódicas</li>
-            <li>⚖️ <strong>Plantillas de Reclamación Jurídica</strong>: Burofaxes y escritos judiciales</li>
-            <li>☁️ <strong>Sincronización en la Nube Cifrada</strong>: Copia permanente multidispositivo</li>
+            <li><strong>Descargas ilimitadas</strong> de <strong>informes PDF formales sin marca de agua</strong> (con huella digital)</li>
+            <li>🌙 <strong>Modo Centinela Nocturno</strong>: Registro automático de picos de exceso de ruido</li>
+            <li>📊 <strong>Dossier de Molestias Continuas</strong>: Gráficos de tendencias acústicas acumuladas</li>
+            <li>⚖️ <strong>Plantillas de Reclamación Legal</strong>: Escritos de queja y requerimientos formales</li>
+            <li>☁️ <strong>Sincronización en la Nube</strong>: Acceso multidispositivo, pruebas siempre a salvo</li>
           </ul>
-          <a class="button primary" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Comprar Pro Anual · 24,99 $</a>
-          <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">¿Ya tiene cuenta? Iniciar sesión</a>
+          <a class="button primary billing-period-yearly" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Obtener Pase Anual Pro · $24.99</a>
+          <a class="button primary billing-period-monthly" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="display:none;border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">Contratar Pro Mensual · $4.99</a>
+          <div class="single-report-link-bar">
+            <span>¿Solo necesitas un único informe?</span>
+            <a class="single-link" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Desbloquear informe único sin marca de agua $1.99 →</a>
+          </div>
+          <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">¿Ya tienes una cuenta? Iniciar sesión</a>
         </div>
 
-        <!-- Lifetime License -->
+        <!-- Lifetime Tier -->
         <div class="price-card lifetime reveal">
           <span class="price-pill">Licencia de por Vida</span>
-          <span class="price-name">Acceso Total Permanente</span>
+          <span class="price-name">Acceso Total Ilimitado</span>
           <div class="price-tag">
-            <del class="price-del">199,00 $</del>79,99 $
-            <span class="price-discount-tag">60% DTO.</span>
+            <del class="price-del">$199.00</del>$79.99
+            <span class="price-discount-tag">60% OFF</span>
           </div>
-          <div class="price-compare-hint">Pago único · Tranquilidad jurídica continua para inquilinos y propietarios</div>
+          <div class="price-compare-hint">Pago único · Protección y seguridad permanente sin suscripciones recurrentes</div>
           <ul class="check-list">
-            <li><strong>Licencia definitiva de propiedad</strong> sin suscripciones recurrentes</li>
-            <li>Incluye todas las funciones Centinela, Dossier y escritos formales</li>
-            <li>Sincronización entre dispositivos y almacenamiento cloud permanente</li>
-            <li>Soporte prioritario y todas las futuras mejoras acústicas incluidas</li>
-            <li>Disponible en cualquier momento ante ruidos vecinales, obras o comercios</li>
+            <li><strong>Licencia permanente de por vida</strong> sin tarifas de renovación periódicas</li>
+            <li>Incluye todas las funciones de centinela, informes de tendencia y plantillas legales</li>
+            <li>Sincronización multidispositivo y respaldo cifrado en la nube</li>
+            <li>Soporte prioritario VIP y todas las actualizaciones acústicas futuras</li>
+            <li>Listo para actuar de inmediato ante conflictos de vivienda, vecinos o locales</li>
           </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">Acceso de por Vida · 79,99 $</a>
-          <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">¿Ya tiene cuenta? Iniciar sesión</a>
+          <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">Obtener Acceso Vitalicio · $79.99</a>
+          <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">¿Ya tienes una cuenta? Iniciar sesión</a>
         </div>
       </div>
 

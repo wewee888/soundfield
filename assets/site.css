@@ -1482,27 +1482,43 @@ a.card:hover h3 { color: var(--text-strong); }
 }
 
 .hero-split .hero-headline {
-  font-size: clamp(28px, 2.7vw, 38px);
-  line-height: 1.22;
+  font-size: clamp(24px, 2.3vw, 34px);
+  line-height: 1.25;
   letter-spacing: -0.025em;
   margin: 0;
   font-weight: 800;
 }
 
+.hero-title-main {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .hero-split .hero-headline em {
   font-style: normal;
-  color: var(--accent);
-  display: inline;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 55%, var(--accent-3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+  white-space: nowrap;
+  text-shadow: 0 0 28px rgba(44, 240, 193, 0.28);
 }
 
 .hero-split .hero-subhead {
   display: block;
   margin-top: 8px;
-  font-size: clamp(16px, 1.3vw, 19px);
-  font-weight: 550;
-  line-height: 1.42;
-  color: #a0aec0;
+  font-size: clamp(16px, 1.3vw, 20px);
+  font-weight: 700;
+  line-height: 1.38;
   letter-spacing: -0.01em;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 55%, var(--accent-3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: 0 0 28px rgba(44, 240, 193, 0.28);
 }
 
 .hero-eyebrow-cluster {

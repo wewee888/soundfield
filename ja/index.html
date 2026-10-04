@@ -75,6 +75,11 @@
         </div>
       </div>
       <div class="nav-utility">
+        <button type="button" class="nav-bookmark-btn" data-bookmark-trigger title="ブックマークまたはホーム画面に追加">
+          <span class="star" aria-hidden="true">⭐</span>
+          <span class="nav-bm-text">ブックマーク</span>
+          <kbd data-bookmark-key>Ctrl+D</kbd>
+        </button>
         <a class="nav-upgrade" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">
           <span class="star" aria-hidden="true">★</span>
           <span>Pro</span>
@@ -94,6 +99,11 @@
             <a class="button primary" href="../soundtest.html">測定開始</a>
             <a class="button" href="../samples.html">レポートサンプルを見る</a>
             <a class="button ghost" href="../accuracy.html">精度の限界を読む</a>
+          </div>
+          <div class="hero-bookmark-bar" data-bookmark-trigger title="ブックマークとホーム画面追加">
+            <span class="star-icon" aria-hidden="true">⭐</span>
+            <span>おすすめ：<kbd data-bookmark-key>Ctrl+D</kbd> でブックマーク保存（スマホはホーム画面に追加）しておくと、突然の騒音でも即座に起動できます</span>
+            <span class="action-arrow" aria-hidden="true">→</span>
           </div>
 
           <form class="hero-search" data-hero-form aria-label="Try the noise evidence workflow">
@@ -404,89 +414,73 @@
         <span>初期公開特別キャンペーン：現在早期特別割引価格にてご提供中。キャンペーン終了後は通常価格（単回 4.99ドル / 月額 9.99ドル / 年額 59.99ドル / 永久買切 199ドル）に戻ります。今すぐ特別価格で権利を確保！</span>
       </div>
 
-      <div class="pricing-row">
+      <!-- Interactive Billing Toggle -->
+      <div class="billing-toggle-wrap reveal">
+        <div class="billing-toggle" role="group" aria-label="Billing cycle selector">
+          <button type="button" class="billing-toggle-btn active" data-billing-toggle="yearly">
+            <span>年額プラン</span>
+            <span class="billing-discount-badge">58% OFF</span>
+          </button>
+          <button type="button" class="billing-toggle-btn" data-billing-toggle="monthly">
+            <span>月額プラン</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="pricing-row pricing-three-cards">
         <!-- Free Tier -->
         <div class="price-card reveal">
-          <span class="price-pill">無料体験版</span>
-          <span class="price-name">Web測定ツール</span>
-          <div class="price-tag">$0</div>
-          <div class="price-compare-hint">環境基準や受忍限度を超えているか即座に確認する簡易チェック</div>
+          <span class="price-pill">無料基本プラン</span>
+          <span class="price-name">無料版</span>
+          <div class="price-tag">$0<small style="font-size:13px;color:var(--soft);">/forever</small></div>
+          <div class="price-compare-hint">迅速な騒音レベル測定とリアルタイムdB推定</div>
           <ul class="check-list">
-            <li>リアルタイム高精度騒音計（A/C特性）</li>
-            <li>音声録音＆リアルタイム周波数スペクトル波形</li>
-            <li>GPS位置情報および正確なタイムスタンプ自動記録</li>
-            <li>個人参考用ウォーターマーク入りプレビュー出力</li>
-            <li>データはブラウザローカル内のみに安全一時保持</li>
+            <li>リアルタイム騒音測定（A特性周波数重み付け）</li>
+            <li>ライブFFT音響スペクトラム解析</li>
+            <li>ブラウザ内での簡易録音および写真記録</li>
+            <li>自動タイムスタンプおよびGPS位置情報付与</li>
+            <li>民間参考用の透かし入り事前確認レポート</li>
           </ul>
-          <a class="button" href="../soundtest.html">無料測定を開始</a>
+          <a class="button" href="../soundtest.html">今すぐ無料で始める</a>
         </div>
 
-        <!-- Single Official Report -->
-        <div class="price-card single-report reveal">
-          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
-            <img src="../assets/images/forensic_report_preview.webp" alt="Official forensic PDF vs watermarked preview comparison" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center top;display:block;">
-          </div>
-          <span class="price-pill">単回正式レポート</span>
-          <span class="price-name">改ざん防止証拠PDF</span>
-          <div class="price-tag">
-            <del class="price-del">$4.99</del>$1.99
-            <span class="price-discount-tag">60% OFF</span>
-          </div>
-          <div class="price-compare-hint">1回買い切り · 「音量を故意に上げた」という相手方の言い逃れを完全排除</div>
-          <ul class="check-list">
-            <li>透かしのない正式な<strong>法廷・交渉用PDF証拠レポート</strong> 1件出力</li>
-            <li><strong>SHA-256 電子署名ハッシュ</strong>＆GPS位置情報刻印</li>
-            <li>公的音響統計指標（LAeq・L10・L90・ピーク値）完全収録</li>
-            <li>現場写真＋緯度経度付き証拠シート添付</li>
-            <li>管理会社・大家・警察相談・調停申立に直ちに利用可能</li>
-          </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">単回レポートをアンロック · $1.99</a>
-        </div>
-
-        <!-- Pro Monthly -->
-        <div class="price-card monthly reveal">
-          <span class="price-pill">Pro マンスリー</span>
-          <span class="price-name">Pro 月間権利プラン</span>
-          <div class="price-tag">
-            <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/月</small>
-            <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
-          </div>
-          <div class="price-compare-hint">短期賃貸中のトラブル、突発的な解体・リフォーム工事対策に最適</div>
-          <ul class="check-list">
-            <li><strong>30日間無制限</strong>で正式証拠PDFレポートを出力可能</li>
-            <li>🌙 <strong>夜間ノイズ見張り番モード</strong>：基準値超過時に自動記録</li>
-            <li>📊 <strong>連続騒音被害鑑定ファイル</strong>：30日間の推移グラフ集計</li>
-            <li>⚖️ <strong>苦情申入・法的通知書テンプレート</strong>：迅速な書面作成</li>
-            <li>☁️ <strong>暗号化クラウド同期</strong>：端末変更やデータ消去時も証拠を保護</li>
-          </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">月額Proに加入 · $4.99</a>
-        </div>
-
-        <!-- Pro Yearly (Recommended) -->
+        <!-- Pro Tier (Interactive Toggle Yearly vs Monthly) -->
         <div class="price-card pro reveal">
           <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
             <img src="../assets/images/sentry_night_monitor.webp" alt="Overnight Sentry Mode illustration" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center 40%;display:block;">
           </div>
-          <span class="price-badge-popular">★ 最も選ばれている人気プラン · 月あたり約2.08ドル</span>
+          <span class="price-badge-popular">★ 最も選ばれている人気プラン</span>
           <span class="price-pill">Pro 年間プレミアム</span>
           <span class="price-name">長期紛争対策ファイル</span>
           <div class="price-tag">
-            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/年</small>
-            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">35ドルお得</span>
+            <span class="billing-period-yearly">
+              <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
+              <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35</span>
+            </span>
+            <span class="billing-period-monthly" style="display:none;">
+              <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
+              <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
+            </span>
           </div>
-          <div class="price-compare-hint">365日間の自動監視体制 · 手動での見張りや記録ストレスから完全解放</div>
+          <div class="price-compare-hint billing-period-yearly">365日間の自動監視体制 · 手動での見張りや記録ストレスから完全解放</div>
+          <div class="price-compare-hint billing-period-monthly" style="display:none;">短期賃貸中のトラブル、突発的な解体・リフォーム工事対策に最適</div>
           <ul class="check-list">
-            <li><strong>365日間無制限</strong>で公式証拠PDFレポートを出力可能</li>
+            <li><strong>無制限</strong>の公式<strong>ウォーターマークなし証拠PDFレポート出力</strong> (改ざん防止検証付き)</li>
             <li>🌙 <strong>夜間ノイズ見張り番モード</strong>：深夜の断続的騒音を逃さず自動記録</li>
-            <li>📊 <strong>連続騒音被害鑑定ファイル</strong>：月単位の騒音推移と頻度マップ</li>
-            <li>⚖️ <strong>苦情申入・法的通知書テンプレート</strong>：交渉書面を網羅</li>
+            <li>📊 <strong>連続騒音被害鑑定ファイル</strong>：月単位の騒音推移と頻度マップ集計</li>
+            <li>⚖️ <strong>苦情申入・法的通知書テンプレート</strong>：管理会社や大家への交渉書面を作成</li>
             <li>☁️ <strong>暗号化クラウド同期</strong>：複数端末同期＆長期証拠バックアップ</li>
           </ul>
-          <a class="button primary" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">年間Proパスを入手 · $24.99</a>
+          <a class="button primary billing-period-yearly" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">年間Proパスを入手 · $24.99</a>
+          <a class="button primary billing-period-monthly" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="display:none;border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">月額Proに加入 · $4.99</a>
+          <div class="single-report-link-bar">
+            <span>単回のレポート出力のみが必要ですか？</span>
+            <a class="single-link" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">1回きりの無透かし証拠レポートをアンロック $1.99 →</a>
+          </div>
           <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">アカウントをお持ちですか？ ログイン</a>
         </div>
 
-        <!-- Lifetime License -->
+        <!-- Lifetime Tier -->
         <div class="price-card lifetime reveal">
           <span class="price-pill">永久ライセンス</span>
           <span class="price-name">買い切り無制限版</span>
@@ -498,11 +492,11 @@
           <ul class="check-list">
             <li><strong>永久利用ライセンス</strong>：継続的な課金リスクなし</li>
             <li>見張り番モード、被害ファイル、法的書面テンプレートを全網羅</li>
-            <li>マルチデバイス同期＆無制限クラウド証拠保管</li>
-            <li>優先サポート＆今後のすべての高度機能アップデートを永久無料提供</li>
-            <li>近隣トラブル、賃貸更新、住環境防衛に生涯備えられます</li>
+            <li>デバイス間同期および永久暗号化クラウド保存</li>
+            <li>VIP優先サポートおよび将来の全音響ツール機能へのアクセス権</li>
+            <li>賃貸・隣人トラブル・工事騒音発生時にいつでも即座に証拠化可能</li>
           </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">永久ライセンスを購入 · $79.99</a>
+          <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">永久アクセス権を獲得 · $79.99</a>
           <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">アカウントをお持ちですか？ ログイン</a>
         </div>
       </div>
