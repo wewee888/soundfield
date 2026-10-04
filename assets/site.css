@@ -2699,17 +2699,112 @@ a.card:hover h3 { color: var(--text-strong); }
   .timeline-item { grid-template-columns: 1fr; gap: 8px; }
   .meter-row { grid-template-columns: 1fr; }
   .section { padding: 32px 0; }
+  
+  /* ─── Compact Mobile-First Footer (大幅紧凑化移动端底栏) ─── */
+  .footer-deluxe {
+    margin-top: 32px;
+    padding-top: 20px;
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+
   .footer-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px 16px;
+    gap: 16px 14px;
+    padding-bottom: 14px;
   }
+
   .footer-brand, .footer-col.footer-brand {
     grid-column: 1 / -1;
-    margin-bottom: 6px;
-    padding-bottom: 20px;
+    margin-bottom: 4px;
+    padding-bottom: 12px;
     border-bottom: 1px solid var(--ink-border);
   }
-  .footer-meta { flex-direction: column; align-items: flex-start; }
+
+  .footer-brand p {
+    font-size: 11.5px;
+    line-height: 1.45;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    color: var(--soft);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .footer-flags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .footer-flag {
+    min-width: 30px;
+    min-height: 26px;
+    padding: 3px 5px;
+    border-radius: 6px;
+    gap: 2px;
+  }
+
+  .footer-flag-img {
+    width: 18px;
+    height: 12px;
+  }
+
+  .footer-flag-text {
+    font-size: 8px;
+  }
+
+  .footer-col h4 {
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+    color: var(--accent);
+  }
+
+  .footer-col ul {
+    gap: 4px;
+  }
+
+  .footer-col li {
+    font-size: 11.5px;
+    line-height: 1.35;
+  }
+
+  .footer-col a {
+    padding: 1px 0;
+    display: inline-block;
+  }
+
+  /* Compact 2-column layout for the 9 language links on mobile to save vertical height */
+  .footer-col:last-child ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 6px;
+  }
+
+  .footer-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 0 0;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .footer-social {
+    gap: 8px;
+  }
+
+  .footer-social a {
+    width: 28px;
+    height: 28px;
+  }
+
+  .footer-social svg {
+    width: 14px;
+    height: 14px;
+  }
 }
 
 /* ─── App-like Mobile Bottom Navigation Bar & Drawer ─── */

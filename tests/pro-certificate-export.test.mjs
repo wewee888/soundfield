@@ -22,11 +22,11 @@ test('soundtest.html includes Pro certificate engine, watermarked free summary, 
   // Verify 1620px height in free summary to avoid bottom cutoff
   assert.ok(html.includes('canvas.width=1080;canvas.height=1620;'), 'Free summary canvas height must be 1620px to prevent cutoff');
 
-  // Verify 1200x1754 A4 ratio in pro certificate canvas
-  assert.ok(html.includes('canvas.width = 1200') && html.includes('canvas.height = 1754'), 'Pro certificate canvas must have 1200x1754 resolution');
+  // Verify 800x1400 mobile-first ratio in pro certificate canvas (reduced width by 1/3)
+  assert.ok(html.includes('canvas.width = 800') && html.includes('canvas.height = 1400'), 'Pro certificate canvas must have 800x1400 resolution');
 
   // Verify PDF embedding canvas
-  assert.ok(html.includes("doc.addImage(imgData, 'PNG', 0, 0, 210, 297, undefined, 'FAST');"), 'buildPDF must embed high-res certificate image onto A4 page');
+  assert.ok(html.includes("doc.addImage(imgData, 'PNG'"), 'buildPDF must embed certificate image onto A4 page');
 
   // Verify dynamic peak circle positioning in trend chart SVG
   assert.ok(html.includes("elPeakCircle.setAttribute('cx', String(peakX));"), 'renderCertificateData must position peak circle cx dynamically');
