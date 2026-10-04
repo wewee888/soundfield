@@ -7603,45 +7603,191 @@
   const EXTRA_I18N = {
     'en-US': {
       ui: { brandSub: "Field Acoustic Recorder", savePoint: "Save Point" },
-      placeholders: { building: "Building", floor: "Floor", room: "Room", point: "Point (e.g. window)" }
+      placeholders: { building: "Building", floor: "Floor", room: "Room", point: "Point (e.g. window)" },
+      scale: { quiet: "Quiet", urban: "Urban", danger: "Danger" },
+      telemetry: {
+        title: "Acoustic Metrics (LEQ & LN MATRIX)",
+        badge: "IEC 61672-1 Calibrated",
+        subLeq: "Equivalent Continuous Level",
+        lblPeak: "Peak SPL",
+        subPeak: "Max Impulse / Peak",
+        lblMin: "Min SPL",
+        subMin: "Noise Floor Baseline",
+        lblL10: "L10 Peak",
+        subL10: "Infrequent Loud Events",
+        lblL50: "L50 Median",
+        subL50: "Typical Median Level",
+        lblL90: "L90 Residual",
+        subL90: "Ambient Background Floor"
+      }
     },
     'zh-CN': {
       ui: { brandSub: "现场声学事实记录", savePoint: "保存测点" },
-      placeholders: { building: "楼栋", floor: "楼层", room: "房间号", point: "测点名，如窗边" }
+      placeholders: { building: "楼栋", floor: "楼层", room: "房间号", point: "测点名，如窗边" },
+      scale: { quiet: "安静", urban: "市井", danger: "危险" },
+      telemetry: {
+        title: "声学统计参量 (LEQ & LN MATRIX)",
+        badge: "IEC 61672-1 标定",
+        subLeq: "等效连续声级",
+        lblPeak: "峰值 Peak",
+        subPeak: "最大脉冲冲击",
+        lblMin: "最小 Min",
+        subMin: "本底底噪基线",
+        lblL10: "L10 峰值态",
+        subL10: "偶发高噪声级",
+        lblL50: "L50 中位数",
+        subL50: "常态中值声压",
+        lblL90: "L90 本底",
+        subL90: "持续背景噪声"
+      }
     },
     'es': {
       ui: { brandSub: "Grabador de audio pericial", savePoint: "Guardar punto" },
-      placeholders: { building: "Edificio", floor: "Planta", room: "Habitación", point: "Punto (ej. ventana)" }
+      placeholders: { building: "Edificio", floor: "Planta", room: "Habitación", point: "Punto (ej. ventana)" },
+      scale: { quiet: "Tranquilo", urban: "Urbano", danger: "Peligro" },
+      telemetry: {
+        title: "Parámetros acústicos (LEQ & LN MATRIX)",
+        badge: "IEC 61672-1 Calibrado",
+        subLeq: "Nivel continuo equivalente",
+        lblPeak: "Pico Peak",
+        subPeak: "Impulso / impacto máximo",
+        lblMin: "Mínimo Min",
+        subMin: "Línea base de ruido fondo",
+        lblL10: "L10 Estado pico",
+        subL10: "Eventos fuertes ocasionales",
+        lblL50: "L50 Mediana",
+        subL50: "Presión acústica media normal",
+        lblL90: "L90 Ruido residual",
+        subL90: "Ruido de fondo continuo"
+      }
     },
     'fr': {
       ui: { brandSub: "Enregistreur de preuve acoustique", savePoint: "Enregistrer point" },
-      placeholders: { building: "Bâtiment", floor: "Étage", room: "Pièce", point: "Point (ex. fenêtre)" }
+      placeholders: { building: "Bâtiment", floor: "Étage", room: "Pièce", point: "Point (ex. fenêtre)" },
+      scale: { quiet: "Calme", urban: "Urbain", danger: "Danger" },
+      telemetry: {
+        title: "Métriques acoustiques (LEQ & LN MATRIX)",
+        badge: "IEC 61672-1 Calibré",
+        subLeq: "Niveau continu équivalent",
+        lblPeak: "Crête Peak",
+        subPeak: "Impulsion / pic maximal",
+        lblMin: "Minimum Min",
+        subMin: "Bruit de fond de base",
+        lblL10: "L10 Niveau de crête",
+        subL10: "Bruits forts occasionnels",
+        lblL50: "L50 Médiane",
+        subL50: "Niveau sonore médian typique",
+        lblL90: "L90 Bruit résiduel",
+        subL90: "Bruit de fond ambiant continu"
+      }
     },
     'de': {
       ui: { brandSub: "Akustischer Beweisrekorder", savePoint: "Punkt speichern" },
-      placeholders: { building: "Gebäude", floor: "Etage", room: "Raum", point: "Messpunkt (z. B. Fenster)" }
+      placeholders: { building: "Gebäude", floor: "Etage", room: "Raum", point: "Messpunkt (z. B. Fenster)" },
+      scale: { quiet: "Ruhig", urban: "Städtisch", danger: "Gefahr" },
+      telemetry: {
+        title: "Akustik-Metriken (LEQ & LN MATRIX)",
+        badge: "IEC 61672-1 Kalibriert",
+        subLeq: "Äquivalenter Dauerschallpegel",
+        lblPeak: "Spitze Peak",
+        subPeak: "Maximaler Impuls / Stoß",
+        lblMin: "Minimum Min",
+        subMin: "Grundrauschen-Basislinie",
+        lblL10: "L10 Spitzenpegel",
+        subL10: "Gelegentliche laute Ereignisse",
+        lblL50: "L50 Median",
+        subL50: "Typischer mittlerer Pegel",
+        lblL90: "L90 Grundgeräusch",
+        subL90: "Kontinuierliches Hintergrundgeräusch"
+      }
     },
     'ja': {
       ui: { brandSub: "現場音響証拠レコーダー", savePoint: "測定点を保存" },
-      placeholders: { building: "建物", floor: "階", room: "部屋", point: "測定点（例：窓際）" }
+      placeholders: { building: "建物", floor: "階", room: "部屋", point: "測定点（例：窓際）" },
+      scale: { quiet: "静穏", urban: "市街地", danger: "危険" },
+      telemetry: {
+        title: "音響統計パラメータ (LEQ & LN MATRIX)",
+        badge: "IEC 61672-1 基準",
+        subLeq: "等価連続A特性音压レベル",
+        lblPeak: "ピーク Peak",
+        subPeak: "最大インパルス衝撃",
+        lblMin: "最小 Min",
+        subMin: "暗騒音・最小ベースライン",
+        lblL10: "L10 ピーク状態",
+        subL10: "突発・間欠的な高騒音",
+        lblL50: "L50 中央値",
+        subL50: "定常中央音圧レベル",
+        lblL90: "L90 暗騒音",
+        subL90: "定常的背景ノイズ"
+      }
     },
     'ko': {
       ui: { brandSub: "현장 음향 증거 레코더", savePoint: "측정 위치 저장" },
-      placeholders: { building: "동/건물", floor: "층", room: "호수", point: "측정 위치 (예: 창가)" }
+      placeholders: { building: "동/건물", floor: "층", room: "호수", point: "측정 위치 (예: 창가)" },
+      scale: { quiet: "조용함", urban: "도심", danger: "위험" },
+      telemetry: {
+        title: "음향 통계 지표 (LEQ & LN MATRIX)",
+        badge: "IEC 61672-1 교정",
+        subLeq: "등가 소음도 (LAeq)",
+        lblPeak: "최고 피크 Peak",
+        subPeak: "최대 임펄스 / 충격음",
+        lblMin: "최저 Min",
+        subMin: "바탕 소음 기준선",
+        lblL10: "L10 상위 10% 소음",
+        subL10: "간헐적 고소음 구간",
+        lblL50: "L50 중앙값",
+        subL50: "일반적 평균 소음 수준",
+        lblL90: "L90 지속 배경소음",
+        subL90: "지속적 주변 배경 소음"
+      }
     },
     'vi': {
       ui: { brandSub: "Máy ghi bằng chứng âm thanh", savePoint: "Lưu điểm đo" },
-      placeholders: { building: "Tòa nhà", floor: "Tầng", room: "Phòng", point: "Điểm đo (vd: cạnh cửa sổ)" }
+      placeholders: { building: "Tòa nhà", floor: "Tầng", room: "Phòng", point: "Điểm đo (vd: cạnh cửa sổ)" },
+      scale: { quiet: "Yên tĩnh", urban: "Đô thị", danger: "Nguy hiểm" },
+      telemetry: {
+        title: "Thông số âm học (LEQ & LN MATRIX)",
+        badge: "IEC 61672-1 Hiệu chuẩn",
+        subLeq: "Mức âm tương đương",
+        lblPeak: "Đỉnh Peak",
+        subPeak: "Xung / đỉnh tối đa",
+        lblMin: "Tối thiểu Min",
+        subMin: "Đường nền tạp âm cơ sở",
+        lblL10: "L10 Đỉnh Top 10%",
+        subL10: "Mức ồn cao đột xuất",
+        lblL50: "L50 Trung vị",
+        subL50: "Mức áp suất âm trung bình",
+        lblL90: "L90 Tạp âm nền",
+        subL90: "Mức ồn nền liên tục"
+      }
     },
     'th': {
       ui: { brandSub: "เครื่องบันทึกหลักฐานเสียงภาคสนาม", savePoint: "บันทึกจุดตรวจวัด" },
-      placeholders: { building: "อาคาร", floor: "ชั้น", room: "ห้อง", point: "จุดตรวจวัด (เช่น ริมหน้าต่าง)" }
+      placeholders: { building: "อาคาร", floor: "ชั้น", room: "ห้อง", point: "จุดตรวจวัด (เช่น ริมหน้าต่าง)" },
+      scale: { quiet: "เงียบ", urban: "ในเมือง", danger: "อันตราย" },
+      telemetry: {
+        title: "ค่าสถิติอะคูสติก (LEQ & LN MATRIX)",
+        badge: "IEC 61672-1 สอบเทียบ",
+        subLeq: "ระดับเสียงต่อเนื่องเทียบเท่า",
+        lblPeak: "ค่าสูงสุด Peak",
+        subPeak: "แรงกระแทก / เสียงสูงสุด",
+        lblMin: "ค่าต่ำสุด Min",
+        subMin: "ระดับเสียงรบกวนพื้นหลัง",
+        lblL10: "L10 ระดับพีค 10%",
+        subL10: "เหตุการณ์เสียงดังเป็นช่วงๆ",
+        lblL50: "L50 ค่ามัธยฐาน",
+        subL50: "ระดับเสียงเฉลี่ยทั่วไป",
+        lblL90: "L90 เสียงรบกวนคงที่",
+        subL90: "ระดับเสียงพื้นหลังต่อเนื่อง"
+      }
     }
   };
   Object.keys(EXTRA_I18N).forEach((loc) => {
     if (I18N_DATA[loc]) {
       if (EXTRA_I18N[loc].ui) Object.assign(I18N_DATA[loc].ui, EXTRA_I18N[loc].ui);
       if (EXTRA_I18N[loc].placeholders) Object.assign(I18N_DATA[loc].placeholders, EXTRA_I18N[loc].placeholders);
+      if (EXTRA_I18N[loc].scale) I18N_DATA[loc].scale = Object.assign({}, EXTRA_I18N[loc].scale);
+      if (EXTRA_I18N[loc].telemetry) I18N_DATA[loc].telemetry = Object.assign({}, EXTRA_I18N[loc].telemetry);
     }
   });
 

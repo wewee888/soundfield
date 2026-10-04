@@ -3246,11 +3246,11 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
       </div>
       <div class="status-pill" id="statusPill">
         <span class="sdot" id="sdot"></span>
-        <span class="stxt" id="stxt">就绪</span>
+        <span class="stxt" id="stxt">Ready</span>
       </div>
-      <button class="sentry-hero-badge" id="heroSentryBtn" onclick="triggerSentryModeHook()" type="button" title="夜间噪音超标自动抓拍录音">
+      <button class="sentry-hero-badge" id="heroSentryBtn" onclick="triggerSentryModeHook()" type="button" title="Auto-record and capture when night noise threshold is exceeded">
         <span>🌙</span>
-        <span id="heroSentryBtnText">夜间哨兵</span>
+        <span id="heroSentryBtnText">Sentry Mode</span>
       </button>
     </div>
 
@@ -3279,16 +3279,16 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
           <span class="stitch-db-unit">dB</span>
         </div>
         <!-- Noise Severity Badge -->
-        <div class="stitch-severity-badge db-level-main lv-q" id="dbLevelMain">安静</div>
+        <div class="stitch-severity-badge db-level-main lv-q" id="dbLevelMain">Quiet</div>
         <p class="stitch-kicker">RMS SPL REAL-TIME</p>
       </div>
     </div>
 
     <!-- Gauge Reference Scale Indicators -->
-    <div class="stitch-scale-bar">
-      <span>30 <span class="sub">安静 Quiet</span></span>
-      <span class="mid">60 <span class="sub">市井 Urban</span></span>
-      <span class="dang">120 <span class="sub">危险 Danger</span></span>
+    <div class="stitch-scale-bar" id="stitchScaleBar">
+      <span id="scale30">30 <span class="sub" id="scaleSub30">Quiet</span></span>
+      <span class="mid" id="scale60">60 <span class="sub" id="scaleSub60">Urban</span></span>
+      <span class="dang" id="scale120">120 <span class="sub" id="scaleSub120">Danger</span></span>
     </div>
 
     <!-- Hidden compatibility elements to satisfy legacy logic/tests -->
@@ -3302,80 +3302,80 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
   <!-- Stats matrix — IEC 61672 SLM standard notation -->
   <section class="stitch-telemetry-sec">
     <div class="stitch-telemetry-head">
-      <h3 class="stitch-telemetry-title">声学统计参量 (LEQ &amp; LN MATRIX)</h3>
-      <span class="stitch-telemetry-badge">IEC 61672-1 标定</span>
+      <h3 class="stitch-telemetry-title" id="telemetryTitle">Acoustic Metrics (LEQ &amp; LN MATRIX)</h3>
+      <span class="stitch-telemetry-badge" id="telemetryBadge">IEC 61672-1 Calibrated</span>
     </div>
     <div class="stitch-matrix-grid">
       <!-- Card 1: LAeq -->
       <div class="stitch-matrix-card highlight">
         <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl">LAeq</span>
+          <span class="stitch-matrix-lbl" id="telemetryLblLeq">LAeq</span>
           <span class="stitch-metric-dot bg-cyan"></span>
         </div>
         <div class="stitch-matrix-val-wrap">
           <span class="stitch-matrix-val" id="sLeq">--<span class="u"> dB</span></span>
         </div>
-        <span class="stitch-matrix-sub">等效连续声级</span>
+        <span class="stitch-matrix-sub" id="telemetrySubLeq">Equivalent Continuous Level</span>
       </div>
 
       <!-- Card 2: Peak -->
       <div class="stitch-matrix-card">
         <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl">峰值 Peak</span>
+          <span class="stitch-matrix-lbl" id="telemetryLblPeak">Peak SPL</span>
           <span class="stitch-metric-dot bg-rose"></span>
         </div>
         <div class="stitch-matrix-val-wrap">
           <span class="stitch-matrix-val color-rose" id="sPeak">--<span class="u"> dB</span></span>
         </div>
-        <span class="stitch-matrix-sub">最大脉冲冲击</span>
+        <span class="stitch-matrix-sub" id="telemetrySubPeak">Max Impulse / Peak</span>
       </div>
 
       <!-- Card 3: Min -->
       <div class="stitch-matrix-card">
         <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl">最小 Min</span>
+          <span class="stitch-matrix-lbl" id="telemetryLblMin">Min SPL</span>
           <span class="stitch-metric-dot bg-emerald"></span>
         </div>
         <div class="stitch-matrix-val-wrap">
           <span class="stitch-matrix-val color-emerald" id="sMin">--<span class="u"> dB</span></span>
         </div>
-        <span class="stitch-matrix-sub">本底底噪基线</span>
+        <span class="stitch-matrix-sub" id="telemetrySubMin">Noise Floor Baseline</span>
       </div>
 
       <!-- Card 4: L10 -->
       <div class="stitch-matrix-card">
         <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl">L10 峰值态</span>
-          <span class="stitch-matrix-tag">Top10%</span>
+          <span class="stitch-matrix-lbl" id="telemetryLblL10">L10 Peak</span>
+          <span class="stitch-matrix-tag" id="telemetryTagL10">Top10%</span>
         </div>
         <div class="stitch-matrix-val-wrap">
           <span class="stitch-matrix-val" id="sL10">--<span class="u"> dB</span></span>
         </div>
-        <span class="stitch-matrix-sub">偶发高噪声级</span>
+        <span class="stitch-matrix-sub" id="telemetrySubL10">Infrequent Loud Events</span>
       </div>
 
       <!-- Card 5: L50 -->
       <div class="stitch-matrix-card">
         <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl">L50 中位数</span>
-          <span class="stitch-matrix-tag">Median</span>
+          <span class="stitch-matrix-lbl" id="telemetryLblL50">L50 Median</span>
+          <span class="stitch-matrix-tag" id="telemetryTagL50">Median</span>
         </div>
         <div class="stitch-matrix-val-wrap">
           <span class="stitch-matrix-val" id="sL50">--<span class="u"> dB</span></span>
         </div>
-        <span class="stitch-matrix-sub">常态中值声压</span>
+        <span class="stitch-matrix-sub" id="telemetrySubL50">Typical Median Level</span>
       </div>
 
       <!-- Card 6: L90 -->
       <div class="stitch-matrix-card">
         <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl">L90 本底</span>
-          <span class="stitch-matrix-tag">Residual</span>
+          <span class="stitch-matrix-lbl" id="telemetryLblL90">L90 Residual</span>
+          <span class="stitch-matrix-tag" id="telemetryTagL90">Residual</span>
         </div>
         <div class="stitch-matrix-val-wrap">
           <span class="stitch-matrix-val" id="sL90">--<span class="u"> dB</span></span>
         </div>
-        <span class="stitch-matrix-sub">持续背景噪声</span>
+        <span class="stitch-matrix-sub" id="telemetrySubL90">Ambient Background Floor</span>
       </div>
     </div>
   </section>
@@ -3420,22 +3420,22 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
   <!-- Action bar: Dual 50% / 50% buttons (一人一半：左侧实时监测，右侧录音存证) -->
   <div class="action-bar" id="actionBar">
     <!-- Monitor Button (Left 50%) -->
-    <button class="start-btn" id="startBtn" onclick="toggleMon()" type="button" aria-label="实时监测分贝">
+    <button class="start-btn" id="startBtn" onclick="toggleMon()" type="button" aria-label="Start Meter">
       <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/>
       </svg>
       <span class="btn-copy">
-        <span class="btn-title" id="startBtnTitle">开始实时监测</span>
-        <span class="btn-sub" id="startBtnSub">仅测分贝</span>
+        <span class="btn-title" id="startBtnTitle">Start Meter</span>
+        <span class="btn-sub" id="startBtnSub">Live dB Only</span>
       </span>
     </button>
 
     <!-- Evidence Recording Button (Right 50%) -->
-    <button class="rec-action-btn idle" id="recActionBtn" onclick="toggleRecAction()" type="button" aria-label="开始录音存证">
+    <button class="rec-action-btn idle" id="recActionBtn" onclick="toggleRecAction()" type="button" aria-label="Record Audio">
       <span class="rec-pulse-dot" id="recActionDot"></span>
       <span class="btn-copy">
-        <span class="btn-title" id="recActionTitle">录音存证</span>
-        <span class="btn-sub" id="recActionSub">测分贝+留底录音</span>
+        <span class="btn-title" id="recActionTitle">Record Audio</span>
+        <span class="btn-sub" id="recActionSub">dB + Audio File</span>
       </span>
     </button>
 
@@ -3460,11 +3460,11 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
   <div class="live-monitor-notice" id="liveMonitorNotice" style="display:none!important" aria-hidden="true">
     <div class="lmn-inner">
       <div class="lmn-msg">
-        <span class="lmn-badge">⚠️ 仅实时测声</span>
-        <span class="lmn-text" id="lmnText">当前未保存录音。</span>
+        <span class="lmn-badge">⚠️ Live Monitor</span>
+        <span class="lmn-text" id="lmnText">Not currently recording audio.</span>
       </div>
-      <button type="button" class="lmn-action-btn convert" id="lmnConvertBtn" onclick="primaryEvidenceAction()">● 立即转为录音存证</button>
-      <button type="button" class="lmn-close" onclick="dismissLiveMonitorNotice(event)" aria-label="关闭提示">✕</button>
+      <button type="button" class="lmn-action-btn convert" id="lmnConvertBtn" onclick="primaryEvidenceAction()">● Switch to Audio Evidence</button>
+      <button type="button" class="lmn-close" onclick="dismissLiveMonitorNotice(event)" aria-label="Close">✕</button>
     </div>
   </div>
 
@@ -3481,8 +3481,8 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
         </div>
         <div>
-          <h4 class="stitch-custody-title" id="custodyTitleText">声学现场存证链 (Chain of Custody)</h4>
-          <p class="stitch-custody-sub" id="custodySubText">防伪可信电子凭据 · 自动记录取证环境</p>
+          <h4 class="stitch-custody-title" id="custodyTitleText">Chain of Custody Acoustic Proof</h4>
+          <p class="stitch-custody-sub" id="custodySubText">Tamper-evident digital proof · Sealed environment</p>
         </div>
       </div>
       <span class="stitch-sha-pill">SHA-256</span>
@@ -3491,17 +3491,17 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
     <!-- Integrated Location & Refresh / Pro Amendment Row -->
     <div class="stitch-custody-loc-row">
       <div class="stitch-custody-loc-info">
-        <div class="stitch-custody-place" id="custodyPlace">现场声学监测站点 (待刷新)</div>
-        <div class="stitch-custody-subplace" id="custodySubPlace">正在自动获取高精经纬度…</div>
+        <div class="stitch-custody-place" id="custodyPlace">Acoustic Monitoring Site (Pending)</div>
+        <div class="stitch-custody-subplace" id="custodySubPlace">Acquiring GPS coordinates…</div>
       </div>
       <div class="stitch-custody-loc-actions">
-        <button type="button" class="btn-custody-mini" id="custodyRefreshGpsBtn" onclick="triggerLocationRefresh()" title="重新获取/刷新GPS">
+        <button type="button" class="btn-custody-mini" id="custodyRefreshGpsBtn" onclick="triggerLocationRefresh()" title="Refresh GPS">
           <span class="spin-icon" id="custodyGpsSpin">🔄</span>
-          <span id="custodyRefreshText">刷新</span>
+          <span id="custodyRefreshText">Refresh</span>
         </button>
-        <button type="button" class="btn-custody-mini pro-tag" id="custodyEditPlaceBtn" onclick="openLocationCorrectionModal()" title="修正位置/测点水印 (PRO专属)">
+        <button type="button" class="btn-custody-mini pro-tag" id="custodyEditPlaceBtn" onclick="openLocationCorrectionModal()" title="Edit Location (PRO)">
           <span>📍</span>
-          <span id="custodyEditText">位置修正</span>
+          <span id="custodyEditText">Edit Location</span>
           <span class="mini-pro-pill">PRO</span>
         </button>
       </div>
@@ -3509,14 +3509,14 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
 
     <div class="stitch-custody-grid">
       <div class="stitch-custody-cell">
-        <div class="stitch-cell-lbl" id="custodyGpsLbl">WGS-84 地理坐标</div>
-        <div class="stitch-cell-val" id="custodyGpsCoord">等待刷新定位...</div>
-        <div class="stitch-cell-sub" id="custodyGpsAcc">精度: --</div>
+        <div class="stitch-cell-lbl" id="custodyGpsLbl">WGS-84 Geographic Coords</div>
+        <div class="stitch-cell-val" id="custodyGpsCoord">Awaiting GPS lock...</div>
+        <div class="stitch-cell-sub" id="custodyGpsAcc">Accuracy: --</div>
       </div>
       <div class="stitch-custody-cell">
-        <div class="stitch-cell-lbl" id="custodyNtpLbl">权威时间戳 NTP</div>
+        <div class="stitch-cell-lbl" id="custodyNtpLbl">NTP Atomic Timestamp</div>
         <div class="stitch-cell-val" id="custodyNtpTime">--:--:--</div>
-        <div class="stitch-cell-sub text-cyan" id="custodyNtpStatus">本地高精时钟</div>
+        <div class="stitch-cell-sub text-cyan" id="custodyNtpStatus">Precision High-Res Clock</div>
       </div>
     </div>
   </section>
@@ -4643,9 +4643,11 @@ function setStartButtonText(){
   if(startBtn){
     if(isMon){
       startBtn.className='start-btn stop';
+      startBtn.setAttribute('aria-label', t('ui.stopMeter','Stop Meter'));
       startBtn.innerHTML='<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" stroke="none"/></svg><span class="btn-copy"><span class="btn-title">' + t('ui.stopMeter','Stop Meter') + '</span><span class="btn-sub">' + t('ui.monitoringSub','Monitoring') + '</span></span>';
     } else {
       startBtn.className='start-btn';
+      startBtn.setAttribute('aria-label', t('ui.startMeter','Start Meter'));
       startBtn.innerHTML='<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/></svg><span class="btn-copy"><span class="btn-title">' + t('ui.startMeter','Start Meter') + '</span><span class="btn-sub">' + t('ui.meterSub','Live dB Only') + '</span></span>';
     }
   }
@@ -4654,9 +4656,11 @@ function setStartButtonText(){
   if(recActionBtn){
     if(isRec){
       recActionBtn.className='rec-action-btn recording';
+      recActionBtn.setAttribute('aria-label', t('ui.stopRecord','Stop & Save'));
       recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + t('ui.stopRecord','Stop & Save') + '</span><span class="btn-sub">' + t('ui.recordingSub','Recording...') + '</span></span>';
     } else {
       recActionBtn.className='rec-action-btn idle';
+      recActionBtn.setAttribute('aria-label', t('ui.recordEvidence','Record Audio'));
       recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + t('ui.recordEvidence','Record Audio') + '</span><span class="btn-sub">' + t('ui.recordSub','dB + Audio File') + '</span></span>';
     }
   }
@@ -4823,10 +4827,42 @@ function applyTranslations(){
   const heroSentry=document.getElementById('heroSentryBtn');
   if(heroSentry){
     heroSentry.classList.toggle('active',!!autoRecOnThreshold);
+    heroSentry.title=isZh?'夜间噪音超标自动抓拍录音':'Auto-record and capture when night noise threshold is exceeded';
     const textEl=document.getElementById('heroSentryBtnText');
     const sentryCopy=t('modes.sentry',{});
     if(textEl)textEl.textContent=autoRecOnThreshold?(sentryCopy.on||'Sentry On'):(sentryCopy.label||'Sentry Mode');
   }
+
+  // Dial Gauge Reference Scale Indicators
+  const scaleSub30 = document.getElementById('scaleSub30');
+  const scaleSub60 = document.getElementById('scaleSub60');
+  const scaleSub120 = document.getElementById('scaleSub120');
+  if (scaleSub30) scaleSub30.textContent = t('scale.quiet', isZh ? '安静' : 'Quiet');
+  if (scaleSub60) scaleSub60.textContent = t('scale.urban', isZh ? '市井' : 'Urban');
+  if (scaleSub120) scaleSub120.textContent = t('scale.danger', isZh ? '危险' : 'Danger');
+
+  // Stats Matrix (IEC 61672 SLM Telemetry)
+  setText('telemetryTitle', t('telemetry.title', isZh ? '声学统计参量 (LEQ & LN MATRIX)' : 'Acoustic Metrics (LEQ & LN MATRIX)'));
+  setText('telemetryBadge', t('telemetry.badge', isZh ? 'IEC 61672-1 标定' : 'IEC 61672-1 Calibrated'));
+
+  setText('telemetryLblLeq', 'LAeq');
+  setText('telemetrySubLeq', t('telemetry.subLeq', isZh ? '等效连续声级' : 'Equivalent Continuous Level'));
+
+  setText('telemetryLblPeak', t('telemetry.lblPeak', isZh ? '峰值 Peak' : 'Peak SPL'));
+  setText('telemetrySubPeak', t('telemetry.subPeak', isZh ? '最大脉冲冲击' : 'Max Impulse / Peak'));
+
+  setText('telemetryLblMin', t('telemetry.lblMin', isZh ? '最小 Min' : 'Min SPL'));
+  setText('telemetrySubMin', t('telemetry.subMin', isZh ? '本底底噪基线' : 'Noise Floor Baseline'));
+
+  setText('telemetryLblL10', t('telemetry.lblL10', isZh ? 'L10 峰值态' : 'L10 Peak'));
+  setText('telemetrySubL10', t('telemetry.subL10', isZh ? '偶发高噪声级' : 'Infrequent Loud Events'));
+
+  setText('telemetryLblL50', t('telemetry.lblL50', isZh ? 'L50 中位数' : 'L50 Median'));
+  setText('telemetrySubL50', t('telemetry.subL50', isZh ? '常态中值声压' : 'Typical Median Level'));
+
+  setText('telemetryLblL90', t('telemetry.lblL90', isZh ? 'L90 本底' : 'L90 Residual'));
+  setText('telemetrySubL90', t('telemetry.subL90', isZh ? '持续背景噪声' : 'Ambient Background Floor'));
+
   const sceneLabel=document.getElementById('sceneChipLabel');if(sceneLabel)sceneLabel.textContent=t('ui.quickScene');
   const sceneHint=document.getElementById('sceneChipHint');if(sceneHint)sceneHint.textContent=t('ui.quickSceneHint');
   renderSceneChips();updateGeoDock();
@@ -7081,18 +7117,19 @@ async function refreshStorageHealth({silent=false}={}){
   card.classList.toggle('storage-health-ok',health.status==='ok');
   card.classList.toggle('storage-health-warn',health.status!=='ok');
   fill.style.width=`${health.usagePercent}%`;
+  const isEn = appLanguage !== 'zh-CN';
   grid.innerHTML=[
-    [health.supported?'IndexedDB 可用':'IndexedDB 不可用','媒体刷新后是否可恢复'],
-    [health.persisted?'持久化已授权':'持久化未确认','浏览器可能在存储压力下清理'],
-    [`${health.usageText} / ${health.quotaText}`,`已用约 ${health.usagePercent}%`],
-    [`${health.recordCount} 条记录`,`${health.recoverableMediaCount} 个媒体可恢复 · ${health.temporaryMediaCount} 个临时文件`],
+    [health.supported?(isEn?'IndexedDB Available':'IndexedDB 可用'):(isEn?'IndexedDB Unavailable':'IndexedDB 不可用'),isEn?'Media recoverable after refresh':'媒体刷新后是否可恢复'],
+    [health.persisted?(isEn?'Persistent Storage Granted':'持久化已授权'):(isEn?'Persistence Unconfirmed':'持久化未确认'),isEn?'Browser may clean up under storage pressure':'浏览器可能在存储压力下清理'],
+    [`${health.usageText} / ${health.quotaText}`,isEn?`Used approx ${health.usagePercent}%`:`已用约 ${health.usagePercent}%`],
+    [`${health.recordCount} ${isEn?(health.recordCount===1?'record':'records'):'条记录'}`,isEn?`${health.recoverableMediaCount} recoverable · ${health.temporaryMediaCount} temp files`:`${health.recoverableMediaCount} 个媒体可恢复 · ${health.temporaryMediaCount} 个临时文件`],
   ].map(([value,label])=>`<div class="storage-health-stat"><strong>${esc(value)}</strong><span>${esc(label)}</span></div>`).join('');
   summary.textContent=health.temporaryMediaCount>0
-    ?'有临时媒体文件尚未持久化，请在刷新或关闭页面前到“记录”页保存。'
+    ?(isEn?'Temporary media files not yet persisted. Please save from Records before closing or refreshing.':'有临时媒体文件尚未持久化，请在刷新或关闭页面前到“记录”页保存。')
     :health.status==='ok'
-      ?'当前浏览器存储状态良好；重要证据仍建议导出媒体文件和备份 JSON。'
-      :'当前存储存在限制；请及时保存媒体文件，并导出本机备份 JSON。';
-  if(!silent)toast('本地存储状态已刷新。','info');
+      ?(isEn?'Browser storage status is healthy. Export media files and backup JSON for important evidence.':'当前浏览器存储状态良好；重要证据仍建议导出媒体文件和备份 JSON。')
+      :(isEn?'Storage limits detected. Save media files promptly and export local backup JSON.':'当前存储存在限制；请及时保存媒体文件，并导出本机备份 JSON。');
+  if(!silent)toast(isEn?'Local storage status refreshed.':'本地存储状态已刷新。','info');
 }
 
 function buildLocalMetadataBackup(){
