@@ -1933,11 +1933,11 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
 }
 </style>
   <link rel="canonical" href="https://soundtest.pro/soundtest/"/>
-  <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
-  <script>LA.init({id:"281wblDNvub2tk9f",ck:"281wblDNvub2tk9f"})</script>
+  <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js" onload="try{window.LA&&LA.init({id:'281wblDNvub2tk9f',ck:'281wblDNvub2tk9f'})}catch(_){}"></script>
+  <script>try{if(window.LA&&typeof LA.init==='function'){LA.init({id:'281wblDNvub2tk9f',ck:'281wblDNvub2tk9f'});}}catch(_){}</script>
 </head>
 <body>
-<div class="perm-modal" id="permModal" role="dialog" aria-modal="true" aria-labelledby="permTitle">
+<div class="perm-modal hidden" id="permModal" role="dialog" aria-modal="true" aria-labelledby="permTitle" style="display:none;">
   <div class="perm-card">
     <div class="perm-brand" data-trust="permissionBranding">
       <div class="perm-logo" aria-hidden="true">
@@ -3471,7 +3471,8 @@ let animId,peak=0,mn=999,dbH=[],trendH=[],wBuf,fBuf;
 let sessStart,recStart,recTmr,monTmr,curDb=0,tickN=0,lastTick=0,lastAnalysisAt=0,lastVisualAt=0,lastOverlayAt=0;
 let leqEnergy=0,leqTime=0;
 let curLoc=null,chunks=[],recHasVideo=false;
-let noiseEvents=[],lastImpulseEventAt=0,longMonitorPlan={autoStopMinutes:0,eventThresholdDb:75};
+let noiseEvents=[],longMonitorNoiseEvents=noiseEvents,lastImpulseEventAt=0,longMonitorPlan={autoStopMinutes:0,eventThresholdDb:75};
+let capHideTmr=null;
 let cameraMode='preview';
 let evidenceMode='audio';
 let watermarkCameraOpen=false,watermarkCameraMode='video';
@@ -4018,7 +4019,7 @@ function applyTranslations(){
   setText('applyTaskBtn',t('ui.applyTask','Apply Task'));
   setText('markEventBtn',t('ui.markEvent','Mark Event'));
   const evSummary=document.getElementById('noiseEventSummary');
-  if(evSummary&&(!longMonitorNoiseEvents||!longMonitorNoiseEvents.length)){
+  if(evSummary&&(!noiseEvents||!noiseEvents.length)){
     evSummary.textContent=t('ui.noEventsRecorded','No noise events recorded yet. Web app cannot guarantee 24–72h background recording with screen locked.');
   }
   setPlaceholder('buildingInput',t('placeholders.building','Building'));
@@ -5526,12 +5527,12 @@ async function queryPermissionState(name){
   }
 }
 
-async function shouldShowPermissionGuide(){
+async function shouldShowPermissionGuide(knownMicState=null){
   // Always show if browser lacks secure context or media support
   if(!supports.secure||!supports.media)return true;
   if(micPermissionGranted)return false;
   // Check actual permission state — if mic is already granted, skip modal
-  const micState=await queryPermissionState('microphone');
+  const micState=knownMicState||await queryPermissionState('microphone');
   if(micState==='granted'){
     micPermissionGranted=true;
     try{sessionStorage.setItem('sf_mic_granted','1');}catch(_){}
@@ -5554,7 +5555,7 @@ async function applyPermissionGuideState(){
     try{sessionStorage.setItem('sf_mic_granted','1');}catch(_){}
   }
   console.log('[permGuide] micState=',micState,'hasSeen=',hasSeenPermissionGuide(),'secure=',supports.secure,'media=',supports.media);
-  if(await shouldShowPermissionGuide()){
+  if(await shouldShowPermissionGuide(micState)){
     modal.classList.remove('hidden');
     modal.classList.add('show');
     modal.style.display='flex';
@@ -6561,7 +6562,8 @@ async function toggleMon(opts={}){
         try{sessionStorage.removeItem('sf_mic_granted');}catch(_){}
         openPermissionModal({denied:true});
       }
-      throw e;
+      if(opts?.rethrow)throw e;
+      return false;
     }finally{
       setButtonBusy('startBtn',false);
     }

@@ -248,5 +248,23 @@ test('Dedicated Camera standalone page, Pro showcase card, and SEO integration',
   assert.ok(zhIndexHtml.includes('camera.html'), 'zh/index.html footer links to camera');
 });
 
+test('Runtime script safety: declarations, 51.la guarding, and permission modal stability', () => {
+  const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+
+  // Verify variable declarations prevent ReferenceErrors
+  assert.ok(soundtestHtml.includes('let capHideTmr=null;'), 'capHideTmr is declared');
+  assert.ok(soundtestHtml.includes('longMonitorNoiseEvents=noiseEvents'), 'longMonitorNoiseEvents is defined and aliased to noiseEvents');
+
+  // Verify 51.la script is guarded against network/adblock failure
+  assert.ok(soundtestHtml.includes('try{window.LA&&LA.init'), '51.la script is safely guarded with try and existence check');
+
+  // Verify permission modal is hidden by default in markup to prevent blocking clicks
+  assert.ok(soundtestHtml.includes('class="perm-modal hidden"'), 'permModal has hidden class in initial markup');
+  assert.ok(soundtestHtml.includes('id="permModal"') && soundtestHtml.includes('style="display:none;"'), 'permModal has display:none in initial markup');
+
+  // Verify toggleMon does not rethrow unconditionally causing unhandled promise rejections
+  assert.ok(soundtestHtml.includes('if(opts?.rethrow)throw e;'), 'toggleMon guards rethrowing with opts.rethrow');
+});
+
 
 
