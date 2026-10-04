@@ -1482,17 +1482,34 @@ a.card:hover h3 { color: var(--text-strong); }
 }
 
 .hero-split .hero-headline {
-  font-size: clamp(26px, 2.6vw, 36px);
-  line-height: 1.25;
+  font-size: clamp(28px, 2.7vw, 38px);
+  line-height: 1.22;
   letter-spacing: -0.025em;
   margin: 0;
+  font-weight: 800;
 }
 
 .hero-split .hero-headline em {
-  font-size: 0.88em;
-  line-height: 1.35;
+  font-style: normal;
+  color: var(--accent);
+  display: inline;
+}
+
+.hero-split .hero-subhead {
   display: block;
-  margin-top: 6px;
+  margin-top: 8px;
+  font-size: clamp(16px, 1.3vw, 19px);
+  font-weight: 550;
+  line-height: 1.42;
+  color: #a0aec0;
+  letter-spacing: -0.01em;
+}
+
+.hero-eyebrow-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
 }
 
 .hero-split .hero-lead {

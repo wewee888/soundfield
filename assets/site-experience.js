@@ -21,17 +21,17 @@
       },
       { threshold: 0.01, rootMargin: '0px 0px 240px 0px' }
     );
-    const lookahead = (window.innerHeight || 800) + 240;
     document.querySelectorAll('.reveal').forEach((el, index) => {
       if (!el.style.getPropertyValue('--reveal-delay')) {
         el.style.setProperty('--reveal-delay', `${Math.min(index, 8) * 35}ms`);
       }
-      const rect = el.getBoundingClientRect();
-      if (rect.top <= lookahead && rect.bottom >= 0) {
-        el.classList.add('is-visible');
-      } else {
-        observer.observe(el);
-      }
+      observer.observe(el);
+      try {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= (window.innerHeight || 800) + 300) {
+          el.classList.add('is-visible');
+        }
+      } catch (_) {}
     });
   }
 
