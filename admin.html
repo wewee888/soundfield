@@ -528,6 +528,11 @@
       max-width: 500px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
     }
+    .adm-modal.adm-modal-lg {
+      max-width: 760px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
     .adm-modal-header {
       display: flex;
       justify-content: space-between;
@@ -661,6 +666,9 @@
         <span>👥</span> 注册用户中心
         <span class="adm-tab-badge" id="tabBadgeUsers">0</span>
       </button>
+      <button class="adm-tab-btn" onclick="switchTab('analytics')">
+        <span>📈</span> 访问与转化分析
+      </button>
       <button class="adm-tab-btn" onclick="switchTab('operations')">
         <span>🔑</span> VIP授权与运维工具
       </button>
@@ -767,10 +775,12 @@
                   <th>方案</th>
                   <th>金额</th>
                   <th>状态</th>
+                  <th>订单时间</th>
+                  <th style="text-align:right;">快捷操作</th>
                 </tr>
               </thead>
               <tbody id="overviewRecentOrders">
-                <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">正在加载订单…</td></tr>
+                <tr><td colspan="7" style="text-align:center; color:#64748b; padding:20px;">正在加载订单…</td></tr>
               </tbody>
             </table>
           </div>
@@ -788,12 +798,15 @@
                 <tr>
                   <th>姓名</th>
                   <th>注册邮箱</th>
+                  <th>IP / 归属地</th>
+                  <th>语言</th>
                   <th>会员层级</th>
                   <th>注册时间</th>
+                  <th style="text-align:right;">快捷操作</th>
                 </tr>
               </thead>
               <tbody id="overviewRecentUsers">
-                <tr><td colspan="4" style="text-align:center; color:#64748b; padding:20px;">正在加载用户…</td></tr>
+                <tr><td colspan="7" style="text-align:center; color:#64748b; padding:20px;">正在加载用户…</td></tr>
               </tbody>
             </table>
           </div>
@@ -906,15 +919,17 @@
               <tr>
                 <th>用户姓名</th>
                 <th>注册邮箱</th>
+                <th>IP地址 / 国家属地</th>
+                <th>首选语言</th>
                 <th>会员等级</th>
                 <th>有效期至</th>
                 <th>注册时间</th>
-                <th>历史订单 / 消费</th>
-                <th style="text-align: right;">操作与授权</th>
+                <th>消费 / 订单</th>
+                <th style="text-align: right;">管理操作</th>
               </tr>
             </thead>
             <tbody id="usersTableBody">
-              <tr><td colspan="7" style="text-align: center; color: #64748b; padding: 30px;">正在加载用户资料…</td></tr>
+              <tr><td colspan="9" style="text-align: center; color: #64748b; padding: 30px;">正在加载用户资料…</td></tr>
             </tbody>
           </table>
         </div>
@@ -998,6 +1013,191 @@
       </div>
     </div>
 
+    <!-- TAB 5: 访问与转化分析 -->
+    <div id="viewAnalytics" class="tab-view">
+      <!-- Traffic Stats Grid -->
+      <div class="adm-stats-grid">
+        <div class="stat-card cyan">
+          <div class="stat-head">
+            <span class="stat-title">全站独立访客 (Total UV)</span>
+            <span class="stat-icon">👁️</span>
+          </div>
+          <div class="stat-number" id="anlTotalUv">0</div>
+          <div class="stat-trend">
+            <span>今日活跃 UV: <strong id="anlTodayUv" style="color:var(--adm-accent);">0</strong></span>
+            <span style="margin-left: auto;">累计浏览 PV: <strong id="anlTotalPv">0</strong></span>
+          </div>
+        </div>
+
+        <div class="stat-card blue">
+          <div class="stat-head">
+            <span class="stat-title">访客注册转化率 (Reg. Rate)</span>
+            <span class="stat-icon">👥</span>
+          </div>
+          <div class="stat-number" id="anlRegRate" style="color: #60a5fa;">0.0%</div>
+          <div class="stat-trend">
+            <span>注册用户: <strong id="anlTotalReg">0</strong> 人</span>
+            <span style="margin-left: auto;">访客转化为注册用户</span>
+          </div>
+        </div>
+
+        <div class="stat-card amber">
+          <div class="stat-head">
+            <span class="stat-title">收银台发起率 (Checkout Rate)</span>
+            <span class="stat-icon">🛒</span>
+          </div>
+          <div class="stat-number" id="anlCheckoutRate" style="color: var(--adm-amber);">0.0%</div>
+          <div class="stat-trend">
+            <span>发起订单: <strong id="anlCheckouts">0</strong> 笔</span>
+            <span style="margin-left: auto;">注册用户发起支付</span>
+          </div>
+        </div>
+
+        <div class="stat-card gold">
+          <div class="stat-head">
+            <span class="stat-title">支付核销率 (Paid Rate)</span>
+            <span class="stat-icon">🎯</span>
+          </div>
+          <div class="stat-number" id="anlPaidRate" style="color: var(--adm-gold);">0.0%</div>
+          <div class="stat-trend">
+            <span>实收履约: <strong id="anlPaidCount">0</strong> 笔</span>
+            <span style="margin-left: auto;">全站净付费率: <strong id="anlOverallRate" style="color:var(--adm-accent);">0.0%</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Funnel Visualizer -->
+      <div class="funnel-container" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <h3 style="margin: 0; font-size: 15px; color: #fff; font-weight: 800;">
+            📊 全链路转化全景漏斗 (End-to-End Visitor Funnel)
+          </h3>
+          <span style="font-size: 12px; color: var(--adm-muted);">实时追踪从访客进站到最终付费净留存</span>
+        </div>
+        <div class="funnel-steps" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+          <div class="funnel-step">
+            <div class="funnel-step-name">1. 全球独立访客 (UV)</div>
+            <div class="funnel-step-val" id="fnlAnlUv">0</div>
+            <div class="funnel-step-sub">进站流量基数</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-step-name">2. 注册转化 (Registered)</div>
+            <div class="funnel-step-val" id="fnlAnlReg" style="color:#60a5fa;">0</div>
+            <div class="funnel-step-sub" id="fnlAnlRegSub">转化率: 0.0%</div>
+          </div>
+          <div class="funnel-step danger">
+            <div class="funnel-step-name">3. 发起收银台 (Checkouts)</div>
+            <div class="funnel-step-val" id="fnlAnlCheckout" style="color:var(--adm-amber);">0</div>
+            <div class="funnel-step-sub" id="fnlAnlCheckoutSub">待付/弃单: 0</div>
+          </div>
+          <div class="funnel-step highlight">
+            <div class="funnel-step-name">4. 支付成功 (Paid VIP)</div>
+            <div class="funnel-step-val" id="fnlAnlPaid" style="color:var(--adm-accent);">0</div>
+            <div class="funnel-step-sub" id="fnlAnlPaidSub">净付费渗透: 0.0%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registration Sources & Drop-off Diagnostic Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; margin-bottom: 24px;">
+        <!-- Top Registration Pages -->
+        <div class="adm-card" style="margin-bottom: 0;">
+          <div class="adm-card-header">
+            <h3 class="adm-card-title">📍 用户注册来源页面归因排行 (Where Users Registered)</h3>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>页面路径 (Source Path)</th>
+                  <th>注册人数</th>
+                  <th>转化占比</th>
+                </tr>
+              </thead>
+              <tbody id="anlRegPagesBody">
+                <tr><td colspan="3" style="text-align:center; color:#64748b; padding:20px;">正在加载页面归因…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- High Drop-off & Friction Points -->
+        <div class="adm-card" style="margin-bottom: 0;">
+          <div class="adm-card-header">
+            <h3 class="adm-card-title">⚠️ 高跳出与流失节点深度诊断 (Friction & Churn Analysis)</h3>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>关键跳出节点</th>
+                  <th>流失原因分析</th>
+                  <th>优化与挽回建议</th>
+                </tr>
+              </thead>
+              <tbody id="anlDropoffBody">
+                <tr><td colspan="3" style="text-align:center; color:#64748b; padding:20px;">正在加载诊断…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Geographic Distribution & Cloudflare Integration Card -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px;">
+        <!-- Geographic Distribution -->
+        <div class="adm-card" style="margin-bottom: 0;">
+          <div class="adm-card-header">
+            <h3 class="adm-card-title">🌐 访客与注册用户全球分布 (Geographic Distribution)</h3>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>国家 / 地区</th>
+                  <th>注册用户</th>
+                  <th>全球占比</th>
+                </tr>
+              </thead>
+              <tbody id="anlCountriesBody">
+                <tr><td colspan="3" style="text-align:center; color:#64748b; padding:20px;">正在统计全球分布…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Cloudflare Official System Integration Card -->
+        <div class="adm-card" style="margin-bottom: 0;">
+          <div class="adm-card-header">
+            <h3 class="adm-card-title">☁️ Cloudflare 官方数据互联与授权状态</h3>
+            <span class="status-badge badge-paid" id="cfBadgeStatus">🟢 原生边缘统计已启用</span>
+          </div>
+          <div style="font-size: 13px; color: #cbd5e1; line-height: 1.7; margin-bottom: 16px;">
+            <p style="margin: 0 0 10px;">
+              <strong>1. 当前运行模式：</strong>无需外部授权，本系统已内置 Cloudflare Worker Edge KV 毫秒级数据流分析引擎，实时记录独立访客、各页面注册归因与漏斗留存。
+            </p>
+            <p style="margin: 0 0 10px;">
+              <strong>2. 接入 Cloudflare 官方边缘原始日志 (GraphQL API)：</strong><br>
+              若需进一步直接调取 Cloudflare CDN 边缘底层的原始 HTTP 请求与 WAF 拦截统计，只需在 Cloudflare Pages 设置中的 <strong>Environment Variables</strong> 填入：
+              <div style="background: rgba(0,0,0,0.4); padding: 8px 12px; border-radius: 8px; font-family: monospace; font-size: 12px; margin: 6px 0; color: #2cf0c1;">
+                • CF_API_TOKEN (权限: Zone:Analytics:Read, Account:Analytics:Read)<br>
+                • CF_ACCOUNT_ID (您的 Cloudflare 账户 ID)
+              </div>
+              系统将自动激活官方高级边缘统计面板。
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button onclick="fetchAnalyticsData()" class="btn-action btn-primary" style="padding: 8px 16px;">
+              🔄 立即刷新分析数据
+            </button>
+            <a href="https://dash.cloudflare.com" target="_blank" rel="noopener" class="btn-action" style="padding: 8px 16px; text-decoration:none;">
+              前往 Cloudflare 仪表盘 ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- User VIP Adjust Modal -->
@@ -1059,6 +1259,170 @@
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" onclick="closeMarkPaidModal()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; border-radius:6px; padding:8px 16px; cursor:pointer;">取消</button>
         <button type="button" onclick="submitMarkPaid()" class="btn-action btn-primary" id="btnConfirmMarkPaid" style="padding:8px 20px;">确认核销并开通会员</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit User Profile & Tier Modal -->
+  <div class="adm-modal-backdrop" id="editUserModal">
+    <div class="adm-modal">
+      <div class="adm-modal-header">
+        <h3 class="adm-modal-title">✏️ 编辑用户档案与资料</h3>
+        <button onclick="closeEditUserModal()" style="background:transparent; border:none; color:var(--adm-muted); font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <form onsubmit="submitEditUser(event)">
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">注册邮箱 (账号唯一标识)</label>
+          <input type="text" id="editUserEmail" class="adm-input" style="width:100%; opacity:0.8;" readonly>
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">用户姓名 / 昵称</label>
+          <input type="text" id="editUserName" class="adm-input" style="width:100%;" placeholder="例如: Jeannie Reaves" required>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">归属国家 / 地区</label>
+            <select id="editUserCountry" class="adm-select" style="width:100%;">
+              <option value="US">🇺🇸 美国 (US)</option>
+              <option value="CN">🇨🇳 中国大陆 (CN)</option>
+              <option value="HK">🇭🇰 中国香港 (HK)</option>
+              <option value="TW">🇹🇼 中国台湾 (TW)</option>
+              <option value="GB">🇬🇧 英国 (GB)</option>
+              <option value="CA">🇨🇦 加拿大 (CA)</option>
+              <option value="AU">🇦🇺 澳大利亚 (AU)</option>
+              <option value="DE">🇩🇪 德国 (DE)</option>
+              <option value="FR">🇫🇷 法国 (FR)</option>
+              <option value="JP">🇯🇵 日本 (JP)</option>
+              <option value="SG">🇸🇬 新加坡 (SG)</option>
+              <option value="KR">🇰🇷 韩国 (KR)</option>
+              <option value="OTHER">🌐 其他海外国家</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">首选语言</label>
+            <select id="editUserLanguage" class="adm-select" style="width:100%;">
+              <option value="en">English (en)</option>
+              <option value="zh-CN">简体中文 (zh-CN)</option>
+              <option value="es">Español (es)</option>
+              <option value="fr">Français (fr)</option>
+              <option value="de">Deutsch (de)</option>
+              <option value="ja">日本語 (ja)</option>
+              <option value="ko">한국어 (ko)</option>
+            </select>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">会员方案调整</label>
+            <select id="editUserPlan" class="adm-select" style="width:100%;" onchange="editUserAdjustDays()">
+              <option value="free">🌱 免费用户 (Free)</option>
+              <option value="single">单次版 (Single)</option>
+              <option value="pro">月度 PRO (30天)</option>
+              <option value="yearly">年度专业版 (365天)</option>
+              <option value="lifetime">终身买断版 (永久)</option>
+              <option value="team">企业团队版 (365天)</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">有效天数 (从今日起算)</label>
+            <input type="number" id="editUserDays" class="adm-input" style="width:100%;" value="30">
+          </div>
+        </div>
+        <div style="margin-bottom: 18px;">
+          <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">修改备注</label>
+          <input type="text" id="editUserNote" class="adm-input" style="width:100%;" value="管理员后台修改用户档案">
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" onclick="closeEditUserModal()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; border-radius:6px; padding:8px 16px; cursor:pointer;">取消</button>
+          <button type="submit" class="btn-action btn-primary" id="btnSubmitEditUser" style="padding:8px 20px;">保存修改</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Abandoned Cart Dunning & Marketing Email Modal -->
+  <div class="adm-modal-backdrop" id="dunningEmailModal">
+    <div class="adm-modal adm-modal-lg">
+      <div class="adm-modal-header">
+        <div>
+          <h3 class="adm-modal-title">⚡ 发起催付与营销跟进邮件 (Smart Email Dunning)</h3>
+          <p style="font-size: 12px; color: var(--adm-muted); margin: 4px 0 0;">针对待付款与弃单用户，基于客户所在时区精准发送高转化催付模板</p>
+        </div>
+        <button onclick="closeDunningModal()" style="background:transparent; border:none; color:var(--adm-muted); font-size:18px; cursor:pointer;">✕</button>
+      </div>
+
+      <!-- Recipient & Local Time info -->
+      <div style="background: rgba(11, 17, 32, 0.8); border: 1px solid var(--adm-border-dim); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
+          <div>
+            <span style="font-size: 12px; color: var(--adm-muted);">收件客户:</span>
+            <strong id="dunCustomerName" style="color: #fff; margin-left: 6px;">--</strong>
+            <span id="dunCustomerEmail" style="color: #cbd5e1; font-size: 12.5px; margin-left: 6px;">--</span>
+          </div>
+          <div id="dunTimezoneBadge" style="font-size: 11.5px; background: rgba(44,240,193,0.1); border: 1px solid rgba(44,240,193,0.3); color: var(--adm-accent); padding: 3px 10px; border-radius: 20px;">
+            🕒 计算客户时区中…
+          </div>
+        </div>
+        <div style="display: flex; gap: 16px; font-size: 12px; color: var(--adm-muted); flex-wrap: wrap;">
+          <div>订单流水号: <span id="dunOrderId" style="font-family: monospace; color: #fff;">--</span></div>
+          <div>购买方案: <span id="dunOrderPlan" style="font-weight: 700; color: var(--adm-accent);">--</span></div>
+          <div>待付金额: <span id="dunOrderFee" style="font-weight: 900; color: var(--adm-gold);">--</span></div>
+          <div>支付渠道: <span id="dunOrderGateway" style="color: #60a5fa;">--</span></div>
+        </div>
+      </div>
+
+      <!-- Template Stage Selector -->
+      <div style="margin-bottom: 14px;">
+        <label style="display:block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px; font-weight: 600;">选择阶段跟进策略 (Dunning Sequence)</label>
+        <div class="filter-pills" id="dunningTemplatePills">
+          <button type="button" class="pill-btn active" onclick="switchDunningTemplate('abandoned_1h', this)">
+            ⏱️ 1小时弃单温和提醒
+          </button>
+          <button type="button" class="pill-btn" onclick="switchDunningTemplate('discount_24h', this)">
+            🎁 24小时限时85折特惠
+          </button>
+          <button type="button" class="pill-btn" onclick="switchDunningTemplate('notice_3d', this)">
+            ⏰ 3天订单作废预警
+          </button>
+          <button type="button" class="pill-btn" onclick="switchDunningTemplate('weekly_reengage', this)">
+            🔄 7天周期回访与唤醒
+          </button>
+        </div>
+      </div>
+
+      <!-- Editable Subject and Checkout URL -->
+      <div style="margin-bottom: 12px;">
+        <label style="display:block; font-size: 12px; color: var(--adm-muted); margin-bottom: 4px; font-weight: 600;">邮件主题 (Subject - 可自定义)</label>
+        <input type="text" id="dunEmailSubject" class="adm-input" style="width: 100%; font-weight: 600;" placeholder="输入邮件主题…">
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <label style="display:block; font-size: 12px; color: var(--adm-muted); margin-bottom: 4px; font-weight: 600;">一键支付直达链接 (Checkout URL)</label>
+        <input type="url" id="dunCheckoutUrl" class="adm-input" style="width: 100%; font-family: monospace; font-size: 12px;" placeholder="https://…">
+      </div>
+
+      <!-- Live Email Preview Box -->
+      <div style="margin-bottom: 18px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label style="font-size: 12px; color: var(--adm-muted); font-weight: 600;">实时邮件效果预览 (HTML Visual Preview)</label>
+          <span style="font-size: 11px; color: #64748b;">自适应国际化模板 (中英双语)</span>
+        </div>
+        <div id="dunEmailPreviewBox" style="background: #070b14; border: 1px solid var(--adm-border-dim); border-radius: 12px; padding: 16px; max-height: 240px; overflow-y: auto; font-size: 13px;">
+          正在渲染预览…
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="font-size: 12px; color: #64748b;">
+          发信渠道: <span style="color: var(--adm-accent);">Cloudflare Workers Email / Resend API</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" onclick="closeDunningModal()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; border-radius:6px; padding:8px 16px; cursor:pointer;">取消</button>
+          <button type="button" onclick="sendDunningEmail()" class="btn-action btn-primary" id="btnSendDunning" style="padding: 8px 24px;">
+            🚀 立即发送催付邮件
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -1171,8 +1535,12 @@
       } else if (tabId === 'users') {
         document.querySelectorAll('.adm-nav-tabs button')[2].classList.add('active');
         document.getElementById('viewUsers').classList.add('active');
-      } else if (tabId === 'operations') {
+      } else if (tabId === 'analytics') {
         document.querySelectorAll('.adm-nav-tabs button')[3].classList.add('active');
+        document.getElementById('viewAnalytics').classList.add('active');
+        fetchAnalyticsData();
+      } else if (tabId === 'operations') {
+        document.querySelectorAll('.adm-nav-tabs button')[4].classList.add('active');
         document.getElementById('viewOperations').classList.add('active');
       }
     }
@@ -1204,6 +1572,9 @@
 
           document.getElementById('lastSyncTime').textContent = '同步于 ' + new Date().toLocaleTimeString();
         }
+
+        // Also fetch analytics
+        fetchAnalyticsData();
       } catch (err) {
         console.error('Fetch admin data failed:', err);
       }
@@ -1265,39 +1636,67 @@
       document.getElementById('userPillFree').textContent = s.freeUsersCount || 0;
       document.getElementById('userPillExpired').textContent = s.expiredUsersCount || 0;
 
-      // Render Recent Orders Snapshot
+      // Render Recent Orders Snapshot (with Order Time and Quick Dunning Action)
       const recentOrdersEl = document.getElementById('overviewRecentOrders');
-      const recentOrders = rawOrders.slice(0, 5);
+      const recentOrders = rawOrders.slice(0, 6);
       if (recentOrders.length === 0) {
-        recentOrdersEl.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b; padding:16px;">暂无订单记录</td></tr>';
+        recentOrdersEl.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#64748b; padding:16px;">暂无订单记录</td></tr>';
       } else {
         recentOrdersEl.innerHTML = recentOrders.map(o => {
           const isPaid = o.status === 'paid';
+          const orderDate = o.created_at ? new Date(o.created_at).toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '--';
+          const orderId = o.trade_order_id || o.order_id || '--';
           return `<tr>
-            <td style="font-family:monospace; font-size:12px; color:#94a3b8;">${(o.trade_order_id || o.order_id || '--').slice(-10)}</td>
+            <td style="font-family:monospace; font-size:12px; color:#94a3b8;">
+              <span title="${orderId}" style="cursor:pointer;" onclick="navigator.clipboard.writeText('${orderId}'); showToast('订单号已复制')">${orderId.slice(-10)} 📋</span>
+            </td>
             <td style="font-weight:600; color:#fff;">${o.email || '<span style="color:#64748b">微信游客</span>'}</td>
             <td><span class="tier-badge tier-${o.plan || 'pro'}">${o.plan || 'pro'}</span></td>
             <td style="font-weight:800; font-family:monospace; color:${isPaid ? '#2cf0c1' : '#f59e0b'};">
               ${o.currency === 'USD' ? '$' : '¥'} ${o.fee || '0.00'}
             </td>
             <td><span class="status-badge ${isPaid ? 'badge-paid' : 'badge-pending'}">${isPaid ? '已支付' : '待支付'}</span></td>
+            <td style="font-size:12px; color:#94a3b8; font-family:monospace;">${orderDate}</td>
+            <td style="text-align:right;">
+              ${!isPaid ? `
+                <button onclick="openDunningModal('${orderId}')" class="btn-action" style="font-size:11px; padding:3px 7px; background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.4); color:#fbbf24;" title="催付该订单">
+                  ⚡ 催付
+                </button>
+              ` : `
+                <button onclick="quickFillGrant('${o.email}', '${o.plan}')" class="btn-action" style="font-size:11px; padding:3px 7px;">
+                  🔑 续期
+                </button>
+              `}
+            </td>
           </tr>`;
         }).join('');
       }
 
-      // Render Recent Users Snapshot
+      // Render Recent Users Snapshot (with IP, Country Flag, Language, Edit and Delete)
       const recentUsersEl = document.getElementById('overviewRecentUsers');
-      const recentUsers = rawUsers.slice(0, 5);
+      const recentUsers = rawUsers.slice(0, 6);
       if (recentUsers.length === 0) {
-        recentUsersEl.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#64748b; padding:16px;">暂无注册用户</td></tr>';
+        recentUsersEl.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#64748b; padding:16px;">暂无注册用户</td></tr>';
       } else {
         recentUsersEl.innerHTML = recentUsers.map(u => {
           const regDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '--';
           return `<tr>
             <td style="font-weight:600; color:#fff;">${u.name || '未命名'}</td>
-            <td style="color:#cbd5e1;">${u.email}</td>
+            <td style="color:#cbd5e1; font-family:monospace; font-size:12px;">${u.email}</td>
+            <td>${getCountryBadge(u.country, u.ip)}</td>
+            <td><span style="font-size:11px; color:#94a3b8;">${u.language || 'en'}</span></td>
             <td><span class="tier-badge tier-${u.plan || 'free'}">${u.plan_display || u.plan}</span></td>
             <td style="font-size:12px; color:#64748b;">${regDate}</td>
+            <td style="text-align:right;">
+              <div style="display:inline-flex; gap:4px;">
+                <button onclick="openEditUserModal('${u.email}')" class="btn-action" style="font-size:11px; padding:3px 6px;" title="编辑用户资料">
+                  ✏️
+                </button>
+                <button onclick="deleteUser('${u.email}')" class="btn-danger-sm" style="font-size:11px; padding:3px 6px;" title="永久注销该用户">
+                  🗑️
+                </button>
+              </div>
+            </td>
           </tr>`;
         }).join('');
       }
@@ -1373,6 +1772,9 @@
           <td style="text-align: right;">
             <div style="display: inline-flex; gap: 6px;">
               ${!isPaid ? `
+                <button onclick="openDunningModal('${orderId}')" class="btn-action" style="font-size: 11px; padding: 4px 8px; background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.4); color:#fbbf24;" title="发起弃单跟进与催付邮件">
+                  ⚡ 催付
+                </button>
                 <button onclick="openMarkPaidModal('${orderId}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;">
                   ✅ 标记已付
                 </button>
@@ -1416,7 +1818,7 @@
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b; padding: 32px;">没有匹配的用户资料</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #64748b; padding: 32px;">没有匹配的用户资料</td></tr>';
         return;
       }
 
@@ -1448,7 +1850,9 @@
               <span>${u.name || '未命名'}</span>
             </div>
           </td>
-          <td style="font-weight: 600; color: #e2e8f0;">${u.email}</td>
+          <td style="font-weight: 600; color: #e2e8f0; font-family: monospace; font-size: 12.5px;">${u.email}</td>
+          <td>${getCountryBadge(u.country, u.ip)}</td>
+          <td><span style="font-size: 11.5px; color: #94a3b8;">${u.language || 'en'}</span></td>
           <td>
             <span class="tier-badge tier-${u.plan || 'free'}">${u.plan_display || u.plan}</span>
           </td>
@@ -1456,23 +1860,24 @@
           <td style="font-size: 12px; color: #64748b;">${regDate}</td>
           <td>
             <span style="font-size: 12px; color: #94a3b8;">${u.order_count || 0} 笔 · </span>
-            <strong style="font-family: monospace; color: ${Number(u.total_spent_cny) > 0 ? '#f59e0b' : '#64748b'};">
-              ¥ ${u.total_spent_cny || '0.00'}
+            <strong style="font-family: monospace; color: ${(Number(u.total_spent_cny) > 0 || Number(u.total_spent_usd) > 0) ? '#f59e0b' : '#64748b'};">
+              ${Number(u.total_spent_usd) > 0 ? ('$' + u.total_spent_usd) : ('¥ ' + (u.total_spent_cny || '0.00'))}
             </strong>
           </td>
           <td style="text-align: right;">
             <div style="display: inline-flex; gap: 6px;">
+              <button onclick="openEditUserModal('${u.email}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;" title="编辑用户姓名、国家、语言与权限">
+                ✏️ 编辑
+              </button>
               <button onclick="openUserAdjustModal('${u.email}', '${u.plan}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;">
-                ✨ 调级/续期
+                ✨ 调级
               </button>
-              <button onclick="sendUserMagicLink('${u.email}')" class="btn-action" style="font-size: 11px; padding: 4px 8px; background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa;" title="给该用户发送免密登录链接">
-                ✉️ 发信
+              <button onclick="openDunningModalForUser('${u.email}')" class="btn-action" style="font-size: 11px; padding: 4px 8px; background: rgba(251, 191, 36, 0.15); border-color: rgba(251, 191, 36, 0.4); color: #fbbf24;" title="给该用户发送催付或营销邮件">
+                ⚡ 催付/发信
               </button>
-              ${u.is_vip ? `
-                <button onclick="revokeUserVip('${u.email}')" class="btn-danger-sm" style="font-size: 11px; padding: 4px 8px;" title="撤销会员资格">
-                  🚫
-                </button>
-              ` : ''}
+              <button onclick="deleteUser('${u.email}')" class="btn-danger-sm" style="font-size: 11px; padding: 4px 8px;" title="安全注销并永久抹除该用户">
+                🗑️ 删除
+              </button>
             </div>
           </td>
         </tr>`;
@@ -1812,6 +2217,528 @@
         msgEl.style.color = '#f87171';
         msgEl.textContent = '网络请求失败';
         msgEl.style.display = 'block';
+      }
+    }
+
+    // ── Country Flag and Badge Helper ──
+    const COUNTRY_FLAGS = {
+      US: '🇺🇸', CN: '🇨🇳', HK: '🇭🇰', TW: '🇹🇼', GB: '🇬🇧',
+      JP: '🇯🇵', DE: '🇩🇪', FR: '🇫🇷', CA: '🇨🇦', AU: '🇦🇺',
+      SG: '🇸🇬', KR: '🇰🇷', IN: '🇮🇳', RU: '🇷🇺', BR: '🇧🇷',
+      NL: '🇳🇱', ES: '🇪🇸', IT: '🇮🇹', SE: '🇸🇪', CH: '🇨🇭',
+    };
+
+    function getCountryBadge(code, ip) {
+      const c = String(code || 'US').toUpperCase();
+      const flag = COUNTRY_FLAGS[c] || '🌐';
+      const ipText = ip && ip !== 'Unknown' ? `<span style="color:#64748b; font-size:11px; margin-left:4px;">${ip}</span>` : '';
+      return `<span style="display:inline-flex; align-items:center; gap:4px; font-family:monospace; font-size:11.5px; background:rgba(255,255,255,0.05); padding:2px 7px; border-radius:5px; border:1px solid rgba(255,255,255,0.1);"><span style="font-size:13px;">${flag}</span><strong>${c}</strong>${ipText}</span>`;
+    }
+
+    function getUserLocalTimeInfo(country) {
+      const c = String(country || 'US').toUpperCase();
+      const tzMap = {
+        US: { tz: 'America/New_York', label: '美东时间 (EDT/EST)' },
+        CN: { tz: 'Asia/Shanghai', label: '北京时间 (CST)' },
+        HK: { tz: 'Asia/Hong_Kong', label: '香港时间 (HKT)' },
+        TW: { tz: 'Asia/Taipei', label: '台北时间 (CST)' },
+        GB: { tz: 'Europe/London', label: '伦敦时间 (BST/GMT)' },
+        CA: { tz: 'America/Toronto', label: '加拿大东部时间' },
+        AU: { tz: 'Australia/Sydney', label: '悉尼时间 (AEST)' },
+        JP: { tz: 'Asia/Tokyo', label: '东京时间 (JST)' },
+        DE: { tz: 'Europe/Berlin', label: '柏林时间 (CEST)' },
+        FR: { tz: 'Europe/Paris', label: '巴黎时间 (CEST)' },
+        SG: { tz: 'Asia/Singapore', label: '新加坡时间 (SGT)' },
+      };
+
+      const item = tzMap[c] || { tz: 'UTC', label: 'UTC 协调时间' };
+      try {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('zh-CN', { timeZone: item.tz, hour: '2-digit', minute: '2-digit', hour12: false });
+        const hour = parseInt(timeStr.split(':')[0], 10);
+        const isSleeping = hour >= 22 || hour < 8;
+        const statusText = isSleeping ? '🌙 夜间时段 (慎发/建议等上午)' : '☀️ 黄金工作时段 (推荐发送)';
+        const statusColor = isSleeping ? '#fbbf24' : '#2cf0c1';
+        return {
+          text: `🕒 ${item.label}: ${timeStr} · ${statusText}`,
+          color: statusColor,
+          isSleeping,
+        };
+      } catch (_) {
+        return { text: `🕒 ${item.label}`, color: '#2cf0c1', isSleeping: false };
+      }
+    }
+
+    // ── Edit User Modal Functions ──
+    function openEditUserModal(email) {
+      const u = rawUsers.find(x => x.email.toLowerCase() === email.toLowerCase());
+      if (!u) return;
+
+      document.getElementById('editUserEmail').value = u.email;
+      document.getElementById('editUserName').value = u.name && u.name !== '未命名' ? u.name : '';
+      document.getElementById('editUserCountry').value = u.country || 'US';
+      document.getElementById('editUserLanguage').value = u.language || 'en';
+      document.getElementById('editUserPlan').value = u.plan || 'free';
+      editUserAdjustDays();
+      document.getElementById('editUserModal').style.display = 'flex';
+    }
+
+    function closeEditUserModal() {
+      document.getElementById('editUserModal').style.display = 'none';
+    }
+
+    function editUserAdjustDays() {
+      const plan = document.getElementById('editUserPlan').value;
+      const daysInput = document.getElementById('editUserDays');
+      if (plan === 'free') daysInput.value = 0;
+      else if (plan === 'pro') daysInput.value = 30;
+      else if (plan === 'yearly' || plan === 'team') daysInput.value = 365;
+      else if (plan === 'lifetime') daysInput.value = 36500;
+      else if (plan === 'single') daysInput.value = 365;
+    }
+
+    async function submitEditUser(e) {
+      e.preventDefault();
+      const email = document.getElementById('editUserEmail').value.trim();
+      const name = document.getElementById('editUserName').value.trim();
+      const country = document.getElementById('editUserCountry').value;
+      const language = document.getElementById('editUserLanguage').value;
+      const plan = document.getElementById('editUserPlan').value;
+      const days = document.getElementById('editUserDays').value;
+      const note = document.getElementById('editUserNote').value.trim();
+      const btn = document.getElementById('btnSubmitEditUser');
+
+      btn.disabled = true;
+      btn.textContent = '正在保存…';
+
+      try {
+        const resp = await fetch('/api/admin/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
+          },
+          body: JSON.stringify({
+            action: 'edit_user',
+            email,
+            name,
+            country,
+            language,
+            plan,
+            days,
+            note,
+          }),
+        });
+
+        const result = await resp.json().catch(() => ({}));
+        btn.disabled = false;
+        btn.textContent = '保存修改';
+
+        if (resp.ok && result.ok) {
+          showToast(result.message || '用户资料已更新！');
+          closeEditUserModal();
+          fetchAdminData();
+        } else {
+          alert('修改失败：' + (result.message || '未知错误'));
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = '保存修改';
+        alert('网络请求失败');
+      }
+    }
+
+    async function deleteUser(email) {
+      if (!confirm(`⚠️ 危险操作：确定要彻底删除注销用户 ${email} 吗？\n该操作将永久抹除其注册资料、会话凭证与会员权益，无法恢复！`)) return;
+
+      try {
+        const resp = await fetch('/api/admin/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
+          },
+          body: JSON.stringify({ action: 'delete_user', email }),
+        });
+        const result = await resp.json().catch(() => ({}));
+        if (resp.ok && result.ok) {
+          showToast(result.message || `用户 ${email} 已安全删除并永久抹除`);
+          fetchAdminData();
+        } else {
+          alert('删除失败：' + (result.message || '未知错误'));
+        }
+      } catch (err) {
+        alert('网络请求失败');
+      }
+    }
+
+    // ── Smart Dunning & Marketing Email System ──
+    let activeDunningState = {
+      orderId: '',
+      email: '',
+      name: '',
+      country: 'US',
+      plan: 'pro',
+      fee: '4.99',
+      currency: 'USD',
+      checkoutUrl: '',
+      templateId: 'abandoned_1h',
+    };
+
+    const DUNNING_TEMPLATES = {
+      abandoned_1h: {
+        name: '1小时弃单温和提醒',
+        getSubject: (isEn) => isEn
+          ? `Did something go wrong with your SOUNDTEST.PRO order?`
+          : `您在 SOUNDTEST.PRO 的专业版订单尚未完成支付`,
+        getMessage: (name, plan, fee, isEn) => isEn
+          ? `Hi ${name},<br><br>We noticed you started upgrading to <strong>${plan}</strong> (${fee}), but didn't finish checkout. Whether you are dealing with neighborhood noise disputes, industrial compliance, or nocturnal sleep disturbances, our certified PDF reports with SHA-256 evidence hashes and overnight Sentry Mode are ready to protect your rights.`
+          : `尊敬的 ${name}：<br><br>系统检测到您刚刚在 SOUNDTEST.PRO 创建了 <strong>${plan}</strong> (${fee}) 订单，但尚未完成支付。<br>无论是邻里噪音取证、夜间哨兵自动超标录音，还是导出防伪司法级 PDF 报告，开通后均可立即在手机与电脑多端无限制使用。`,
+        ctaText: (fee, isEn) => isEn ? `Resume Checkout & Activate Now (${fee})` : `立即继续支付并激活会员 (${fee})`,
+      },
+      discount_24h: {
+        name: '24小时限时85折特惠',
+        getSubject: (isEn) => isEn
+          ? `Special 15% OFF to complete your SOUNDTEST.PRO Pro upgrade (Next 24 Hours)`
+          : `【限时立减15%】您的 SOUNDTEST.PRO 会员特惠保留中`,
+        getMessage: (name, plan, fee, isEn) => isEn
+          ? `Hi ${name},<br><br>We understand how critical clear, tamper-evident acoustic evidence is. To make sure you get the legal-grade documentation you need without hesitation, we've unlocked a <strong>15% VIP Courtesy Discount</strong> on your <strong>${plan}</strong> reservation.<br><br>Your reserved rate is valid for the next 24 hours.`
+          : `尊敬的 ${name}：<br><br>我们深知遭遇噪音困扰时的无助与取证维权的紧迫。为帮助您以最高性价比获得完整法律效力存证与无水印 PDF 出具权益，我们已为您的 <strong>${plan}</strong> 订单申请了专属保留特惠。<br><br>此特权通道将在 24 小时后自动关闭。`,
+        ctaText: (fee, isEn) => isEn ? `Claim Discount & Finish Upgrade →` : `使用特惠立即完成升级 →`,
+      },
+      notice_3d: {
+        name: '3天订单作废预警',
+        getSubject: (isEn) => isEn
+          ? `Final Notice: Your SOUNDTEST.PRO cart reservation is expiring`
+          : `最后保留通知：您的 SOUNDTEST.PRO 订单及云同步空间即将释放`,
+        getMessage: (name, plan, fee, isEn) => isEn
+          ? `Hi ${name},<br><br>This is a quick final notice regarding your pending <strong>${plan}</strong> license (${fee}). Your temporary checkout session and reserved cloud storage slots will expire shortly.<br><br>If you still wish to secure certified noise calibration reports and continuous sentry alerts, please finalize before expiration.`
+          : `尊敬的 ${name}：<br><br>这是一封友好的最后通知。您于日前提交的 <strong>${plan}</strong> (${fee}) 预留订单将于近期超时作废，预留的云端取证加密空间也将一并释放。<br><br>若您仍需使用夜间哨兵自动监测与司法报告盖章导出功能，请抓紧最后时间完成。`,
+        ctaText: (fee, isEn) => isEn ? `Finalize Upgrade Before Expiration` : `在订单作废前完成支付`,
+      },
+      weekly_reengage: {
+        name: '7天周期回访与唤醒',
+        getSubject: (isEn) => isEn
+          ? `Still dealing with unwanted noise disturbances? We're here to help`
+          : `仍在遭遇噪音困扰？SOUNDTEST.PRO 现场取证与夜间哨兵功能已全面就绪`,
+        getMessage: (name, plan, fee, isEn) => isEn
+          ? `Hi ${name},<br><br>We wanted to check in and see how your noise situation is going. Unwanted disturbances—from construction, loud neighbors, or HVAC units—can severely impact sleep and daily life.<br><br>Your SOUNDTEST.PRO account is still ready to unlock overnight Sentry Mode, tamper-evident SHA-256 digital seals, and certified PDF evidence reports.`
+          : `尊敬的 ${name}：<br><br>我们希望跟进了解一下您近期的噪音维权进展。无论是邻里生活噪音、楼上震动还是工商业噪音，长期困扰均对身心健康造成严重影响。<br><br>您的 SOUNDTEST.PRO 账户仍可随时开启夜间哨兵自动超标录音、防伪盖章 PDF 报告出具与多端云端存证。`,
+        ctaText: (fee, isEn) => isEn ? `Resume Pro Access & Generate Reports` : `立即重新激活专业版并导出证据`,
+      }
+    };
+
+    function openDunningModal(orderId) {
+      const ord = rawOrders.find(o => (o.trade_order_id === orderId || o.order_id === orderId));
+      if (!ord) return;
+
+      const user = rawUsers.find(u => u.email.toLowerCase() === (ord.email || '').toLowerCase());
+      const buyerName = user ? (user.name || ord.email) : (ord.email || 'Customer');
+      const country = user ? (user.country || 'US') : (ord.currency === 'USD' ? 'US' : 'CN');
+
+      let checkoutUrl = ord.checkout_url || '';
+      if (!checkoutUrl) {
+        if (ord.currency === 'USD') {
+          checkoutUrl = `https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c?email=${encodeURIComponent(ord.email || '')}&plan=${ord.plan}`;
+        } else {
+          checkoutUrl = `https://soundtest.pro/auth.html?email=${encodeURIComponent(ord.email || '')}`;
+        }
+      }
+
+      activeDunningState = {
+        orderId: ord.trade_order_id || ord.order_id,
+        email: ord.email || '',
+        name: buyerName,
+        country,
+        plan: ord.plan || 'pro',
+        fee: (ord.currency === 'USD' ? '$' : '¥') + (ord.fee || '0.00'),
+        currency: ord.currency || (country === 'CN' ? 'CNY' : 'USD'),
+        checkoutUrl,
+        templateId: 'abandoned_1h',
+      };
+
+      populateDunningModal();
+      document.getElementById('dunningEmailModal').style.display = 'flex';
+    }
+
+    function openDunningModalForUser(email) {
+      const user = rawUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+      const ord = rawOrders.find(o => o.email.toLowerCase() === email.toLowerCase() && o.status !== 'paid');
+
+      const country = user ? (user.country || 'US') : 'US';
+      const isUsd = country !== 'CN';
+
+      let plan = ord ? ord.plan : 'yearly';
+      let fee = ord ? ((ord.currency === 'USD' ? '$' : '¥') + ord.fee) : (isUsd ? '$24.99' : '¥19.90');
+      let orderId = ord ? (ord.trade_order_id || ord.order_id) : `lead_${Date.now()}`;
+      let checkoutUrl = ord ? ord.checkout_url : '';
+      if (!checkoutUrl) {
+        if (isUsd) {
+          checkoutUrl = `https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c?email=${encodeURIComponent(email)}&plan=${plan}`;
+        } else {
+          checkoutUrl = `https://soundtest.pro/auth.html?email=${encodeURIComponent(email)}`;
+        }
+      }
+
+      activeDunningState = {
+        orderId,
+        email,
+        name: user ? (user.name || email) : email,
+        country,
+        plan,
+        fee,
+        currency: isUsd ? 'USD' : 'CNY',
+        checkoutUrl,
+        templateId: 'abandoned_1h',
+      };
+
+      populateDunningModal();
+      document.getElementById('dunningEmailModal').style.display = 'flex';
+    }
+
+    function closeDunningModal() {
+      document.getElementById('dunningEmailModal').style.display = 'none';
+    }
+
+    function populateDunningModal() {
+      const s = activeDunningState;
+      document.getElementById('dunCustomerName').textContent = s.name;
+      document.getElementById('dunCustomerEmail').textContent = `<${s.email}>`;
+      document.getElementById('dunOrderId').textContent = s.orderId;
+      document.getElementById('dunOrderPlan').textContent = s.plan.toUpperCase();
+      document.getElementById('dunOrderFee').textContent = s.fee;
+      document.getElementById('dunOrderGateway').textContent = s.currency === 'USD' ? '🌐 Creem.io (USD $)' : '🟢 微信支付 (CNY ¥)';
+      document.getElementById('dunCheckoutUrl').value = s.checkoutUrl;
+
+      // Timezone badge
+      const tzInfo = getUserLocalTimeInfo(s.country);
+      const tzBadge = document.getElementById('dunTimezoneBadge');
+      tzBadge.textContent = tzInfo.text;
+      tzBadge.style.color = tzInfo.color;
+      tzBadge.style.borderColor = tzInfo.color;
+
+      // Reset template pills
+      document.querySelectorAll('#dunningTemplatePills .pill-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === 0);
+      });
+      s.templateId = 'abandoned_1h';
+
+      updateDunningPreview();
+    }
+
+    function switchDunningTemplate(templateId, el) {
+      activeDunningState.templateId = templateId;
+      if (el) {
+        document.querySelectorAll('#dunningTemplatePills .pill-btn').forEach(btn => btn.classList.remove('active'));
+        el.classList.add('active');
+      }
+      updateDunningPreview();
+    }
+
+    function updateDunningPreview() {
+      const s = activeDunningState;
+      const tpl = DUNNING_TEMPLATES[s.templateId] || DUNNING_TEMPLATES.abandoned_1h;
+      const isEn = s.currency === 'USD' || !(/[\u4e00-\u9fa5]/.test(s.name));
+
+      const subject = tpl.getSubject(isEn);
+      document.getElementById('dunEmailSubject').value = subject;
+
+      const checkoutUrl = document.getElementById('dunCheckoutUrl').value || s.checkoutUrl;
+      const messageHtml = tpl.getMessage(s.name, s.plan.toUpperCase(), s.fee, isEn);
+      const ctaText = tpl.ctaText(s.fee, isEn);
+
+      const previewBox = document.getElementById('dunEmailPreviewBox');
+      previewBox.innerHTML = `
+        <div style="background: rgba(14,21,38,0.9); border: 1px solid rgba(44,240,193,0.3); border-radius: 12px; padding: 18px; color: #f1f5f9; font-family: sans-serif;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px; margin-bottom: 12px;">
+            <div style="font-weight: 900; font-size: 15px; color: #fff;">⚡ SOUNDTEST<span style="color:#2cf0c1;">.PRO</span></div>
+            <span style="font-size: 11px; color: #94a3b8;">${isEn ? 'Global Checkout Support' : '声学存证与财务中心'}</span>
+          </div>
+          <div style="font-size: 13.5px; line-height: 1.6; margin-bottom: 16px; color: #cbd5e1;">
+            ${messageHtml}
+          </div>
+          <div style="text-align: center; margin: 16px 0;">
+            <a href="${checkoutUrl}" target="_blank" style="display:inline-block; background:linear-gradient(135deg,#2cf0c1,#3b82f6); color:#04101a; padding:10px 22px; border-radius:8px; font-weight:800; text-decoration:none; font-size:13.5px;">
+              ${ctaText}
+            </a>
+          </div>
+          <div style="font-size: 11.5px; color: #64748b; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;">
+            直达链接: <span style="color:#2cf0c1; word-break:break-all;">${checkoutUrl}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    async function sendDunningEmail() {
+      const s = activeDunningState;
+      const subject = document.getElementById('dunEmailSubject').value.trim();
+      const checkoutUrl = document.getElementById('dunCheckoutUrl').value.trim();
+      const btn = document.getElementById('btnSendDunning');
+
+      if (!s.email || !s.email.includes('@')) {
+        alert('无效的收件邮箱');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '正在通过边缘节点发送…';
+
+      try {
+        const resp = await fetch('/api/admin/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
+          },
+          body: JSON.stringify({
+            to: s.email,
+            name: s.name,
+            orderId: s.orderId,
+            plan: s.plan,
+            amount: s.fee,
+            currency: s.currency,
+            checkoutUrl,
+            templateId: s.templateId,
+            subject,
+          }),
+        });
+
+        const result = await resp.json().catch(() => ({}));
+        btn.disabled = false;
+        btn.textContent = '🚀 立即发送催付邮件';
+
+        if (resp.ok && result.ok) {
+          showToast(`催付邮件已成功发送至 ${s.email} (${result.method || 'Cloudflare'})！`);
+          closeDunningModal();
+          fetchAdminData();
+        } else {
+          alert('发送失败：' + (result.message || '未知错误'));
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = '🚀 立即发送催付邮件';
+        alert('发信请求异常，请检查网络连接');
+      }
+    }
+
+    // ── Traffic & Visit Analytics System ──
+    async function fetchAnalyticsData() {
+      try {
+        const resp = await fetch('/api/admin/analytics', {
+          headers: {
+            'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
+          }
+        });
+        if (resp.ok) {
+          const data = await resp.json().catch(() => ({}));
+          if (data.ok) {
+            renderAnalyticsView(data);
+          }
+        }
+      } catch (err) {
+        console.error('Fetch analytics failed:', err);
+      }
+    }
+
+    function renderAnalyticsView(data) {
+      const t = data.traffic || {};
+      const f = data.funnel || {};
+
+      // 1. KPI Stats
+      document.getElementById('anlTotalUv').textContent = (t.totalUv || 0).toLocaleString();
+      document.getElementById('anlTodayUv').textContent = (t.todayUv || 0).toLocaleString();
+      document.getElementById('anlTotalPv').textContent = (t.totalPv || 0).toLocaleString();
+
+      document.getElementById('anlRegRate').textContent = f.regRate || '0.0%';
+      document.getElementById('anlTotalReg').textContent = f.registered || 0;
+
+      document.getElementById('anlCheckoutRate').textContent = f.checkoutRate || '0.0%';
+      document.getElementById('anlCheckouts').textContent = f.checkouts || 0;
+
+      document.getElementById('anlPaidRate').textContent = f.paidRate || '0.0%';
+      document.getElementById('anlPaidCount').textContent = f.paid || 0;
+      document.getElementById('anlOverallRate').textContent = f.overallRate || '0.0%';
+
+      // 2. Funnel Visualizer
+      document.getElementById('fnlAnlUv').textContent = (f.uv || 0) + ' UV';
+      document.getElementById('fnlAnlReg').textContent = (f.registered || 0) + ' 人';
+      document.getElementById('fnlAnlRegSub').textContent = '转化率: ' + (f.regRate || '0%');
+      document.getElementById('fnlAnlCheckout').textContent = (f.checkouts || 0) + ' 笔';
+      document.getElementById('fnlAnlCheckoutSub').textContent = '待付/弃单: ' + (f.unpaid || 0) + ' 笔';
+      document.getElementById('fnlAnlPaid').textContent = (f.paid || 0) + ' 笔';
+      document.getElementById('fnlAnlPaidSub').textContent = '净付费率: ' + (f.overallRate || '0%');
+
+      // 3. Registration Pages Attribution
+      const regPagesBody = document.getElementById('anlRegPagesBody');
+      const pages = data.registrationPages || [];
+      if (pages.length === 0) {
+        regPagesBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#64748b; padding:16px;">暂无归因数据</td></tr>';
+      } else {
+        regPagesBody.innerHTML = pages.map(p => `
+          <tr>
+            <td style="font-family: monospace; font-size: 12.5px; color: #fff;">${p.page}</td>
+            <td style="font-weight: 700; color: #60a5fa;">${p.count} 人</td>
+            <td>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="flex:1; height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden;">
+                  <div style="width:${p.percentage}; height:100%; background:linear-gradient(90deg,#60a5fa,#2cf0c1);"></div>
+                </div>
+                <span style="font-size:11.5px; color:#cbd5e1; width:45px; text-align:right;">${p.percentage}</span>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // 4. Drop-off & Friction Points
+      const dropBody = document.getElementById('anlDropoffBody');
+      const dropoffs = data.dropoffPages || [];
+      dropBody.innerHTML = dropoffs.map(d => `
+        <tr>
+          <td style="font-family: monospace; font-size: 12px; color: #fbbf24;">${d.page}</td>
+          <td style="font-size: 12.5px; color: #cbd5e1;">${d.note}</td>
+          <td><span style="font-size:11px; background:rgba(245,158,11,0.12); color:#fbbf24; border:1px solid rgba(245,158,11,0.3); padding:2px 8px; border-radius:4px;">${d.dropoffScore}</span></td>
+        </tr>
+      `).join('');
+
+      // 5. Geographic Distribution
+      const countriesBody = document.getElementById('anlCountriesBody');
+      const countries = data.countries || [];
+      if (countries.length === 0) {
+        countriesBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#64748b; padding:16px;">暂无国家分布</td></tr>';
+      } else {
+        countriesBody.innerHTML = countries.map(c => `
+          <tr>
+            <td>
+              <span style="font-size:14px; margin-right:6px;">${c.flag}</span>
+              <strong style="color:#fff; font-family:monospace;">${c.code}</strong>
+            </td>
+            <td style="font-weight:700; color:var(--adm-accent);">${c.count} 人</td>
+            <td>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="flex:1; height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden;">
+                  <div style="width:${c.percentage}; height:100%; background:linear-gradient(90deg,#2cf0c1,#10b981);"></div>
+                </div>
+                <span style="font-size:11.5px; color:#cbd5e1; width:45px; text-align:right;">${c.percentage}</span>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // 6. CF Integration Badge
+      const cfStatus = data.cfApiStatus || {};
+      const badge = document.getElementById('cfBadgeStatus');
+      if (cfStatus.configured) {
+        badge.className = 'status-badge badge-paid';
+        badge.textContent = '🟢 Cloudflare GraphQL 边缘日志已关联';
+      } else {
+        badge.className = 'status-badge badge-pending';
+        badge.textContent = '🟢 原生边缘统计已启用 (零授权)';
       }
     }
 

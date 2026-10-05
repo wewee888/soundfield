@@ -73,12 +73,29 @@ export async function onRequestPost(context) {
         console.error('Membership lookup failed during registration:', memErr);
       }
 
+      // Extract geolocation & device context from Cloudflare request headers
+      const clientIp = request.headers.get('cf-connecting-ip') ||
+                       request.headers.get('x-real-ip') ||
+                       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                       'Unknown';
+      const country = request.cf?.country || request.headers.get('cf-ipcountry') || 'US';
+      const city = request.cf?.city || '';
+      const region = request.cf?.region || '';
+      const language = String(body.lang || request.headers.get('accept-language')?.split(',')[0] || 'en').trim();
+      const sourcePage = String(body.sourcePage || request.headers.get('referer') || '').slice(0, 250);
+
       // Save user record
       const now = new Date().toISOString();
       const userRecord = {
         name,
         email,
         passwordHash,
+        ip: clientIp,
+        country,
+        city,
+        region,
+        language,
+        sourcePage,
         createdAt: clientCreatedAt || now,
         updatedAt: now,
       };

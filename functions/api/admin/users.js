@@ -73,6 +73,12 @@ export async function onRequestGet(context) {
         user: {
           name: user.name,
           email: user.email,
+          ip: user.ip || 'Unknown',
+          country: user.country || 'US',
+          city: user.city || '',
+          region: user.region || '',
+          language: user.language || 'en',
+          sourcePage: user.sourcePage || '',
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         },
@@ -96,6 +102,12 @@ export async function onRequestGet(context) {
         users.push({
           email,
           name: u.name || '未命名',
+          ip: u.ip || 'Unknown',
+          country: u.country || 'US',
+          city: u.city || '',
+          region: u.region || '',
+          language: u.language || 'en',
+          sourcePage: u.sourcePage || '',
           createdAt: u.createdAt || null,
           updatedAt: u.updatedAt || null,
           membership: mem || { plan: 'free', status: 'none' },
@@ -178,21 +190,49 @@ export async function onRequestPost(context) {
       });
     }
 
-    if (action === 'update_profile') {
+    if (action === 'update_profile' || action === 'edit_user') {
       const rawUser = await env.ab_test.get(`user:${email}`);
       if (!rawUser) {
         return json({ ok: false, error: 'user_not_found', message: 'User not found' }, 404);
       }
       const u = JSON.parse(rawUser);
-      if (body.name) u.name = String(body.name).trim();
+      if (body.name !== undefined) u.name = String(body.name).trim();
+      if (body.country !== undefined) u.country = String(body.country).trim().toUpperCase();
+      if (body.language !== undefined) u.language = String(body.language).trim();
       u.updatedAt = new Date().toISOString();
       await env.ab_test.put(`user:${email}`, JSON.stringify(u));
 
+      // Synchronize membership tier if plan is specified
+      if (body.plan !== undefined) {
+        const plan = String(body.plan).toLowerCase();
+        if (plan === 'free') {
+          await env.ab_test.delete(`member:${email}`);
+        } else {
+          let days = parseInt(body.days || 30, 10);
+          if (plan === 'lifetime') days = 36500;
+          else if (plan === 'yearly' || plan === 'team') days = 365;
+          const expDate = body.expires_at || new Date(Date.now() + days * 86400 * 1000).toISOString();
+          const memberRecord = {
+            email,
+            plan: plan === 'team' ? 'team' : plan,
+            plan_display: plan,
+            status: 'paid',
+            granted_at: new Date().toISOString(),
+            expires_at: expDate,
+            granted_by: 'admin_edit_user',
+            note: String(body.note || '管理员后台修改用户档案'),
+          };
+          await env.ab_test.put(`member:${email}`, JSON.stringify(memberRecord), {
+            expirationTtl: Math.min(days * 86400, 86400 * 365 * 10),
+          });
+        }
+      }
+
       return json({
         ok: true,
-        action: 'update_profile',
+        action: 'edit_user',
         email,
-        message: '用户资料已更新',
+        message: `用户 ${email} 的资料与会员权限已更新成功！`,
       });
     }
 
@@ -203,7 +243,7 @@ export async function onRequestPost(context) {
         ok: true,
         action: 'delete_user',
         email,
-        message: `用户 ${email} 及其会员记录已安全注销`,
+        message: `用户 ${email} 及其会员记录已安全注销并永久抹除`,
       });
     }
 
@@ -213,12 +253,41 @@ export async function onRequestPost(context) {
   }
 }
 
+export async function onRequestPut(context) {
+  const req = context.request;
+  const body = await req.json().catch(() => ({}));
+  body.action = body.action || 'edit_user';
+  return onRequestPost({
+    ...context,
+    request: new Request(req.url, {
+      method: 'POST',
+      headers: req.headers,
+      body: JSON.stringify(body),
+    }),
+  });
+}
+
+export async function onRequestDelete(context) {
+  const req = context.request;
+  const url = new URL(req.url);
+  const email = (url.searchParams.get('email') || '').toLowerCase().trim();
+  const body = { action: 'delete_user', email };
+  return onRequestPost({
+    ...context,
+    request: new Request(req.url, {
+      method: 'POST',
+      headers: req.headers,
+      body: JSON.stringify(body),
+    }),
+  });
+}
+
 export async function onRequestOptions() {
   return new Response(null, {
     status: 204,
     headers: {
       'access-control-allow-origin': '*',
-      'access-control-allow-methods': 'GET, POST, OPTIONS',
+      'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'access-control-allow-headers': 'content-type, authorization, x-admin-token, x-admin-email, x-session-token',
     },
   });

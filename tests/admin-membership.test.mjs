@@ -518,6 +518,199 @@ test('Admin users API /api/admin/users allows query and membership adjustments',
   const mem = JSON.parse(kv.get('member:member_test@example.com'));
   assert.equal(mem.plan, 'team');
   assert.equal(mem.status, 'paid');
+
+  // Test edit_user profile & country/language
+  const editReq = new Request('https://soundtest.pro/api/admin/users', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
+    body: JSON.stringify({
+      action: 'edit_user',
+      email: 'member_test@example.com',
+      name: 'Jeannie Reaves',
+      country: 'US',
+      language: 'en-US',
+      plan: 'yearly',
+      days: 365,
+    }),
+  });
+  const editRes = await usersModule.onRequestPost({ request: editReq, env: mockEnv });
+  assert.equal(editRes.status, 200);
+  const editData = await editRes.json();
+  assert.equal(editData.ok, true);
+
+  const updatedRaw = JSON.parse(kv.get('user:member_test@example.com'));
+  assert.equal(updatedRaw.name, 'Jeannie Reaves');
+  assert.equal(updatedRaw.country, 'US');
+  assert.equal(updatedRaw.language, 'en-US');
+
+  // Test delete_user
+  const delReq = new Request('https://soundtest.pro/api/admin/users', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
+    body: JSON.stringify({
+      action: 'delete_user',
+      email: 'member_test@example.com',
+    }),
+  });
+  const delRes = await usersModule.onRequestPost({ request: delReq, env: mockEnv });
+  assert.equal(delRes.status, 200);
+  assert.equal(kv.has('user:member_test@example.com'), false);
+  assert.equal(kv.has('member:member_test@example.com'), false);
+});
+
+test('Admin analytics API /api/admin/analytics calculates traffic, funnel and attribution', async () => {
+  const anlPath = path.join(rootDir, 'functions/api/admin/analytics.js');
+  assert.ok(fs.existsSync(anlPath), 'analytics.js must exist');
+  const anlModule = await import(`file://${anlPath.replace(/\\/g, '/')}`);
+
+  const kv = new Map();
+  // Set up 2 users: one US, one CN
+  kv.set('user:jeannie@example.com', JSON.stringify({
+    name: 'Jeannie Reaves',
+    email: 'jeannie@example.com',
+    country: 'US',
+    language: 'en',
+    sourcePage: '/soundtest.html',
+    createdAt: new Date().toISOString(),
+  }));
+  kv.set('user:zhang@example.com', JSON.stringify({
+    name: '张三',
+    email: 'zhang@example.com',
+    country: 'CN',
+    language: 'zh-CN',
+    sourcePage: '/zh/use-cases/apartment-noise.html',
+    createdAt: new Date().toISOString(),
+  }));
+
+  // Set up orders
+  kv.set('order:ord_1', JSON.stringify({
+    order_id: 'ord_1',
+    status: 'paid',
+    fee: '19.90',
+    currency: 'CNY',
+  }));
+  kv.set('order:ord_2', JSON.stringify({
+    order_id: 'ord_2',
+    status: 'pending',
+    fee: '24.99',
+    currency: 'USD',
+  }));
+
+  const mockEnv = {
+    ADMIN_SECRET: 'soundtest_admin_2026',
+    ab_test: {
+      get: async (k) => kv.get(k) || null,
+      put: async (k, v) => kv.set(k, v),
+      delete: async (k) => kv.delete(k),
+      list: async ({ prefix }) => {
+        const matchingKeys = Array.from(kv.keys())
+          .filter((k) => k.startsWith(prefix))
+          .map((name) => ({ name }));
+        return { keys: matchingKeys };
+      },
+    },
+  };
+
+  const req = new Request('https://soundtest.pro/api/admin/analytics', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
+  });
+  const res = await anlModule.onRequestGet({ request: req, env: mockEnv });
+  assert.equal(res.status, 200);
+  const data = await res.json();
+  assert.equal(data.ok, true);
+  assert.equal(data.funnel.registered, 2);
+  assert.equal(data.funnel.checkouts, 2);
+  assert.equal(data.funnel.paid, 1);
+  assert.ok(data.registrationPages.length >= 2);
+  assert.ok(data.countries.some((c) => c.code === 'US'));
+  assert.ok(data.countries.some((c) => c.code === 'CN'));
+});
+
+test('Admin send-email API /api/admin/send-email dispatches dunning emails and updates order stats', async () => {
+  const sendEmailPath = path.join(rootDir, 'functions/api/admin/send-email.js');
+  assert.ok(fs.existsSync(sendEmailPath), 'send-email.js must exist');
+  const sendEmailModule = await import(`file://${sendEmailPath.replace(/\\/g, '/')}`);
+
+  const kv = new Map();
+  kv.set('order:creem_999', JSON.stringify({
+    order_id: 'creem_999',
+    plan: 'yearly',
+    fee: '24.99',
+    currency: 'USD',
+    email: 'boodoll2018@gmail.com',
+    status: 'pending',
+  }));
+
+  const mockEnv = {
+    ADMIN_SECRET: 'soundtest_admin_2026',
+    ab_test: {
+      get: async (k) => kv.get(k) || null,
+      put: async (k, v) => kv.set(k, v),
+      delete: async (k) => kv.delete(k),
+    },
+  };
+
+  // Test dry-run preview
+  const dryReq = new Request('https://soundtest.pro/api/admin/send-email', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
+    body: JSON.stringify({
+      to: 'boodoll2018@gmail.com',
+      name: 'Jeannie Reaves',
+      orderId: 'creem_999',
+      plan: 'yearly',
+      amount: '$24.99',
+      currency: 'USD',
+      templateId: 'discount_24h',
+      dryRun: true,
+    }),
+  });
+  const dryRes = await sendEmailModule.onRequestPost({ request: dryReq, env: mockEnv });
+  assert.equal(dryRes.status, 200);
+  const dryData = await dryRes.json();
+  assert.equal(dryData.ok, true);
+  assert.ok(dryData.html.includes('15%'));
+  assert.ok(dryData.subject.includes('15% OFF'));
+
+  // Test simulation dispatch
+  const sendReq = new Request('https://soundtest.pro/api/admin/send-email', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
+    body: JSON.stringify({
+      to: 'boodoll2018@gmail.com',
+      name: 'Jeannie Reaves',
+      orderId: 'creem_999',
+      plan: 'yearly',
+      amount: '$24.99',
+      currency: 'USD',
+      templateId: 'abandoned_1h',
+    }),
+  });
+  const sendRes = await sendEmailModule.onRequestPost({ request: sendReq, env: mockEnv });
+  assert.equal(sendRes.status, 200);
+  const sendData = await sendRes.json();
+  assert.equal(sendData.ok, true);
+
+  // Check KV was updated with dunning stats
+  const ordAfter = JSON.parse(kv.get('order:creem_999'));
+  assert.equal(ordAfter.dunning_count, 1);
+  assert.ok(ordAfter.last_dunning_at);
+  assert.equal(ordAfter.last_dunning_template, 'abandoned_1h');
 });
 
 

@@ -1753,8 +1753,99 @@
   color: var(--accent);
   text-decoration: none;
 }
-.auth-pay-footer a:hover {
-  text-decoration: underline;
+
+/* ── Dual Gateway Toggle & Creem USD Styles ── */
+.auth-pay-gateway-toggle {
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 10px 0 14px;
+  width: 100%;
+}
+
+.auth-gw-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 8px 10px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 180ms ease;
+  white-space: nowrap;
+}
+
+.auth-gw-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.auth-gw-btn.active {
+  background: linear-gradient(135deg, rgba(44, 240, 193, 0.16), rgba(124, 155, 255, 0.16));
+  border-color: rgba(44, 240, 193, 0.4);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.auth-pay-creem-action {
+  width: 100%;
+  margin: 10px 0 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-pay-creem-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #2cf0c1 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  transition: all 200ms ease;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.auth-pay-creem-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(99, 102, 241, 0.55);
+  color: #fff;
+}
+
+.auth-pay-creem-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 4px;
+}
+
+.auth-pay-creem-badges span {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
 }
 
 /* ── Super Admin Console Card ── */

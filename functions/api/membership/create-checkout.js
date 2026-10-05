@@ -34,7 +34,8 @@ async function readBody(request) {
 export async function onRequestPost(context) {
   const { request, env } = context;
   const body = await readBody(request);
-  const plan = String(body.plan || '').toLowerCase();
+  let plan = String(body.plan || '').toLowerCase();
+  if (plan === 'yearly') plan = 'team';
   const email = String(body.email || '').trim().toLowerCase();
   const source = String(body.source || 'soundtest-pro-web');
 
@@ -77,12 +78,14 @@ export async function onRequestPost(context) {
       await env.ab_test.put(
         `order:${creemOrderId}`,
         JSON.stringify({
+          order_id: creemOrderId,
           plan,
           fee: planFees[plan] || '4.99',
           currency: 'USD',
           provider: 'creem',
           status: 'pending',
           email,
+          checkout_url: checkoutUrl,
           created_at: new Date().toISOString(),
         }),
         { expirationTtl: 86400 * 30 }
@@ -90,7 +93,7 @@ export async function onRequestPost(context) {
     } catch (_) {}
   }
 
-  return json({ ok: true, plan, checkoutUrl });
+  return json({ ok: true, plan, order_id: `creem_${Date.now()}`, checkoutUrl });
 }
 
 export function onRequestGet() {

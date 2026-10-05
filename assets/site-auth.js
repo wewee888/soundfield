@@ -1053,8 +1053,85 @@
   function openUpgradePayModal({ feature = 'sync', session = null, onSuccess = null } = {}) {
     closeUpgradePayModal();
 
-    const isZh = getNavAuthLang() === 'zh';
+    // Robust detection of overseas vs mainland China users
+    let isChinaUser = false;
+    try {
+      const explicitZhPath = window.location.pathname.startsWith('/zh/');
+      const userCountry = (session?.country || '').toUpperCase();
+      let tz = '';
+      try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (_) {}
+      const isChinaTz = ['Asia/Shanghai', 'Asia/Chongqing', 'Asia/Harbin', 'Asia/Urumqi', 'PRC'].includes(tz);
+      const navLang = (navigator.language || '').toLowerCase();
+      const isZhNavLang = navLang.startsWith('zh');
+
+      if (userCountry) {
+        isChinaUser = (userCountry === 'CN');
+      } else if (explicitZhPath) {
+        isChinaUser = true;
+      } else {
+        // If not on /zh/ path, treat as China only if both timezone and browser language match China
+        isChinaUser = isChinaTz && isZhNavLang;
+      }
+    } catch (_) {
+      isChinaUser = false;
+    }
+
+    const isZh = (getNavAuthLang() === 'zh') || isChinaUser;
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    let activeGateway = isChinaUser ? 'wechat' : 'creem'; // Overseas defaults to Creem (USD $), Mainland China to WeChat (CNY ¥)
+
+    const currencyConfigs = {
+      creem: {
+        symbol: '$',
+        currency: 'USD',
+        providerName: isZh ? 'Creem.io 国际信用卡 / 移动支付' : 'Creem.io Safe Checkout',
+        footerText: isZh ? '🔒 Creem.io 国际安全结算 · 支持 Visa/Master/Apple Pay · 即时生效' : '🔒 Creem.io Secure Checkout · Cards, Apple Pay, Google Pay · Instant Access',
+        plans: {
+          sync: [
+            { id: 'yearly', name: 'Pro Annual', fee: '24.99', origFee: '$59.99', tag: '★ POPULAR · SAVE 58%' },
+            { id: 'lifetime', name: 'Lifetime', fee: '79.99', origFee: '$199.00', tag: '💎 LIFETIME' },
+            { id: 'pro', name: 'Pro Monthly', fee: '4.99', origFee: '$9.99', tag: 'MONTHLY' },
+            { id: 'single', name: 'Single Pass', fee: '1.99', origFee: '$4.99', tag: 'SINGLE' },
+          ],
+          team: [
+            { id: 'team', name: 'Team Annual', fee: '249.00', origFee: '$499.00', tag: '🏢 5 SEATS' },
+            { id: 'lifetime', name: 'Pro Lifetime', fee: '79.99', origFee: '$199.00', tag: '💎 LIFETIME' },
+            { id: 'yearly', name: 'Pro Annual', fee: '24.99', origFee: '$59.99', tag: 'PERSONAL' },
+          ],
+          pro: [
+            { id: 'yearly', name: 'Pro Annual', fee: '24.99', origFee: '$59.99', tag: '★ POPULAR' },
+            { id: 'lifetime', name: 'Lifetime', fee: '79.99', origFee: '$199.00', tag: '💎 LIFETIME' },
+            { id: 'pro', name: 'Pro Monthly', fee: '4.99', origFee: '$9.99', tag: 'MONTHLY' },
+            { id: 'single', name: 'Single Pass', fee: '1.99', origFee: '$4.99', tag: 'SINGLE' },
+          ]
+        },
+        defaultPlan: feature === 'team' ? 'team' : 'yearly'
+      },
+      wechat: {
+        symbol: '¥',
+        currency: 'CNY',
+        providerName: isZh ? '微信扫码安全直付 (虎皮椒)' : 'WeChat Pay Safe Checkout',
+        footerText: isZh ? '🔒 虎皮椒安全微信结算 · 支付成功即时生效 · 跨设备多端通用' : '🔒 WeChat Pay · Instant activation across devices',
+        plans: {
+          sync: [
+            { id: 'yearly', name: isZh ? 'PRO 年度版' : 'Pro Annual', fee: '19.90', origFee: '¥59.90', tag: isZh ? '★ 最受欢迎 · 省67%' : '★ POPULAR' },
+            { id: 'lifetime', name: isZh ? 'PRO 终身版' : 'Lifetime', fee: '39.90', origFee: '¥199.00', tag: isZh ? '💎 买断立省¥159' : '💎 LIFETIME' },
+            { id: 'pro', name: isZh ? 'PRO 月度版' : 'Pro Monthly', fee: '9.90', origFee: '¥19.90', tag: isZh ? '单月体验' : 'MONTHLY' },
+          ],
+          team: [
+            { id: 'team', name: isZh ? '企业团队年卡' : 'Team Annual', fee: '1998.00', origFee: '¥3,999.00', tag: isZh ? '🏢 5人团队 · 企业级' : '🏢 5 SEATS' },
+            { id: 'lifetime', name: isZh ? '个人终身买断' : 'Pro Lifetime', fee: '39.90', origFee: '¥199.00', tag: isZh ? '💎 个人买断' : '💎 PERSONAL' },
+            { id: 'yearly', name: isZh ? '个人年度版' : 'Pro Annual', fee: '19.90', origFee: '¥59.90', tag: isZh ? '个人年卡' : 'PERSONAL' },
+          ],
+          pro: [
+            { id: 'yearly', name: isZh ? 'PRO 年度版' : 'Pro Annual', fee: '19.90', origFee: '¥59.90', tag: isZh ? '★ 最受欢迎 · 省67%' : '★ POPULAR' },
+            { id: 'lifetime', name: isZh ? 'PRO 终身版' : 'Lifetime', fee: '39.90', origFee: '¥199.00', tag: isZh ? '💎 买断立省¥159' : '💎 LIFETIME' },
+            { id: 'pro', name: isZh ? 'PRO 月度版' : 'Pro Monthly', fee: '9.90', origFee: '¥19.90', tag: isZh ? '单月体验' : 'MONTHLY' },
+          ]
+        },
+        defaultPlan: feature === 'team' ? 'team' : 'yearly'
+      }
+    };
 
     const featureConfigs = {
       sync: {
@@ -1074,12 +1151,6 @@
               '🛡️ Watermark-free certified PDF reports with SHA-256 evidence hashes',
               '🌙 Sentry mode for automated overnight noise monitoring & capture',
             ],
-        plans: [
-          { id: 'yearly', name: isZh ? 'PRO 年度版' : 'Pro Annual', fee: '19.90', origFee: '¥59.90', tag: isZh ? '★ 最受欢迎 · 省67%' : '★ POPULAR' },
-          { id: 'lifetime', name: isZh ? 'PRO 终身版' : 'Lifetime', fee: '39.90', origFee: '¥199.00', tag: isZh ? '💎 买断立省¥159' : '💎 LIFETIME' },
-          { id: 'pro', name: isZh ? 'PRO 月度版' : 'Pro Monthly', fee: '9.90', origFee: '¥19.90', tag: isZh ? '单月体验' : 'MONTHLY' },
-        ],
-        defaultPlan: 'yearly',
       },
       team: {
         badge: isZh ? '🏢 企业团队版专属权益' : '🏢 ENTERPRISE / TEAM FEATURE',
@@ -1100,12 +1171,6 @@
               '🔖 Official audit verification stamps & conclusion notes',
               '👥 5 member seats with shared enterprise evidence workspace',
             ],
-        plans: [
-          { id: 'team', name: isZh ? '企业团队年卡' : 'Team Annual', fee: '1998.00', origFee: '¥3,999.00', tag: isZh ? '🏢 5人团队 · 企业级' : '🏢 5 SEATS' },
-          { id: 'lifetime', name: isZh ? '个人终身买断' : 'Pro Lifetime', fee: '39.90', origFee: '¥199.00', tag: isZh ? '💎 个人买断' : '💎 PERSONAL' },
-          { id: 'yearly', name: isZh ? '个人年度版' : 'Pro Annual', fee: '19.90', origFee: '¥59.90', tag: isZh ? '个人年卡' : 'PERSONAL' },
-        ],
-        defaultPlan: 'team',
       },
       pro: {
         badge: isZh ? '⚡ PRO 专业版专属权益' : '⚡ PRO MEMBERSHIP',
@@ -1124,17 +1189,12 @@
               '🛡️ Watermark-free certified PDF reports with SHA-256 evidence hashes',
               '🌙 Sentry mode for automated overnight noise monitoring & capture',
             ],
-        plans: [
-          { id: 'yearly', name: isZh ? 'PRO 年度版' : 'Pro Annual', fee: '19.90', origFee: '¥59.90', tag: isZh ? '★ 最受欢迎 · 省67%' : '★ POPULAR' },
-          { id: 'lifetime', name: isZh ? 'PRO 终身版' : 'Lifetime', fee: '39.90', origFee: '¥199.00', tag: isZh ? '💎 买断立省¥159' : '💎 LIFETIME' },
-          { id: 'pro', name: isZh ? 'PRO 月度版' : 'Pro Monthly', fee: '9.90', origFee: '¥19.90', tag: isZh ? '单月体验' : 'MONTHLY' },
-        ],
-        defaultPlan: 'yearly',
       },
     };
 
-    const cfg = featureConfigs[feature] || featureConfigs.sync;
-    let selectedPlanId = cfg.defaultPlan;
+    const curFeatCfg = featureConfigs[feature] || featureConfigs.sync;
+    const curGwCfg = currencyConfigs[activeGateway] || currencyConfigs.creem;
+    let selectedPlanId = curGwCfg.defaultPlan;
 
     // Create modal DOM element
     const overlay = document.createElement('div');
@@ -1143,81 +1203,134 @@
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
 
-    overlay.innerHTML = `
-      <div class="auth-pay-modal">
-        <button type="button" class="auth-pay-close" id="authPayModalClose" aria-label="${isZh ? '关闭' : 'Close'}">×</button>
-        <div class="auth-pay-header">
-          <span class="auth-pay-badge">${cfg.badge}</span>
-          <h2 class="auth-pay-title">${cfg.title}</h2>
-          <p class="auth-pay-subtitle">${cfg.subtitle}</p>
-        </div>
+    function renderModalContent() {
+      const activeGwObj = currencyConfigs[activeGateway];
+      const plansList = activeGwObj.plans[feature] || activeGwObj.plans.sync;
+      const curPlanObj = plansList.find(p => p.id === selectedPlanId) || plansList[0];
 
-        <div class="auth-pay-features">
-          ${cfg.bullets.map(b => `
-            <div class="auth-pay-feature-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>${b}</span>
-            </div>
-          `).join('')}
-        </div>
+      overlay.innerHTML = `
+        <div class="auth-pay-modal">
+          <button type="button" class="auth-pay-close" id="authPayModalClose" aria-label="${isZh ? '关闭' : 'Close'}">×</button>
+          <div class="auth-pay-header">
+            <span class="auth-pay-badge">${curFeatCfg.badge}</span>
+            <h2 class="auth-pay-title">${curFeatCfg.title}</h2>
+            <p class="auth-pay-subtitle">${curFeatCfg.subtitle}</p>
+          </div>
 
-        <div class="auth-pay-plans" id="authPayPlanButtons">
-          ${cfg.plans.map(p => `
-            <button type="button" class="auth-pay-plan-btn ${p.id === selectedPlanId ? 'active' : ''}" data-pay-plan="${p.id}">
-              ${p.tag ? `<span class="auth-pay-plan-tag">${p.tag}</span>` : ''}
-              <span class="auth-pay-plan-name">${p.name}</span>
-              <span class="auth-pay-plan-price">¥${p.fee}</span>
+          <!-- Currency & Payment Gateway Switcher -->
+          <div class="auth-pay-gateway-toggle" id="authPayGatewayToggle">
+            <button type="button" class="auth-gw-btn ${activeGateway === 'creem' ? 'active' : ''}" data-gw="creem">
+              💳 ${isZh ? '国际信用卡 / Apple Pay (USD $)' : 'Credit Card / Apple Pay (USD $)'}
             </button>
-          `).join('')}
-        </div>
+            <button type="button" class="auth-gw-btn ${activeGateway === 'wechat' ? 'active' : ''}" data-gw="wechat">
+              🟢 ${isZh ? '微信支付 (人民币 ¥)' : 'WeChat Pay (CNY ¥)'}
+            </button>
+          </div>
 
-        <div class="auth-pay-box">
-          <div class="auth-pay-pricing-summary">
-            <span class="auth-pay-summary-label" id="authPayPlanLabel">${isZh ? '微信扫码安全直付' : 'WeChat Pay Safe Checkout'}</span>
-            <div class="auth-pay-summary-amount">
-              <span class="auth-pay-currency">¥</span>
-              <span class="auth-pay-amount-num" id="authPayAmount">--</span>
-              <span class="auth-pay-orig-num" id="authPayOrig">--</span>
+          <div class="auth-pay-features">
+            ${curFeatCfg.bullets.map(b => `
+              <div class="auth-pay-feature-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>${b}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="auth-pay-plans" id="authPayPlanButtons">
+            ${plansList.map(p => `
+              <button type="button" class="auth-pay-plan-btn ${p.id === selectedPlanId ? 'active' : ''}" data-pay-plan="${p.id}">
+                ${p.tag ? `<span class="auth-pay-plan-tag">${p.tag}</span>` : ''}
+                <span class="auth-pay-plan-name">${p.name}</span>
+                <span class="auth-pay-plan-price">${activeGwObj.symbol}${p.fee}</span>
+              </button>
+            `).join('')}
+          </div>
+
+          <div class="auth-pay-box">
+            <div class="auth-pay-pricing-summary">
+              <span class="auth-pay-summary-label" id="authPayPlanLabel">${activeGwObj.providerName}</span>
+              <div class="auth-pay-summary-amount">
+                <span class="auth-pay-currency">${activeGwObj.symbol}</span>
+                <span class="auth-pay-amount-num" id="authPayAmount">${curPlanObj.fee}</span>
+                <span class="auth-pay-orig-num" id="authPayOrig">${curPlanObj.origFee}</span>
+              </div>
+            </div>
+
+            <!-- Creem Action Container (USD) -->
+            <div class="auth-pay-creem-action" id="authPayCreemAction" style="display:${activeGateway === 'creem' ? 'flex' : 'none'};">
+              <a class="auth-pay-creem-btn" id="authPayCreemBtn" href="#" target="_blank" rel="noopener">
+                <span>🚀</span>
+                <span>${isZh ? '前往 Creem 安全收银台支付' : 'Proceed to Creem Secure Checkout'}</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <div class="auth-pay-creem-badges">
+                <span>💳 Visa</span><span>💳 Mastercard</span><span>🍎 Apple Pay</span><span>🌐 Google Pay</span>
+              </div>
+            </div>
+
+            <div class="auth-pay-qr-wrapper" id="authPayQrWrapper">
+              <img class="auth-pay-qr-img" id="authPayQrImg" alt="${activeGateway === 'creem' ? 'Checkout QR Code' : (isZh ? '微信支付二维码' : 'WeChat Pay QR Code')}" src="" style="display:none;" />
+              <div class="auth-pay-qr-loading" id="authPayQrLoading">
+                <div class="auth-pay-spinner"></div>
+                <span>${isZh ? '正在连接安全收银台…' : 'Connecting to checkout gateway…'}</span>
+              </div>
+            </div>
+
+            <div class="auth-pay-mobile-action" id="authPayMobileAction" style="display:none;">
+              <a class="auth-pay-mobile-btn" id="authPayMobileBtn" href="#" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M8.5 2C4.36 2 1 4.91 1 8.5c0 1.99 1.01 3.77 2.61 4.96L2.8 16.2c-.08.24.15.45.38.35l3.22-1.38c.66.19 1.37.33 2.1.33.25 0 .5-.02.74-.04-.21-.63-.34-1.3-.34-2 0-3.87 3.8-7 8.5-7 .34 0 .67.02 1 .05C17.06 3.93 13.09 2 8.5 2zM6 6.5c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5.5 3c-4.14 0-7.5 2.69-7.5 6s3.36 6 7.5 6c.65 0 1.28-.08 1.87-.24l2.58 1.11c.21.09.43-.09.35-.31l-.64-2.18C22.02 18.77 23 17.25 23 15.5c0-3.31-3.36-6-7.5-6zm-2.5 3.5c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75zm4.5 0c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75z"/></svg>
+                <span>${isZh ? '唤起微信完成支付' : 'Open WeChat to Pay'}</span>
+              </a>
+            </div>
+
+            <div class="auth-pay-status-pill" id="authPayStatusPill">
+              <span class="auth-pay-dot"></span>
+              <span id="authPayStatusText">${isZh ? '等待支付完成中，完成后权益即时生效…' : 'Awaiting payment, auto-activates when done…'}</span>
             </div>
           </div>
 
-          <div class="auth-pay-qr-wrapper" id="authPayQrWrapper">
-            <img class="auth-pay-qr-img" id="authPayQrImg" alt="${isZh ? '微信支付二维码' : 'WeChat Pay QR Code'}" src="" style="display:none;" />
-            <div class="auth-pay-qr-loading" id="authPayQrLoading">
-              <div class="auth-pay-spinner"></div>
-              <span>${isZh ? '正在生成微信安全支付二维码…' : 'Generating payment QR code…'}</span>
+          <div class="auth-pay-footer">
+            <span id="authPayFooterGuarantee">${activeGwObj.footerText}</span>
+            <div>
+              ${isZh
+                ? '如需对公转账或开具发票，请联系客服 <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>'
+                : 'Need invoicing or wire transfer? Contact <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>'}
             </div>
           </div>
-
-          <div class="auth-pay-mobile-action" id="authPayMobileAction" style="display:none;">
-            <a class="auth-pay-mobile-btn" id="authPayMobileBtn" href="#" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M8.5 2C4.36 2 1 4.91 1 8.5c0 1.99 1.01 3.77 2.61 4.96L2.8 16.2c-.08.24.15.45.38.35l3.22-1.38c.66.19 1.37.33 2.1.33.25 0 .5-.02.74-.04-.21-.63-.34-1.3-.34-2 0-3.87 3.8-7 8.5-7 .34 0 .67.02 1 .05C17.06 3.93 13.09 2 8.5 2zM6 6.5c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5.5 3c-4.14 0-7.5 2.69-7.5 6s3.36 6 7.5 6c.65 0 1.28-.08 1.87-.24l2.58 1.11c.21.09.43-.09.35-.31l-.64-2.18C22.02 18.77 23 17.25 23 15.5c0-3.31-3.36-6-7.5-6zm-2.5 3.5c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75zm4.5 0c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75z"/></svg>
-              <span>${isZh ? '唤起微信完成支付' : 'Open WeChat to Pay'}</span>
-            </a>
-          </div>
-
-          <div class="auth-pay-status-pill" id="authPayStatusPill">
-            <span class="auth-pay-dot"></span>
-            <span id="authPayStatusText">${isZh ? '等待扫码中，支付完成后自动激活…' : 'Awaiting payment, auto-activates when done…'}</span>
-          </div>
         </div>
+      `;
 
-        <div class="auth-pay-footer">
-          <span>🔒 ${isZh ? '虎皮椒安全微信结算 · 支付成功即时生效 · 跨设备多端通用' : 'Secure payment gateway · Instant activation across devices'}</span>
-          <div>
-            ${isZh
-              ? '如需对公转账或开具发票，请联系客服 <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>'
-              : 'Need invoicing or wire transfer? Contact <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>'}
-          </div>
-        </div>
-      </div>
-    `;
+      attachModalEvents();
+      loadPaymentOrder(selectedPlanId);
+    }
 
-    document.body.appendChild(overlay);
-    document.body.style.overflow = 'hidden';
+    function attachModalEvents() {
+      overlay.querySelector('#authPayModalClose')?.addEventListener('click', closeUpgradePayModal);
 
-    // Close handlers
-    overlay.querySelector('#authPayModalClose')?.addEventListener('click', closeUpgradePayModal);
+      // Gateway switcher buttons
+      overlay.querySelectorAll('.auth-gw-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const nextGw = btn.getAttribute('data-gw');
+          if (nextGw === activeGateway) return;
+          activeGateway = nextGw;
+          const plansList = currencyConfigs[activeGateway].plans[feature] || currencyConfigs[activeGateway].plans.sync;
+          selectedPlanId = plansList[0].id;
+          renderModalContent();
+        });
+      });
+
+      // Plan selection buttons
+      overlay.querySelectorAll('[data-pay-plan]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const nextPlanId = btn.getAttribute('data-pay-plan');
+          if (nextPlanId === selectedPlanId) return;
+          selectedPlanId = nextPlanId;
+          overlay.querySelectorAll('[data-pay-plan]').forEach(b => b.classList.toggle('active', b.getAttribute('data-pay-plan') === selectedPlanId));
+          loadPaymentOrder(selectedPlanId);
+        });
+      });
+    }
+
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) closeUpgradePayModal();
     });
@@ -1229,17 +1342,10 @@
     };
     window.addEventListener('keydown', keyHandler);
 
-    // Plan selection handler
-    const planButtons = overlay.querySelectorAll('[data-pay-plan]');
-    planButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const nextPlanId = btn.getAttribute('data-pay-plan');
-        if (nextPlanId === selectedPlanId) return;
-        selectedPlanId = nextPlanId;
-        planButtons.forEach(b => b.classList.toggle('active', b.getAttribute('data-pay-plan') === selectedPlanId));
-        loadPaymentOrder(selectedPlanId);
-      });
-    });
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    renderModalContent();
 
     async function loadPaymentOrder(planId) {
       if (authPayPollTimer) {
@@ -1247,13 +1353,18 @@
         authPayPollTimer = null;
       }
 
-      const curPlanCfg = cfg.plans.find(p => p.id === planId) || cfg.plans[0];
+      const activeGwObj = currencyConfigs[activeGateway];
+      const plansList = activeGwObj.plans[feature] || activeGwObj.plans.sync;
+      const curPlanCfg = plansList.find(p => p.id === planId) || plansList[0];
+
       const amountEl = overlay.querySelector('#authPayAmount');
       const origEl = overlay.querySelector('#authPayOrig');
       const qrImg = overlay.querySelector('#authPayQrImg');
       const qrLoading = overlay.querySelector('#authPayQrLoading');
       const mobileAction = overlay.querySelector('#authPayMobileAction');
       const mobileBtn = overlay.querySelector('#authPayMobileBtn');
+      const creemAction = overlay.querySelector('#authPayCreemAction');
+      const creemBtn = overlay.querySelector('#authPayCreemBtn');
       const statusText = overlay.querySelector('#authPayStatusText');
 
       if (amountEl) amountEl.textContent = curPlanCfg.fee;
@@ -1261,54 +1372,129 @@
 
       if (qrLoading) {
         qrLoading.style.display = 'flex';
-        qrLoading.innerHTML = `<div class="auth-pay-spinner"></div><span>${isZh ? '正在生成微信安全支付二维码…' : 'Generating payment QR code…'}</span>`;
+        qrLoading.innerHTML = `<div class="auth-pay-spinner"></div><span>${isZh ? '正在连接安全收银台…' : 'Connecting to checkout gateway…'}</span>`;
       }
       if (qrImg) qrImg.style.display = 'none';
       if (mobileAction) mobileAction.style.display = 'none';
+      if (creemAction) creemAction.style.display = 'none';
       if (statusText) statusText.textContent = isZh ? '正在连接安全收银台…' : 'Connecting to checkout gateway…';
 
-      try {
-        const resp = await fetch('/api/payment/hupijiao-create', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            plan: planId,
-            email: session?.email || '',
-            return_url: window.location.href,
-          }),
-        });
+      const buyerEmail = session?.email || '';
 
-        const data = await resp.json().catch(() => ({}));
-        if (!resp.ok || !data.ok) {
-          throw new Error(data.error || (isZh ? '创建订单失败' : 'Failed to create order'));
-        }
+      if (activeGateway === 'creem') {
+        // Creem.io USD Checkout Flow
+        try {
+          const resp = await fetch('/api/membership/create-checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              plan: planId === 'yearly' ? 'team' : planId,
+              email: buyerEmail,
+              source: window.location.pathname,
+            }),
+          });
 
-        if (qrLoading) qrLoading.style.display = 'none';
-
-        if (isMobile) {
-          if (mobileAction && mobileBtn && data.url) {
-            mobileAction.style.display = 'block';
-            mobileBtn.href = data.url;
+          const data = await resp.json().catch(() => ({}));
+          if (!resp.ok || !data.ok || !data.checkoutUrl) {
+            throw new Error(data.error || (isZh ? '创建美金订单失败' : 'Failed to create Creem checkout'));
           }
-          if (statusText) statusText.textContent = isZh ? '请点击上方按钮唤起微信支付…' : 'Click the button above to pay in WeChat…';
-        } else {
-          if (qrImg && data.url_qrcode) {
-            qrImg.src = data.url_qrcode;
+
+          if (qrLoading) qrLoading.style.display = 'none';
+
+          if (creemAction && creemBtn) {
+            creemAction.style.display = 'flex';
+            creemBtn.href = data.checkoutUrl;
+          }
+
+          if (qrImg) {
+            // Render QR code for mobile scanning
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.checkoutUrl)}`;
             qrImg.style.display = 'block';
           }
-          if (statusText) statusText.textContent = isZh ? '请使用手机微信扫码支付，完成后自动激活…' : 'Please scan with WeChat, auto-activates when done…';
+
+          if (statusText) {
+            statusText.textContent = isZh ? '请点击上方按钮前往 Creem 支付，或扫码付款…' : 'Click button above to pay via Creem, or scan QR…';
+          }
+
+          // Poll membership endpoint for auto-activation
+          startCreemPolling(buyerEmail, planId, data.order_id);
+        } catch (err) {
+          if (qrLoading) {
+            qrLoading.style.display = 'flex';
+            qrLoading.innerHTML = `<span style="color:#ff6276;padding:10px;text-align:center;">${err.message || 'Error'}</span><button type="button" class="btn-outline btn-sm" id="authPayRetryBtn" style="margin-top:6px;">${isZh ? '重试' : 'Retry'}</button>`;
+            qrLoading.querySelector('#authPayRetryBtn')?.addEventListener('click', () => loadPaymentOrder(planId));
+          }
+          if (statusText) statusText.textContent = isZh ? '订单初始化失败，请稍后重试' : 'Checkout initialization failed';
+        }
+      } else {
+        // WeChat Pay Flow (Hupijiao)
+        try {
+          const resp = await fetch('/api/payment/hupijiao-create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              plan: planId,
+              email: buyerEmail,
+              return_url: window.location.href,
+            }),
+          });
+
+          const data = await resp.json().catch(() => ({}));
+          if (!resp.ok || !data.ok) {
+            throw new Error(data.error || (isZh ? '创建订单失败' : 'Failed to create order'));
+          }
+
+          if (qrLoading) qrLoading.style.display = 'none';
+
+          if (isMobile) {
+            if (mobileAction && mobileBtn && data.url) {
+              mobileAction.style.display = 'block';
+              mobileBtn.href = data.url;
+            }
+            if (statusText) statusText.textContent = isZh ? '请点击上方按钮唤起微信支付…' : 'Click the button above to pay in WeChat…';
+          } else {
+            if (qrImg && data.url_qrcode) {
+              qrImg.src = data.url_qrcode;
+              qrImg.style.display = 'block';
+            }
+            if (statusText) statusText.textContent = isZh ? '请使用手机微信扫码支付，完成后自动激活…' : 'Please scan with WeChat, auto-activates when done…';
+          }
+
+          // Start polling Hupijiao check
+          startPaymentPolling(data.order_id, data.open_order_id, planId);
+        } catch (err) {
+          if (qrLoading) {
+            qrLoading.style.display = 'flex';
+            qrLoading.innerHTML = `<span style="color:#ff6276;padding:10px;text-align:center;">${err.message || (isZh ? '网络连接超时，请重试' : 'Network error, please retry')}</span><button type="button" class="btn-outline btn-sm" id="authPayRetryBtn" style="margin-top:6px;">${isZh ? '重新加载' : 'Retry'}</button>`;
+            qrLoading.querySelector('#authPayRetryBtn')?.addEventListener('click', () => loadPaymentOrder(planId));
+          }
+          if (statusText) statusText.textContent = isZh ? '订单初始化失败，请稍后重试' : 'Order initialization failed';
+        }
+      }
+    }
+
+    function startCreemPolling(email, planId, orderId) {
+      if (authPayPollTimer) clearInterval(authPayPollTimer);
+      if (!email) return;
+      let count = 0;
+      authPayPollTimer = setInterval(async () => {
+        count++;
+        if (count > 120) { // 6 minutes timeout
+          clearInterval(authPayPollTimer);
+          authPayPollTimer = null;
+          return;
         }
 
-        // Start polling
-        startPaymentPolling(data.order_id, data.open_order_id, planId);
-      } catch (err) {
-        if (qrLoading) {
-          qrLoading.style.display = 'flex';
-          qrLoading.innerHTML = `<span style="color:#ff6276;padding:10px;text-align:center;">${err.message || (isZh ? '网络连接超时，请重试' : 'Network error, please retry')}</span><button type="button" class="btn-outline btn-sm" id="authPayRetryBtn" style="margin-top:6px;">${isZh ? '重新加载' : 'Retry'}</button>`;
-          qrLoading.querySelector('#authPayRetryBtn')?.addEventListener('click', () => loadPaymentOrder(planId));
-        }
-        if (statusText) statusText.textContent = isZh ? '订单初始化失败，请稍后重试' : 'Order initialization failed';
-      }
+        try {
+          const resp = await fetch(`/api/membership/lookup?email=${encodeURIComponent(email)}`);
+          const info = await resp.json().catch(() => ({}));
+          if (info && info.active) {
+            clearInterval(authPayPollTimer);
+            authPayPollTimer = null;
+            handlePaymentSuccess(planId, orderId || 'creem_verified');
+          }
+        } catch (_) {}
+      }, 3000);
     }
 
     function startPaymentPolling(orderId, openOrderId, planId) {
@@ -1349,7 +1535,7 @@
           active: true,
           plan: effectiveTier,
           plan_display: planId,
-          provider: 'wechat_pay',
+          provider: activeGateway === 'creem' ? 'creem' : 'wechat_pay',
           status: 'paid',
           expires_at: expDate,
           order_id: orderId,
@@ -1369,7 +1555,7 @@
         }
       }
 
-      showToast(isZh ? '🎉 微信支付成功！已为您即时激活会员权益' : '🎉 Payment successful! Membership activated.', 'success');
+      showToast(isZh ? (activeGateway === 'creem' ? '🎉 美金支付成功！已为您即时激活会员权益' : '🎉 微信支付成功！已为您即时激活会员权益') : '🎉 Payment successful! Membership activated.', 'success');
 
       setTimeout(() => {
         closeUpgradePayModal();
@@ -1381,9 +1567,6 @@
         }
       }, 700);
     }
-
-    // Initial load
-    loadPaymentOrder(selectedPlanId);
   }
 
   // Expose on window for easy access/testing

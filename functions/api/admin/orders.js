@@ -176,6 +176,12 @@ export async function onRequestGet(context) {
           }
         }
 
+        const buyerEmail = o.email || '';
+        let fallbackCheckoutUrl = o.checkout_url || '';
+        if (!fallbackCheckoutUrl && currency === 'USD') {
+          fallbackCheckoutUrl = `https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c?email=${encodeURIComponent(buyerEmail)}&source=admin_dunning`;
+        }
+
         orders.push({
           order_id: orderId,
           trade_order_id: o.trade_order_id || orderId,
@@ -186,11 +192,15 @@ export async function onRequestGet(context) {
           provider: o.provider || (currency === 'USD' ? 'creem' : 'wechat'),
           title: o.title || 'SOUNDTEST.PRO 服务',
           status: isPaid ? 'paid' : (o.status || 'pending'),
-          email: o.email || '',
+          email: buyerEmail,
           paid_at: o.paid_at || null,
           created_at: o.created_at || null,
           openid: o.openid || '',
           transaction_id: o.transaction_id || '',
+          checkout_url: fallbackCheckoutUrl,
+          dunning_count: o.dunning_count || 0,
+          last_dunning_at: o.last_dunning_at || null,
+          last_dunning_subject: o.last_dunning_subject || '',
         });
       } catch (_) {}
     }
@@ -299,6 +309,12 @@ export async function onRequestGet(context) {
         users.push({
           email,
           name: u.name || '未命名',
+          ip: u.ip || 'Unknown',
+          country: u.country || 'US',
+          city: u.city || '',
+          region: u.region || '',
+          language: u.language || 'en',
+          sourcePage: u.sourcePage || '',
           createdAt: u.createdAt || null,
           updatedAt: u.updatedAt || null,
           plan,
