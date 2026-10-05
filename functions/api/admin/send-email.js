@@ -12,7 +12,7 @@ function json(data, status = 200) {
   });
 }
 
-const ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com'];
+const ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com', 'admin@soundtest.pro'];
 
 async function verifyAuth(request, env) {
   const adminSecret = String(env.ADMIN_SECRET || 'soundtest_admin_2026');
@@ -40,7 +40,7 @@ async function verifyAuth(request, env) {
       const sessRaw = await env.ab_test.get(`sess:${token}`);
       if (sessRaw) {
         const sess = JSON.parse(sessRaw);
-        if (sess.email && ADMIN_EMAILS.includes(sess.email.toLowerCase())) {
+        if ((sess.email && ADMIN_EMAILS.includes(sess.email.toLowerCase())) || sess.role === 'admin') {
           return true;
         }
       }

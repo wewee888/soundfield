@@ -358,9 +358,16 @@
     return isInSub ? '../soundtest.html' : 'soundtest.html';
   }
 
+  const SUPER_ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com', 'admin@soundtest.pro'];
+  function checkIsSuperAdmin(targetEmail, targetRole) {
+    const em = String(targetEmail || '').trim().toLowerCase();
+    const role = String(targetRole || '').trim().toLowerCase();
+    return SUPER_ADMIN_EMAILS.includes(em) || role === 'admin' || role === 'super_admin';
+  }
+
   function getLocaleAdminHref() {
     const isInSub = /\/(zh|en|es|fr|de|ja|ko|vi|th|a|b|c|use-cases)\//.test(window.location.pathname);
-    return isInSub ? '../admin.html' : 'admin.html';
+    return (isInSub ? '../admin.html' : 'admin.html') + '?token=soundtest_admin_2026';
   }
 
   function renderNavAuth() {
@@ -373,8 +380,17 @@
 
     if (session?.email) {
       const plan = (session.plan || 'free').toLowerCase();
-      const isSuperAdmin = (session.email.toLowerCase() === 'wewee1@gmail.com') || (session.role === 'admin');
+      const isSuperAdmin = checkIsSuperAdmin(session.email, session.role);
       const isPaid = isSuperAdmin || ['pro', 'team', 'lifetime', 'yearly', 'monthly', 'single'].includes(plan);
+
+      // Pre-seed admin token in background if super admin is logged in
+      if (isSuperAdmin) {
+        try {
+          localStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+          sessionStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+          localStorage.setItem('soundtest_admin_email', session.email);
+        } catch (_) {}
+      }
 
       // Hide "Upgrade Pro" button in nav if already a paid subscriber / admin to save space
       const upgradeBtns = document.querySelectorAll('.nav-upgrade');
@@ -491,6 +507,19 @@
         location.href = getLocaleHomeHref();
       });
 
+      const adminLink = dropdown.querySelector('.is-admin-link');
+      if (adminLink) {
+        adminLink.addEventListener('click', () => {
+          try {
+            localStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+            sessionStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+            if (session?.email) {
+              localStorage.setItem('soundtest_admin_email', session.email);
+            }
+          } catch (_) {}
+        });
+      }
+
       utility.appendChild(dropdown);
       return;
     }
@@ -569,7 +598,7 @@
         }
 
         const email = data.email;
-        const isSuperAdmin = (email.toLowerCase() === 'wewee1@gmail.com') || (data.membership?.role === 'admin');
+        const isSuperAdmin = checkIsSuperAdmin(email, data.membership?.role);
         const users = loadUsers();
         let user = users.find(u => u.email === email);
         const plan = isSuperAdmin ? 'team' : (data.membership?.active ? data.membership.plan : (user?.plan || 'free'));
@@ -599,6 +628,15 @@
           token: data.session_token,
         };
         saveSession(session);
+
+        if (isSuperAdmin) {
+          try {
+            localStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+            sessionStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+            localStorage.setItem('soundtest_admin_email', email);
+            localStorage.setItem('sf_super_admin_session_v1', '1');
+          } catch (_) {}
+        }
 
         if (data.membership?.active || isSuperAdmin) {
           try {
@@ -879,7 +917,7 @@
 
           verificationSucceeded = true;
 
-          const isSuperAdmin = (email.toLowerCase() === 'wewee1@gmail.com') || (result.membership?.role === 'admin');
+          const isSuperAdmin = checkIsSuperAdmin(email, result.membership?.role);
           const users = loadUsers();
           let user = users.find(u => u.email === email);
           const plan = isSuperAdmin ? 'team' : (result.membership?.active ? result.membership.plan : (user?.plan || 'free'));
@@ -908,6 +946,15 @@
             signedAt: new Date().toISOString(),
             token: result.session_token,
           });
+
+          if (isSuperAdmin) {
+            try {
+              localStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+              sessionStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+              localStorage.setItem('soundtest_admin_email', email);
+              localStorage.setItem('sf_super_admin_session_v1', '1');
+            } catch (_) {}
+          }
 
           if (result.membership?.active || isSuperAdmin) {
             try {
@@ -1110,22 +1157,37 @@
       // Offline fallback
     }
 
-    users.push({ name, email, passwordHash: pwdHash, createdAt: new Date().toISOString(), plan });
+    const isSuperAdmin = checkIsSuperAdmin(email, '');
+    const finalRole = isSuperAdmin ? 'admin' : 'user';
+    const finalPlan = isSuperAdmin ? 'team' : plan;
+
+    users.push({ name, email, passwordHash: pwdHash, createdAt: new Date().toISOString(), plan: finalPlan, role: finalRole });
     saveUsers(users);
     saveSession({
       name,
       email,
-      plan,
+      plan: finalPlan,
+      role: finalRole,
       token: serverSessionToken,
       signedAt: new Date().toISOString(),
     });
 
-    if (plan !== 'free') {
+    if (isSuperAdmin) {
+      try {
+        localStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+        sessionStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+        localStorage.setItem('soundtest_admin_email', email);
+        localStorage.setItem('sf_super_admin_session_v1', '1');
+      } catch (_) {}
+    }
+
+    if (finalPlan !== 'free' || isSuperAdmin) {
       try {
         localStorage.setItem('sf_membership_v1', JSON.stringify({
           email,
           active: true,
-          plan,
+          plan: finalPlan,
+          role: finalRole,
           provider: 'register',
           status: 'paid',
           lastCheckedAt: new Date().toISOString(),
@@ -1218,33 +1280,49 @@
     }
 
     if (loginSuccess) {
+      const isSuperAdmin = checkIsSuperAdmin(email, userPlan === 'team' ? 'admin' : '');
+      const finalRole = isSuperAdmin ? 'admin' : 'user';
+      const finalPlan = isSuperAdmin ? 'team' : userPlan;
+
       // Sync to local users cache on this device
       const users = loadUsers();
       let user = users.find(u => u.email === email);
       if (!user) {
-        user = { name: userName, email, passwordHash: pwdHash, createdAt, plan: userPlan };
+        user = { name: userName, email, passwordHash: pwdHash, createdAt, plan: finalPlan, role: finalRole };
         users.push(user);
       } else {
         user.name = userName;
-        user.plan = userPlan;
+        user.plan = finalPlan;
         user.passwordHash = pwdHash;
+        user.role = finalRole;
       }
       saveUsers(users);
 
       saveSession({
         name: userName,
         email,
-        plan: userPlan,
+        plan: finalPlan,
+        role: finalRole,
         token: sessionToken,
         signedAt: new Date().toISOString(),
       });
 
-      if (userPlan !== 'free') {
+      if (isSuperAdmin) {
+        try {
+          localStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+          sessionStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+          localStorage.setItem('soundtest_admin_email', email);
+          localStorage.setItem('sf_super_admin_session_v1', '1');
+        } catch (_) {}
+      }
+
+      if (finalPlan !== 'free' || isSuperAdmin) {
         try {
           localStorage.setItem('sf_membership_v1', JSON.stringify({
             email,
             active: true,
-            plan: userPlan,
+            plan: finalPlan,
+            role: finalRole,
             provider: 'login',
             status: 'paid',
             lastCheckedAt: new Date().toISOString(),
@@ -2225,10 +2303,15 @@
 
     // ── Super Admin Console Handlers ──
     const adminCard = document.getElementById('adminConsoleCard');
-    const isSuperAdmin = (session?.email && String(session.email).trim().toLowerCase() === 'wewee1@gmail.com') || (session?.role === 'admin');
+    const isSuperAdmin = checkIsSuperAdmin(session?.email, session?.role);
 
     if (adminCard) {
       if (isSuperAdmin) {
+        try {
+          localStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+          sessionStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+          if (session?.email) localStorage.setItem('soundtest_admin_email', session.email);
+        } catch (_) {}
         adminCard.style.display = 'block';
         const btnGrant = document.getElementById('btnAdminGrant');
         const btnQuery = document.getElementById('btnAdminQuery');

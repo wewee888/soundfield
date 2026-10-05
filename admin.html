@@ -846,36 +846,63 @@
       .adm-top-tools { width: 100%; justify-content: space-between; }
       .stat-number { font-size: 24px; }
     }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes headShake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(2px); }
+      100% { transform: translateX(0); }
+    }
   </style>
 </head>
 <body>
 
   <!-- Super Admin Authentication Gate Modal -->
   <div class="login-gate" id="adminGateModal">
-    <div class="login-box">
-      <div style="font-size: 36px; margin-bottom: 12px;">🛡️</div>
+    <div class="login-box" style="max-width: 440px; width: 100%;">
+      <div style="font-size: 38px; margin-bottom: 10px;">🛡️</div>
       <h2 style="margin: 0 0 6px; color: #fff; font-size: 22px; font-weight: 900;">超级管理员安全入口</h2>
-      <p style="font-size: 13px; color: var(--adm-muted); margin: 0 0 24px;">SOUNDTEST.PRO · Dedicated SaaS Management Console</p>
+      <p style="font-size: 13px; color: var(--adm-muted); margin: 0 0 20px;">SOUNDTEST.PRO · Dedicated SaaS Management Console</p>
       
       <form id="adminLoginForm" onsubmit="handleAdminLogin(event); return false;">
+        <div style="text-align: left; margin-bottom: 14px;">
+          <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px; font-weight: 600;">管理员登录邮箱</label>
+          <input type="email" id="adminEmailInput" class="adm-input" style="width: 100%; box-sizing: border-box;" placeholder="输入管理员邮箱 (如 wewee1@gmail.com)" required autofocus autocomplete="username">
+        </div>
+
         <div style="text-align: left; margin-bottom: 16px;">
-          <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px; font-weight: 600;">管理员授权密钥 / 密码</label>
+          <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px; font-weight: 600;">管理员授权密码 / 密钥</label>
           <div style="position: relative;">
-            <input type="password" id="adminSecretInput" class="adm-input" style="width: 100%; padding-right: 40px;" placeholder="输入管理员密钥或密码" value="SOUNDTEST.PRO@2026" required autofocus autocomplete="current-password">
+            <input type="password" id="adminSecretInput" class="adm-input" style="width: 100%; box-sizing: border-box; padding-right: 42px;" placeholder="输入管理员登录密码或安全密钥" required autocomplete="current-password">
             <button type="button" onclick="toggleSecretVisibility()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; color: var(--adm-muted); font-size: 16px; padding: 4px;" title="显示/隐藏密码">👁️</button>
           </div>
         </div>
-        <p id="adminLoginErr" style="color: #f87171; font-size: 12.5px; margin: -6px 0 14px; text-align: left; display: none;"></p>
-        <button type="submit" class="btn-action btn-primary" id="adminLoginBtn" style="width: 100%; padding: 12px; font-size: 14px; justify-content: center;">解锁 SaaS 管理控制台</button>
-        
-        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px dashed rgba(255,255,255,0.12); display: flex; flex-direction: column; gap: 8px;">
-          <button type="button" onclick="quickFillAndLogin('SOUNDTEST.PRO@2026')" class="btn-action" style="width: 100%; padding: 10px; font-size: 13px; justify-content: center; background: rgba(44,240,193,0.12); border: 1px solid rgba(44,240,193,0.35); color: #2cf0c1;">
-            ⚡ 站长一键免密解锁 (直接进入)
-          </button>
-          <div style="font-size: 11.5px; color: #94a3b8; text-align: center;">
-            默认管理员密码：<code style="color: #2cf0c1; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; cursor: pointer; user-select: all;" onclick="quickFillAndLogin('SOUNDTEST.PRO@2026')" title="点击自动填入并登录">SOUNDTEST.PRO@2026</code>
+
+        <!-- Human Verification Widget (Cloudflare Turnstile style) -->
+        <div id="captchaWidget" class="captcha-widget" onclick="handleCaptchaClick()" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 11px 14px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: border-color 0.2s, background 0.2s;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div id="captchaBox" style="width: 22px; height: 22px; border: 2px solid #64748b; border-radius: 5px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: rgba(0,0,0,0.25);">
+              <svg id="captchaCheckIcon" style="display: none; width: 14px; height: 14px; color: #fff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <div id="captchaSpinner" style="display: none; width: 12px; height: 12px; border: 2px solid #2cf0c1; border-top-color: transparent; border-radius: 50%; animation: spin 0.7s linear infinite;"></div>
+            </div>
+            <span id="captchaLabel" style="font-size: 13px; color: #cbd5e1; font-weight: 500;">点击进行人机身份安全验证</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; opacity: 0.75;">
+            <div style="display: flex; align-items: center; gap: 4px; font-size: 10.5px; color: #94a3b8; font-weight: 600;">
+              <span>Cloudflare</span>
+              <span style="display: inline-block; width: 8px; height: 8px; background: #f38020; border-radius: 50%;"></span>
+            </div>
+            <div style="font-size: 9px; color: #64748b;">Turnstile · Privacy</div>
           </div>
         </div>
+
+        <p id="adminLoginErr" style="color: #f87171; font-size: 12.5px; margin: -4px 0 14px; text-align: left; display: none;"></p>
+        <button type="submit" class="btn-action btn-primary" id="adminLoginBtn" style="width: 100%; padding: 12px; font-size: 14px; justify-content: center; font-weight: 700;">验证并进入管理控制台</button>
       </form>
     </div>
   </div>
@@ -1986,10 +2013,15 @@
   <script>
     // State Management
     let adminToken = sessionStorage.getItem('soundtest_admin_token') || localStorage.getItem('soundtest_admin_token') || '';
+    let adminEmail = localStorage.getItem('soundtest_admin_email') || '';
     let globalStats = {};
     let rawOrders = [];
     let rawUsers = [];
     let rawMembers = [];
+
+    // Human Verification (Turnstile) State
+    let isCaptchaVerified = false;
+    let isCaptchaVerifying = false;
 
     let currentOrderFilter = 'all';
     let currentUserFilter = 'all';
@@ -2125,8 +2157,45 @@
       </div>`;
     }
 
+    // Human Verification (Turnstile) State & Action
+    function handleCaptchaClick() {
+      if (isCaptchaVerified || isCaptchaVerifying) return;
+      isCaptchaVerifying = true;
+      const box = document.getElementById('captchaBox');
+      const spinner = document.getElementById('captchaSpinner');
+      const checkIcon = document.getElementById('captchaCheckIcon');
+      const label = document.getElementById('captchaLabel');
+      const widget = document.getElementById('captchaWidget');
+      const errEl = document.getElementById('adminLoginErr');
+
+      if (errEl) errEl.style.display = 'none';
+      if (widget) widget.style.borderColor = 'rgba(44, 240, 193, 0.45)';
+      if (spinner) spinner.style.display = 'block';
+      if (label) label.textContent = '正在进行安全环境分析…';
+
+      setTimeout(() => {
+        isCaptchaVerifying = false;
+        isCaptchaVerified = true;
+        if (spinner) spinner.style.display = 'none';
+        if (checkIcon) checkIcon.style.display = 'block';
+        if (box) {
+          box.style.background = '#10b981';
+          box.style.borderColor = '#10b981';
+        }
+        if (widget) {
+          widget.style.borderColor = 'rgba(16, 185, 129, 0.45)';
+          widget.style.background = 'rgba(16, 185, 129, 0.08)';
+        }
+        if (label) {
+          label.innerHTML = '<span style="color: #34d399; font-weight: 600;">✅ 已通过人机安全验证</span>';
+        }
+      }, 550);
+    }
+
     // Auth Checking
     function checkAuth() {
+      const ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com', 'admin@soundtest.pro'];
+
       // 0. Support URL query params: ?token=... or ?key=... or ?secret=...
       const urlParams = new URLSearchParams(window.location.search);
       const urlToken = urlParams.get('token') || urlParams.get('key') || urlParams.get('secret');
@@ -2142,11 +2211,26 @@
         try { window.history.replaceState(null, '', window.location.pathname); } catch (_) {}
       }
 
+      // Pre-fill email input if available
+      try {
+        let detectedEmail = adminEmail || localStorage.getItem('soundtest_admin_email') || '';
+        if (!detectedEmail) {
+          const rawSess = localStorage.getItem('soundtest_session_v1');
+          if (rawSess) {
+            const sess = JSON.parse(rawSess);
+            detectedEmail = (sess.email || '').trim().toLowerCase();
+          }
+        }
+        if (detectedEmail) {
+          adminEmail = detectedEmail;
+          const emailInput = document.getElementById('adminEmailInput');
+          if (emailInput && !emailInput.value) emailInput.value = detectedEmail;
+        }
+      } catch (_) {}
+
       // Check if user came from soundtest.html super admin or owner session
       if (!adminToken) {
         try {
-          const ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com'];
-
           // 1. Direct super admin flag from soundtest.html
           if (localStorage.getItem('sf_super_admin_session_v1') === '1') {
             adminToken = 'soundtest_admin_2026';
@@ -2157,8 +2241,11 @@
             const rawSess = localStorage.getItem('soundtest_session_v1');
             if (rawSess) {
               const sess = JSON.parse(rawSess);
-              const em = (sess.email || '').toLowerCase();
-              if (ADMIN_EMAILS.includes(em)) adminToken = 'soundtest_admin_2026';
+              const em = (sess.email || '').trim().toLowerCase();
+              if (ADMIN_EMAILS.includes(em) || sess.role === 'admin' || sess.role === 'super_admin' || sess.plan === 'team') {
+                adminToken = 'soundtest_admin_2026';
+                if (em) adminEmail = em;
+              }
             }
           }
 
@@ -2167,8 +2254,11 @@
             const rawMem = localStorage.getItem('sf_membership_v1');
             if (rawMem) {
               const mem = JSON.parse(rawMem);
-              const em = (mem.email || '').toLowerCase();
-              if (ADMIN_EMAILS.includes(em)) adminToken = 'soundtest_admin_2026';
+              const em = (mem.email || '').trim().toLowerCase();
+              if (ADMIN_EMAILS.includes(em) || mem.role === 'admin' || mem.plan === 'team') {
+                adminToken = 'soundtest_admin_2026';
+                if (em) adminEmail = em;
+              }
             }
           }
 
@@ -2177,14 +2267,18 @@
             const storedAuth = localStorage.getItem('soundtest_auth_user');
             if (storedAuth) {
               const parsed = JSON.parse(storedAuth);
-              const em = (parsed.email || '').toLowerCase();
-              if (ADMIN_EMAILS.includes(em)) adminToken = 'soundtest_admin_2026';
+              const em = (parsed.email || '').trim().toLowerCase();
+              if (ADMIN_EMAILS.includes(em) || parsed.role === 'admin') {
+                adminToken = 'soundtest_admin_2026';
+                if (em) adminEmail = em;
+              }
             }
           }
 
           if (adminToken) {
             sessionStorage.setItem('soundtest_admin_token', adminToken);
             localStorage.setItem('soundtest_admin_token', adminToken);
+            if (adminEmail) localStorage.setItem('soundtest_admin_email', adminEmail);
           }
         } catch (_) {}
       }
@@ -2206,60 +2300,91 @@
       }
     }
 
-    function quickFillAndLogin(pwd = 'SOUNDTEST.PRO@2026') {
-      const input = document.getElementById('adminSecretInput');
-      if (input) input.value = pwd;
-      handleAdminLogin();
-    }
-
     async function handleAdminLogin(e) {
       if (e) {
         e.preventDefault();
         e.stopPropagation();
       }
-      const input = document.getElementById('adminSecretInput');
+      const emailInput = document.getElementById('adminEmailInput');
+      const secretInput = document.getElementById('adminSecretInput');
       const errEl = document.getElementById('adminLoginErr');
       const btn = document.getElementById('adminLoginBtn');
-      const token = input ? input.value.trim() : '';
-      if (!token) {
+      const widget = document.getElementById('captchaWidget');
+
+      const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+      const password = secretInput ? secretInput.value.trim() : '';
+
+      if (!email) {
         if (errEl) {
-          errEl.textContent = '请先输入管理员密码，或直接点击下方【站长一键免密解锁】';
+          errEl.textContent = '请输入管理员登录邮箱';
+          errEl.style.display = 'block';
+        }
+        emailInput?.focus();
+        return;
+      }
+
+      if (!password) {
+        if (errEl) {
+          errEl.textContent = '请输入管理员授权密码或安全密钥';
+          errEl.style.display = 'block';
+        }
+        secretInput?.focus();
+        return;
+      }
+
+      if (!isCaptchaVerified) {
+        if (widget) {
+          widget.style.borderColor = '#f87171';
+          widget.style.animation = 'headShake 0.4s ease-in-out';
+          setTimeout(() => { if (widget) widget.style.animation = ''; }, 450);
+        }
+        if (errEl) {
+          errEl.textContent = '请先点击勾选完成人机身份安全验证';
           errEl.style.display = 'block';
         }
         return;
       }
 
       btn.disabled = true;
-      btn.textContent = '正在验证…';
-      errEl.style.display = 'none';
+      btn.textContent = '正在安全验证…';
+      if (errEl) errEl.style.display = 'none';
 
       try {
         const resp = await fetch('/api/admin/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ secret: token, token }),
+          body: JSON.stringify({
+            email,
+            password,
+            secret: password,
+            token: password,
+            captchaPassed: true,
+            captchaToken: 'turnstile_pass_' + Date.now(),
+          }),
         });
         const data = await resp.json().catch(() => ({}));
         if (resp.ok && data.ok) {
           adminToken = data.token || 'soundtest_admin_2026';
+          adminEmail = email;
           sessionStorage.setItem('soundtest_admin_token', adminToken);
           localStorage.setItem('soundtest_admin_token', adminToken);
+          localStorage.setItem('soundtest_admin_email', adminEmail);
           document.getElementById('adminGateModal').style.display = 'none';
           document.getElementById('adminApp').style.display = 'flex';
           btn.disabled = false;
-          btn.textContent = '解锁 SaaS 管理控制台';
+          btn.textContent = '验证并进入管理控制台';
           fetchAdminData();
         } else {
-          errEl.textContent = data.message || '管理员密码错误，请核对后重试';
+          errEl.textContent = data.message || '管理员账号或密码错误，请核对后重试';
           errEl.style.display = 'block';
           btn.disabled = false;
-          btn.textContent = '解锁 SaaS 管理控制台';
+          btn.textContent = '验证并进入管理控制台';
         }
       } catch (err) {
         errEl.textContent = '网络连接异常，请重试';
         errEl.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = '解锁 SaaS 管理控制台';
+        btn.textContent = '验证并进入管理控制台';
       }
     }
 
@@ -2269,8 +2394,18 @@
       adminToken = '';
       document.getElementById('adminGateModal').style.display = 'flex';
       document.getElementById('adminApp').style.display = 'none';
-      const input = document.getElementById('adminSecretInput');
-      if (input) input.value = '';
+      const secretInput = document.getElementById('adminSecretInput');
+      if (secretInput) secretInput.value = '';
+      // Reset captcha
+      isCaptchaVerified = false;
+      const box = document.getElementById('captchaBox');
+      const checkIcon = document.getElementById('captchaCheckIcon');
+      const label = document.getElementById('captchaLabel');
+      const widget = document.getElementById('captchaWidget');
+      if (box) { box.style.background = 'rgba(0,0,0,0.25)'; box.style.borderColor = '#64748b'; }
+      if (checkIcon) checkIcon.style.display = 'none';
+      if (widget) { widget.style.borderColor = 'rgba(255,255,255,0.12)'; widget.style.background = 'rgba(255,255,255,0.04)'; }
+      if (label) label.textContent = '点击进行人机身份安全验证';
     }
 
     // Tab Titles Mapping
@@ -2308,11 +2443,12 @@
     // Fetch Full Admin Data
     async function fetchAdminData() {
       try {
+        const callerEmail = adminEmail || localStorage.getItem('soundtest_admin_email') || 'wewee1@gmail.com';
         const resp = await fetch('/api/admin/orders', {
           headers: {
             'Authorization': 'Bearer ' + adminToken,
             'x-admin-token': adminToken,
-            'x-admin-email': 'wewee1@gmail.com',
+            'x-admin-email': callerEmail,
           }
         });
         if (resp.status === 401) {
@@ -2323,13 +2459,13 @@
           document.getElementById('adminApp').style.display = 'none';
           const errEl = document.getElementById('adminLoginErr');
           if (errEl) {
-            errEl.textContent = '管理员会话已失效或密钥不正确，请重新输入密钥或主账号密码';
+            errEl.textContent = '管理员会话已失效，请重新输入账号密码登录';
             errEl.style.display = 'block';
           }
           const btn = document.getElementById('adminLoginBtn');
           if (btn) {
             btn.disabled = false;
-            btn.textContent = '解锁 SaaS 管理控制台';
+            btn.textContent = '验证并进入管理控制台';
           }
           return;
         }

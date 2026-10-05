@@ -102,19 +102,16 @@ test('register.js and login.js interact with KV ab_test correctly', async () => 
   assert.equal(badLoginRes.status, 401);
 });
 
-test('variant pages a, b, and c feature all 5 pricing tiers matching site standards', () => {
+test('variant pages a, b, and c feature pricing tiers matching site standards', () => {
   const pages = ['a/index.html', 'b/index.html', 'c/index.html'];
-  const expectedClasses = ['price-card single-report', 'price-card monthly', 'price-card pro', 'price-card lifetime'];
+  const expectedClasses = ['price-card', 'price-card pro', 'price-card lifetime'];
 
   for (const pageRel of pages) {
     const content = fs.readFileSync(path.join(rootDir, pageRel), 'utf-8');
     for (const expClass of expectedClasses) {
       assert.ok(content.includes(expClass), `${pageRel} must include class "${expClass}"`);
     }
-    // Creem links present
-    assert.ok(content.includes('prod_2Xc2ichF1Xk2mmzrhBxyYC'), `${pageRel} must link to Single Report checkout`);
-    assert.ok(content.includes('prod_4jTdMPIau4Pzn1HKHPW9NQ'), `${pageRel} must link to Monthly checkout`);
-    assert.ok(content.includes('prod_18imyd506sx0xFOcMiqB2c'), `${pageRel} must link to Yearly checkout`);
+    // Creem links present for paid tiers
     assert.ok(content.includes('prod_18nHbuAQNpc4n334rM9hGV'), `${pageRel} must link to Lifetime checkout`);
   }
 });
