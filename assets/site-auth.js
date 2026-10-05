@@ -366,8 +366,7 @@
   }
 
   function getLocaleAdminHref() {
-    const isInSub = /\/(zh|en|es|fr|de|ja|ko|vi|th|a|b|c|use-cases)\//.test(window.location.pathname);
-    return (isInSub ? '../admin.html' : 'admin.html') + '?token=soundtest_admin_2026';
+    return '/admin.html?token=soundtest_admin_2026';
   }
 
   function renderNavAuth() {
@@ -403,7 +402,9 @@
         link.style.display = 'none';
       });
 
-      const rawName = session.name || session.email.split('@')[0];
+      const rawName = (session.name || session.email.split('@')[0] || 'User').trim();
+      const firstName = rawName.split(/\s+/)[0] || rawName;
+      const shortName = escHtml(firstName);
       const displayName = escHtml(rawName);
       const email = escHtml(session.email);
       const initial = (rawName.charAt(0) || 'U').toUpperCase();
@@ -444,7 +445,7 @@
       dropdown.innerHTML = `
         <button class="nav-user-trigger" type="button" aria-expanded="false" aria-haspopup="true" title="${displayName} (${email})">
           <span class="nav-user-avatar">${escHtml(initial)}</span>
-          <span class="nav-user-name">${displayName}</span>
+          <span class="nav-user-name">${shortName}</span>
           ${badgeHtml}
           <svg class="nav-user-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
             <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -454,7 +455,7 @@
           <div class="nav-user-header">
             <div class="nav-user-head-avatar">${escHtml(initial)}</div>
             <div class="nav-user-head-meta">
-              <div class="nav-user-head-name">${displayName} ${badgeHtml}</div>
+              <div class="nav-user-head-name">${shortName} ${badgeHtml}</div>
               <div class="nav-user-head-email" title="${email}">${email}</div>
               <div class="nav-user-head-plan">${escHtml(planLabel)}</div>
             </div>
