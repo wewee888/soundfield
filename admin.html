@@ -857,10 +857,13 @@
       <h2 style="margin: 0 0 6px; color: #fff; font-size: 22px; font-weight: 900;">超级管理员安全入口</h2>
       <p style="font-size: 13px; color: var(--adm-muted); margin: 0 0 24px;">SOUNDTEST.PRO · Dedicated SaaS Management Console</p>
       
-      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+      <form id="adminLoginForm" onsubmit="handleAdminLogin(event); return false;">
         <div style="text-align: left; margin-bottom: 16px;">
-          <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px; font-weight: 600;">管理员授权密钥 (ADMIN_SECRET) 或主账号密码</label>
-          <input type="password" id="adminSecretInput" class="adm-input" style="width: 100%;" placeholder="输入管理员密钥或主账号密码" required autofocus autocomplete="current-password">
+          <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px; font-weight: 600;">管理员授权密钥 / 密码</label>
+          <div style="position: relative;">
+            <input type="password" id="adminSecretInput" class="adm-input" style="width: 100%; padding-right: 40px;" placeholder="输入管理员密钥或密码" required autofocus autocomplete="current-password">
+            <button type="button" onclick="toggleSecretVisibility()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; color: var(--adm-muted); font-size: 16px; padding: 4px;" title="显示/隐藏密码">👁️</button>
+          </div>
         </div>
         <p id="adminLoginErr" style="color: #f87171; font-size: 12.5px; margin: -6px 0 14px; text-align: left; display: none;"></p>
         <button type="submit" class="btn-action btn-primary" id="adminLoginBtn" style="width: 100%; padding: 12px; font-size: 14px; justify-content: center;">解锁 SaaS 管理控制台</button>
@@ -2115,18 +2118,54 @@
 
     // Auth Checking
     function checkAuth() {
-      // Check if user came from soundtest.html session
+      // Clean up accidental trailing '?' in URL
+      if (window.location.search === '?') {
+        try { window.history.replaceState(null, '', window.location.pathname); } catch (_) {}
+      }
+
+      // Check if user came from soundtest.html super admin or owner session
       if (!adminToken) {
         try {
-          const storedAuth = localStorage.getItem('soundtest_auth_user');
-          if (storedAuth) {
-            const parsed = JSON.parse(storedAuth);
-            if (parsed.email && parsed.email.toLowerCase() === 'wewee1@gmail.com') {
-              // Master admin account automatically acquires adminSecret token
-              adminToken = 'soundtest_admin_2026';
-              sessionStorage.setItem('soundtest_admin_token', adminToken);
-              localStorage.setItem('soundtest_admin_token', adminToken);
+          const ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com'];
+
+          // 1. Direct super admin flag from soundtest.html
+          if (localStorage.getItem('sf_super_admin_session_v1') === '1') {
+            adminToken = 'soundtest_admin_2026';
+          }
+
+          // 2. Main site session from site-auth.js
+          if (!adminToken) {
+            const rawSess = localStorage.getItem('soundtest_session_v1');
+            if (rawSess) {
+              const sess = JSON.parse(rawSess);
+              const em = (sess.email || '').toLowerCase();
+              if (ADMIN_EMAILS.includes(em)) adminToken = 'soundtest_admin_2026';
             }
+          }
+
+          // 3. Pro/VIP membership record
+          if (!adminToken) {
+            const rawMem = localStorage.getItem('sf_membership_v1');
+            if (rawMem) {
+              const mem = JSON.parse(rawMem);
+              const em = (mem.email || '').toLowerCase();
+              if (ADMIN_EMAILS.includes(em)) adminToken = 'soundtest_admin_2026';
+            }
+          }
+
+          // 4. Legacy auth user key
+          if (!adminToken) {
+            const storedAuth = localStorage.getItem('soundtest_auth_user');
+            if (storedAuth) {
+              const parsed = JSON.parse(storedAuth);
+              const em = (parsed.email || '').toLowerCase();
+              if (ADMIN_EMAILS.includes(em)) adminToken = 'soundtest_admin_2026';
+            }
+          }
+
+          if (adminToken) {
+            sessionStorage.setItem('soundtest_admin_token', adminToken);
+            localStorage.setItem('soundtest_admin_token', adminToken);
           }
         } catch (_) {}
       }
@@ -2141,8 +2180,18 @@
       }
     }
 
+    function toggleSecretVisibility() {
+      const input = document.getElementById('adminSecretInput');
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    }
+
     async function handleAdminLogin(e) {
-      if (e) e.preventDefault();
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       const input = document.getElementById('adminSecretInput');
       const errEl = document.getElementById('adminLoginErr');
       const btn = document.getElementById('adminLoginBtn');
@@ -2161,7 +2210,7 @@
         });
         const data = await resp.json().catch(() => ({}));
         if (resp.ok && data.ok) {
-          adminToken = data.token || token;
+          adminToken = data.token || 'soundtest_admin_2026';
           sessionStorage.setItem('soundtest_admin_token', adminToken);
           localStorage.setItem('soundtest_admin_token', adminToken);
           document.getElementById('adminGateModal').style.display = 'none';
@@ -2171,7 +2220,7 @@
           input.value = '';
           fetchAdminData();
         } else {
-          errEl.textContent = data.message || '管理员密钥或主账号密码错误，请重新输入';
+          errEl.textContent = data.message || '管理员密码错误，请核对后重试';
           errEl.style.display = 'block';
           btn.disabled = false;
           btn.textContent = '解锁 SaaS 管理控制台';
