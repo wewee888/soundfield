@@ -106,7 +106,7 @@ def build_hero_html(locale, scenario_slug, sc_data):
         </div>
         <div class="hero-split-visual reveal" style="display: flex; justify-content: center; align-items: center;">
           <div class="hero-device-frame">
-            <img src="../../assets/images/{img}" alt="{img_alt}" loading="lazy">
+            <img src="../../assets/images/{img}?v=20261006a" alt="{img_alt}" loading="lazy">
           </div>
         </div>
       </div>
