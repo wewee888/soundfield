@@ -1432,11 +1432,15 @@
             document.cookie = 'sf_locale=' + next + '; Path=/; Max-Age=31536000; SameSite=Lax';
           } catch (_) {}
         }
-        const currentPath = window.location.pathname;
-        let pageName = currentPath.split('/').filter(Boolean).pop() || 'index.html';
-        if (!pageName.includes('.html')) pageName = 'index.html';
-        const targetUrl = next === 'en' ? (pageName === 'index.html' ? '/' : `/${pageName}`) : `/${next}/${pageName}`;
-        window.location.href = targetUrl;
+        if (window.SoundtestI18n && typeof window.SoundtestI18n.resolveTargetLocaleUrl === 'function') {
+          window.location.href = window.SoundtestI18n.resolveTargetLocaleUrl(next);
+        } else {
+          const currentPath = window.location.pathname;
+          let pageName = currentPath.split('/').filter(Boolean).pop() || 'index.html';
+          if (!pageName.includes('.html')) pageName = 'index.html';
+          const targetUrl = next === 'en' ? (pageName === 'index.html' ? '/' : `/${pageName}`) : `/${next}/${pageName}`;
+          window.location.href = targetUrl;
+        }
       });
     }
 
