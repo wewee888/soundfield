@@ -850,6 +850,10 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    .spinning span:first-child, .spinning.btn-action span {
+      display: inline-block;
+      animation: spin 0.75s linear infinite;
+    }
     @keyframes headShake {
       0% { transform: translateX(0); }
       20% { transform: translateX(-6px); }
@@ -1006,7 +1010,7 @@
         </div>
         <div class="adm-topbar-tools">
           <span id="lastSyncTime" style="font-size: 12px; color: #64748b; font-family: monospace;">刚刚同步</span>
-          <button onclick="fetchAdminData()" class="btn-action" style="padding: 7px 14px;" title="立即刷新最新数据">
+          <button id="topbarRefreshBtn" onclick="fetchAdminData(true)" class="btn-action" style="padding: 7px 14px;" title="立即刷新最新数据">
             <span>🔄</span> 刷新
           </button>
           <button onclick="switchTab('operations')" class="btn-action btn-primary" style="padding: 7px 16px;">
@@ -1486,15 +1490,18 @@
       <div class="adm-card" style="margin-bottom: 24px;">
         <div class="adm-card-header">
           <div>
-            <h3 class="adm-card-title">🟢 全站实时访客活动流 (Live Visitor Activity Stream)</h3>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h3 class="adm-card-title" style="margin:0;">🟢 全站实时访客活动流 (Live Visitor Activity Stream)</h3>
+              <span id="visitorStreamSyncTime" style="font-size: 11px; color: var(--adm-accent); font-family: monospace;"></span>
+            </div>
             <p style="font-size: 12px; color: var(--adm-muted); margin: 3px 0 0;">
               边缘 Worker 毫秒级捕捉全站独立访客与会话轨迹，按时间倒序实时展示
             </p>
           </div>
           <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             <input type="text" id="visitorSearchInput" class="adm-input" placeholder="搜索 IP / 国家 / 路径 / 邮箱…" style="width:200px; font-size:12px;" oninput="filterVisitorsStream()">
-            <button onclick="fetchAnalyticsData()" class="btn-action" style="font-size:11px; padding:4px 10px;">
-              🔄 立即刷新
+            <button onclick="fetchAnalyticsData(true)" class="btn-action btn-refresh-analytics" style="font-size:11px; padding:4px 10px;" title="立即向边缘节点拉取最新访客">
+              <span>🔄</span> 立即刷新
             </button>
           </div>
         </div>
@@ -1694,8 +1701,8 @@
             </p>
           </div>
           <div style="display: flex; gap: 10px;">
-            <button onclick="fetchAnalyticsData()" class="btn-action btn-primary" style="padding: 8px 16px;">
-              🔄 立即刷新分析数据
+            <button onclick="fetchAnalyticsData(true)" class="btn-action btn-primary btn-refresh-analytics" style="padding: 8px 16px;">
+              <span>🔄</span> 立即刷新分析数据
             </button>
             <a href="https://dash.cloudflare.com" target="_blank" rel="noopener" class="btn-action" style="padding: 8px 16px; text-decoration:none;">
               前往 Cloudflare 仪表盘 ↗
@@ -2215,6 +2222,25 @@
 
     // Auth Checking
     function checkAuth() {
+      // Proactively purge any stale /api/ or /admin responses from Service Worker CacheStorage
+      try {
+        if ('caches' in window) {
+          caches.keys().then(names => {
+            names.forEach(name => {
+              caches.open(name).then(cache => {
+                cache.keys().then(reqs => {
+                  reqs.forEach(req => {
+                    if (req.url.includes('/api/') || req.url.includes('/admin')) {
+                      cache.delete(req);
+                    }
+                  });
+                });
+              });
+            });
+          }).catch(() => {});
+        }
+      } catch (_) {}
+
       const ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com', 'admin@soundtest.pro'];
 
       // 0. Support URL query params: ?token=... or ?key=... or ?secret=...
@@ -2466,14 +2492,19 @@
     }
 
     // Fetch Full Admin Data
-    async function fetchAdminData() {
+    async function fetchAdminData(isManual = false) {
+      const topBtn = document.getElementById('topbarRefreshBtn');
+      if (topBtn) topBtn.classList.add('spinning');
       try {
         const callerEmail = adminEmail || localStorage.getItem('soundtest_admin_email') || 'wewee1@gmail.com';
-        const resp = await fetch('/api/admin/orders', {
+        const resp = await fetch(`/api/admin/orders?_t=${Date.now()}`, {
+          cache: 'no-store',
           headers: {
             'Authorization': 'Bearer ' + adminToken,
             'x-admin-token': adminToken,
             'x-admin-email': callerEmail,
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
           }
         });
         if (resp.status === 401) {
@@ -2507,12 +2538,20 @@
           renderUsersTable();
 
           document.getElementById('lastSyncTime').textContent = '同步于 ' + new Date().toLocaleTimeString();
+          if (isManual) {
+            showAdmToast('经营大盘与订单数据已全部同步', false);
+          }
         }
 
         // Also fetch analytics
-        fetchAnalyticsData();
+        fetchAnalyticsData(isManual);
       } catch (err) {
         console.error('Fetch admin data failed:', err);
+        if (isManual) {
+          showAdmToast('同步数据失败: ' + err.message, true);
+        }
+      } finally {
+        if (topBtn) topBtn.classList.remove('spinning');
       }
     }
 
@@ -3967,23 +4006,51 @@
     }
 
     // ── Traffic & Visit Analytics System ──
-    async function fetchAnalyticsData() {
+    let isFetchingAnalytics = false;
+    async function fetchAnalyticsData(isManual = false) {
+      if (isFetchingAnalytics) return;
+      isFetchingAnalytics = true;
+      const callerEmail = adminEmail || localStorage.getItem('soundtest_admin_email') || 'wewee1@gmail.com';
+      const refreshBtns = document.querySelectorAll('.btn-refresh-analytics');
+      refreshBtns.forEach(b => b.classList.add('spinning'));
+
       try {
-        const resp = await fetch('/api/admin/analytics', {
+        const resp = await fetch(`/api/admin/analytics?_t=${Date.now()}`, {
+          cache: 'no-store',
           headers: {
             'Authorization': 'Bearer ' + adminToken,
             'x-admin-token': adminToken,
-            'x-admin-email': 'wewee1@gmail.com',
+            'x-admin-email': callerEmail,
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
           }
         });
         if (resp.ok) {
           const data = await resp.json().catch(() => ({}));
           if (data.ok) {
             renderAnalyticsView(data);
+            const nowTimeStr = new Date().toLocaleTimeString();
+            const syncEl = document.getElementById('lastSyncTime');
+            if (syncEl) syncEl.textContent = '同步于 ' + nowTimeStr;
+            const subSync = document.getElementById('visitorStreamSyncTime');
+            if (subSync) subSync.textContent = '· 已更新于 ' + nowTimeStr;
+
+            if (isManual) {
+              const vCount = Array.isArray(data.recentVisitors) ? data.recentVisitors.length : 0;
+              showAdmToast(`访客与全站分析已刷新（当前捕获 ${vCount} 条访客记录）`, false);
+            }
+          } else {
+            if (isManual) showAdmToast(data.message || '获取分析数据失败', true);
           }
+        } else {
+          if (isManual) showAdmToast(`分析接口响应异常 (HTTP ${resp.status})`, true);
         }
       } catch (err) {
         console.error('Fetch analytics failed:', err);
+        if (isManual) showAdmToast('网络请求失败: ' + err.message, true);
+      } finally {
+        isFetchingAnalytics = false;
+        refreshBtns.forEach(b => b.classList.remove('spinning'));
       }
     }
 
@@ -4273,6 +4340,20 @@
       a.click();
       URL.revokeObjectURL(url);
     }
+
+    // Auto-refresh when admin tab becomes visible
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && adminToken) {
+        fetchAdminData(false);
+      }
+    });
+
+    // Auto-polling every 45s while admin tab is visible
+    setInterval(() => {
+      if (!document.hidden && adminToken) {
+        fetchAdminData(false);
+      }
+    }, 45000);
 
     // Boot
     if (document.readyState === 'loading') {

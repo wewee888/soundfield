@@ -7,7 +7,9 @@ function json(data, status = 200) {
     status,
     headers: {
       'content-type': 'application/json; charset=utf-8',
-      'cache-control': 'no-store',
+      'cache-control': 'no-store, no-cache, must-revalidate, max-age=0',
+      'pragma': 'no-cache',
+      'expires': '0',
       'access-control-allow-origin': '*',
     },
   });

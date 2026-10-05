@@ -149,7 +149,7 @@
           title: document.title || '',
           referrer: document.referrer || '',
         }),
-        signal: AbortSignal.timeout ? AbortSignal.timeout(3500) : undefined,
+        signal: AbortSignal.timeout ? AbortSignal.timeout(6000) : undefined,
       });
       if (resp.ok) {
         const geoData = await resp.json().catch(() => null);

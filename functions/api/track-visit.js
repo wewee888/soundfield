@@ -7,7 +7,9 @@ function json(data, status = 200) {
     status,
     headers: {
       'content-type': 'application/json; charset=utf-8',
-      'cache-control': 'no-store, no-cache',
+      'cache-control': 'no-store, no-cache, must-revalidate, max-age=0',
+      'pragma': 'no-cache',
+      'expires': '0',
       'access-control-allow-origin': '*',
     },
   });
@@ -163,8 +165,8 @@ export async function onRequestPost(context) {
         if (!Array.isArray(recentVisitors)) recentVisitors = [];
 
         recentVisitors.unshift(visitorEvent);
-        if (recentVisitors.length > 100) {
-          recentVisitors = recentVisitors.slice(0, 100);
+        if (recentVisitors.length > 250) {
+          recentVisitors = recentVisitors.slice(0, 250);
         }
         await env.ab_test.put('visitors:recent', JSON.stringify(recentVisitors), {
           expirationTtl: 86400 * 30, // 30 days

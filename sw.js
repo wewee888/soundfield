@@ -1,4 +1,4 @@
-const CACHE_NAME = 'soundtest-pro-v10';
+const CACHE_NAME = 'soundtest-pro-v11';
 const NETWORK_FIRST_PATHS = [
   '/assets/lang-flags.js',
   '/assets/i18n-data.js',
@@ -50,13 +50,44 @@ self.addEventListener('activate', (event) => {
           return null;
         })
       )
-    ).then(() => self.clients.claim())
+    ).then(() => {
+      // Clean up any stale API responses that might have slipped into the cache
+      return caches.open(CACHE_NAME).then((cache) => {
+        return cache.keys().then((requests) => {
+          return Promise.all(
+            requests
+              .filter((req) => req.url.includes('/api/') || req.url.includes('/admin'))
+              .map((req) => cache.delete(req))
+          );
+        });
+      });
+    }).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
+
+  // 1. NEVER intercept or cache backend API, functions, admin console, or cache-busted requests
+  if (
+    url.pathname.startsWith('/api/') ||
+    url.pathname.startsWith('/functions/') ||
+    url.pathname === '/admin' ||
+    url.pathname === '/admin.html' ||
+    url.pathname.startsWith('/admin/') ||
+    url.searchParams.has('_t') ||
+    url.searchParams.has('nocache')
+  ) {
+    return; // Pass through directly to browser network stack
+  }
+
+  // 2. Never cache JSON API responses
+  const acceptHeader = event.request.headers.get('accept') || '';
+  if (acceptHeader.includes('application/json')) {
+    return;
+  }
+
   if (event.request.mode === 'navigate' || NETWORK_FIRST_PATHS.includes(url.pathname)) {
     event.respondWith(
       fetch(event.request).catch(() => caches.match(event.request))
