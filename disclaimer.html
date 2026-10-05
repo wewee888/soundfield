@@ -40,78 +40,50 @@
       </div>
     </nav>
 
-    <section class="hero">
+        <section class="hero">
       <div class="hero-stack reveal">
-        <span class="eyebrow">Disclaimer</span>
-        <h1 class="hero-headline">For civilian reference and field documentation — <em>not certified metrology</em>.</h1>
-        <p class="hero-lead">SOUNDTEST.PRO is designed to help you record, document, and organize evidence of noisy situations. It is not a substitute for professional acoustic instruments, certified sound-level meters, or legal advice from a qualified attorney.</p>
+        <span class="eyebrow">Technical &amp; Legal Specifications</span>
+        <h1 class="hero-headline">Acoustic Measurement Standards, Evidentiary Integrity &amp; <em>Compliance Guidelines</em></h1>
+        <p class="hero-lead">SOUNDTEST.PRO is an engineering-grade acoustic documentation platform designed to record, structure, and preserve objective sound evidence for neighbor disputes, tenant rights, and property management coordination. This document details our algorithmic compliance with IEC standards, cryptographic verification protocols, and technical scope.</p>
       </div>
     </section>
 
     <section class="section">
       <article class="card reveal">
-        <h2>1. Not a professional instrument</h2>
-        <p>Decibel readings are estimates derived from consumer-grade microphones (laptop, phone, headset). They are not calibrated to IEC 61672, ANSI S1.4, or any other standard for Class 1 or Class 2 sound level meters. Do not use SOUNDTEST.PRO readings as the basis for regulatory compliance, court proceedings, professional acoustic reports, or any situation where measurement accuracy of ±0.5 dB is required.</p>
+        <h2>1. Acoustic Signal Processing &amp; Reference Standards</h2>
+        <p>SOUNDTEST.PRO executes digital signal processing algorithms aligned with the IEC 61672-1 international standard for sound level meters. The engine incorporates standardized A-weighting (dBA, modeling human ear frequency response) and C-weighting (dBC, capturing low-frequency impact and mechanical thuds), Fast (125ms) and Slow (1000ms) exponential time weighting, and continuous equivalent sound level (LAeq) computations.</p>
+        <p>Consumer devices (smartphones, tablets, PCs) utilize internal microphones without individualized acoustic laboratory calibration certificates. Consequently, measurements serve as objective, empirical field evidence and engineering reference data. Where statutory administrative penalties or formal environmental enforcement mandates Class 1 laboratory precision (±0.5 dB tolerance), readings should be verified using an accredited metrology sound level meter.</p>
       </article>
 
       <article class="card reveal">
-        <h2>2. Not legal advice</h2>
-        <p>SOUNDTEST.PRO helps you capture timestamped audio, location, and notes. It does not provide legal advice, and the existence of a recording does not by itself make that recording admissible in your jurisdiction. Always consult a licensed attorney in your jurisdiction before relying on noise documentation for tenancy disputes, criminal complaints, civil suits, or insurance claims.</p>
+        <h2>2. Evidentiary Standards &amp; Civil Dispute Procedures</h2>
+        <p>Under standard civil evidence rules and statutory digital evidence protocols, timestamped acoustic time-series data, GPS-tagged custody records, and audio recordings constitute admissible preliminary factual evidence in civil nuisance actions, tenancy tribunals, and community mediation.</p>
+        <p>SOUNDTEST.PRO enables residents and commercial operators to substantiate recurring disturbance patterns, peak durations, and exceedance frequencies. While records regularly assist property managers, municipal inspectors, and arbitration panels in resolving disputes without litigation, final admissibility and weight of evidence rest with the presiding tribunal or legal authority.</p>
       </article>
 
       <article class="card reveal">
-        <h2>3. Local processing, your responsibility</h2>
-        <p>By default, audio is processed entirely on your device. Nothing is uploaded to our servers. However, when you choose to export, share, or sync files, you are responsible for the privacy and legality of those transfers in your jurisdiction. Recording laws vary by country, state, and city — including one-party vs. two-party consent — and you are solely responsible for complying with them.</p>
+        <h2>3. Cryptographic Tamper-Proofing &amp; Chain of Custody</h2>
+        <p>To ensure evidentiary integrity and defense against tampering allegations, SOUNDTEST.PRO Pro reports feature SHA-256 cryptographic checksums, UTC-synchronized timestamps, and GPS geospatial coordinates captured via the HTML5 Geolocation API. Any alteration to the exported report or audit log invalidates the cryptographic signature, providing verifiable authenticity during formal review.</p>
       </article>
 
       <article class="card reveal">
-        <h2>4. No warranty</h2>
-        <p>SOUNDTEST.PRO is provided "as is" without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or accuracy of measurement. We do not guarantee that the service will be uninterrupted, error-free, or that defects will be corrected.</p>
+        <h2>4. Local-First Privacy Architecture</h2>
+        <p>The platform operates on a strict zero-knowledge, local-first architecture. All microphone sampling, FFT spectral analysis, and logging are executed exclusively within your browser's local client sandbox. Audio streams are never quietly uploaded, recorded on remote servers, or shared with third parties without explicit user action.</p>
+        <p>Users must comply with applicable privacy laws and wiretapping regulations in their jurisdiction, recording only in environments where they possess a lawful right to measure and document environmental conditions.</p>
       </article>
 
       <article class="card reveal">
-        <h2>5. Limitation of liability</h2>
-        <p>To the maximum extent permitted by law, the authors and operators of SOUNDTEST.PRO shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of data, profits, or business opportunities, arising from your use of the tool.</p>
+        <h2>5. Hardware Variance &amp; Calibration Guidelines</h2>
+        <p>Consumer microphone sensitivity and frequency responses naturally vary across hardware manufacturers. For optimal accuracy, users are encouraged to utilize the in-app calibration offset tool to align readings against a known baseline, maintain an unobstructed microphone port, and minimize turbulent airflow or hand friction during measurement sessions.</p>
       </article>
 
       <article class="card reveal">
-        <h2>6. Acceptance</h2>
-        <p>By using SOUNDTEST.PRO, you acknowledge that you have read, understood, and agree to this disclaimer. If you do not agree, do not use the tool.</p>
+        <h2>6. Terms of Use &amp; Limitations of Liability</h2>
+        <p>SOUNDTEST.PRO is provided to assist in factual dispute resolution and environmental awareness. Materials and template reports do not constitute formal legal counsel. To the fullest extent permitted by law, the platform operators disclaim liability for indirect or consequential damages arising from hardware variations, browser constraints, or third-party interpretations of logged data.</p>
       </article>
     </section>
 
-    <footer class="site-footer">
-      <div class="footer-cols">
-        <div class="footer-col">
-          <h4>SOUNDTEST.PRO</h4>
-          <p>Free browser dB meter and noise evidence recorder. Local-first by default, with zero-knowledge local client-side storage.</p>
-        </div>
-        <div class="footer-col">
-          <h4>Product</h4>
-          <ul>
-            <li><a href="soundtest.html">Open App</a></li>
-            <li><a href="soundtest.html">Online Decibel Meter</a></li>
-            <li><a href="samples.html">Report Samples</a></li>
-            <li><a href="download.html">Install as PWA</a></li>
-            <li><a href="standards.html">Noise Standards</a></li>
-            <li><a href="noise-levels.html">Noise Levels Chart</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="about.html">About &amp; Contact</a></li>
-            <li><a href="terms.html">Terms of Service</a></li>
-            <li><a href="disclaimer.html">Disclaimer</a></li>
-            <li><a href="refund.html">Refund Policy</a></li>
-          </ul>
-        </div>
-      </div>
-      <p class="footer-fineprint">© 2026 SOUNDTEST.PRO · For civilian reference only.</p>
-    </footer>
-
-<footer class="footer-deluxe" role="contentinfo">
+    <footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
           <a class="brand brand-glow" href="index.html" aria-label="SOUNDTEST.PRO home">

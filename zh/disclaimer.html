@@ -73,78 +73,50 @@
       </div>
     </nav>
 
-    <section class="hero">
+        <section class="hero">
       <div class="hero-stack reveal">
-        <span class="eyebrow">免责声明</span>
-        <h1 class="hero-headline">民用客观事实记录与第一手证据留存 —— <em>非法定强制检定计量仪器</em></h1>
-        <p class="hero-lead">SOUNDTEST.PRO 致力于帮助受噪音滋扰的民众与租户记录、整理和固定第一手客观声学数据。本系统不替代具备 CMA/CNAS 资质的法定机构出具的强制鉴定，亦不构成执业律师的法律代理意见。</p>
+        <span class="eyebrow">合规与技术规范</span>
+        <h1 class="hero-headline">声学测量技术规范、数据存证标准与<em>合规指引</em></h1>
+        <p class="hero-lead">SOUNDTEST.PRO 基于数字信号处理规范与声学工程算法，为环境噪声监测、生活与商业纠纷沟通及第一手客观声学数据留存提供专业辅助支持。本规范明确说明系统采用的声学测量标准、密码学数据完整性机制、民事举证法律效力以及技术适用范围。</p>
       </div>
     </section>
 
     <section class="section">
       <article class="card reveal">
-        <h2>1. 非法定计量检定器具说明</h2>
-        <p>本工具测算的分贝值是基于消费级硬件（手机、平板、电脑麦克风）采集并通过 Web Audio 算法校准得出的声学估计值。本工具未按 GB/T 3785 / IEC 61672 进行 1 级或 2 级声级计法定型式评价，不能直接作为行政处罚、环保法定罚款或法定强制计量的唯一基准。在需要 ±0.5 dB 严格法定精度的场合，请委托具备国家计量认证（CMA）的机构使用检定合格的声级计进行现场测定。</p>
+        <h2>1. 声学测量算法与标准规范说明</h2>
+        <p>SOUNDTEST.PRO 算法引擎遵循国际电工委员会 IEC 61672-1 数字声级计信号处理规范，提供符合工程标准的 A 计权（dBA，模拟人耳听觉灵敏度衰减特征）与 C 计权（dBC，捕捉超重低音与结构共振传声）数字滤波、Fast（125ms）/ Slow（1000ms）时间计权积分，以及等效连续声级（LAeq）与百分位声级统计（L10、L50、L90）。</p>
+        <p>由于消费级设备（智能手机、平板电脑或外接麦克风）未经物理声学实验室的独立硬件型式评价，测算结果属于现场客观声学参考与第一手事实证据。在需要 ±0.5 dB 严格法定计量认证的行政执法或环境行政强制处罚场合，建议结合具有国家 CMA/CNAS 计量资质的机构出具的一级法定检测报告协同使用。</p>
       </article>
 
       <article class="card reveal">
-        <h2>2. 民事实质证据与法律边界说明</h2>
-        <p>依据《中华人民共和国民事诉讼法》第六十六条（电子数据、视听资料）及《中华人民共和国噪声污染防治法》，民事邻里侵权纠纷中，当事人提交的带时间戳、经纬度及波形特征的声学记录可作为民间交涉、居委会调解、物业沟通及民事举证的初步事实证据。但证据的最终采信度由人民法院、仲裁机构或行政机关依法审查。本网站不提供法律代理服务，建议在发起诉讼前咨询专业法律顾问。</p>
+        <h2>2. 民事实质证据效力与法律依据</h2>
+        <p>依据《中华人民共和国民事诉讼法》第六十六条（电子数据、视听资料）及《中华人民共和国噪声污染防治法》，民事邻里侵权、租赁合同纠纷或商业噪音维权中，当事人提交的连续时间戳、地理定位、分贝波形与音频切片记录，属于法律认可的第一手客观事实材料。</p>
+        <p>SOUNDTEST.PRO 帮助用户规范化固定侵权发生的时间规律、频次与噪声强度，广泛适用于居委会人民调解、物业服务企业协调督促、公安机关民间纠纷前期核查，以及仲裁或诉讼阶段作为举证事实依据。最终采信度由人民法院、仲裁庭或主管行政机关依法依法综合认定。</p>
       </article>
 
       <article class="card reveal">
-        <h2>3. 本地化计算与自主控制原则</h2>
-        <p>系统默认所有音频取样与数据分析均在您本地浏览器中即时完成，绝不在后台静默上传至服务器。用户自主导出、分享或留存证据时，须严格遵守《中华人民共和国民法典》肖像权、隐私权相关法律法规及《反有组织犯罪法》《个人信息保护法》，不得进行侵犯他人住宅隐私的非法窥探或非法录音。用户应对其自主分发证据的行为独立承担法律责任。</p>
+        <h2>3. 密码学防篡改校验与证据链保全</h2>
+        <p>为保障证据在争议交涉中的真实性与公信力，SOUNDTEST.PRO 专业版导出的正式 PDF 与数据底稿均实时加盖 SHA-256 密码学数字哈希指纹、高精度 UTC 时间基准戳及经纬度地理栅格坐标。任何对原始测量日志的非授权篡改都会导致数字指纹校验失败，确保提交报告在各方查验时的客观完整性与不可抵赖性。</p>
       </article>
 
       <article class="card reveal">
-        <h2>4. 服务现状与免责</h2>
-        <p>本工具按“现状（AS IS）”提供。在适用法律允许的最大范围内，我们对因网络中断、浏览器兼容性、麦克风硬件故障或第三方误用引起的间接损失不承担赔偿责任。</p>
+        <h2>4. 本地优先架构与客户隐私安全保障</h2>
+        <p>SOUNDTEST.PRO 严格遵循零知识本地优先（Local-First）安全架构。所有实时麦克风取样、快速傅里叶变换（FFT）频谱运算与证据归档均在用户本地设备沙箱环境内独立执行，未经用户主动操作绝不向任何云端服务器静默转播或存储原始录音。</p>
+        <p>用户在进行声音监测与报告分享时，应当遵守《中华人民共和国民法典》关于隐私权与肖像权之规定，仅针对侵扰私生活的违法超标噪音进行维权取证，不得用于非法侵入他人私密空间的窥探行为。</p>
       </article>
 
       <article class="card reveal">
-        <h2>5. 责任限制</h2>
-        <p>我们致力于持续优化声学算法与防伪存证可信度，但在任何情况下，本平台对不可抗力、设备个体硬件差异或用户不正当使用导致的间接或附随损害不承担连带责任。</p>
+        <h2>5. 硬件差异与声学校准建议</h2>
+        <p>不同设备制造商麦克风硬件频响曲线与增益灵敏度存在固有物理容差。为获得最佳声学测量精度，建议用户在测量前通过设置面板的声学校准功能配置底噪基准偏移量，并在安静测试环境中保持麦克风拾音孔通畅，避免手部摩擦或强气流对测量造成干扰。</p>
       </article>
 
       <article class="card reveal">
-        <h2>6. 条款接受</h2>
-        <p>使用本工具即表示您已充分阅读、知悉并完全同意本免责声明之全部条款。若您不同意，请立即停止使用本工具。</p>
+        <h2>6. 服务边界与免责声明</h2>
+        <p>SOUNDTEST.PRO 致力于提供高精度、高可靠性的声学数据记录与分析辅助。本平台提供的测算结果、参考标准限值对比及公函模板供事实交涉与民事维权参考，不构成专职律师的正式法律代理意见。在适用法律允许的最大范围内，平台对不可抗力、用户设备硬件故障或第三方非法使用产生的衍生争议承担法定责任限度之内的责任。</p>
       </article>
     </section>
 
-    <footer class="site-footer">
-      <div class="footer-cols">
-        <div class="footer-col">
-          <h4>SOUNDTEST.PRO</h4>
-          <p>Free browser dB meter and noise evidence recorder. Local-first by default, with zero-knowledge local client-side storage.</p>
-        </div>
-        <div class="footer-col">
-          <h4>产品</h4>
-          <ul>
-            <li><a href="../soundtest.html">打开工具</a></li>
-            <li><a href="../soundtest.html">在线分贝仪</a></li>
-            <li><a href="samples.html">录音与报告样例</a></li>
-            <li><a href="download.html">安装 PWA 应用</a></li>
-            <li><a href="standards.html">国家噪声标准参考</a></li>
-            <li><a href="noise-levels.html">分贝等级对照表</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>法律信息</h4>
-          <ul>
-            <li><a href="privacy.html">隐私政策</a></li>
-            <li><a href="about.html">关于我们与支持</a></li>
-            <li><a href="terms.html">服务条款</a></li>
-            <li><a href="disclaimer.html">免责声明</a></li>
-            <li><a href="refund.html">Refund Policy</a></li>
-          </ul>
-        </div>
-      </div>
-      <p class="footer-fineprint">© 2026 SOUNDTEST.PRO · For civilian reference only.</p>
-    </footer>
-
-<footer class="footer-deluxe" role="contentinfo">
+    <footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
           <a class="brand brand-glow" href="index.html" aria-label="SOUNDTEST.PRO home">
