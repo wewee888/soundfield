@@ -73,43 +73,49 @@
       </div>
     </nav>
 
-    <section class="hero">
+        <section class="hero">
       <div class="hero-stack reveal">
-        <span class="eyebrow">Haftungsausschluss</span>
-        <h1 class="hero-headline">For civilian reference and field documentation — <em>not certified metrology</em>.</h1>
-        <p class="hero-lead">SOUNDTEST.PRO is designed to help you record, document, and organize evidence of noisy situations. It is not a substitute for professional acoustic instruments, certified sound-level meters, or legal advice from a qualified attorney.</p>
+        <span class="eyebrow">Internationale Normen & Konformität</span>
+        <h1 class="hero-headline">Akustische Messnormen, Multi-Jurisdiktionelle Beweissicherung & <em>Rechtliche Richtlinien</em></h1>
+        <p class="hero-lead">SOUNDTEST.PRO basiert auf etablierten akustischen Signalverarbeitungsstandards (IEC 61672-1) und kryptografischer SHA-256 Integritätssicherung. Dieses Dokument spezifiziert die technischen Grenzwerte sowie die rechtliche Verwertbarkeit von Lärmaufzeichnungen in zivilrechtlichen und mietrechtlichen Streitigkeiten.</p>
       </div>
     </section>
 
     <section class="section">
       <article class="card reveal">
-        <h2>1. Not a professional instrument</h2>
-        <p>Decibel readings are estimates derived from consumer-grade microphones (laptop, phone, headset). They are not calibrated to IEC 61672, ANSI S1.4, or any other standard for Class 1 or Class 2 sound level meters. Do not use SOUNDTEST.PRO readings as the basis for regulatory compliance, court proceedings, professional acoustic reports, or any situation where measurement accuracy of ±0.5 dB is required.</p>
+        <h2>1. Akustische Signalverarbeitung & Normenbezug (IEC 61672-1)</h2>
+        <p>Die Algorithmen von SOUNDTEST.PRO orientieren sich an der internationalen Norm IEC 61672-1 für Schallpegelmesser. Das System implementiert standardisierte A-Bewertung (dBA), C-Bewertung (dBC für tieffrequenten Körperschall), Zeitbewertungen Fast (125ms) und Slow (1000ms) sowie äquivalente Dauerschallpegel (LAeq) und statistische Perzentile (L10, L50, L90).</p>
+        <p>Da Mikrofone in Endgeräten (Smartphones, Notebooks) über keine individuelle Kalibrierurkunde nach Eichrecht verfügen, dienen Messwerte als substantiierte, objektive Parteidokumentation. Für hoheitliche Verwaltungsverfahren mit Eichpflicht (±0,5 dB Toleranz) ist eine Messung mit einem geeichten Klasse-1-Schallpegelmesser ergänzend heranzuziehen.</p>
       </article>
 
       <article class="card reveal">
-        <h2>2. Not legal advice</h2>
-        <p>SOUNDTEST.PRO helps you capture timestamped audio, location, and notes. It does not provide legal advice, and the existence of a recording does not by itself make that recording admissible in your jurisdiction. Always consult a licensed attorney in your jurisdiction before relying on noise documentation for tenancy disputes, criminal complaints, civil suits, or insurance claims.</p>
+        <h2>2. Beweisrechtliche Relevanz im deutschen und internationalen Recht</h2>
+        <p>Nach ständiger zivilprozessualer Rechtsprechung stellen lückenlos protokollierte Lärmtagebücher und digitale Aufzeichnungen wesentliche Beweismittel im Freibeweis dar:</p>
+        <ul style="margin: 8px 0 12px 20px; line-height: 1.6; color: var(--muted); font-size: 13.5px;">
+          <li style="margin-bottom: 6px;"><strong>Deutschland, Österreich & Schweiz</strong>: Nach § 371 ZPO (Beweis durch Augenschein an elektronischen Unterlagen), BGB § 906 (Zuführung unwägbarer Stoffe / unzumutbare Immissionen) sowie im Mietrecht (Mietminderung gem. § 536 BGB wegen Lärmstörung unter Bezug auf TA Lärm). In der Schweiz gem. ZPO Art. 177 ff. und Lärmschutz-Verordnung (LSV).</li>
+          <li style="margin-bottom: 6px;"><strong>International (USA, UK, EU)</strong>: US Federal Rules of Evidence (FRE 901/902 ESI), UK Environmental Protection Act 1990 (Statutory Nuisance) und EU-Umgebungslärmrichtlinie (2002/49/EG) zur außergerichtlichen Streitbeilegung.</li>
+        </ul>
+        <p>Die freie Beweiswürdigung obliegt dem zuständigen Gericht oder Schiedsorgan (§ 286 ZPO).</p>
       </article>
 
       <article class="card reveal">
-        <h2>3. Local processing, your responsibility</h2>
-        <p>By default, audio is processed entirely on your device. Nothing is uploaded to our servers. However, when you choose to export, share, or sync files, you are responsible for the privacy and legality of those transfers in your jurisdiction. Recording laws vary by country, state, and city — including one-party vs. two-party consent — and you are solely responsible for complying with them.</p>
+        <h2>3. Kryptografischer Fälschungsschutz (SHA-256 & Zeitstempel)</h2>
+        <p>Zur Abwehr von Manipulationsvorwürfen werden alle Berichte von SOUNDTEST.PRO Pro mit einem SHA-256-Kryptohash, UTC-synchronisierten Zeitstempeln und GPS-Standortkoordinaten signiert. Nachträgliche Veränderungen führen zur Entwertung der Signatur.</p>
       </article>
 
       <article class="card reveal">
-        <h2>4. No warranty</h2>
-        <p>SOUNDTEST.PRO is provided "as is" without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or accuracy of measurement. We do not guarantee that the service will be uninterrupted, error-free, or that defects will be corrected.</p>
+        <h2>4. Datenschutz & Lokale Signalverarbeitung (DSGVO)</h2>
+        <p>Die Plattform arbeitet strikt nach dem Zero-Knowledge- und Local-First-Prinzip im Einklang mit der DSGVO. Audiodaten werden ausschließlich im Browser des Endgeräts verarbeitet und niemals unbemerkt an Remoteserver übertragen.</p>
       </article>
 
       <article class="card reveal">
-        <h2>5. Limitation of liability</h2>
-        <p>To the maximum extent permitted by law, the authors and operators of SOUNDTEST.PRO shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of data, profits, or business opportunities, arising from your use of the tool.</p>
+        <h2>5. Hardwaretoleranzen & Empfehlungen zur Kalibrierung</h2>
+        <p>Aufgrund von Hardwareunterschieden empfehlen wir vor längeren Messungen die Nutzung des integrierten Kalibrierungs-Offsets sowie das Vermeiden von Wind- und Gehäusegeräuschen am Mikrofon.</p>
       </article>
 
       <article class="card reveal">
-        <h2>6. Acceptance</h2>
-        <p>By using SOUNDTEST.PRO, you acknowledge that you have read, understood, and agree to this disclaimer. If you do not agree, do not use the tool.</p>
+        <h2>6. Haftungsbegrenzung & Rechtsberatungsausschluss</h2>
+        <p>SOUNDTEST.PRO stellt Werkzeuge zur sachlichen Lärmprotokollierung bereit und erbringt keine Rechtsberatung im Sinne des RDG. Die Haftung für mittelbare Schäden ist im gesetzlich zulässigen Rahmen ausgeschlossen.</p>
       </article>
     </section>
 

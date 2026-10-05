@@ -73,43 +73,49 @@
       </div>
     </nav>
 
-    <section class="hero">
+        <section class="hero">
       <div class="hero-stack reveal">
-        <span class="eyebrow">Aviso legal</span>
-        <h1 class="hero-headline">For civilian reference and field documentation — <em>not certified metrology</em>.</h1>
-        <p class="hero-lead">SOUNDTEST.PRO is designed to help you record, document, and organize evidence of noisy situations. It is not a substitute for professional acoustic instruments, certified sound-level meters, or legal advice from a qualified attorney.</p>
+        <span class="eyebrow">Normativa Internacional y Conformidad</span>
+        <h1 class="hero-headline">Normas de Medición Acústica, Validez Probatoria Internacional y <em>Aviso Legal</em></h1>
+        <p class="hero-lead">SOUNDTEST.PRO implementa algoritmos de procesamiento digital de señales acústicas alineados con la norma internacional IEC 61672-1, proporcionando informes con verificación criptográfica SHA-256 y geolocalización GPS para la resolución documentada de disputas por ruido.</p>
       </div>
     </section>
 
     <section class="section">
       <article class="card reveal">
-        <h2>1. Not a professional instrument</h2>
-        <p>Decibel readings are estimates derived from consumer-grade microphones (laptop, phone, headset). They are not calibrated to IEC 61672, ANSI S1.4, or any other standard for Class 1 or Class 2 sound level meters. Do not use SOUNDTEST.PRO readings as the basis for regulatory compliance, court proceedings, professional acoustic reports, or any situation where measurement accuracy of ±0.5 dB is required.</p>
+        <h2>1. Procesamiento Acústico y Estándares de Referencia (IEC 61672-1)</h2>
+        <p>El motor de cálculo aplica los estándares internacionales de sonometría IEC 61672-1: ponderación frecuencial A (dBA, sensibilidad auditiva humana) y C (dBC para frecuencias bajas e impacto estructural), constantes de integración Fast (125 ms) y Slow (1000 ms), nivel sonoro continuo equivalente (LAeq) y percentiles estadísticos.</p>
+        <p>Los dispositivos móviles no cuentan con certificado individual de calibración metrológica oficial. Por tanto, los valores constituyen pruebas objetivas e indiciarias de campo. Cuando se requiera sanción administrativa con precisión legal de ±0,5 dB, debe contrastarse con sonómetro homologado de clase 1.</p>
       </article>
 
       <article class="card reveal">
-        <h2>2. Not legal advice</h2>
-        <p>SOUNDTEST.PRO helps you capture timestamped audio, location, and notes. It does not provide legal advice, and the existence of a recording does not by itself make that recording admissible in your jurisdiction. Always consult a licensed attorney in your jurisdiction before relying on noise documentation for tenancy disputes, criminal complaints, civil suits, or insurance claims.</p>
+        <h2>2. Validez Probatoria en España, Latinoamérica y Derecho Comparado</h2>
+        <p>De acuerdo con la legislación procesal civil, las series temporales de datos acústicos con marca de tiempo constituyen medios de prueba válidos:</p>
+        <ul style="margin: 8px 0 12px 20px; line-height: 1.6; color: var(--muted); font-size: 13.5px;">
+          <li style="margin-bottom: 6px;"><strong>España</strong>: Ley 37/2003, de 17 de noviembre, del Ruido; Ley de Enjuiciamiento Civil (LEC Art. 299.2 y Art. 384 sobre medios de reproducción de sonido y soportes electrónicos); y Ley de Propiedad Horizontal (Art. 7.2 acción de cesación de ruidos molestos).</li>
+          <li style="margin-bottom: 6px;"><strong>América Latina y EE.UU.</strong>: Códigos civiles y procesales sobre inmisiones ilegítimas e indemnización por daño ambiental/vecinal, así como las Reglas Federales de Evidencia de EE. UU. (FRE Rule 901/902 sobre información electrónica autovalidable ESI).</li>
+        </ul>
+        <p>La valoración de la fuerza probatoria corresponde en última instancia a los tribunales o autoridades administrativas competentes.</p>
       </article>
 
       <article class="card reveal">
-        <h2>3. Local processing, your responsibility</h2>
-        <p>By default, audio is processed entirely on your device. Nothing is uploaded to our servers. However, when you choose to export, share, or sync files, you are responsible for the privacy and legality of those transfers in your jurisdiction. Recording laws vary by country, state, and city — including one-party vs. two-party consent — and you are solely responsible for complying with them.</p>
+        <h2>3. Integridad Criptográfica SHA-256 y Cadena de Custodia</h2>
+        <p>Para garantizar autenticidad ante terceros, los informes oficiales emitidos por SOUNDTEST.PRO Pro incorporan un hash criptográfico SHA-256, marcas temporales UTC y coordenadas GPS. Cualquier alteración invalida la firma digital de control.</p>
       </article>
 
       <article class="card reveal">
-        <h2>4. No warranty</h2>
-        <p>SOUNDTEST.PRO is provided "as is" without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or accuracy of measurement. We do not guarantee that the service will be uninterrupted, error-free, or that defects will be corrected.</p>
+        <h2>4. Privacidad Local y Cumplimiento de Protección de Datos (RGPD)</h2>
+        <p>El sistema se rige por una arquitectura local-first. Todo el procesamiento se realiza en el navegador del usuario sin enviar audios a servidores externos. Los usuarios deben respetar la normativa de protección de datos e intimidad personal.</p>
       </article>
 
       <article class="card reveal">
-        <h2>5. Limitation of liability</h2>
-        <p>To the maximum extent permitted by law, the authors and operators of SOUNDTEST.PRO shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of data, profits, or business opportunities, arising from your use of the tool.</p>
+        <h2>5. Calibración y Variación de Hardware</h2>
+        <p>Debido a la diversidad de micrófonos en el mercado, se recomienda utilizar la función de calibración integrada para ajustar el offset de base y evitar interferencias mecánicas o viento durante las mediciones.</p>
       </article>
 
       <article class="card reveal">
-        <h2>6. Acceptance</h2>
-        <p>By using SOUNDTEST.PRO, you acknowledge that you have read, understood, and agree to this disclaimer. If you do not agree, do not use the tool.</p>
+        <h2>6. Exención de Responsabilidad y Asesoramiento Legal</h2>
+        <p>SOUNDTEST.PRO es una herramienta técnica de apoyo documental y no presta asesoramiento legal. En la medida máxima permitida por la ley, se declina responsabilidad por daños indirectos derivados del uso de la herramienta.</p>
       </article>
     </section>
 

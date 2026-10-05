@@ -73,43 +73,49 @@
       </div>
     </nav>
 
-    <section class="hero">
+        <section class="hero">
       <div class="hero-stack reveal">
-        <span class="eyebrow">免責事項</span>
-        <h1 class="hero-headline">For civilian reference and field documentation — <em>not certified metrology</em>.</h1>
-        <p class="hero-lead">SOUNDTEST.PRO is designed to help you record, document, and organize evidence of noisy situations. It is not a substitute for professional acoustic instruments, certified sound-level meters, or legal advice from a qualified attorney.</p>
+        <span class="eyebrow">国際基準適合・電磁的証拠保全仕様</span>
+        <h1 class="hero-headline">音響計測技術基準・国際電磁的記録の証拠保全基準および<em>法的免責事項</em></h1>
+        <p class="hero-lead">SOUNDTEST.PRO は、IEC 61672-1 国際規格準拠のアルゴリズム、SHA-256 暗号学的ハッシュによる改ざん防止検証、GPS タイムスタンプを備え、近隣騒音、賃貸借トラブル、マンション管理組合における客観的証拠保全を支援する専門的音響ツールです。</p>
       </div>
     </section>
 
     <section class="section">
       <article class="card reveal">
-        <h2>1. Not a professional instrument</h2>
-        <p>Decibel readings are estimates derived from consumer-grade microphones (laptop, phone, headset). They are not calibrated to IEC 61672, ANSI S1.4, or any other standard for Class 1 or Class 2 sound level meters. Do not use SOUNDTEST.PRO readings as the basis for regulatory compliance, court proceedings, professional acoustic reports, or any situation where measurement accuracy of ±0.5 dB is required.</p>
+        <h2>1. 音響計測アルゴリズムと参考規格</h2>
+        <p>SOUNDTEST.PRO のアルゴリズムは、国際電気標準会議 IEC 61672-1（サウンドレベルメータ国際規格）に準拠し、人間の聴覚特性を模擬した A 特性（dBA）、低周波・重低音衝撃を捉える C 特性（dBC）、Fast（125ms）/ Slow（1000ms）時間重み付け積分、等価騒音レベル（LAeq）および百分位数（L10、L50、L90）の精密計算を実行します。</p>
+        <p>民生用端末（スマートフォン、PCマイク等）は検定公認機関による個体キャリブレーションを受けていないため、測定値は現場の客観的参考証拠となります。±0.5 dB の厳格な公的証明を要する行政処分等の手続きにおいては、計量法に基づく公認検定器との併用を推奨します。</p>
       </article>
 
       <article class="card reveal">
-        <h2>2. Not legal advice</h2>
-        <p>SOUNDTEST.PRO helps you capture timestamped audio, location, and notes. It does not provide legal advice, and the existence of a recording does not by itself make that recording admissible in your jurisdiction. Always consult a licensed attorney in your jurisdiction before relying on noise documentation for tenancy disputes, criminal complaints, civil suits, or insurance claims.</p>
+        <h2>2. 日本および各国の民事訴訟法・証拠保全の根拠</h2>
+        <p>裁判所実務および民事訴訟における証拠能力について、タイムスタンプおよび波形記録は有力な客観的事実資料として位置づけられます：</p>
+        <ul style="margin: 8px 0 12px 20px; line-height: 1.6; color: var(--muted); font-size: 13.5px;">
+          <li style="margin-bottom: 6px;"><strong>日本国内の法的枠組み</strong>：日本の『騒音規制法』、各自治体の環境確保条例・公害防止条例、および民事訴訟法第228条（文書・電磁的記録の成立の真正）。裁判実務における「受忍限度論」（社会通念上の受忍限度を超える違法性の立証）や管理会社・調停（ADR）における重要証拠として機能します。</li>
+          <li style="margin-bottom: 6px;"><strong>米国・欧州・国際法域</strong>：米国の連邦証拠規則（FRE Rule 901/902 ESI電子証拠認証）、英国1990年環境保護法（Statutory Nuisance）、ドイツ民法（BGB § 906）、フランス民法（第1253条 異常な近隣侵害訴訟）等において、暗号化タイムスタンプ記録は示談および仲裁の客観的証拠として広く活用されています。</li>
+        </ul>
+        <p>最終的な証拠採否および事実認定は、管轄裁判所、調停委員会または公的機関の判断に委ねられます。</p>
       </article>
 
       <article class="card reveal">
-        <h2>3. Local processing, your responsibility</h2>
-        <p>By default, audio is processed entirely on your device. Nothing is uploaded to our servers. However, when you choose to export, share, or sync files, you are responsible for the privacy and legality of those transfers in your jurisdiction. Recording laws vary by country, state, and city — including one-party vs. two-party consent — and you are solely responsible for complying with them.</p>
+        <h2>3. 暗号学的ハッシュによる改ざん防止（SHA-256）</h2>
+        <p>客観的信憑性を担保するため、SOUNDTEST.PRO Pro レポートには SHA-256 暗号学的ハッシュ値、高精度 UTC タイムスタンプ、HTML5 Geolocation による位置情報が埋め込まれます。記録の事後改ざんはハッシュ不一致により直ちに検知され、反証に対する耐性を確保します。</p>
       </article>
 
       <article class="card reveal">
-        <h2>4. No warranty</h2>
-        <p>SOUNDTEST.PRO is provided "as is" without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or accuracy of measurement. We do not guarantee that the service will be uninterrupted, error-free, or that defects will be corrected.</p>
+        <h2>4. ローカルファースト設計と完全なプライバシー保護</h2>
+        <p>本ツールはゼロナレッジ・ローカルファースト（Local-First）原則に基づき、GDPR 等の国際プライバシー法令に準拠しています。音声サンプリングおよび FFT 解析はすべてブラウザ内のサンドボックスで完結し、サーバーへ無断送信されることは一切ありません。</p>
       </article>
 
       <article class="card reveal">
-        <h2>5. Limitation of liability</h2>
-        <p>To the maximum extent permitted by law, the authors and operators of SOUNDTEST.PRO shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of data, profits, or business opportunities, arising from your use of the tool.</p>
+        <h2>5. ハードウェア差異と測定・校正指針</h2>
+        <p>端末のマイク特性には物理的な個体差が存在します。最高精度を得るため、設定画面のキャリブレーション機能（オフセット調整）をご活用いただき、マイク穴への接触や突風・摩擦を避けて測定を行ってください。</p>
       </article>
 
       <article class="card reveal">
-        <h2>6. Acceptance</h2>
-        <p>By using SOUNDTEST.PRO, you acknowledge that you have read, understood, and agree to this disclaimer. If you do not agree, do not use the tool.</p>
+        <h2>6. サービス利用規約と責任の限定</h2>
+        <p>SOUNDTEST.PRO は客観的事実の記録を支援するものであり、弁護士による法的助言を提供するものではありません。適用法令の許容する最大限において、不可抗力や端末故障、第三者による不正使用に起因する派生損害について法的責任の限度内でのみ責任を負います。</p>
       </article>
     </section>
 

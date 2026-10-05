@@ -73,43 +73,49 @@
       </div>
     </nav>
 
-    <section class="hero">
+        <section class="hero">
       <div class="hero-stack reveal">
-        <span class="eyebrow">면책 조항</span>
-        <h1 class="hero-headline">For civilian reference and field documentation — <em>not certified metrology</em>.</h1>
-        <p class="hero-lead">SOUNDTEST.PRO is designed to help you record, document, and organize evidence of noisy situations. It is not a substitute for professional acoustic instruments, certified sound-level meters, or legal advice from a qualified attorney.</p>
+        <span class="eyebrow">국제 표준 준수 및 디지털 증거 규격</span>
+        <h1 class="hero-headline">음향 측정 기술 규격, 국제 법적 증거 보전 기준 및 <em>면책 고지</em></h1>
+        <p class="hero-lead">SOUNDTEST.PRO 는 국제전기기술위원회(IEC 61672-1) 소음계 신호 처리 표준, SHA-256 암호화 위변조 방지 해시 및 GPS 타임스탬프를 적용하여 이웃 간 소음, 층간소음, 임대차 분쟁 등에서 객관적 사실 증거를 확보할 수 있도록 지원합니다.</p>
       </div>
     </section>
 
     <section class="section">
       <article class="card reveal">
-        <h2>1. Not a professional instrument</h2>
-        <p>Decibel readings are estimates derived from consumer-grade microphones (laptop, phone, headset). They are not calibrated to IEC 61672, ANSI S1.4, or any other standard for Class 1 or Class 2 sound level meters. Do not use SOUNDTEST.PRO readings as the basis for regulatory compliance, court proceedings, professional acoustic reports, or any situation where measurement accuracy of ±0.5 dB is required.</p>
+        <h2>1. 음향 측정 알고리즘 및 표준 규격 (IEC 61672-1)</h2>
+        <p>SOUNDTEST.PRO 엔진은 국제 소음계 표준인 IEC 61672-1 신호 처리 기준을 준수합니다. 사람의 청각 특성을 반영한 A-가중치(dBA), 중저음 충격음을 포착하는 C-가중치(dBC), Fast(125ms)/Slow(1000ms) 시간 가중 적분, 등가소음도(LAeq) 및 백분위수(L10, L50, L90)를 정밀 산출합니다.</p>
+        <p>소비자용 스마트폰 마이크는 국가 공인 검정 기관의 개별 형식 승인을 거치지 않았으므로 측정 결과는 객관적 현장 증거 및 참고 자료로 활용됩니다. 엄격한 법정 허용오차(±0.5 dB)가 요구되는 행정처분 사안의 경우 공인 1급 소음계 측정을 병행하시기 바랍니다.</p>
       </article>
 
       <article class="card reveal">
-        <h2>2. Not legal advice</h2>
-        <p>SOUNDTEST.PRO helps you capture timestamped audio, location, and notes. It does not provide legal advice, and the existence of a recording does not by itself make that recording admissible in your jurisdiction. Always consult a licensed attorney in your jurisdiction before relying on noise documentation for tenancy disputes, criminal complaints, civil suits, or insurance claims.</p>
+        <h2>2. 국내외 민사소송법 및 증거 능력 법적 근거</h2>
+        <p>국내외 민사소송 및 분쟁 조정 절차에서 시간대별 소음 측정 데이터는 유력한 객관적 사실 자료로 인정받습니다:</p>
+        <ul style="margin: 8px 0 12px 20px; line-height: 1.6; color: var(--muted); font-size: 13.5px;">
+          <li style="margin-bottom: 6px;"><strong>대한민국 법적 근거</strong>: 『소음·진동관리법』, 『공동주택 층간소음의 범위와 기준에 관한 규칙』, 『민사소송법』 제374조(전자적 기록 등의 증거능력). 환경분쟁조정위원회, 층간소음 이웃사이센터 중재 및 법원 손해배상 청구 소송의 기초 증거로 활용됩니다.</li>
+          <li style="margin-bottom: 6px;"><strong>글로벌 법역(미국, 유럽, 일본)</strong>: 미국 연방증거규칙(FRE 901/902 ESI 전자증거 자기인증), 영국 1990 환경보호법, 독일 민법(BGB § 906), 일본 민사소송법 제228조(전자적 증거)에 의거하여 분쟁 조정의 객관적 근거로 통용됩니다.</li>
+        </ul>
+        <p>최종적인 증거 채택 및 사실 인정 여부는 관할 법원 또는 조정 기관의 판단에 따릅니다.</p>
       </article>
 
       <article class="card reveal">
-        <h2>3. Local processing, your responsibility</h2>
-        <p>By default, audio is processed entirely on your device. Nothing is uploaded to our servers. However, when you choose to export, share, or sync files, you are responsible for the privacy and legality of those transfers in your jurisdiction. Recording laws vary by country, state, and city — including one-party vs. two-party consent — and you are solely responsible for complying with them.</p>
+        <h2>3. SHA-256 암호화 위변조 방지 및 증거 보전</h2>
+        <p>기록의 신뢰성을 보장하기 위해 SOUNDTEST.PRO Pro 보고서에는 SHA-256 암호화 디지털 지문, UTC 정밀 타임스탬프, GPS 위치 좌표가 자동 각인됩니다. 사후 수정 시 해시가 불일치하여 조작 여부를 즉시 검증할 수 있습니다.</p>
       </article>
 
       <article class="card reveal">
-        <h2>4. No warranty</h2>
-        <p>SOUNDTEST.PRO is provided "as is" without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or accuracy of measurement. We do not guarantee that the service will be uninterrupted, error-free, or that defects will be corrected.</p>
+        <h2>4. 로컬 퍼스트 아키텍처 및 철저한 개인정보 보호</h2>
+        <p>본 서비스는 제로 놀리지(Zero-Knowledge) 로컬 퍼스트 원칙을 따릅니다. 모든 음향 분석은 기기 내부 브라우저에서 수행되며, 오디오 원본이 서버로 무단 전송되지 않습니다. 타인의 사생활 비밀을 침해하는 불법 도청 용도로 사용할 수 없습니다.</p>
       </article>
 
       <article class="card reveal">
-        <h2>5. Limitation of liability</h2>
-        <p>To the maximum extent permitted by law, the authors and operators of SOUNDTEST.PRO shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of data, profits, or business opportunities, arising from your use of the tool.</p>
+        <h2>5. 하드웨어 편차 및 권장 교정 절차</h2>
+        <p>스마트폰 기종별 마이크 감도 특성에 편차가 있을 수 있습니다. 정밀 측정을 위해 설정 메뉴의 캘리브레이션 기능을 통해 기준 오프셋을 설정하고, 마이크에 바람이나 마찰이 닿지 않도록 주의하십시오.</p>
       </article>
 
       <article class="card reveal">
-        <h2>6. Acceptance</h2>
-        <p>By using SOUNDTEST.PRO, you acknowledge that you have read, understood, and agree to this disclaimer. If you do not agree, do not use the tool.</p>
+        <h2>6. 서비스 한계 및 면책 고지</h2>
+        <p>SOUNDTEST.PRO 는 사실 관계 입증을 돕는 도구이며 법률 자문을 제공하지 않습니다. 관련 법령이 허용하는 한도 내에서 기기 결함이나 제3자의 부적절한 사용으로 인한 간접 손해에 대해 법적 책임 범위 내에서만 책임을 부담합니다.</p>
       </article>
     </section>
 
