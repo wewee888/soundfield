@@ -341,5 +341,184 @@ test('Membership lookup endpoint /api/membership/lookup and soundtest.html auto-
   assert.ok(soundtestHtml.includes("email.toLowerCase() === 'wewee1@gmail.com'"), 'soundtest.html lookupMembership has superadmin bypass');
 });
 
+test('Admin orders API /api/admin/orders calculates conversion funnel and executes order actions', async () => {
+  const ordersPath = path.join(rootDir, 'functions/api/admin/orders.js');
+  assert.ok(fs.existsSync(ordersPath), 'orders.js must exist');
+  const ordersModule = await import(`file://${ordersPath.replace(/\\/g, '/')}`);
+
+  const kv = new Map();
+  // Seed sample data: 3 orders (2 paid, 1 unpaid), 2 users, 1 member
+  kv.set('order:ord_001', JSON.stringify({
+    trade_order_id: 'ord_001',
+    plan: 'pro',
+    fee: '9.90',
+    currency: 'CNY',
+    status: 'paid',
+    email: 'alice@example.com',
+    created_at: new Date().toISOString(),
+    paid_at: new Date().toISOString(),
+  }));
+  kv.set('order:ord_002', JSON.stringify({
+    trade_order_id: 'ord_002',
+    plan: 'yearly',
+    fee: '19.90',
+    currency: 'CNY',
+    status: 'pending',
+    email: 'bob@example.com',
+    created_at: new Date().toISOString(),
+  }));
+  kv.set('order:ord_003', JSON.stringify({
+    trade_order_id: 'ord_003',
+    plan: 'single',
+    fee: '1.99',
+    currency: 'USD',
+    provider: 'creem',
+    status: 'paid',
+    email: 'charlie@example.com',
+    created_at: new Date().toISOString(),
+    paid_at: new Date().toISOString(),
+  }));
+
+  kv.set('user:alice@example.com', JSON.stringify({
+    name: 'Alice',
+    email: 'alice@example.com',
+    createdAt: new Date().toISOString(),
+  }));
+  kv.set('user:bob@example.com', JSON.stringify({
+    name: 'Bob',
+    email: 'bob@example.com',
+    createdAt: new Date().toISOString(),
+  }));
+
+  kv.set('member:alice@example.com', JSON.stringify({
+    plan: 'pro',
+    plan_display: 'pro',
+    status: 'paid',
+    expires_at: new Date(Date.now() + 86400000 * 30).toISOString(),
+    granted_at: new Date().toISOString(),
+  }));
+
+  const mockEnv = {
+    ADMIN_SECRET: 'soundtest_admin_2026',
+    ab_test: {
+      get: async (k) => kv.get(k) || null,
+      put: async (k, v) => kv.set(k, v),
+      delete: async (k) => kv.delete(k),
+      list: async ({ prefix }) => {
+        const matchingKeys = Array.from(kv.keys())
+          .filter((k) => k.startsWith(prefix))
+          .map((name) => ({ name }));
+        return { keys: matchingKeys };
+      },
+    },
+  };
+
+  // 1. Unauthorized request
+  const unauthReq = new Request('https://soundtest.pro/api/admin/orders');
+  const unauthRes = await ordersModule.onRequestGet({ request: unauthReq, env: mockEnv });
+  assert.equal(unauthRes.status, 401);
+
+  // 2. Authorized request: check conversion funnel calculations
+  const authReq = new Request('https://soundtest.pro/api/admin/orders', {
+    headers: { 'Authorization': 'Bearer soundtest_admin_2026' },
+  });
+  const authRes = await ordersModule.onRequestGet({ request: authReq, env: mockEnv });
+  assert.equal(authRes.status, 200);
+  const data = await authRes.json();
+  assert.equal(data.ok, true);
+  assert.equal(data.stats.totalOrders, 3);
+  assert.equal(data.stats.paidOrders, 2);
+  assert.equal(data.stats.unpaidOrders, 1);
+  assert.equal(data.stats.conversionRate, '66.7%');
+  assert.equal(data.stats.dropRate, '33.3%');
+  assert.equal(data.stats.totalRevenueCny, '9.90');
+  assert.equal(data.stats.unpaidRevenueCny, '19.90');
+  assert.equal(data.stats.totalRevenueUsd, '1.99');
+  assert.equal(data.stats.totalUsers, 2);
+  assert.equal(data.stats.paidUsersCount, 1);
+  assert.equal(data.stats.payingUserRatio, '50.0%');
+
+  // Verify users array has merged intelligence
+  assert.equal(data.users.length, 2);
+  const aliceUser = data.users.find((u) => u.email === 'alice@example.com');
+  assert.ok(aliceUser);
+  assert.equal(aliceUser.is_vip, true);
+  assert.equal(aliceUser.plan, 'pro');
+
+  // 3. Mark unpaid order as paid
+  const markReq = new Request('https://soundtest.pro/api/admin/orders', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
+    body: JSON.stringify({ action: 'mark_paid', order_id: 'ord_002', note: '微信转账核销' }),
+  });
+  const markRes = await ordersModule.onRequestPost({ request: markReq, env: mockEnv });
+  assert.equal(markRes.status, 200);
+  const markData = await markRes.json();
+  assert.equal(markData.ok, true);
+  assert.equal(markData.member_granted, true);
+
+  // Verify Bob now has member record in KV
+  assert.ok(kv.has('member:bob@example.com'));
+  const bobMember = JSON.parse(kv.get('member:bob@example.com'));
+  assert.equal(bobMember.status, 'paid');
+});
+
+test('Admin users API /api/admin/users allows query and membership adjustments', async () => {
+  const usersPath = path.join(rootDir, 'functions/api/admin/users.js');
+  assert.ok(fs.existsSync(usersPath), 'users.js must exist');
+  const usersModule = await import(`file://${usersPath.replace(/\\/g, '/')}`);
+
+  const kv = new Map();
+  kv.set('user:member_test@example.com', JSON.stringify({
+    name: 'Member Test',
+    email: 'member_test@example.com',
+    createdAt: new Date().toISOString(),
+  }));
+
+  const mockEnv = {
+    ADMIN_SECRET: 'soundtest_admin_2026',
+    ab_test: {
+      get: async (k) => kv.get(k) || null,
+      put: async (k, v) => kv.set(k, v),
+      delete: async (k) => kv.delete(k),
+      list: async ({ prefix }) => {
+        const matchingKeys = Array.from(kv.keys())
+          .filter((k) => k.startsWith(prefix))
+          .map((name) => ({ name }));
+        return { keys: matchingKeys };
+      },
+    },
+  };
+
+  // Adjust VIP tier to Team
+  const adjustReq = new Request('https://soundtest.pro/api/admin/users', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
+    body: JSON.stringify({
+      action: 'adjust_vip',
+      email: 'member_test@example.com',
+      plan: 'team',
+      days: 365,
+    }),
+  });
+  const adjustRes = await usersModule.onRequestPost({ request: adjustReq, env: mockEnv });
+  assert.equal(adjustRes.status, 200);
+  const adjustData = await adjustRes.json();
+  assert.equal(adjustData.ok, true);
+  assert.equal(adjustData.plan, 'team');
+
+  // Verify KV written
+  assert.ok(kv.has('member:member_test@example.com'));
+  const mem = JSON.parse(kv.get('member:member_test@example.com'));
+  assert.equal(mem.plan, 'team');
+  assert.equal(mem.status, 'paid');
+});
+
 
 

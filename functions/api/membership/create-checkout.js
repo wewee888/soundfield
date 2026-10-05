@@ -69,6 +69,27 @@ export async function onRequestPost(context) {
     // Bad URL in env — fall back to plain baseUrl
   }
 
+  // Record order checkout creation in KV for funnel tracking
+  if (env.ab_test) {
+    const creemOrderId = `creem_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const planFees = { single: '1.99', pro: '4.99', team: '24.99', lifetime: '79.99' };
+    try {
+      await env.ab_test.put(
+        `order:${creemOrderId}`,
+        JSON.stringify({
+          plan,
+          fee: planFees[plan] || '4.99',
+          currency: 'USD',
+          provider: 'creem',
+          status: 'pending',
+          email,
+          created_at: new Date().toISOString(),
+        }),
+        { expirationTtl: 86400 * 30 }
+      );
+    } catch (_) {}
+  }
+
   return json({ ok: true, plan, checkoutUrl });
 }
 

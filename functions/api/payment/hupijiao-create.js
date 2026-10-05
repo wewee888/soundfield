@@ -92,12 +92,14 @@ export async function onRequestPost(context) {
             JSON.stringify({
               plan,
               fee: cfg.fee,
+              currency: 'CNY',
+              provider: 'wechat',
               status: 'pending',
               email: String(body.email || '').trim().toLowerCase(),
               open_order_id: String(result.openid || ''),
               created_at: new Date().toISOString(),
             }),
-            { expirationTtl: 86400 * 2 }
+            { expirationTtl: 86400 * 30 }
           );
         } catch (_) {}
       }

@@ -3,201 +3,444 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>超级管理员控制台 · SOUNDTEST.PRO Admin</title>
-  <link rel="stylesheet" href="assets/site.css?v=20261005c">
-  <link rel="stylesheet" href="assets/auth.css?v=20261005c">
+  <title>SaaS 管理控制台 · SOUNDTEST.PRO Admin Console</title>
+  <link rel="stylesheet" href="assets/site.css?v=20261005f">
+  <link rel="stylesheet" href="assets/auth.css?v=20261005f">
   <style>
     :root {
-      --admin-bg: #040711;
-      --admin-panel: #0b1120;
-      --admin-card: rgba(15, 23, 42, 0.75);
-      --admin-border: rgba(44, 240, 193, 0.2);
-      --admin-accent: #2cf0c1;
-      --admin-accent-glow: rgba(44, 240, 193, 0.35);
-      --admin-gold: #f59e0b;
-      --admin-blue: #3b82f6;
+      --adm-bg: #040711;
+      --adm-panel: #0b1120;
+      --adm-panel-hover: #0f172a;
+      --adm-card: rgba(15, 23, 42, 0.85);
+      --adm-border: rgba(44, 240, 193, 0.2);
+      --adm-border-dim: rgba(255, 255, 255, 0.08);
+      --adm-accent: #2cf0c1;
+      --adm-accent-glow: rgba(44, 240, 193, 0.35);
+      --adm-gold: #f59e0b;
+      --adm-amber: #fbbf24;
+      --adm-blue: #3b82f6;
+      --adm-purple: #8b5cf6;
+      --adm-rose: #f43f5e;
+      --adm-text: #f1f5f9;
+      --adm-muted: #94a3b8;
+    }
+    * {
+      box-sizing: border-box;
     }
     body {
-      background-color: var(--admin-bg);
-      color: #e2e8f0;
+      background-color: var(--adm-bg);
+      color: var(--adm-text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
-    .admin-container {
-      max-width: 1240px;
+    .adm-container {
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 24px 20px 60px;
+      padding: 20px 24px 80px;
     }
-    .admin-header {
+
+    /* Top Header */
+    .adm-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 16px 24px;
-      background: var(--admin-panel);
-      border: 1px solid var(--admin-border);
+      background: var(--adm-panel);
+      border: 1px solid var(--adm-border);
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
     }
-    .admin-brand {
+    .adm-brand {
       display: flex;
       align-items: center;
       gap: 12px;
       text-decoration: none;
       color: #fff;
     }
-    .admin-badge {
+    .adm-brand-logo {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, rgba(44, 240, 193, 0.2), rgba(59, 130, 246, 0.2));
+      border: 1px solid var(--adm-accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 14px var(--adm-accent-glow);
+    }
+    .adm-brand-text {
+      font-weight: 900;
+      font-size: 19px;
+      letter-spacing: 0.04em;
+    }
+    .adm-badge-saas {
       display: inline-block;
       padding: 3px 8px;
       border-radius: 6px;
-      background: rgba(44, 240, 193, 0.15);
-      border: 1px solid rgba(44, 240, 193, 0.4);
-      color: var(--admin-accent);
+      background: rgba(44, 240, 193, 0.12);
+      border: 1px solid rgba(44, 240, 193, 0.35);
+      color: var(--adm-accent);
       font-size: 11px;
       font-weight: 800;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
-    .admin-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 18px;
-      margin-bottom: 28px;
+    .adm-top-tools {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    .stat-box {
-      background: var(--admin-card);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    .adm-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--adm-muted);
+      background: rgba(15, 23, 42, 0.6);
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--adm-border-dim);
+    }
+    .adm-pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--adm-accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--adm-accent);
+      animation: admPulse 2s infinite;
+    }
+    @keyframes admPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Tabs Navigation */
+    .adm-nav-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--adm-border-dim);
+      padding-bottom: 12px;
+      overflow-x: auto;
+    }
+    .adm-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--adm-muted);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .adm-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .adm-tab-btn.active {
+      color: #04101a;
+      background: var(--adm-accent);
+      box-shadow: 0 4px 16px var(--adm-accent-glow);
+    }
+    .adm-tab-badge {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .adm-tab-btn.active .adm-tab-badge {
+      background: rgba(4, 16, 26, 0.25);
+      color: #04101a;
+    }
+
+    /* Tab Content Views */
+    .tab-view {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+    .tab-view.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Grids */
+    .adm-card {
+      background: var(--adm-card);
+      border: 1px solid var(--adm-border-dim);
+      border-radius: 16px;
+      padding: 22px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .adm-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .adm-card-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* KPI Grid */
+    .adm-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--adm-card);
+      border: 1px solid var(--adm-border-dim);
       border-radius: 14px;
       padding: 20px 22px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
     }
-    .stat-box::before {
+    .stat-card::before {
       content: "";
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--admin-accent), transparent);
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-color, var(--adm-accent)), transparent);
     }
-    .stat-label {
-      font-size: 12.5px;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
-    .stat-val {
-      font-size: 28px;
-      font-weight: 900;
-      color: #fff;
-      font-family: 'JetBrains Mono', Consolas, monospace;
-    }
-    .stat-sub {
-      font-size: 12px;
-      color: #64748b;
-      margin-top: 6px;
-    }
+    .stat-card.gold { --accent-color: var(--adm-gold); }
+    .stat-card.amber { --accent-color: var(--adm-amber); }
+    .stat-card.cyan { --accent-color: var(--adm-accent); }
+    .stat-card.blue { --accent-color: var(--adm-blue); }
+    .stat-card.purple { --accent-color: var(--adm-purple); }
 
-    /* Admin Action Split */
-    .admin-main-grid {
-      display: grid;
-      grid-template-columns: 380px 1fr;
-      gap: 24px;
-    }
-    @media (max-width: 960px) {
-      .admin-main-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .admin-card {
-      background: var(--admin-card);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
-    .admin-card-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #fff;
-      margin: 0 0 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .form-group {
-      margin-bottom: 16px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      color: #94a3b8;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-    .form-control {
-      width: 100%;
-      box-sizing: border-box;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      padding: 10px 14px;
-      color: #fff;
-      font-size: 14px;
-      outline: none;
-      transition: border-color .2s;
-    }
-    .form-control:focus {
-      border-color: var(--admin-accent);
-      box-shadow: 0 0 12px rgba(44, 240, 193, 0.2);
-    }
-    .btn-admin {
-      background: linear-gradient(135deg, #2cf0c1 0%, #10b981 100%);
-      color: #04101a;
-      border: none;
-      border-radius: 8px;
-      padding: 11px 18px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      box-sizing: border-box;
-      box-shadow: 0 4px 16px var(--admin-accent-glow);
-      transition: all .2s ease;
-    }
-    .btn-admin:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px var(--admin-accent-glow);
-    }
-    .btn-danger {
-      background: rgba(239, 68, 68, 0.15);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      margin-top: 8px;
-    }
-    .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.25);
-    }
-
-    /* Orders Table */
-    .table-tools {
+    .stat-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 8px;
+    }
+    .stat-title {
+      font-size: 12.5px;
+      color: var(--adm-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .stat-icon {
+      font-size: 18px;
+    }
+    .stat-number {
+      font-size: 30px;
+      font-weight: 900;
+      color: #fff;
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      line-height: 1.2;
+    }
+    .stat-trend {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Conversion Funnel Bar */
+    .funnel-container {
+      background: rgba(11, 17, 32, 0.7);
+      border: 1px solid var(--adm-border-dim);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .funnel-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      position: relative;
+    }
+    .funnel-step {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+    }
+    .funnel-step.highlight {
+      border-color: rgba(44, 240, 193, 0.4);
+      background: rgba(44, 240, 193, 0.04);
+    }
+    .funnel-step.danger {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.04);
+    }
+    .funnel-step-name {
+      font-size: 12px;
+      color: var(--adm-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .funnel-step-val {
+      font-size: 24px;
+      font-weight: 900;
+      font-family: monospace;
+      color: #fff;
+    }
+    .funnel-step-sub {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    .funnel-bar-wrap {
+      margin-top: 14px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+    }
+    .funnel-bar-paid {
+      height: 100%;
+      background: linear-gradient(90deg, #2cf0c1, #10b981);
+      transition: width 0.4s ease;
+    }
+    .funnel-bar-unpaid {
+      height: 100%;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b);
+      transition: width 0.4s ease;
+    }
+
+    /* Filters & Controls */
+    .filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       gap: 12px;
       flex-wrap: wrap;
+      margin-bottom: 16px;
     }
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--adm-muted);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    .pill-btn.active {
+      background: rgba(44, 240, 193, 0.15);
+      border-color: var(--adm-accent);
+      color: var(--adm-accent);
+    }
+    .adm-input {
+      background: rgba(11, 17, 32, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .adm-input:focus {
+      border-color: var(--adm-accent);
+      box-shadow: 0 0 10px var(--adm-accent-glow);
+    }
+    .adm-select {
+      background: rgba(11, 17, 32, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    /* Standard Button Styles */
+    .btn-action {
+      background: rgba(44, 240, 193, 0.15);
+      border: 1px solid rgba(44, 240, 193, 0.4);
+      color: var(--adm-accent);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      background: rgba(44, 240, 193, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2cf0c1 0%, #10b981 100%);
+      color: #04101a;
+      border: none;
+      font-weight: 800;
+      box-shadow: 0 4px 14px var(--adm-accent-glow);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #3df2c6 0%, #15c78c 100%);
+      transform: translateY(-1px);
+    }
+    .btn-danger-sm {
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      color: #fb7185;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .btn-danger-sm:hover {
+      background: rgba(244, 63, 94, 0.25);
+    }
+
+    /* Tables */
     .table-wrap {
       overflow-x: auto;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      border: 1px solid var(--adm-border-dim);
     }
     table {
       width: 100%;
@@ -206,38 +449,104 @@
       text-align: left;
     }
     th {
-      background: rgba(15, 23, 42, 0.95);
-      padding: 12px 14px;
-      color: #94a3b8;
-      font-weight: 600;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(11, 17, 32, 0.95);
+      padding: 13px 16px;
+      color: var(--adm-muted);
+      font-weight: 700;
+      border-bottom: 1px solid var(--adm-border-dim);
       white-space: nowrap;
     }
     td {
-      padding: 12px 14px;
+      padding: 13px 16px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       color: #cbd5e1;
       white-space: nowrap;
+      vertical-align: middle;
     }
     tr:hover td {
       background: rgba(255, 255, 255, 0.02);
     }
+
+    /* Badges */
     .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .badge-paid {
+      background: rgba(44, 240, 193, 0.15);
+      color: #2cf0c1;
+      border: 1px solid rgba(44, 240, 193, 0.35);
+    }
+    .badge-pending {
+      background: rgba(251, 191, 36, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.35);
+    }
+    .badge-expired {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    .tier-badge {
       display: inline-block;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 4px;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
+      text-transform: uppercase;
     }
-    .status-paid { background: rgba(44, 240, 193, 0.15); color: #2cf0c1; border: 1px solid rgba(44, 240, 193, 0.4); }
-    .status-pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .tier-single { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .tier-pro { background: rgba(44, 240, 193, 0.15); color: #2cf0c1; border: 1px solid rgba(44, 240, 193, 0.3); }
+    .tier-yearly { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tier-lifetime { background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .tier-free { background: rgba(255, 255, 255, 0.06); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); }
 
-    /* Auth Gate Modal */
+    /* Modals */
+    .adm-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 17, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 9990;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .adm-modal {
+      background: var(--adm-panel);
+      border: 1px solid var(--adm-border);
+      border-radius: 16px;
+      padding: 26px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    }
+    .adm-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .adm-modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0;
+    }
+
+    /* Auth Gate */
     .login-gate {
       position: fixed;
       inset: 0;
-      background: rgba(4, 7, 17, 0.95);
-      backdrop-filter: blur(16px);
+      background: rgba(4, 7, 17, 0.96);
+      backdrop-filter: blur(20px);
       z-index: 9999;
       display: flex;
       align-items: center;
@@ -246,13 +555,39 @@
     }
     .login-box {
       width: 100%;
-      max-width: 400px;
-      background: var(--admin-panel);
-      border: 1px solid var(--admin-border);
-      border-radius: 16px;
-      padding: 32px;
+      max-width: 420px;
+      background: var(--adm-panel);
+      border: 1px solid var(--adm-border);
+      border-radius: 20px;
+      padding: 36px 30px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(44, 240, 193, 0.15);
       text-align: center;
+    }
+
+    /* Toast Notification */
+    #admToast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0b1120;
+      border: 1px solid var(--adm-accent);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px var(--adm-accent-glow);
+      font-size: 13.5px;
+      font-weight: 700;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .adm-container { padding: 12px 14px 60px; }
+      .adm-header { flex-direction: column; align-items: flex-start; }
+      .adm-top-tools { width: 100%; justify-content: space-between; }
+      .stat-number { font-size: 24px; }
     }
   </style>
 </head>
@@ -261,160 +596,518 @@
   <!-- Super Admin Authentication Gate Modal -->
   <div class="login-gate" id="adminGateModal">
     <div class="login-box">
-      <div style="font-size: 32px; margin-bottom: 12px;">🛡️</div>
-      <h2 style="margin: 0 0 6px; color: #fff; font-size: 20px; font-weight: 800;">超级管理员安全入口</h2>
-      <p style="font-size: 13px; color: #94a3b8; margin: 0 0 24px;">SOUNDTEST.PRO · Super Admin Authentication</p>
+      <div style="font-size: 36px; margin-bottom: 12px;">🛡️</div>
+      <h2 style="margin: 0 0 6px; color: #fff; font-size: 22px; font-weight: 900;">超级管理员安全入口</h2>
+      <p style="font-size: 13px; color: var(--adm-muted); margin: 0 0 24px;">SOUNDTEST.PRO · Dedicated SaaS Management Console</p>
       
       <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
-        <div class="form-group" style="text-align: left;">
-          <label for="adminSecretInput">管理员授权密匙 (ADMIN_SECRET)</label>
-          <input type="password" id="adminSecretInput" class="form-control" placeholder="输入管理员密匙" required autofocus autocomplete="current-password">
+        <div style="text-align: left; margin-bottom: 16px;">
+          <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px; font-weight: 600;">管理员授权密钥 (ADMIN_SECRET)</label>
+          <input type="password" id="adminSecretInput" class="adm-input" style="width: 100%;" placeholder="输入管理员密钥" required autofocus autocomplete="current-password">
         </div>
         <p id="adminLoginErr" style="color: #f87171; font-size: 12.5px; margin: -6px 0 14px; text-align: left; display: none;"></p>
-        <button type="submit" class="btn-admin" id="adminLoginBtn">解锁超级管理控制台</button>
+        <button type="submit" class="btn-action btn-primary" id="adminLoginBtn" style="width: 100%; padding: 12px; font-size: 14px; justify-content: center;">解锁 SaaS 管理控制台</button>
       </form>
     </div>
   </div>
 
+  <!-- Toast Notification Box -->
+  <div id="admToast"><span id="admToastIcon">✅</span><span id="admToastText">操作成功</span></div>
+
   <!-- Admin Main Dashboard App -->
-  <div class="admin-container" id="adminApp" style="display: none;">
+  <div class="adm-container" id="adminApp" style="display: none;">
+    
     <!-- Top Bar -->
-    <header class="admin-header">
+    <header class="adm-header">
       <div style="display: flex; align-items: center; gap: 14px;">
-        <a href="index.html" class="admin-brand">
-          <span style="font-size: 20px;">⚡</span>
-          <span style="font-weight: 900; font-size: 18px; letter-spacing: 0.05em;">SOUNDTEST<span style="color:var(--admin-accent)">.PRO</span></span>
+        <a href="index.html" class="adm-brand">
+          <div class="adm-brand-logo">⚡</div>
+          <div>
+            <div class="adm-brand-text">SOUNDTEST<span style="color:var(--adm-accent)">.PRO</span></div>
+            <div style="font-size: 11px; color: var(--adm-muted); font-weight: 600;">SaaS Management Console</div>
+          </div>
         </a>
-        <span class="admin-badge">Super Admin Console</span>
+        <span class="adm-badge-saas">Super Admin</span>
       </div>
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 12px; color: #94a3b8;">KV 引擎: <strong style="color:#2cf0c1">ab_test 在线</strong></span>
-        <button onclick="handleAdminLogout()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #cbd5e1; padding: 6px 14px; font-size: 12px; cursor: pointer;">退出管理</button>
+
+      <div class="adm-top-tools">
+        <div class="adm-status-indicator">
+          <span class="adm-pulse-dot"></span>
+          <span>KV ab_test 正常</span>
+        </div>
+        <span id="lastSyncTime" style="font-size: 11.5px; color: #64748b;">刚刚同步</span>
+        <button onclick="fetchAdminData()" class="btn-action" style="padding: 6px 12px;" title="立即刷新最新业务与订单数据">
+          <span>🔄</span> 刷新数据
+        </button>
+        <a href="soundtest.html" target="_blank" class="btn-action" style="text-decoration: none; padding: 6px 12px;">
+          <span>📱</span> 打开前端APP ↗
+        </a>
+        <button onclick="handleAdminLogout()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #cbd5e1; padding: 6px 12px; font-size: 12px; cursor: pointer;">
+          退出
+        </button>
       </div>
     </header>
 
-    <!-- Top Stats Overview -->
-    <div class="admin-stats-grid">
-      <div class="stat-box">
-        <div class="stat-label">微信支付总额 (CNY)</div>
-        <div class="stat-val" id="statGmvCny">¥ 0.00</div>
-        <div class="stat-sub">境内微信支付累计已入账</div>
+    <!-- Navigation Tabs -->
+    <nav class="adm-nav-tabs">
+      <button class="adm-tab-btn active" onclick="switchTab('overview')">
+        <span>📊</span> 经营概览大盘
+      </button>
+      <button class="adm-tab-btn" onclick="switchTab('orders')">
+        <span>📦</span> 订单漏斗与管理
+        <span class="adm-tab-badge" id="tabBadgeOrders">0</span>
+      </button>
+      <button class="adm-tab-btn" onclick="switchTab('users')">
+        <span>👥</span> 注册用户中心
+        <span class="adm-tab-badge" id="tabBadgeUsers">0</span>
+      </button>
+      <button class="adm-tab-btn" onclick="switchTab('operations')">
+        <span>🔑</span> VIP授权与运维工具
+      </button>
+    </nav>
+
+    <!-- TAB 1: 经营概览大盘 -->
+    <div id="viewOverview" class="tab-view active">
+      <!-- KPI Stats Grid -->
+      <div class="adm-stats-grid">
+        <div class="stat-card cyan">
+          <div class="stat-head">
+            <span class="stat-title">已成交实收金额 (Paid GMV)</span>
+            <span class="stat-icon">💰</span>
+          </div>
+          <div class="stat-number" id="kpiPaidRevenue">¥ 0.00</div>
+          <div class="stat-trend">
+            <span>今日新增: <strong id="kpiTodayRevenue" style="color:var(--adm-gold);">¥ 0.00</strong></span>
+            <span style="margin-left: auto;">已履约: <strong id="kpiPaidCount">0</strong> 笔</span>
+          </div>
+        </div>
+
+        <div class="stat-card amber">
+          <div class="stat-head">
+            <span class="stat-title">待支付 / 弃单流失总额</span>
+            <span class="stat-icon">📉</span>
+          </div>
+          <div class="stat-number" id="kpiUnpaidRevenue" style="color: var(--adm-amber);">¥ 0.00</div>
+          <div class="stat-trend">
+            <span>未支付订单: <strong id="kpiUnpaidCount">0</strong> 笔</span>
+            <span style="margin-left: auto; color: #f87171;">弃单率: <strong id="kpiDropRate">0.0%</strong></span>
+          </div>
+        </div>
+
+        <div class="stat-card gold">
+          <div class="stat-head">
+            <span class="stat-title">订单支付转化率 (Conversion Rate)</span>
+            <span class="stat-icon">🎯</span>
+          </div>
+          <div class="stat-number" id="kpiConversionRate" style="color: var(--adm-gold);">0.0%</div>
+          <div class="stat-trend">
+            <span>总生成订单: <strong id="kpiTotalOrders">0</strong> 笔</span>
+            <span style="margin-left: auto;">收款成功率</span>
+          </div>
+        </div>
+
+        <div class="stat-card blue">
+          <div class="stat-head">
+            <span class="stat-title">注册用户与付费渗透</span>
+            <span class="stat-icon">👥</span>
+          </div>
+          <div class="stat-number" id="kpiTotalUsers" style="color: #60a5fa;">0</div>
+          <div class="stat-trend">
+            <span>付费VIP: <strong id="kpiPaidUsers" style="color:var(--adm-accent);">0</strong> 人</span>
+            <span style="margin-left: auto;">付费渗透率: <strong id="kpiUserRatio">0.0%</strong></span>
+          </div>
+        </div>
       </div>
-      <div class="stat-box">
-        <div class="stat-label">海外支付总额 (USD)</div>
-        <div class="stat-val" id="statGmvUsd">$ 0.00</div>
-        <div class="stat-sub">Creem.io / Gumroad 海外累计</div>
+
+      <!-- Conversion Funnel Visualizer -->
+      <div class="funnel-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <h3 style="margin: 0; font-size: 15px; color: #fff; font-weight: 800;">
+            📈 订单支付转化漏斗分析 (Order Conversion Funnel)
+          </h3>
+          <span style="font-size: 12px; color: var(--adm-muted);">实时跟踪从点击购买到完成支付全流程</span>
+        </div>
+        <div class="funnel-steps">
+          <div class="funnel-step">
+            <div class="funnel-step-name">1. 订单发起生成 (Total Created)</div>
+            <div class="funnel-step-val" id="fnlCreated">0 笔</div>
+            <div class="funnel-step-sub">包含微信收银台与 Creem 发起</div>
+          </div>
+          <div class="funnel-step danger">
+            <div class="funnel-step-name">2. 待支付 / 页面中途放弃 (Abandoned)</div>
+            <div class="funnel-step-val" id="fnlUnpaid" style="color: var(--adm-amber);">0 笔</div>
+            <div class="funnel-step-sub" id="fnlUnpaidSub">流失金额: ¥ 0.00</div>
+          </div>
+          <div class="funnel-step highlight">
+            <div class="funnel-step-name">3. 支付成功核销 (Paid & Fulfilled)</div>
+            <div class="funnel-step-val" id="fnlPaid" style="color: var(--adm-accent);">0 笔</div>
+            <div class="funnel-step-sub" id="fnlPaidSub">实收额: ¥ 0.00</div>
+          </div>
+        </div>
+        <div class="funnel-bar-wrap">
+          <div class="funnel-bar-paid" id="fnlBarPaid" style="width: 0%;" title="已支付比例"></div>
+          <div class="funnel-bar-unpaid" id="fnlBarUnpaid" style="width: 0%;" title="未付款比例"></div>
+        </div>
       </div>
-      <div class="stat-box">
-        <div class="stat-label">今日营业额 (Today GMV)</div>
-        <div class="stat-val" id="statTodayGmv" style="color: #f59e0b;">¥ 0.00</div>
-        <div class="stat-sub">当日实时支付流水</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">成功付费订单数</div>
-        <div class="stat-val" id="statPaidCount" style="color: #2cf0c1;">0</div>
-        <div class="stat-sub">总计有效核销交易</div>
+
+      <!-- Recent Snapshot Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px;">
+        <!-- Recent Orders Snapshot -->
+        <div class="adm-card" style="margin-bottom: 0;">
+          <div class="adm-card-header">
+            <h3 class="adm-card-title">📦 最新订单流水快照</h3>
+            <button onclick="switchTab('orders')" class="btn-action" style="font-size: 11px;">查看全部订单 →</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>订单号</th>
+                  <th>购买邮箱</th>
+                  <th>方案</th>
+                  <th>金额</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody id="overviewRecentOrders">
+                <tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">正在加载订单…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recent Registered Users Snapshot -->
+        <div class="adm-card" style="margin-bottom: 0;">
+          <div class="adm-card-header">
+            <h3 class="adm-card-title">👥 最新注册用户快照</h3>
+            <button onclick="switchTab('users')" class="btn-action" style="font-size: 11px;">管理所有用户 →</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>姓名</th>
+                  <th>注册邮箱</th>
+                  <th>会员层级</th>
+                  <th>注册时间</th>
+                </tr>
+              </thead>
+              <tbody id="overviewRecentUsers">
+                <tr><td colspan="4" style="text-align:center; color:#64748b; padding:20px;">正在加载用户…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Main Grid: License Granting & Live Orders -->
-    <div class="admin-main-grid">
-      <!-- Left Panel: License Provisioning & Email Magic Link Test -->
-      <div style="display: flex; flex-direction: column; gap: 24px;">
-        <!-- Grant License Card -->
-        <div class="admin-card">
-          <h3 class="admin-card-title">🔑 用户授权与 VIP 开通</h3>
-          <p style="font-size: 12.5px; color: #94a3b8; margin: -10px 0 16px; line-height: 1.5;">
-            手动为指定邮箱开通或撤销 PRO / 终身会员资格，写入 Cloudflare KV 立即全球生效。
-          </p>
-          <form id="grantLicenseForm" onsubmit="handleGrantLicense(event)">
-            <div class="form-group">
-              <label for="grantEmail">用户邮箱 (User Email)</label>
-              <input type="email" id="grantEmail" class="form-control" placeholder="user@example.com" required>
+    <!-- TAB 2: 订单漏斗与管理 -->
+    <div id="viewOrders" class="tab-view">
+      <div class="adm-card">
+        <div class="adm-card-header">
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <h3 class="adm-card-title">📦 订单列表与状态跟踪</h3>
+            <div style="display: flex; gap: 8px;">
+              <span class="status-badge badge-paid">已支付: <strong id="ordCountPaid">0</strong></span>
+              <span class="status-badge badge-pending">未支付/流失: <strong id="ordCountPending">0</strong></span>
             </div>
-            <div class="form-group">
-              <label for="grantPlan">会员层级方案 (Plan Tier)</label>
-              <select id="grantPlan" class="form-control" onchange="adjustDaysDefault()">
-                <option value="single">单次版 (Single Report) - ¥3.9 / $1.99</option>
-                <option value="pro" selected>月度 PRO 会员 (Monthly) - ¥9.9 / $4.99</option>
-                <option value="yearly">年度专业版 (Yearly Team) - ¥19.9 / $24.99</option>
-                <option value="lifetime">终身无限制版 (Lifetime) - ¥39.9 / $79.99</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="grantDays">有效天数 (Expiration Days)</label>
-              <input type="number" id="grantDays" class="form-control" value="30">
-            </div>
-            <div class="form-group">
-              <label for="grantNote">管理员备注 (Internal Note)</label>
-              <input type="text" id="grantNote" class="form-control" placeholder="微信转账客户 / 运营赠送" value="微信客户手动开通">
-            </div>
-            <button type="submit" class="btn-admin" id="btnSubmitGrant">一键授权开通 / Grant License</button>
-            <button type="button" class="btn-admin btn-danger" onclick="handleRevokeLicense()">撤销该用户会员资格 / Revoke</button>
-            <div id="grantResultMsg" style="margin-top: 14px; font-size: 12.5px; display: none;"></div>
-          </form>
-        </div>
-
-        <!-- Email Sending Magic Link Quick Tester -->
-        <div class="admin-card">
-          <h3 class="admin-card-title">✉️ 邮件免密登录通道测试</h3>
-          <p style="font-size: 12.5px; color: #94a3b8; margin: -10px 0 16px; line-height: 1.5;">
-            测试 Cloudflare Email Sending (system@soundtest.pro) 魔法链接与动态验证码发信通道。
-          </p>
-          <div class="form-group">
-            <label for="testEmailInput">测试接收邮箱</label>
-            <input type="email" id="testEmailInput" class="form-control" placeholder="输入测试收件箱">
           </div>
-          <button type="button" class="btn-admin" onclick="handleTestMagicEmail()" id="btnTestEmail">发送测试魔法邮件</button>
-          <div id="testEmailMsg" style="margin-top: 12px; font-size: 12.5px; display: none;"></div>
-        </div>
-      </div>
-
-      <!-- Right Panel: Live Orders Stream Table -->
-      <div class="admin-card" style="display: flex; flex-direction: column;">
-        <div class="table-tools">
-          <h3 class="admin-card-title" style="margin: 0;">📦 实时支付交易流水</h3>
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="orderSearchInput" class="form-control" placeholder="搜索订单号或邮箱…" style="width: 200px; padding: 6px 10px; font-size: 12px;" oninput="renderOrdersTable()">
-            <button onclick="fetchOrders()" class="btn-admin" style="width: auto; padding: 6px 14px; font-size: 12px;">刷新数据</button>
-            <button onclick="exportOrdersCsv()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; padding: 6px 12px; font-size: 12px; cursor: pointer;">导出 CSV</button>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button onclick="exportOrdersCsv()" class="btn-action" style="background: rgba(255,255,255,0.06); color:#fff; border-color:rgba(255,255,255,0.15);">
+              📥 导出当前筛选 CSV
+            </button>
+            <button onclick="fetchAdminData()" class="btn-action btn-primary">
+              🔄 刷新流水
+            </button>
           </div>
         </div>
 
+        <!-- Filter Controls -->
+        <div class="filter-bar">
+          <div class="filter-pills" id="orderStatusFilters">
+            <button class="pill-btn active" onclick="setOrderFilter('all', this)">全部订单 (<span id="pillAllCount">0</span>)</button>
+            <button class="pill-btn" onclick="setOrderFilter('paid', this)">🟢 已支付已履约 (<span id="pillPaidCount">0</span>)</button>
+            <button class="pill-btn" onclick="setOrderFilter('pending', this)">🟡 待支付 / 弃单 (<span id="pillPendingCount">0</span>)</button>
+            <button class="pill-btn" onclick="setOrderFilter('creem', this)">🌐 海外订单 (USD)</button>
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <select id="orderPlanFilter" class="adm-select" onchange="renderOrdersTable()">
+              <option value="all">所有套餐方案</option>
+              <option value="single">单次版 (Single)</option>
+              <option value="pro">月度 PRO (Monthly)</option>
+              <option value="yearly">年度专业版 (Yearly Team)</option>
+              <option value="lifetime">终身买断版 (Lifetime)</option>
+              <option value="team">企业团队版 (Enterprise)</option>
+            </select>
+            <input type="text" id="orderSearchInput" class="adm-input" placeholder="搜索订单号 / 买家邮箱 / 交易号…" style="width: 230px;" oninput="renderOrdersTable()">
+          </div>
+        </div>
+
+        <!-- Orders Table -->
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>订单号</th>
-                <th>用户邮箱</th>
-                <th>购买方案</th>
-                <th>金额</th>
-                <th>支付方式</th>
+                <th>订单流水号</th>
+                <th>买家账号 / 邮箱</th>
+                <th>购买套餐</th>
+                <th>订单金额</th>
+                <th>支付渠道</th>
                 <th>订单状态</th>
                 <th>创建时间</th>
                 <th>支付完成时间</th>
+                <th style="text-align: right;">管理操作</th>
               </tr>
             </thead>
             <tbody id="ordersTableBody">
-              <tr>
-                <td colspan="8" style="text-align: center; color: #64748b; padding: 30px;">正在加载订单流水…</td>
-              </tr>
+              <tr><td colspan="9" style="text-align: center; color: #64748b; padding: 30px;">正在加载订单流水…</td></tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
+
+    <!-- TAB 3: 注册用户中心 -->
+    <div id="viewUsers" class="tab-view">
+      <div class="adm-card">
+        <div class="adm-card-header">
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <h3 class="adm-card-title">👥 注册用户资料与权限中心</h3>
+            <div style="display: flex; gap: 8px;">
+              <span class="status-badge" style="background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.3);">总注册: <strong id="userTotalBadge">0</strong></span>
+              <span class="status-badge badge-paid">付费VIP: <strong id="userVipBadge">0</strong></span>
+              <span class="status-badge" style="background:rgba(255,255,255,0.06); color:#94a3b8; border:1px solid rgba(255,255,255,0.1);">免费用户: <strong id="userFreeBadge">0</strong></span>
+            </div>
+          </div>
+          <button onclick="fetchAdminData()" class="btn-action btn-primary">
+            🔄 刷新用户数据
+          </button>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="filter-bar">
+          <div class="filter-pills" id="userTierFilters">
+            <button class="pill-btn active" onclick="setUserFilter('all', this)">全部用户 (<span id="userPillAll">0</span>)</button>
+            <button class="pill-btn" onclick="setUserFilter('vip', this)">⭐ 活跃付费会员 (<span id="userPillVip">0</span>)</button>
+            <button class="pill-btn" onclick="setUserFilter('free', this)">🌱 免费体验用户 (<span id="userPillFree">0</span>)</button>
+            <button class="pill-btn" onclick="setUserFilter('expired', this)">⏰ 已过期用户 (<span id="userPillExpired">0</span>)</button>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="userSearchInput" class="adm-input" placeholder="搜索用户姓名或邮箱…" style="width: 250px;" oninput="renderUsersTable()">
+          </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>用户姓名</th>
+                <th>注册邮箱</th>
+                <th>会员等级</th>
+                <th>有效期至</th>
+                <th>注册时间</th>
+                <th>历史订单 / 消费</th>
+                <th style="text-align: right;">操作与授权</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="7" style="text-align: center; color: #64748b; padding: 30px;">正在加载用户资料…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: VIP授权与运维工具 -->
+    <div id="viewOperations" class="tab-view">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px;">
+        <!-- Grant VIP License Form -->
+        <div class="adm-card">
+          <h3 class="adm-card-title" style="margin-bottom: 8px;">🔑 用户手动授权与 VIP 增发</h3>
+          <p style="font-size: 13px; color: var(--adm-muted); margin: 0 0 18px; line-height: 1.6;">
+            适用于微信线下转账、对公转账、大客户批量开通或运营特权赠送。直接写入全球 Cloudflare KV，即时生效。
+          </p>
+
+          <form id="grantForm" onsubmit="handleManualGrant(event)">
+            <div style="margin-bottom: 14px;">
+              <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px; font-weight:600;">目标用户邮箱</label>
+              <input type="email" id="grantEmail" class="adm-input" style="width:100%;" placeholder="user@example.com" required>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+              <div>
+                <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px; font-weight:600;">会员方案 (Plan)</label>
+                <select id="grantPlan" class="adm-select" style="width:100%;" onchange="autoAdjustDays()">
+                  <option value="single">单次版 (Single) - ¥3.9</option>
+                  <option value="pro" selected>月度 PRO 会员 - ¥9.9</option>
+                  <option value="yearly">年度专业版 - ¥19.9</option>
+                  <option value="lifetime">终身无限制版 - ¥39.9</option>
+                  <option value="team">企业团队版 - ¥1998</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px; font-weight:600;">有效天数</label>
+                <input type="number" id="grantDays" class="adm-input" style="width:100%;" value="30">
+              </div>
+            </div>
+            <div style="margin-bottom: 18px;">
+              <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px; font-weight:600;">管理员备注</label>
+              <input type="text" id="grantNote" class="adm-input" style="width:100%;" value="管理员手动增发特权">
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+              <button type="submit" class="btn-action btn-primary" id="btnSubmitGrant" style="flex: 1; padding: 10px; justify-content: center;">
+                一键授权开通 / Grant License
+              </button>
+              <button type="button" class="btn-danger-sm" onclick="handleQuickRevoke()" style="padding: 10px 14px;">
+                撤销会员
+              </button>
+            </div>
+            <div id="grantMsg" style="margin-top: 14px; font-size: 13px; display: none;"></div>
+          </form>
+        </div>
+
+        <!-- Magic Link & Email Sending Diagnostic -->
+        <div class="adm-card">
+          <h3 class="adm-card-title" style="margin-bottom: 8px;">✉️ 邮件系统发信通道诊断 (Email Delivery)</h3>
+          <p style="font-size: 13px; color: var(--adm-muted); margin: 0 0 18px; line-height: 1.6;">
+            测试 Cloudflare Email Workers / 动态验证码与魔法登录通道 (system@soundtest.pro)。
+          </p>
+
+          <div style="margin-bottom: 14px;">
+            <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px; font-weight:600;">测试收件邮箱</label>
+            <input type="email" id="testEmailInput" class="adm-input" style="width:100%;" placeholder="receiver@example.com">
+          </div>
+          <button type="button" class="btn-action btn-primary" onclick="handleTestMagicEmail()" id="btnTestEmail" style="width: 100%; padding: 10px; justify-content: center; margin-bottom: 14px;">
+            发送测试登录验证码邮件
+          </button>
+          <div id="testEmailMsg" style="font-size: 13px; display: none; line-height: 1.6;"></div>
+
+          <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--adm-border-dim);">
+            <h4 style="margin: 0 0 10px; color: #fff; font-size: 14px;">🛠️ 系统状态与运维信息</h4>
+            <div style="font-size: 12.5px; color: var(--adm-muted); line-height: 1.8;">
+              <div>• 运行架构: Cloudflare Pages Functions (Edge Serverless)</div>
+              <div>• 数据存储: Cloudflare KV (全球强一致/毫秒级缓存)</div>
+              <div>• 支付通道: 虎皮椒微信支付 (XunhuPay) + Creem.io 海外收银台</div>
+              <div>• 当前版本: SOUNDTEST.PRO SaaS Engine v2026.10</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- User VIP Adjust Modal -->
+  <div class="adm-modal-backdrop" id="userAdjustModal">
+    <div class="adm-modal">
+      <div class="adm-modal-header">
+        <h3 class="adm-modal-title">✨ 会员等级与有效期调整</h3>
+        <button onclick="closeUserAdjustModal()" style="background:transparent; border:none; color:var(--adm-muted); font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <form onsubmit="submitUserAdjust(event)">
+        <div style="margin-bottom: 14px;">
+          <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">目标用户</label>
+          <input type="text" id="modalUserEmail" class="adm-input" style="width:100%; opacity:0.8;" readonly>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">选择调整方案</label>
+            <select id="modalUserPlan" class="adm-select" style="width:100%;" onchange="modalAdjustDays()">
+              <option value="single">单次版 (Single)</option>
+              <option value="pro" selected>月度 PRO (30天)</option>
+              <option value="yearly">年度专业版 (365天)</option>
+              <option value="lifetime">终身买断版 (永久)</option>
+              <option value="team">企业团队版 (365天)</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">有效天数</label>
+            <input type="number" id="modalUserDays" class="adm-input" style="width:100%;" value="30">
+          </div>
+        </div>
+        <div style="margin-bottom: 18px;">
+          <label style="display:block; font-size:12px; color:var(--adm-muted); margin-bottom:5px;">调整备注</label>
+          <input type="text" id="modalUserNote" class="adm-input" style="width:100%;" value="用户后台快捷调级">
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" onclick="closeUserAdjustModal()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; border-radius:6px; padding:8px 16px; cursor:pointer;">取消</button>
+          <button type="submit" class="btn-action btn-primary" id="btnModalAdjustSubmit" style="padding:8px 20px;">确认保存并生效</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mark Paid Order Confirmation Modal -->
+  <div class="adm-modal-backdrop" id="markPaidModal">
+    <div class="adm-modal">
+      <div class="adm-modal-header">
+        <h3 class="adm-modal-title">✅ 手动标记订单已付款</h3>
+        <button onclick="closeMarkPaidModal()" style="background:transparent; border:none; color:var(--adm-muted); font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <p style="font-size: 13px; color: var(--adm-muted); margin: 0 0 16px; line-height: 1.5;">
+        确认已核实买家款项入账（例如线下扫码、微信转账或对公转账）。确认后系统将立即把订单状态变更为 <strong style="color:var(--adm-accent);">已支付</strong>，并自动为关联邮箱开通对应的会员权限！
+      </p>
+      <div style="background: rgba(11, 17, 32, 0.8); border: 1px solid var(--adm-border-dim); border-radius: 10px; padding: 14px; margin-bottom: 16px; font-size: 13px;">
+        <div style="margin-bottom: 6px;">订单号: <strong id="modalOrderId" style="color:#fff; font-family:monospace;">--</strong></div>
+        <div style="margin-bottom: 6px;">金额: <strong id="modalOrderFee" style="color:var(--adm-gold);">¥ 0.00</strong></div>
+        <div style="margin-bottom: 6px;">套餐: <strong id="modalOrderPlan" style="color:var(--adm-accent);">--</strong></div>
+        <div>买家邮箱: <strong id="modalOrderEmail" style="color:#fff;">--</strong></div>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" onclick="closeMarkPaidModal()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; border-radius:6px; padding:8px 16px; cursor:pointer;">取消</button>
+        <button type="button" onclick="submitMarkPaid()" class="btn-action btn-primary" id="btnConfirmMarkPaid" style="padding:8px 20px;">确认核销并开通会员</button>
+      </div>
+    </div>
   </div>
 
   <script>
+    // State Management
     let adminToken = sessionStorage.getItem('soundtest_admin_token') || '';
-    let rawOrdersList = [];
+    let globalStats = {};
+    let rawOrders = [];
+    let rawUsers = [];
+    let rawMembers = [];
 
+    let currentOrderFilter = 'all';
+    let currentUserFilter = 'all';
+
+    let activeModalOrder = null;
+
+    // Toast Helper
+    function showToast(text, isError = false) {
+      const toast = document.getElementById('admToast');
+      const icon = document.getElementById('admToastIcon');
+      const txt = document.getElementById('admToastText');
+      icon.textContent = isError ? '❌' : '✅';
+      txt.textContent = text;
+      toast.style.borderColor = isError ? '#f43f5e' : '#2cf0c1';
+      toast.style.display = 'flex';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+
+    // Auth Checking
     function checkAuth() {
+      // Check if user came from soundtest.html session
+      if (!adminToken) {
+        try {
+          const storedAuth = localStorage.getItem('soundtest_auth_user');
+          if (storedAuth) {
+            const parsed = JSON.parse(storedAuth);
+            if (parsed.email && parsed.email.toLowerCase() === 'wewee1@gmail.com') {
+              adminToken = parsed.token || 'soundtest_admin_2026';
+              sessionStorage.setItem('soundtest_admin_token', adminToken);
+            }
+          }
+        } catch (_) {}
+      }
+
       if (adminToken) {
         document.getElementById('adminGateModal').style.display = 'none';
         document.getElementById('adminApp').style.display = 'block';
-        fetchOrders();
+        fetchAdminData();
       } else {
         document.getElementById('adminGateModal').style.display = 'flex';
         document.getElementById('adminApp').style.display = 'none';
@@ -437,7 +1130,7 @@
         const resp = await fetch('/api/admin/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token }),
+          body: JSON.stringify({ secret: token, token }),
         });
         const data = await resp.json().catch(() => ({}));
         if (resp.ok && data.ok) {
@@ -445,16 +1138,16 @@
           sessionStorage.setItem('soundtest_admin_token', adminToken);
           checkAuth();
         } else {
-          errEl.textContent = data.message || '管理员密码错误，请重试';
+          errEl.textContent = data.message || '管理员密钥错误，请重新输入';
           errEl.style.display = 'block';
           btn.disabled = false;
-          btn.textContent = '解锁超级管理控制台';
+          btn.textContent = '解锁 SaaS 管理控制台';
         }
       } catch (err) {
-        errEl.textContent = '网络错误，请稍后重试';
+        errEl.textContent = '网络连接异常，请重试';
         errEl.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = '解锁超级管理控制台';
+        btn.textContent = '解锁 SaaS 管理控制台';
       }
     }
 
@@ -464,90 +1157,544 @@
       checkAuth();
     }
 
-    function adjustDaysDefault() {
-      const plan = document.getElementById('grantPlan').value;
-      const daysInput = document.getElementById('grantDays');
-      if (plan === 'pro') daysInput.value = 30;
-      else if (plan === 'yearly') daysInput.value = 365;
-      else if (plan === 'lifetime') daysInput.value = 36500;
-      else if (plan === 'single') daysInput.value = 365;
+    // Tab Navigation
+    function switchTab(tabId) {
+      document.querySelectorAll('.adm-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
+
+      if (tabId === 'overview') {
+        document.querySelectorAll('.adm-nav-tabs button')[0].classList.add('active');
+        document.getElementById('viewOverview').classList.add('active');
+      } else if (tabId === 'orders') {
+        document.querySelectorAll('.adm-nav-tabs button')[1].classList.add('active');
+        document.getElementById('viewOrders').classList.add('active');
+      } else if (tabId === 'users') {
+        document.querySelectorAll('.adm-nav-tabs button')[2].classList.add('active');
+        document.getElementById('viewUsers').classList.add('active');
+      } else if (tabId === 'operations') {
+        document.querySelectorAll('.adm-nav-tabs button')[3].classList.add('active');
+        document.getElementById('viewOperations').classList.add('active');
+      }
     }
 
-    async function fetchOrders() {
+    // Fetch Full Admin Data
+    async function fetchAdminData() {
       try {
         const resp = await fetch('/api/admin/orders', {
           headers: {
             'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
           }
         });
         if (resp.status === 401) {
           handleAdminLogout();
           return;
         }
+
         const data = await resp.json().catch(() => ({}));
         if (data.ok) {
-          document.getElementById('statGmvCny').textContent = '¥ ' + (data.stats.total_cny || 0).toFixed(2);
-          document.getElementById('statGmvUsd').textContent = '$ ' + (data.stats.total_usd || 0).toFixed(2);
-          document.getElementById('statTodayGmv').textContent = '¥ ' + (data.stats.today_cny || 0).toFixed(2);
-          document.getElementById('statPaidCount').textContent = data.stats.paid_orders || 0;
+          globalStats = data.stats || {};
+          rawOrders = data.orders || [];
+          rawUsers = data.users || [];
+          rawMembers = data.members || [];
 
-          rawOrdersList = data.orders || [];
+          updateOverviewMetrics();
           renderOrdersTable();
+          renderUsersTable();
+
+          document.getElementById('lastSyncTime').textContent = '同步于 ' + new Date().toLocaleTimeString();
         }
       } catch (err) {
-        console.error('Fetch orders failed', err);
+        console.error('Fetch admin data failed:', err);
       }
+    }
+
+    // Overview KPIs and Funnel
+    function updateOverviewMetrics() {
+      const s = globalStats;
+      const totalRevCny = parseFloat(s.totalRevenueCny || s.total_cny || 0);
+      const todayRevCny = parseFloat(s.todayRevenueCny || s.today_cny || 0);
+      const unpaidRevCny = parseFloat(s.unpaidRevenueCny || s.unpaid_cny || 0);
+
+      document.getElementById('kpiPaidRevenue').textContent = '¥ ' + totalRevCny.toFixed(2);
+      document.getElementById('kpiTodayRevenue').textContent = '¥ ' + todayRevCny.toFixed(2);
+      document.getElementById('kpiPaidCount').textContent = s.paidOrders || s.paid_orders || 0;
+
+      document.getElementById('kpiUnpaidRevenue').textContent = '¥ ' + unpaidRevCny.toFixed(2);
+      document.getElementById('kpiUnpaidCount').textContent = s.unpaidOrders || s.unpaid_orders || 0;
+      document.getElementById('kpiDropRate').textContent = s.dropRate || '0.0%';
+
+      document.getElementById('kpiConversionRate').textContent = s.conversionRate || '0.0%';
+      document.getElementById('kpiTotalOrders').textContent = s.totalOrders || s.total_orders || 0;
+
+      document.getElementById('kpiTotalUsers').textContent = s.totalUsers || s.total_users || 0;
+      document.getElementById('kpiPaidUsers').textContent = s.paidUsersCount || 0;
+      document.getElementById('kpiUserRatio').textContent = s.payingUserRatio || '0.0%';
+
+      // Funnel
+      const totalOrd = s.totalOrders || 0;
+      const paidOrd = s.paidOrders || 0;
+      const unpaidOrd = s.unpaidOrders || 0;
+
+      document.getElementById('fnlCreated').textContent = totalOrd + ' 笔';
+      document.getElementById('fnlUnpaid').textContent = unpaidOrd + ' 笔';
+      document.getElementById('fnlUnpaidSub').textContent = '流失金额: ¥ ' + unpaidRevCny.toFixed(2);
+      document.getElementById('fnlPaid').textContent = paidOrd + ' 笔';
+      document.getElementById('fnlPaidSub').textContent = '实收额: ¥ ' + totalRevCny.toFixed(2);
+
+      const paidPct = totalOrd > 0 ? (paidOrd / totalOrd * 100) : 0;
+      const unpaidPct = totalOrd > 0 ? (unpaidOrd / totalOrd * 100) : 0;
+      document.getElementById('fnlBarPaid').style.width = paidPct + '%';
+      document.getElementById('fnlBarUnpaid').style.width = unpaidPct + '%';
+
+      // Badges
+      document.getElementById('tabBadgeOrders').textContent = totalOrd;
+      document.getElementById('tabBadgeUsers').textContent = s.totalUsers || 0;
+
+      document.getElementById('ordCountPaid').textContent = paidOrd;
+      document.getElementById('ordCountPending').textContent = unpaidOrd;
+      document.getElementById('pillAllCount').textContent = totalOrd;
+      document.getElementById('pillPaidCount').textContent = paidOrd;
+      document.getElementById('pillPendingCount').textContent = unpaidOrd;
+
+      document.getElementById('userTotalBadge').textContent = s.totalUsers || 0;
+      document.getElementById('userVipBadge').textContent = s.paidUsersCount || 0;
+      document.getElementById('userFreeBadge').textContent = s.freeUsersCount || 0;
+      document.getElementById('userPillAll').textContent = s.totalUsers || 0;
+      document.getElementById('userPillVip').textContent = s.paidUsersCount || 0;
+      document.getElementById('userPillFree').textContent = s.freeUsersCount || 0;
+      document.getElementById('userPillExpired').textContent = s.expiredUsersCount || 0;
+
+      // Render Recent Orders Snapshot
+      const recentOrdersEl = document.getElementById('overviewRecentOrders');
+      const recentOrders = rawOrders.slice(0, 5);
+      if (recentOrders.length === 0) {
+        recentOrdersEl.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b; padding:16px;">暂无订单记录</td></tr>';
+      } else {
+        recentOrdersEl.innerHTML = recentOrders.map(o => {
+          const isPaid = o.status === 'paid';
+          return `<tr>
+            <td style="font-family:monospace; font-size:12px; color:#94a3b8;">${(o.trade_order_id || o.order_id || '--').slice(-10)}</td>
+            <td style="font-weight:600; color:#fff;">${o.email || '<span style="color:#64748b">微信游客</span>'}</td>
+            <td><span class="tier-badge tier-${o.plan || 'pro'}">${o.plan || 'pro'}</span></td>
+            <td style="font-weight:800; font-family:monospace; color:${isPaid ? '#2cf0c1' : '#f59e0b'};">
+              ${o.currency === 'USD' ? '$' : '¥'} ${o.fee || '0.00'}
+            </td>
+            <td><span class="status-badge ${isPaid ? 'badge-paid' : 'badge-pending'}">${isPaid ? '已支付' : '待支付'}</span></td>
+          </tr>`;
+        }).join('');
+      }
+
+      // Render Recent Users Snapshot
+      const recentUsersEl = document.getElementById('overviewRecentUsers');
+      const recentUsers = rawUsers.slice(0, 5);
+      if (recentUsers.length === 0) {
+        recentUsersEl.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#64748b; padding:16px;">暂无注册用户</td></tr>';
+      } else {
+        recentUsersEl.innerHTML = recentUsers.map(u => {
+          const regDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '--';
+          return `<tr>
+            <td style="font-weight:600; color:#fff;">${u.name || '未命名'}</td>
+            <td style="color:#cbd5e1;">${u.email}</td>
+            <td><span class="tier-badge tier-${u.plan || 'free'}">${u.plan_display || u.plan}</span></td>
+            <td style="font-size:12px; color:#64748b;">${regDate}</td>
+          </tr>`;
+        }).join('');
+      }
+    }
+
+    // Orders Filter & Render
+    function setOrderFilter(filter, el) {
+      currentOrderFilter = filter;
+      document.querySelectorAll('#orderStatusFilters .pill-btn').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+      renderOrdersTable();
     }
 
     function renderOrdersTable() {
       const tbody = document.getElementById('ordersTableBody');
+      const planFilter = document.getElementById('orderPlanFilter').value;
       const search = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
 
-      const filtered = rawOrdersList.filter(o => {
-        if (!search) return true;
-        return (o.id && o.id.toLowerCase().includes(search)) ||
-               (o.email && o.email.toLowerCase().includes(search)) ||
-               (o.plan && o.plan.toLowerCase().includes(search));
+      const filtered = rawOrders.filter(o => {
+        // Status filter
+        if (currentOrderFilter === 'paid' && o.status !== 'paid') return false;
+        if (currentOrderFilter === 'pending' && o.status === 'paid') return false;
+        if (currentOrderFilter === 'creem' && o.currency !== 'USD' && o.provider !== 'creem') return false;
+
+        // Plan filter
+        if (planFilter !== 'all' && o.plan !== planFilter) return false;
+
+        // Search text
+        if (search) {
+          const matchId = (o.trade_order_id || o.order_id || '').toLowerCase().includes(search);
+          const matchEmail = (o.email || '').toLowerCase().includes(search);
+          const matchTx = (o.transaction_id || '').toLowerCase().includes(search);
+          if (!matchId && !matchEmail && !matchTx) return false;
+        }
+
+        return true;
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 26px;">暂无匹配的订单记录</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #64748b; padding: 32px;">没有匹配的订单记录</td></tr>';
         return;
       }
 
       tbody.innerHTML = filtered.map(o => {
         const isPaid = o.status === 'paid';
-        const feeFormatted = o.fee ? (o.fee > 100 ? (o.fee / 100).toFixed(2) : Number(o.fee).toFixed(2)) : '0.00';
-        const currencySym = (o.provider === 'creem' || o.provider === 'gumroad') ? '$' : '¥';
-        const planNames = { single: '单次报告', pro: '月度 PRO', yearly: '年度 Team', lifetime: '终身版' };
-        const planText = planNames[o.plan] || o.plan;
+        const feeFormatted = Number(o.fee || 0).toFixed(2);
+        const currencySym = o.currency === 'USD' ? '$' : '¥';
         const createdDate = o.created_at ? new Date(o.created_at).toLocaleString() : '--';
         const paidDate = o.paid_at ? new Date(o.paid_at).toLocaleString() : (isPaid ? createdDate : '--');
+        const orderId = o.trade_order_id || o.order_id || '--';
 
         return `<tr>
-          <td style="font-family: monospace; font-size: 12px; color: #94a3b8;">${o.id || '--'}</td>
-          <td style="font-weight: 600; color: #fff;">${o.email || '<span style="color:#64748b">微信游客</span>'}</td>
-          <td><span style="color: #2cf0c1; font-weight: 700;">${planText}</span></td>
-          <td style="font-weight: 800; font-family: monospace; color: #f59e0b;">${currencySym} ${feeFormatted}</td>
-          <td><span style="font-size: 11.5px; color: #94a3b8;">${o.provider || '微信支付'}</span></td>
+          <td style="font-family: monospace; font-size: 12px; color: #94a3b8;">
+            <span title="${orderId}" style="cursor:pointer;" onclick="navigator.clipboard.writeText('${orderId}'); showToast('订单号已复制')">${orderId} 📋</span>
+          </td>
           <td>
-            <span class="status-badge ${isPaid ? 'status-paid' : 'status-pending'}">
-              ${isPaid ? '已支付' : '等待支付'}
+            <div style="font-weight: 600; color: #fff;">${o.email || '<span style="color:#64748b">微信游客</span>'}</div>
+          </td>
+          <td><span class="tier-badge tier-${o.plan || 'pro'}">${o.plan || 'pro'}</span></td>
+          <td style="font-weight: 800; font-family: monospace; color: ${isPaid ? '#2cf0c1' : '#f59e0b'};">
+            ${currencySym} ${feeFormatted}
+          </td>
+          <td>
+            <span style="font-size: 11.5px; color: #94a3b8;">${o.provider === 'creem' ? '🌐 Creem.io' : '🟢 微信支付'}</span>
+          </td>
+          <td>
+            <span class="status-badge ${isPaid ? 'badge-paid' : 'badge-pending'}">
+              ${isPaid ? '已支付' : '待支付 / 弃单'}
             </span>
           </td>
           <td style="font-size: 12px; color: #64748b;">${createdDate}</td>
           <td style="font-size: 12px; color: #64748b;">${paidDate}</td>
+          <td style="text-align: right;">
+            <div style="display: inline-flex; gap: 6px;">
+              ${!isPaid ? `
+                <button onclick="openMarkPaidModal('${orderId}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;">
+                  ✅ 标记已付
+                </button>
+              ` : `
+                <button onclick="quickFillGrant('${o.email}', '${o.plan}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;">
+                  🔑 续期
+                </button>
+              `}
+              <button onclick="deleteOrder('${orderId}')" class="btn-danger-sm" style="padding: 4px 8px; font-size: 11px;" title="删除无用订单记录">
+                🗑️
+              </button>
+            </div>
+          </td>
         </tr>`;
       }).join('');
     }
 
-    async function handleGrantLicense(e) {
+    // Users Filter & Render
+    function setUserFilter(filter, el) {
+      currentUserFilter = filter;
+      document.querySelectorAll('#userTierFilters .pill-btn').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+      renderUsersTable();
+    }
+
+    function renderUsersTable() {
+      const tbody = document.getElementById('usersTableBody');
+      const search = (document.getElementById('userSearchInput')?.value || '').toLowerCase().trim();
+
+      const filtered = rawUsers.filter(u => {
+        if (currentUserFilter === 'vip' && !u.is_vip) return false;
+        if (currentUserFilter === 'free' && u.status !== 'free') return false;
+        if (currentUserFilter === 'expired' && u.status !== 'expired') return false;
+
+        if (search) {
+          const matchName = (u.name || '').toLowerCase().includes(search);
+          const matchEmail = (u.email || '').toLowerCase().includes(search);
+          if (!matchName && !matchEmail) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b; padding: 32px;">没有匹配的用户资料</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(u => {
+        const regDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '--';
+        let expText = '--';
+        let expClass = 'color: #64748b;';
+        if (u.expires_at) {
+          const expDate = new Date(u.expires_at);
+          const diffDays = Math.ceil((expDate.getTime() - Date.now()) / (86400 * 1000));
+          if (diffDays > 3000) {
+            expText = '👑 终身永久有效';
+            expClass = 'color: #c084fc; font-weight: 700;';
+          } else if (diffDays > 0) {
+            expText = `${expDate.toLocaleDateString()} (余 ${diffDays} 天)`;
+            expClass = 'color: #2cf0c1; font-weight: 600;';
+          } else {
+            expText = `${expDate.toLocaleDateString()} (已过期)`;
+            expClass = 'color: #f87171;';
+          }
+        }
+
+        return `<tr>
+          <td>
+            <div style="font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+              <span style="width: 26px; height: 26px; border-radius: 50%; background: rgba(44, 240, 193, 0.15); border: 1px solid rgba(44, 240, 193, 0.3); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; color: var(--adm-accent);">
+                ${(u.name || 'U').slice(0, 1).toUpperCase()}
+              </span>
+              <span>${u.name || '未命名'}</span>
+            </div>
+          </td>
+          <td style="font-weight: 600; color: #e2e8f0;">${u.email}</td>
+          <td>
+            <span class="tier-badge tier-${u.plan || 'free'}">${u.plan_display || u.plan}</span>
+          </td>
+          <td style="font-size: 12px; ${expClass}">${expText}</td>
+          <td style="font-size: 12px; color: #64748b;">${regDate}</td>
+          <td>
+            <span style="font-size: 12px; color: #94a3b8;">${u.order_count || 0} 笔 · </span>
+            <strong style="font-family: monospace; color: ${Number(u.total_spent_cny) > 0 ? '#f59e0b' : '#64748b'};">
+              ¥ ${u.total_spent_cny || '0.00'}
+            </strong>
+          </td>
+          <td style="text-align: right;">
+            <div style="display: inline-flex; gap: 6px;">
+              <button onclick="openUserAdjustModal('${u.email}', '${u.plan}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;">
+                ✨ 调级/续期
+              </button>
+              <button onclick="sendUserMagicLink('${u.email}')" class="btn-action" style="font-size: 11px; padding: 4px 8px; background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa;" title="给该用户发送免密登录链接">
+                ✉️ 发信
+              </button>
+              ${u.is_vip ? `
+                <button onclick="revokeUserVip('${u.email}')" class="btn-danger-sm" style="font-size: 11px; padding: 4px 8px;" title="撤销会员资格">
+                  🚫
+                </button>
+              ` : ''}
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Modal Operations: User VIP Adjustment
+    function openUserAdjustModal(email, currentPlan) {
+      document.getElementById('modalUserEmail').value = email;
+      const planSelect = document.getElementById('modalUserPlan');
+      if (['single', 'pro', 'yearly', 'lifetime', 'team'].includes(currentPlan)) {
+        planSelect.value = currentPlan;
+      } else {
+        planSelect.value = 'pro';
+      }
+      modalAdjustDays();
+      document.getElementById('userAdjustModal').style.display = 'flex';
+    }
+
+    function closeUserAdjustModal() {
+      document.getElementById('userAdjustModal').style.display = 'none';
+    }
+
+    function modalAdjustDays() {
+      const plan = document.getElementById('modalUserPlan').value;
+      const daysInput = document.getElementById('modalUserDays');
+      if (plan === 'pro') daysInput.value = 30;
+      else if (plan === 'yearly' || plan === 'team') daysInput.value = 365;
+      else if (plan === 'lifetime') daysInput.value = 36500;
+      else if (plan === 'single') daysInput.value = 365;
+    }
+
+    async function submitUserAdjust(e) {
+      e.preventDefault();
+      const email = document.getElementById('modalUserEmail').value;
+      const plan = document.getElementById('modalUserPlan').value;
+      const days = document.getElementById('modalUserDays').value;
+      const note = document.getElementById('modalUserNote').value;
+      const btn = document.getElementById('btnModalAdjustSubmit');
+
+      btn.disabled = true;
+      btn.textContent = '正在保存…';
+
+      try {
+        const resp = await fetch('/api/admin/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
+          },
+          body: JSON.stringify({ action: 'adjust_vip', email, plan, days, note }),
+        });
+        const result = await resp.json().catch(() => ({}));
+        btn.disabled = false;
+        btn.textContent = '确认保存并生效';
+
+        if (resp.ok && result.ok) {
+          showToast(`已成功为 ${email} 开通 ${plan.toUpperCase()} 会员！`);
+          closeUserAdjustModal();
+          fetchAdminData();
+        } else {
+          alert('调级失败：' + (result.message || '未知错误'));
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = '确认保存并生效';
+        alert('网络请求异常');
+      }
+    }
+
+    async function revokeUserVip(email) {
+      if (!confirm(`确定要撤销用户 ${email} 的 VIP 资格吗？将恢复为免费版。`)) return;
+      try {
+        const resp = await fetch('/api/admin/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
+          },
+          body: JSON.stringify({ action: 'revoke_vip', email }),
+        });
+        const result = await resp.json().catch(() => ({}));
+        if (resp.ok && result.ok) {
+          showToast(`已撤销用户 ${email} 的会员权限`);
+          fetchAdminData();
+        } else {
+          alert('操作失败：' + (result.message || '未知错误'));
+        }
+      } catch (err) {
+        alert('网络错误');
+      }
+    }
+
+    async function sendUserMagicLink(email) {
+      if (!confirm(`确定通过 Cloudflare Email 发送登录验证码至 ${email} 吗？`)) return;
+      try {
+        showToast('正在发送登录邮件…');
+        const resp = await fetch('/api/auth/magic-link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        const result = await resp.json().catch(() => ({}));
+        if (resp.ok && result.ok) {
+          showToast(`邮件已成功提交发送至 ${email}！`);
+        } else {
+          alert('发信失败：' + (result.message || '未知错误'));
+        }
+      } catch (err) {
+        alert('网络错误');
+      }
+    }
+
+    // Modal Operations: Mark Paid Order
+    function openMarkPaidModal(orderId) {
+      const ord = rawOrders.find(o => (o.trade_order_id === orderId || o.order_id === orderId));
+      if (!ord) return;
+      activeModalOrder = ord;
+
+      document.getElementById('modalOrderId').textContent = ord.trade_order_id || ord.order_id;
+      document.getElementById('modalOrderFee').textContent = (ord.currency === 'USD' ? '$' : '¥') + ' ' + (ord.fee || '0.00');
+      document.getElementById('modalOrderPlan').textContent = ord.plan;
+      document.getElementById('modalOrderEmail').textContent = ord.email || '未绑定邮箱 (微信游客)';
+
+      document.getElementById('markPaidModal').style.display = 'flex';
+    }
+
+    function closeMarkPaidModal() {
+      document.getElementById('markPaidModal').style.display = 'none';
+      activeModalOrder = null;
+    }
+
+    async function submitMarkPaid() {
+      if (!activeModalOrder) return;
+      const btn = document.getElementById('btnConfirmMarkPaid');
+      btn.disabled = true;
+      btn.textContent = '正在核销…';
+
+      try {
+        const resp = await fetch('/api/admin/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
+          },
+          body: JSON.stringify({
+            action: 'mark_paid',
+            order_id: activeModalOrder.trade_order_id || activeModalOrder.order_id,
+            email: activeModalOrder.email,
+          }),
+        });
+        const result = await resp.json().catch(() => ({}));
+        btn.disabled = false;
+        btn.textContent = '确认核销并开通会员';
+
+        if (resp.ok && result.ok) {
+          showToast(result.message || '订单已标记为已支付！');
+          closeMarkPaidModal();
+          fetchAdminData();
+        } else {
+          alert('核销失败：' + (result.message || '未知错误'));
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = '确认核销并开通会员';
+        alert('网络错误');
+      }
+    }
+
+    async function deleteOrder(orderId) {
+      if (!confirm(`确定要从系统安全删除订单 ${orderId} 吗？`)) return;
+      try {
+        const resp = await fetch('/api/admin/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
+          },
+          body: JSON.stringify({ action: 'delete_order', order_id: orderId }),
+        });
+        const result = await resp.json().catch(() => ({}));
+        if (resp.ok && result.ok) {
+          showToast('订单记录已删除');
+          fetchAdminData();
+        } else {
+          alert('删除失败：' + (result.message || '未知错误'));
+        }
+      } catch (err) {
+        alert('网络错误');
+      }
+    }
+
+    // Operations Tab: Grant VIP Form
+    function autoAdjustDays() {
+      const plan = document.getElementById('grantPlan').value;
+      const daysInput = document.getElementById('grantDays');
+      if (plan === 'pro') daysInput.value = 30;
+      else if (plan === 'yearly' || plan === 'team') daysInput.value = 365;
+      else if (plan === 'lifetime') daysInput.value = 36500;
+      else if (plan === 'single') daysInput.value = 365;
+    }
+
+    function quickFillGrant(email, plan) {
+      switchTab('operations');
+      document.getElementById('grantEmail').value = email || '';
+      if (plan) {
+        document.getElementById('grantPlan').value = plan;
+        autoAdjustDays();
+      }
+    }
+
+    async function handleManualGrant(e) {
       e.preventDefault();
       const email = document.getElementById('grantEmail').value.trim();
       const plan = document.getElementById('grantPlan').value;
       const days = document.getElementById('grantDays').value;
       const note = document.getElementById('grantNote').value;
-      const msgEl = document.getElementById('grantResultMsg');
+      const msgEl = document.getElementById('grantMsg');
       const btn = document.getElementById('btnSubmitGrant');
 
       btn.disabled = true;
@@ -560,6 +1707,7 @@
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
           },
           body: JSON.stringify({ email, plan, days, note, action: 'grant' }),
         });
@@ -571,7 +1719,8 @@
           msgEl.style.color = '#2cf0c1';
           msgEl.textContent = `✅ 成功开通！用户 ${email} 获授 ${plan.toUpperCase()} 会员，有效至 ${new Date(result.expires_at).toLocaleDateString()}`;
           msgEl.style.display = 'block';
-          fetchOrders();
+          showToast('会员权限已生效！');
+          fetchAdminData();
         } else {
           msgEl.style.color = '#f87171';
           msgEl.textContent = '❌ 操作失败：' + (result.message || '未知错误');
@@ -581,12 +1730,12 @@
         btn.disabled = false;
         btn.textContent = '一键授权开通 / Grant License';
         msgEl.style.color = '#f87171';
-        msgEl.textContent = '网络请求失败，请稍后重试';
+        msgEl.textContent = '网络请求失败';
         msgEl.style.display = 'block';
       }
     }
 
-    async function handleRevokeLicense() {
+    async function handleQuickRevoke() {
       const email = document.getElementById('grantEmail').value.trim();
       if (!email || !email.includes('@')) {
         alert('请输入需要撤销的有效用户邮箱');
@@ -594,21 +1743,24 @@
       }
       if (!confirm(`确定要撤销用户 ${email} 的会员授权吗？`)) return;
 
-      const msgEl = document.getElementById('grantResultMsg');
+      const msgEl = document.getElementById('grantMsg');
       try {
         const resp = await fetch('/api/admin/grant', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + adminToken,
+            'x-admin-token': adminToken,
           },
           body: JSON.stringify({ email, action: 'revoke' }),
         });
         const result = await resp.json().catch(() => ({}));
         if (resp.ok && result.ok) {
           msgEl.style.color = '#fbbf24';
-          msgEl.textContent = `⚠️ 已成功撤销用户 ${email} 的会员资格并清除 KV 记录。`;
+          msgEl.textContent = `⚠️ 已成功撤销用户 ${email} 的会员资格。`;
           msgEl.style.display = 'block';
+          showToast('已撤销会员资格');
+          fetchAdminData();
         } else {
           msgEl.style.color = '#f87171';
           msgEl.textContent = '撤销失败：' + (result.message || '未知错误');
@@ -631,7 +1783,7 @@
       }
 
       btn.disabled = true;
-      btn.textContent = '正在通过 env.EMAIL 发送…';
+      btn.textContent = '正在通过 Cloudflare 发送…';
       msgEl.style.display = 'none';
 
       try {
@@ -642,12 +1794,13 @@
         });
         const result = await resp.json().catch(() => ({}));
         btn.disabled = false;
-        btn.textContent = '发送测试魔法邮件';
+        btn.textContent = '发送测试登录验证码邮件';
 
         if (resp.ok && result.ok) {
           msgEl.style.color = '#2cf0c1';
-          msgEl.innerHTML = `✅ 邮件已成功提交发信通道！MessageID: ${result.message_id || 'OK'}<br>若收件箱未收到，请检查垃圾箱或 Cloudflare Email Routing 设置。${result.code ? `<br><strong>动态验证码:</strong> ${result.code}` : ''}`;
+          msgEl.innerHTML = `✅ 邮件已成功提交发信通道！MessageID: ${result.message_id || 'OK'}<br>若收件箱未收到，请检查垃圾箱。${result.code ? `<br><strong>动态验证码:</strong> ${result.code}` : ''}`;
           msgEl.style.display = 'block';
+          showToast('测试邮件已发送');
         } else {
           msgEl.style.color = '#f87171';
           msgEl.textContent = '❌ 发信失败：' + (result.message || '未知错误');
@@ -655,28 +1808,31 @@
         }
       } catch (err) {
         btn.disabled = false;
-        btn.textContent = '发送测试魔法邮件';
+        btn.textContent = '发送测试登录验证码邮件';
         msgEl.style.color = '#f87171';
         msgEl.textContent = '网络请求失败';
         msgEl.style.display = 'block';
       }
     }
 
+    // Export CSV Helper
     function exportOrdersCsv() {
-      if (!rawOrdersList || rawOrdersList.length === 0) {
+      if (!rawOrders || rawOrders.length === 0) {
         alert('暂无可导出的订单记录');
         return;
       }
-      const headers = ['Order ID', 'Email', 'Plan', 'Fee', 'Provider', 'Status', 'Created At', 'Paid At'];
-      const rows = rawOrdersList.map(o => [
-        `"${o.id || ''}"`,
+      const headers = ['Order ID', 'Email', 'Plan', 'Fee', 'Currency', 'Provider', 'Status', 'Created At', 'Paid At', 'Transaction ID'];
+      const rows = rawOrders.map(o => [
+        `"${o.trade_order_id || o.order_id || ''}"`,
         `"${o.email || ''}"`,
         `"${o.plan || ''}"`,
         `"${o.fee || ''}"`,
-        `"${o.provider || ''}"`,
+        `"${o.currency || 'CNY'}"`,
+        `"${o.provider || 'wechat'}"`,
         `"${o.status || ''}"`,
         `"${o.created_at || ''}"`,
         `"${o.paid_at || ''}"`,
+        `"${o.transaction_id || ''}"`,
       ]);
       const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -688,6 +1844,7 @@
       URL.revokeObjectURL(url);
     }
 
+    // Boot
     document.addEventListener('DOMContentLoaded', checkAuth);
   </script>
 </body>
