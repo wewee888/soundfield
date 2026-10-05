@@ -64,6 +64,7 @@ HTML_TO_CANONICAL: dict[str, str] = {
     "refund.html": "/refund/",
     "stats.html": "/stats/",
     "noise-levels.html": "/noise-levels/",
+    "camera.html": "/camera.html",
 }
 
 
@@ -152,10 +153,20 @@ def gather_pages() -> dict[str, set[str]]:
 
 def sibling_url(canonical_key: str, lang: str) -> str:
     """Given logical key '/samples/' and lang='zh', return '/zh/samples/'.
+    Given logical key '/use-cases/foo/' and lang='zh', return '/use-cases/zh/foo/'.
     For x-default, return the root-level key.
     """
     if lang == "x-default":
         return f"{DOMAIN}{canonical_key}"
+    if canonical_key.startswith("/use-cases/"):
+        if canonical_key == "/use-cases/":
+            if lang == "en":
+                return f"{DOMAIN}/use-cases/"
+            return f"{DOMAIN}/use-cases/{lang}/"
+        tail = canonical_key[len("/use-cases/"):]
+        if lang == "en":
+            return f"{DOMAIN}/use-cases/{tail}"
+        return f"{DOMAIN}/use-cases/{lang}/{tail}"
     return f"{DOMAIN}/{lang}{canonical_key}"
 
 
@@ -195,7 +206,7 @@ def pick_lastmod(logical_key: str) -> str:
                 candidates.append(p)
     else:
         # /<doc>/ -> <lang>/<doc>.html and /<doc>.html
-        doc = logical_key.strip("/")
+        doc = logical_key.strip("/").removesuffix(".html")
         # doc is a single segment here (e.g. "samples", "soundtest")
         for lang in LANGS + [None]:
             if lang:
