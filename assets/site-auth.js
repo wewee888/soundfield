@@ -501,17 +501,17 @@
       btn.style.display = '';
     });
     document.querySelectorAll('.nav-links a[href*="auth.html"]').forEach(link => {
-      link.style.display = '';
+      link.style.display = 'none';
     });
 
     const login = document.createElement('a');
-    login.className = 'nav-auth-btn';
+    login.className = 'nav-auth-btn login-btn';
     login.href = getLocaleAuthHref('login');
     login.textContent = t.login;
     login.setAttribute('data-auth-ui', 'true');
     utility.appendChild(login);
     const register = document.createElement('a');
-    register.className = 'nav-auth-btn';
+    register.className = 'nav-auth-btn register-btn';
     register.href = getLocaleAuthHref('register');
     register.textContent = t.register;
     register.setAttribute('data-auth-ui', 'true');

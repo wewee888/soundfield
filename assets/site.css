@@ -175,7 +175,7 @@ p { margin: 0; color: var(--muted); text-wrap: pretty; }
 .site-nav-main {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 12px;
   flex: 1;
   min-width: 0;
 }
@@ -211,16 +211,21 @@ p { margin: 0; color: var(--muted); text-wrap: pretty; }
   flex-wrap: nowrap;
   white-space: nowrap;
   gap: 2px;
-  font-size: 13px;
+  font-size: 12.5px;
 }
 
 .nav-links a {
   color: var(--muted);
-  padding: 6px 10px;
+  padding: 5px 8px;
   border-radius: 999px;
   font-weight: 500;
   white-space: nowrap;
   transition: color 200ms var(--ease), background 200ms var(--ease), border-color 200ms var(--ease);
+}
+
+/* Hide duplicate account link inside nav-links on desktop since nav-utility handles auth */
+.nav-links a[href*="auth.html"] {
+  display: none !important;
 }
 
 .nav-links a:hover {
@@ -282,7 +287,7 @@ p { margin: 0; color: var(--muted); text-wrap: pretty; }
 .nav-utility {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
   white-space: nowrap;
 }
@@ -297,16 +302,16 @@ p { margin: 0; color: var(--muted); text-wrap: pretty; }
 .lang-picker-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  height: 36px;
-  min-width: 148px;
-  padding: 0 12px 0 10px;
+  gap: 6px;
+  height: 34px;
+  min-width: unset;
+  padding: 0 10px 0 8px;
   border-radius: 999px;
   border: 1px solid var(--ink-border);
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-strong);
   font: inherit;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 200ms var(--ease), background 200ms var(--ease);
@@ -402,15 +407,17 @@ p { margin: 0; color: var(--muted); text-wrap: pretty; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
-  padding: 0 14px;
+  height: 34px;
+  padding: 0 11px;
   border-radius: 999px;
   border: 1px solid var(--ink-border);
   background: rgba(255, 255, 255, 0.05);
   color: var(--text);
   font: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
   transition: border-color 200ms var(--ease), background 200ms var(--ease), transform 180ms var(--ease);
 }
@@ -1760,19 +1767,20 @@ a.card:hover h3 { color: var(--text-strong); }
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  height: 36px;
-  padding: 0 14px;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
   border-radius: 999px;
   color: var(--text-strong);
   font: inherit;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.02em;
   background: rgba(8, 11, 24, 0.85);
   border: 1px solid rgba(44, 240, 193, 0.2);
   cursor: pointer;
   text-decoration: none;
+  white-space: nowrap;
   isolation: isolate;
   transition: transform 220ms var(--ease), filter 220ms var(--ease);
 }
@@ -3051,29 +3059,29 @@ a.card:hover h3 { color: var(--text-strong); }
   line-height: 1.45;
 }
 
-/* ─── Responsive ─── */
+/* ─── Responsive Navigation ─── */
 /* Ensure navigation stays on a single sleek line across all laptop & desktop screens */
-@media (max-width: 1240px) and (min-width: 769px) {
+@media (max-width: 1360px) and (min-width: 1181px) {
   .site-nav {
     padding: 8px 12px;
     gap: 8px;
   }
   .site-nav-main {
-    gap: 10px;
+    gap: 8px;
   }
   .nav-links {
     gap: 1px;
   }
   .nav-links a {
-    padding: 5px 8px;
+    padding: 4px 7px;
     font-size: 12px;
   }
-  .nav-user-name {
-    max-width: 65px;
+  .nav-utility {
+    gap: 5px;
   }
 }
 
-@media (max-width: 960px) and (min-width: 769px) {
+@media (max-width: 1180px) and (min-width: 769px) {
   .site-nav {
     padding: 6px 10px;
     gap: 6px;
@@ -3082,19 +3090,30 @@ a.card:hover h3 { color: var(--text-strong); }
     gap: 8px;
   }
   .brand {
-    font-size: 11.5px;
+    font-size: 12px;
     gap: 6px;
   }
   .brand-mark {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
+  }
+  .nav-links {
+    gap: 1px;
   }
   .nav-links a {
     padding: 4px 6px;
     font-size: 11.5px;
   }
+  /* Secondary reference docs defer to the rich footer on compact screens */
+  .nav-links a[href*="accuracy"],
+  .nav-links a[href*="standards"] {
+    display: none !important;
+  }
+  .nav-auth-btn.register-btn {
+    display: none !important;
+  }
   .nav-user-name {
-    max-width: 50px;
+    max-width: 60px;
   }
 }
 

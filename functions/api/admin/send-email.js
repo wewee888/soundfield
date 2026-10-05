@@ -42,10 +42,11 @@ async function verifyAuth(request, env) {
   return false;
 }
 
-// Built-in Email Templates (Bilingual: EN for USD / Creem, ZH for CNY / WeChat)
-function getEmailTemplate({ templateId, name, email, plan, amount, currency, checkoutUrl, orderId }) {
-  const isEn = currency === 'USD' || !(/[\u4e00-\u9fa5]/.test(name));
-  const safeName = name && name !== '未命名' ? name : (isEn ? 'SoundTest Explorer' : '尊敬的现场取证用户');
+// Built-in Email Templates (Multilingual: EN, ZH, ES, JA, etc.)
+function getEmailTemplate({ templateId, name, email, plan, amount, currency, checkoutUrl, orderId, lang, discountCode, discountAmount }) {
+  const isEn = lang ? (lang === 'en') : (currency === 'USD' || !(/[\u4e00-\u9fa5]/.test(name)));
+  const isZh = lang ? (lang === 'zh') : (!isEn);
+  const safeName = name && name !== '未命名' ? name : (isZh ? '尊敬的现场取证用户' : 'SoundTest Explorer');
   const safePlan = plan.toUpperCase();
   const safeAmount = amount.startsWith('$') || amount.startsWith('¥') ? amount : `${currency === 'USD' ? '$' : '¥'}${amount}`;
   const safeUrl = checkoutUrl || `https://soundtest.pro/auth.html?email=${encodeURIComponent(email)}`;
@@ -154,6 +155,26 @@ function getEmailTemplate({ templateId, name, email, plan, amount, currency, che
                 ${selectedTpl.message}
               </div>
 
+              ${discountCode ? `
+              <!-- Exclusive Recovery Discount Banner -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(44, 240, 193, 0.15)); border: 1.5px dashed #f59e0b; border-radius: 12px; padding: 14px 18px; margin-bottom: 22px; text-align: center;">
+                <tr>
+                  <td>
+                    <div style="font-size: 11.5px; color: #fbbf24; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;">
+                      ${isEn ? '🎁 EXCLUSIVE RECOVERY DISCOUNT APPLIED' : '🎁 专属限时挽回特惠已生效'}
+                    </div>
+                    <div style="font-size: 17px; font-weight: 900; color: #ffffff; margin: 6px 0;">
+                      ${isEn ? 'Promo Code:' : '专属优惠码:'} <span style="font-family: monospace; background: #060a16; padding: 3px 10px; border-radius: 6px; border: 1px solid #f59e0b; color: #fbbf24;">${discountCode}</span>
+                    </div>
+                    <div style="font-size: 13px; color: #cbd5e1;">
+                      ${isEn ? 'Discounted Rate:' : '折后立减价:'} <strong style="color: #2cf0c1; font-size: 16px;">${discountAmount || safeAmount}</strong>
+                      ${isEn ? '(Auto-applied via the button below)' : '（点击下方结算按钮自动抵扣）'}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              ` : ''}
+
               <!-- Order Summary Box -->
               <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(44, 240, 193, 0.2); border-radius: 12px; padding: 16px 20px; margin-bottom: 26px;">
                 <tr>
@@ -231,6 +252,9 @@ export async function onRequestPost(context) {
     const dryRun = Boolean(body.dryRun);
     const customSubject = body.subject ? String(body.subject).trim() : null;
     const customHtml = body.customHtml ? String(body.customHtml).trim() : null;
+    const lang = body.lang ? String(body.lang).trim() : null;
+    const discountCode = body.discountCode ? String(body.discountCode).trim() : null;
+    const discountAmount = body.discountAmount ? String(body.discountAmount).trim() : null;
 
     if (!to || !to.includes('@')) {
       return json({ ok: false, error: 'invalid_email', message: 'Valid recipient email is required' }, 400);
@@ -246,6 +270,9 @@ export async function onRequestPost(context) {
       currency,
       checkoutUrl,
       orderId,
+      lang,
+      discountCode,
+      discountAmount,
     });
 
     const finalSubject = customSubject || rendered.subject;
