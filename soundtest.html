@@ -1383,10 +1383,146 @@
         <button class="mode-pill active" id="modeAudioBtn" type="button" role="tab" aria-selected="true" onclick="setEvidenceMode('audio')"><strong>录音存证</strong><span>低耗电 · 自动加密入库</span></button>
         <button class="mode-pill" id="modeVideoBtn" type="button" role="tab" aria-selected="false" onclick="setEvidenceMode('video')"><strong>录像存证</strong><span>画面+声学水印 · 同步保全</span></button>
         <button class="mode-pill" id="modePhotoBtn" type="button" role="tab" aria-selected="false" onclick="setEvidenceMode('photo')"><strong>照片取证</strong><span>叠加分贝+GPS+地址</span></button>
-        <button class="mode-pill" id="modeSentryBtn" type="button" role="tab" aria-selected="false" onclick="triggerSentryModeHook()"><strong>🌙 哨兵模式 <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>夜间静默待命 · 超标自动抓现行</span></button>
+        <button class="mode-pill" id="modeSentryBtn" type="button" role="tab" aria-selected="false" onclick="setEvidenceMode('sentry')"><strong>🌙 哨兵模式 <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>夜间静默待命 · 超标自动抓现行</span></button>
       </div>
       <div class="mode-title" id="modeTitle">取证录音模式</div>
       <div class="mode-desc" id="modeDesc">录制完整音频与分贝时间序列，自动保全入库并支持导出正式 PDF 维权报告。</div>
+
+      <!-- 🌙 SENTRY SURVEILLANCE WORKSTATION & HUD CONSOLE (Visible in sentry mode) -->
+      <div id="sentryWorkstationPanel" class="sentry-workstation-panel" style="display:none;">
+        
+        <!-- 1. Four-Step Autonomous Workflow Pipeline Banner -->
+        <div class="sentry-pipeline-banner">
+          <div class="sentry-pipeline-title">
+            <span class="sentry-kicker">AUTONOMOUS FORENSIC PIPELINE</span>
+            <span id="sentryPipelineTitle">⚡ 哨兵无人值守全自动存证闭环</span>
+          </div>
+          <div class="sentry-pipeline-steps">
+            <div class="sentry-pipe-step active" id="pipeStep1">
+              <div class="step-num">①</div>
+              <strong id="pipeStep1T">静默守护</strong>
+              <span id="pipeStep1D">超低功耗待命</span>
+            </div>
+            <div class="sentry-pipe-arrow">➔</div>
+            <div class="sentry-pipe-step" id="pipeStep2">
+              <div class="step-num">②</div>
+              <strong id="pipeStep2T">突发超标</strong>
+              <span id="pipeStep2D">持续3秒自动录</span>
+            </div>
+            <div class="sentry-pipe-arrow">➔</div>
+            <div class="sentry-pipe-step" id="pipeStep3">
+              <div class="step-num">③</div>
+              <strong id="pipeStep3T">回落延时</strong>
+              <span id="pipeStep3D">静音10秒截取</span>
+            </div>
+            <div class="sentry-pipe-arrow">➔</div>
+            <div class="sentry-pipe-step" id="pipeStep4">
+              <div class="step-num">④</div>
+              <strong id="pipeStep4T">数字封存</strong>
+              <span id="pipeStep4D">SHA-256指纹入库</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Live Surveillance HUD Status Box -->
+        <div class="sentry-hud-card" id="sentryHudCard">
+          <div class="sentry-hud-header">
+            <div class="sentry-status-indicator">
+              <span class="sentry-led-dot led-off" id="sentryLedDot"></span>
+              <span class="sentry-status-text" id="sentryStatusText">待启动监听 · 点击下方按钮开启守夜</span>
+            </div>
+            <span class="sentry-hud-badge">SENTRY HUD</span>
+          </div>
+
+          <!-- Real-Time 3-Metric Display -->
+          <div class="sentry-metrics-grid">
+            <div class="sentry-metric-item">
+              <span class="sentry-metric-label" id="sentryLiveDbLbl">实时环境分贝</span>
+              <div class="sentry-metric-val" id="sentryLiveDbVal">--<small> dB</small></div>
+            </div>
+            <div class="sentry-metric-item">
+              <span class="sentry-metric-label" id="sentryTriggerDbLbl">触发报警阈值</span>
+              <div class="sentry-metric-val th-val" id="sentryTriggerDbVal">50<small> dB</small></div>
+            </div>
+            <div class="sentry-metric-item">
+              <span class="sentry-metric-label" id="sentryTonightCountLbl">今夜抓获违规</span>
+              <div class="sentry-metric-val count-val" id="sentryTonightCountVal">0<small> 次</small></div>
+            </div>
+          </div>
+
+          <!-- Dynamic Delta / Safety Margin Bar -->
+          <div class="sentry-delta-bar" id="sentryDeltaBar">
+            <span id="sentryDeltaText">🛡️ 哨兵已就绪：点击下方【启动夜间哨兵守护】开启麦克风监听</span>
+          </div>
+        </div>
+
+        <!-- 3. Threshold Presets & Custom Configuration -->
+        <div class="sentry-controls-section">
+          <div class="sentry-section-label">
+            <span id="sentryThSectionTitle">🎯 抓拍阈值设定 (超过此分贝启动录音)</span>
+          </div>
+          <div class="sentry-preset-row">
+            <button type="button" class="sentry-preset-btn" id="sentryPre45" onclick="setSentryPresetThreshold(45)">
+              <strong>🌙 45 dB</strong>
+              <span id="sentryPre45Span">夜间卧室 (国标限值)</span>
+            </button>
+            <button type="button" class="sentry-preset-btn active" id="sentryPre50" onclick="setSentryPresetThreshold(50)">
+              <strong>🏡 50 dB</strong>
+              <span id="sentryPre50Span">住宅常态 (推荐默认)</span>
+            </button>
+            <button type="button" class="sentry-preset-btn" id="sentryPre55" onclick="setSentryPresetThreshold(55)">
+              <strong>🚗 55 dB</strong>
+              <span id="sentryPre55Span">临街/白日</span>
+            </button>
+          </div>
+          <div class="sentry-custom-th-row">
+            <span id="sentryCustomLabel">自定义数值：</span>
+            <input type="number" id="sentryCustomThInput" min="30" max="100" value="50" onchange="setSentryPresetThreshold(this.value)">
+            <span>dB</span>
+          </div>
+        </div>
+
+        <!-- 4. Trigger Duration & Silence Hold Delay -->
+        <div class="sentry-sliders-section">
+          <div class="sentry-slider-row">
+            <div class="sentry-slider-info">
+              <strong id="sentryMinSecLbl">超标持续判定：<span id="sentryMinSecVal">3</span> 秒</strong>
+              <span id="sentryMinSecDesc">噪音连续超过阈值达到此时长才录制（防止咳嗽、翻身、关门误触发）</span>
+            </div>
+            <input type="range" id="sentryMinSecSlider" min="1" max="10" value="3" step="1" oninput="setSentryMinSec(this.value)">
+          </div>
+
+          <div class="sentry-slider-row">
+            <div class="sentry-slider-info">
+              <strong id="sentryStopSecLbl">恢复静音延时：<span id="sentryStopSecVal">10</span> 秒</strong>
+              <span id="sentryStopSecDesc">噪音停止后继续录制此时长才封存（录完整段噪音，保全尾音）</span>
+            </div>
+            <input type="range" id="sentryStopSecSlider" min="5" max="30" value="10" step="1" oninput="setSentryStopSec(this.value)">
+          </div>
+        </div>
+
+        <!-- 5. Tonight's Captured Incidents Ledger -->
+        <div class="sentry-ledger-section">
+          <div class="sentry-ledger-header">
+            <div class="sentry-ledger-title">
+              <span id="sentryLedgerTitle">📁 今夜自动抓获的超标证据</span>
+              <span class="sentry-ledger-badge" id="sentryTonightCountValBadge">0</span>
+            </div>
+            <button type="button" class="sentry-view-records-btn" onclick="sw('r')" id="sentryViewAllBtn">
+              查看全部证据库 ↗
+            </button>
+          </div>
+          <div class="sentry-incidents-list" id="sentryIncidentsList">
+            <div class="sentry-empty-state">
+              <div class="sentry-empty-icon">🌙</div>
+              <div class="sentry-empty-title">今夜尚未检测到超标突发噪音</div>
+              <div class="sentry-empty-desc">哨兵已就绪，分贝超过设定阈值时将自动录音、抓现行并加盖数字指纹存证。</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- END SENTRY WORKSTATION -->
       <button class="mode-primary-btn" id="modePrimaryBtn" type="button" onclick="primaryEvidenceAction()">● 开始取证录音（入库保全）</button>
       <div class="mode-secondary-actions">
         <button class="btn b-amber" id="modeLocationBtn" type="button" onclick="getLoc()">获取/刷新地址</button>
@@ -2874,6 +3010,7 @@ function applyTranslations(){
   }
   updateReportTemplateOptions();
   syncEvidenceModeUi();
+  if(typeof translateSentryWorkstation==='function') translateSentryWorkstation();
   renderPlanStatus();
   updateWeightUi();
   updateCameraOverlay();
@@ -3411,11 +3548,13 @@ function modeCopy(mode=evidenceMode){
     audio:{label:'Audio',short:'Audio',tagline:'Low-power audio log',title:'Audio mode',desc:'Best for long sessions. Uses the mic only and keeps power use low.',primary:'● Start Audio Evidence',stop:'⏹ Stop & Save Evidence'},
     video:{label:'Video',short:'Video',tagline:'Video + microphone',title:'Evidence video',desc:'Capture the scene, microphone audio, and burned-in evidence watermark in the full-screen camera.',primary:'📹 Start Evidence Video',stop:'⏹ Stop & Save Evidence'},
     photo:{label:'Photo',short:'Photo',tagline:'dB-stamped photo',title:'Photo mode',desc:'Capture a photo with dB, GPS, address, and calibration details.',primary:'📷 Capture Evidence Photo',stop:'📷 Capture Evidence Photo'},
+    sentry:{label:'Sentry Mode',short:'Sentry',tagline:'Overnight auto-capture on exceedance',title:'🌙 Sentry Acoustic Surveillance Console',desc:'Fully autonomous threshold capture: stands by silently overnight, auto-records in milliseconds upon sustained noise exceedance, and digitally seals evidence with SHA-256 timestamps upon drop. No sleepless manual monitoring.',primary:'▶ Start Sentry Surveillance',stop:'⏹ Stop Sentry Mode',recordingPrimary:'🔴 Auto-Capturing Incident (Click to Stop & Seal)'},
   };
   const zhFallback={
     audio:{label:'录音存证',short:'录音',tagline:'低耗电 · 自动加密入库',title:'取证录音模式',desc:'录制完整音频与分贝时间序列，自动保全入库并支持导出正式 PDF 维权报告。',primary:'● 开始取证录音（入库保全）',stop:'⏹ 停止录音并保存证据'},
     video:{label:'录像存证',short:'录像',tagline:'画面+声学水印 · 同步保全',title:'取证录像模式',desc:'现场画面与麦克风声音同步保存，自动叠加分贝、时间与 GPS 防伪水印，停止后写入证据库。',primary:'📹 开始取证录像（入库保全）',stop:'⏹ 停止录像并保存证据'},
     photo:{label:'照片取证',short:'照片',tagline:'生成带分贝水印与地点照片',title:'照片取证模式',desc:'快速抓拍现场并叠加实时分贝、经纬度、地点与时间戳，保存为不可篡改的证据照片。',primary:'📷 拍照取证（生成水印）',stop:'📷 拍照取证（生成水印）'},
+    sentry:{label:'🌙 哨兵模式',short:'哨兵',tagline:'夜间静默待命 · 超标自动抓现行',title:'🌙 哨兵声学守护工作台',desc:'全自动超标抓现行：夜间静默待命，分贝持续超标时毫秒级自动触发录音；声音回落后自动封存并加盖不可篡改 SHA-256 数字指纹。无需彻夜守候。',primary:'▶ 启动夜间哨兵守护（开始监听）',stop:'⏹ 退出哨兵守护模式',recordingPrimary:'🔴 正在自动抓取超标证据（点击立即封存）'},
   };
   const fallback=appLanguage==='zh-CN'?(zhFallback[mode]||zhFallback.audio):(enFallback[mode]||enFallback.audio);
   return t(`modes.${mode}`,fallback);
@@ -3438,8 +3577,20 @@ function setEvidenceMode(mode,{save=true}={}){
     window.location.href=getDedicatedCameraUrl();
     return;
   }
-  evidenceMode=['audio','video','photo'].includes(mode)?mode:'audio';
-  if(evidenceMode==='audio'){
+  if(mode==='sentry'){
+    if(!isProActive()){
+      openSentryGatingModal();
+      return;
+    }
+    evidenceMode='sentry';
+    autoRecOnThreshold=true;
+  }else{
+    evidenceMode=['audio','video','photo','sentry'].includes(mode)?mode:'audio';
+    if(mode==='audio'&&autoRecOnThreshold){
+      autoRecOnThreshold=false;
+    }
+  }
+  if(evidenceMode==='audio'||evidenceMode==='sentry'){
     closeWatermarkCamera();
     if(isCam&&!isRec)stopCameraPreview({silent:true});
   }
@@ -3449,36 +3600,35 @@ function setEvidenceMode(mode,{save=true}={}){
 
 function syncEvidenceModeUi(){
   const isZh=appLanguage==='zh-CN';
-  ['audio','video','photo'].forEach(mode=>{
+  ['audio','video','photo','sentry'].forEach(mode=>{
     const btn=document.getElementById(`mode${mode[0].toUpperCase()}${mode.slice(1)}Btn`);
     if(!btn)return;
     const active=evidenceMode===mode;
     const copy=modeCopy(mode);
     btn.classList.toggle('active',active);
     btn.setAttribute('aria-selected',active?'true':'false');
-    btn.innerHTML=`<strong>${copy.label}</strong><span>${copy.tagline}</span>`;
-  });
-  const sentryBtn = document.getElementById('modeSentryBtn');
-  if (sentryBtn) {
-    sentryBtn.classList.toggle('active', !!autoRecOnThreshold);
-    const sentryCopy = t('modes.sentry', {});
-    if (autoRecOnThreshold) {
-      const activeLabel = sentryCopy.activeLabel || (isZh ? '哨兵已开启' : 'Sentry Active');
-      const activeTag = sentryCopy.activeTagline || (isZh ? '超标自动录制中' : 'Auto-record engaged');
-      sentryBtn.innerHTML = `<strong>🌙 ${activeLabel}</strong><span>${activeTag}</span>`;
-    } else {
-      const label = sentryCopy.label || (isZh ? '哨兵模式' : 'Sentry Mode');
-      const tag = sentryCopy.tagline || (isZh ? '夜间静默待命 · 超标自动抓现行' : 'Overnight auto-capture on exceedance');
-      sentryBtn.innerHTML = `<strong>🌙 ${label} <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>${tag}</span>`;
+    if(mode==='sentry'){
+      if(active||autoRecOnThreshold){
+        const activeLabel=copy.activeLabel||(isZh?'哨兵守护中':'Sentry Active');
+        const activeTag=copy.activeTagline||(isZh?'超标自动录制中':'Auto-record armed');
+        btn.innerHTML=`<strong>🌙 ${activeLabel}</strong><span>${activeTag}</span>`;
+      }else{
+        const label=copy.label||(isZh?'哨兵模式':'Sentry Mode');
+        const tag=copy.tagline||(isZh?'夜间静默待命 · 超标自动抓现行':'Overnight auto-capture on exceedance');
+        btn.innerHTML=`<strong>${label} <span class="pro-feature-badge" style="background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;padding:1px 5px;border-radius:4px;margin-left:2px;">PRO</span></strong><span>${tag}</span>`;
+      }
+    }else{
+      btn.innerHTML=`<strong>${copy.label}</strong><span>${copy.tagline}</span>`;
     }
-  }
+  });
   const heroSentry = document.getElementById('heroSentryBtn');
   if (heroSentry) {
-    heroSentry.classList.toggle('active', !!autoRecOnThreshold);
+    const isSentryActive = evidenceMode === 'sentry' || !!autoRecOnThreshold;
+    heroSentry.classList.toggle('active', isSentryActive);
     const textEl = document.getElementById('heroSentryBtnText');
     const sentryCopy = t('modes.sentry', {});
     if (textEl) {
-      textEl.textContent = autoRecOnThreshold ? (sentryCopy.on || (isZh ? '哨兵已开' : 'Sentry On')) : (sentryCopy.label || (isZh ? '哨兵模式' : 'Sentry Mode'));
+      textEl.textContent = isSentryActive ? (sentryCopy.on || (isZh ? '哨兵已开启' : 'Sentry On')) : (sentryCopy.label || (isZh ? '哨兵模式' : 'Sentry Mode'));
     }
   }
   // Decoupled camera panel: permanently hidden in soundtest.html to keep core tool clean & uncluttered
@@ -3487,17 +3637,22 @@ function syncEvidenceModeUi(){
     camPanel.style.display = 'none';
     camPanel.hidden = true;
   }
-  // Audio panel: hidden when idle in free default view; displayed only when recording is active or Sentry is enabled
+  // Audio panel: hidden when idle in free default view; displayed only when recording is active or Sentry is enabled in legacy panel
   const audioPanel = document.getElementById('audioModePanel');
   if (audioPanel) {
-    const showAudio = isRec || autoRecOnThreshold;
+    const showAudio = isRec || (autoRecOnThreshold && evidenceMode !== 'sentry');
     audioPanel.style.display = showAudio ? 'block' : 'none';
     audioPanel.hidden = !showAudio;
   }
-  // Long-monitor / Sentry task controls: only visible when Sentry mode is enabled
+  // Sentry Workstation Panel: visible when in sentry mode
+  const sentryPanel = document.getElementById('sentryWorkstationPanel');
+  if (sentryPanel) {
+    sentryPanel.style.display = (evidenceMode === 'sentry') ? 'flex' : 'none';
+  }
+  // Long-monitor / Sentry task controls: only visible when Sentry mode is enabled in legacy panel
   const sentryControls = document.querySelector('[data-long-monitor="webTaskControls"]');
   if (sentryControls) {
-    sentryControls.style.display = autoRecOnThreshold ? 'block' : 'none';
+    sentryControls.style.display = (autoRecOnThreshold && evidenceMode !== 'sentry') ? 'block' : 'none';
   }
   const copy=modeCopy();
   setText('modeCardLabel',t('modes.cardLabel',isZh?'取证存证模式（自动入库 · 生成法律报告）':'Evidence Mode (Auto-Vault & Formal Report)'));
@@ -3509,8 +3664,26 @@ function syncEvidenceModeUi(){
   setText('cameraCloseBtn',t('modes.closeCamera',isZh?'关闭摄像头':'Close Camera'));
   const primary=document.getElementById('modePrimaryBtn');
   if(primary){
-    primary.textContent=isRec&&evidenceMode!=='photo'?copy.stop:copy.primary;
-    primary.classList.toggle('recording',isRec&&evidenceMode!=='photo');
+    if(evidenceMode==='sentry'){
+      if(isRec){
+        primary.textContent=copy.recordingPrimary||(isZh?'🔴 正在自动抓取超标证据（点击立即封存）':'🔴 Recording Exceedance (Click to Stop)');
+        primary.classList.add('recording');
+      }else if(!isMon){
+        primary.textContent=copy.primary||(isZh?'▶ 启动夜间哨兵守护（开始监听）':'▶ Start Sentry Surveillance');
+        primary.classList.remove('recording');
+      }else{
+        primary.textContent=copy.stop||(isZh?'⏹ 退出哨兵守护模式':'⏹ Stop Sentry Mode');
+        primary.classList.remove('recording');
+      }
+    }else{
+      primary.textContent=isRec&&evidenceMode!=='photo'?copy.stop:copy.primary;
+      primary.classList.toggle('recording',isRec&&evidenceMode!=='photo');
+    }
+  }
+  if(evidenceMode==='sentry'){
+    updateSentryPresetButtons();
+    translateSentryWorkstation();
+    renderSentryIncidentsList();
   }
   const cameraClose=document.getElementById('cameraCloseBtn');
   if(cameraClose){
@@ -3599,6 +3772,20 @@ function translateReportPreviewModal(){
 }
 
 async function primaryEvidenceAction(){
+  if(evidenceMode==='sentry'){
+    if(!isMon){
+      await toggleMon();
+      syncEvidenceModeUi();
+      toast(appLanguage==='zh-CN'?'🌙 哨兵已进入静默守护状态，实时监测突发噪音...':'🌙 Sentry is now standing by silently, monitoring for noise spikes...','info',4000);
+      return;
+    }
+    if(isRec){
+      return toggleRec();
+    }
+    await toggleMon();
+    syncEvidenceModeUi();
+    return;
+  }
   if((evidenceMode==='video'||evidenceMode==='photo')&&!watermarkCameraOpen)await openWatermarkCamera(evidenceMode);
   if(evidenceMode==='video')return toggleVideoRec();
   if(evidenceMode==='photo'){
@@ -3614,6 +3801,278 @@ async function primaryEvidenceAction(){
     return capturePhoto();
   }
   return toggleRec();
+}
+
+
+/* ── Sentry Surveillance Workstation Helper Suite ── */
+function translateSentryWorkstation() {
+  const isZh = appLanguage === 'zh-CN';
+  setText('sentryPipelineTitle', isZh ? '⚡ 哨兵无人值守全自动存证闭环' : '⚡ Autonomous Forensic Surveillance Pipeline');
+  setText('pipeStep1T', isZh ? '静默守护' : 'Silent Standby');
+  setText('pipeStep1D', isZh ? '超低功耗待命' : 'Low-power guard');
+  setText('pipeStep2T', isZh ? '突发超标' : 'Spike Exceedance');
+  setText('pipeStep2D', isZh ? `持续${autoRecMinSeconds}秒自动录` : `Auto-record on ${autoRecMinSeconds}s`);
+  setText('pipeStep3T', isZh ? '回落延时' : 'Post-Drop Delay');
+  setText('pipeStep3D', isZh ? `静音${autoRecAfterStopSeconds}秒截取` : `Hold ${autoRecAfterStopSeconds}s after drop`);
+  setText('pipeStep4T', isZh ? '数字封存' : 'Cryptographic Seal');
+  setText('pipeStep4D', isZh ? 'SHA-256指纹入库' : 'SHA-256 notarized');
+
+  setText('sentryLiveDbLbl', isZh ? '实时环境分贝' : 'Live dB Reading');
+  setText('sentryTriggerDbLbl', isZh ? '触发报警阈值' : 'Trigger Threshold');
+  setText('sentryTonightCountLbl', isZh ? '今夜抓获违规' : "Tonight's Incidents");
+
+  setText('sentryThSectionTitle', isZh ? '🎯 抓拍阈值设定 (超过此分贝启动录音)' : '🎯 Trigger Threshold (Auto-records above this dB)');
+  setText('sentryPre45Span', isZh ? '夜间卧室 (国标限值)' : 'Night Bedroom (GB Limit)');
+  setText('sentryPre50Span', isZh ? '住宅常态 (推荐默认)' : 'Residential (Default)');
+  setText('sentryPre55Span', isZh ? '临街/白日' : 'Roadside / Daytime');
+  setText('sentryCustomLabel', isZh ? '自定义数值：' : 'Custom value:');
+
+  setText('sentryMinSecLbl', isZh ? `超标持续判定：${autoRecMinSeconds} 秒` : `Sustained Duration: ${autoRecMinSeconds}s`);
+  setText('sentryMinSecDesc', isZh ? '噪音连续超过阈值达到此时长才录制（防止咳嗽、翻身、关门误触发）' : 'Only triggers after sound stays above threshold for this duration (filters coughs & bed turns)');
+  setText('sentryStopSecLbl', isZh ? `恢复静音延时：${autoRecAfterStopSeconds} 秒` : `Silence Hold Delay: ${autoRecAfterStopSeconds}s`);
+  setText('sentryStopSecDesc', isZh ? '噪音停止后继续录制此时长才封存（录完整段噪音，保全尾音）' : 'Continues recording for this duration after sound drops to capture full noise event');
+
+  setText('sentryLedgerTitle', isZh ? '📁 今夜自动抓获的超标证据' : "📁 Tonight's Auto-Captured Proof");
+  setText('sentryViewAllBtn', isZh ? '查看全部证据库 ↗' : 'View All Records ↗');
+}
+
+function setSentryPresetThreshold(db) {
+  const val = Math.max(30, Math.min(120, Number(db) || 50));
+  alertTh = val;
+  const thR = document.getElementById('thR');
+  if (thR) thR.value = alertTh;
+  const thV = document.getElementById('thV');
+  if (thV) thV.textContent = alertTh + ' dB';
+  const customInput = document.getElementById('sentryCustomThInput');
+  if (customInput) customInput.value = alertTh;
+  updateSentryPresetButtons();
+  saveState();
+  toast(appLanguage === 'zh-CN' ? `🎯 哨兵触发阈值已设为 ${alertTh} dB` : `🎯 Sentry threshold set to ${alertTh} dB`, 'info', 2000);
+}
+
+function updateSentryPresetButtons() {
+  const p45 = document.getElementById('sentryPre45');
+  const p50 = document.getElementById('sentryPre50');
+  const p55 = document.getElementById('sentryPre55');
+  const customInput = document.getElementById('sentryCustomThInput');
+  if (p45) p45.classList.toggle('active', alertTh === 45);
+  if (p50) p50.classList.toggle('active', alertTh === 50);
+  if (p55) p55.classList.toggle('active', alertTh === 55);
+  if (customInput && document.activeElement !== customInput) customInput.value = alertTh;
+}
+
+function setSentryMinSec(val) {
+  autoRecMinSeconds = Math.max(1, Math.min(30, Number(val) || 3));
+  const elVal = document.getElementById('sentryMinSecVal');
+  if (elVal) elVal.textContent = autoRecMinSeconds;
+  const slider = document.getElementById('sentryMinSecSlider');
+  if (slider) slider.value = autoRecMinSeconds;
+  const r1 = document.getElementById('autoRecMinSR');
+  if (r1) r1.value = autoRecMinSeconds;
+  const v1 = document.getElementById('autoRecMinSV');
+  if (v1) v1.textContent = autoRecMinSeconds + 's';
+  const r2 = document.getElementById('autoRecMinSR2');
+  if (r2) r2.value = autoRecMinSeconds;
+  const v2 = document.getElementById('autoRecMinSV2');
+  if (v2) v2.textContent = autoRecMinSeconds + 's';
+  const pipe2 = document.getElementById('pipeStep2D');
+  if (pipe2) pipe2.textContent = appLanguage === 'zh-CN' ? `持续${autoRecMinSeconds}秒自动录` : `Auto-record on ${autoRecMinSeconds}s`;
+  const lbl = document.getElementById('sentryMinSecLbl');
+  if (lbl) lbl.textContent = appLanguage === 'zh-CN' ? `超标持续判定：${autoRecMinSeconds} 秒` : `Sustained Duration: ${autoRecMinSeconds}s`;
+  saveState();
+}
+
+function setSentryStopSec(val) {
+  autoRecAfterStopSeconds = Math.max(3, Math.min(60, Number(val) || 10));
+  const elVal = document.getElementById('sentryStopSecVal');
+  if (elVal) elVal.textContent = autoRecAfterStopSeconds;
+  const slider = document.getElementById('sentryStopSecSlider');
+  if (slider) slider.value = autoRecAfterStopSeconds;
+  const r1 = document.getElementById('autoRecAfterStopSR');
+  if (r1) r1.value = autoRecAfterStopSeconds;
+  const v1 = document.getElementById('autoRecAfterStopSV');
+  if (v1) v1.textContent = autoRecAfterStopSeconds + 's';
+  const r2 = document.getElementById('autoRecAfterStopSR2');
+  if (r2) r2.value = autoRecAfterStopSeconds;
+  const v2 = document.getElementById('autoRecAfterStopSV2');
+  if (v2) v2.textContent = autoRecAfterStopSeconds + 's';
+  const pipe3 = document.getElementById('pipeStep3D');
+  if (pipe3) pipe3.textContent = appLanguage === 'zh-CN' ? `静音${autoRecAfterStopSeconds}秒截取` : `Hold ${autoRecAfterStopSeconds}s after drop`;
+  const lbl = document.getElementById('sentryStopSecLbl');
+  if (lbl) lbl.textContent = appLanguage === 'zh-CN' ? `恢复静音延时：${autoRecAfterStopSeconds} 秒` : `Silence Hold Delay: ${autoRecAfterStopSeconds}s`;
+  saveState();
+}
+
+function renderSentryIncidentsList() {
+  const container = document.getElementById('sentryIncidentsList');
+  const countEl = document.getElementById('sentryTonightCountVal');
+  const countBadge = document.getElementById('sentryTonightCountValBadge');
+  if (!container) return;
+  const isZh = appLanguage === 'zh-CN';
+  const sentryRecs = (DB.records || []).filter(r => r.isSentry);
+  const count = sentryRecs.length;
+  if (countEl) countEl.innerHTML = `${count}<small> ${isZh ? '次' : 'hits'}</small>`;
+  if (countBadge) countBadge.textContent = count;
+  if (count === 0) {
+    container.innerHTML = `
+      <div class="sentry-empty-state">
+        <div class="sentry-empty-icon">🌙</div>
+        <div class="sentry-empty-title">${isZh ? '今夜尚未检测到超标突发噪音' : 'No noise exceedances detected yet'}</div>
+        <div class="sentry-empty-desc">${isZh ? '哨兵已就绪，分贝持续超过设定阈值时将自动录音、抓现行并加盖数字指纹存证。' : 'Sentry is active. Audio will be auto-captured and digitally sealed when noise exceeds threshold.'}</div>
+      </div>
+    `;
+    return;
+  }
+  container.innerHTML = sentryRecs.map(rec => {
+    const timeDate = rec.time instanceof Date ? rec.time : new Date(rec.time);
+    const timeStr = !isNaN(timeDate.getTime()) ? formatLocaleDate(timeDate, { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--:--';
+    const peak = rec.peakDb || '--';
+    const dur = rec.dur || 0;
+    const sha = rec.hashes?.mediaSha256 ? rec.hashes.mediaSha256.substring(0, 8).toUpperCase() : (rec.evidenceId || 'ST-PRO');
+    return `
+      <div class="sentry-incident-item">
+        <div class="sentry-incident-header">
+          <div class="sentry-incident-time">
+            <span class="sentry-incident-dot"></span>
+            <strong>${timeStr}</strong>
+            <span class="sentry-incident-dur">${dur}s</span>
+          </div>
+          <div class="sentry-incident-peak">
+            <span>${isZh ? '峰值' : 'Peak'}</span>
+            <strong>${peak} dB</strong>
+          </div>
+        </div>
+        <div class="sentry-incident-meta">
+          <span class="sentry-sha-badge" title="SHA-256 Digital Fingerprint: ${rec.hashes?.mediaSha256 || ''}">🛡️ SHA-256: ${sha}...</span>
+          <div class="sentry-incident-actions">
+            ${(rec.url || rec.blobId) ? `<button type="button" class="sentry-mini-btn" onclick="playRecordUrl(${rec.id})">${isZh ? '▶ 试听' : '▶ Play'}</button>` : ''}
+            <button type="button" class="sentry-mini-btn primary" onclick="openSentryIncidentReport(${rec.id})">${isZh ? '📄 报告' : '📄 Report'}</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openSentryIncidentReport(id) {
+  const rec = (DB.records || []).find(r => r.id === id);
+  if (!rec) return;
+  openReportPreviewModal([rec], false);
+}
+
+let activeSentryAudio = null;
+function playRecordUrl(id) {
+  const rec = (DB.records || []).find(r => r.id === id);
+  if (!rec) return;
+  if (activeSentryAudio) {
+    try { activeSentryAudio.pause(); } catch (_) {}
+    activeSentryAudio = null;
+  }
+  if (rec.url) {
+    activeSentryAudio = new Audio(rec.url);
+    activeSentryAudio.play().catch(e => console.warn('Audio play failed', e));
+    toast(appLanguage === 'zh-CN' ? '正在播放该段超标录音...' : 'Playing captured incident audio...', 'info', 3000);
+  } else if (rec.blobId && typeof loadMediaBlob === 'function') {
+    loadMediaBlob(rec.blobId).then(blob => {
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        activeSentryAudio = new Audio(url);
+        activeSentryAudio.play().catch(e => console.warn('Audio play failed', e));
+        toast(appLanguage === 'zh-CN' ? '正在播放该段超标录音...' : 'Playing captured incident audio...', 'info', 3000);
+      }
+    });
+  }
+}
+
+function updateSentrySurveillanceHud(inst, isAbove, nowTs) {
+  if (evidenceMode !== 'sentry') return;
+  const isZh = appLanguage === 'zh-CN';
+  const liveDbEl = document.getElementById('sentryLiveDbVal');
+  const triggerDbEl = document.getElementById('sentryTriggerDbVal');
+  const ledDot = document.getElementById('sentryLedDot');
+  const statusText = document.getElementById('sentryStatusText');
+  const deltaBar = document.getElementById('sentryDeltaBar');
+  const deltaText = document.getElementById('sentryDeltaText');
+  const pipe1 = document.getElementById('pipeStep1');
+  const pipe2 = document.getElementById('pipeStep2');
+  const pipe3 = document.getElementById('pipeStep3');
+  const pipe4 = document.getElementById('pipeStep4');
+
+  if (triggerDbEl) triggerDbEl.innerHTML = `${alertTh}<small> dB</small>`;
+
+  if (!isMon) {
+    if (liveDbEl) {
+      liveDbEl.innerHTML = `--<small> dB</small>`;
+      liveDbEl.style.color = 'var(--tx3)';
+    }
+    if (ledDot) ledDot.className = 'sentry-led-dot led-off';
+    if (statusText) statusText.textContent = isZh ? '待启动监听 · 点击下方按钮开启守夜' : 'Standby · Click button below to start monitoring';
+    if (deltaBar) {
+      deltaBar.className = 'sentry-delta-bar';
+      if (deltaText) deltaText.textContent = isZh ? `🛡️ 哨兵已就绪：已设阈值 ${alertTh} dB · 点击【启动夜间哨兵守护】开始监听` : `🛡️ Sentry ready: Preset threshold ${alertTh} dB · Click start below`;
+    }
+    pipe1?.classList.add('active');
+    pipe2?.classList.remove('active');
+    pipe3?.classList.remove('active');
+    pipe4?.classList.remove('active');
+    return;
+  }
+
+  const roundedDb = Math.round(inst || 0);
+  if (liveDbEl) {
+    liveDbEl.innerHTML = `${roundedDb}<small> dB</small>`;
+    if (roundedDb >= alertTh) {
+      liveDbEl.style.color = '#ef4444';
+    } else if (roundedDb >= alertTh - 6) {
+      liveDbEl.style.color = '#f59e0b';
+    } else {
+      liveDbEl.style.color = '#10b981';
+    }
+  }
+
+  if (isRec) {
+    if (ledDot) ledDot.className = 'sentry-led-dot led-recording';
+    const recTimer = document.getElementById('recTimer')?.textContent || '--:--';
+    if (statusText) statusText.textContent = isZh ? `🔴 突发噪音超标！自动录音存证中 ${recTimer}` : `🔴 Exceedance detected! Auto-recording ${recTimer}`;
+    if (deltaBar) {
+      deltaBar.className = 'sentry-delta-bar alert';
+      if (deltaText) {
+        if (autoRecTimeout) {
+          deltaText.textContent = isZh ? `⏱️ 噪音已回落，延时封存缓冲中 · 将在 ${autoRecAfterStopSeconds} 秒后归档加盖 SHA-256 指纹` : `⏱️ Sound dropped, hold buffer active · Sealing in ${autoRecAfterStopSeconds}s`;
+        } else {
+          deltaText.textContent = isZh ? `🔴 正在抓取超标声学证据 · 声音回落后将延时 ${autoRecAfterStopSeconds} 秒自动封存入库` : `🔴 Recording incident · Will auto-seal ${autoRecAfterStopSeconds}s after sound drops`;
+        }
+      }
+    }
+    pipe1?.classList.remove('active');
+    pipe2?.classList.remove('active');
+    pipe3?.classList.add('active');
+    pipe4?.classList.remove('active');
+  } else if (isAbove) {
+    if (ledDot) ledDot.className = 'sentry-led-dot led-triggered';
+    const aboveSec = autoRecAboveSince ? ((nowTs - autoRecAboveSince) / 1000).toFixed(1) : '0.0';
+    if (statusText) statusText.textContent = isZh ? `⚠️ 瞬时超标 +${roundedDb - alertTh} dB！判定中 ${aboveSec}s / ${autoRecMinSeconds}s` : `⚠️ Spike +${roundedDb - alertTh} dB! Holding ${aboveSec}s / ${autoRecMinSeconds}s`;
+    if (deltaBar) {
+      deltaBar.className = 'sentry-delta-bar warn';
+      if (deltaText) deltaText.textContent = isZh ? `⚠️ 噪音已达 ${roundedDb} dB (超标 +${roundedDb - alertTh} dB) · 持续满 ${autoRecMinSeconds} 秒将立即自动唤醒录音` : `⚠️ Noise at ${roundedDb} dB (exceeds by +${roundedDb - alertTh} dB) · Auto-recording triggers at ${autoRecMinSeconds}s`;
+    }
+    pipe1?.classList.remove('active');
+    pipe2?.classList.add('active');
+    pipe3?.classList.remove('active');
+    pipe4?.classList.remove('active');
+  } else {
+    if (ledDot) ledDot.className = 'sentry-led-dot led-standby';
+    if (statusText) statusText.textContent = isZh ? '🟢 静默守护中 · 实时监听突发噪音...' : '🟢 Standing by silently · Listening for noise spikes...';
+    const delta = Math.max(0, alertTh - roundedDb);
+    if (deltaBar) {
+      deltaBar.className = 'sentry-delta-bar';
+      if (deltaText) deltaText.textContent = isZh ? `🛡️ 当前分贝低于阈值 ${delta} dB · 环境平稳，安然入睡` : `🛡️ Current dB is ${delta} dB below threshold · Environment quiet`;
+    }
+    pipe1?.classList.add('active');
+    pipe2?.classList.remove('active');
+    pipe3?.classList.remove('active');
+    pipe4?.classList.remove('active');
+  }
 }
 
 function stopCameraPreview({silent=false}={}){
@@ -4710,7 +5169,8 @@ function loadState(){
     autoDayNightMode=s.autoDayNightMode??false;dayThresholdDb=s.dayThresholdDb??55;nightThresholdDb=s.nightThresholdDb??45;
     if(s.calibrationBaseline!==CALIBRATION_BASELINE&&typeof s.calOffset!=='number')calOffset=getCalibrationPreset(calibrationPresetKey).offset;
     weighting=['A','C','Z'].includes(s.weighting)?s.weighting:'A';timeWeight=s.timeWeight==='S'?'S':'F';
-    evidenceMode=['audio','video','photo'].includes(s.evidenceMode)?s.evidenceMode:'audio';
+    evidenceMode=['audio','video','photo','sentry'].includes(s.evidenceMode)?s.evidenceMode:'audio';
+    if(evidenceMode==='sentry') autoRecOnThreshold=true;
     placeLookupOn=s.placeLookupOn!==false;longRunPowerSaver=s.longRunPowerSaver!==false;googleMapsKey=s.googleMapsKey||'';amapKey=s.amapKey||'';baiduKey=s.baiduKey||DEFAULT_BAIDU_KEY;
     longMonitorPlan={autoStopMinutes:Number(s.longMonitorPlan?.autoStopMinutes)||0,eventThresholdDb:Number(s.longMonitorPlan?.eventThresholdDb)||75};
     if (membershipState.active && membershipState.plan && membershipState.plan !== 'free') {
@@ -5599,7 +6059,7 @@ async function toggleMon(opts={}){
       document.getElementById('stxt').textContent=t('ui.monitoring');
       showCapTemporarily('info',t('ui.monitoring'),appLanguage!=='zh-CN'?'Live mic analysis is running on this device. Tap Record to save evidence.':'正在本机实时分析麦克风输入；点击录制可保存本次会话证据。','LIVE');
       trackEvent('monitor_start',{mode:evidenceMode,weighting,timeWeight});
-      updateWeightUi();requestWakeLock();getLoc();tick();
+      updateWeightUi();requestWakeLock();getLoc();syncEvidenceModeUi();tick();
     }catch(e){
       const detail=mediaErrorDetail(e);
       const msg=detail?`${explainMediaError(e)} (${detail})`:explainMediaError(e);
@@ -5705,6 +6165,9 @@ function tick(){
       ?`Now ${Math.round(inst)} ${weightLabel()} · ${lv.l} · above ${alertTh} dB`
       :`当前 ${Math.round(inst)} ${weightLabel()}，${lv.l}，已超过阈值 ${alertTh} dB`;
   }
+
+  // ── Update Sentry Surveillance HUD ──
+  if(typeof updateSentrySurveillanceHud==='function') updateSentrySurveillanceHud(inst, isAbove, nowTs);
 
   // ── Auto-record on threshold exceed ──
   if(autoRecOnThreshold){
@@ -6018,11 +6481,17 @@ async function saveRec(){
     loc:curLoc?{...curLoc}:null,note:document.getElementById('ann').value.trim(),
     hasVid:recHasVideo,mediaKind:recHasVideo?'video':'audio',mimeType:blob.type,dur,snap:[...trendH],weighting,timeWeight,
     events:[...noiseEvents],longMonitorPlan:{...longMonitorPlan},
+    isSentry:!!(autoRecOnThreshold||evidenceMode==='sentry'),
     leqDb:Math.round(leq),l5Db:Math.round(lnStats.L5||0),l10Db:Math.round(lnStats.L10||0),l50Db:Math.round(lnStats.L50||0),l90Db:Math.round(lnStats.L90||0),l95Db:Math.round(lnStats.L95||0),
     hashes:{mediaSha256:mediaHash,metadataSha256:metadataHash},metadata:recordMetadata,
     calibration:{offsetDb:calOffset,micGainDb,errorRange:calibrationErrorRange(),preset:calibrationPresetKey,history:calibrationHistory[0]||null}});
   recHasVideo=false;
   saveState();renderRecs();
+  if(typeof renderSentryIncidentsList==='function') renderSentryIncidentsList();
+  if(autoRecOnThreshold||evidenceMode==='sentry'){
+    const pipe4=document.getElementById('pipeStep4');
+    if(pipe4){pipe4.classList.add('active');setTimeout(()=>{if(!isRec)pipe4.classList.remove('active');},4000);}
+  }
   refreshStorageHealth({silent:true});
   const savedKind=DB.records[0]?.hasVid?t('media.video'):t('media.audio');
   const recordingSaveStatus=persisted?'persistent':'temporary';
@@ -6036,7 +6505,10 @@ async function saveRec(){
   }
   setTimeout(() => {
     if (DB.records && DB.records.length) {
-      openReportPreviewModal([DB.records[0]], false);
+      // Overnight Sentry mode does NOT pop up full modal to avoid waking sleeping user
+      if (!autoRecOnThreshold && evidenceMode !== 'sentry') {
+        openReportPreviewModal([DB.records[0]], false);
+      }
     }
   }, 450);
 }
@@ -9038,14 +9510,15 @@ function triggerSentryModeHook() {
     openSentryGatingModal();
     return;
   }
-  togAutoRec();
-  if (autoRecOnThreshold) {
-    toast(t('modes.sentry.startedToast', '🌙 Sentry Mode active: Auto-records on threshold exceed'), 'info', 4000);
-    if (!isMon) {
-      toast(t('modes.sentry.tipToast', 'Tip: Click [Start Monitoring] to begin night surveillance'), 'warn', 5000);
-    }
+  if (evidenceMode === 'sentry') {
+    setEvidenceMode('audio');
+    toast(appLanguage === 'zh-CN' ? '🌙 哨兵模式已停止' : '🌙 Sentry Mode stopped', 'info', 3000);
   } else {
-    toast(t('modes.sentry.stoppedToast', '🌙 Sentry Mode stopped'), 'info', 3000);
+    setEvidenceMode('sentry');
+    toast(appLanguage === 'zh-CN' ? '🌙 哨兵工作台已激活：超标自动录音入库' : '🌙 Sentry Console active: Auto-records on threshold exceed', 'info', 4000);
+    if (!isMon) {
+      toast(appLanguage === 'zh-CN' ? '提示：点击【启动夜间哨兵守护】开启麦克风监听' : 'Tip: Click [Start Sentry Surveillance] to begin night surveillance', 'warn', 5000);
+    }
   }
 }
 
