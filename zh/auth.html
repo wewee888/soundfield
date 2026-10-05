@@ -416,30 +416,30 @@
             </div>
           </div>
 
-          <!-- 存储与多端云同步卡片 -->
+          <!-- 本地安全存储与证据保险库卡片 -->
           <div class="dash-card dash-storage-card">
             <div class="dash-card-header">
               <h3>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-                存储健康度与云同步
+                本地证据存储与保险库
               </h3>
-              <span class="dash-card-badge" data-storage-badge>本地优先</span>
+              <span class="dash-card-badge" data-storage-badge>零知识加密</span>
             </div>
             <div class="dash-storage-body">
               <div class="storage-meter-wrap">
                 <div class="storage-meter-labels">
                   <span class="storage-usage-text" data-storage-usage-text>正在计算存储占用...</span>
-                  <span class="storage-quota-text" data-storage-quota-text>本地 IndexedDB + 云端配额</span>
+                  <span class="storage-quota-text" data-storage-quota-text>本地 IndexedDB 安全存储（私密不上传）</span>
                 </div>
                 <div class="storage-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                   <div class="storage-progress-fill" data-storage-fill style="width: 2%;"></div>
                 </div>
               </div>
-              <p class="storage-note">录音片段、高清视频与声学水印照片默认保存在当前浏览器中；Pro/Team 账户支持多设备端到端加密同步元数据与模板。</p>
+              <p class="storage-note">录音片段、高清视频与声学水印照片严格保存在当前设备本地；所有测量数据百分之百属于用户，绝不上载至外部服务器。</p>
               <div class="storage-actions">
                 <button type="button" class="btn-outline btn-sm" id="btn-sync-cloud">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                  立即同步元数据
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  导出证据安全备份
                 </button>
                 <button type="button" class="btn-ghost btn-sm" id="btn-check-storage">刷新存储状态</button>
               </div>
@@ -645,9 +645,9 @@
 
       <div class="footer-meta">
         <span>© SOUNDTEST.PRO · 专业级声学测量与现场数字存证系统 · 严格遵循 IEC 61672 声学测定规范。</span>
-        <div style="font-size:12px;color:var(--soft);margin-top:6px;">官方客服支持：<a href="mailto:hi@soundtest.pro" style="color:var(--accent);text-underline-offset:2px;">hi@soundtest.pro</a>（24 小时内快速响应）</div>
+        <div style="font-size:12px;color:var(--soft);margin-top:6px;">官方客户支持邮箱：<a href="mailto:support@soundtest.pro" style="color:var(--accent);text-underline-offset:2px;font-weight:600;">support@soundtest.pro</a> / <a href="mailto:hi@soundtest.pro" style="color:var(--accent);text-underline-offset:2px;">hi@soundtest.pro</a>（24小时内极速回复）</div>
         <div class="footer-social" aria-label="联系与支持">
-          <a href="mailto:hi@soundtest.pro" aria-label="邮箱支持"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="mailto:support@soundtest.pro" aria-label="Customer Support (support@soundtest.pro)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
           <a href="changelog.html" aria-label="更新日志"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
           <a href="standards.html" aria-label="国家标准参考"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
         </div>

@@ -32,7 +32,13 @@
 /samples.html /samples/ 302
 /accuracy.html /accuracy/ 302
 /auth.html /auth/ 302
-/compliance.html /compliance/ 302
+/compliance.html /terms.html 301
+/compliance /terms.html 301
+/compliance/ /terms.html 301
+/zh/compliance.html /zh/terms.html 301
+/zh/compliance/ /zh/terms.html 301
+/en/compliance.html /terms.html 301
+/en/compliance/ /terms.html 301
 /download.html /download/ 302
 /launch-metrics.html /launch-metrics/ 302
 /monetization.html /monetization/ 302
