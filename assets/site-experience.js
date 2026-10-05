@@ -1552,6 +1552,7 @@
     initBookmarkQuickAccess();
     initPwaInstallBanner();
     initEchoHudLiveSimulator();
+    initAppPreloading();
   });
 
   function initPwaInstallBanner() {
@@ -2245,6 +2246,92 @@
         showBookmarkToast(curI18n.toast);
       }
     });
+  }
+
+  /* ── Ultra-Fast Tool Preloading for 0-Latency Monitoring Launch (PC & Mobile) ── */
+  function initAppPreloading() {
+    const pathname = window.location.pathname || '';
+    if (pathname.endsWith('soundtest.html') || pathname.endsWith('camera.html')) return;
+
+    // Detect if we are in a locale subdirectory (e.g. /zh/, /en/, /de/) or /use-cases/
+    const isSubdir = !/^\/(?:index\.html)?$/.test(pathname) && (/^\/([a-z]{2})\//.test(pathname) || /^\/use-cases\//.test(pathname));
+    const prefix = isSubdir ? '../' : '';
+
+    const criticalUrls = [
+      prefix + 'soundtest.html',
+      prefix + 'assets/soundtest.css',
+      prefix + 'assets/layout-flow.css',
+      prefix + 'camera.html',
+      prefix + 'assets/camera.css',
+      prefix + 'assets/camera.js'
+    ];
+
+    const prefetchUrl = (url, asType = '') => {
+      try {
+        if (document.querySelector(`link[rel="prefetch"][href="${url}"]`)) return;
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = url;
+        if (asType) link.as = asType;
+        document.head.appendChild(link);
+      } catch (_) {}
+    };
+
+    const fetchBackground = (url) => {
+      try {
+        if ('fetch' in window) {
+          fetch(url, { priority: 'low', cache: 'force-cache' }).catch(() => {});
+        }
+      } catch (_) {}
+    };
+
+    let preloaded = false;
+    const doPreload = () => {
+      if (preloaded) return;
+      preloaded = true;
+      criticalUrls.forEach(url => {
+        prefetchUrl(url);
+        fetchBackground(url);
+      });
+    };
+
+    // 1. Idle / background preload after initial page render (600ms on desktop / mobile)
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(doPreload, { timeout: 2000 });
+    } else {
+      setTimeout(doPreload, 800);
+    }
+
+    // 2. High-intent triggers: On hover or touchstart on any monitor / camera buttons
+    const triggerSelectors = [
+      'a[href*="soundtest.html"]',
+      'a[href*="camera.html"]',
+      '.hero-cta',
+      '.app-btn',
+      '.nav-btn-highlight',
+      '[data-preload-app]',
+      '.primary-cta',
+      '.action-bar-btn'
+    ];
+
+    const eagerPreload = () => {
+      doPreload();
+      try {
+        if (!document.querySelector('link[rel="prerender"][href*="soundtest.html"]')) {
+          const prerender = document.createElement('link');
+          prerender.rel = 'prerender';
+          prerender.href = prefix + 'soundtest.html';
+          document.head.appendChild(prerender);
+        }
+      } catch (_) {}
+    };
+
+    try {
+      document.querySelectorAll(triggerSelectors.join(',')).forEach(el => {
+        el.addEventListener('pointerenter', eagerPreload, { once: true, passive: true });
+        el.addEventListener('touchstart', eagerPreload, { once: true, passive: true });
+      });
+    } catch (_) {}
   }
 })();
 

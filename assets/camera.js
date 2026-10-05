@@ -233,9 +233,20 @@
     requestAnimationFrame(sampleAudioLoop);
   }
 
-  /* ── Geolocation & Reverse Geocoding with Fallback ── */
-  async function initLocation() {
-    if (hudGeo) hudGeo.textContent = t('正在获取 GPS 坐标与现场地址…', 'Locating via GPS & network…');
+  /* ── Geolocation & Reverse Geocoding with Fallback & Interactive Refresh ── */
+  let isLocating = false;
+
+  async function refreshLocation(opts = {}) {
+    const { forceGps = true, showToastNotice = false } = (typeof opts === 'boolean' ? { showToastNotice: opts } : opts);
+    if (isLocating) return;
+    isLocating = true;
+
+    const refreshBtn = document.getElementById('refreshGeoBtn');
+    const hudBtn = document.getElementById('hudRefreshGeoBtn');
+    refreshBtn?.querySelector('svg')?.classList.add('is-refreshing');
+    hudBtn?.querySelector('svg')?.classList.add('is-refreshing');
+
+    if (hudGeo) hudGeo.textContent = t('正在获取现场最新卫星 GPS 与地址…', 'Acquiring high-accuracy GPS & address…');
 
     const fallbackToIp = async () => {
       try {
@@ -248,7 +259,7 @@
               lng: parseFloat(data.lng),
               acc: 2000,
               address: data.address || data.name || data.city || 'IP Network Location',
-              provider: data.provider || 'IP'
+              provider: 'IP'
             };
             updateHudGeo();
             return true;
@@ -260,8 +271,15 @@
       return false;
     };
 
+    const doneLocating = () => {
+      isLocating = false;
+      refreshBtn?.querySelector('svg')?.classList.remove('is-refreshing');
+      hudBtn?.querySelector('svg')?.classList.remove('is-refreshing');
+    };
+
     if (!navigator.geolocation) {
       await fallbackToIp();
+      doneLocating();
       return;
     }
 
@@ -285,17 +303,97 @@
             }
           }
         } catch (_) {}
+
         updateHudGeo();
-      },
-      async (err) => {
-        console.warn('[Geolocation GPS failed, trying IP]', err);
-        const ok = await fallbackToIp();
-        if (!ok && hudGeo) {
-          hudGeo.textContent = t('GPS 信号较弱 · 未获取详细地址', 'GPS unavailable · Address unlisted');
+
+        // Sync fresh GPS to localStorage for soundtest.html and future camera visits
+        try {
+          localStorage.setItem('soundtest_last_gps_v1', JSON.stringify({ ...curLocation, time: Date.now() }));
+          const rawSf = localStorage.getItem(STORAGE_KEY);
+          const parsedSf = rawSf ? JSON.parse(rawSf) : {};
+          parsedSf.curLoc = {
+            lat: curLocation.lat,
+            lng: curLocation.lng,
+            acc: curLocation.acc,
+            provider: 'GPS',
+            placeText: curLocation.address,
+            text: `${curLocation.lat.toFixed(4)}°N, ${curLocation.lng.toFixed(4)}°E (±${curLocation.acc}m)`,
+            t: Date.now()
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(parsedSf));
+        } catch (_) {}
+
+        doneLocating();
+
+        if (showToastNotice) {
+          const accStr = `±${curLocation.acc}m`;
+          const toastMsg = curLocation.address 
+            ? t(`已更新至高精度定位：${curLocation.address} (${accStr})`, `Updated to GPS: ${curLocation.address} (${accStr})`)
+            : t(`已更新至现场卫星定位 (${accStr})`, `Updated to GPS coordinates (${accStr})`);
+          showToast(toastMsg, 3200);
         }
       },
-      { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }
+      async (err) => {
+        console.warn('[Geolocation GPS failed, trying network/IP fallback]', err);
+        if (err?.code === 1) {
+          // Permission denied
+          doneLocating();
+          await fallbackToIp();
+          showToast(t('定位权限未开启，请在浏览器中允许“位置信息”以获取精准地址', 'Location permission denied. Please allow in browser settings.'), 4500);
+        } else {
+          // Try low accuracy before falling back to IP
+          navigator.geolocation.getCurrentPosition(
+            async (lowPos) => {
+              curLocation = {
+                lat: parseFloat(lowPos.coords.latitude.toFixed(6)),
+                lng: parseFloat(lowPos.coords.longitude.toFixed(6)),
+                acc: Math.round(lowPos.coords.accuracy || 100),
+                address: '',
+                provider: 'Network'
+              };
+              try {
+                const res = await fetch(`/api/geo/reverse?lat=${curLocation.lat}&lng=${curLocation.lng}&lang=${encodeURIComponent(lang)}`);
+                if (res.ok) {
+                  const data = await res.json();
+                  if (data && (data.name || data.address)) curLocation.address = data.address || data.name;
+                }
+              } catch (_) {}
+              updateHudGeo();
+              doneLocating();
+              if (showToastNotice) {
+                showToast(t(`已更新基站网络定位 (±${curLocation.acc}m)`, `Updated network location (±${curLocation.acc}m)`), 2800);
+              }
+            },
+            async () => {
+              const ok = await fallbackToIp();
+              doneLocating();
+              if (showToastNotice) {
+                showToast(t('卫星信号较弱，已回退为网络粗略定位', 'Weak GPS signal, fell back to network location.'), 3000);
+              }
+            },
+            { enableHighAccuracy: false, timeout: 6000, maximumAge: 0 }
+          );
+        }
+      },
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
     );
+  }
+
+  async function initLocation() {
+    // 1. Immediately read last known accurate location from localStorage if recent (< 10 mins)
+    try {
+      const lastGpsRaw = localStorage.getItem('soundtest_last_gps_v1');
+      if (lastGpsRaw) {
+        const lastGps = JSON.parse(lastGpsRaw);
+        if (lastGps && lastGps.lat && lastGps.acc <= 500 && (Date.now() - (lastGps.time || 0) < 600000)) {
+          curLocation = lastGps;
+          updateHudGeo();
+        }
+      }
+    } catch (_) {}
+
+    // 2. Always immediately trigger a fresh GPS hardware query
+    refreshLocation({ forceGps: true, showToastNotice: false });
   }
 
   function updateHudGeo() {
@@ -529,6 +627,42 @@
   // Hash Token initialization
   computeSha256(`INIT-${Date.now()}`).then(h => {
     if (hudHash) hudHash.textContent = `SHA-256 [${h.slice(0, 10)}…]`;
+  });
+
+  const refreshGeoBtn = document.getElementById('refreshGeoBtn');
+  const hudRefreshGeoBtn = document.getElementById('hudRefreshGeoBtn');
+  const hudGeoRow = document.getElementById('hudGeoRow');
+
+  if (refreshGeoBtn) {
+    refreshGeoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      refreshLocation({ forceGps: true, showToastNotice: true });
+    });
+  }
+
+  if (hudRefreshGeoBtn) {
+    hudRefreshGeoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      refreshLocation({ forceGps: true, showToastNotice: true });
+    });
+  }
+
+  if (hudGeoRow) {
+    hudGeoRow.addEventListener('click', (e) => {
+      if (e.target.closest('#hudRefreshGeoBtn')) return;
+      refreshLocation({ forceGps: true, showToastNotice: true });
+    });
+  }
+
+  // Auto-refresh when returning to tab
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      if (!curLocation || curLocation.acc >= 1000 || curLocation.provider === 'IP') {
+        refreshLocation({ forceGps: true, showToastNotice: false });
+      }
+    }
   });
 
   // Startup

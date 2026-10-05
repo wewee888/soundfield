@@ -43,7 +43,7 @@
     · 重复的 -2 后缀函数（togDayNightThreshold2 / setSustainedAlertSec2 / setAutoRecMinSec2 / setAutoRecAfterStopSec2 / togAutoRec2）已合并为单一函数，DOM ID 保留以兼容
   任何时候拆这部分，请严格按函数逐个迁移 + 全量回归测试。
 -->
-<link rel="stylesheet" href="assets/soundtest.css?v=20261004b">
+<link rel="stylesheet" href="assets/soundtest.css?v=20261005e">
 <style>
 /* Defensive ad suppression & critical layout overrides */
 .live-monitor-notice{display:none!important}
@@ -1002,7 +1002,7 @@
       <div class="watermark-stat"><span>PEAK</span><strong id="watermarkPeak">--</strong></div>
       <div class="watermark-stat"><span>MIN</span><strong id="watermarkMin">--</strong></div>
     </div>
-    <div class="watermark-meta">
+    <div class="watermark-meta" id="watermarkMetaBox" onclick="getLoc({forceRefresh:true})" title="点击重新获取高精度 GPS 现场定位" style="cursor:pointer">
       <strong id="watermarkPlace">位置待获取</strong>
       <span id="watermarkGps">GPS 坐标：未获取</span>
       <span id="watermarkCalibration">设备/校准：--</span>
@@ -1016,7 +1016,7 @@
     </div>
     <button class="watermark-primary" id="watermarkPrimaryBtn" type="button" onclick="primaryEvidenceAction()">拍照取证</button>
     <div class="watermark-side-actions end">
-      <button class="watermark-icon-btn" id="watermarkLocationBtn" type="button" onclick="getLoc()">刷新地址</button>
+      <button class="watermark-icon-btn" id="watermarkLocationBtn" type="button" onclick="getLoc({forceRefresh:true})">刷新地址</button>
       <button class="watermark-icon-btn" id="watermarkRecordsBtn" type="button" onclick="sw('r');closeWatermarkCamera()">记录</button>
     </div>
   </div>
@@ -3654,8 +3654,8 @@ async function openWatermarkCamera(mode=evidenceMode){
   if(!isMon){
     toggleMon({fromAuthModal:true}).catch(err=>console.warn('[watermarkCamera] mic start error:', err));
   }
-  if(!curLoc){
-    getLoc();
+  if(true){ // Always refresh location on entering camera
+    getLoc({forceRefresh:true});
   }
   syncWatermarkCameraUi();
 }
@@ -6147,6 +6147,17 @@ async function applyPosition(p,source='GPS'){
     updateCameraOverlay();
     syncWatermarkCameraUi();
   }
+  if(curLoc && curLoc.acc < 500){
+    try {
+      localStorage.setItem('soundtest_last_gps_v1', JSON.stringify({
+        lat: curLoc.lat,
+        lng: curLoc.lng,
+        acc: curLoc.acc,
+        address: curLoc.place?.name || curLoc.place?.address || '',
+        time: Date.now()
+      }));
+    } catch (_) {}
+  }
 }
 
 function stopLocationRefine(){
@@ -6197,7 +6208,7 @@ async function fallbackIpLocation(){
   return false;
 }
 
-function getLoc(){
+function getLoc(opts={forceRefresh:true}){
   if(!supports.geolocation){
     fallbackIpLocation().then(ok=>{
       if(!ok){
@@ -6222,6 +6233,28 @@ function getLoc(){
   setPlaceText(null,placeLookupOn?'loading':'off');
   setPlaceProviderStatus(baiduKey?(appLanguage!=='zh-CN'?'Map service: Baidu will be tried first.':'地图服务：将优先调用百度。'):(appLanguage!=='zh-CN'?'Map service: Baidu key missing, public fallback only.':'地图服务：未配置百度 Key，只能使用公开地图兜底。'),baiduKey?'info':'err');
 
+  const forceRefresh = Boolean(opts && opts.forceRefresh);
+  if(!curLoc || curLoc.acc >= 1000){
+    try {
+      const savedGps = localStorage.getItem('soundtest_last_gps_v1');
+      if (savedGps) {
+        const parsed = JSON.parse(savedGps);
+        if (parsed && parsed.lat && parsed.acc < 500 && (Date.now() - (parsed.time || 0) < 600000)) {
+          curLoc = {
+            lat: parsed.lat,
+            lng: parsed.lng,
+            acc: parsed.acc,
+            source: 'GPS',
+            place: parsed.address ? { name: parsed.address, address: parsed.address, provider: 'GPS' } : null
+          };
+          setPlaceText(curLoc.place);
+          updateMapLinks(curLoc);
+          updateCameraOverlay();
+          syncWatermarkCameraUi();
+        }
+      }
+    } catch (_) {}
+  }
   let resolved=false;
 
   const tryLowAccuracy=()=>{
@@ -6256,7 +6289,7 @@ function getLoc(){
     );
   };
 
-  const highOpts={enableHighAccuracy:true,timeout:7000,maximumAge:60000};
+  const highOpts={enableHighAccuracy:true,timeout:12000,maximumAge:forceRefresh?0:5000};
   navigator.geolocation.getCurrentPosition(
     p=>{
       resolved=true;
@@ -9290,6 +9323,9 @@ document.addEventListener('visibilitychange',()=>{
     if(isMon&&shouldHoldWakeLock())requestWakeLock();
     if(isMon&&audioCtx&&audioCtx.state!=='running'){
       audioCtx.resume().catch(()=>{});
+      if(!curLoc || curLoc.acc >= 1000 || curLoc.source === 'IP' || (typeof curLoc.source === 'string' && curLoc.source.includes('IP'))){
+        if(typeof getLoc==='function')getLoc({forceRefresh:true});
+      }
     }
   }
 });
