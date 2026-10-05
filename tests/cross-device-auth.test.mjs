@@ -292,4 +292,30 @@ test('assets/site-auth.js includes openUpgradePayModal and guards paid features'
   assert.ok(cssContent.includes('.auth-pay-plan-btn'), '.auth-pay-plan-btn style must be defined');
 });
 
+test('soundtest.html Pro upgrade modal removes sample report link and locks Chinese users to WeChat Pay CNY tier', async () => {
+  const htmlPath = path.join(rootDir, 'soundtest.html');
+  const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+
+  // Verify pumPreviewLink is removed
+  assert.ok(!htmlContent.includes('pumPreviewLink'), 'pumPreviewLink must be removed so it does not distract users from payment');
+  assert.ok(!htmlContent.includes('查看正式报告样例'), 'Link text 查看正式报告样例 must not appear in upgrade modal');
+
+  // Verify isChinaPricingUser prioritizes Chinese language
+  assert.ok(htmlContent.includes("appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh'))"), 'isChinaPricingUser must prioritize Chinese language');
+
+  // Verify pricing-tier endpoint honors Chinese language parameter
+  const pricingTierPath = path.join(rootDir, 'functions/api/geo/pricing-tier.js');
+  const pricingTierModule = await import(`file://${pricingTierPath.replace(/\\/g, '/')}`);
+  const zhReq = new Request('https://soundtest.pro/api/geo/pricing-tier?lang=zh-CN', {
+    headers: { 'cf-ipcountry': 'US' } // Even if user is on US proxy
+  });
+  const zhRes = await pricingTierModule.onRequestGet({ request: zhReq });
+  assert.equal(zhRes.status, 200);
+  const zhData = await zhRes.json();
+  assert.equal(zhData.isChinaIp, true, 'isChinaIp should be true for Chinese language request');
+  assert.equal(zhData.currency, 'CNY', 'Currency should be CNY for Chinese language request');
+  assert.equal(zhData.pricingTier, 'china_test');
+});
+
+
 

@@ -43,20 +43,26 @@ async function handlePricingRequest(context) {
   const region = cf.region || '';
   const colo = cf.colo || '';
 
-  // Determine if mainland China strictly by IP country
-  const isChinaIp = (country === 'CN');
+  // Determine if mainland China or Chinese locale user (e.g. users behind proxy)
+  const url = new URL(request.url);
+  const langParam = url.searchParams.get('lang') || '';
+  const acceptLang = String(request.headers.get('accept-language') || '').toLowerCase();
+  const isZh = langParam.startsWith('zh') || acceptLang.includes('zh') || (request.headers.get('referer') || '').includes('/zh');
 
-  if (isChinaIp) {
+  const isChinaIp = (country === 'CN');
+  const isChinaTier = isChinaIp || isZh;
+
+  if (isChinaTier) {
     return json({
       ok: true,
       clientIp,
-      country: 'CN',
+      country: isChinaIp ? 'CN' : country,
       city,
       region,
-      flag: '🇨🇳',
+      flag: isChinaIp ? '🇨🇳' : (COUNTRY_FLAGS[country] || '🌐'),
       isChinaIp: true,
       pricingTier: 'china_test',
-      tierName: '中国大陆测试定价区',
+      tierName: '中国及中文区专属定价',
       currency: 'CNY',
       symbol: '¥',
       currencySymbol: '¥',

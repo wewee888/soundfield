@@ -41,17 +41,19 @@ export async function onRequestPost(context) {
     const cfg = PLAN_CONFIGS[plan] || PLAN_CONFIGS.single;
 
     // Strict IP Country & Geo Pricing Enforcement:
-    // Mainland China visitors get CNY test pricing.
-    // Overseas visitors (US, GB, JP, etc.) MUST pay USD via Creem.io and are blocked here.
+    // Chinese users get CNY domestic pricing.
+    // Pure overseas visitors (US, GB, JP, etc. on non-Chinese versions) pay USD via Creem.io and are blocked here.
     const country = String(request.cf?.country || request.headers.get('cf-ipcountry') || '').toUpperCase();
     const host = request.headers.get('host') || '';
     const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
+    const acceptLang = String(request.headers.get('accept-language') || '').toLowerCase();
+    const isZh = String(body.lang || '').startsWith('zh') || acceptLang.includes('zh') || (request.headers.get('referer') || '').includes('/zh');
 
-    if (!isLocalhost && country && country !== 'CN') {
+    if (!isLocalhost && country && country !== 'CN' && !isZh) {
       return json({
         ok: false,
         error: 'geo_pricing_restricted',
-        message: '人民币测试价格仅支持中国大陆境内网络 IP 访问 / CNY test pricing is strictly restricted to mainland China IPs.',
+        message: '人民币测试价格仅支持中国大陆及中文用户访问 / CNY test pricing is restricted to users in the Chinese region.',
         pricingTier: 'overseas',
         currency: 'USD',
         country,

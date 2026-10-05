@@ -866,8 +866,7 @@
     </button>
 
     <!-- Secondary Links -->
-    <div class="pum-footer-links">
-      <a href="javascript:void(0)" onclick="closeProUpgradeModal();openLatestReportPreview();" id="pumPreviewLink">📄 查看正式报告样例 ↗</a>
+    <div class="pum-footer-links" style="justify-content:center;">
       <a href="javascript:void(0)" onclick="closeProUpgradeModal();openSettingsDrawerTab('subscription');" id="pumVerifyLink">🔑 已购验证会员</a>
     </div>
 
@@ -4631,33 +4630,35 @@ function logoutMembership(){
 let clientGeoPricing = null;
 
 function isChinaPricingUser() {
-  if (clientGeoPricing && typeof clientGeoPricing.isChinaIp === 'boolean') {
-    return clientGeoPricing.isChinaIp;
+  // 1. Language is top priority: Chinese language version is strictly locked to WeChat Pay (CNY).
+  // Guarantees Chinese users (even behind VPN/proxies with foreign IPs) NEVER see English Creem links.
+  if (appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh'))) {
+    return true;
   }
-  try {
-    const cached = sessionStorage.getItem('sf_geo_pricing');
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      if (parsed && typeof parsed.isChinaIp === 'boolean') {
-        clientGeoPricing = parsed;
-        return parsed.isChinaIp;
-      }
-    }
-  } catch (_) {}
 
-  // Fallback before Edge geo returns:
+  // 2. If client geo data indicates China IP and user device is in Chinese locale:
+  if (clientGeoPricing && clientGeoPricing.isChinaIp === true) {
+    const navLang = navigator.language || '';
+    if (navLang.startsWith('zh')) return true;
+  }
+
+  // 3. Fallback before Edge geo returns: Chinese timezone + Chinese device language
   try {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-    if (tz.includes('Shanghai') || tz.includes('Chongqing') || tz.includes('Urumqi') || tz.includes('Beijing')) {
+    if ((tz.includes('Shanghai') || tz.includes('Chongqing') || tz.includes('Urumqi') || tz.includes('Beijing')) &&
+        (navigator.language && navigator.language.startsWith('zh'))) {
       return true;
     }
   } catch (_) {}
-  return (appLanguage === 'zh-CN') || (navigator.language && navigator.language.startsWith('zh'));
+
+  // 4. All overseas / international visitors (en, ja, de, fr, es, etc.) strictly use Creem (USD)
+  return false;
 }
 
 async function fetchClientGeoPricing() {
   try {
-    const res = await fetch('/api/geo/pricing-tier', { cache: 'no-store' });
+    const lang = encodeURIComponent(appLanguage || 'zh-CN');
+    const res = await fetch(`/api/geo/pricing-tier?lang=${lang}`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       if (data && data.ok) {
@@ -4688,68 +4689,80 @@ function selectProUpgradePlan(planId) {
 
 function updateProUpgradeModalPricing() {
   const isChina = isChinaPricingUser();
-  const isZh = (appLanguage === 'zh-CN');
+  const isZh = (appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh')));
 
   if (isChina) {
+    // Header & Badges
+    setText('pumBadge', '★ PRO 官方专业升级');
+    setText('pumTitle', '解锁 SOUNDTEST.PRO 全部专业权益');
+    setText('pumDesc', '生成物业/法理标准无水印存证底稿 · 加盖 SHA-256 数字指纹与 GPS 坐标');
+    setText('pumVerifyLink', '🔑 已购验证会员');
+
     // Yearly
     setText('pumPriceYearly', '¥19.90');
     setText('pumPriceOrigYearly', '¥59.90');
-    setText('pumPlanNameYearly', isZh ? 'PRO 会员年卡' : 'Pro Annual');
-    setText('pumPlanTagYearly', isZh ? '★ 最受欢迎 · 省67%' : '★ POPULAR · SAVE 67%');
-    setText('pumPlanDescYearly', isZh ? '365天无限次去除报告水印 · 夜间长时自动监测 · 现场公函维权模板' : 'Unlimited watermark removal for 365 days · Sentry mode · Legal report templates');
+    setText('pumPlanNameYearly', 'PRO 会员年卡');
+    setText('pumPlanTagYearly', '★ 最受欢迎 · 省67%');
+    setText('pumPlanDescYearly', '365天无限次去除报告水印 · 夜间长时自动监测 · 现场公函维权模板');
 
     // Lifetime
     setText('pumPriceLifetime', '¥39.90');
     setText('pumPriceOrigLifetime', '¥199.00');
-    setText('pumPlanNameLifetime', isZh ? '终身永久买断版' : 'Pro Lifetime');
-    setText('pumPlanTagLifetime', isZh ? '💎 终身买断' : '💎 LIFETIME');
-    setText('pumPlanDescLifetime', isZh ? '一次性付费永久有效 · 终身免费升级后续所有专业版功能与算法' : 'One-time payment · Lifetime free updates and all upcoming features');
+    setText('pumPlanNameLifetime', '终身永久买断版');
+    setText('pumPlanTagLifetime', '💎 终身买断');
+    setText('pumPlanDescLifetime', '一次性付费永久有效 · 终身免费升级后续所有专业版功能与算法');
 
     // Monthly
     setText('pumPriceMonthly', '¥9.90');
     setText('pumPriceOrigMonthly', '¥19.90');
-    setText('pumPlanNameMonthly', isZh ? 'PRO 会员月卡' : 'Pro Monthly');
-    setText('pumPlanTagMonthly', isZh ? '单月体验' : 'MONTHLY');
-    setText('pumPlanDescMonthly', isZh ? '30天全功能无限制使用 · 适合集中交涉与突发噪声取证周期' : '30-day intensive unlimited usage · Suitable for short disputes');
+    setText('pumPlanNameMonthly', 'PRO 会员月卡');
+    setText('pumPlanTagMonthly', '单月体验');
+    setText('pumPlanDescMonthly', '30天全功能无限制使用 · 适合集中交涉与突发噪声取证周期');
 
     // Single
     setText('pumPriceSingle', '¥3.90');
     setText('pumPriceOrigSingle', '¥9.90');
-    setText('pumPlanNameSingle', isZh ? '单次报告防伪解锁' : 'Single Pass');
-    setText('pumPlanTagSingle', isZh ? '单次可用' : 'SINGLE');
-    setText('pumPlanDescSingle', isZh ? '仅去除本次测定报告水印 · 加盖防伪数字指纹与时间戳' : 'Unlocks watermark removal for this report · SHA-256 digital stamp');
+    setText('pumPlanNameSingle', '单次报告防伪解锁');
+    setText('pumPlanTagSingle', '单次可用');
+    setText('pumPlanDescSingle', '仅去除本次测定报告水印 · 加盖防伪数字指纹与时间戳');
 
-    setText('pumSecurityNote', isZh ? '🔒 虎皮椒安全微信直付 · 支付成功自动激活 · 跨设备通用' : '🔒 WeChat Pay Safe Checkout · Instant Activation');
+    setText('pumSecurityNote', '🔒 微信安全直付 · 支付成功自动激活 · 跨设备通用');
   } else {
+    // Overseas / International Header & Badges
+    setText('pumBadge', '★ PRO OFFICIAL UPGRADE');
+    setText('pumTitle', 'Unlock Full Professional Evidentiary Power');
+    setText('pumDesc', 'Official unwatermarked reports · Cryptographic SHA-256 digital seals · GPS custody');
+    setText('pumVerifyLink', '🔑 Already purchased? Restore Pro');
+
     // Yearly
     setText('pumPriceYearly', '$24.99');
     setText('pumPriceOrigYearly', '$59.99');
-    setText('pumPlanNameYearly', isZh ? 'PRO 年度全能版' : 'Pro Annual');
-    setText('pumPlanTagYearly', isZh ? '★ 最推荐 · 省58%' : '★ BEST VALUE · SAVE 58%');
-    setText('pumPlanDescYearly', isZh ? '365天无限次去水印报告导出 + 夜间长时哨兵 + 现场公函' : '365-day all-access · Unlimited clean exports + Sentry mode + Dossier');
+    setText('pumPlanNameYearly', 'Pro Annual');
+    setText('pumPlanTagYearly', '★ BEST VALUE · SAVE 58%');
+    setText('pumPlanDescYearly', '365-day all-access · Unlimited clean exports + Sentry mode + Dossier');
 
     // Lifetime
     setText('pumPriceLifetime', '$79.99');
     setText('pumPriceOrigLifetime', '$199.00');
-    setText('pumPlanNameLifetime', isZh ? 'PRO 终身买断' : 'Pro Lifetime License');
-    setText('pumPlanTagLifetime', isZh ? '💎 终身买断' : '💎 LIFETIME');
-    setText('pumPlanDescLifetime', isZh ? '桌面/移动一次性买断，终身全功能免费享用' : 'One-time payment · Permanent access to all pro tools');
+    setText('pumPlanNameLifetime', 'Pro Lifetime License');
+    setText('pumPlanTagLifetime', '💎 LIFETIME');
+    setText('pumPlanDescLifetime', 'One-time payment · Permanent access to all pro tools');
 
     // Monthly
     setText('pumPriceMonthly', '$4.99');
     setText('pumPriceOrigMonthly', '$9.99');
-    setText('pumPlanNameMonthly', isZh ? 'PRO 月度会员' : 'Pro Monthly Pass');
-    setText('pumPlanTagMonthly', isZh ? '月卡' : 'MONTHLY');
-    setText('pumPlanDescMonthly', isZh ? '30天集中全功能监测与存证' : '30-day intensive monitoring and documentation');
+    setText('pumPlanNameMonthly', 'Pro Monthly Pass');
+    setText('pumPlanTagMonthly', 'MONTHLY');
+    setText('pumPlanDescMonthly', '30-day intensive monitoring and documentation');
 
     // Single
     setText('pumPriceSingle', '$1.99');
     setText('pumPriceOrigSingle', '$4.99');
-    setText('pumPlanNameSingle', isZh ? '单次取证报告解锁' : 'Single Forensic Pass');
-    setText('pumPlanTagSingle', isZh ? '单次可用' : 'SINGLE');
-    setText('pumPlanDescSingle', isZh ? '去除本次单份报告水印并加盖防伪指纹' : 'Clean export for single report with SHA-256 seal');
+    setText('pumPlanNameSingle', 'Single Forensic Pass');
+    setText('pumPlanTagSingle', 'SINGLE');
+    setText('pumPlanDescSingle', 'Clean export for single report with SHA-256 seal');
 
-    setText('pumSecurityNote', isZh ? '🔒 Creem.io 国际安全结算 · 支持 Visa/Mastercard/Apple Pay · 即时生效' : '🔒 Creem.io Secure Checkout · Cards, Apple Pay, Google Pay · Instant Access');
+    setText('pumSecurityNote', '🔒 Creem.io Secure Checkout · Cards, Apple Pay, Google Pay · Instant Access');
   }
 
   updateProUpgradeCtaText();
@@ -4757,7 +4770,6 @@ function updateProUpgradeModalPricing() {
 
 function updateProUpgradeCtaText() {
   const isChina = isChinaPricingUser();
-  const isZh = (appLanguage === 'zh-CN');
   const btnText = document.getElementById('pumCheckoutBtnText');
   const btnIcon = document.getElementById('pumCheckoutBtnIcon');
   if (!btnText) return;
@@ -4777,10 +4789,10 @@ function updateProUpgradeCtaText() {
 
   if (isChina) {
     if (btnIcon) btnIcon.textContent = '🟢';
-    btnText.textContent = isZh ? `立即微信安全开通 (${priceMapChina[selectedProUpgradePlan] || '¥19.90'})` : `Pay with WeChat (${priceMapChina[selectedProUpgradePlan] || '¥19.90'})`;
+    btnText.textContent = `立即微信安全开通 (${priceMapChina[selectedProUpgradePlan] || '¥19.90'})`;
   } else {
     if (btnIcon) btnIcon.textContent = '💳';
-    btnText.textContent = isZh ? `通过 Creem 国际结算开通 (${priceMapGlobal[selectedProUpgradePlan] || '$24.99'})` : `Checkout with Visa / Apple Pay (${priceMapGlobal[selectedProUpgradePlan] || '$24.99'})`;
+    btnText.textContent = `Checkout with Visa / Apple Pay (${priceMapGlobal[selectedProUpgradePlan] || '$24.99'})`;
   }
 }
 
@@ -10074,6 +10086,7 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
           plan,
           email: currentEmail,
           return_url: window.location.href,
+          lang: appLanguage,
         }),
       });
     const data = await res.json().catch(() => ({}));
