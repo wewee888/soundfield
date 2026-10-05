@@ -4630,29 +4630,30 @@ function logoutMembership(){
 let clientGeoPricing = null;
 
 function isChinaPricingUser() {
-  // 1. Language is top priority: Chinese language version is strictly locked to WeChat Pay (CNY).
-  // Guarantees Chinese users (even behind VPN/proxies with foreign IPs) NEVER see English Creem links.
-  if (appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh'))) {
-    return true;
+  const lang = String(appLanguage || '').toLowerCase();
+  const isZh = lang.startsWith('zh');
+
+  // 1. Language strictly controls pricing gateway:
+  // If the active app language is NOT Chinese (en, es, de, fr, ja, ko, vi, th),
+  // NEVER use China pricing / WeChat Pay! Strictly use Global USD ($) via Creem.
+  if (!isZh) {
+    return false;
   }
 
-  // 2. If client geo data indicates China IP and user device is in Chinese locale:
-  if (clientGeoPricing && clientGeoPricing.isChinaIp === true) {
-    const navLang = navigator.language || '';
-    if (navLang.startsWith('zh')) return true;
+  // 2. If client geo data indicates overseas IP, lock to USD ($)
+  if (clientGeoPricing && clientGeoPricing.isChinaIp === false) {
+    return false;
   }
-
-  // 3. Fallback before Edge geo returns: Chinese timezone + Chinese device language
   try {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-    if ((tz.includes('Shanghai') || tz.includes('Chongqing') || tz.includes('Urumqi') || tz.includes('Beijing')) &&
-        (navigator.language && navigator.language.startsWith('zh'))) {
-      return true;
+    const geoRaw = sessionStorage.getItem('sf_geo_pricing');
+    if (geoRaw) {
+      const geo = JSON.parse(geoRaw);
+      if (geo && geo.isChinaIp === false) return false;
     }
   } catch (_) {}
 
-  // 4. All overseas / international visitors (en, ja, de, fr, es, etc.) strictly use Creem (USD)
-  return false;
+  // 3. For Chinese language in China: WeChat Pay (CNY)
+  return true;
 }
 
 async function fetchClientGeoPricing() {
@@ -4687,112 +4688,453 @@ function selectProUpgradePlan(planId) {
   updateProUpgradeCtaText();
 }
 
-function updateProUpgradeModalPricing() {
-  const isChina = isChinaPricingUser();
-  const isZh = (appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh')));
-
-  if (isChina) {
-    // Header & Badges
-    setText('pumBadge', '★ PRO 官方专业升级');
-    setText('pumTitle', '解锁 SOUNDTEST.PRO 全部专业权益');
-    setText('pumDesc', '生成物业/法理标准无水印存证底稿 · 加盖 SHA-256 数字指纹与 GPS 坐标');
-    setText('pumVerifyLink', '🔑 已购验证会员');
-
-    // Yearly
-    setText('pumPriceYearly', '¥19.90');
-    setText('pumPriceOrigYearly', '¥59.90');
-    setText('pumPlanNameYearly', 'PRO 会员年卡');
-    setText('pumPlanTagYearly', '★ 最受欢迎 · 省67%');
-    setText('pumPlanDescYearly', '365天无限次去除报告水印 · 夜间长时自动监测 · 现场公函维权模板');
-
-    // Lifetime
-    setText('pumPriceLifetime', '¥39.90');
-    setText('pumPriceOrigLifetime', '¥199.00');
-    setText('pumPlanNameLifetime', '终身永久买断版');
-    setText('pumPlanTagLifetime', '💎 终身买断');
-    setText('pumPlanDescLifetime', '一次性付费永久有效 · 终身免费升级后续所有专业版功能与算法');
-
-    // Monthly
-    setText('pumPriceMonthly', '¥9.90');
-    setText('pumPriceOrigMonthly', '¥19.90');
-    setText('pumPlanNameMonthly', 'PRO 会员月卡');
-    setText('pumPlanTagMonthly', '单月体验');
-    setText('pumPlanDescMonthly', '30天全功能无限制使用 · 适合集中交涉与突发噪声取证周期');
-
-    // Single
-    setText('pumPriceSingle', '¥3.90');
-    setText('pumPriceOrigSingle', '¥9.90');
-    setText('pumPlanNameSingle', '单次报告防伪解锁');
-    setText('pumPlanTagSingle', '单次可用');
-    setText('pumPlanDescSingle', '仅去除本次测定报告水印 · 加盖防伪数字指纹与时间戳');
-
-    setText('pumSecurityNote', '🔒 微信安全直付 · 支付成功自动激活 · 跨设备通用');
-  } else {
-    // Overseas / International Header & Badges
-    setText('pumBadge', '★ PRO OFFICIAL UPGRADE');
-    setText('pumTitle', 'Unlock Full Professional Evidentiary Power');
-    setText('pumDesc', 'Official unwatermarked reports · Cryptographic SHA-256 digital seals · GPS custody');
-    setText('pumVerifyLink', '🔑 Already purchased? Restore Pro');
-
-    // Yearly
-    setText('pumPriceYearly', '$24.99');
-    setText('pumPriceOrigYearly', '$59.99');
-    setText('pumPlanNameYearly', 'Pro Annual');
-    setText('pumPlanTagYearly', '★ BEST VALUE · SAVE 58%');
-    setText('pumPlanDescYearly', '365-day all-access · Unlimited clean exports + Sentry mode + Dossier');
-
-    // Lifetime
-    setText('pumPriceLifetime', '$79.99');
-    setText('pumPriceOrigLifetime', '$199.00');
-    setText('pumPlanNameLifetime', 'Pro Lifetime License');
-    setText('pumPlanTagLifetime', '💎 LIFETIME');
-    setText('pumPlanDescLifetime', 'One-time payment · Permanent access to all pro tools');
-
-    // Monthly
-    setText('pumPriceMonthly', '$4.99');
-    setText('pumPriceOrigMonthly', '$9.99');
-    setText('pumPlanNameMonthly', 'Pro Monthly Pass');
-    setText('pumPlanTagMonthly', 'MONTHLY');
-    setText('pumPlanDescMonthly', '30-day intensive monitoring and documentation');
-
-    // Single
-    setText('pumPriceSingle', '$1.99');
-    setText('pumPriceOrigSingle', '$4.99');
-    setText('pumPlanNameSingle', 'Single Forensic Pass');
-    setText('pumPlanTagSingle', 'SINGLE');
-    setText('pumPlanDescSingle', 'Clean export for single report with SHA-256 seal');
-
-    setText('pumSecurityNote', '🔒 Creem.io Secure Checkout · Cards, Apple Pay, Google Pay · Instant Access');
+const PUM_I18N = {
+  zh: {
+    badge: '★ PRO 官方专业升级',
+    title: '解锁 SOUNDTEST.PRO 全部专业权益',
+    desc: '生成物业/法理标准无水印存证底稿 · 加盖 SHA-256 数字指纹与 GPS 坐标',
+    verifyLink: '🔑 已购验证会员',
+    securityNote: '🔒 微信安全直付 · 支付成功自动激活 · 跨设备通用',
+    plans: {
+      yearly: {
+        name: 'PRO 会员年卡',
+        tag: '★ 最受欢迎 · 省67%',
+        desc: '365天无限次去除报告水印 · 夜间长时自动监测 · 现场公函维权模板',
+        price: '¥19.90',
+        orig: '¥59.90',
+        cta: '立即微信安全开通 (¥19.90 / 年)'
+      },
+      lifetime: {
+        name: '终身永久买断版',
+        tag: '💎 终身买断',
+        desc: '一次性付费永久有效 · 终身免费升级后续所有专业版功能与算法',
+        price: '¥39.90',
+        orig: '¥199.00',
+        cta: '立即微信安全开通 (¥39.90)'
+      },
+      pro: {
+        name: 'PRO 会员月卡',
+        tag: '单月体验',
+        desc: '30天全功能无限制使用 · 适合集中交涉与突发噪声取证周期',
+        price: '¥9.90',
+        orig: '¥19.90',
+        cta: '立即微信安全开通 (¥9.90 / 月)'
+      },
+      single: {
+        name: '单次报告防伪解锁',
+        tag: '单次可用',
+        desc: '仅去除本次测定报告水印 · 加盖防伪数字指纹与时间戳',
+        price: '¥3.90',
+        orig: '¥9.90',
+        cta: '立即微信安全开通 (¥3.90)'
+      }
+    }
+  },
+  en: {
+    badge: '★ OFFICIAL PRO UPGRADE',
+    title: 'Unlock Full SOUNDTEST.PRO Professional Features',
+    desc: 'Generate unwatermarked legal/HOA evidence dossiers · Cryptographic SHA-256 digital seals & GPS custody',
+    verifyLink: '🔑 Already purchased? Restore Membership',
+    securityNote: '🔒 Secure Checkout via Creem · Visa, Mastercard, Apple Pay, Google Pay · Instant Activation',
+    plans: {
+      yearly: {
+        name: 'Pro Annual Pass',
+        tag: '★ MOST POPULAR · SAVE 58%',
+        desc: '365 days unlimited clean exports · Overnight Sentry surveillance · Legal notice templates',
+        price: '$24.99',
+        orig: '$59.99',
+        cta: 'Unlock Pro Annual ($24.99 / yr)'
+      },
+      lifetime: {
+        name: 'Pro Lifetime License',
+        tag: '💎 LIFETIME',
+        desc: 'One-time payment · Permanent access · Free updates for all future pro acoustic features',
+        price: '$79.99',
+        orig: '$199.00',
+        cta: 'Unlock Pro Lifetime ($79.99)'
+      },
+      pro: {
+        name: 'Pro Monthly Pass',
+        tag: 'MONTHLY',
+        desc: '30 days unlimited access · Ideal for intensive neighbor dispute and acute noise documentation',
+        price: '$4.99',
+        orig: '$9.99',
+        cta: 'Unlock Pro Monthly ($4.99 / mo)'
+      },
+      single: {
+        name: 'Single Report Forensic Pass',
+        tag: 'SINGLE USE',
+        desc: 'Remove watermark for this report only · Cryptographic SHA-256 digital stamp & verified timestamp',
+        price: '$1.99',
+        orig: '$4.99',
+        cta: 'Unlock Single Report ($1.99)'
+      }
+    }
+  },
+  es: {
+    badge: '★ ACTUALIZACIÓN OFICIAL PRO',
+    title: 'Desbloquee Todas las Funciones Profesionales de SOUNDTEST.PRO',
+    desc: 'Generación de informes probatorios sin marca de agua · Sellos criptográficos SHA-256 y custodia GPS',
+    verifyLink: '🔑 ¿Ya compraste? Restaurar Membresía',
+    securityNote: '🔒 Pago seguro con Creem · Visa, Mastercard, Apple Pay, Google Pay · Activación instantánea',
+    plans: {
+      yearly: {
+        name: 'Pase Anual Pro',
+        tag: '★ MÁS POPULAR · AHORRA 58%',
+        desc: '365 días de exportaciones ilimitadas sin marca de agua · Vigilancia Centinela nocturna · Plantillas legales',
+        price: '$24.99',
+        orig: '$59.99',
+        cta: 'Activar Pase Anual ($24.99 / año)'
+      },
+      lifetime: {
+        name: 'Licencia Vitalicia Pro',
+        tag: '💎 VITALICIO',
+        desc: 'Pago único y acceso permanente · Actualizaciones gratuitas de por vida para todas las herramientas acústicas',
+        price: '$79.99',
+        orig: '$199.00',
+        cta: 'Activar Licencia Vitalicia ($79.99)'
+      },
+      pro: {
+        name: 'Pase Mensual Pro',
+        tag: 'MENSUAL',
+        desc: '30 días de acceso ilimitado · Ideal para disputas de alquiler y documentación intensiva de ruido',
+        price: '$4.99',
+        orig: '$9.99',
+        cta: 'Activar Pase Mensual ($4.99 / mes)'
+      },
+      single: {
+        name: 'Desbloqueo de Informe Único',
+        tag: 'USO ÚNICO',
+        desc: 'Elimine la marca de agua solo de este informe · Sello digital SHA-256 y marca de tiempo verificada',
+        price: '$1.99',
+        orig: '$4.99',
+        cta: 'Desbloquear Informe Único ($1.99)'
+      }
+    }
+  },
+  fr: {
+    badge: '★ MISE À NIVEAU OFFICIELLE PRO',
+    title: 'Débloquez Toutes les Fonctionnalités Professionnelles de SOUNDTEST.PRO',
+    desc: 'Génération de dossiers sans filigrane · Sceaux cryptographiques SHA-256 et horodatage GPS certifié',
+    verifyLink: '🔑 Déjà acheté ? Restaurer l\'abonnement',
+    securityNote: '🔒 Paiement sécurisé via Creem · Visa, Mastercard, Apple Pay, Google Pay · Activation immédiate',
+    plans: {
+      yearly: {
+        name: 'Abonnement Annuel Pro',
+        tag: '★ LE PLUS POPULAIRE · ÉCONOMISEZ 58%',
+        desc: '365 jours d\'exports illimités sans filigrane · Mode Sentinelle nocturne · Modèles de mise en demeure formelle',
+        price: '$24.99',
+        orig: '$59.99',
+        cta: 'Activer l\'Annuel Pro ($24.99 / an)'
+      },
+      lifetime: {
+        name: 'Licence Pro à Vie',
+        tag: '💎 À VIE',
+        desc: 'Paiement unique, accès permanent · Mises à jour gratuites à vie pour tous les algorithmes acoustiques',
+        price: '$79.99',
+        orig: '$199.00',
+        cta: 'Activer la Licence à Vie ($79.99)'
+      },
+      pro: {
+        name: 'Pass Mensuel Pro',
+        tag: 'MENSUEL',
+        desc: '30 jours d\'accès complet · Idéal pour litiges de voisinage et constats de nuisances sonores aiguës',
+        price: '$4.99',
+        orig: '$9.99',
+        cta: 'Activer le Pass Mensuel ($4.99 / mois)'
+      },
+      single: {
+        name: 'Déblocage Rapport Unique',
+        tag: 'USAGE UNIQUE',
+        desc: 'Retirez le filigrane uniquement pour ce rapport · Sceau numérique SHA-256 et horodatage',
+        price: '$1.99',
+        orig: '$4.99',
+        cta: 'Débloquer ce Rapport ($1.99)'
+      }
+    }
+  },
+  de: {
+    badge: '★ OFFIZIELLES PRO-UPGRADE',
+    title: 'Schalten Sie Alle Professionellen SOUNDTEST.PRO Funktionen Frei',
+    desc: 'Erstellung wasserzeichenfreier Beweisdossiers · Kryptografische SHA-256-Siegel & GPS-Standortnachweis',
+    verifyLink: '🔑 Bereits gekauft? Mitgliedschaft wiederherstellen',
+    securityNote: '🔒 Sichere Zahlung via Creem · Visa, Mastercard, Apple Pay, Google Pay · Sofortige Freischaltung',
+    plans: {
+      yearly: {
+        name: 'Pro Jahrespass',
+        tag: '★ AM BELIEBTESTEN · 58% SPAREN',
+        desc: '365 Tage unbegrenzte Exporte ohne Wasserzeichen · Nächtliche Sentry-Überwachung · Mängelrüge-Vorlagen',
+        price: '$24.99',
+        orig: '$59.99',
+        cta: 'Pro Jahrespass Freischalten ($24.99 / Jahr)'
+      },
+      lifetime: {
+        name: 'Pro Lebenslange Lizenz',
+        tag: '💎 LEBENSLANG',
+        desc: 'Einmalzahlung, dauerhafter Zugriff · Lebenslang kostenlose Updates aller Akustikfunktionen & Algorithmen',
+        price: '$79.99',
+        orig: '$199.00',
+        cta: 'Lebenslange Lizenz Freischalten ($79.99)'
+      },
+      pro: {
+        name: 'Pro Monatspass',
+        tag: 'MONATLICH',
+        desc: '30 Tage uneingeschränkter Zugriff · Ideal für akute Mietminderungs- und Lärmbelästigungsstreitigkeiten',
+        price: '$4.99',
+        orig: '$9.99',
+        cta: 'Pro Monatspass Freischalten ($4.99 / Monat)'
+      },
+      single: {
+        name: 'Einzelbericht-Freischaltung',
+        tag: 'EINZELNUTZUNG',
+        desc: 'Entfernt das Wasserzeichen nur für diesen Bericht · Mit SHA-256-Siegel & Zeitstempel',
+        price: '$1.99',
+        orig: '$4.99',
+        cta: 'Diesen Bericht Freischalten ($1.99)'
+      }
+    }
+  },
+  ja: {
+    badge: '★ PRO 公式アップグレード',
+    title: 'SOUNDTEST.PRO のすべてのプロ証拠機能をアンロック',
+    desc: '透かしなしの提出用レポート作成 · SHA-256暗号化デジタル刻印＆GPS位置情報',
+    verifyLink: '🔑 ご購入済みですか？ 会員権限を復元',
+    securityNote: '🔒 Creem.io 安全決済 · Visa, Mastercard, Apple Pay, Google Pay · 即時自動反映',
+    plans: {
+      yearly: {
+        name: 'PRO 年間パス',
+        tag: '★ 一番人気 · 58%OFF',
+        desc: '365日間無制限の透かしなしPDF出力 · 夜間長時間自動セントリー監視 · 騒音苦情申出公文書テンプレート',
+        price: '$24.99',
+        orig: '$59.99',
+        cta: 'PRO 年間パスを開通 ($24.99 / 年)'
+      },
+      lifetime: {
+        name: 'PRO 永久買い切りライセンス',
+        tag: '💎 永久買い切り',
+        desc: '一回のお支払いで永久利用可能 · 将来追加される全プロ機能＆音響アルゴリズムの永続無料アップデート',
+        price: '$79.99',
+        orig: '$199.00',
+        cta: '永久買い切りライセンスを購入 ($79.99)'
+      },
+      pro: {
+        name: 'PRO 月間パス',
+        tag: '1ヶ月体験',
+        desc: '30日間全機能が無制限に利用可能 · 突発的な近隣騒音トラブルや集中証拠収集に最適',
+        price: '$4.99',
+        orig: '$9.99',
+        cta: 'PRO 月間パスを開通 ($4.99 / 月)'
+      },
+      single: {
+        name: '単一レポート透かし解除',
+        tag: '1回のみ有効',
+        desc: '今回の測定レポートのみ透かしを削除 · 暗号学的SHA-256印章および検証済みタイムスタンプ付き',
+        price: '$1.99',
+        orig: '$4.99',
+        cta: 'このレポートを解除 ($1.99)'
+      }
+    }
+  },
+  ko: {
+    badge: '★ PRO 공식 프로 업그레이드',
+    title: 'SOUNDTEST.PRO 모든 전문 증거 수집 기능 잠금 해제',
+    desc: '관리실·법적 제출용 무워터마크 증거 보고서 생성 · SHA-256 디지털 암호 인장 및 GPS 인증',
+    verifyLink: '🔑 이미 구매하셨나요? 회원 자격 복원',
+    securityNote: '🔒 Creem 안전 결제 · Visa, Mastercard, Apple Pay, Google Pay · 즉시 활성화',
+    plans: {
+      yearly: {
+        name: 'PRO 연간 패스',
+        tag: '★ 가장 인기 · 58% 할인',
+        desc: '365일 무제한 워터마크 제거 출력 · 야간 지속 자동 센트리 감시 · 분쟁 대응 공식 문서 템플릿',
+        price: '$24.99',
+        orig: '$59.99',
+        cta: 'PRO 연간 패스 활성화 ($24.99 / 년)'
+      },
+      lifetime: {
+        name: 'PRO 평생 영구 라이선스',
+        tag: '💎 평생 소장',
+        desc: '1회 결제로 평생 사용 · 향후 추가되는 모든 프로 음향 기능 및 알고리즘 영구 무료 업그레이드',
+        price: '$79.99',
+        orig: '$199.00',
+        cta: '평생 라이선스 구매 ($79.99)'
+      },
+      pro: {
+        name: 'PRO 월간 패스',
+        tag: '1개월 체험',
+        desc: '30일간 모든 기능 무제한 이용 · 층간소음 분쟁 및 단기 집중 소음 증거 수집에 적합',
+        price: '$4.99',
+        orig: '$9.99',
+        cta: 'PRO 월간 패스 활성화 ($4.99 / 월)'
+      },
+      single: {
+        name: '단일 보고서 워터마크 해제',
+        tag: '1회 사용',
+        desc: '이번 측정 보고서만 워터마크 제거 · SHA-256 디지털 지문 및 인증 타임스탬프 부여',
+        price: '$1.99',
+        orig: '$4.99',
+        cta: '이 보고서 해제 ($1.99)'
+      }
+    }
+  },
+  vi: {
+    badge: '★ NÂNG CẤP PRO CHÍNH THỨC',
+    title: 'Mở Khóa Toàn Bộ Quyền Lợi Chuyên Nghiệp SOUNDTEST.PRO',
+    desc: 'Xuất hồ sơ bằng chứng không hình mờ theo tiêu chuẩn pháp lý · Đóng dấu mã hóa SHA-256 & tọa độ GPS',
+    verifyLink: '🔑 Đã mua trước đó? Khôi phục thành viên',
+    securityNote: '🔒 Thanh toán an toàn qua Creem · Thẻ Visa, Mastercard, Apple Pay, Google Pay · Kích hoạt ngay',
+    plans: {
+      yearly: {
+        name: 'Gói PRO Hàng Năm',
+        tag: '★ PHỔ BIẾN NHẤT · TIẾT KIỆM 58%',
+        desc: '365 ngày xuất báo cáo không giới hạn không hình mờ · Giám sát tự động ban đêm Sentry · Mẫu khiếu nại',
+        price: '$24.99',
+        orig: '$59.99',
+        cta: 'Kích Hoạt Gói Năm ($24.99 / năm)'
+      },
+      lifetime: {
+        name: 'Bản Quyền Trọn Đời PRO',
+        tag: '💎 TRỌN ĐỜI',
+        desc: 'Thanh toán 1 lần dùng vĩnh viễn · Miễn phí nâng cấp mọi tính năng âm thanh chuyên nghiệp sau này',
+        price: '$79.99',
+        orig: '$199.00',
+        cta: 'Mua Bản Quyền Trọn Đời ($79.99)'
+      },
+      pro: {
+        name: 'Gói PRO Hàng Tháng',
+        tag: 'GÓI THÁNG',
+        desc: '30 ngày sử dụng không giới hạn · Phù hợp giải quyết tranh chấp tiếng ồn đột xuất và tập trung thu thập chứng cứ',
+        price: '$4.99',
+        orig: '$9.99',
+        cta: 'Kích Hoạt Gói Tháng ($4.99 / tháng)'
+      },
+      single: {
+        name: 'Mở Khóa 1 Báo Cáo',
+        tag: 'DÙNG 1 LẦN',
+        desc: 'Chỉ gỡ hình mờ cho báo cáo lần này · Đính kèm dấu vân tay số SHA-256 và mốc thời gian',
+        price: '$1.99',
+        orig: '$4.99',
+        cta: 'Mở Khóa Báo Cáo Này ($1.99)'
+      }
+    }
+  },
+  th: {
+    badge: '★ อัปเกรด PRO อย่างเป็นทางการ',
+    title: 'ปลดล็อกฟีเจอร์พยานหลักฐานระดับมืออาชีพของ SOUNDTEST.PRO',
+    desc: 'สร้างรายงานหลักฐานไร้ลายน้ำตามมาตรฐานนิติวิทยาศาสตร์ · ประทับตราดิจิทัล SHA-256 และพิกัด GPS',
+    verifyLink: '🔑 ซื้อแล้วใช่ไหม? กู้คืนสิทธิ์สมาชิก',
+    securityNote: '🔒 ชำระเงินปลอดภัยผ่าน Creem · Visa, Mastercard, Apple Pay, Google Pay · ใช้งานได้ทันที',
+    plans: {
+      yearly: {
+        name: 'แพ็กเกจ PRO รายปี',
+        tag: '★ ยอดนิยมสูงสุด · ประหยัด 58%',
+        desc: 'ส่งออกรายงานไร้ลายน้ำไม่จำกัด 365 วัน · โหมดเฝ้าระวังอัตโนมัติยามค่ำคืน Sentry · แม่แบบหนังสือร้องเรียน',
+        price: '$24.99',
+        orig: '$59.99',
+        cta: 'เปิดใช้งานแพ็กเกจรายปี ($24.99 / ปี)'
+      },
+      lifetime: {
+        name: 'สิทธิ์ใช้งานตลอดชีพ PRO',
+        tag: '💎 ตลอดชีพ',
+        desc: 'ชำระครั้งเดียวใช้งานได้ถาวร · อัปเกรดฟังก์ชันและอัลกอริทึมเสียงระดับโปรฟรีตลอดอายุการใช้งาน',
+        price: '$79.99',
+        orig: '$199.00',
+        cta: 'ซื้อสิทธิ์ใช้งานตลอดชีพ ($79.99)'
+      },
+      pro: {
+        name: 'แพ็กเกจ PRO รายเดือน',
+        tag: 'รายเดือน',
+        desc: 'ใช้งานเต็มรูปแบบไม่จำกัด 30 วัน · เหมาะสำหรับช่วงรวบรวมหลักฐานข้อพิพาทเรื่องเสียงรบกวนเร่งด่วน',
+        price: '$4.99',
+        orig: '$9.99',
+        cta: 'เปิดใช้งานแพ็กเกจรายเดือน ($4.99 / เดือน)'
+      },
+      single: {
+        name: 'ปลดล็อกรายงานครั้งเดียว',
+        tag: 'ใช้ครั้งเดียว',
+        desc: 'ลบลายน้ำเฉพาะรายงานครั้งนี้เท่านั้น · พร้อมประทับตราดิจิทัล SHA-256 และเวลาที่ตรวจสอบได้',
+        price: '$1.99',
+        orig: '$4.99',
+        cta: 'ปลดล็อกรายงานนี้ ($1.99)'
+      }
+    }
   }
+};
+
+function getActiveModalLangKey() {
+  const lang = String(appLanguage || '').toLowerCase();
+  if (lang.startsWith('zh')) return 'zh';
+  if (lang.startsWith('es')) return 'es';
+  if (lang.startsWith('fr')) return 'fr';
+  if (lang.startsWith('de')) return 'de';
+  if (lang.startsWith('ja')) return 'ja';
+  if (lang.startsWith('ko')) return 'ko';
+  if (lang.startsWith('vi')) return 'vi';
+  if (lang.startsWith('th')) return 'th';
+  return 'en';
+}
+
+function updateProUpgradeModalPricing() {
+  const langKey = getActiveModalLangKey();
+  const dict = PUM_I18N[langKey] || PUM_I18N.en;
+
+  // Header & Badges
+  setText('pumBadge', dict.badge);
+  setText('pumTitle', dict.title);
+  setText('pumDesc', dict.desc);
+  setText('pumVerifyLink', dict.verifyLink);
+  setText('pumSecurityNote', dict.securityNote);
+
+  // Yearly
+  const y = dict.plans.yearly;
+  setText('pumPlanNameYearly', y.name);
+  setText('pumPlanTagYearly', y.tag);
+  setText('pumPlanDescYearly', y.desc);
+  setText('pumPriceYearly', y.price);
+  setText('pumPriceOrigYearly', y.orig);
+
+  // Lifetime
+  const l = dict.plans.lifetime;
+  setText('pumPlanNameLifetime', l.name);
+  setText('pumPlanTagLifetime', l.tag);
+  setText('pumPlanDescLifetime', l.desc);
+  setText('pumPriceLifetime', l.price);
+  setText('pumPriceOrigLifetime', l.orig);
+
+  // Monthly
+  const m = dict.plans.pro;
+  setText('pumPlanNameMonthly', m.name);
+  setText('pumPlanTagMonthly', m.tag);
+  setText('pumPlanDescMonthly', m.desc);
+  setText('pumPriceMonthly', m.price);
+  setText('pumPriceOrigMonthly', m.orig);
+
+  // Single
+  const s = dict.plans.single;
+  setText('pumPlanNameSingle', s.name);
+  setText('pumPlanTagSingle', s.tag);
+  setText('pumPlanDescSingle', s.desc);
+  setText('pumPriceSingle', s.price);
+  setText('pumPriceOrigSingle', s.orig);
 
   updateProUpgradeCtaText();
 }
 
 function updateProUpgradeCtaText() {
+  const langKey = getActiveModalLangKey();
+  const dict = PUM_I18N[langKey] || PUM_I18N.en;
   const isChina = isChinaPricingUser();
   const btnText = document.getElementById('pumCheckoutBtnText');
   const btnIcon = document.getElementById('pumCheckoutBtnIcon');
   if (!btnText) return;
 
-  const priceMapChina = {
-    yearly: '¥19.90 / 年',
-    lifetime: '¥39.90',
-    pro: '¥9.90 / 月',
-    single: '¥3.90',
-  };
-  const priceMapGlobal = {
-    yearly: '$24.99 / yr',
-    lifetime: '$79.99',
-    pro: '$4.99 / mo',
-    single: '$1.99',
-  };
+  const planKey = selectedProUpgradePlan || 'yearly';
+  const planData = dict.plans[planKey] || dict.plans.yearly;
 
-  if (isChina) {
-    if (btnIcon) btnIcon.textContent = '🟢';
-    btnText.textContent = `立即微信安全开通 (${priceMapChina[selectedProUpgradePlan] || '¥19.90'})`;
-  } else {
-    if (btnIcon) btnIcon.textContent = '💳';
-    btnText.textContent = `Checkout with Visa / Apple Pay (${priceMapGlobal[selectedProUpgradePlan] || '$24.99'})`;
+  if (btnIcon) {
+    btnIcon.textContent = isChina ? '🟢' : '💳';
+  }
+  btnText.textContent = planData.cta;
+}
   }
 }
 
