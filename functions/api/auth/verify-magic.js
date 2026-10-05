@@ -152,17 +152,66 @@ export async function onRequestPost(context) {
     }
 
     // Persist session token in KV — 30-day TTL — enables cross-device validation
+    const now = new Date().toISOString();
+    const clientIp = request.headers.get('cf-connecting-ip') ||
+                     request.headers.get('x-real-ip') ||
+                     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                     'Unknown';
+    const country = request.cf?.country || request.headers.get('cf-ipcountry') || 'US';
+
     if (env.ab_test && sessionToken) {
       const SESSION_TTL = 30 * 24 * 60 * 60; // 30 days in seconds
       const sessPayload = JSON.stringify({
         email: verifiedEmail,
         plan: membership.active ? (membership.plan || 'pro') : 'free',
-        created_at: new Date().toISOString(),
+        created_at: now,
         expires_at: new Date(Date.now() + SESSION_TTL * 1000).toISOString(),
       });
       await env.ab_test.put(`sess:${sessionToken}`, sessPayload, {
         expirationTtl: SESSION_TTL,
       }).catch(err => console.error('Session KV write failed:', err));
+
+      // Update user login tracking in KV
+      try {
+        const rawUser = await env.ab_test.get(`user:${verifiedEmail}`);
+        if (rawUser) {
+          const u = JSON.parse(rawUser);
+          if (!u.firstLoginAt) {
+            u.firstLoginAt = now;
+            u.firstLoginConfirmed = true;
+          }
+          u.lastLoginAt = now;
+          u.loginCount = (u.loginCount || 0) + 1;
+          u.lastLoginIp = clientIp;
+          u.loginStatus = 'confirmed';
+          u.updatedAt = now;
+          await env.ab_test.put(`user:${verifiedEmail}`, JSON.stringify(u));
+        }
+
+        // Append to history
+        const rawHistory = await env.ab_test.get(`history:${verifiedEmail}`);
+        let history = [];
+        if (rawHistory) {
+          try { history = JSON.parse(rawHistory); } catch (_) {}
+        }
+        if (!Array.isArray(history)) history = [];
+        history.unshift({
+          timestamp: now,
+          action: 'magic_login',
+          actionLabel: '免密魔法链接/验证码登录成功',
+          page: redirectTo || '/auth.html',
+          title: '快捷身份验证登录',
+          ip: clientIp,
+          country,
+          userAgent: request.headers.get('user-agent') || '',
+        });
+        if (history.length > 50) history = history.slice(0, 50);
+        await env.ab_test.put(`history:${verifiedEmail}`, JSON.stringify(history), {
+          expirationTtl: 90 * 86400,
+        });
+      } catch (logErr) {
+        console.error('Failed to update magic login tracking:', logErr);
+      }
     }
 
     return json({
@@ -172,6 +221,8 @@ export async function onRequestPost(context) {
       session_token: sessionToken,
       redirect_to: redirectTo,
       membership,
+      firstLoginAt: now,
+      lastLoginAt: now,
     });
   } catch (err) {
     return json({ ok: false, error: 'server_error', message: err.message }, 500);

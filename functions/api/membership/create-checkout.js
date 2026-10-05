@@ -90,6 +90,29 @@ export async function onRequestPost(context) {
         }),
         { expirationTtl: 86400 * 30 }
       );
+
+      // Record event in user's browsing journey
+      try {
+        const rawHistory = await env.ab_test.get(`history:${email}`);
+        let history = [];
+        if (rawHistory) {
+          try { history = JSON.parse(rawHistory); } catch (_) {}
+        }
+        if (!Array.isArray(history)) history = [];
+        history.unshift({
+          timestamp: new Date().toISOString(),
+          action: 'checkout_open',
+          actionLabel: `发起 ${plan.toUpperCase()} 订单支付`,
+          page: '/checkout',
+          title: `跳转 Creem 收银台 ($${planFees[plan] || '4.99'})`,
+          orderId: creemOrderId,
+          plan,
+          ip: request.headers.get('cf-connecting-ip') || request.headers.get('x-real-ip') || 'Unknown',
+          country: request.cf?.country || 'US',
+        });
+        if (history.length > 50) history = history.slice(0, 50);
+        await env.ab_test.put(`history:${email}`, JSON.stringify(history), { expirationTtl: 90 * 86400 });
+      } catch (_) {}
     } catch (_) {}
   }
 

@@ -322,6 +322,30 @@ export async function onRequestPost(context) {
       }
     }
 
+    // Record dunning email event in user's browsing journey
+    if (!dryRun && to && env && env.ab_test) {
+      try {
+        const rawHistory = await env.ab_test.get(`history:${to}`);
+        let history = [];
+        if (rawHistory) {
+          try { history = JSON.parse(rawHistory); } catch (_) {}
+        }
+        if (!Array.isArray(history)) history = [];
+        history.unshift({
+          timestamp: new Date().toISOString(),
+          action: 'email_dunning',
+          actionLabel: `营销/催付邮件已送达 (${templateId})`,
+          page: '/admin/send-email',
+          title: finalSubject,
+          template: templateId,
+          orderId: orderId || '',
+          method: sendMethod,
+        });
+        if (history.length > 50) history = history.slice(0, 50);
+        await env.ab_test.put(`history:${to}`, JSON.stringify(history), { expirationTtl: 90 * 86400 });
+      } catch (_) {}
+    }
+
     return json({
       ok: true,
       message: dryRun

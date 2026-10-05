@@ -206,22 +206,75 @@ p { margin: 0; color: var(--muted); text-wrap: pretty; }
 .nav-links {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   gap: 2px;
   font-size: 13px;
 }
 
 .nav-links a {
   color: var(--muted);
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 999px;
   font-weight: 500;
-  transition: color 200ms var(--ease), background 200ms var(--ease);
+  white-space: nowrap;
+  transition: color 200ms var(--ease), background 200ms var(--ease), border-color 200ms var(--ease);
 }
 
 .nav-links a:hover {
   color: var(--text-strong);
   background: rgba(255, 255, 255, 0.05);
+}
+
+/* ─── Live Meter Entrance (Open App / 在线分贝仪) Highlight ─── */
+.nav-links a[href*="soundtest.html"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent, #2cf0c1);
+  background: rgba(44, 240, 193, 0.08);
+  border: 1px solid rgba(44, 240, 193, 0.30);
+  font-weight: 600;
+  padding: 5px 12px;
+  box-shadow: 0 0 14px rgba(44, 240, 193, 0.12);
+}
+
+.nav-links a[href*="soundtest.html"]::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent, #2cf0c1);
+  box-shadow: 0 0 8px var(--accent, #2cf0c1);
+  animation: navPulseDot 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.nav-links a[href*="soundtest.html"]:hover {
+  color: #04101a;
+  background: linear-gradient(135deg, var(--accent, #2cf0c1), var(--accent-2, #7c9bff));
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(44, 240, 193, 0.35);
+  transform: translateY(-1px);
+}
+
+.nav-links a[href*="soundtest.html"]:hover::before {
+  background: #04101a;
+  box-shadow: none;
+}
+
+@keyframes navPulseDot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 8px var(--accent, #2cf0c1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.8);
+    box-shadow: 0 0 3px var(--accent, #2cf0c1);
+  }
 }
 
 .nav-utility {
@@ -370,6 +423,261 @@ p { margin: 0; color: var(--muted); text-wrap: pretty; }
   color: #04101a;
   border-color: transparent;
   box-shadow: 0 10px 30px rgba(44, 240, 193, 0.22);
+}
+
+/* ─── Compact User Profile Dropdown (Replaces 3 cluttered buttons) ─── */
+.nav-user-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-user-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 10px 0 6px;
+  border-radius: 999px;
+  border: 1px solid var(--ink-border, rgba(255, 255, 255, 0.12));
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-strong, #ffffff);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 180ms var(--ease);
+  user-select: none;
+}
+
+.nav-user-trigger:hover,
+.nav-user-dropdown.is-open .nav-user-trigger {
+  border-color: rgba(44, 240, 193, 0.45);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.nav-user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent, #2cf0c1), var(--accent-2, #7c9bff));
+  color: #04101a;
+  font-weight: 800;
+  font-size: 11px;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(44, 240, 193, 0.3);
+}
+
+.nav-user-name {
+  max-width: 88px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-user-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 1.5px 5px;
+  border-radius: 4px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.nav-user-badge.badge-pro {
+  background: linear-gradient(135deg, #2cf0c1, #38bdf8);
+  color: #04101a;
+}
+
+.nav-user-badge.badge-lifetime {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #04101a;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+.nav-user-badge.badge-team {
+  background: linear-gradient(135deg, #a78bfa, #818cf8);
+  color: #04101a;
+}
+
+.nav-user-badge.badge-admin {
+  background: linear-gradient(135deg, #f43f5e, #e11d48);
+  color: #ffffff;
+}
+
+.nav-user-caret {
+  color: var(--muted, rgba(255, 255, 255, 0.5));
+  transition: transform 200ms var(--ease), color 180ms ease;
+  flex-shrink: 0;
+}
+
+.nav-user-dropdown.is-open .nav-user-caret {
+  transform: rotate(180deg);
+  color: var(--accent, #2cf0c1);
+}
+
+/* Dropdown Menu Panel */
+.nav-user-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 260px;
+  border-radius: 18px;
+  background: rgba(10, 16, 32, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  padding: 8px;
+  display: none;
+  flex-direction: column;
+  z-index: 220;
+  transform-origin: top right;
+}
+
+.nav-user-dropdown.is-open .nav-user-menu {
+  display: flex;
+  animation: navDropFade 180ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes navDropFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.nav-user-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 12px;
+}
+
+.nav-user-head-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent, #2cf0c1), var(--accent-2, #7c9bff));
+  color: #04101a;
+  font-weight: 800;
+  font-size: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 0 14px rgba(44, 240, 193, 0.35);
+}
+
+.nav-user-head-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-user-head-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-strong, #ffffff);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-user-head-email {
+  font-size: 11px;
+  color: var(--muted, rgba(255, 255, 255, 0.55));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.nav-user-head-plan {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent, #2cf0c1);
+  margin-top: 3px;
+}
+
+.nav-user-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 0;
+}
+
+.nav-user-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-user-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--text, #e2e8f0);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: all 150ms var(--ease);
+}
+
+.nav-user-item svg {
+  color: var(--muted, rgba(255, 255, 255, 0.5));
+  transition: color 150ms ease, transform 150ms ease;
+  flex-shrink: 0;
+}
+
+.nav-user-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-strong, #ffffff);
+}
+
+.nav-user-item:hover svg {
+  color: var(--accent, #2cf0c1);
+  transform: scale(1.1);
+}
+
+.nav-user-item.is-admin-link:hover svg {
+  color: #f43f5e;
+}
+
+.nav-user-item.nav-user-logout {
+  color: #fca5a5;
+}
+
+.nav-user-item.nav-user-logout svg {
+  color: #fca5a5;
+}
+
+.nav-user-item.nav-user-logout:hover {
+  background: rgba(239, 68, 68, 0.16);
+  color: #f87171;
+}
+
+.nav-user-item.nav-user-logout:hover svg {
+  color: #f87171;
 }
 
 /* ─── Buttons ─── */
@@ -2740,6 +3048,52 @@ a.card:hover h3 { color: var(--text-strong); }
 }
 
 /* ─── Responsive ─── */
+/* Ensure navigation stays on a single sleek line across all laptop & desktop screens */
+@media (max-width: 1240px) and (min-width: 769px) {
+  .site-nav {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .site-nav-main {
+    gap: 10px;
+  }
+  .nav-links {
+    gap: 1px;
+  }
+  .nav-links a {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  .nav-user-name {
+    max-width: 65px;
+  }
+}
+
+@media (max-width: 960px) and (min-width: 769px) {
+  .site-nav {
+    padding: 6px 10px;
+    gap: 6px;
+  }
+  .site-nav-main {
+    gap: 8px;
+  }
+  .brand {
+    font-size: 11.5px;
+    gap: 6px;
+  }
+  .brand-mark {
+    width: 26px;
+    height: 26px;
+  }
+  .nav-links a {
+    padding: 4px 6px;
+    font-size: 11.5px;
+  }
+  .nav-user-name {
+    max-width: 50px;
+  }
+}
+
 @media (max-width: 1080px) {
   .hero-split { grid-template-columns: 1fr; }
   .split-asym { grid-template-columns: 1fr; }

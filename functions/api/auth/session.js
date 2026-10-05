@@ -106,11 +106,94 @@ export async function onRequestPost(context) {
       }).catch(() => {});
     }
 
+    // Update user record with first login confirmation & last active timestamp
+    const now = new Date().toISOString();
+    const clientIp = request.headers.get('cf-connecting-ip') ||
+                     request.headers.get('x-real-ip') ||
+                     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                     'Unknown';
+    const country = request.cf?.country || request.headers.get('cf-ipcountry') || 'US';
+    const city = request.cf?.city || '';
+
+    let firstLoginConfirmed = true;
+    try {
+      const rawUser = await env.ab_test.get(`user:${email}`);
+      if (rawUser) {
+        const u = JSON.parse(rawUser);
+        if (!u.firstLoginAt) {
+          u.firstLoginAt = now;
+          u.firstLoginConfirmed = true;
+          u.loginStatus = 'confirmed';
+        }
+        firstLoginConfirmed = Boolean(u.firstLoginConfirmed);
+        u.lastLoginAt = now;
+        u.loginCount = (u.loginCount || 0) + 1;
+        u.lastLoginIp = clientIp;
+        u.lastLoginCountry = country;
+        u.updatedAt = now;
+        await env.ab_test.put(`user:${email}`, JSON.stringify(u));
+      }
+    } catch (uErr) {
+      console.error('Session user update failed:', uErr);
+    }
+
+    // Record page view browsing trail in history:${email}
+    const page = String(body.page || '').trim();
+    if (page) {
+      try {
+        const title = String(body.title || '').slice(0, 120);
+        const referrer = String(body.referrer || '').slice(0, 200);
+        const action = String(body.action || 'page_view');
+        const actionLabel = String(body.actionLabel || (
+          page.includes('measure') || page.includes('app.html') ? '使用分贝测试仪' :
+          page.includes('auth.html') ? '访问个人中心/登录页' :
+          page.includes('checkout') ? '访问支付页面' :
+          '浏览网站页面'
+        ));
+
+        const rawHistory = await env.ab_test.get(`history:${email}`);
+        let history = [];
+        if (rawHistory) {
+          try { history = JSON.parse(rawHistory); } catch (_) {}
+        }
+        if (!Array.isArray(history)) history = [];
+
+        // Debounce: ignore exact duplicate page within 10s
+        const lastEvt = history[0];
+        const isDuplicate = lastEvt &&
+          lastEvt.page === page &&
+          (Date.now() - new Date(lastEvt.timestamp).getTime() < 10000);
+
+        if (!isDuplicate) {
+          history.unshift({
+            timestamp: now,
+            action,
+            actionLabel,
+            page,
+            title,
+            referrer,
+            ip: clientIp,
+            country,
+            city,
+            userAgent: (request.headers.get('user-agent') || '').slice(0, 150),
+          });
+          if (history.length > 50) history = history.slice(0, 50);
+          await env.ab_test.put(`history:${email}`, JSON.stringify(history), {
+            expirationTtl: 90 * 86400,
+          });
+        }
+      } catch (histErr) {
+        console.error('Failed to log browsing event:', histErr);
+      }
+    }
+
     return json({
       valid: true,
       email,
       membership,
       session_created_at: created_at,
+      first_login_confirmed: firstLoginConfirmed,
+      last_login_at: now,
     });
   } catch (err) {
     return json({ valid: false, error: 'server_error', message: err.message }, 500);

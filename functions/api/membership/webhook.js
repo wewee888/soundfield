@@ -45,6 +45,20 @@ export async function onRequestPost(context) {
     const env = context.env;
     const body = await request.text();
 
+    // Check if this is a Creem.io Webhook
+    const creemSig = request.headers.get('creem-signature') ||
+                     request.headers.get('Creem-Signature') ||
+                     request.headers.get('x-creem-signature');
+    if (creemSig || body.includes('checkout.completed') || body.includes('subscription.') || body.includes('eventType')) {
+      const { onRequestPost: onCreemPost } = await import('./creem-webhook.js');
+      const clonedReq = new Request(request.url, {
+        method: request.method,
+        headers: request.headers,
+        body,
+      });
+      return await onCreemPost({ request: clonedReq, env });
+    }
+
     const secret = String(env.GUMROAD_WEBHOOK_SECRET || '');
     const headerSig = String(
       request.headers.get('x-gumroad-signature') ||
@@ -129,11 +143,9 @@ export async function onRequestPost(context) {
   }
 }
 
-export function onRequestGet() {
-  return new Response(JSON.stringify({ error: 'method_not_allowed', message: 'POST only' }), {
-    status: 405,
-    headers: { 'content-type': 'application/json; charset=utf-8' },
-  });
+export async function onRequestGet(context) {
+  const { onRequestGet: onCreemGet } = await import('./creem-webhook.js');
+  return await onCreemGet(context);
 }
 
 export function onRequestOptions() {

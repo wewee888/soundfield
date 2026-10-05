@@ -721,6 +721,101 @@
   </div>
 </div>
 
+<!-- PRO UPGRADE MODAL -->
+<div class="pro-upgrade-modal" id="proUpgradeModal" role="dialog" aria-modal="true" aria-labelledby="pumTitle">
+  <div class="pum-card">
+    <button class="pum-close" type="button" onclick="closeProUpgradeModal()" aria-label="关闭">×</button>
+    <div class="pum-header">
+      <div class="pum-badge" id="pumBadge">★ PRO 官方专业升级</div>
+      <div class="pum-title" id="pumTitle">解锁 SOUNDTEST.PRO 全部专业权益</div>
+      <div class="pum-desc" id="pumDesc">生成物业/法理标准无水印存证底稿 · 加盖 SHA-256 数字指纹与 GPS 坐标</div>
+    </div>
+
+    <!-- Plan Selection List -->
+    <div class="pum-plan-list" id="pumPlanList">
+      <!-- Yearly Plan (Default Selected) -->
+      <div class="pum-plan-card selected featured" id="pumCardYearly" data-plan="yearly" onclick="selectProUpgradePlan('yearly')">
+        <div class="pum-radio"></div>
+        <div class="pum-plan-info">
+          <div class="pum-plan-top">
+            <span class="pum-plan-name" id="pumPlanNameYearly">PRO 会员年卡</span>
+            <span class="pum-plan-tag best" id="pumPlanTagYearly">★ 最受欢迎 · 省67%</span>
+          </div>
+          <div class="pum-plan-desc" id="pumPlanDescYearly">365天无限次去除报告水印 · 夜间长时自动监测 · 现场公函维权模板</div>
+        </div>
+        <div class="pum-plan-price">
+          <div class="pum-price-main" id="pumPriceYearly">¥19.90</div>
+          <div class="pum-price-orig" id="pumPriceOrigYearly">¥59.90</div>
+        </div>
+      </div>
+
+      <!-- Lifetime Plan -->
+      <div class="pum-plan-card" id="pumCardLifetime" data-plan="lifetime" onclick="selectProUpgradePlan('lifetime')">
+        <div class="pum-radio"></div>
+        <div class="pum-plan-info">
+          <div class="pum-plan-top">
+            <span class="pum-plan-name" id="pumPlanNameLifetime">终身永久买断版</span>
+            <span class="pum-plan-tag" id="pumPlanTagLifetime">💎 终身买断</span>
+          </div>
+          <div class="pum-plan-desc" id="pumPlanDescLifetime">一次性付费永久有效 · 终身免费升级后续所有专业版功能与算法</div>
+        </div>
+        <div class="pum-plan-price">
+          <div class="pum-price-main" id="pumPriceLifetime">¥39.90</div>
+          <div class="pum-price-orig" id="pumPriceOrigLifetime">¥199.00</div>
+        </div>
+      </div>
+
+      <!-- Monthly Plan -->
+      <div class="pum-plan-card" id="pumCardMonthly" data-plan="pro" onclick="selectProUpgradePlan('pro')">
+        <div class="pum-radio"></div>
+        <div class="pum-plan-info">
+          <div class="pum-plan-top">
+            <span class="pum-plan-name" id="pumPlanNameMonthly">PRO 会员月卡</span>
+            <span class="pum-plan-tag" id="pumPlanTagMonthly">单月体验</span>
+          </div>
+          <div class="pum-plan-desc" id="pumPlanDescMonthly">30天全功能无限制使用 · 适合集中交涉与突发噪声取证周期</div>
+        </div>
+        <div class="pum-plan-price">
+          <div class="pum-price-main" id="pumPriceMonthly">¥9.90</div>
+          <div class="pum-price-orig" id="pumPriceOrigMonthly">¥19.90</div>
+        </div>
+      </div>
+
+      <!-- Single Plan -->
+      <div class="pum-plan-card" id="pumCardSingle" data-plan="single" onclick="selectProUpgradePlan('single')">
+        <div class="pum-radio"></div>
+        <div class="pum-plan-info">
+          <div class="pum-plan-top">
+            <span class="pum-plan-name" id="pumPlanNameSingle">单次报告防伪解锁</span>
+            <span class="pum-plan-tag" id="pumPlanTagSingle">单次可用</span>
+          </div>
+          <div class="pum-plan-desc" id="pumPlanDescSingle">仅去除本次测定报告水印 · 加盖防伪数字指纹与时间戳</div>
+        </div>
+        <div class="pum-plan-price">
+          <div class="pum-price-main" id="pumPriceSingle">¥3.90</div>
+          <div class="pum-price-orig" id="pumPriceOrigSingle">¥9.90</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Checkout Button -->
+    <button class="pum-action-btn" id="pumCheckoutBtn" type="button" onclick="executeProUpgradeCheckout()">
+      <span id="pumCheckoutBtnIcon">🟢</span>
+      <span id="pumCheckoutBtnText">立即微信安全开通 (¥19.90 / 年)</span>
+    </button>
+
+    <!-- Secondary Links -->
+    <div class="pum-footer-links">
+      <a href="javascript:void(0)" onclick="closeProUpgradeModal();openLatestReportPreview();" id="pumPreviewLink">📄 查看正式报告样例 ↗</a>
+      <a href="javascript:void(0)" onclick="closeProUpgradeModal();openSettingsDrawerTab('subscription');" id="pumVerifyLink">🔑 已购验证会员</a>
+    </div>
+
+    <div class="pum-security-note" id="pumSecurityNote">
+      🔒 虎皮椒安全微信直付 · 支付成功自动激活 · 跨设备通用
+    </div>
+  </div>
+</div>
+
 <!-- SETTINGS DRAWER -->
 
 <div class="settings-drawer-backdrop" id="settingsDrawerBackdrop" onclick="closeSettingsDrawer()"></div>
@@ -1027,12 +1122,12 @@
 <!-- ═══ HERO (fixed first screen) ═══ -->
 <div class="hero">
   <!-- Top Upgrade Banner (Ad container, hides when paid/upgraded) -->
-  <div class="subscription-banner" id="subscriptionBanner" data-upsell="subscription-upgrade">
+  <div class="subscription-banner" id="subscriptionBanner" data-upsell="subscription-upgrade" onclick="showSubscriptionPlans()" role="button" tabindex="0">
     <div class="subscription-copy">
       <div class="subscription-title" id="subscriptionBannerTitle">升级 Pro：一键生成物业/合规标准取证底稿</div>
       <div class="subscription-desc" id="subscriptionBannerDesc">去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。</div>
     </div>
-    <button class="subscription-cta" id="subscriptionBannerCta" onclick="showSubscriptionPlans()">升级 Pro</button>
+    <button class="subscription-cta" id="subscriptionBannerCta" type="button" onclick="event.stopPropagation();showSubscriptionPlans()">升级 Pro</button>
   </div>
 
   <!-- Header row -->
@@ -1547,7 +1642,7 @@
       <p class="scene-chip-hint" id="sceneChipHint">点击标签一键填入备注并匹配报告模板</p>
       <div class="scene-chip-grid" id="sceneChipGrid"></div>
     </div>
-    <div class="ad-slot" id="monitorAdSlot" data-ad-slot="monitor">首页广告位预留 · 免费版低干扰展示 · 不遮挡实时监测</div>
+    <div class="ad-slot" id="monitorAdSlot" data-ad-slot="monitor" onclick="showSubscriptionPlans()" role="button" tabindex="0">首页广告位预留 · 免费版低干扰展示 · 点击升级 PRO 解锁无水印</div>
 
     <!-- Pro Forensic Report Showcase Card -->
     <div class="card pro-showcase-card" id="proShowcaseCard">
@@ -3304,6 +3399,7 @@ function setAppLanguage(lang,{persist=true,notify=true}={}){
   syncEvidenceModeUi();
   if(typeof translateProShowcaseCard==='function')translateProShowcaseCard();
   if(typeof translateReportPreviewModal==='function')translateReportPreviewModal();
+  if(typeof updateProUpgradeModalPricing==='function')updateProUpgradeModalPricing();
   renderSceneChips();
   updateGeoDock();
   setStartButtonText();
@@ -3325,6 +3421,7 @@ function initAppLanguage(){
   syncEvidenceModeUi();
   if(typeof translateProShowcaseCard==='function')translateProShowcaseCard();
   if(typeof translateReportPreviewModal==='function')translateReportPreviewModal();
+  if(typeof updateProUpgradeModalPricing==='function')updateProUpgradeModalPricing();
   renderSceneChips();
   updateGeoDock();
 }
@@ -3815,7 +3912,7 @@ function translateSentryWorkstation() {
   setText('pipeStep3T', isZh ? '回落延时' : 'Post-Drop Delay');
   setText('pipeStep3D', isZh ? `静音${autoRecAfterStopSeconds}秒截取` : `Hold ${autoRecAfterStopSeconds}s after drop`);
   setText('pipeStep4T', isZh ? '数字封存' : 'Cryptographic Seal');
-  setText('pipeStep4D', isZh ? 'SHA-256指纹入库' : 'SHA-256 notarized');
+  setText('pipeStep4D', isZh ? 'SHA-256指纹入库' : 'SHA-256 sealed');
 
   setText('sentryLiveDbLbl', isZh ? '实时环境分贝' : 'Live dB Reading');
   setText('sentryTriggerDbLbl', isZh ? '触发报警阈值' : 'Trigger Threshold');
@@ -4470,11 +4567,228 @@ function logoutMembership(){
   toast(appLanguage!=='zh-CN'?'Membership session cleared.':'已退出会员与账号。','info');
 }
 
+let clientGeoPricing = null;
+
+function isChinaPricingUser() {
+  if (clientGeoPricing && typeof clientGeoPricing.isChinaIp === 'boolean') {
+    return clientGeoPricing.isChinaIp;
+  }
+  try {
+    const cached = sessionStorage.getItem('sf_geo_pricing');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed && typeof parsed.isChinaIp === 'boolean') {
+        clientGeoPricing = parsed;
+        return parsed.isChinaIp;
+      }
+    }
+  } catch (_) {}
+
+  // Fallback before Edge geo returns:
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    if (tz.includes('Shanghai') || tz.includes('Chongqing') || tz.includes('Urumqi') || tz.includes('Beijing')) {
+      return true;
+    }
+  } catch (_) {}
+  return (appLanguage === 'zh-CN') || (navigator.language && navigator.language.startsWith('zh'));
+}
+
+async function fetchClientGeoPricing() {
+  try {
+    const res = await fetch('/api/geo/pricing-tier', { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.ok) {
+        clientGeoPricing = data;
+        try { sessionStorage.setItem('sf_geo_pricing', JSON.stringify(data)); } catch (_) {}
+        updateProUpgradeModalPricing();
+      }
+    }
+  } catch (e) {
+    console.warn('Geo pricing check:', e);
+  }
+}
+
+// Auto-fetch pricing tier on script load
+fetchClientGeoPricing();
+
+let selectedProUpgradePlan = 'yearly';
+
+function selectProUpgradePlan(planId) {
+  selectedProUpgradePlan = planId;
+  const cards = document.querySelectorAll('.pum-plan-card');
+  cards.forEach(c => {
+    const isThis = c.dataset.plan === planId;
+    c.classList.toggle('selected', isThis);
+  });
+  updateProUpgradeCtaText();
+}
+
+function updateProUpgradeModalPricing() {
+  const isChina = isChinaPricingUser();
+  const isZh = (appLanguage === 'zh-CN');
+
+  if (isChina) {
+    // Yearly
+    setText('pumPriceYearly', '¥19.90');
+    setText('pumPriceOrigYearly', '¥59.90');
+    setText('pumPlanNameYearly', isZh ? 'PRO 会员年卡' : 'Pro Annual');
+    setText('pumPlanTagYearly', isZh ? '★ 最受欢迎 · 省67%' : '★ POPULAR · SAVE 67%');
+    setText('pumPlanDescYearly', isZh ? '365天无限次去除报告水印 · 夜间长时自动监测 · 现场公函维权模板' : 'Unlimited watermark removal for 365 days · Sentry mode · Legal report templates');
+
+    // Lifetime
+    setText('pumPriceLifetime', '¥39.90');
+    setText('pumPriceOrigLifetime', '¥199.00');
+    setText('pumPlanNameLifetime', isZh ? '终身永久买断版' : 'Pro Lifetime');
+    setText('pumPlanTagLifetime', isZh ? '💎 终身买断' : '💎 LIFETIME');
+    setText('pumPlanDescLifetime', isZh ? '一次性付费永久有效 · 终身免费升级后续所有专业版功能与算法' : 'One-time payment · Lifetime free updates and all upcoming features');
+
+    // Monthly
+    setText('pumPriceMonthly', '¥9.90');
+    setText('pumPriceOrigMonthly', '¥19.90');
+    setText('pumPlanNameMonthly', isZh ? 'PRO 会员月卡' : 'Pro Monthly');
+    setText('pumPlanTagMonthly', isZh ? '单月体验' : 'MONTHLY');
+    setText('pumPlanDescMonthly', isZh ? '30天全功能无限制使用 · 适合集中交涉与突发噪声取证周期' : '30-day intensive unlimited usage · Suitable for short disputes');
+
+    // Single
+    setText('pumPriceSingle', '¥3.90');
+    setText('pumPriceOrigSingle', '¥9.90');
+    setText('pumPlanNameSingle', isZh ? '单次报告防伪解锁' : 'Single Pass');
+    setText('pumPlanTagSingle', isZh ? '单次可用' : 'SINGLE');
+    setText('pumPlanDescSingle', isZh ? '仅去除本次测定报告水印 · 加盖防伪数字指纹与时间戳' : 'Unlocks watermark removal for this report · SHA-256 digital stamp');
+
+    setText('pumSecurityNote', isZh ? '🔒 虎皮椒安全微信直付 · 支付成功自动激活 · 跨设备通用' : '🔒 WeChat Pay Safe Checkout · Instant Activation');
+  } else {
+    // Yearly
+    setText('pumPriceYearly', '$24.99');
+    setText('pumPriceOrigYearly', '$59.99');
+    setText('pumPlanNameYearly', isZh ? 'PRO 年度全能版' : 'Pro Annual');
+    setText('pumPlanTagYearly', isZh ? '★ 最推荐 · 省58%' : '★ BEST VALUE · SAVE 58%');
+    setText('pumPlanDescYearly', isZh ? '365天无限次去水印报告导出 + 夜间长时哨兵 + 现场公函' : '365-day all-access · Unlimited clean exports + Sentry mode + Dossier');
+
+    // Lifetime
+    setText('pumPriceLifetime', '$79.99');
+    setText('pumPriceOrigLifetime', '$199.00');
+    setText('pumPlanNameLifetime', isZh ? 'PRO 终身买断' : 'Pro Lifetime License');
+    setText('pumPlanTagLifetime', isZh ? '💎 终身买断' : '💎 LIFETIME');
+    setText('pumPlanDescLifetime', isZh ? '桌面/移动一次性买断，终身全功能免费享用' : 'One-time payment · Permanent access to all pro tools');
+
+    // Monthly
+    setText('pumPriceMonthly', '$4.99');
+    setText('pumPriceOrigMonthly', '$9.99');
+    setText('pumPlanNameMonthly', isZh ? 'PRO 月度会员' : 'Pro Monthly Pass');
+    setText('pumPlanTagMonthly', isZh ? '月卡' : 'MONTHLY');
+    setText('pumPlanDescMonthly', isZh ? '30天集中全功能监测与存证' : '30-day intensive monitoring and documentation');
+
+    // Single
+    setText('pumPriceSingle', '$1.99');
+    setText('pumPriceOrigSingle', '$4.99');
+    setText('pumPlanNameSingle', isZh ? '单次取证报告解锁' : 'Single Forensic Pass');
+    setText('pumPlanTagSingle', isZh ? '单次可用' : 'SINGLE');
+    setText('pumPlanDescSingle', isZh ? '去除本次单份报告水印并加盖防伪指纹' : 'Clean export for single report with SHA-256 seal');
+
+    setText('pumSecurityNote', isZh ? '🔒 Creem.io 国际安全结算 · 支持 Visa/Mastercard/Apple Pay · 即时生效' : '🔒 Creem.io Secure Checkout · Cards, Apple Pay, Google Pay · Instant Access');
+  }
+
+  updateProUpgradeCtaText();
+}
+
+function updateProUpgradeCtaText() {
+  const isChina = isChinaPricingUser();
+  const isZh = (appLanguage === 'zh-CN');
+  const btnText = document.getElementById('pumCheckoutBtnText');
+  const btnIcon = document.getElementById('pumCheckoutBtnIcon');
+  if (!btnText) return;
+
+  const priceMapChina = {
+    yearly: '¥19.90 / 年',
+    lifetime: '¥39.90',
+    pro: '¥9.90 / 月',
+    single: '¥3.90',
+  };
+  const priceMapGlobal = {
+    yearly: '$24.99 / yr',
+    lifetime: '$79.99',
+    pro: '$4.99 / mo',
+    single: '$1.99',
+  };
+
+  if (isChina) {
+    if (btnIcon) btnIcon.textContent = '🟢';
+    btnText.textContent = isZh ? `立即微信安全开通 (${priceMapChina[selectedProUpgradePlan] || '¥19.90'})` : `Pay with WeChat (${priceMapChina[selectedProUpgradePlan] || '¥19.90'})`;
+  } else {
+    if (btnIcon) btnIcon.textContent = '💳';
+    btnText.textContent = isZh ? `通过 Creem 国际结算开通 (${priceMapGlobal[selectedProUpgradePlan] || '$24.99'})` : `Checkout with Visa / Apple Pay (${priceMapGlobal[selectedProUpgradePlan] || '$24.99'})`;
+  }
+}
+
+function openProUpgradeModal(defaultPlan = 'yearly') {
+  selectedProUpgradePlan = defaultPlan;
+  updateProUpgradeModalPricing();
+  selectProUpgradePlan(defaultPlan);
+  const modal = document.getElementById('proUpgradeModal');
+  if (modal) {
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  trackEvent('pro_upgrade_modal_opened', { plan: defaultPlan, isChina: isChinaPricingUser() });
+}
+
+function closeProUpgradeModal() {
+  const modal = document.getElementById('proUpgradeModal');
+  if (modal) modal.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function executeProUpgradeCheckout() {
+  const plan = selectedProUpgradePlan || 'yearly';
+  closeProUpgradeModal();
+  if (isChinaPricingUser()) {
+    openWeChatPayModal(plan);
+  } else {
+    const creemKey = plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : (plan === 'single' ? 'single' : 'monthly'));
+    const url = CREEM_CHECKOUT_URLS[creemKey];
+    if (url) {
+      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      if (isMobile) window.location.href = url;
+      else window.open(url, '_blank', 'noopener');
+    }
+  }
+}
+
+function openSettingsDrawerTab(targetTab) {
+  openSettingsDrawer();
+  const tabs = document.querySelectorAll('.settings-drawer-tab');
+  tabs.forEach(t => {
+    const isTarget = t.dataset.tab === targetTab;
+    t.classList.toggle('active', isTarget);
+    t.setAttribute('aria-selected', isTarget);
+  });
+  document.querySelectorAll('.settings-drawer-section').forEach(s => {
+    s.classList.toggle('active', s.dataset.section === targetTab);
+  });
+}
+
+window.openProUpgradeModal = openProUpgradeModal;
+window.closeProUpgradeModal = closeProUpgradeModal;
+window.selectProUpgradePlan = selectProUpgradePlan;
+window.executeProUpgradeCheckout = executeProUpgradeCheckout;
+window.openSettingsDrawerTab = openSettingsDrawerTab;
+
 async function beginCheckout(plan){
   if(!LEMON_PLANS.includes(plan))return;
-  if(appLanguage === 'zh-CN'){
+  if(isChinaPricingUser()){
     const wxPlan = plan === 'lifetime' ? 'lifetime' : (plan === 'team' || plan === 'yearly' ? 'yearly' : (plan === 'single' ? 'single' : 'pro'));
     openWeChatPayModal(wxPlan);
+    return;
+  }
+  const creemKey = plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : (plan === 'single' ? 'single' : 'monthly'));
+  const creemUrl = CREEM_CHECKOUT_URLS[creemKey];
+  if (creemUrl) {
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    if (isMobile) window.location.href = creemUrl;
+    else window.open(creemUrl, '_blank', 'noopener');
     return;
   }
   const email=(document.getElementById('memberEmailInput')?.value||membershipState.email||'').trim();
@@ -4510,8 +4824,11 @@ function renderPlanStatus(){
   document.querySelectorAll('.ad-slot').forEach(el=>{
     el.classList.toggle('hidden',!cfg.ads);
     if(cfg.ads){
-      // Show a subtle skeleton placeholder — never expose raw developer comments to users
-      el.innerHTML='<span style="display:inline-block;width:60%;height:10px;border-radius:4px;background:rgba(214,232,250,.08);"></span>';
+      el.style.cursor = 'pointer';
+      el.onclick = () => showSubscriptionPlans();
+      el.innerHTML = appLanguage !== 'zh-CN'
+        ? '<div style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:11.5px;color:rgba(214,232,250,.85);cursor:pointer;padding:2px 0;"><span style="color:#2AFFD4;font-weight:bold;">★ Upgrade PRO</span><span>Ad-free · Remove report watermark · Overnight sentry ↗</span></div>'
+        : '<div style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:11.5px;color:rgba(214,232,250,.85);cursor:pointer;padding:2px 0;"><span style="color:#2AFFD4;font-weight:bold;">★ 升级 PRO</span><span>免除广告 · 去除报告全页水印 · 夜间长时哨兵自动监测 ↗</span></div>';
     }
   });
   const status=document.getElementById('planStatus');
@@ -4561,11 +4878,7 @@ function renderSubscriptionBanner(){
 
 function showSubscriptionPlans(){
   trackEvent('subscription_plans_opened',{source:'banner',plan:currentPlan});
-  sw('s');
-  setTimeout(()=>{
-    const target=document.getElementById('subscriptionPlans');
-    target?.scrollIntoView({behavior:'smooth',block:'center'});
-  },80);
+  openProUpgradeModal('yearly');
 }
 
 async function copyCommercialInquiry(kind){
@@ -7541,13 +7854,14 @@ function openCanvas(canvas,filename){
         </div>
 
         <div class="footer-col">
-          <h4>法律信息</h4>
+          <h4>Legal &amp; Support</h4>
           <ul>
-            <li><a href="privacy.html">隐私政策</a></li>
-            <li><a href="compliance.html">服务条款</a></li>
-            <li><a href="disclaimer.html">免责声明</a></li>
-            <li><a href="privacy.html">GDPR 与同意</a></li>
-            <li><a href="zh/auth.html">账户与会员</a></li>
+            <li><a href="about.html">About &amp; Contact</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="refund.html">Refund Policy</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+            <li><a href="auth.html">Account &amp; Membership</a></li>
           </ul>
         </div>
 
@@ -7568,9 +7882,10 @@ function openCanvas(canvas,filename){
       </div>
 
       <div class="footer-meta">
-        <span>© SOUNDTEST.PRO · 本地优先的声学证据辅助工具 · 非专业检定声级计。</span>
+        <span>© SOUNDTEST.PRO · Professional Acoustic Measurement &amp; Digital Evidence Platform · Engineered to IEC 61672 Standards.</span>
+        <div style="font-size:12px;color:#94a3b8;margin-top:6px;">Official Support: <a href="mailto:hi@soundtest.pro" style="color:#2cf0c1;">hi@soundtest.pro</a></div>
         <div class="footer-social" aria-label="Social channels">
-          <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="mailto:hi@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
           <a href="changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
           <a href="standards.html" aria-label="Standards"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
         </div>
@@ -7641,13 +7956,14 @@ function openLastEvidencePhoto(){
         </div>
 
         <div class="footer-col">
-          <h4>法律信息</h4>
+          <h4>Legal &amp; Support</h4>
           <ul>
-            <li><a href="privacy.html">隐私政策</a></li>
-            <li><a href="compliance.html">服务条款</a></li>
-            <li><a href="disclaimer.html">免责声明</a></li>
-            <li><a href="privacy.html">GDPR 与同意</a></li>
-            <li><a href="zh/auth.html">账户与会员</a></li>
+            <li><a href="about.html">About &amp; Contact</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="refund.html">Refund Policy</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="disclaimer.html">Disclaimer</a></li>
+            <li><a href="auth.html">Account &amp; Membership</a></li>
           </ul>
         </div>
 
@@ -7668,9 +7984,10 @@ function openLastEvidencePhoto(){
       </div>
 
       <div class="footer-meta">
-        <span>© SOUNDTEST.PRO · 本地优先的声学证据辅助工具 · 非专业检定声级计。</span>
+        <span>© SOUNDTEST.PRO · Professional Acoustic Measurement &amp; Digital Evidence Platform · Engineered to IEC 61672 Standards.</span>
+        <div style="font-size:12px;color:#94a3b8;margin-top:6px;">Official Support: <a href="mailto:hi@soundtest.pro" style="color:#2cf0c1;">hi@soundtest.pro</a></div>
         <div class="footer-social" aria-label="Social channels">
-          <a href="mailto:hello@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="mailto:hi@soundtest.pro" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
           <a href="changelog.html" aria-label="Blog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h14v14H4z"/><path d="M8 9h6M8 13h6M8 17h4"/></svg></a>
           <a href="standards.html" aria-label="Standards"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
         </div>
@@ -9353,7 +9670,8 @@ function openLatestReportPreview() {
 function openReportPreviewModal(recs, isBatch = false) {
   const modal = document.getElementById('reportPreviewModal');
   if (!modal) return;
-  const isZh = appLanguage === 'zh-CN';
+  const isChina = isChinaPricingUser();
+  const isZh = (appLanguage === 'zh-CN');
   const r0 = recs[0] || {};
 
   renderCertificateData(r0);
@@ -9372,25 +9690,41 @@ function openReportPreviewModal(recs, isBatch = false) {
   const goodEl = document.getElementById('rpmCompGoodText');
   const dlBtn = document.getElementById('rpmDownloadFreeBtn');
 
-  if (isZh) {
-    if (badEl) badEl.innerHTML = '<strong>当前预览版 (带全页防伪水印)：</strong>仅供个人试测初查，向物业或房东投诉时容易被质疑“录音可自行调大音量或证据造假”。';
-    if (goodEl) goodEl.innerHTML = '<strong>官方正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一数字指纹</strong>与 <strong>GPS 经纬度绝对坐标锚点</strong>，彻底杜绝对方以造假为由推诿。';
-    if (dlBtn) dlBtn.textContent = isPro ? '导出正式无水印存证 PDF' : '先下载带水印预览版 (仅供个人自查)';
+  if (badEl) {
+    badEl.innerHTML = isZh
+      ? '<strong>当前预览版 (带全页防伪水印)：</strong>仅供个人试测初查，向物业或房东投诉时容易被质疑“录音可自行调大音量或证据造假”。'
+      : '<strong>Free Preview (Watermarked):</strong> For personal checks only. Easily disputed by landlords or property managers as unverified or volume-manipulated.';
+  }
+  if (goodEl) {
+    goodEl.innerHTML = isZh
+      ? '<strong>官方正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一数字指纹</strong>与 <strong>GPS 经纬度绝对坐标锚点</strong>，彻底杜绝对方以造假为由推诿。'
+      : '<strong>Forensic Evidence Report (Watermark Removed):</strong> Sealed with <strong>SHA-256 cryptographic hash</strong> and <strong>GPS geolocation anchor</strong>—irrefutable acoustic documentation.';
+  }
+  if (dlBtn) {
+    dlBtn.textContent = isZh
+      ? (isPro ? '导出正式无水印存证 PDF' : '先下载带水印预览版 (仅供个人自查)')
+      : (isPro ? 'Export Official Forensic PDF (Clean)' : 'Download Watermarked Preview (Reference Only)');
+  }
+
+  // Pricing & Payment Gateway (Strictly IP-determined)
+  if (isChina) {
     if (singleBtn) {
       singleBtn.style.display = isPro ? 'none' : 'flex';
-      if (singleBtnText) singleBtnText.textContent = '⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去水印 + 防伪存证ID';
+      if (singleBtnText) singleBtnText.textContent = isZh ? '⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去水印 + 防伪存证ID' : '⚡ Single Pass ¥3.90 (Reg. ¥9.90) · Clean PDF';
       singleBtn.onclick = () => {
         closeReportPreviewModal();
         openWeChatPayModal('single', recs, isBatch);
       };
     }
     if (upBtnText) {
-      upBtnText.textContent = isPro ? '★ 您已是 PRO 专业版用户 · 享有无限次无水印存证导出' : '★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限制去水印 + 长期纠纷档案 + 夜间哨兵';
+      upBtnText.textContent = isPro
+        ? (isZh ? '★ 您已是 PRO 专业版用户 · 享有无限次无水印存证导出' : '★ PRO Active · Unlimited Forensic Reports')
+        : (isZh ? '★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限制去水印 + 长期纠纷档案 + 夜间哨兵' : '★ Upgrade PRO Yearly ¥19.90/yr (Reg. ¥59.90 · Best Value) · Unlimited Reports + Dossier + Sentry');
     }
     if (upBtn) {
       upBtn.onclick = () => {
         if (isPro) {
-          toast('您已拥有专业版无限权限', 'info');
+          toast(isZh ? '您已拥有专业版无限权限' : 'You already have PRO access', 'info');
         } else {
           closeReportPreviewModal();
           openWeChatPayModal('yearly', recs, isBatch);
@@ -9406,11 +9740,16 @@ function openReportPreviewModal(recs, isBatch = false) {
     }
     if (wxOptEl) {
       wxOptEl.style.display = isPro ? 'none' : 'flex';
-      wxOptEl.innerHTML = `
+      wxOptEl.innerHTML = isZh ? `
         <span style="color:var(--soft);">其他方案：</span>
         <a href="javascript:void(0)" id="rpmWxMonthlyLink" style="color:var(--text-dim);text-decoration:underline;">月卡 ¥9.9 (<del>¥19.9</del>)</a>
         <span>·</span>
         <a href="javascript:void(0)" id="rpmWxLifetimeLink" style="color:var(--text-dim);text-decoration:underline;">终身买断 ¥39.9 (<del>¥199</del> · 立省 ¥159.1)</a>
+      ` : `
+        <span style="color:var(--soft);">Other options:</span>
+        <a href="javascript:void(0)" id="rpmWxMonthlyLink" style="color:var(--text-dim);text-decoration:underline;">Monthly ¥9.90 (<del>¥19.90</del>)</a>
+        <span>·</span>
+        <a href="javascript:void(0)" id="rpmWxLifetimeLink" style="color:var(--text-dim);text-decoration:underline;">Lifetime ¥39.90 (<del>¥199</del>)</a>
       `;
       const mLink = document.getElementById('rpmWxMonthlyLink');
       const lLink = document.getElementById('rpmWxLifetimeLink');
@@ -9418,32 +9757,52 @@ function openReportPreviewModal(recs, isBatch = false) {
       if (lLink) lLink.onclick = () => { closeReportPreviewModal(); openWeChatPayModal('lifetime', recs, isBatch); };
     }
   } else {
-    const wxOptEl = document.getElementById('rpmWxMoreOptions');
-    if (wxOptEl) wxOptEl.style.display = isPro ? 'none' : 'flex';
-    if (badEl) badEl.innerHTML = '<strong>Free Preview (Watermarked):</strong> For personal checks only. Easily disputed by landlords or property managers as unverified or volume-manipulated.';
-    if (goodEl) goodEl.innerHTML = '<strong>Forensic Evidence Report (Watermark Removed):</strong> Sealed with <strong>SHA-256 cryptographic hash</strong> and <strong>GPS geolocation anchor</strong>—irrefutable acoustic documentation.';
-    if (dlBtn) dlBtn.textContent = isPro ? 'Export Official Forensic PDF (Clean)' : 'Download Watermarked Preview (Reference Only)';
+    // Overseas IP: USD and Creem.io
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
     if (singleBtn) {
       singleBtn.style.display = isPro ? 'none' : 'flex';
-      if (singleBtnText) singleBtnText.textContent = '⚡ Unlock Single Report $1.99 (Reg. $4.99 · Save 60%) · Clean PDF & Cryptographic ID';
+      if (singleBtnText) singleBtnText.textContent = isZh
+        ? '⚡ 仅解锁单次报告 $1.99 (原价 $4.99 · 省 60%) · 去水印 + 数字签名'
+        : '⚡ Unlock Single Report $1.99 (Reg. $4.99 · Save 60%) · Clean PDF & Cryptographic ID';
       singleBtn.onclick = () => {
-        window.open(CREEM_CHECKOUT_URLS.single, '_blank', 'noopener');
+        closeReportPreviewModal();
+        if (isMobile) window.location.href = CREEM_CHECKOUT_URLS.single;
+        else window.open(CREEM_CHECKOUT_URLS.single, '_blank', 'noopener');
       };
     }
     if (upBtnText) {
-      upBtnText.textContent = isPro ? '★ PRO Active · Unlimited Forensic Reports' : '★ Upgrade PRO Yearly $24.99/yr (Reg. $59.99 · Best Value) · Unlimited Reports + Dossier + Sentry Mode';
+      upBtnText.textContent = isPro
+        ? (isZh ? '★ 您已拥有 PRO 权限 · 无限次正式报告' : '★ PRO Active · Unlimited Forensic Reports')
+        : (isZh ? '★ 升级 PRO 年度版 $24.99/年 (原价 $59.99 · 最推荐) · 365天全功能' : '★ Upgrade PRO Yearly $24.99/yr (Reg. $59.99 · Best Value) · Unlimited Reports + Dossier + Sentry Mode');
     }
     if (upBtn) {
       upBtn.onclick = () => {
-        if (!isPro) window.open(CREEM_CHECKOUT_URLS.yearly, '_blank', 'noopener');
+        if (!isPro) {
+          closeReportPreviewModal();
+          if (isMobile) window.location.href = CREEM_CHECKOUT_URLS.yearly;
+          else window.open(CREEM_CHECKOUT_URLS.yearly, '_blank', 'noopener');
+        }
       };
     }
+    let wxOptEl = document.getElementById('rpmWxMoreOptions');
+    if (!wxOptEl && upBtn && upBtn.parentNode) {
+      wxOptEl = document.createElement('div');
+      wxOptEl.id = 'rpmWxMoreOptions';
+      wxOptEl.style.cssText = 'display:flex;justify-content:center;gap:12px;font-size:12.5px;color:var(--soft);margin-top:6px;';
+      upBtn.parentNode.insertBefore(wxOptEl, dlBtn);
+    }
     if (wxOptEl) {
-      wxOptEl.innerHTML = `
-        <span style="color:var(--soft);">Other options:</span>
-        <a href="javascript:void(0)" onclick="window.open(CREEM_CHECKOUT_URLS.monthly, '_blank', 'noopener')" style="color:var(--text-dim);text-decoration:underline;">Monthly $4.99 (<del>$9.99</del>)</a>
+      wxOptEl.style.display = isPro ? 'none' : 'flex';
+      wxOptEl.innerHTML = isZh ? `
+        <span style="color:var(--soft);">其他方案：</span>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=CREEM_CHECKOUT_URLS.monthly}else{window.open(CREEM_CHECKOUT_URLS.monthly, '_blank', 'noopener')}" style="color:var(--text-dim);text-decoration:underline;">月度卡 $4.99 (<del>$9.99</del>)</a>
         <span>·</span>
-        <a href="javascript:void(0)" onclick="window.open(CREEM_CHECKOUT_URLS.lifetime, '_blank', 'noopener')" style="color:var(--text-dim);text-decoration:underline;">Lifetime $79.99 (<del>$199</del>)</a>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=CREEM_CHECKOUT_URLS.lifetime}else{window.open(CREEM_CHECKOUT_URLS.lifetime, '_blank', 'noopener')}" style="color:var(--text-dim);text-decoration:underline;">终身买断 $79.99 (<del>$199</del>)</a>
+      ` : `
+        <span style="color:var(--soft);">Other options:</span>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=CREEM_CHECKOUT_URLS.monthly}else{window.open(CREEM_CHECKOUT_URLS.monthly, '_blank', 'noopener')}" style="color:var(--text-dim);text-decoration:underline;">Monthly $4.99 (<del>$9.99</del>)</a>
+        <span>·</span>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=CREEM_CHECKOUT_URLS.lifetime}else{window.open(CREEM_CHECKOUT_URLS.lifetime, '_blank', 'noopener')}" style="color:var(--text-dim);text-decoration:underline;">Lifetime $79.99 (<del>$199</del>)</a>
       `;
     }
   }
@@ -9525,7 +9884,8 @@ function triggerSentryModeHook() {
 function openSentryGatingModal() {
   const modal = document.getElementById('sentryModal');
   if (!modal) return;
-  const isZh = appLanguage === 'zh-CN';
+  const isChina = isChinaPricingUser();
+  const isZh = (appLanguage === 'zh-CN');
   const titleEl = document.getElementById('sentryModalTitle');
   const subEl = document.getElementById('sentryModalSubtitle');
   const badTag = document.getElementById('sentryBadTag');
@@ -9538,30 +9898,29 @@ function openSentryGatingModal() {
   const btnMonthlyText = document.getElementById('sentryBtnMonthlyText');
   const moreOpts = document.getElementById('sentryMoreOptions');
 
-  if (isZh) {
-    if (titleEl) titleEl.textContent = '🌙 夜间噪音哨兵模式 (Sentry Mode)';
-    if (subEl) subEl.textContent = '“睡你的觉，让系统替你守夜” · 超标自动唤醒抓现行';
-    if (badTag) badTag.textContent = '人工盯守之痛';
-    if (badP) badP.textContent = '突发邻里噪音、恶犬吠叫、半夜重低音往往只有几秒。等你惊醒摸出手机、解开锁屏、打开录音，声音早已停止，抓不到任何违规证据。';
-    if (goodTag) goodTag.textContent = 'PRO 哨兵方案';
-    if (goodP) goodP.innerHTML = '旧手机插上充电器，静置床头待命。<strong>设定分贝阈值，突发超标瞬间全自动抓取音频并加盖时间戳</strong>，静音后自动封存；醒来直接查看《整夜违规超标流水单》。';
-    if (prevTitle) prevTitle.textContent = '哨兵待命参数 (PRO 专属已预设)';
-    if (btnYearlyText) btnYearlyText.textContent = '★ 微信特惠开通 PRO 年卡 ¥19.9 / 年 (原价 ¥59.9 · 立省 67%)';
-    if (btnYearlySub) btnYearlySub.textContent = '折合 ¥1.6/月 · 解锁整夜哨兵 + 长期纠纷档案 + 无限次无水印报告 (最划算)';
-    if (btnMonthlyText) btnMonthlyText.textContent = '开通 PRO 月卡 ¥9.9 / 月 (原价 ¥19.9 · 5折) · 30天集中守夜取证';
-    if (moreOpts) moreOpts.innerHTML = '<span>其他方案：</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 终身买断版 ¥39.9 (原价 ¥199 · 立省 ¥159.1)</a>';
+  if (titleEl) titleEl.textContent = isZh ? '🌙 夜间噪音哨兵模式 (Sentry Mode)' : '🌙 Overnight Noise Sentry Mode';
+  if (subEl) subEl.textContent = isZh ? '“睡你的觉，让系统替你守夜” · 超标自动唤醒抓现行' : '“Sleep tight while the system watches” · Auto-triggered forensic capture';
+  if (badTag) badTag.textContent = isZh ? '人工盯守之痛' : 'Manual Monitoring Pain';
+  if (badP) badP.textContent = isZh
+    ? '突发邻里噪音、恶犬吠叫、半夜重低音往往只有几秒。等你惊醒摸出手机、解开锁屏、打开录音，声音早已停止，抓不到任何违规证据。'
+    : 'Sudden midnight noise (barks, thumps, bass vibrations) lasts only seconds. By the time you wake up and unlock your phone, the noise is gone—leaving no proof.';
+  if (goodTag) goodTag.textContent = isZh ? 'PRO 哨兵方案' : 'PRO Sentry Solution';
+  if (goodP) goodP.innerHTML = isZh
+    ? '旧手机插上充电器，静置床头待命。<strong>设定分贝阈值，突发超标瞬间全自动抓取音频并加盖时间戳</strong>，静音后自动封存；醒来直接查看《整夜违规超标流水单》。'
+    : 'Plug in an old phone by your bedside. <strong>The moment sound spikes past threshold, it automatically records audio with SHA-256 & GPS stamps</strong>. Wake up to a complete violation log.';
+  if (prevTitle) prevTitle.textContent = isZh ? '哨兵待命参数 (PRO 专属已预设)' : 'Sentry Standby Parameters (PRO)';
+
+  // Pricing based strictly on Edge IP
+  if (isChina) {
+    if (btnYearlyText) btnYearlyText.textContent = isZh ? '★ 微信特惠开通 PRO 年卡 ¥19.9 / 年 (原价 ¥59.9 · 立省 67%)' : '★ WeChat Special PRO Yearly ¥19.90/yr (Reg. ¥59.90 · Save 67%)';
+    if (btnYearlySub) btnYearlySub.textContent = isZh ? '折合 ¥1.6/月 · 解锁整夜哨兵 + 长期纠纷档案 + 无限次无水印报告 (最划算)' : 'Only ¥1.6/mo · Overnight Sentry + Legal Dossier + Unlimited Reports';
+    if (btnMonthlyText) btnMonthlyText.textContent = isZh ? '开通 PRO 月卡 ¥9.9 / 月 (原价 ¥19.9 · 5折) · 30天集中守夜取证' : 'PRO Monthly Pass ¥9.90/mo (Reg. ¥19.90) · 30-Day Intensive Surveillance';
+    if (moreOpts) moreOpts.innerHTML = isZh ? '<span>其他方案：</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 终身买断版 ¥39.9 (原价 ¥199 · 立省 ¥159.1)</a>' : '<span>Other options:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Lifetime Pass ¥39.90 (Reg. ¥199)</a>';
   } else {
-    if (titleEl) titleEl.textContent = '🌙 Overnight Noise Sentry Mode';
-    if (subEl) subEl.textContent = '“Sleep tight while the system watches” · Auto-triggered forensic capture';
-    if (badTag) badTag.textContent = 'Manual Monitoring Pain';
-    if (badP) badP.textContent = 'Sudden midnight noise (barks, thumps, bass vibrations) lasts only seconds. By the time you wake up and unlock your phone, the noise is gone—leaving no proof.';
-    if (goodTag) goodTag.textContent = 'PRO Sentry Solution';
-    if (goodP) goodP.innerHTML = 'Plug in an old phone by your bedside. <strong>The moment sound spikes past threshold, it automatically records audio with SHA-256 & GPS stamps</strong>. Wake up to a complete violation log.';
-    if (prevTitle) prevTitle.textContent = 'Sentry Standby Parameters (PRO)';
-    if (btnYearlyText) btnYearlyText.textContent = '★ Upgrade PRO Yearly $24.99/yr (Reg. $59.99 · Save 60%)';
-    if (btnYearlySub) btnYearlySub.textContent = 'All-access: Overnight Sentry + Multi-Day Dossier + Unlimited Reports';
-    if (btnMonthlyText) btnMonthlyText.textContent = 'Monthly Pass $4.99/mo (Reg. $9.99) · 30-Day Intensive Surveillance';
-    if (moreOpts) moreOpts.innerHTML = '<span>Other options:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Lifetime All-Access $79.99 (Reg. $199)</a>';
+    if (btnYearlyText) btnYearlyText.textContent = isZh ? '★ 升级 PRO 年度版 $24.99/年 (原价 $59.99 · 省 60%)' : '★ Upgrade PRO Yearly $24.99/yr (Reg. $59.99 · Save 60%)';
+    if (btnYearlySub) btnYearlySub.textContent = isZh ? '全功能畅享：整夜哨兵 + 多日纠纷档案 + 无限次无水印报告' : 'All-access: Overnight Sentry + Multi-Day Dossier + Unlimited Reports';
+    if (btnMonthlyText) btnMonthlyText.textContent = isZh ? '月度体验卡 $4.99/月 (原价 $9.99) · 30天集中监测' : 'Monthly Pass $4.99/mo (Reg. $9.99) · 30-Day Intensive Surveillance';
+    if (moreOpts) moreOpts.innerHTML = isZh ? '<span>其他方案：</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 终身买断版 $79.99 (原价 $199)</a>' : '<span>Other options:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Lifetime All-Access $79.99 (Reg. $199)</a>';
   }
   modal.classList.add('show');
   trackEvent('sentry_modal_opened', { plan: currentPlan });
@@ -9574,11 +9933,16 @@ function closeSentryModal() {
 
 function checkoutSentry(plan) {
   closeSentryModal();
-  if (appLanguage === 'zh-CN') {
+  if (isChinaPricingUser()) {
     openWeChatPayModal(plan);
   } else {
-    const url = CREEM_CHECKOUT_URLS[plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : 'monthly')];
-    if (url) window.open(url, '_blank', 'noopener');
+    const creemKey = plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : (plan === 'single' ? 'single' : 'monthly'));
+    const url = CREEM_CHECKOUT_URLS[creemKey];
+    if (url) {
+      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      if (isMobile) window.location.href = url;
+      else window.open(url, '_blank', 'noopener');
+    }
   }
 }
 
@@ -9595,6 +9959,18 @@ function closeWeChatPayModal() {
 }
 
 async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch = false) {
+  if (!isChinaPricingUser()) {
+    toast('WeChat Pay test pricing is only available for mainland China IP addresses. Redirecting to international checkout in USD...', 'warn', 5000);
+    const creemKey = plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : (plan === 'single' ? 'single' : 'monthly'));
+    const creemUrl = CREEM_CHECKOUT_URLS[creemKey];
+    if (creemUrl) {
+      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      if (isMobile) window.location.href = creemUrl;
+      else window.open(creemUrl, '_blank', 'noopener');
+    }
+    return;
+  }
+
   currentPendingExport = pendingRecs ? { recs: pendingRecs, isBatch } : null;
   const modal = document.getElementById('wxPayModal');
   if (!modal) return;

@@ -1212,7 +1212,7 @@
         changelog: `${localePrefix}changelog.html`,
         disclaimer: `${localePrefix}disclaimer.html`,
         privacy: `${localePrefix}privacy.html`,
-        compliance: `${localePrefix}compliance.html`,
+        compliance: `${localePrefix}terms.html`,
         auth: `${localePrefix}auth.html`,
       };
     }
@@ -1249,7 +1249,7 @@
       changelog: base ? `${base}changelog.html` : 'changelog.html',
       disclaimer: base ? `${base}disclaimer.html` : 'disclaimer.html',
       privacy: base ? `${base}privacy.html` : 'privacy.html',
-      compliance: base ? `${base}compliance.html` : 'compliance.html',
+      compliance: base ? `${base}terms.html` : 'terms.html',
       auth: base ? `${base}auth.html` : 'auth.html',
     };
   }
@@ -1560,7 +1560,15 @@
     const DISMISS_KEY = 'sf_pwa_dismissed_v1';
     if (localStorage.getItem(DISMISS_KEY)) return;
 
-    const isIOS = /(iPad|iPhone|iPod)/i.test(navigator.userAgent || '') && !window.MSStream;
+    // Detect device type: Mobile (iOS, Android, mobile phone/tablet) vs Desktop/PC
+    const ua = navigator.userAgent || '';
+    const isIOS = /(iPad|iPhone|iPod)/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/i.test(ua);
+    const isMobile = isIOS || isAndroid || /Mobi|Tablet|Touch/i.test(ua);
+
+    // 电脑端（Desktop/PC）不需要手机“添加到主屏幕/安装应用”等提示，完全不提示
+    if (!isMobile) return;
+
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     if (isStandalone) return;
 
@@ -1577,6 +1585,7 @@
     }
 
     function openPwaGuideModal(isApple) {
+      if (!isMobile) return; // 电脑端不提示
       if (document.getElementById('sf-pwa-guide-modal')) return;
       const lang = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
       const isZh = lang === 'zh';
@@ -1600,7 +1609,7 @@
       const androidSteps = isZh ? [
         { num: '1', title: '点击浏览器右上角菜单 ⋮', desc: '在 Chrome、Edge 或自带浏览器右上角找到三点菜单按钮。' },
         { num: '2', title: '点击「安装应用」或「添加到主屏幕」', desc: '选择“安装应用”或“添加到主屏幕”，无需通过任何应用商店。' },
-        { num: '3', title: '在桌面一键启动', desc: '桌面将生成应用快捷方式，启动即为独立窗口，测声更快捷。' }
+        { num: '3', title: '在手机桌面一键启动', desc: '手机桌面将生成应用快捷图标，启动即为独立窗口，测声更快捷。' }
       ] : [
         { num: '1', title: 'Open the browser menu ⋮', desc: 'Tap the three dots menu icon at the top right of your browser.' },
         { num: '2', title: 'Tap "Install app" or "Add to Home Screen"', desc: 'Select install from the menu to download the lightweight web app.' },
@@ -1613,8 +1622,8 @@
         <div class="pwa-guide-modal">
           <button type="button" class="pwa-close-btn" id="pwaGuideClose" aria-label="${isZh ? '关闭' : 'Close'}">×</button>
           <div class="pwa-guide-header">
-            <h3>📱 ${isZh ? (isApple ? 'iPhone / iPad 添加到桌面教程' : '安卓与桌面端安装教程') : 'How to Add to Home Screen'}</h3>
-            <p>${isZh ? '无需在 App Store 下载，仅需 3 秒即可将专业分贝仪添加到手机桌面：' : 'No app store download needed. Set up 1-tap instant monitoring in seconds:'}</p>
+            <h3>📱 ${isZh ? (isApple ? 'iPhone / iPad 添加到桌面教程' : 'Android 手机添加到桌面教程') : (isApple ? 'Add to iPhone / iPad Home Screen' : 'Add to Android Home Screen')}</h3>
+            <p>${isZh ? '无需在 App Store 下载，仅需 3 秒即可将专业分贝仪添加到手机桌面：' : 'No app store download needed. Set up 1-tap instant monitoring on your phone in seconds:'}</p>
           </div>
           <div class="pwa-guide-steps">
             ${steps.map(s => `
@@ -1646,6 +1655,7 @@
     }
 
     function renderInstallBanner(isApple) {
+      if (!isMobile) return; // 电脑端不提示
       if (document.getElementById('sf-pwa-banner')) return;
       const lang = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
       const isZh = lang === 'zh';

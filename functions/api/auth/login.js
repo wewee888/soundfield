@@ -100,6 +100,13 @@ export async function onRequestPost(context) {
       const sessionToken = generateSessionToken();
       const SESSION_TTL = 30 * 24 * 60 * 60; // 30 days
       const now = new Date().toISOString();
+      const clientIp = request.headers.get('cf-connecting-ip') ||
+                       request.headers.get('x-real-ip') ||
+                       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                       'Unknown';
+      const country = request.cf?.country || request.headers.get('cf-ipcountry') || userData.country || 'US';
+      const city = request.cf?.city || userData.city || '';
+
       const sessPayload = JSON.stringify({
         email: userData.email,
         plan: membership.active ? (membership.plan || 'pro') : 'free',
@@ -111,6 +118,46 @@ export async function onRequestPost(context) {
         expirationTtl: SESSION_TTL,
       });
 
+      // Update user login metrics & confirm first login
+      try {
+        if (!userData.firstLoginAt) {
+          userData.firstLoginAt = now;
+          userData.firstLoginConfirmed = true;
+        }
+        userData.lastLoginAt = now;
+        userData.loginCount = (userData.loginCount || 0) + 1;
+        userData.lastLoginIp = clientIp;
+        userData.loginStatus = 'confirmed';
+        userData.updatedAt = now;
+        await env.ab_test.put(`user:${email}`, JSON.stringify(userData));
+
+        // Append login event to history
+        const rawHistory = await env.ab_test.get(`history:${email}`);
+        let history = [];
+        if (rawHistory) {
+          try { history = JSON.parse(rawHistory); } catch (_) {}
+        }
+        if (!Array.isArray(history)) history = [];
+        history.unshift({
+          timestamp: now,
+          action: 'login',
+          actionLabel: '密码验证登录成功',
+          page: '/auth.html',
+          title: '用户登录认证通过',
+          referrer: request.headers.get('referer') || '',
+          ip: clientIp,
+          country,
+          city,
+          userAgent: request.headers.get('user-agent') || '',
+        });
+        if (history.length > 50) history = history.slice(0, 50);
+        await env.ab_test.put(`history:${email}`, JSON.stringify(history), {
+          expirationTtl: 90 * 86400,
+        });
+      } catch (logErr) {
+        console.error('Failed to update login tracking in KV:', logErr);
+      }
+
       return json({
         ok: true,
         message: '登录成功 / Login successful.',
@@ -119,6 +166,8 @@ export async function onRequestPost(context) {
         session_token: sessionToken,
         membership,
         createdAt: userData.createdAt || now,
+        firstLoginAt: userData.firstLoginAt || now,
+        lastLoginAt: now,
       });
     }
 

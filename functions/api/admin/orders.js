@@ -306,6 +306,10 @@ export async function onRequestGet(context) {
           .filter((o) => o.status === 'paid' && o.currency === 'USD')
           .reduce((sum, o) => sum + (parseFloat(o.fee) || 0), 0);
 
+        const firstLoginConfirmed = u.firstLoginConfirmed !== undefined
+          ? Boolean(u.firstLoginConfirmed)
+          : Boolean(u.firstLoginAt || u.lastLoginAt || isVip || userOrders.length > 0);
+
         users.push({
           email,
           name: u.name || '未命名',
@@ -317,6 +321,11 @@ export async function onRequestGet(context) {
           sourcePage: u.sourcePage || '',
           createdAt: u.createdAt || null,
           updatedAt: u.updatedAt || null,
+          firstLoginAt: u.firstLoginAt || null,
+          firstLoginConfirmed,
+          lastLoginAt: u.lastLoginAt || null,
+          loginCount: u.loginCount || (firstLoginConfirmed ? 1 : 0),
+          loginStatus: u.loginStatus || (firstLoginConfirmed ? 'confirmed' : 'pending_first_login'),
           plan,
           plan_display: planDisplay,
           status,

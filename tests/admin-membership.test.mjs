@@ -713,5 +713,253 @@ test('Admin send-email API /api/admin/send-email dispatches dunning emails and u
   assert.equal(ordAfter.last_dunning_template, 'abandoned_1h');
 });
 
+test('User first login confirmation, browsing history trail, and minute-precision UI display', async () => {
+  const registerPath = path.join(rootDir, 'functions/api/auth/register.js');
+  const sessionPath = path.join(rootDir, 'functions/api/auth/session.js');
+  const checkoutPath = path.join(rootDir, 'functions/api/membership/create-checkout.js');
+  const adminUsersPath = path.join(rootDir, 'functions/api/admin/users.js');
+
+  const registerModule = await import(`file://${registerPath.replace(/\\/g, '/')}`);
+  const sessionModule = await import(`file://${sessionPath.replace(/\\/g, '/')}`);
+  const checkoutModule = await import(`file://${checkoutPath.replace(/\\/g, '/')}`);
+  const adminUsersModule = await import(`file://${adminUsersPath.replace(/\\/g, '/')}`);
+
+  const kv = new Map();
+  const mockEnv = {
+    ab_test: {
+      get: async (k) => kv.get(k) || null,
+      put: async (k, v) => kv.set(k, v),
+      delete: async (k) => kv.delete(k),
+      list: async ({ prefix }) => {
+        const keys = [];
+        for (const k of kv.keys()) {
+          if (k.startsWith(prefix)) keys.push({ name: k });
+        }
+        return { keys };
+      },
+    },
+  };
+
+  const testUserEmail = 'traveler_jeannie@example.com';
+
+  // 1. User registers
+  const regReq = new Request('https://soundtest.pro/api/auth/register', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'cf-connecting-ip': '72.14.201.2',
+      'cf-ipcountry': 'US',
+    },
+    body: JSON.stringify({
+      name: 'Jeannie Reaves',
+      email: testUserEmail,
+      passwordHash: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08',
+      lang: 'en',
+      sourcePage: '/en/auth.html?mode=register',
+    }),
+  });
+
+  const regRes = await registerModule.onRequestPost({ request: regReq, env: mockEnv });
+  assert.equal(regRes.status, 200);
+  const regData = await regRes.json();
+  assert.equal(regData.ok, true);
+  assert.ok(regData.session_token);
+
+  // Verify KV user record initially has pending first login status
+  const userRecAfterReg = JSON.parse(kv.get(`user:${testUserEmail}`));
+  assert.equal(userRecAfterReg.firstLoginConfirmed, false);
+  assert.equal(userRecAfterReg.firstLoginAt, null);
+  assert.equal(userRecAfterReg.loginStatus, 'pending_first_login');
+
+  // Verify initial history created
+  const historyAfterReg = JSON.parse(kv.get(`history:${testUserEmail}`));
+  assert.ok(Array.isArray(historyAfterReg));
+  assert.equal(historyAfterReg.length, 1);
+  assert.equal(historyAfterReg[0].action, 'register');
+
+  // 2. Client loads a page with the session token -> silentSessionRefresh executes /api/auth/session
+  const sessReq = new Request('https://soundtest.pro/api/auth/session', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'cf-connecting-ip': '72.14.201.2',
+      'cf-ipcountry': 'US',
+    },
+    body: JSON.stringify({
+      token: regData.session_token,
+      page: '/measure/',
+      title: 'Real-time Sound Level Meter',
+      referrer: '/en/auth.html',
+    }),
+  });
+
+  const sessRes = await sessionModule.onRequestPost({ request: sessReq, env: mockEnv });
+  assert.equal(sessRes.status, 200);
+  const sessData = await sessRes.json();
+  assert.equal(sessData.valid, true);
+  assert.equal(sessData.first_login_confirmed, true);
+  assert.ok(sessData.last_login_at);
+
+  // Verify user record now confirmed first login
+  const userRecAfterSess = JSON.parse(kv.get(`user:${testUserEmail}`));
+  assert.equal(userRecAfterSess.firstLoginConfirmed, true);
+  assert.ok(userRecAfterSess.firstLoginAt);
+  assert.ok(userRecAfterSess.lastLoginAt);
+  assert.equal(userRecAfterSess.loginCount, 1);
+
+  // 3. User initiates checkout
+  const chkReq = new Request('https://soundtest.pro/api/membership/create-checkout', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'cf-connecting-ip': '72.14.201.2',
+      'cf-ipcountry': 'US',
+    },
+    body: JSON.stringify({
+      email: testUserEmail,
+      plan: 'pro',
+    }),
+  });
+  const chkRes = await checkoutModule.onRequestPost({ request: chkReq, env: mockEnv });
+  assert.equal(chkRes.status, 200);
+
+  // Verify browsing history contains registration, pageview, and checkout events
+  const historyAfterChk = JSON.parse(kv.get(`history:${testUserEmail}`));
+  assert.ok(historyAfterChk.length >= 3);
+  assert.equal(historyAfterChk[0].action, 'checkout_open');
+  assert.equal(historyAfterChk[1].action, 'page_view');
+  assert.equal(historyAfterChk[2].action, 'register');
+
+  // 4. Admin queries user details with browsing history
+  const adminQueryReq = new Request(`https://soundtest.pro/api/admin/users?email=${encodeURIComponent(testUserEmail)}`, {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
+  });
+  const adminQueryRes = await adminUsersModule.onRequestGet({ request: adminQueryReq, env: mockEnv });
+  assert.equal(adminQueryRes.status, 200);
+  const adminData = await adminQueryRes.json();
+  assert.equal(adminData.ok, true);
+  assert.equal(adminData.user.firstLoginConfirmed, true);
+  assert.ok(adminData.user.firstLoginAt);
+  assert.ok(adminData.user.lastLoginAt);
+  assert.ok(Array.isArray(adminData.history));
+  assert.ok(adminData.history.length >= 3);
+
+  // 5. Verify admin.html UI contains modal, timeline styles, minute-precision columns
+  const adminHtmlContent = fs.readFileSync(path.join(rootDir, 'admin.html'), 'utf8');
+  assert.ok(adminHtmlContent.includes('id="userHistoryModal"'), 'admin.html must contain userHistoryModal');
+  assert.ok(adminHtmlContent.includes('formatDateTime'), 'admin.html must contain formatDateTime function');
+  assert.ok(adminHtmlContent.includes('首次登录状态'), 'admin.html must contain 首次登录状态 column');
+  assert.ok(adminHtmlContent.includes('最后活跃时间'), 'admin.html must contain 最后活跃时间 column');
+  assert.ok(adminHtmlContent.includes('openUserHistoryModal'), 'admin.html must contain openUserHistoryModal function');
+});
+
+test('IP regional pricing defense, admin visitor analytics, and mobile PRO upgrade responsiveness in soundtest.html', async () => {
+  // 1. Verify Edge IP Pricing Tier API (/api/geo/pricing-tier)
+  const pricingTierPath = path.join(rootDir, 'functions/api/geo/pricing-tier.js');
+  assert.ok(fs.existsSync(pricingTierPath), 'pricing-tier.js must exist');
+  const pricingModule = await import(`file://${pricingTierPath.replace(/\\/g, '/')}`);
+
+  // Test Mainland China IP -> CNY test prices
+  const reqChina = new Request('https://soundtest.pro/api/geo/pricing-tier', {
+    method: 'GET',
+    headers: {
+      'cf-connecting-ip': '114.114.114.114',
+      'cf-ipcountry': 'CN',
+    },
+  });
+  const resChina = await pricingModule.onRequestGet({ request: reqChina });
+  assert.equal(resChina.status, 200);
+  const dataChina = await resChina.json();
+  assert.equal(dataChina.ok, true);
+  assert.equal(dataChina.isChinaIp, true);
+  assert.equal(dataChina.currency, 'CNY');
+  assert.equal(dataChina.currencySymbol, '¥');
+  assert.equal(dataChina.pricingTier, 'china_test');
+  assert.equal(dataChina.plans.yearly.price, '19.90');
+  assert.equal(dataChina.plans.single.price, '3.90');
+
+  // Test Overseas US IP -> USD global prices
+  const reqUs = new Request('https://soundtest.pro/api/geo/pricing-tier', {
+    method: 'GET',
+    headers: {
+      'cf-connecting-ip': '8.8.8.8',
+      'cf-ipcountry': 'US',
+    },
+  });
+  const resUs = await pricingModule.onRequestGet({ request: reqUs });
+  assert.equal(resUs.status, 200);
+  const dataUs = await resUs.json();
+  assert.equal(dataUs.ok, true);
+  assert.equal(dataUs.isChinaIp, false);
+  assert.ok(dataUs.pricingTier === 'overseas' || dataUs.pricingTier === 'global_standard');
+  assert.equal(dataUs.plans.yearly.price, '24.99');
+  assert.equal(dataUs.plans.single.price, '1.99');
+
+  // 2. Verify Hupijiao creation endpoint rejects non-CN IP
+  const hupijiaoPath = path.join(rootDir, 'functions/api/payment/hupijiao-create.js');
+  const hupijiaoModule = await import(`file://${hupijiaoPath.replace(/\\/g, '/')}`);
+  const reqForeignHupijiao = new Request('https://soundtest.pro/api/payment/hupijiao-create', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'cf-connecting-ip': '8.8.8.8',
+      'cf-ipcountry': 'US',
+    },
+    body: JSON.stringify({
+      plan: 'yearly',
+      email: 'test@example.com',
+    }),
+  });
+  const resForeign = await hupijiaoModule.onRequestPost({ request: reqForeignHupijiao, env: {} });
+  assert.equal(resForeign.status, 403);
+  const dataForeign = await resForeign.json();
+  assert.equal(dataForeign.ok, false);
+  assert.equal(dataForeign.error, 'geo_pricing_restricted');
+
+  // 3. Verify admin.html contains visitor tracking system and IP defense audit
+  const adminHtml = fs.readFileSync(path.join(rootDir, 'admin.html'), 'utf8');
+  assert.ok(adminHtml.includes('访客与全站分析'), 'admin.html must contain 访客与全站分析 tab');
+  assert.ok(adminHtml.includes('id="analyticsVisitorsTableBody"'), 'admin.html must contain visitors table');
+  assert.ok(adminHtml.includes('Geo-Pricing Enforcement Audit'), 'admin.html must contain IP pricing audit card');
+  assert.ok(adminHtml.includes('renderVisitorsTable'), 'admin.html must have renderVisitorsTable function');
+
+  // 4. Verify soundtest.html and assets/soundtest.css mobile upgrade responsiveness and modal
+  const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+  assert.ok(soundtestHtml.includes('id="proUpgradeModal"'), 'soundtest.html must contain proUpgradeModal');
+  assert.ok(soundtestHtml.includes('id="subscriptionBanner"'), 'soundtest.html must contain subscriptionBanner');
+  assert.ok(soundtestHtml.includes('onclick="showSubscriptionPlans()"'), 'soundtest.html elements must call showSubscriptionPlans');
+  assert.ok(soundtestHtml.includes('function openProUpgradeModal'), 'soundtest.html must contain openProUpgradeModal');
+  assert.ok(soundtestHtml.includes('function isChinaPricingUser'), 'soundtest.html must contain isChinaPricingUser');
+  assert.ok(soundtestHtml.includes('fetchClientGeoPricing'), 'soundtest.html must fetch pricing tier from edge');
+
+  const soundtestCss = fs.readFileSync(path.join(rootDir, 'assets/soundtest.css'), 'utf8');
+  assert.ok(soundtestCss.includes('.pro-upgrade-modal'), 'assets/soundtest.css must contain .pro-upgrade-modal');
+  assert.ok(soundtestCss.includes('.pum-card'), 'assets/soundtest.css must contain .pum-card');
+  assert.ok(soundtestCss.includes('.subscription-banner{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:var(--r);border:.5px solid rgba(255,181,32,.26);background:linear-gradient(135deg,rgba(255,181,32,.12),rgba(42,255,212,.07));box-shadow:0 10px 30px rgba(0,0,0,.18);cursor:pointer'), 'subscription-banner must have cursor pointer');
+});
+
+test('Device-aware PWA prompt suppression on desktop and clean visitor pricing presentation', async () => {
+  const experienceJs = fs.readFileSync(path.join(rootDir, 'assets/site-experience.js'), 'utf8');
+  const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+  const authJs = fs.readFileSync(path.join(rootDir, 'assets/site-auth.js'), 'utf8');
+
+  // 1. Desktop devices must suppress mobile PWA install guide and banner
+  assert.ok(experienceJs.includes('if (!isMobile) return;'), 'site-experience.js suppresses PWA banner on desktop');
+  assert.ok(experienceJs.includes('const isMobile = isIOS || isAndroid || /Mobi|Tablet|Touch/i.test(ua);'), 'site-experience.js checks for mobile devices');
+
+  // 2. Visitor-facing modals must NOT show defensive "IP 定价已锁定", "严禁跨区", or "pumGeoBanner"
+  assert.ok(!soundtestHtml.includes('id="pumGeoBanner"'), 'soundtest.html must not contain pumGeoBanner');
+  assert.ok(!soundtestHtml.includes('IP 定价已锁定'), 'soundtest.html must not display IP 定价已锁定 to visitors');
+  assert.ok(!soundtestHtml.includes('Regional Pricing Locked'), 'soundtest.html must not display Regional Pricing Locked to visitors');
+  assert.ok(!authJs.includes('IP 定价已锁定'), 'site-auth.js must not display IP 定价已锁定');
+  assert.ok(!authJs.includes('严禁低价跨区'), 'site-auth.js must not display 严禁低价跨区 to visitors');
+  assert.ok(!authJs.includes('auth-gw-badge'), 'site-auth.js must not display awkward geo badges in visitor pay modal');
+});
+
+
 
 

@@ -59,7 +59,7 @@ export async function onRequestGet(context) {
     const targetEmail = (url.searchParams.get('email') || '').toLowerCase().trim();
 
     if (targetEmail) {
-      // Query single user detail
+      // Query single user detail + full browsing history
       const userRaw = await env.ab_test.get(`user:${targetEmail}`);
       if (!userRaw) {
         return json({ ok: false, error: 'user_not_found', message: 'User not found' }, 404);
@@ -67,6 +67,57 @@ export async function onRequestGet(context) {
       const user = JSON.parse(userRaw);
       const memRaw = await env.ab_test.get(`member:${targetEmail}`);
       const member = memRaw ? JSON.parse(memRaw) : null;
+
+      // Fetch browsing history
+      const rawHistory = await env.ab_test.get(`history:${targetEmail}`);
+      let history = [];
+      if (rawHistory) {
+        try { history = JSON.parse(rawHistory); } catch (_) {}
+      }
+      if (!Array.isArray(history)) history = [];
+
+      const firstLoginConfirmed = user.firstLoginConfirmed !== undefined
+        ? Boolean(user.firstLoginConfirmed)
+        : Boolean(user.firstLoginAt || user.lastLoginAt || (member && member.status === 'paid'));
+
+      // If history is empty, synthesize milestones from user lifecycle
+      if (history.length === 0) {
+        if (user.createdAt) {
+          history.push({
+            timestamp: user.createdAt,
+            action: 'register',
+            actionLabel: '完成账号注册',
+            page: user.sourcePage || '/auth.html',
+            title: '注册 SOUNDTEST 账号',
+            ip: user.ip || 'Unknown',
+            country: user.country || 'US',
+            city: user.city || '',
+          });
+        }
+        if (user.firstLoginAt) {
+          history.push({
+            timestamp: user.firstLoginAt,
+            action: 'login',
+            actionLabel: '首次登录成功',
+            page: '/measure/',
+            title: '进入分贝检测系统',
+            ip: user.lastLoginIp || user.ip || 'Unknown',
+            country: user.lastLoginCountry || user.country || 'US',
+          });
+        }
+        if (user.lastLoginAt && user.lastLoginAt !== user.firstLoginAt) {
+          history.push({
+            timestamp: user.lastLoginAt,
+            action: 'session',
+            actionLabel: '最近活跃访问',
+            page: '/measure/',
+            title: '使用分贝测试仪',
+            ip: user.lastLoginIp || user.ip || 'Unknown',
+            country: user.lastLoginCountry || user.country || 'US',
+          });
+        }
+        history.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+      }
 
       return json({
         ok: true,
@@ -81,8 +132,14 @@ export async function onRequestGet(context) {
           sourcePage: user.sourcePage || '',
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
+          firstLoginAt: user.firstLoginAt || null,
+          firstLoginConfirmed,
+          lastLoginAt: user.lastLoginAt || null,
+          loginCount: user.loginCount || (firstLoginConfirmed ? 1 : 0),
+          loginStatus: user.loginStatus || (firstLoginConfirmed ? 'confirmed' : 'pending_first_login'),
         },
         membership: member || { plan: 'free', status: 'none', active: false },
+        history,
       });
     }
 
@@ -99,6 +156,10 @@ export async function onRequestGet(context) {
         const memRaw = await env.ab_test.get(`member:${email}`);
         const mem = memRaw ? JSON.parse(memRaw) : null;
 
+        const firstLoginConfirmed = u.firstLoginConfirmed !== undefined
+          ? Boolean(u.firstLoginConfirmed)
+          : Boolean(u.firstLoginAt || u.lastLoginAt || (mem && mem.status === 'paid'));
+
         users.push({
           email,
           name: u.name || '未命名',
@@ -110,6 +171,11 @@ export async function onRequestGet(context) {
           sourcePage: u.sourcePage || '',
           createdAt: u.createdAt || null,
           updatedAt: u.updatedAt || null,
+          firstLoginAt: u.firstLoginAt || null,
+          firstLoginConfirmed,
+          lastLoginAt: u.lastLoginAt || null,
+          loginCount: u.loginCount || (firstLoginConfirmed ? 1 : 0),
+          loginStatus: u.loginStatus || (firstLoginConfirmed ? 'confirmed' : 'pending_first_login'),
           membership: mem || { plan: 'free', status: 'none' },
         });
       } catch (_) {}

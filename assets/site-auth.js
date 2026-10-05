@@ -64,7 +64,12 @@
       const resp = await fetch('/api/auth/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: session.token }),
+        body: JSON.stringify({
+          token: session.token,
+          page: window.location.pathname + window.location.search,
+          title: document.title || '',
+          referrer: document.referrer || '',
+        }),
         // 4s timeout — fail fast, don't block UI
         signal: AbortSignal.timeout ? AbortSignal.timeout(4000) : undefined,
       });
@@ -113,6 +118,70 @@
       // Network error / timeout — silently ignore, keep existing session
     }
   }
+
+  /* ── Visitor Telemetry & Regional IP Pricing Resolver ── */
+  function getOrCreateVisitorId() {
+    let vid = '';
+    try {
+      vid = localStorage.getItem('sf_vid') || '';
+      if (!vid) {
+        vid = `vid_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        localStorage.setItem('sf_vid', vid);
+      }
+    } catch (_) {
+      vid = `vid_${Date.now()}`;
+    }
+    return vid;
+  }
+
+  async function trackVisitorTelemetry() {
+    try {
+      const vid = getOrCreateVisitorId();
+      const session = loadSession();
+      const resp = await fetch('/api/track-visit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          visitorId: vid,
+          sessionToken: session?.token || '',
+          email: session?.email || '',
+          page: window.location.pathname + window.location.search,
+          title: document.title || '',
+          referrer: document.referrer || '',
+        }),
+        signal: AbortSignal.timeout ? AbortSignal.timeout(3500) : undefined,
+      });
+      if (resp.ok) {
+        const geoData = await resp.json().catch(() => null);
+        if (geoData?.ok) {
+          sessionStorage.setItem('sf_geo_pricing', JSON.stringify(geoData));
+          window.__sfGeoPricing = geoData;
+        }
+      }
+    } catch (_) {}
+  }
+  window.__sfTrackVisit = trackVisitorTelemetry;
+
+  /* ── User Activity / Browsing Journey Logger ── */
+  window.__sfLogActivity = async function (action, actionLabel, meta = {}) {
+    const session = loadSession();
+    if (!session?.token) return;
+    try {
+      await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: session.token,
+          page: window.location.pathname + window.location.search,
+          title: document.title || '',
+          referrer: document.referrer || '',
+          action: action || 'activity',
+          actionLabel: actionLabel || action,
+          ...meta,
+        }),
+      });
+    } catch (_) {}
+  };
 
   function loadRecords() {
     try {
@@ -164,15 +233,15 @@
   }
 
   const NAV_AUTH_I18N = {
-    zh: { login: '登录', register: '注册', account: '个人中心', logout: '退出' },
-    en: { login: 'Login', register: 'Register', account: 'Account', logout: 'Logout' },
-    es: { login: 'Acceso', register: 'Registro', account: 'Cuenta', logout: 'Salir' },
-    fr: { login: 'Connexion', register: 'S’inscrire', account: 'Compte', logout: 'Déconnexion' },
-    de: { login: 'Anmelden', register: 'Registrieren', account: 'Konto', logout: 'Abmelden' },
-    ja: { login: 'ログイン', register: '登録', account: 'アカウント', logout: 'ログアウト' },
-    ko: { login: '로그인', register: '회원가입', account: '계정', logout: '로그아웃' },
-    vi: { login: 'Đăng nhập', register: 'Đăng ký', account: 'Tài khoản', logout: 'Đăng xuất' },
-    th: { login: 'เข้าสู่ระบบ', register: 'ลงทะเบียน', account: 'บัญชี', logout: 'ออกจากระบบ' },
+    zh: { login: '登录', register: '注册', account: '个人中心', membership: '会员权益', records: '测量记录', admin: '管理后台', logout: '退出登录', plan_free: '免费版', plan_pro: 'Pro 会员', plan_lifetime: '终身版', plan_team: 'Team 团队版' },
+    en: { login: 'Login', register: 'Register', account: 'Account', membership: 'Membership', records: 'Records & Logs', admin: 'Admin Portal', logout: 'Log Out', plan_free: 'Free Plan', plan_pro: 'Pro Member', plan_lifetime: 'Lifetime Access', plan_team: 'Team Member' },
+    es: { login: 'Acceso', register: 'Registro', account: 'Cuenta', membership: 'Membresía', records: 'Registros', admin: 'Panel Admin', logout: 'Cerrar sesión', plan_free: 'Plan Gratis', plan_pro: 'Miembro Pro', plan_lifetime: 'Acceso Vitalicio', plan_team: 'Equipo' },
+    fr: { login: 'Connexion', register: 'S’inscrire', account: 'Compte', membership: 'Abonnement', records: 'Enregistrements', admin: 'Panneau Admin', logout: 'Déconnexion', plan_free: 'Gratuit', plan_pro: 'Membre Pro', plan_lifetime: 'Accès à Vie', plan_team: 'Équipe' },
+    de: { login: 'Anmelden', register: 'Registrieren', account: 'Konto', membership: 'Mitgliedschaft', records: 'Messberichte', admin: 'Admin-Bereich', logout: 'Abmelden', plan_free: 'Kostenlos', plan_pro: 'Pro-Mitglied', plan_lifetime: 'Lebenslang Pro', plan_team: 'Team' },
+    ja: { login: 'ログイン', register: '登録', account: 'アカウント', membership: 'メンバーシップ', records: '測定記録', admin: '管理パネル', logout: 'ログアウト', plan_free: '無料プラン', plan_pro: 'Pro 会員', plan_lifetime: '永久ライセンス', plan_team: 'チーム' },
+    ko: { login: '로그인', register: '회원가입', account: '계정', membership: '멤버십', records: '측정 기록', admin: '관리 패널', logout: '로그아웃', plan_free: '무료 플랜', plan_pro: 'Pro 멤버', plan_lifetime: '평생 라이선스', plan_team: '팀' },
+    vi: { login: 'Đăng nhập', register: 'Đăng ký', account: 'Tài khoản', membership: 'Gói thành viên', records: 'Bản ghi đo', admin: 'Quản trị', logout: 'Đăng xuất', plan_free: 'Bản miễn phí', plan_pro: 'Thành viên Pro', plan_lifetime: 'Trọn đời', plan_team: 'Đội nhóm' },
+    th: { login: 'เข้าสู่ระบบ', register: 'ลงทะเบียน', account: 'บัญชี', membership: 'สมาชิก', records: 'บันทึกการวัด', admin: 'ผู้ดูแลระบบ', logout: 'ออกจากระบบ', plan_free: 'แผนฟรี', plan_pro: 'สมาชิก Pro', plan_lifetime: 'ตลอดชีพ', plan_team: 'ทีม' },
   };
 
   const AUTH_MSGS = {
@@ -249,6 +318,14 @@
     if (isInLocaleDir) {
       return mode ? `auth.html?mode=${mode}` : 'auth.html';
     }
+    const isInVariantOrSubDir = /\/(a|b|c|use-cases)\//.test(window.location.pathname);
+    if (isInVariantOrSubDir) {
+      const lang = getNavAuthLang();
+      if (lang && lang !== 'en') {
+        return mode ? `../${lang}/auth.html?mode=${mode}` : `../${lang}/auth.html`;
+      }
+      return mode ? `../auth.html?mode=${mode}` : '../auth.html';
+    }
     const lang = getNavAuthLang();
     if (lang && lang !== 'en') {
       return mode ? `${lang}/auth.html?mode=${mode}` : `${lang}/auth.html`;
@@ -261,11 +338,29 @@
     if (isInLocaleDir) {
       return 'index.html';
     }
+    const isInVariantOrSubDir = /\/(a|b|c|use-cases)\//.test(window.location.pathname);
+    if (isInVariantOrSubDir) {
+      const lang = getNavAuthLang();
+      if (lang && lang !== 'en') {
+        return `../${lang}/index.html`;
+      }
+      return '../index.html';
+    }
     const lang = getNavAuthLang();
     if (lang && lang !== 'en') {
       return `${lang}/index.html`;
     }
     return 'index.html';
+  }
+
+  function getLocaleToolHref() {
+    const isInSub = /\/(zh|en|es|fr|de|ja|ko|vi|th|a|b|c|use-cases)\//.test(window.location.pathname);
+    return isInSub ? '../soundtest.html' : 'soundtest.html';
+  }
+
+  function getLocaleAdminHref() {
+    const isInSub = /\/(zh|en|es|fr|de|ja|ko|vi|th|a|b|c|use-cases)\//.test(window.location.pathname);
+    return isInSub ? '../admin.html' : 'admin.html';
   }
 
   function renderNavAuth() {
@@ -275,27 +370,132 @@
     const lang = getNavAuthLang();
     const t = NAV_AUTH_I18N[lang] || NAV_AUTH_I18N.en;
     const session = loadSession();
+
     if (session?.email) {
-      const info = document.createElement('span');
-      info.className = 'nav-auth-pill';
-      info.setAttribute('data-auth-ui', 'true');
-      info.innerHTML = `<strong>${escHtml(session.name || 'User')}</strong><span>${escHtml(session.email)}</span>`;
-      utility.appendChild(info);
-      const profile = document.createElement('a');
-      profile.className = 'nav-auth-btn';
-      profile.setAttribute('data-auth-ui', 'true');
-      profile.href = getLocaleAuthHref();
-      profile.textContent = t.account;
-      utility.appendChild(profile);
-      const logout = document.createElement('button');
-      logout.className = 'nav-auth-btn';
-      logout.type = 'button';
-      logout.setAttribute('data-auth-ui', 'true');
-      logout.textContent = t.logout;
-      logout.addEventListener('click', () => { saveSession(null); renderNavAuth(); location.href = getLocaleHomeHref(); });
-      utility.appendChild(logout);
+      const plan = (session.plan || 'free').toLowerCase();
+      const isSuperAdmin = (session.email.toLowerCase() === 'wewee1@gmail.com') || (session.role === 'admin');
+      const isPaid = isSuperAdmin || ['pro', 'team', 'lifetime', 'yearly', 'monthly', 'single'].includes(plan);
+
+      // Hide "Upgrade Pro" button in nav if already a paid subscriber / admin to save space
+      const upgradeBtns = document.querySelectorAll('.nav-upgrade');
+      upgradeBtns.forEach(btn => {
+        btn.style.display = isPaid ? 'none' : '';
+      });
+
+      const rawName = session.name || session.email.split('@')[0];
+      const displayName = escHtml(rawName);
+      const email = escHtml(session.email);
+      const initial = (rawName.charAt(0) || 'U').toUpperCase();
+
+      let badgeLabel = '';
+      let badgeClass = '';
+      if (isSuperAdmin) {
+        badgeLabel = 'ADMIN';
+        badgeClass = 'badge-admin';
+      } else if (plan === 'lifetime') {
+        badgeLabel = 'LIFETIME';
+        badgeClass = 'badge-lifetime';
+      } else if (plan === 'team') {
+        badgeLabel = 'TEAM';
+        badgeClass = 'badge-team';
+      } else if (isPaid) {
+        badgeLabel = 'PRO';
+        badgeClass = 'badge-pro';
+      }
+
+      const badgeHtml = badgeLabel ? `<span class="nav-user-badge ${badgeClass}">${badgeLabel}</span>` : '';
+
+      let planLabel = t.plan_free;
+      if (isSuperAdmin) {
+        planLabel = '⚡ Super Admin';
+      } else if (plan === 'lifetime') {
+        planLabel = `👑 ${t.plan_lifetime}`;
+      } else if (plan === 'team') {
+        planLabel = `🏢 ${t.plan_team}`;
+      } else if (isPaid) {
+        planLabel = `★ ${t.plan_pro}`;
+      }
+
+      const dropdown = document.createElement('div');
+      dropdown.className = 'nav-user-dropdown';
+      dropdown.setAttribute('data-auth-ui', 'true');
+
+      dropdown.innerHTML = `
+        <button class="nav-user-trigger" type="button" aria-expanded="false" aria-haspopup="true" title="${displayName} (${email})">
+          <span class="nav-user-avatar">${escHtml(initial)}</span>
+          <span class="nav-user-name">${displayName}</span>
+          ${badgeHtml}
+          <svg class="nav-user-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-user-menu" role="menu" aria-label="User profile menu">
+          <div class="nav-user-header">
+            <div class="nav-user-head-avatar">${escHtml(initial)}</div>
+            <div class="nav-user-head-meta">
+              <div class="nav-user-head-name">${displayName} ${badgeHtml}</div>
+              <div class="nav-user-head-email" title="${email}">${email}</div>
+              <div class="nav-user-head-plan">${escHtml(planLabel)}</div>
+            </div>
+          </div>
+          <div class="nav-user-divider"></div>
+          <div class="nav-user-links">
+            <a class="nav-user-item" href="${getLocaleAuthHref()}" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>${t.account}</span>
+            </a>
+            <a class="nav-user-item" href="${getLocaleAuthHref()}#membership" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <span>${t.membership}</span>
+            </a>
+            <a class="nav-user-item" href="${getLocaleToolHref()}#records" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>${t.records}</span>
+            </a>
+            ${isSuperAdmin ? `
+            <a class="nav-user-item is-admin-link" href="${getLocaleAdminHref()}" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <span>${t.admin}</span>
+            </a>` : ''}
+          </div>
+          <div class="nav-user-divider"></div>
+          <button class="nav-user-item nav-user-logout" type="button" role="menuitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>${t.logout}</span>
+          </button>
+        </div>
+      `;
+
+      const trigger = dropdown.querySelector('.nav-user-trigger');
+      const logoutBtn = dropdown.querySelector('.nav-user-logout');
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('is-open');
+        // Close any other open dropdowns first
+        document.querySelectorAll('.nav-user-dropdown.is-open').forEach(dd => {
+          if (dd !== dropdown) dd.classList.remove('is-open');
+        });
+        dropdown.classList.toggle('is-open', !isOpen);
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        saveSession(null);
+        renderNavAuth();
+        location.href = getLocaleHomeHref();
+      });
+
+      utility.appendChild(dropdown);
       return;
     }
+
+    // Guest / logged out state: restore upgrade button
+    const upgradeBtns = document.querySelectorAll('.nav-upgrade');
+    upgradeBtns.forEach(btn => {
+      btn.style.display = '';
+    });
+
     const login = document.createElement('a');
     login.className = 'nav-auth-btn';
     login.href = getLocaleAuthHref('login');
@@ -308,6 +508,34 @@
     register.textContent = t.register;
     register.setAttribute('data-auth-ui', 'true');
     utility.appendChild(register);
+  }
+
+  // Bind global outside-click and Escape listeners once
+  if (typeof window !== 'undefined' && !window.__sfNavUserDropdownBound) {
+    window.__sfNavUserDropdownBound = true;
+    document.addEventListener('click', (e) => {
+      const openDropdowns = document.querySelectorAll('.nav-user-dropdown.is-open');
+      openDropdowns.forEach(dd => {
+        if (!dd.contains(e.target)) {
+          dd.classList.remove('is-open');
+          const trg = dd.querySelector('.nav-user-trigger');
+          if (trg) trg.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const openDropdowns = document.querySelectorAll('.nav-user-dropdown.is-open');
+        openDropdowns.forEach(dd => {
+          dd.classList.remove('is-open');
+          const trg = dd.querySelector('.nav-user-trigger');
+          if (trg) {
+            trg.setAttribute('aria-expanded', 'false');
+            trg.focus();
+          }
+        });
+      }
+    });
   }
 
   /* ── Magic link token auto-login ── */
@@ -1053,32 +1281,31 @@
   function openUpgradePayModal({ feature = 'sync', session = null, onSuccess = null } = {}) {
     closeUpgradePayModal();
 
-    // Robust detection of overseas vs mainland China users
+    // Strict IP-Based Regional Pricing Enforcement:
+    // User requirement: "中国区的金额是远远低于海外版的金额的。中国区基本上就是现在为了做测试的价格，
+    // 而我们的主要是海外用户他们的对应的定域价格是远远不同的，差距很大，这个一定要避免他们随意切换，
+    // 一定要以IP地址来确定它的付费金额，即便他更换了语言，也按他的IP地址的金额计算"
     let isChinaUser = false;
+    let ipCountry = '';
+    let ipFlag = '🌐';
     try {
-      const explicitZhPath = window.location.pathname.startsWith('/zh/');
-      const userCountry = (session?.country || '').toUpperCase();
-      let tz = '';
-      try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (_) {}
-      const isChinaTz = ['Asia/Shanghai', 'Asia/Chongqing', 'Asia/Harbin', 'Asia/Urumqi', 'PRC'].includes(tz);
-      const navLang = (navigator.language || '').toLowerCase();
-      const isZhNavLang = navLang.startsWith('zh');
-
-      if (userCountry) {
-        isChinaUser = (userCountry === 'CN');
-      } else if (explicitZhPath) {
-        isChinaUser = true;
-      } else {
-        // If not on /zh/ path, treat as China only if both timezone and browser language match China
-        isChinaUser = isChinaTz && isZhNavLang;
+      const cachedGeo = JSON.parse(sessionStorage.getItem('sf_geo_pricing') || 'null') || window.__sfGeoPricing;
+      if (cachedGeo && typeof cachedGeo.isChinaIp === 'boolean') {
+        isChinaUser = cachedGeo.isChinaIp;
+        ipCountry = cachedGeo.country || '';
+        ipFlag = cachedGeo.flag || '';
+      } else if (session?.country) {
+        isChinaUser = (session.country.toUpperCase() === 'CN');
+        ipCountry = session.country.toUpperCase();
       }
-    } catch (_) {
-      isChinaUser = false;
-    }
+    } catch (_) {}
 
-    const isZh = (getNavAuthLang() === 'zh') || isChinaUser;
+    // isZh controls the UI translation language (text labels), but NEVER switches currency or prices!
+    const isZh = (getNavAuthLang() === 'zh');
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-    let activeGateway = isChinaUser ? 'wechat' : 'creem'; // Overseas defaults to Creem (USD $), Mainland China to WeChat (CNY ¥)
+
+    // IP-locked gateway: Overseas IP strictly locked to 'creem' (USD $), Mainland China IP to 'wechat' (CNY ¥)
+    let activeGateway = isChinaUser ? 'wechat' : 'creem';
 
     const currencyConfigs = {
       creem: {
@@ -1217,16 +1444,6 @@
             <p class="auth-pay-subtitle">${curFeatCfg.subtitle}</p>
           </div>
 
-          <!-- Currency & Payment Gateway Switcher -->
-          <div class="auth-pay-gateway-toggle" id="authPayGatewayToggle">
-            <button type="button" class="auth-gw-btn ${activeGateway === 'creem' ? 'active' : ''}" data-gw="creem">
-              💳 ${isZh ? '国际信用卡 / Apple Pay (USD $)' : 'Credit Card / Apple Pay (USD $)'}
-            </button>
-            <button type="button" class="auth-gw-btn ${activeGateway === 'wechat' ? 'active' : ''}" data-gw="wechat">
-              🟢 ${isZh ? '微信支付 (人民币 ¥)' : 'WeChat Pay (CNY ¥)'}
-            </button>
-          </div>
-
           <div class="auth-pay-features">
             ${curFeatCfg.bullets.map(b => `
               <div class="auth-pay-feature-item">
@@ -1307,17 +1524,8 @@
     function attachModalEvents() {
       overlay.querySelector('#authPayModalClose')?.addEventListener('click', closeUpgradePayModal);
 
-      // Gateway switcher buttons
-      overlay.querySelectorAll('.auth-gw-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const nextGw = btn.getAttribute('data-gw');
-          if (nextGw === activeGateway) return;
-          activeGateway = nextGw;
-          const plansList = currencyConfigs[activeGateway].plans[feature] || currencyConfigs[activeGateway].plans.sync;
-          selectedPlanId = plansList[0].id;
-          renderModalContent();
-        });
-      });
+      // Gateway switching is strictly locked to prevent currency and pricing bypass:
+      // Overseas IPs are locked to USD (Creem.io), and China IPs to CNY (WeChat Pay).
 
       // Plan selection buttons
       overlay.querySelectorAll('[data-pay-plan]').forEach(btn => {
@@ -2176,6 +2384,9 @@
     if (document.querySelector('[data-auth-page]')) {
       initAuthPage();
     }
+
+    // Fire visitor telemetry & edge geo pricing resolution in background
+    trackVisitorTelemetry().catch(() => {});
 
     // Fire session refresh in background — no await so UI is never blocked
     silentSessionRefresh().then(() => {

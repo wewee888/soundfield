@@ -40,6 +40,24 @@ export async function onRequestPost(context) {
     const plan = String(body.plan || 'single').toLowerCase();
     const cfg = PLAN_CONFIGS[plan] || PLAN_CONFIGS.single;
 
+    // Strict IP Country & Geo Pricing Enforcement:
+    // Mainland China visitors get CNY test pricing.
+    // Overseas visitors (US, GB, JP, etc.) MUST pay USD via Creem.io and are blocked here.
+    const country = String(request.cf?.country || request.headers.get('cf-ipcountry') || '').toUpperCase();
+    const host = request.headers.get('host') || '';
+    const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
+
+    if (!isLocalhost && country && country !== 'CN') {
+      return json({
+        ok: false,
+        error: 'geo_pricing_restricted',
+        message: '人民币测试价格仅支持中国大陆境内网络 IP 访问 / CNY test pricing is strictly restricted to mainland China IPs.',
+        pricingTier: 'overseas',
+        currency: 'USD',
+        country,
+      }, 403);
+    }
+
     const appid = String(env.HUPIJIAO_APPID || '201906177810');
     const appsecret = String(env.HUPIJIAO_APPSECRET || 'f94f1168d88f40156b719b84b8823681');
     const gateway = String(env.HUPIJIAO_GATEWAY || 'https://api.xunhupay.com/payment/do.html');
