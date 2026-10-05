@@ -285,7 +285,7 @@
       flex-wrap: wrap;
     }
     .adm-main-views {
-      padding: 24px 32px 80px;
+      padding: 18px 20px 80px;
       flex: 1;
       min-width: 0;
     }
@@ -363,8 +363,8 @@
     .adm-card {
       background: var(--adm-card);
       border: 1px solid var(--adm-border-dim);
-      border-radius: 16px;
-      padding: 22px;
+      border-radius: 14px;
+      padding: 16px 18px;
       backdrop-filter: blur(14px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
       margin-bottom: 24px;
@@ -621,30 +621,50 @@
       overflow-x: auto;
       border-radius: 12px;
       border: 1px solid var(--adm-border-dim);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    }
+    .table-wrap::-webkit-scrollbar {
+      height: 4px;
+    }
+    .table-wrap::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 13px;
+      font-size: 12px;
       text-align: left;
     }
     th {
       background: rgba(11, 17, 32, 0.95);
-      padding: 13px 16px;
+      padding: 9px 10px;
       color: var(--adm-muted);
       font-weight: 700;
+      font-size: 11.5px;
+      letter-spacing: 0.02em;
       border-bottom: 1px solid var(--adm-border-dim);
       white-space: nowrap;
     }
     td {
-      padding: 13px 16px;
+      padding: 9px 10px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       color: #cbd5e1;
       white-space: nowrap;
       vertical-align: middle;
+      font-size: 12px;
     }
     tr:hover td {
       background: rgba(255, 255, 255, 0.02);
+    }
+    td .btn-action {
+      padding: 3px 6px;
+      font-size: 11px;
+    }
+    td .btn-danger-sm {
+      padding: 3px 6px;
+      font-size: 11px;
     }
 
     /* Badges */
@@ -1999,6 +2019,37 @@
       return `${y}/${m}/${day} ${hh}:${mm}`;
     }
 
+    function formatDateCompact(isoStr) {
+      if (!isoStr) return '--';
+      const d = new Date(isoStr);
+      if (isNaN(d.getTime())) return '--';
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      return `${m}/${day} ${hh}:${mm}`;
+    }
+
+    function formatDateCompactSeconds(isoStr) {
+      if (!isoStr) return '--';
+      const d = new Date(isoStr);
+      if (isNaN(d.getTime())) return '--';
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      const ss = String(d.getSeconds()).padStart(2, '0');
+      return `${m}/${day} ${hh}:${mm}:${ss}`;
+    }
+
+    function formatShortOrderId(orderId) {
+      if (!orderId || orderId === '--') return '--';
+      if (orderId.length <= 15) return orderId;
+      const prefix = orderId.slice(0, 3);
+      const suffix = orderId.slice(-6);
+      return `${prefix}...${suffix}`;
+    }
+
     function formatDateTimeSeconds(isoStr) {
       if (!isoStr) return '--';
       const d = new Date(isoStr);
@@ -2021,43 +2072,44 @@
       const diffSec = Math.floor(diffMs / 1000);
       if (diffSec < 60) return '刚刚';
       const diffMin = Math.floor(diffSec / 60);
-      if (diffMin < 60) return `${diffMin}分钟前`;
+      if (diffMin < 60) return `${diffMin}m前`;
       const diffHour = Math.floor(diffMin / 60);
-      if (diffHour < 24) return `${diffHour}小时前`;
+      if (diffHour < 24) return `${diffHour}h前`;
       const diffDays = Math.floor(diffHour / 24);
-      if (diffDays <= 30) return `${diffDays}天前`;
-      return formatDateTime(isoStr);
+      if (diffDays <= 30) return `${diffDays}d前`;
+      return formatDateCompact(isoStr);
     }
 
     function getLoginStatusBadge(u) {
       const isConfirmed = u.firstLoginConfirmed || !!u.firstLoginAt;
       if (isConfirmed) {
-        const timeStr = u.firstLoginAt ? formatDateTime(u.firstLoginAt) : (u.lastLoginAt ? formatDateTime(u.lastLoginAt) : '已验证');
-        return `<div>
-          <span style="display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700; background:rgba(44, 240, 193, 0.15); border:1px solid rgba(44, 240, 193, 0.35); color:#2cf0c1;" title="已确认首次成功建立会话/登录">
-            🟢 首次登录成功
+        const timeStr = u.firstLoginAt ? formatDateCompact(u.firstLoginAt) : (u.lastLoginAt ? formatDateCompact(u.lastLoginAt) : '已验证');
+        const fullTime = u.firstLoginAt ? formatDateTimeSeconds(u.firstLoginAt) : '';
+        return `<div title="${fullTime}">
+          <span style="display:inline-flex; align-items:center; gap:2px; padding:2px 6px; border-radius:10px; font-size:10.5px; font-weight:700; background:rgba(44, 240, 193, 0.15); border:1px solid rgba(44, 240, 193, 0.35); color:#2cf0c1;" title="已确认首次成功建立会话/登录">
+            🟢 已登录
           </span>
-          <div style="font-size:10.5px; color:#94a3b8; font-family:monospace; margin-top:2px;">${timeStr}</div>
+          <div style="font-size:10px; color:#94a3b8; font-family:monospace; margin-top:2px;">${timeStr}</div>
         </div>`;
       } else {
         return `<div>
-          <span style="display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700; background:rgba(234, 179, 8, 0.15); border:1px solid rgba(234, 179, 8, 0.35); color:#eab308;" title="用户注册后尚未进行有效会话，点击可排查或发送登录指引">
-            🟡 仅注册未登录
+          <span style="display:inline-flex; align-items:center; gap:2px; padding:2px 6px; border-radius:10px; font-size:10.5px; font-weight:700; background:rgba(234, 179, 8, 0.15); border:1px solid rgba(234, 179, 8, 0.35); color:#eab308;" title="用户注册后尚未进行有效会话，点击可排查或发送登录指引">
+            🟡 未登录
           </span>
-          <div style="font-size:10.5px; color:#64748b; margin-top:2px;">等待首次会话</div>
         </div>`;
       }
     }
 
     function getLastActiveDisplay(u) {
       if (!u.lastLoginAt) {
-        return `<span style="font-size:11.5px; color:#64748b;">--</span>`;
+        return `<span style="font-size:11px; color:#64748b;">--</span>`;
       }
-      const dt = formatDateTime(u.lastLoginAt);
+      const dt = formatDateCompact(u.lastLoginAt);
       const rel = formatRelativeTime(u.lastLoginAt);
-      return `<div style="cursor:pointer;" onclick="openUserHistoryModal('${u.email}')" title="点击查看该用户全站浏览记录与操作轨迹">
-        <div style="font-size:12px; color:#cbd5e1; font-family:monospace; font-weight:600;">${dt}</div>
-        <div style="font-size:10.5px; color:var(--adm-accent);">${rel}</div>
+      const full = formatDateTimeSeconds(u.lastLoginAt);
+      return `<div style="cursor:pointer;" onclick="openUserHistoryModal('${u.email}')" title="${full} (点击查看轨迹)">
+        <div style="font-size:11.5px; color:#cbd5e1; font-family:monospace; font-weight:600;">${dt}</div>
+        <div style="font-size:10px; color:var(--adm-accent);">${rel}</div>
       </div>`;
     }
 
@@ -2280,26 +2332,27 @@
       } else {
         recentOrdersEl.innerHTML = recentOrders.map(o => {
           const isPaid = o.status === 'paid';
-          const orderDate = o.created_at ? new Date(o.created_at).toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '--';
+          const orderDate = formatDateCompact(o.created_at);
+          const fullDate = formatDateTimeSeconds(o.created_at);
           const orderId = o.trade_order_id || o.order_id || '--';
           return `<tr>
-            <td style="font-family:monospace; font-size:12px; color:#94a3b8;">
-              <span title="${orderId}" style="cursor:pointer;" onclick="navigator.clipboard.writeText('${orderId}'); showToast('订单号已复制')">${orderId.slice(-10)} 📋</span>
+            <td style="font-family:monospace; font-size:11.5px; color:#94a3b8;">
+              <span title="${orderId} (点击复制单号)" style="cursor:pointer;" onclick="navigator.clipboard.writeText('${orderId}'); showToast('订单号已复制')">${formatShortOrderId(orderId)} 📋</span>
             </td>
-            <td style="font-weight:600; color:#fff;">${o.email || '<span style="color:#64748b">微信游客</span>'}</td>
+            <td style="font-weight:600; color:#fff; font-size:12px;">${escHtml(o.email || '微信游客')}</td>
             <td><span class="tier-badge tier-${o.plan || 'pro'}">${o.plan || 'pro'}</span></td>
-            <td style="font-weight:800; font-family:monospace; color:${isPaid ? '#2cf0c1' : '#f59e0b'};">
+            <td style="font-weight:800; font-family:monospace; color:${isPaid ? '#2cf0c1' : '#f59e0b'}; font-size:12px;">
               ${o.currency === 'USD' ? '$' : '¥'} ${o.fee || '0.00'}
             </td>
-            <td><span class="status-badge ${isPaid ? 'badge-paid' : 'badge-pending'}">${isPaid ? '已支付' : '待支付'}</span></td>
-            <td style="font-size:12px; color:#94a3b8; font-family:monospace;">${orderDate}</td>
+            <td><span class="status-badge ${isPaid ? 'badge-paid' : 'badge-pending'}" style="font-size:11px; padding:2px 7px;">${isPaid ? '已支付' : '待支付'}</span></td>
+            <td style="font-size:11.5px; color:#94a3b8; font-family:monospace;" title="${fullDate}">${orderDate}</td>
             <td style="text-align:right;">
               ${!isPaid ? `
-                <button onclick="openDunningModal('${orderId}')" class="btn-action" style="font-size:11px; padding:3px 7px; background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.4); color:#fbbf24;" title="催付该订单">
+                <button onclick="openDunningModal('${orderId}')" class="btn-action" style="font-size:11px; padding:3px 6px; background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.4); color:#fbbf24;" title="催付该订单">
                   ⚡ 催付
                 </button>
               ` : `
-                <button onclick="quickFillGrant('${o.email}', '${o.plan}')" class="btn-action" style="font-size:11px; padding:3px 7px;">
+                <button onclick="quickFillGrant('${o.email}', '${o.plan}')" class="btn-action" style="font-size:11px; padding:3px 6px;">
                   🔑 续期
                 </button>
               `}
@@ -2315,29 +2368,30 @@
         recentUsersEl.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#64748b; padding:16px;">暂无注册用户</td></tr>';
       } else {
         recentUsersEl.innerHTML = recentUsers.map(u => {
-          const regDate = formatDateTime(u.createdAt);
+          const regDate = formatDateCompact(u.createdAt);
+          const fullReg = formatDateTimeSeconds(u.createdAt);
           return `<tr>
             <td style="font-weight:600; color:#fff;">
-              <a href="javascript:void(0)" onclick="openUserHistoryModal('${u.email}')" style="color:#fff; text-decoration:underline; text-decoration-color:rgba(44,240,193,0.4);" title="点击查看全站浏览记录与登录诊断">
+              <a href="javascript:void(0)" onclick="openUserHistoryModal('${u.email}')" style="color:#fff; text-decoration:underline; text-decoration-color:rgba(44,240,193,0.4); max-width:105px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:inline-block; vertical-align:middle;" title="点击查看全站浏览记录与登录诊断: ${escHtml(u.name || '未命名')}">
                 ${escHtml(u.name || '未命名')}
               </a>
             </td>
-            <td style="color:#cbd5e1; font-family:monospace; font-size:12px;">${escHtml(u.email)}</td>
+            <td style="color:#cbd5e1; font-family:monospace; font-size:11.5px;">${escHtml(u.email)}</td>
             <td>${getCountryBadge(u.country, u.ip)}</td>
             <td><span style="font-size:11px; color:#94a3b8;">${escHtml(u.language || 'en')}</span></td>
             <td><span class="tier-badge tier-${u.plan || 'free'}">${escHtml(u.plan_display || u.plan)}</span></td>
             <td>${getLoginStatusBadge(u)}</td>
             <td>${getLastActiveDisplay(u)}</td>
-            <td style="font-size:12px; color:#cbd5e1; font-family:monospace;">${regDate}</td>
+            <td style="font-size:11px; color:#cbd5e1; font-family:monospace;" title="${fullReg}">${regDate}</td>
             <td style="text-align:right;">
-              <div style="display:inline-flex; gap:4px;">
-                <button onclick="openUserHistoryModal('${u.email}')" class="btn-action" style="font-size:11px; padding:3px 7px; background:rgba(44,240,193,0.1); border-color:rgba(44,240,193,0.3); color:var(--adm-accent);" title="查看全站浏览记录与登录诊断">
+              <div style="display:inline-flex; gap:3px;">
+                <button onclick="openUserHistoryModal('${u.email}')" class="btn-action" style="font-size:10.5px; padding:3px 5px; background:rgba(44,240,193,0.1); border-color:rgba(44,240,193,0.3); color:var(--adm-accent);" title="查看全站浏览记录与登录诊断">
                   👁️ 轨迹
                 </button>
-                <button onclick="openEditUserModal('${u.email}')" class="btn-action" style="font-size:11px; padding:3px 6px;" title="编辑用户资料">
+                <button onclick="openEditUserModal('${u.email}')" class="btn-action" style="font-size:10.5px; padding:3px 5px;" title="编辑用户资料">
                   ✏️
                 </button>
-                <button onclick="deleteUser('${u.email}')" class="btn-danger-sm" style="font-size:11px; padding:3px 6px;" title="永久注销该用户">
+                <button onclick="deleteUser('${u.email}')" class="btn-danger-sm" style="font-size:10.5px; padding:3px 5px;" title="永久注销该用户">
                   🗑️
                 </button>
               </div>
@@ -2390,46 +2444,48 @@
         const isPaid = o.status === 'paid';
         const feeFormatted = Number(o.fee || 0).toFixed(2);
         const currencySym = o.currency === 'USD' ? '$' : '¥';
-        const createdDate = o.created_at ? new Date(o.created_at).toLocaleString() : '--';
-        const paidDate = o.paid_at ? new Date(o.paid_at).toLocaleString() : (isPaid ? createdDate : '--');
+        const createdDate = formatDateCompact(o.created_at);
+        const fullCreated = formatDateTimeSeconds(o.created_at);
+        const paidDate = o.paid_at ? formatDateCompact(o.paid_at) : (isPaid ? createdDate : '--');
+        const fullPaid = o.paid_at ? formatDateTimeSeconds(o.paid_at) : (isPaid ? fullCreated : '--');
         const orderId = o.trade_order_id || o.order_id || '--';
 
         return `<tr>
-          <td style="font-family: monospace; font-size: 12px; color: #94a3b8;">
-            <span title="${orderId}" style="cursor:pointer;" onclick="navigator.clipboard.writeText('${orderId}'); showToast('订单号已复制')">${orderId} 📋</span>
+          <td style="font-family: monospace; font-size: 11.5px; color: #94a3b8;">
+            <span title="${orderId} (点击复制完整单号)" style="cursor:pointer;" onclick="navigator.clipboard.writeText('${orderId}'); showToast('订单号已复制')">${formatShortOrderId(orderId)} 📋</span>
           </td>
           <td>
-            <div style="font-weight: 600; color: #fff;">${o.email || '<span style="color:#64748b">微信游客</span>'}</div>
+            <div style="font-weight: 600; color: #fff; font-size: 12px; max-width: 170px; overflow: hidden; text-overflow: ellipsis;" title="${escHtml(o.email || '')}">${escHtml(o.email || '微信游客')}</div>
           </td>
           <td><span class="tier-badge tier-${o.plan || 'pro'}">${o.plan || 'pro'}</span></td>
-          <td style="font-weight: 800; font-family: monospace; color: ${isPaid ? '#2cf0c1' : '#f59e0b'};">
+          <td style="font-weight: 800; font-family: monospace; color: ${isPaid ? '#2cf0c1' : '#f59e0b'}; font-size: 12px;">
             ${currencySym} ${feeFormatted}
           </td>
           <td>
-            <span style="font-size: 11.5px; color: #94a3b8;">${o.provider === 'creem' ? '🌐 Creem.io' : '🟢 微信支付'}</span>
+            <span style="font-size: 11px; color: #94a3b8;">${o.provider === 'creem' ? '🌐 Creem' : '🟢 微信支付'}</span>
           </td>
           <td>
-            <span class="status-badge ${isPaid ? 'badge-paid' : 'badge-pending'}">
-              ${isPaid ? '已支付' : '待支付 / 弃单'}
+            <span class="status-badge ${isPaid ? 'badge-paid' : 'badge-pending'}" style="font-size: 11px; padding: 2px 7px;">
+              ${isPaid ? '已支付' : '待支付'}
             </span>
           </td>
-          <td style="font-size: 12px; color: #64748b;">${createdDate}</td>
-          <td style="font-size: 12px; color: #64748b;">${paidDate}</td>
+          <td style="font-size: 11.5px; color: #94a3b8; font-family: monospace;" title="${fullCreated}">${createdDate}</td>
+          <td style="font-size: 11.5px; color: #94a3b8; font-family: monospace;" title="${fullPaid}">${paidDate}</td>
           <td style="text-align: right;">
-            <div style="display: inline-flex; gap: 6px;">
+            <div style="display: inline-flex; gap: 4px;">
               ${!isPaid ? `
-                <button onclick="openDunningModal('${orderId}')" class="btn-action" style="font-size: 11px; padding: 4px 8px; background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.4); color:#fbbf24;" title="发起弃单跟进与催付邮件">
+                <button onclick="openDunningModal('${orderId}')" class="btn-action" style="font-size: 11px; padding: 3px 6px; background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.4); color:#fbbf24;" title="发起弃单跟进与催付邮件">
                   ⚡ 催付
                 </button>
-                <button onclick="openMarkPaidModal('${orderId}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;">
-                  ✅ 标记已付
+                <button onclick="openMarkPaidModal('${orderId}')" class="btn-action" style="font-size: 11px; padding: 3px 6px;" title="手动标记为已支付">
+                  ✅ 已付
                 </button>
               ` : `
-                <button onclick="quickFillGrant('${o.email}', '${o.plan}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;">
+                <button onclick="quickFillGrant('${o.email}', '${o.plan}')" class="btn-action" style="font-size: 11px; padding: 3px 6px;">
                   🔑 续期
                 </button>
               `}
-              <button onclick="deleteOrder('${orderId}')" class="btn-danger-sm" style="padding: 4px 8px; font-size: 11px;" title="删除无用订单记录">
+              <button onclick="deleteOrder('${orderId}')" class="btn-danger-sm" style="padding: 3px 6px; font-size: 11px;" title="删除无用订单记录">
                 🗑️
               </button>
             </div>
@@ -2476,60 +2532,63 @@
           const expDate = new Date(u.expires_at);
           const diffDays = Math.ceil((expDate.getTime() - Date.now()) / (86400 * 1000));
           if (diffDays > 3000) {
-            expText = '👑 终身永久有效';
+            expText = '👑 终身';
             expClass = 'color: #c084fc; font-weight: 700;';
           } else if (diffDays > 0) {
-            expText = `${expDate.toLocaleDateString()} (余 ${diffDays} 天)`;
+            const expShort = formatDateCompact(u.expires_at).split(' ')[0];
+            expText = `${expShort} (余${diffDays}天)`;
             expClass = 'color: #2cf0c1; font-weight: 600;';
           } else {
-            expText = `${expDate.toLocaleDateString()} (已过期)`;
+            expText = '已过期';
             expClass = 'color: #f87171;';
           }
         }
+        const regDate = formatDateCompact(u.createdAt);
+        const fullReg = formatDateTimeSeconds(u.createdAt);
 
         return `<tr>
           <td>
-            <div style="font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
-              <span style="width: 26px; height: 26px; border-radius: 50%; background: rgba(44, 240, 193, 0.15); border: 1px solid rgba(44, 240, 193, 0.3); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; color: var(--adm-accent);">
+            <div style="font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px;">
+              <span style="width: 22px; height: 22px; border-radius: 50%; background: rgba(44, 240, 193, 0.15); border: 1px solid rgba(44, 240, 193, 0.3); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: var(--adm-accent);">
                 ${(u.name || 'U').slice(0, 1).toUpperCase()}
               </span>
-              <a href="javascript:void(0)" onclick="openUserHistoryModal('${u.email}')" style="color: #fff; text-decoration: underline; text-decoration-color: rgba(44,240,193,0.4);" title="点击查看用户全站浏览轨迹与登录诊断">
+              <a href="javascript:void(0)" onclick="openUserHistoryModal('${u.email}')" style="color: #fff; text-decoration: underline; text-decoration-color: rgba(44,240,193,0.4); max-width: 105px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle;" title="点击查看用户全站浏览轨迹与登录诊断: ${escHtml(u.name || '未命名')}">
                 ${escHtml(u.name || '未命名')}
               </a>
             </div>
           </td>
-          <td style="font-weight: 600; color: #e2e8f0; font-family: monospace; font-size: 12.5px;">${escHtml(u.email)}</td>
+          <td style="font-weight: 600; color: #e2e8f0; font-family: monospace; font-size: 11.5px;">${escHtml(u.email)}</td>
           <td>${getCountryBadge(u.country, u.ip)}</td>
-          <td><span style="font-size: 11.5px; color: #94a3b8;">${escHtml(u.language || 'en')}</span></td>
+          <td><span style="font-size: 11px; color: #94a3b8;">${escHtml(u.language || 'en')}</span></td>
           <td>
             <span class="tier-badge tier-${u.plan || 'free'}">${escHtml(u.plan_display || u.plan)}</span>
           </td>
-          <td style="font-size: 12px; ${expClass}">${expText}</td>
+          <td style="font-size: 11px; ${expClass}">${expText}</td>
           <td>${getLoginStatusBadge(u)}</td>
           <td>${getLastActiveDisplay(u)}</td>
-          <td style="font-size: 12px; color: #cbd5e1; font-family: monospace;">${regDate}</td>
+          <td style="font-size: 11px; color: #cbd5e1; font-family: monospace;" title="${fullReg}">${regDate}</td>
           <td>
-            <span style="font-size: 12px; color: #94a3b8;">${u.order_count || 0} 笔 · </span>
-            <strong style="font-family: monospace; color: ${(Number(u.total_spent_cny) > 0 || Number(u.total_spent_usd) > 0) ? '#f59e0b' : '#64748b'};">
-              ${Number(u.total_spent_usd) > 0 ? ('$' + u.total_spent_usd) : ('¥ ' + (u.total_spent_cny || '0.00'))}
+            <span style="font-size: 11px; color: #94a3b8;">${u.order_count || 0}笔 · </span>
+            <strong style="font-family: monospace; font-size: 11.5px; color: ${(Number(u.total_spent_cny) > 0 || Number(u.total_spent_usd) > 0) ? '#f59e0b' : '#64748b'};">
+              ${Number(u.total_spent_usd) > 0 ? ('$' + u.total_spent_usd) : ('¥' + (u.total_spent_cny || '0.00'))}
             </strong>
           </td>
           <td style="text-align: right;">
-            <div style="display: inline-flex; gap: 6px;">
-              <button onclick="openUserHistoryModal('${u.email}')" class="btn-action" style="font-size: 11px; padding: 4px 8px; background: rgba(44, 240, 193, 0.12); border-color: rgba(44, 240, 193, 0.35); color: var(--adm-accent);" title="查看该用户的全生命周期浏览记录与登录诊断">
-                👁️ 浏览记录
+            <div style="display: inline-flex; gap: 3px;">
+              <button onclick="openUserHistoryModal('${u.email}')" class="btn-action" style="font-size: 10.5px; padding: 3px 5px; background: rgba(44, 240, 193, 0.12); border-color: rgba(44, 240, 193, 0.35); color: var(--adm-accent);" title="查看该用户的全生命周期浏览记录与登录诊断">
+                👁️ 轨迹
               </button>
-              <button onclick="openEditUserModal('${u.email}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;" title="编辑用户姓名、国家、语言与权限">
-                ✏️ 编辑
+              <button onclick="openEditUserModal('${u.email}')" class="btn-action" style="font-size: 10.5px; padding: 3px 5px;" title="编辑用户姓名、国家、语言与权限">
+                ✏️
               </button>
-              <button onclick="openUserAdjustModal('${u.email}', '${u.plan}')" class="btn-action" style="font-size: 11px; padding: 4px 8px;">
-                ✨ 调级
+              <button onclick="openUserAdjustModal('${u.email}', '${u.plan}')" class="btn-action" style="font-size: 10.5px; padding: 3px 5px;" title="调整会员等级与有效期">
+                ✨
               </button>
-              <button onclick="openDunningModalForUser('${u.email}')" class="btn-action" style="font-size: 11px; padding: 4px 8px; background: rgba(251, 191, 36, 0.15); border-color: rgba(251, 191, 36, 0.4); color: #fbbf24;" title="给该用户发送催付或营销邮件">
-                ⚡ 催付/发信
+              <button onclick="openDunningModalForUser('${u.email}')" class="btn-action" style="font-size: 10.5px; padding: 3px 5px; background: rgba(251, 191, 36, 0.15); border-color: rgba(251, 191, 36, 0.4); color: #fbbf24;" title="给该用户发送催付或营销邮件">
+                ⚡ 催付
               </button>
-              <button onclick="deleteUser('${u.email}')" class="btn-danger-sm" style="font-size: 11px; padding: 4px 8px;" title="安全注销并永久抹除该用户">
-                🗑️ 删除
+              <button onclick="deleteUser('${u.email}')" class="btn-danger-sm" style="font-size: 10.5px; padding: 3px 5px;" title="安全注销并永久抹除该用户">
+                🗑️
               </button>
             </div>
           </td>
@@ -3091,8 +3150,8 @@
     function getCountryBadge(code, ip) {
       const c = String(code || 'US').toUpperCase();
       const flag = COUNTRY_FLAGS[c] || '🌐';
-      const ipText = ip && ip !== 'Unknown' ? `<span style="color:#64748b; font-size:11px; margin-left:4px;">${ip}</span>` : '';
-      return `<span style="display:inline-flex; align-items:center; gap:4px; font-family:monospace; font-size:11.5px; background:rgba(255,255,255,0.05); padding:2px 7px; border-radius:5px; border:1px solid rgba(255,255,255,0.1);"><span style="font-size:13px;">${flag}</span><strong>${c}</strong>${ipText}</span>`;
+      const ipText = ip && ip !== 'Unknown' ? `<span style="color:#64748b; font-size:10.5px; margin-left:3px;" title="${ip}">${ip.length > 15 ? ip.slice(0, 12) + '…' : ip}</span>` : '';
+      return `<span style="display:inline-flex; align-items:center; gap:3px; font-family:monospace; font-size:11px; background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:5px; border:1px solid rgba(255,255,255,0.1);"><span style="font-size:12px;">${flag}</span><strong>${c}</strong>${ipText}</span>`;
     }
 
     function getUserLocalTimeInfo(country) {
@@ -3882,39 +3941,40 @@
     }
 
     function buildVisitorRowHtml(v) {
-      const timeStr = formatDateTimeSeconds(v.timestamp);
+      const timeStr = formatDateCompactSeconds(v.timestamp);
+      const fullTime = formatDateTimeSeconds(v.timestamp);
       const relStr = formatRelativeTime(v.timestamp);
       const isChina = (v.pricingTier === 'china_test' || v.country === 'CN');
 
-      let identityBadge = '<span style="font-size:11px; color:#94a3b8; background:rgba(255,255,255,0.06); padding:2px 7px; border-radius:10px; border:1px solid rgba(255,255,255,0.08);">🌐 匿名访客</span>';
+      let identityBadge = '<span style="font-size:10.5px; color:#94a3b8; background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:8px; border:1px solid rgba(255,255,255,0.08);">🌐 匿名</span>';
       if (v.isVip) {
-        identityBadge = `<span style="font-size:11px; color:#c084fc; background:rgba(192,132,252,0.12); padding:2px 8px; border-radius:10px; border:1px solid rgba(192,132,252,0.35); font-weight:700;">👑 VIP (${escHtml(v.userName || v.email)})</span>`;
+        identityBadge = `<span style="font-size:10.5px; color:#c084fc; background:rgba(192,132,252,0.12); padding:2px 6px; border-radius:8px; border:1px solid rgba(192,132,252,0.35); font-weight:700;">👑 VIP (${escHtml(v.userName || v.email)})</span>`;
       } else if (v.isRegistered || v.email) {
-        identityBadge = `<span style="font-size:11px; color:#60a5fa; background:rgba(59,130,246,0.12); padding:2px 8px; border-radius:10px; border:1px solid rgba(59,130,246,0.3); font-weight:600;">👤 ${escHtml(v.userName || v.email)}</span>`;
+        identityBadge = `<span style="font-size:10.5px; color:#60a5fa; background:rgba(59,130,246,0.12); padding:2px 6px; border-radius:8px; border:1px solid rgba(59,130,246,0.3); font-weight:600;">👤 ${escHtml(v.userName || v.email)}</span>`;
       }
 
       const pricingBadge = isChina
-        ? `<span style="font-size:11px; color:#2cf0c1; background:rgba(44,240,193,0.12); padding:2px 8px; border-radius:10px; border:1px solid rgba(44,240,193,0.3); font-weight:700;" title="大陆IP专属微信测试价 (¥3.90~¥39.90)">🇨🇳 大陆测试区 (¥)</span>`
-        : `<span style="font-size:11px; color:#60a5fa; background:rgba(59,130,246,0.12); padding:2px 8px; border-radius:10px; border:1px solid rgba(59,130,246,0.35); font-weight:700;" title="海外IP强锁国际美金价 ($1.99~$79.99)">🌍 海外美金区 ($)</span>`;
+        ? `<span style="font-size:10.5px; color:#2cf0c1; background:rgba(44,240,193,0.12); padding:2px 6px; border-radius:8px; border:1px solid rgba(44,240,193,0.3); font-weight:700;" title="大陆IP专属微信测试价 (¥3.90~¥39.90)">🇨🇳 大陆测试 (¥)</span>`
+        : `<span style="font-size:10.5px; color:#60a5fa; background:rgba(59,130,246,0.12); padding:2px 6px; border-radius:8px; border:1px solid rgba(59,130,246,0.35); font-weight:700;" title="海外IP强锁国际美金价 ($1.99~$79.99)">🌍 海外美金 ($)</span>`;
 
       const pageLink = v.page
-        ? `<a href="${v.page}" target="_blank" style="color:#fff; text-decoration:none; display:flex; flex-direction:column;" title="在新标签中打开访问页面">
-             <span style="font-weight:600; font-size:12.5px;">${escHtml(v.title || v.page)}</span>
-             <span style="font-size:10.5px; color:var(--adm-accent); font-family:monospace;">${v.page} ↗</span>
+        ? `<a href="${v.page}" target="_blank" style="color:#fff; text-decoration:none; display:flex; flex-direction:column;" title="在新标签中打开: ${v.page}">
+             <span style="font-weight:600; font-size:11.5px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(v.title || v.page)}</span>
+             <span style="font-size:10px; color:var(--adm-accent); font-family:monospace; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${v.page} ↗</span>
            </a>`
         : '<span style="color:#64748b;">--</span>';
 
       return `<tr>
-        <td>
-          <div style="font-size:12px; color:#cbd5e1; font-family:monospace; font-weight:600;">${timeStr}</div>
-          <div style="font-size:10.5px; color:var(--adm-accent);">${relStr}</div>
+        <td title="${fullTime}">
+          <div style="font-size:11px; color:#cbd5e1; font-family:monospace; font-weight:600;">${timeStr}</div>
+          <div style="font-size:10px; color:var(--adm-accent);">${relStr}</div>
         </td>
         <td>${identityBadge}</td>
         <td>${getCountryBadge(v.country, v.ip)}</td>
         <td>${pricingBadge}</td>
         <td>${pageLink}</td>
-        <td><span style="font-size:11.5px; color:#cbd5e1;">${escHtml(v.channel || '直接访问')}</span></td>
-        <td><span style="font-size:11px; color:#94a3b8;" title="${escHtml(v.userAgent || '')}">${escHtml(v.device || '浏览器')}</span></td>
+        <td><span style="font-size:11px; color:#cbd5e1;">${escHtml(v.channel || '直接访问')}</span></td>
+        <td><span style="font-size:10.5px; color:#94a3b8;" title="${escHtml(v.userAgent || '')}">${escHtml(v.device || '浏览器')}</span></td>
       </tr>`;
     }
 
