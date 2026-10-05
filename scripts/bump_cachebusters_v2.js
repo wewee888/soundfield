@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const version = '20261005e';
+const version = '20261005f';
 
 function walkDir(dir, cb) {
   for (const item of fs.readdirSync(dir)) {
