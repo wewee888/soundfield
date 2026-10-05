@@ -5385,3 +5385,99 @@ a.card:hover h3 { color: var(--text-strong); }
 
 
 
+
+
+/* ============================================================
+   USE-CASE PAGE COMPONENTS  (appended 20261005)
+   ============================================================ */
+
+/* ── Hero stat strip ─────────────────────────────────────── */
+.uc-stats { display:flex; flex-wrap:wrap; gap:20px; margin-top:20px; }
+.uc-stat { display:flex; flex-direction:column; gap:2px; }
+.uc-stat-value { font-family:"JetBrains Mono",monospace; font-size:22px; font-weight:800; color:var(--accent); letter-spacing:-0.03em; line-height:1; }
+.uc-stat-label { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+
+/* ── Step workflow ───────────────────────────────────────── */
+.uc-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+.uc-steps::before { content:""; position:absolute; top:26px; left:calc(12.5% + 26px); right:calc(12.5% + 26px); height:2px; background:linear-gradient(90deg,var(--accent) 0%,var(--accent-2) 100%); opacity:0.22; pointer-events:none; }
+.uc-step { display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 14px; gap:12px; }
+.uc-step-num { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,rgba(44,240,193,0.15),rgba(124,155,255,0.1)); border:2px solid rgba(44,240,193,0.3); display:flex; align-items:center; justify-content:center; font-family:"JetBrains Mono",monospace; font-size:20px; font-weight:800; color:var(--accent); flex-shrink:0; position:relative; z-index:1; }
+.uc-step-icon { font-size:22px; }
+.uc-step-title { font-size:14px; font-weight:700; color:var(--text-strong); margin:0; }
+.uc-step-desc { font-size:13px; color:var(--muted); line-height:1.6; margin:0; }
+
+/* ── dB reference table ──────────────────────────────────── */
+.uc-db-section { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:32px; overflow-x:auto; }
+.uc-db-table { width:100%; border-collapse:collapse; font-size:13.5px; }
+.uc-db-table th { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); padding:8px 14px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.08); }
+.uc-db-table td { padding:11px 14px; border-bottom:1px solid rgba(255,255,255,0.04); color:var(--text-dim); vertical-align:middle; line-height:1.5; }
+.uc-db-table tr:last-child td { border-bottom:0; }
+.uc-db-table .db-val { font-family:"JetBrains Mono",monospace; font-weight:700; font-size:15px; white-space:nowrap; }
+.db-safe { color:#2cf0c1; }
+.db-mild { color:#fbbf24; }
+.db-moderate { color:#fb923c; }
+.db-severe { color:#f87171; }
+.uc-db-badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; }
+.badge-safe { background:rgba(44,240,193,0.12); color:#2cf0c1; }
+.badge-mild { background:rgba(251,191,36,0.12); color:#fbbf24; }
+.badge-moderate { background:rgba(251,146,60,0.12); color:#fb923c; }
+.badge-severe { background:rgba(248,113,113,0.12); color:#f87171; }
+
+/* ── Feature spotlight grid ──────────────────────────────── */
+.uc-feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.uc-feature-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:10px; transition:border-color 0.2s, background 0.2s; }
+.uc-feature-card:hover { border-color:rgba(44,240,193,0.25); background:rgba(44,240,193,0.04); }
+.uc-feature-icon { font-size:28px; line-height:1; }
+.uc-feature-title { font-size:15px; font-weight:700; color:var(--text-strong); margin:0; }
+.uc-feature-desc { font-size:13px; color:var(--muted); line-height:1.65; margin:0; }
+
+/* ── CTA conversion band ─────────────────────────────────── */
+.uc-cta-band { background:linear-gradient(135deg,rgba(44,240,193,0.08) 0%,rgba(124,155,255,0.06) 50%,rgba(255,144,194,0.06) 100%); border:1px solid rgba(44,240,193,0.18); border-radius:20px; padding:44px 40px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:16px; }
+.uc-cta-band h2 { font-size:26px; font-weight:800; color:var(--text-strong); margin:0; letter-spacing:-0.02em; }
+.uc-cta-band p { font-size:15px; color:var(--muted); max-width:520px; margin:0; line-height:1.65; }
+.uc-cta-actions { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
+.uc-cta-note { font-size:12px; color:var(--soft); }
+.uc-cta-note a { color:var(--accent); text-underline-offset:3px; }
+
+/* ── Cross-scenario navigation ───────────────────────────── */
+.uc-scene-nav { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.uc-scene-pill { display:flex; align-items:center; gap:12px; padding:14px 18px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:12px; text-decoration:none; color:var(--text-dim); font-size:13px; font-weight:600; transition:border-color 0.18s, background 0.18s, color 0.18s; }
+.uc-scene-pill:hover { border-color:rgba(124,155,255,0.3); background:rgba(124,155,255,0.06); color:var(--text-strong); }
+.uc-scene-pill.current { border-color:rgba(44,240,193,0.3); background:rgba(44,240,193,0.07); color:var(--accent); cursor:default; pointer-events:none; }
+.uc-scene-emoji { font-size:20px; flex-shrink:0; }
+.uc-scene-label { display:flex; flex-direction:column; gap:1px; }
+.uc-scene-label strong { font-size:13px; font-weight:700; color:inherit; }
+.uc-scene-label small { font-size:11px; color:var(--soft); font-weight:400; }
+
+/* ── FAQ accordion ───────────────────────────────────────── */
+.uc-faq-list { display:flex; flex-direction:column; gap:8px; }
+.uc-faq-item { border:1px solid rgba(255,255,255,0.07); border-radius:12px; overflow:hidden; transition:border-color 0.2s; }
+.uc-faq-item:hover { border-color:rgba(255,255,255,0.13); }
+.uc-faq-q { width:100%; background:rgba(255,255,255,0.025); border:none; padding:18px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; cursor:pointer; text-align:left; font-size:15px; font-weight:700; color:var(--text-strong); transition:background 0.18s; }
+.uc-faq-q:hover { background:rgba(255,255,255,0.04); }
+.uc-faq-q[aria-expanded="true"] { background:rgba(44,240,193,0.06); }
+.uc-faq-chevron { flex-shrink:0; width:20px; height:20px; color:var(--muted); transition:transform 0.25s ease; }
+.uc-faq-q[aria-expanded="true"] .uc-faq-chevron { transform:rotate(180deg); color:var(--accent); }
+.uc-faq-a { display:none; padding:14px 22px 18px; font-size:14px; color:var(--muted); line-height:1.7; border-top:1px solid rgba(255,255,255,0.05); }
+.uc-faq-a.open { display:block; }
+
+/* ── Evidence checklist strip ────────────────────────────── */
+.uc-evidence-strip { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.uc-evidence-item { display:flex; align-items:flex-start; gap:12px; padding:16px; background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.06); border-radius:10px; }
+.uc-evidence-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
+.uc-evidence-text strong { display:block; font-size:13px; font-weight:700; color:var(--text-strong); margin-bottom:2px; }
+.uc-evidence-text span { font-size:12.5px; color:var(--muted); line-height:1.55; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width:860px) {
+  .uc-steps { grid-template-columns:repeat(2,1fr); gap:24px; }
+  .uc-steps::before { display:none; }
+  .uc-feature-grid { grid-template-columns:1fr; }
+  .uc-scene-nav { grid-template-columns:repeat(2,1fr); }
+  .uc-evidence-strip { grid-template-columns:1fr; }
+  .uc-cta-band { padding:32px 24px; }
+}
+@media (max-width:540px) {
+  .uc-steps { grid-template-columns:1fr; }
+  .uc-scene-nav { grid-template-columns:1fr; }
+}
