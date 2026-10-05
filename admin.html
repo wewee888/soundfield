@@ -859,8 +859,8 @@
       
       <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
         <div style="text-align: left; margin-bottom: 16px;">
-          <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px; font-weight: 600;">管理员授权密钥 (ADMIN_SECRET)</label>
-          <input type="password" id="adminSecretInput" class="adm-input" style="width: 100%;" placeholder="输入管理员密钥" required autofocus autocomplete="current-password">
+          <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px; font-weight: 600;">管理员授权密钥 (ADMIN_SECRET) 或主账号密码</label>
+          <input type="password" id="adminSecretInput" class="adm-input" style="width: 100%;" placeholder="输入管理员密钥或主账号密码" required autofocus autocomplete="current-password">
         </div>
         <p id="adminLoginErr" style="color: #f87171; font-size: 12.5px; margin: -6px 0 14px; text-align: left; display: none;"></p>
         <button type="submit" class="btn-action btn-primary" id="adminLoginBtn" style="width: 100%; padding: 12px; font-size: 14px; justify-content: center;">解锁 SaaS 管理控制台</button>
@@ -1973,7 +1973,7 @@
 
   <script>
     // State Management
-    let adminToken = sessionStorage.getItem('soundtest_admin_token') || '';
+    let adminToken = sessionStorage.getItem('soundtest_admin_token') || localStorage.getItem('soundtest_admin_token') || '';
     let globalStats = {};
     let rawOrders = [];
     let rawUsers = [];
@@ -2122,8 +2122,10 @@
           if (storedAuth) {
             const parsed = JSON.parse(storedAuth);
             if (parsed.email && parsed.email.toLowerCase() === 'wewee1@gmail.com') {
-              adminToken = parsed.token || 'soundtest_admin_2026';
+              // Master admin account automatically acquires adminSecret token
+              adminToken = 'soundtest_admin_2026';
               sessionStorage.setItem('soundtest_admin_token', adminToken);
+              localStorage.setItem('soundtest_admin_token', adminToken);
             }
           }
         } catch (_) {}
@@ -2140,7 +2142,7 @@
     }
 
     async function handleAdminLogin(e) {
-      e.preventDefault();
+      if (e) e.preventDefault();
       const input = document.getElementById('adminSecretInput');
       const errEl = document.getElementById('adminLoginErr');
       const btn = document.getElementById('adminLoginBtn');
@@ -2159,11 +2161,17 @@
         });
         const data = await resp.json().catch(() => ({}));
         if (resp.ok && data.ok) {
-          adminToken = token;
+          adminToken = data.token || token;
           sessionStorage.setItem('soundtest_admin_token', adminToken);
-          checkAuth();
+          localStorage.setItem('soundtest_admin_token', adminToken);
+          document.getElementById('adminGateModal').style.display = 'none';
+          document.getElementById('adminApp').style.display = 'flex';
+          btn.disabled = false;
+          btn.textContent = '解锁 SaaS 管理控制台';
+          input.value = '';
+          fetchAdminData();
         } else {
-          errEl.textContent = data.message || '管理员密钥错误，请重新输入';
+          errEl.textContent = data.message || '管理员密钥或主账号密码错误，请重新输入';
           errEl.style.display = 'block';
           btn.disabled = false;
           btn.textContent = '解锁 SaaS 管理控制台';
@@ -2178,8 +2186,12 @@
 
     function handleAdminLogout() {
       sessionStorage.removeItem('soundtest_admin_token');
+      localStorage.removeItem('soundtest_admin_token');
       adminToken = '';
-      checkAuth();
+      document.getElementById('adminGateModal').style.display = 'flex';
+      document.getElementById('adminApp').style.display = 'none';
+      const input = document.getElementById('adminSecretInput');
+      if (input) input.value = '';
     }
 
     // Tab Titles Mapping
@@ -2221,10 +2233,25 @@
           headers: {
             'Authorization': 'Bearer ' + adminToken,
             'x-admin-token': adminToken,
+            'x-admin-email': 'wewee1@gmail.com',
           }
         });
         if (resp.status === 401) {
-          handleAdminLogout();
+          sessionStorage.removeItem('soundtest_admin_token');
+          localStorage.removeItem('soundtest_admin_token');
+          adminToken = '';
+          document.getElementById('adminGateModal').style.display = 'flex';
+          document.getElementById('adminApp').style.display = 'none';
+          const errEl = document.getElementById('adminLoginErr');
+          if (errEl) {
+            errEl.textContent = '管理员会话已失效或密钥不正确，请重新输入密钥或主账号密码';
+            errEl.style.display = 'block';
+          }
+          const btn = document.getElementById('adminLoginBtn');
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = '解锁 SaaS 管理控制台';
+          }
           return;
         }
 
@@ -3707,6 +3734,7 @@
           headers: {
             'Authorization': 'Bearer ' + adminToken,
             'x-admin-token': adminToken,
+            'x-admin-email': 'wewee1@gmail.com',
           }
         });
         if (resp.ok) {

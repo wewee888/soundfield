@@ -16,15 +16,35 @@ export async function onRequestPost(context) {
   const { request, env } = context;
   try {
     const body = await request.json().catch(() => ({}));
-    const secret = String(body.secret || '').trim();
+    const secret = String(body.secret || body.token || '').trim();
     const adminSecret = String(env.ADMIN_SECRET || 'soundtest_admin_2026');
 
     if (!secret) {
-      return json({ ok: false, error: 'missing_secret', message: 'Admin secret is required' }, 400);
+      return json({ ok: false, error: 'missing_secret', message: '请输入管理员密钥或主账号密码' }, 400);
     }
 
-    if (secret !== adminSecret) {
-      return json({ ok: false, error: 'invalid_secret', message: 'Incorrect admin secret' }, 401);
+    let isValid = (secret === adminSecret);
+
+    // Also verify against super admin account password in KV
+    if (!isValid && env && env.ab_test) {
+      try {
+        const rawUser = await env.ab_test.get('user:wewee1@gmail.com');
+        if (rawUser) {
+          const userData = JSON.parse(rawUser);
+          if (userData && userData.passwordHash) {
+            const enc = new TextEncoder().encode(secret);
+            const buf = await crypto.subtle.digest('SHA-256', enc);
+            const sha256 = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+            if (secret === userData.passwordHash || sha256 === userData.passwordHash) {
+              isValid = true;
+            }
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (!isValid) {
+      return json({ ok: false, error: 'invalid_secret', message: '管理员密钥或主账号密码错误，请重新输入' }, 401);
     }
 
     return json({
