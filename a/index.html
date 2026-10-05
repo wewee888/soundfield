@@ -328,10 +328,29 @@
     <!-- PRICING -->
     <section class="section" id="pricing">
       <div class="section-header reveal">
-        <span class="eyebrow">Free gets you most of the way. Pro carries the case.</span>
-        <h2>Start free. Upgrade when the noise gets serious.</h2>
+        <span class="eyebrow">Plans &amp; Pricing</span>
+        <h2>Free for instant checks. Unlock irrefutable proof when you need action.</h2>
+        <p class="lead">Instant browser dB testing is 100% free. When facing uncooperative neighbors, landlords, or HOAs, unlock official tamper-evident documentation starting from $1.99, or get the complete automated toolkit.</p>
       </div>
-      <div class="pricing-row">
+
+      <div class="launch-discount-banner reveal">
+        <span class="fire">🔥</span>
+        <span>Early Launch Special: Current rates are introductory early-bird pricing. Standard prices will resume after the promo period ($4.99 Single / $9.99 Monthly / $59.99 Yearly / $199 Lifetime). Lock in your rate today!</span>
+      </div>
+
+      <div class="billing-toggle-wrap reveal">
+        <div class="billing-toggle" role="radiogroup" aria-label="Billing cycle selection">
+          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true" onclick="setPricingBillingCycle('yearly')">
+            <span>Billed Yearly</span>
+            <span class="billing-discount-badge">Save $35 · ~$2.08/mo 🔥</span>
+          </button>
+          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false" onclick="setPricingBillingCycle('monthly')">
+            <span>Billed Monthly</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="pricing-row pricing-three-cards">
         <!-- Free Tier -->
         <div class="price-card reveal">
           <span class="price-pill">Free Version</span>
@@ -348,62 +367,34 @@
           <a class="button" href="../soundtest.html" data-cta="pricing_free">Try Web Meter Free</a>
         </div>
 
-        <!-- Single Official Report -->
-        <div class="price-card single-report reveal">
-          <span class="price-pill">Single Report</span>
-          <span class="price-name">Official Evidence PDF</span>
-          <div class="price-tag">
-            <del class="price-del">$4.99</del>$1.99
-            <span class="price-discount-tag">60% OFF</span>
+        <!-- Pro Version (Yearly/Monthly Switcher + Single Report Shortcut) -->
+        <div class="price-card pro reveal">
+          <span class="price-badge-popular">★ Most Popular · Dispute Ready</span>
+          <span class="price-pill">Pro Premium Version</span>
+          <span class="price-name">Pro Dispute Guardian</span>
+          <div class="price-tag billing-period-yearly">
+            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
+            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35.00 (~$2.08/mo)</span>
           </div>
-          <div class="price-compare-hint">One-time purchase · Eliminates "volume turned up" disputes</div>
-          <ul class="check-list">
-            <li>1 Full <strong>unwatermarked evidentiary PDF report</strong></li>
-            <li><strong>SHA-256 cryptographic digital fingerprint</strong> &amp; GPS anchor</li>
-            <li>Official acoustic metrics (LAeq, L10, L90, Peak dB)</li>
-            <li>Timestamped photos &amp; coordinates evidence sheet</li>
-            <li>Formal documentation for landlords, HOAs, and mediation</li>
-          </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Unlock Single Report · $1.99</a>
-        </div>
-
-        <!-- Pro Monthly -->
-        <div class="price-card monthly reveal">
-          <span class="price-pill">Pro Flexible Monthly</span>
-          <span class="price-name">Pro Monthly Access</span>
-          <div class="price-tag">
+          <div class="price-tag billing-period-monthly" style="display:none;">
             <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
             <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
           </div>
-          <div class="price-compare-hint">Ideal for short-term disputes, temporary construction, or rental inspections</div>
+          <div class="price-compare-hint billing-period-yearly">365 Days of automated surveillance · Relieves manual monitoring fatigue</div>
+          <div class="price-compare-hint billing-period-monthly" style="display:none;">Ideal for short-term disputes, temporary construction, or rental inspections</div>
           <ul class="check-list">
-            <li><strong>30 Days of unlimited</strong> unwatermarked PDF evidence generation</li>
+            <li><strong>Unlimited</strong> unwatermarked <strong>official PDF reports</strong> (with SHA-256 fingerprint)</li>
             <li>🌙 <strong>Overnight Sentry Mode</strong>: Auto-records when noise exceeds threshold</li>
             <li>📊 <strong>Multi-Day Disturbance Dossier</strong>: 30-day aggregated trend graphs</li>
             <li>⚖️ <strong>Formal Dispute Notice Templates</strong>: Standardized complaint formats</li>
-            <li>💾 <strong>Local Data Archive &amp; Export</strong>: Download complete JSON/CSV evidence anytime</li>
+            <li>💾 <strong>Complete Local Archive &amp; Export</strong>: Safe evidence retention with full JSON, CSV &amp; PDF export</li>
           </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">Get Pro Monthly · $4.99</a>
-        </div>
-
-        <!-- Pro Yearly (Recommended) -->
-        <div class="price-card pro reveal">
-          <span class="price-badge-popular">★ Most Popular · ~$2.08/mo</span>
-          <span class="price-pill">Pro Premium Version</span>
-          <span class="price-name">Continuous Dispute Dossier</span>
-          <div class="price-tag">
-            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
-            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35.00</span>
+          <a class="button primary billing-period-yearly" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Get Pro Yearly · $24.99</a>
+          <a class="button primary billing-period-monthly" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="display:none;border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">Get Pro Monthly · $4.99</a>
+          <div class="single-report-link-bar">
+            <span>Need only a single report?</span>
+            <a class="single-link" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Unlock Single Report $1.99 →</a>
           </div>
-          <div class="price-compare-hint">365 Days of automated surveillance · Relieves manual monitoring fatigue</div>
-          <ul class="check-list">
-            <li><strong>365 Days of unlimited</strong> unwatermarked PDF evidence generation</li>
-            <li>🌙 <strong>Overnight Sentry Mode</strong>: Auto-records when noise exceeds threshold</li>
-            <li>📊 <strong>Multi-Day Disturbance Dossier</strong>: Aggregated trend graphs &amp; peak logs</li>
-            <li>⚖️ <strong>Formal Dispute Notice Templates</strong>: Standardized dispute documentation</li>
-            <li>💾 <strong>Complete Data Export</strong>: Full JSON, CSV, and PDF backups on demand</li>
-          </ul>
-          <a class="button primary" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Get Pro Yearly · $24.99</a>
           <a class="button-link" href="../en/auth.html" style="margin-top:6px;font-size:12px;">Already have an account? Sign in</a>
         </div>
 
@@ -419,13 +410,95 @@
           <ul class="check-list">
             <li><strong>Permanent ownership license</strong> with zero recurring subscription fees</li>
             <li>Includes all Sentry Mode, Dossier generation, and template features</li>
-            <li>Offline database storage &amp; complete evidence export</li>
+            <li>Local evidence storage &amp; full JSON/CSV export</li>
             <li>Priority support &amp; all future acoustic updates included forever</li>
             <li>Ready anytime you face rental, neighbor, or commercial disturbances</li>
           </ul>
           <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">Get Lifetime Access · $79.99</a>
           <a class="button-link" href="../en/auth.html" style="margin-top:6px;font-size:12px;">Already have an account? Sign in</a>
         </div>
+      </div>
+
+      <!-- Full Feature Comparison Matrix -->
+      <div class="pricing-matrix-wrap reveal">
+        <table class="pricing-matrix">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Features &amp; Capabilities</th>
+              <th style="width: 15%;">Free Check</th>
+              <th style="width: 15%;">Single Report</th>
+              <th style="width: 15%;" class="col-monthly">Pro Monthly</th>
+              <th style="width: 15%;" class="col-pro">Pro Yearly ★</th>
+              <th style="width: 15%;" class="col-lifetime">Lifetime</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feature-name">A/C-Weighted Real-Time dB Meter<span class="feature-desc">Calibrated frequency curves, fast/slow response</span></td>
+              <td><span class="check-yes">✔ Included</span></td>
+              <td><span class="check-yes">✔ Included</span></td>
+              <td class="col-monthly"><span class="check-yes">✔ Included</span></td>
+              <td class="col-pro"><span class="check-yes">✔ Included</span></td>
+              <td class="col-lifetime"><span class="check-yes">✔ Included</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">Photo &amp; Video Watermarked Capture<span class="feature-desc">Automatic GPS coordinates &amp; timestamp stamp</span></td>
+              <td><span class="check-yes">✔ Basic</span></td>
+              <td><span class="check-yes">✔ High-Res</span></td>
+              <td class="col-monthly"><span class="check-yes">✔ High-Res</span></td>
+              <td class="col-pro"><span class="check-yes">✔ High-Res</span></td>
+              <td class="col-lifetime"><span class="check-yes">✔ High-Res</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">Official Evidentiary PDF Report<span class="feature-desc">Removes personal preview watermark for legal &amp; HOA use</span></td>
+              <td><span class="check-no">✖ Watermarked only</span></td>
+              <td><span class="check-yes">✔ 1 Official Report</span></td>
+              <td class="col-monthly"><span class="check-yes">✔ Unlimited (30 Days)</span></td>
+              <td class="col-pro"><span class="check-yes">✔ Unlimited (365 Days)</span></td>
+              <td class="col-lifetime"><span class="check-yes">✔ Unlimited (Lifetime)</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">SHA-256 Cryptographic Fingerprint<span class="feature-desc">Immutable evidence custody chain defense against tampering claims</span></td>
+              <td><span class="check-no">✖ Not included</span></td>
+              <td><span class="check-yes">✔ Included</span></td>
+              <td class="col-monthly"><span class="check-yes">✔ Included</span></td>
+              <td class="col-pro"><span class="check-yes">✔ Included</span></td>
+              <td class="col-lifetime"><span class="check-yes">✔ Included</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">🌙 Overnight Sentry Mode<span class="feature-desc">Automated overnight surveillance, auto-triggers recording on spikes</span></td>
+              <td><span class="check-no">✖ Not included</span></td>
+              <td><span class="check-no">✖ Not included</span></td>
+              <td class="col-monthly"><span class="check-yes">✔ 30 Days</span></td>
+              <td class="col-pro"><span class="check-yes">✔ 365 Days</span></td>
+              <td class="col-lifetime"><span class="check-yes">✔ Lifetime</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">📊 Multi-Day Disturbance Dossier<span class="feature-desc">Aggregated trend analysis proving persistent chronic nuisance</span></td>
+              <td><span class="check-no">✖ Not included</span></td>
+              <td><span class="check-no">✖ Not included</span></td>
+              <td class="col-monthly"><span class="check-yes">✔ 30-Day Trends</span></td>
+              <td class="col-pro"><span class="check-yes">✔ Full Year Dossier</span></td>
+              <td class="col-lifetime"><span class="check-yes">✔ Lifetime Archive</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">⚖️ Formal Legal Dispute Templates<span class="feature-desc">Pre-drafted notice letters for landlords, HOAs, and municipal filings</span></td>
+              <td><span class="check-no">✖ Not included</span></td>
+              <td><span class="check-no">✖ Not included</span></td>
+              <td class="col-monthly"><span class="check-yes">✔ Included</span></td>
+              <td class="col-pro"><span class="check-yes">✔ Included</span></td>
+              <td class="col-lifetime"><span class="check-yes">✔ Included</span></td>
+            </tr>
+            <tr>
+              <td class="feature-name">Local Archive &amp; Offline Data Ownership<span class="feature-desc">Export complete measurements via JSON, CSV, and raw audio files</span></td>
+              <td><span class="check-yes">✔ Temporary Cache</span></td>
+              <td><span class="check-yes">✔ Single Export</span></td>
+              <td class="col-monthly"><span class="check-yes">✔ Full Export</span></td>
+              <td class="col-pro"><span class="check-yes">✔ Full Export</span></td>
+              <td class="col-lifetime"><span class="check-yes">✔ Full Export</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 

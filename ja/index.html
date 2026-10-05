@@ -405,12 +405,12 @@
 
       <!-- Interactive Billing Toggle -->
       <div class="billing-toggle-wrap reveal">
-        <div class="billing-toggle" role="group" aria-label="Billing cycle selector">
-          <button type="button" class="billing-toggle-btn active" data-billing-toggle="yearly" onclick="setPricingBillingCycle('yearly')">
+        <div class="billing-toggle" role="radiogroup" aria-label="Billing cycle selector">
+          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true" onclick="setPricingBillingCycle('yearly')">
             <span>年額プラン</span>
             <span class="billing-discount-badge">58% OFF</span>
           </button>
-          <button type="button" class="billing-toggle-btn" data-billing-toggle="monthly" onclick="setPricingBillingCycle('monthly')">
+          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false" onclick="setPricingBillingCycle('monthly')">
             <span>月額プラン</span>
           </button>
         </div>
@@ -438,15 +438,13 @@
           <span class="price-badge-popular">★ 最も選ばれている人気プラン</span>
           <span class="price-pill">Pro 年間プレミアム</span>
           <span class="price-name">長期紛争対策ファイル</span>
-          <div class="price-tag">
-            <span class="billing-period-yearly">
-              <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
+          <div class="price-tag billing-period-yearly">
+            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
               <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35</span>
-            </span>
-            <span class="billing-period-monthly" style="display:none;">
-              <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
+          </div>
+          <div class="price-tag billing-period-monthly" style="display:none;">
+            <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
               <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
-            </span>
           </div>
           <div class="price-compare-hint billing-period-yearly">365日間の自動監視体制 · 手動での見張りや記録ストレスから完全解放</div>
           <div class="price-compare-hint billing-period-monthly" style="display:none;">短期賃貸中のトラブル、突発的な解体・リフォーム工事対策に最適</div>

@@ -405,12 +405,12 @@
 
       <!-- Interactive Billing Toggle -->
       <div class="billing-toggle-wrap reveal">
-        <div class="billing-toggle" role="group" aria-label="Billing cycle selector">
-          <button type="button" class="billing-toggle-btn active" data-billing-toggle="yearly" onclick="setPricingBillingCycle('yearly')">
+        <div class="billing-toggle" role="radiogroup" aria-label="Billing cycle selector">
+          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true" onclick="setPricingBillingCycle('yearly')">
             <span>Facturation annuelle</span>
             <span class="billing-discount-badge">-58% de réduction</span>
           </button>
-          <button type="button" class="billing-toggle-btn" data-billing-toggle="monthly" onclick="setPricingBillingCycle('monthly')">
+          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false" onclick="setPricingBillingCycle('monthly')">
             <span>Facturation mensuelle</span>
           </button>
         </div>
@@ -438,15 +438,13 @@
           <span class="price-badge-popular">★ Choix le Plus Populaire</span>
           <span class="price-pill">Version Annuelle Pro</span>
           <span class="price-name">Dossier Preuve Pro</span>
-          <div class="price-tag">
-            <span class="billing-period-yearly">
-              <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
+          <div class="price-tag billing-period-yearly">
+            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
               <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35</span>
-            </span>
-            <span class="billing-period-monthly" style="display:none;">
-              <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
+          </div>
+          <div class="price-tag billing-period-monthly" style="display:none;">
+            <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
               <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
-            </span>
           </div>
           <div class="price-compare-hint billing-period-yearly">365 jours de surveillance continue automatisée · Plus besoin de veiller pour enregistrer</div>
           <div class="price-compare-hint billing-period-monthly" style="display:none;">Idéal pour litiges locatifs, bruits de travaux urgents ou constatations ponctuelles</div>
