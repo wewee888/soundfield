@@ -1021,9 +1021,9 @@
         </div>
       </div>
 
-      <!-- Recent Snapshot Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px;">
-        <!-- Recent Orders Snapshot -->
+      <!-- Full-Width Single-Column Snapshots (No Side-by-Side Scrolling) -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- Recent Orders Snapshot (Full Width) -->
         <div class="adm-card" style="margin-bottom: 0;">
           <div class="adm-card-header">
             <h3 class="adm-card-title">📦 最新订单流水快照</h3>
@@ -1049,7 +1049,7 @@
           </div>
         </div>
 
-        <!-- Recent Registered Users Snapshot -->
+        <!-- Recent Registered Users Snapshot (Full Width) -->
         <div class="adm-card" style="margin-bottom: 0;">
           <div class="adm-card-header">
             <h3 class="adm-card-title">👥 最新注册用户快照</h3>
@@ -1077,8 +1077,8 @@
           </div>
         </div>
 
-        <!-- Live Visitor Stream Snapshot on Overview -->
-        <div class="adm-card" style="margin-top: 24px;">
+        <!-- Live Visitor Stream Snapshot on Overview (Full Width) -->
+        <div class="adm-card" style="margin-bottom: 0;">
           <div class="adm-card-header">
             <div>
               <h3 class="adm-card-title">🟢 实时进站访客流与画像追踪 (Live Visitor Activity)</h3>
@@ -1242,9 +1242,9 @@
 
     <!-- TAB 4: VIP授权与运维工具 -->
     <div id="viewOperations" class="tab-view">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px;">
+      <div style="display: flex; flex-direction: column; gap: 24px;">
         <!-- Grant VIP License Form -->
-        <div class="adm-card">
+        <div class="adm-card" style="margin-bottom: 0;">
           <h3 class="adm-card-title" style="margin-bottom: 8px;">🔑 用户手动授权与 VIP 增发</h3>
           <p style="font-size: 13px; color: var(--adm-muted); margin: 0 0 18px; line-height: 1.6;">
             适用于微信线下转账、对公转账、大客户批量开通或运营特权赠送。直接写入全球 Cloudflare KV，即时生效。
@@ -1289,7 +1289,7 @@
         </div>
 
         <!-- Magic Link & Email Sending Diagnostic -->
-        <div class="adm-card">
+        <div class="adm-card" style="margin-bottom: 0;">
           <h3 class="adm-card-title" style="margin-bottom: 8px;">✉️ 邮件系统发信通道诊断 (Email Delivery)</h3>
           <p style="font-size: 13px; color: var(--adm-muted); margin: 0 0 18px; line-height: 1.6;">
             测试 Cloudflare Email Workers / 动态验证码与魔法登录通道 (system@soundtest.pro)。
@@ -1480,9 +1480,9 @@
         </div>
       </div>
 
-      <!-- Registration Sources & Drop-off Diagnostic Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; margin-bottom: 24px;">
-        <!-- Top Registration Pages -->
+      <!-- Registration Sources & Drop-off Diagnostic Stack -->
+      <div style="display: flex; flex-direction: column; gap: 24px; margin-bottom: 24px;">
+        <!-- Top Registration Pages (Full Width) -->
         <div class="adm-card" style="margin-bottom: 0;">
           <div class="adm-card-header">
             <h3 class="adm-card-title">📍 用户注册来源页面归因排行 (Where Users Registered)</h3>
@@ -1503,7 +1503,7 @@
           </div>
         </div>
 
-        <!-- High Drop-off & Friction Points -->
+        <!-- High Drop-off & Friction Points (Full Width) -->
         <div class="adm-card" style="margin-bottom: 0;">
           <div class="adm-card-header">
             <h3 class="adm-card-title">⚠️ 高跳出与流失节点深度诊断 (Friction & Churn Analysis)</h3>
@@ -1525,9 +1525,9 @@
         </div>
       </div>
 
-      <!-- Top Visited Pages & Acquisition Channels Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; margin-bottom: 24px;">
-        <!-- Top Visited Pages Across Site -->
+      <!-- Top Visited Pages & Acquisition Channels Stack -->
+      <div style="display: flex; flex-direction: column; gap: 24px; margin-bottom: 24px;">
+        <!-- Top Visited Pages Across Site (Full Width) -->
         <div class="adm-card" style="margin-bottom: 0;">
           <div class="adm-card-header">
             <h3 class="adm-card-title">🔥 全站高频热门浏览页面排行 (Top Visited Pages)</h3>
@@ -1548,7 +1548,7 @@
           </div>
         </div>
 
-        <!-- Acquisition Channels Breakdown -->
+        <!-- Acquisition Channels Breakdown (Full Width) -->
         <div class="adm-card" style="margin-bottom: 0;">
           <div class="adm-card-header">
             <h3 class="adm-card-title">🧭 获客引流渠道分布 (Traffic Sources & Attribution)</h3>
@@ -1570,8 +1570,8 @@
         </div>
       </div>
 
-      <!-- Geographic Distribution & Cloudflare Integration Card -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px;">
+      <!-- Geographic Distribution & Cloudflare Integration Card Stack -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
         <!-- Geographic Distribution -->
         <div class="adm-card" style="margin-bottom: 0;">
           <div class="adm-card-header">
@@ -1622,7 +1622,8 @@
             </a>
           </div>
         </div>
-      </div> <!-- /viewAnalytics -->
+      </div>
+    </div> <!-- /viewAnalytics -->
     </div> <!-- /adm-main-views -->
   </main> <!-- /adm-main-body -->
 </div> <!-- /adm-layout (adminApp) -->
@@ -1795,6 +1796,9 @@
           <div>购买方案: <span id="dunOrderPlan" style="font-weight: 700; color: var(--adm-accent);">--</span></div>
           <div>待付金额: <span id="dunOrderFee" style="font-weight: 900; color: var(--adm-gold);">--</span></div>
           <div>支付渠道: <span id="dunOrderGateway" style="color: #60a5fa;">--</span></div>
+        </div>
+      </div>
+
       <!-- Language Version Switcher -->
       <div style="margin-bottom: 14px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
