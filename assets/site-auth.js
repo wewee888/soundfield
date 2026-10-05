@@ -382,6 +382,11 @@
         btn.style.display = isPaid ? 'none' : '';
       });
 
+      // Hide redundant Account link in nav-links since the user dropdown handles account
+      document.querySelectorAll('.nav-links a[href*="auth.html"]').forEach(link => {
+        link.style.display = 'none';
+      });
+
       const rawName = session.name || session.email.split('@')[0];
       const displayName = escHtml(rawName);
       const email = escHtml(session.email);
@@ -490,10 +495,13 @@
       return;
     }
 
-    // Guest / logged out state: restore upgrade button
+    // Guest / logged out state: restore upgrade button & account link
     const upgradeBtns = document.querySelectorAll('.nav-upgrade');
     upgradeBtns.forEach(btn => {
       btn.style.display = '';
+    });
+    document.querySelectorAll('.nav-links a[href*="auth.html"]').forEach(link => {
+      link.style.display = '';
     });
 
     const login = document.createElement('a');
