@@ -87,6 +87,11 @@ test('SEO & GEO Standard: llms.txt and llms-full.txt are compliant and configure
   assert.match(llmsContent, /^>\s+.+/m, 'llms.txt must have a blockquote summary');
   assert.match(llmsContent, /^##\s+.+/m, 'llms.txt must have H2 sections');
 
+  const expectedLangs = ['en', 'zh', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'];
+  for (const lang of expectedLangs) {
+    assert.match(llmsContent, new RegExp(`https://soundtest\\.pro/${lang}/`), `llms.txt must include language route /${lang}/`);
+  }
+
   const headers = fs.readFileSync(path.join(rootDir, '_headers'), 'utf8');
   assert.match(headers, /\/llms\.txt[\s\S]*?Content-Type:\s*text\/plain/i, '_headers must set text/plain for /llms.txt');
   assert.match(headers, /\/llms-full\.txt[\s\S]*?Content-Type:\s*text\/plain/i, '_headers must set text/plain for /llms-full.txt');

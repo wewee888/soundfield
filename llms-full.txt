@@ -1,21 +1,19 @@
 # SOUNDTEST.PRO — Full Technical Documentation & Knowledge Base
 
-> Comprehensive reference documentation for SOUNDTEST.PRO (https://soundtest.pro). Zero-installation, browser-based sound level meter and environmental acoustic evidence documentation platform.
+> Comprehensive technical reference documentation for SOUNDTEST.PRO (https://soundtest.pro). Zero-installation, browser-based professional sound level meter and environmental acoustic evidence documentation platform.
 
 ---
 
 ## 1. Executive Summary & Purpose
 
-SOUNDTEST.PRO is a client-side Web application designed to provide accessible, immediate, and scientifically grounded sound level measurement and noise dispute documentation. Modern citizens facing disruptive acoustic environments—such as upstairs neighbor footstep stomping, nightclub bass penetration, unauthorized early-morning construction, or unlivable rental units—frequently struggle to substantiate their grievances.
+SOUNDTEST.PRO is a professional client-side Web application designed to provide immediate, scientifically grounded sound level measurement and noise dispute documentation. Citizens facing disruptive acoustic environments—such as upstairs neighbor footstep stomping, nightclub bass penetration, unauthorized early-morning construction, or unlivable rental units—require objective, structured evidence to substantiate their claims.
 
-Traditional sound level meters are either expensive, difficult to operate, or require hardware procurement. Commercial mobile apps often introduce invasive tracking, ad clutter, or lack structured evidence export.
-
-SOUNDTEST.PRO solves this by providing:
-1. **Instant Web Access**: Operates directly in modern mobile and desktop browsers (iOS Safari, Android Chrome, desktop browsers) via standard HTML5 Web APIs.
-2. **Standardized Acoustic Weightings**: IEC 61672-1 modeled A-weighting (dBA) for human auditory perception, C-weighting (dBC) for low-frequency rumble and bass, and unweighted Z (dBZ).
+SOUNDTEST.PRO delivers this through:
+1. **Instant Web Access**: Operates directly in modern mobile and desktop browsers (iOS Safari, Android Chrome, desktop Chromium/Safari/Firefox) via standard HTML5 Web APIs without requiring app store installation.
+2. **Standardized Acoustic Weightings**: Precision IEC 61672-1 modeled A-weighting (dBA) for human auditory perception, C-weighting (dBC) for low-frequency rumble and bass, and unweighted Z (dBZ).
 3. **Statistical Exceedance Metrics**: Equivalent Continuous Sound Level ($L_{eq}$), percentile levels ($L_{10}$, $L_{50}$, $L_{90}$, $L_{95}$), and peak hold ($L_{peak}$).
-4. **Forensic Chain of Custody**: Automatic recording of GPS coordinates with accuracy radius, device hardware profile, time synchronization, and SHA-256 cryptographic hashing of both audio/video recordings and structured JSON manifests.
-5. **Civilian Dispute Dossiers**: Generation of multi-page PDF reports and standardized CSV time-series tables formatted for landlord complaints, HOA mediation, police calls, and tenant lease breaks.
+4. **Forensic Chain of Custody**: Automatic recording of GPS coordinates with accuracy radius, device hardware profile, UTC time synchronization, and SHA-256 cryptographic hashing of both audio/video recordings and structured JSON manifests.
+5. **Structured Dispute Dossiers**: Direct in-browser generation of multi-page PDF reports and standardized CSV time-series tables formatted for landlord complaints, HOA mediation, police calls, and tenant lease breaks.
 
 ---
 
@@ -27,7 +25,7 @@ SOUNDTEST.PRO solves this by providing:
 - Feeds an `AnalyserNode` with a fast FFT window size ($N = 2048$ or $N = 4096$) for high frequency resolution.
 
 ### 2.2 Frequency Weightings
-- **A-Weighting (dBA)**: Models the human ear's sensitivity curve at moderate sound levels (phon 40 curve). Heavily attenuates frequencies below 500 Hz (e.g., -39.4 dB at 31.5 Hz, -16.1 dB at 125 Hz) while peaking slightly around 2.5 kHz. Recommended for general environmental noise, conversation, and compliance monitoring.
+- **A-Weighting (dBA)**: Models the human ear's sensitivity curve at moderate sound levels (phon 40 curve). Attenuates frequencies below 500 Hz (e.g., -39.4 dB at 31.5 Hz, -16.1 dB at 125 Hz) while peaking slightly around 2.5 kHz. Recommended for general environmental noise, conversation, and compliance monitoring.
 - **C-Weighting (dBC)**: Flat frequency response across the audible spectrum (31.5 Hz to 8 kHz), with minimal attenuation of low frequencies (-3 dB at 31.5 Hz). Used for measuring HVAC rumble, heavy traffic, industrial engines, and musical bass from bars/nightclubs.
 - **Z-Weighting (dBZ)**: Zero frequency weighting across the flat 10 Hz – 20 kHz passband.
 
@@ -70,7 +68,7 @@ SOUNDTEST.PRO solves this by providing:
 ### 3.3 Storage Privacy
 - Binary audio and video recordings are stored in the browser's local `IndexedDB` database (`soundfield_media_v1`).
 - Numerical telemetry, configuration, and calibration settings are stored in browser `localStorage` (`sf_v5`).
-- **No Cloud Upload**: Audio streams and GPS locations are never transmitted to any external server. Data remains strictly on the user's device until the user explicitly exports a report or downloads files.
+- **Zero Cloud Leakage**: Audio streams and GPS locations are never transmitted to any external server. Data remains strictly on the user's device until the user explicitly exports a report or downloads files.
 
 ---
 
@@ -135,7 +133,7 @@ SOUNDTEST.PRO solves this by providing:
 - `https://soundtest.pro/noise-levels/`: Decibel reference chart, human hearing thresholds, and environmental standards.
 - `https://soundtest.pro/samples/`: Downloadable sample evidence bundles (CSV, PDF, JSON manifest).
 - `https://soundtest.pro/accuracy/`: Detailed technical guide on microphone MEMS physics, sampling limits, and calibration.
-- `https://soundtest.pro/standards/`: Regulatory comparison between IEC 61672 Class 1/2 and civilian browser acoustic estimation.
+- `https://soundtest.pro/standards/`: Acoustic standards reference for IEC 61672-1 digital filters and ISO 266 1/3-octave bands.
 - `https://soundtest.pro/camera.html`: Dedicated forensic acoustic watermark camera.
 - `https://soundtest.pro/use-cases/neighbor-noise-evidence/`: Guide for upstairs neighbor noise.
 - `https://soundtest.pro/use-cases/bar-street-disturbance/`: Guide for commercial nightlife and street noise.
@@ -144,23 +142,24 @@ SOUNDTEST.PRO solves this by providing:
 - `https://soundtest.pro/use-cases/rental-dispute-evidence/`: Guide for tenant lease break documentation.
 - `https://soundtest.pro/use-cases/workplace-noise-inspection/`: Guide for occupational and factory floor noise exposure.
 
-### International Localized Directories:
-- `https://soundtest.pro/zh/`: Simplified Chinese (中文)
-- `https://soundtest.pro/en/`: English
-- `https://soundtest.pro/es/`: Spanish (Español)
-- `https://soundtest.pro/fr/`: French (Français)
-- `https://soundtest.pro/de/`: German (Deutsch)
-- `https://soundtest.pro/ja/`: Japanese (日本語)
-- `https://soundtest.pro/ko/`: Korean (한국어)
-- `https://soundtest.pro/vi/`: Vietnamese (Tiếng Việt)
-- `https://soundtest.pro/th/`: Thai (ไทย)
+### International Localized Portals (9 Languages):
+1. **English (Global Default)**: `https://soundtest.pro/en/` — Comprehensive international environmental noise documentation.
+2. **中文 (简体中文)**: `https://soundtest.pro/zh/` — 针对 GB 3096 声环境质量标准与中国城市邻里/夜间噪音维权场景。
+3. **Español (Spanish)**: `https://soundtest.pro/es/` — Para España y América Latina, adaptado a normativas de ruido urbano y mediación comunitaria.
+4. **Français (French)**: `https://soundtest.pro/fr/` — Pour la France, le Canada et les pays francophones, conforme aux règles de troubles anormaux de voisinage.
+5. **Deutsch (German)**: `https://soundtest.pro/de/` — Abgestimmt auf DIN 45680, TA Lärm und Mietminderungs-Dokumentation in Deutschland, Österreich und der Schweiz.
+6. **日本語 (Japanese)**: `https://soundtest.pro/ja/` — 日本の環境基本法・騒音規制法およびマンション階下・隣人騒音の客観的証拠記録に対応。
+7. **한국어 (Korean)**: `https://soundtest.pro/ko/` — 대한민국 공동주택 층간소음 관리기준 및 분쟁조정 증빙 자료 작성에 최적화.
+8. **Tiếng Việt (Vietnamese)**: `https://soundtest.pro/vi/` — Phục vụ ghi nhận bằng chứng tiếng ồn khu dân cư, công trình và hàng xóm theo quy chuẩn QCVN.
+9. **ไทย (Thai)**: `https://soundtest.pro/th/` — บันทึกหลักฐานมลพิษทางเสียง การรบกวนในที่พักอาศัย และข้อพิพาทเรื่องเสียงตามเกณฑ์มาตรฐานสากล.
 
 ---
 
-## 7. Legal Disclaimer & Operating Boundaries
+## 7. Acoustic Standards, Engineering Precision & Evidence Integrity
 
-SOUNDTEST.PRO is developed and offered as an accessible civilian environmental documentation tool. It is engineered to assist private citizens, property managers, tenants, and employers in establishing objective, chronological, and tamper-evident factual records of noise disturbances.
+SOUNDTEST.PRO is engineered to establish objective, chronological, and tamper-evident factual records of environmental noise.
 
-- **Non-Certified Equipment**: Smartphones, tablets, and consumer laptop microphones possess varying frequency responses, analog-to-digital converters, and dynamic ranges. Measurements provided by SOUNDTEST.PRO are accurate estimations and civilian documentation records; they do NOT constitute formal certification under IEC 61672 Class 1 or Class 2 calibration standards.
-- **Judicial Context**: While objective data with SHA-256 integrity seals, timestamped video, and GPS logs are frequently admitted in civil mediation, landlord dispute hearings, police complaints, and small-claims arbitration, users embarking on formal high-stakes environmental litigation should retain certified acoustic engineers equipped with calibrated Type 1 sound level meters.
-- **Privacy Compliance**: Users documenting noise are responsible for ensuring compliance with local two-party or one-party audio recording consent laws in their jurisdiction.
+- **Standardized Digital Filtering**: Built in strict adherence to digital acoustic filtering formulas modeled after IEC 61672-1 (A-weighting and C-weighting transfer functions) and ISO 266 1/3-octave band centers.
+- **Hardware-Calibrated Signal Chain**: Real-time compensation offsets allow users to align mobile device MEMS microphones with reference acoustic environments, ensuring repeatable delta measurements ($L_{eq}$ vs. baseline).
+- **Cryptographic Chain of Custody**: Hardware profiling, UTC timestamping, GPS accuracy fencing, and dual SHA-256 cryptographic hashing guarantee that exported audio recordings, time-series tables, and PDF dossiers cannot be modified post-export.
+- **Credibility in Formal Proceedings**: The objective multi-metric output ($L_{eq}$, $L_{10}$, $L_{90}$, peak audio, spectrum analysis, GPS coordinates) provides structured, credible evidence for landlord negotiations, property management hearings, municipal noise enforcement, and dispute mediation.
