@@ -44,7 +44,7 @@ FAQ_DATA = {
     "en": {
         "title": "Free Online Decibel Meter & Noise Evidence Recorder | No App Required · SOUNDTEST.PRO",
         "description": "Free online decibel meter and acoustic evidence workstation. Measure dB SPL, record audio with GPS & timestamp watermarks, run overnight sentry monitoring, and export tamper-evident PDF dossiers for tenant disputes and noise complaints.",
-        "keywords": "online decibel meter free, neighbor noise complaint evidence, apartment noise meter, quiet enjoyment breach proof, break lease noise evidence, decibel watermark camera, overnight noise sentry, tamper-evident sound report, small claims noise proof",
+        "keywords": "online decibel meter free, sound level meter online, neighbor noise complaint evidence, apartment noise meter, noise disturbance log, quiet enjoyment breach proof, break lease noise evidence, decibel watermark camera, overnight noise sentry, tamper-evident sound report, small claims noise proof, how to prove noise nuisance",
         "eyebrow": "Legal Evidence & Nuisance FAQ",
         "heading": "Frequently Asked Questions on Noise Evidence & Legal Action",
         "lead": "Authoritative guidance on neighbor disputes, constructive eviction, tenancy lease breaking, and tamper-evident acoustic proof.",
@@ -74,7 +74,7 @@ FAQ_DATA = {
     "de": {
         "title": "Kostenloser Online-Dezibelmesser & Lärm-Beweisrekorder | Keine App nötig · SOUNDTEST.PRO",
         "description": "Kostenloser Online-Dezibelmesser und Schallpegel-Beweisrekorder ohne App. Ermitteln Sie dB-Werte, erfassen Sie Lärm mit GPS- und Zeit-Wasserzeichen, nutzen Sie den Nacht-Wächtermodus und exportieren Sie ein rechtssicheres PDF-Lärmprotokoll nach BGB § 536.",
-        "keywords": "dezibelmesser online kostenlos, lärmprotokoll nachbarn mietminderung, ruhestörung beweisen bgb 536, wasserzeichen kamera dezibel uhrzeit, nächtliche ruhestörung dokumentieren, ta lärm grenzwerte wohngebiet, schallpegelmessung browser",
+        "keywords": "dezibelmesser online kostenlos, schallpegelmesser online, lärmprotokoll nachbarn mietminderung, lärmbelästigung dokumentieren, ruhestörung beweisen bgb 536, wasserzeichen kamera dezibel uhrzeit, nächtliche ruhestörung dokumentieren, ta lärm grenzwerte wohngebiet, schallpegelmessung browser",
         "eyebrow": "Rechts- & Beweis-FAQ",
         "heading": "Häufige Fragen zu Ruhestörung, Lärmprotokoll und Mietrecht",
         "lead": "Fundierte Antworten zu Mietminderung nach BGB § 536, TA Lärm Grenzwerten und gerichtsfester Dokumentation.",
@@ -104,7 +104,7 @@ FAQ_DATA = {
     "es": {
         "title": "Sonómetro Online Gratis y Grabador de Evidencia de Ruido | Sin App · SOUNDTEST.PRO",
         "description": "Sonómetro online gratis y grabador de pruebas de ruido sin app. Mida decibelios en tiempo real, tome fotos y vídeos con marca de agua GPS y fecha, active vigilancia nocturna y exporte informes PDF periciales con firma criptográfica SHA-256.",
-        "keywords": "sonómetro online gratis, denunciar ruido vecinos pruebas, medir decibelios online, rescindir contrato alquiler por ruidos, cámara con marca de agua decibelios gps, límite decibelios noche vivienda, informe pericial acústico pdf",
+        "keywords": "sonómetro online gratis, medidor de ruido online, denunciar ruido vecinos pruebas, denuncia por ruidos molestos, medir decibelios online, rescindir contrato alquiler por ruidos, cámara con marca de agua decibelios gps, límite decibelios noche vivienda, informe pericial acústico pdf",
         "eyebrow": "Preguntas Frecuentes y Guía Legal",
         "heading": "Preguntas Frecuentes sobre Evidencias de Ruido y Reclamaciones",
         "lead": "Respuestas directas sobre la Ley del Ruido, límites de decibelios en dormitorios y rescisión de contratos de alquiler.",
@@ -134,7 +134,7 @@ FAQ_DATA = {
     "fr": {
         "title": "Sonomètre en Ligne Gratuit et Preuve de Bruit Sans App · SOUNDTEST.PRO",
         "description": "Sonomètre en ligne gratuit et enregistreur de preuves sonores sans application. Mesurez les dB, prenez des photos/vidéos horodatées avec filigrane GPS, activez la surveillance nocturne et exportez un dossier PDF infalsifiable pour litiges locatifs et tapage nocturne.",
-        "keywords": "sonomètre en ligne gratuit, preuve bruit voisin tapage nocturne, mesurer décibels en ligne, résiliation bail nuisance sonore preuve, photo filigrane décibels gps, constat nuisance sonore appartement, rapport acoustique pdf",
+        "keywords": "sonomètre en ligne gratuit, décibelmètre en ligne, preuve bruit voisin tapage nocturne, troubles anormaux de voisinage, mesurer décibels en ligne, résiliation bail nuisance sonore preuve, photo filigrane décibels gps, constat nuisance sonore appartement, rapport acoustique pdf",
         "eyebrow": "FAQ & Guide Juridique",
         "heading": "Questions Fréquentes sur les Preuves de Bruit et Litiges",
         "lead": "Conseils pratiques sur le tapage nocturne, l'émergence sonore globale et la résiliation de bail pour troubles de voisinage.",
@@ -164,7 +164,7 @@ FAQ_DATA = {
     "ja": {
         "title": "無料オンライン騒音計・騒音証拠記録ツール｜アプリ不要 · SOUNDTEST.PRO",
         "description": "無料オンライン騒音計・音響証拠記録ツール。アプリ不要でスマホからリアルタイムにデシベルを測定し、日時・位置情報付き透かし写真撮影、夜間自動監視、改ざん防止SHA-256付きPDF報告書を出力。上の階の足音や近隣トラブルの証拠化に。",
-        "keywords": "騒音計 オンライン 無料, 上の階 足音 騒音 証拠 集め方, マンション 騒音 トラブル 証拠, 賃貸 騒音 退去 家賃減額 証拠, デシベル 透かし カメラ 位置情報, 夜間 騒音 測定 記録 アプリ不要, 騒音 証拠 pdf 報告書",
+        "keywords": "騒音計 オンライン 無料, デシベル 測定 オンライン, 上の階 足音 騒音 証拠 集め方, マンション 騒音 トラブル 証拠, 受忍限度 騒音 証拠, 賃貸 騒音 退去 家賃減額 証拠, 管理会社 騒音 相談 証拠, デシベル 透かし カメラ 位置情報, 夜間 騒音 測定 記録 アプリ不要, 騒音 証拠 pdf 報告書",
         "eyebrow": "よくある質問・証拠化ガイド",
         "heading": "騒音トラブルと客観的証拠収集のよくある質問",
         "lead": "上の階の足音、受忍限度論、管理会社・警察への通報、違約金なしでの賃貸退去に関する法的実務ガイド。",
@@ -183,7 +183,7 @@ FAQ_DATA = {
             },
             {
                 "q": "騒音トラブルで賃貸物件を違約金なしで退去・家賃減額を求める手順は？",
-                "a": "SOUNDTEST.PRO で1〜2週間にわたり継続的な騒音発生データと透かし写真を蓄積し、PDF報告書を作成します。これを添えて管理会社や大家に書面で改善要請を行い、改善されない場合は賃貸借契約の解除（正当事由）を主張できます。"
+                "a": "SOUNDTEST.PRO で1〜2週間にわたり継続的な騒音発生データと透かし写真を蓄積し、PDF報告書を作成します。これを添えて管理会社や大家に書面で改善要请を行い、改善されない場合は賃貸借契約の解除（正当事由）を主張できます。"
             },
             {
                 "q": "一般的なオンライン騒音計とSOUNDTEST.PROの違いは何ですか？",
@@ -194,7 +194,7 @@ FAQ_DATA = {
     "ko": {
         "title": "무료 온라인 소음측정기 및 소음 증거 기록 도구 | 앱 설치 불필요 · SOUNDTEST.PRO",
         "description": "무료 온라인 소음측정기 및 층간소음 증거 수집 도구. 앱 설치 없이 브라우저에서 실시간 데시벨 측정, 시간·위치 각인 워터마크 카메라, 야간 무인 감시, 위변조 방지 SHA-256 적용 정식 PDF 보고서를 생성하여 이웃사이센터 및 분쟁 조정 증거로 활용하세요.",
-        "keywords": "온라인 소음측정기 무료, 층간소음 증거 수집 방법, 윗집 발소리 층간소음 신고 증거, 층간소음 이웃사이센터 제출용, 데시벨 시간 위치 워터마크 카메라, 원룸 오피스텔 층간소음 계약해지 증거, 층간소음 pdf 보고서",
+        "keywords": "온라인 소음측정기 무료, 데시벨 측정기 온라인, 층간소음 증거 수집 방법, 층간소음 법적기준 데시벨, 윗집 발소리 층간소음 신고 증거, 층간소음 이웃사이센터 제출용, 데시벨 시간 위치 워터마크 카메라, 원룸 오피스텔 층간소음 계약해지 증거, 층간소음 손해배상 증거, 층간소음 pdf 보고서",
         "eyebrow": "자주 묻는 질문 및 법적 증거 가이드",
         "heading": "층간소음 증거 수집 및 분쟁 해결 FAQ",
         "lead": "윗집 쿵쿵거림 발소리 대처, 법정 층간소음 데시벨 기준, 이웃사이센터 제출 및 전월세 계약 해지 핵심 가이드.",
@@ -224,7 +224,7 @@ FAQ_DATA = {
     "th": {
         "title": "เครื่องมือวัดระดับเสียงและบันทึกหลักฐานออนไลน์ฟรี | ไม่ต้องลงแอป · SOUNDTEST.PRO",
         "description": "เครื่องมือวัดระดับเสียงเดซิเบลออนไลน์ฟรีและบันทึกหลักฐานเสียงรบกวนโดยไม่ต้องติดตั้งแอป วัดระดับ dB แบบเรียลไทม์ ถ่ายภาพติดลายน้ำเวลาและพิกัด GPS โหมดเฝ้าระวังเวลากลางคืน และส่งออกรายงาน PDF เข้ารหัส SHA-256 สำหรับร้องเรียนข้างบ้านหรือนิติบุคคล",
-        "keywords": "วัดเดซิเบลออนไลน์ ฟรี, ร้องเรียนเสียงดังข้างบ้าน หลักฐาน, เสียงดังรบกวน แจ้งความ บันทึกเดซิเบล, กล้องถ่ายรูปติดลายน้ำเดซิเบลและพิกัด, ยกเลิกสัญญาเช่าห้อง เสียงดัง, รายงานเสียงรบกวน pdf",
+        "keywords": "วัดเดซิเบลออนไลน์ ฟรี, เครื่องวัดเสียง ออนไลน์, ร้องเรียนเสียงดังข้างบ้าน หลักฐาน, กฎหมายเสียงรบกวน ข้างบ้าน, เสียงดังรบกวน แจ้งความ บันทึกเดซิเบล, กล้องถ่ายรูปติดลายน้ำเดซิเบลและพิกัด, ยกเลิกสัญญาเช่าห้อง เสียงดัง, รายงานเสียงรบกวน pdf",
         "eyebrow": "คำถามที่พบบ่อยและแนวทางรวบรวมหลักฐาน",
         "heading": "คำถามที่พบบ่อยเกี่ยวกับการบันทึกเสียงรบกวนและการร้องเรียน",
         "lead": "คำแนะนำทางกฎหมายและวิธีรวบรวมหลักฐานเสียงรบกวนข้างบ้าน พ.ร.บ.การสาธารณสุข และการยกเลิกสัญญาเช่า",
@@ -254,7 +254,7 @@ FAQ_DATA = {
     "vi": {
         "title": "Máy đo độ ồn decibel & ghi nhận chứng cứ trực tuyến | Không cần app · SOUNDTEST.PRO",
         "description": "Máy đo độ ồn decibel trực tuyến miễn phí và thu thập bằng chứng âm thanh không cần cài ứng dụng. Đo dB thời gian thực, chụp ảnh quay video đóng dấu vị trí GPS và thời gian, chế độ gác đêm tự động và xuất báo cáo PDF mã hóa SHA-256 khiếu nại tiếng ồn.",
-        "keywords": "đo độ ồn online miễn phí, bằng chứng tiếng ồn hàng xóm hát karaoke, khiếu nại tiếng ồn chung cư, máy đo decibel trực tuyến, chụp ảnh đóng dấu decibel gps, hủy hợp đồng thuê nhà vì tiếng ồn, báo cáo bằng chứng âm thanh pdf",
+        "keywords": "đo độ ồn online miễn phí, máy đo decibel trực tuyến, đo decibel bằng điện thoại, bằng chứng tiếng ồn hàng xóm hát karaoke, khiếu nại tiếng ồn chung cư, quy chuẩn tiếng ồn khu dân cư, chụp ảnh đóng dấu decibel gps, hủy hợp đồng thuê nhà vì tiếng ồn, báo cáo bằng chứng âm thanh pdf",
         "eyebrow": "Câu hỏi thường gặp & Hướng dẫn chứng cứ",
         "heading": "Câu hỏi thường gặp về Thu thập chứng cứ tiếng ồn & Khiếu nại",
         "lead": "Hướng dẫn thực tế khiếu nại tiếng ồn karaoke, tiêu chuẩn QCVN 26:2010/BTNMT và hủy hợp đồng thuê nhà.",
