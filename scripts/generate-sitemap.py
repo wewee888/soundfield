@@ -53,7 +53,8 @@ HTML_TO_CANONICAL: dict[str, str] = {
     "samples.html": "/samples/",
     "accuracy.html": "/accuracy/",
     "auth.html": "/auth/",
-    "compliance.html": "/compliance/",
+    "about.html": "/about/",
+    "terms.html": "/terms/",
     "download.html": "/download/",
     "launch-metrics.html": "/launch-metrics/",
     "monetization.html": "/monetization/",
@@ -62,7 +63,6 @@ HTML_TO_CANONICAL: dict[str, str] = {
     "disclaimer.html": "/disclaimer/",
     "privacy.html": "/privacy/",
     "refund.html": "/refund/",
-    "stats.html": "/stats/",
     "noise-levels.html": "/noise-levels/",
     "camera.html": "/camera.html",
 }
@@ -99,6 +99,8 @@ def file_to_canonical(rel_path: str) -> tuple[str | None, str | None]:
         # /use-cases/en/index.html -> lang=en, key='/use-cases/'
         # /index.html -> lang=None, key='/'
         if subdirs and subdirs[0] == "use-cases":
+            if len(subdirs) > 1 and subdirs[1] in LANGS:
+                lang = subdirs[1]
             return "/use-cases/", lang
         return "/", lang
 

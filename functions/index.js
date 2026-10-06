@@ -160,8 +160,17 @@ function resolveLocale({ url, cookieHeader, countryHeader, acceptLanguageHeader 
   return 'en';
 }
 
+const BOT_USER_AGENTS = /googlebot|bingbot|yandex|baiduspider|duckduckbot|slurp|facebookexternalhit|twitterbot|linkedinbot|applebot|semrush|ahrefs/i;
+
 function onRequestGet(context) {
   const url = new URL(context.request.url);
+  const userAgent = context.request.headers.get('user-agent') || '';
+
+  // 1. Search engine crawlers and social scrapers always get the canonical root page directly
+  if (BOT_USER_AGENTS.test(userAgent)) {
+    return context.next();
+  }
+
   const cookieHeader = context.request.headers.get('cookie') || '';
   const countryHeader = context.request.headers.get('cf-ipcountry') || context.request.cf?.country || '';
   const acceptLanguageHeader = context.request.headers.get('accept-language') || '';
@@ -191,29 +200,16 @@ function onRequestGet(context) {
     });
   }
 
-  // English: handle A/B test variant assignment
+  // English: serve canonical root index.html directly by default (zero-redirect for top SEO score)
   const overrideVariant = url.searchParams.get('variant');
-  let variant = overrideVariant && VARIANTS.includes(overrideVariant) ? overrideVariant : null;
-
-  if (!variant) {
-    variant = parseCookie(cookieHeader, 'sf_variant');
-    if (!variant || !VARIANTS.includes(variant)) {
-      variant = pickVariant();
-    }
+  if (overrideVariant && VARIANTS.includes(overrideVariant)) {
+    const dest = '/' + overrideVariant + '/' + search;
+    headers.set('Location', dest);
+    return new Response(null, { status: 302, headers });
   }
 
-  const dest = '/' + variant + '/' + search;
-  headers.set('Location', dest);
-  headers.append('Set-Cookie', 'sf_locale=en; Path=/; Max-Age=31536000; SameSite=Lax');
-  headers.append('Set-Cookie', 'sf_variant=' + variant + '; Path=/; Max-Age=31536000; SameSite=Lax');
-  if (countryHeader) {
-    headers.append('Set-Cookie', 'sf_country=' + encodeURIComponent(countryHeader.toUpperCase()) + '; Path=/; Max-Age=31536000; SameSite=Lax');
-  }
-
-  return new Response(null, {
-    status: 302,
-    headers,
-  });
+  // Default English: serve the canonical static index.html directly
+  return context.next();
 }
 
 export {
