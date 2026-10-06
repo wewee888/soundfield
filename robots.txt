@@ -5,3 +5,5 @@ Disallow: /admin/
 Disallow: /api/
 
 Sitemap: https://soundtest.pro/sitemap.xml
+
+# LLM & AI Agents Documentation: https://soundtest.pro/llms.txt

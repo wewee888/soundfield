@@ -75,3 +75,19 @@ test('SEO Standard: sitemap.xml does not contain noindexed or redirected pages',
   assert.doesNotMatch(sitemap, /<loc>[^<]*\/compliance\/<\/loc>/);
   assert.doesNotMatch(sitemap, /<loc>[^<]*\/admin\.html<\/loc>/);
 });
+
+test('SEO & GEO Standard: llms.txt and llms-full.txt are compliant and configured', () => {
+  const llmsPath = path.join(rootDir, 'llms.txt');
+  const llmsFullPath = path.join(rootDir, 'llms-full.txt');
+  assert.ok(fs.existsSync(llmsPath), 'llms.txt must exist at project root');
+  assert.ok(fs.existsSync(llmsFullPath), 'llms-full.txt must exist at project root');
+
+  const llmsContent = fs.readFileSync(llmsPath, 'utf8');
+  assert.match(llmsContent, /^#\s+SOUNDTEST\.PRO/m, 'llms.txt must start with H1 project name');
+  assert.match(llmsContent, /^>\s+.+/m, 'llms.txt must have a blockquote summary');
+  assert.match(llmsContent, /^##\s+.+/m, 'llms.txt must have H2 sections');
+
+  const headers = fs.readFileSync(path.join(rootDir, '_headers'), 'utf8');
+  assert.match(headers, /\/llms\.txt[\s\S]*?Content-Type:\s*text\/plain/i, '_headers must set text/plain for /llms.txt');
+  assert.match(headers, /\/llms-full\.txt[\s\S]*?Content-Type:\s*text\/plain/i, '_headers must set text/plain for /llms-full.txt');
+});

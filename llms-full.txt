@@ -1,0 +1,166 @@
+# SOUNDTEST.PRO — Full Technical Documentation & Knowledge Base
+
+> Comprehensive reference documentation for SOUNDTEST.PRO (https://soundtest.pro). Zero-installation, browser-based sound level meter and environmental acoustic evidence documentation platform.
+
+---
+
+## 1. Executive Summary & Purpose
+
+SOUNDTEST.PRO is a client-side Web application designed to provide accessible, immediate, and scientifically grounded sound level measurement and noise dispute documentation. Modern citizens facing disruptive acoustic environments—such as upstairs neighbor footstep stomping, nightclub bass penetration, unauthorized early-morning construction, or unlivable rental units—frequently struggle to substantiate their grievances.
+
+Traditional sound level meters are either expensive, difficult to operate, or require hardware procurement. Commercial mobile apps often introduce invasive tracking, ad clutter, or lack structured evidence export.
+
+SOUNDTEST.PRO solves this by providing:
+1. **Instant Web Access**: Operates directly in modern mobile and desktop browsers (iOS Safari, Android Chrome, desktop browsers) via standard HTML5 Web APIs.
+2. **Standardized Acoustic Weightings**: IEC 61672-1 modeled A-weighting (dBA) for human auditory perception, C-weighting (dBC) for low-frequency rumble and bass, and unweighted Z (dBZ).
+3. **Statistical Exceedance Metrics**: Equivalent Continuous Sound Level ($L_{eq}$), percentile levels ($L_{10}$, $L_{50}$, $L_{90}$, $L_{95}$), and peak hold ($L_{peak}$).
+4. **Forensic Chain of Custody**: Automatic recording of GPS coordinates with accuracy radius, device hardware profile, time synchronization, and SHA-256 cryptographic hashing of both audio/video recordings and structured JSON manifests.
+5. **Civilian Dispute Dossiers**: Generation of multi-page PDF reports and standardized CSV time-series tables formatted for landlord complaints, HOA mediation, police calls, and tenant lease breaks.
+
+---
+
+## 2. Acoustic Processing & Algorithm Specifications
+
+### 2.1 Audio Ingestion & Sampling
+- Utilizes browser `navigator.mediaDevices.getUserMedia({ audio: true, video: false })`.
+- Streams microphone pulse-code modulation (PCM) data into an `AudioContext` with a native hardware sample rate (typically 44.1 kHz or 48.0 kHz).
+- Feeds an `AnalyserNode` with a fast FFT window size ($N = 2048$ or $N = 4096$) for high frequency resolution.
+
+### 2.2 Frequency Weightings
+- **A-Weighting (dBA)**: Models the human ear's sensitivity curve at moderate sound levels (phon 40 curve). Heavily attenuates frequencies below 500 Hz (e.g., -39.4 dB at 31.5 Hz, -16.1 dB at 125 Hz) while peaking slightly around 2.5 kHz. Recommended for general environmental noise, conversation, and compliance monitoring.
+- **C-Weighting (dBC)**: Flat frequency response across the audible spectrum (31.5 Hz to 8 kHz), with minimal attenuation of low frequencies (-3 dB at 31.5 Hz). Used for measuring HVAC rumble, heavy traffic, industrial engines, and musical bass from bars/nightclubs.
+- **Z-Weighting (dBZ)**: Zero frequency weighting across the flat 10 Hz – 20 kHz passband.
+
+### 2.3 Time Weightings
+- **Fast Response (F)**: Exponential time weighting with an integration time constant $\tau = 125\text{ ms}$. Accurately tracks rapid fluctuations, sudden shouts, door slams, and intermittent footstep impact noise.
+- **Slow Response (S)**: Exponential time weighting with an integration time constant $\tau = 1000\text{ ms}$ ($1\text{ s}$). Smooths out short-term fluctuations to provide an average indication of steady-state noise (e.g., HVAC units, highway traffic hum).
+
+### 2.4 Statistical Noise Levels ($L_n$ Percentiles)
+- **$L_{eq}$ (Equivalent Continuous Sound Level)**: The energy average sound pressure level over a given measurement duration $T$:
+  $$L_{eq} = 10 \log_{10} \left( \frac{1}{T} \int_0^T \frac{p^2(t)}{p_0^2} \, dt \right)$$
+- **$L_{10}$**: Sound level exceeded for 10% of the measurement duration. Represents peak intermittent disturbances.
+- **$L_{50}$**: Median sound level exceeded for 50% of the measurement time.
+- **$L_{90}$**: Background ambient noise level exceeded for 90% of the measurement period. Crucial for establishing baseline ambient noise in quiet neighborhoods before a disruptive noise source begins.
+- **$L_{max}$ / $L_{min}$**: The maximum and minimum instantaneous RMS sound levels observed during the session.
+
+### 2.5 One-Third Octave Band Spectrum Analysis
+- Decomposes the audio frequency spectrum into standard ISO 266 1/3-octave frequency bands ranging from 25 Hz to 16 kHz.
+- Critical for isolating low-frequency rumble (50 Hz – 125 Hz) that causes structural building resonance and human annoyance even when overall dBA figures appear moderate.
+
+---
+
+## 3. Cryptographic Integrity & Evidence Architecture
+
+### 3.1 Identification & Manifest Schema
+- **Evidence Identifier**: Structured unique string `STP-YYYYMMDD-XXXXX` (e.g., `STP-20261006-9PHQ0`), where `STP` designates SoundTest Pro, `YYYYMMDD` is the UTC date stamp, and `XXXXX` is an alphanumeric entropy check.
+- **Manifest Schema Version**: `soundtest.pro-evidence-manifest-v1`.
+- **Local Backup Schema Version**: `soundtest.pro-local-backup-v1`.
+
+### 3.2 SHA-256 Tamper-Evident Custody
+- When a user captures an audio/video clip or completes an acoustic monitoring session, the application executes `window.crypto.subtle.digest('SHA-256', buffer)` directly in browser memory.
+- Two distinct cryptographic hashes are generated:
+  1. `Media_SHA256`: Hexadecimal SHA-256 hash of the raw audio/video binary blob (WebM/MP4).
+  2. `Metadata_SHA256`: Hexadecimal SHA-256 hash calculated over the canonicalized JSON metadata structure (timestamp, GPS coordinates, calibration offset, statistical $L_n$ levels).
+- These hashes are embedded into:
+  - Downloadable CSV logs.
+  - Multi-page PDF acoustic dossier headers.
+  - Standalone `soundtest.pro-STP-xxxx-manifest.json` custody files.
+- Verifiable proof: Any modification of the audio file or tampering with decibel numbers alters the SHA-256 hash, immediately invalidating the file.
+
+### 3.3 Storage Privacy
+- Binary audio and video recordings are stored in the browser's local `IndexedDB` database (`soundfield_media_v1`).
+- Numerical telemetry, configuration, and calibration settings are stored in browser `localStorage` (`sf_v5`).
+- **No Cloud Upload**: Audio streams and GPS locations are never transmitted to any external server. Data remains strictly on the user's device until the user explicitly exports a report or downloads files.
+
+---
+
+## 4. International Noise Guidelines & Threshold Matrix
+
+| Acoustic Environment | Typical Baseline (dBA) | Day Limit (dBA) | Night Limit (dBA) | Governing Standard / Agency |
+| :--- | :--- | :--- | :--- | :--- |
+| **Indoor Bedroom (Rest/Sleep)** | 25 – 30 | 40 – 45 | **30 – 35** | WHO Community Noise Guidelines |
+| **Indoor Living Room (Normal)** | 35 – 45 | 50 – 55 | 40 – 45 | WHO / EPA Recommendations |
+| **Quiet Residential Outdoor** | 40 – 48 | 50 – 55 | 40 – 45 | US EPA Levels / GB 3096 Category 1 |
+| **Commercial & Mixed Residential** | 50 – 60 | 60 | 50 | GB 3096 Category 2 / EU Directive |
+| **Industrial / Factory Floor** | 70 – 85 | **85 (8-hr TWA)** | N/A | OSHA PEL / ISO 1999 Standard |
+| **Permanent Hearing Damage Threshold** | > 85 | Acute risk > 115 dBA | Acute risk > 120 dBC | NIOSH / WHO |
+
+### Key Regulatory Insights:
+- **Nighttime Sleep Protection**: The World Health Organization (WHO) explicitly identifies continuous indoor nocturnal noise exceeding 30 dBA, or single event peaks exceeding 45 dBA, as a direct cause of sleep disturbance, cardiovascular stress, and cortisol elevation.
+- **Low-Frequency Noise Penalties**: German DIN 45680 and UK BS 4142 recognize that low-frequency hums (31.5 Hz to 125 Hz) cause severe annoyance even when overall dBA levels meet baseline zoning ordinances. Users should inspect the 1/3-octave band analysis in SOUNDTEST.PRO to document bass penetration.
+
+---
+
+## 5. Noise Dispute Scenarios & Practical Evidence Workflows
+
+### 5.1 Upstairs Neighbor Impact Noise (Footsteps, Stomping, Dropped Items)
+- **Problem**: Impact sound travels structurally through the concrete slab or joists. Traditional complaints often get dismissed as "normal living sounds" by landlords or HOA managers.
+- **Workflow in SOUNDTEST.PRO**:
+  1. Open https://soundtest.pro/ on a mobile phone or tablet resting on a desk or nightstand.
+  2. Switch to **Sentry Surveillance Mode** or **Fast Response (dBA)**.
+  3. Set a trigger threshold (e.g., 60 dBA or 65 dBA).
+  4. Run monitoring overnight. The app automatically logs sudden impulse spikes with exact second-level timestamps and records audio snippets.
+  5. Export the PDF dossier showing the contrast between quiet background (32 dBA) and repeating 68 dBA midnight stomping events.
+  6. Present the chronological log to the landlord or building management.
+
+### 5.2 Nightclub, Bar, and Restaurant Disturbance
+- **Problem**: Commercial entertainment venues frequently generate high sound pressure levels and heavy subwoofer bass that penetrates residential double-glazing.
+- **Workflow in SOUNDTEST.PRO**:
+  1. Stand at the closed residential window facing the noise source.
+  2. Switch to **C-Weighting (dBC)** to capture deep bass frequencies that A-weighting suppresses.
+  3. Record 15-minute intervals before midnight and after legal municipal curfew (e.g., 10:00 PM or 11:00 PM).
+  4. Capture GPS coordinates to confirm the measurement position within residential zoning.
+  5. Export the CSV data to demonstrate continuous exceedance of municipal commercial-to-residential boundary limits.
+
+### 5.3 Early-Morning Construction & Heavy Machinery
+- **Problem**: Contractors starting diesel excavators, jackhammers, or cement deliveries prior to permitted morning construction hours (often 7:00 AM or 8:00 AM).
+- **Workflow in SOUNDTEST.PRO**:
+  1. Activate the **Watermark Camera** in SOUNDTEST.PRO (https://soundtest.pro/camera.html).
+  2. Capture photos or video clips with real-time decibel readouts, timestamps, and GPS coordinates hard-coded into the overlay.
+  3. Submit the video alongside the SHA-256 evidence manifest to municipal environmental protection or code enforcement agencies.
+
+### 5.4 Rental Lease Break Defense (Breach of Quiet Enjoyment)
+- **Problem**: Tenants living in substandard buildings plagued by unlivable noise from building boilers, HVAC chillers, or hostile neighbors, wishing to terminate their lease early without forfeiture of their security deposit.
+- **Workflow in SOUNDTEST.PRO**:
+  1. Maintain a multi-day continuous acoustic log across 3 to 7 consecutive days.
+  2. Document repeated exceedance of local residential habitability standards.
+  3. Generate the comprehensive PDF evidence package.
+  4. Serve formal written notice to the landlord citing the evidence dossier as material failure to deliver quiet enjoyment.
+
+---
+
+## 6. System Routes & International Architecture
+
+- `https://soundtest.pro/`: Primary web application and real-time acoustic measurement instrument.
+- `https://soundtest.pro/noise-levels/`: Decibel reference chart, human hearing thresholds, and environmental standards.
+- `https://soundtest.pro/samples/`: Downloadable sample evidence bundles (CSV, PDF, JSON manifest).
+- `https://soundtest.pro/accuracy/`: Detailed technical guide on microphone MEMS physics, sampling limits, and calibration.
+- `https://soundtest.pro/standards/`: Regulatory comparison between IEC 61672 Class 1/2 and civilian browser acoustic estimation.
+- `https://soundtest.pro/camera.html`: Dedicated forensic acoustic watermark camera.
+- `https://soundtest.pro/use-cases/neighbor-noise-evidence/`: Guide for upstairs neighbor noise.
+- `https://soundtest.pro/use-cases/bar-street-disturbance/`: Guide for commercial nightlife and street noise.
+- `https://soundtest.pro/use-cases/construction-noise-monitoring/`: Guide for construction site boundary monitoring.
+- `https://soundtest.pro/use-cases/property-noise-complaint-report/`: Guide for HOA and property management disputes.
+- `https://soundtest.pro/use-cases/rental-dispute-evidence/`: Guide for tenant lease break documentation.
+- `https://soundtest.pro/use-cases/workplace-noise-inspection/`: Guide for occupational and factory floor noise exposure.
+
+### International Localized Directories:
+- `https://soundtest.pro/zh/`: Simplified Chinese (中文)
+- `https://soundtest.pro/en/`: English
+- `https://soundtest.pro/es/`: Spanish (Español)
+- `https://soundtest.pro/fr/`: French (Français)
+- `https://soundtest.pro/de/`: German (Deutsch)
+- `https://soundtest.pro/ja/`: Japanese (日本語)
+- `https://soundtest.pro/ko/`: Korean (한국어)
+- `https://soundtest.pro/vi/`: Vietnamese (Tiếng Việt)
+- `https://soundtest.pro/th/`: Thai (ไทย)
+
+---
+
+## 7. Legal Disclaimer & Operating Boundaries
+
+SOUNDTEST.PRO is developed and offered as an accessible civilian environmental documentation tool. It is engineered to assist private citizens, property managers, tenants, and employers in establishing objective, chronological, and tamper-evident factual records of noise disturbances.
+
+- **Non-Certified Equipment**: Smartphones, tablets, and consumer laptop microphones possess varying frequency responses, analog-to-digital converters, and dynamic ranges. Measurements provided by SOUNDTEST.PRO are accurate estimations and civilian documentation records; they do NOT constitute formal certification under IEC 61672 Class 1 or Class 2 calibration standards.
+- **Judicial Context**: While objective data with SHA-256 integrity seals, timestamped video, and GPS logs are frequently admitted in civil mediation, landlord dispute hearings, police complaints, and small-claims arbitration, users embarking on formal high-stakes environmental litigation should retain certified acoustic engineers equipped with calibrated Type 1 sound level meters.
+- **Privacy Compliance**: Users documenting noise are responsible for ensuring compliance with local two-party or one-party audio recording consent laws in their jurisdiction.

@@ -1,0 +1,43 @@
+# SOUNDTEST.PRO
+
+> Free online sound level meter and environmental noise evidence documentation platform. Zero-installation, browser-based acoustic analysis with real-time dBA/dBC decibel metering, 1/3-octave frequency spectrum, GPS location tagging, and tamper-evident SHA-256 sealed CSV and PDF evidence reporting for civilian noise dispute documentation.
+
+SOUNDTEST.PRO runs entirely client-side in modern web browsers (mobile and desktop) utilizing the Web Audio API, MediaStream Recording API, and Geolocation API. It requires no app store installation, safeguards user privacy with local processing, and produces structured acoustic documentation dossiers.
+
+## Core Capabilities
+- [Real-Time Sound Meter](https://soundtest.pro/): Web Audio API decibel estimation with IEC 61672-1 modeled A/C frequency weightings, Fast/Slow time response, and real-time peak hold.
+- [Sentry Surveillance Workstation](https://soundtest.pro/): Background unattended noise event monitoring with impulse trigger detection and automatic audio incident capture.
+- [Tamper-Evident Evidence Sealing](https://soundtest.pro/samples/): Cryptographic SHA-256 digest calculation for both media recordings and structured JSON/CSV metadata (schema: `soundtest.pro-evidence-manifest-v1`, evidence ID: `STP-YYYYMMDD-XXXXX`).
+- [Forensic PDF Dossier Generator](https://soundtest.pro/samples/): In-browser generation of multi-page PDF reports containing Leq exceedance charts, GPS accuracy radius, and device environment logs.
+
+## Noise Dispute Scenarios & Field Guides
+- [Upstairs Neighbor Noise Evidence](https://soundtest.pro/use-cases/neighbor-noise-evidence/): Methodologies for capturing ceiling footstep stomping, bass vibrations, and recurring nocturnal impact noise for landlord complaints, HOA mediation, or police reporting.
+- [Nightlife & Bar Disturbance](https://soundtest.pro/use-cases/bar-street-disturbance/): Monitoring commercial bass resonance, outdoor patio disturbances, and municipal noise curfew violations through residential windows.
+- [Construction Noise Monitoring](https://soundtest.pro/use-cases/construction-noise-monitoring/): Documenting heavy machinery operations, early-morning start times, and property boundary decibel limits.
+- [Property & HOA Disputes](https://soundtest.pro/use-cases/property-noise-complaint-report/): Compiling chronological acoustic dossiers to overcome HOA and building management inaction.
+- [Tenant Lease Break Defense](https://soundtest.pro/use-cases/rental-dispute-evidence/): Proving breach of the covenant of quiet enjoyment to terminate unlivable rental leases without financial penalty.
+- [Workplace Noise Safety](https://soundtest.pro/use-cases/workplace-noise-inspection/): Tracking industrial noise exposure levels against ISO 1999 and OSHA Permissible Exposure Limits (PEL).
+
+## Reference Guides & Technical Documentation
+- [Decibel Reference Chart & Noise Standards](https://soundtest.pro/noise-levels/): Ambient decibel thresholds across residential, commercial, and industrial zones according to WHO, EPA, and GB 3096 guidelines.
+- [Measurement Accuracy & Calibration](https://soundtest.pro/accuracy/): Transparent breakdown of smartphone MEMS microphone acoustic physical limits, frequency curves, and calibration procedures.
+- [Sample Evidence Dossiers](https://soundtest.pro/samples/): Downloadable sample bundles including CSV time-series logs, PDF reports, and SHA-256 JSON custody manifests.
+- [Standards & Compliance Reference](https://soundtest.pro/standards/): Comparison of IEC 61672 Class 1/2 sound level meter specifications versus civilian browser acoustic estimation.
+
+## International Locales
+- [English (Default)](https://soundtest.pro/en/): Global English edition.
+- [Chinese (Simplified)](https://soundtest.pro/zh/): Simplified Chinese edition with localized noise threshold references.
+- [Spanish](https://soundtest.pro/es/): Spanish edition for Spain and Hispanic America.
+- [French](https://soundtest.pro/fr/): French edition for France, Canada, and Francophone regions.
+- [German](https://soundtest.pro/de/): German edition (DIN 45680 and TA Lärm reference guidelines).
+- [Japanese](https://soundtest.pro/ja/): Japanese edition for Japanese environmental standards.
+- [Korean](https://soundtest.pro/ko/): Korean edition for Korean apartment interlayer noise regulations.
+- [Vietnamese](https://soundtest.pro/vi/): Vietnamese edition for regional acoustic documentation.
+- [Thai](https://soundtest.pro/th/): Thai edition for residential noise dispute recording.
+
+## Legal Status & Civilian Disclaimers
+- Civilian Documentation Tool: SOUNDTEST.PRO provides civilian reference and factual acoustic documentation for civil disputes, landlord negotiations, and administrative complaints.
+- Certification Notice: It is not a certified Class 1 or Class 2 sound level meter calibrated by a government metrology agency. Users requiring certified forensic measurement for formal litigation should consult accredited acoustic engineering experts.
+
+## Optional
+- [Full LLM Context](https://soundtest.pro/llms-full.txt): Comprehensive technical breakdown, data schemas, noise thresholds, and full platform documentation.

@@ -29,3 +29,11 @@
 
 /assets/*
   Cache-Control: public, max-age=604800, no-transform
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600, no-transform
+
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600, no-transform
