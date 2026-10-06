@@ -14,6 +14,51 @@
       .replace(/'/g, '&#39;');
   }
 
+  /* ── Open Redirect Protection Helper ── */
+  function sanitizeRedirectUrl(rawUrl, defaultFallback = '') {
+    if (!rawUrl || typeof rawUrl !== 'string') return defaultFallback;
+    const str = rawUrl.trim();
+    if (!str) return defaultFallback;
+
+    // 1. Block control characters & dangerous pseudoprotocols
+    if (/[\u0000-\u001F\u007F]/.test(str)) return defaultFallback;
+    if (/^(javascript|data|vbscript|mailto|blob):/i.test(str)) return defaultFallback;
+
+    // 2. Block protocol-relative URLs (//attacker.com, /\attacker.com, \/attacker.com, \\attacker.com)
+    if (/^[\/\\]{2,}/.test(str) || str.startsWith('/\\') || str.startsWith('\\/')) return defaultFallback;
+
+    // 3. Prevent infinite auth loop
+    if (str.includes('auth.html') || str === '/auth' || str === '/auth/') return defaultFallback;
+
+    // 4. If it's a relative path on this site (e.g., /soundtest.html, /measure/, /admin.html)
+    if (str.startsWith('/') && !str.startsWith('//')) {
+      return str;
+    }
+
+    // 5. If it's a relative filename without leading slash (e.g., soundtest.html, admin.html)
+    if (/^[a-zA-Z0-9_\-]+\.html(?:[?#].*)?$/.test(str) || /^[a-zA-Z0-9_\-]+\/(?:[?#].*)?$/.test(str)) {
+      return '/' + str;
+    }
+
+    // 6. If it's an absolute URL, strictly verify origin matches soundtest.pro or current origin
+    try {
+      const origin = (typeof window !== 'undefined' && window.location?.origin) ? window.location.origin : 'https://soundtest.pro';
+      const parsed = new URL(str, origin);
+      const host = parsed.hostname.toLowerCase();
+      const isAllowedHost = host === 'soundtest.pro' ||
+                            host === 'www.soundtest.pro' ||
+                            host.endsWith('.soundtest-pro.pages.dev') ||
+                            host === 'localhost' ||
+                            host === '127.0.0.1';
+      if (isAllowedHost && !parsed.pathname.includes('auth.html')) {
+        return parsed.pathname + parsed.search + parsed.hash;
+      }
+    } catch (_) {}
+
+    return defaultFallback;
+  }
+  window.__sfSanitizeRedirectUrl = sanitizeRedirectUrl;
+
   /* ── Storage keys ── */
   const USERS_KEY    = 'soundtest_users_v1';
   const SESSION_KEY   = 'soundtest_session_v1';
@@ -653,7 +698,8 @@
           } catch (_) {}
         }
 
-        const redirectTo = params.get('redirect_to');
+        const rawRedirect = params.get('redirect_to');
+        const redirectTo = sanitizeRedirectUrl(rawRedirect);
         const cleanUrl = window.location.pathname + (redirectTo ? `?redirect_to=${encodeURIComponent(redirectTo)}` : '');
         window.history.replaceState({}, document.title, cleanUrl);
 
@@ -671,7 +717,7 @@
           renderNavAuth();
         }
 
-        if (redirectTo && !redirectTo.includes('auth.html')) {
+        if (redirectTo) {
           setTimeout(() => location.href = redirectTo, 800);
         }
         return true;
@@ -821,7 +867,8 @@
         if (magicCodeSection) magicCodeSection.style.display = 'block';
 
         try {
-          const redirectTo = new URLSearchParams(window.location.search).get('redirect_to') || '';
+          const rawRedirect = new URLSearchParams(window.location.search).get('redirect_to') || '';
+          const redirectTo = sanitizeRedirectUrl(rawRedirect);
           const resp = await fetch('/api/auth/magic-link', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -986,8 +1033,9 @@
           }
 
           setTimeout(() => {
-            const redirectTo = new URLSearchParams(window.location.search).get('redirect_to');
-            if (redirectTo && !redirectTo.includes('auth.html')) {
+            const rawRedirect = new URLSearchParams(window.location.search).get('redirect_to');
+            const redirectTo = sanitizeRedirectUrl(rawRedirect);
+            if (redirectTo) {
               location.href = redirectTo;
               return;
             }
@@ -1332,7 +1380,9 @@
       }
 
       showToast(getAuthMsg('welcome_back'), 'success');
-      setTimeout(() => location.href = getLocaleAuthHref(), 600);
+      const rawRedirect = new URLSearchParams(window.location.search).get('redirect_to');
+      const redirectTo = sanitizeRedirectUrl(rawRedirect);
+      setTimeout(() => location.href = redirectTo || getLocaleAuthHref(), 600);
     }
   }
 

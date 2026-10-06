@@ -12,6 +12,33 @@ function json(data, status = 200) {
   });
 }
 
+function sanitizeRedirectUrl(rawUrl, defaultFallback = '/auth.html') {
+  if (!rawUrl || typeof rawUrl !== 'string') return defaultFallback;
+  const str = rawUrl.trim();
+  if (!str) return defaultFallback;
+  if (/[\u0000-\u001F\u007F]/.test(str)) return defaultFallback;
+  if (/^(javascript|data|vbscript|mailto|blob):/i.test(str)) return defaultFallback;
+  if (/^[\/\\]{2,}/.test(str) || str.startsWith('/\\') || str.startsWith('\\/')) return defaultFallback;
+  if (str.includes('auth.html') || str === '/auth' || str === '/auth/') return defaultFallback;
+  if (str.startsWith('/') && !str.startsWith('//')) return str;
+  if (/^[a-zA-Z0-9_\-]+\.html(?:[?#].*)?$/.test(str) || /^[a-zA-Z0-9_\-]+\/(?:[?#].*)?$/.test(str)) {
+    return '/' + str;
+  }
+  try {
+    const parsed = new URL(str, 'https://soundtest.pro');
+    const host = parsed.hostname.toLowerCase();
+    const isAllowedHost = host === 'soundtest.pro' ||
+                          host === 'www.soundtest.pro' ||
+                          host.endsWith('.soundtest-pro.pages.dev') ||
+                          host === 'localhost' ||
+                          host === '127.0.0.1';
+    if (isAllowedHost && !parsed.pathname.includes('auth.html')) {
+      return parsed.pathname + parsed.search + parsed.hash;
+    }
+  } catch (_) {}
+  return defaultFallback;
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
   try {
@@ -46,7 +73,7 @@ export async function onRequestPost(context) {
         try {
           storedPayload = JSON.parse(raw);
           verifiedEmail = storedPayload.email;
-          redirectTo = storedPayload.redirect_to || redirectTo;
+          redirectTo = sanitizeRedirectUrl(storedPayload.redirect_to, redirectTo);
         } catch (_) {
           return json({ ok: false, error: 'corrupt_token_data' }, 500);
         }
@@ -73,7 +100,7 @@ export async function onRequestPost(context) {
             }, 401);
           }
           verifiedEmail = storedPayload.email;
-          redirectTo = storedPayload.redirect_to || redirectTo;
+          redirectTo = sanitizeRedirectUrl(storedPayload.redirect_to, redirectTo);
 
           // Single-use: delete both keys
           await env.ab_test.delete(`magic_code:${email}`);

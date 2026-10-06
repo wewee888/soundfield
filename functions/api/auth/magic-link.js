@@ -12,6 +12,33 @@ function json(data, status = 200) {
   });
 }
 
+function sanitizeRedirectUrl(rawUrl, defaultFallback = '') {
+  if (!rawUrl || typeof rawUrl !== 'string') return defaultFallback;
+  const str = rawUrl.trim();
+  if (!str) return defaultFallback;
+  if (/[\u0000-\u001F\u007F]/.test(str)) return defaultFallback;
+  if (/^(javascript|data|vbscript|mailto|blob):/i.test(str)) return defaultFallback;
+  if (/^[\/\\]{2,}/.test(str) || str.startsWith('/\\') || str.startsWith('\\/')) return defaultFallback;
+  if (str.includes('auth.html') || str === '/auth' || str === '/auth/') return defaultFallback;
+  if (str.startsWith('/') && !str.startsWith('//')) return str;
+  if (/^[a-zA-Z0-9_\-]+\.html(?:[?#].*)?$/.test(str) || /^[a-zA-Z0-9_\-]+\/(?:[?#].*)?$/.test(str)) {
+    return '/' + str;
+  }
+  try {
+    const parsed = new URL(str, 'https://soundtest.pro');
+    const host = parsed.hostname.toLowerCase();
+    const isAllowedHost = host === 'soundtest.pro' ||
+                          host === 'www.soundtest.pro' ||
+                          host.endsWith('.soundtest-pro.pages.dev') ||
+                          host === 'localhost' ||
+                          host === '127.0.0.1';
+    if (isAllowedHost && !parsed.pathname.includes('auth.html')) {
+      return parsed.pathname + parsed.search + parsed.hash;
+    }
+  } catch (_) {}
+  return defaultFallback;
+}
+
 /**
  * High-end dark tech responsive HTML email template for SOUNDTEST.PRO
  */
@@ -143,7 +170,7 @@ export async function onRequestPost(context) {
   try {
     const body = await request.json().catch(() => ({}));
     const email = String(body.email || '').trim().toLowerCase();
-    const redirectTo = String(body.redirect_to || '').trim();
+    const redirectTo = sanitizeRedirectUrl(body.redirect_to, '');
 
     if (!email || !email.includes('@')) {
       return json({ ok: false, error: 'invalid_email', message: 'Valid email address is required' }, 400);
