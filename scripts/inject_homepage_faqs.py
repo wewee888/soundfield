@@ -42,7 +42,7 @@ FAQ_DATA = {
         ]
     },
     "en": {
-        "title": "Free Online Noise Evidence Recorder | No App Required · SOUNDTEST.PRO",
+        "title": "Free Online Decibel Meter & Noise Evidence Recorder | No App Required · SOUNDTEST.PRO",
         "description": "Free online decibel meter and acoustic evidence workstation. Measure dB SPL, record audio with GPS & timestamp watermarks, run overnight sentry monitoring, and export tamper-evident PDF dossiers for tenant disputes and noise complaints.",
         "keywords": "online decibel meter free, neighbor noise complaint evidence, apartment noise meter, quiet enjoyment breach proof, break lease noise evidence, decibel watermark camera, overnight noise sentry, tamper-evident sound report, small claims noise proof",
         "eyebrow": "Legal Evidence & Nuisance FAQ",
@@ -72,7 +72,7 @@ FAQ_DATA = {
         ]
     },
     "de": {
-        "title": "Kostenloser Lärmaufzeichner für Beweise | Keine App nötig · SOUNDTEST.PRO",
+        "title": "Kostenloser Online-Dezibelmesser & Lärm-Beweisrekorder | Keine App nötig · SOUNDTEST.PRO",
         "description": "Kostenloser Online-Dezibelmesser und Schallpegel-Beweisrekorder ohne App. Ermitteln Sie dB-Werte, erfassen Sie Lärm mit GPS- und Zeit-Wasserzeichen, nutzen Sie den Nacht-Wächtermodus und exportieren Sie ein rechtssicheres PDF-Lärmprotokoll nach BGB § 536.",
         "keywords": "dezibelmesser online kostenlos, lärmprotokoll nachbarn mietminderung, ruhestörung beweisen bgb 536, wasserzeichen kamera dezibel uhrzeit, nächtliche ruhestörung dokumentieren, ta lärm grenzwerte wohngebiet, schallpegelmessung browser",
         "eyebrow": "Rechts- & Beweis-FAQ",
@@ -102,7 +102,7 @@ FAQ_DATA = {
         ]
     },
     "es": {
-        "title": "Grabador de Evidencia de Ruido Online Gratuito | Sin Instalar App · SOUNDTEST.PRO",
+        "title": "Sonómetro Online Gratis y Grabador de Evidencia de Ruido | Sin App · SOUNDTEST.PRO",
         "description": "Sonómetro online gratis y grabador de pruebas de ruido sin app. Mida decibelios en tiempo real, tome fotos y vídeos con marca de agua GPS y fecha, active vigilancia nocturna y exporte informes PDF periciales con firma criptográfica SHA-256.",
         "keywords": "sonómetro online gratis, denunciar ruido vecinos pruebas, medir decibelios online, rescindir contrato alquiler por ruidos, cámara con marca de agua decibelios gps, límite decibelios noche vivienda, informe pericial acústico pdf",
         "eyebrow": "Preguntas Frecuentes y Guía Legal",
@@ -132,7 +132,7 @@ FAQ_DATA = {
         ]
     },
     "fr": {
-        "title": "Enregistreur de Bruit Preuve Gratuit Sans Application · SOUNDTEST.PRO",
+        "title": "Sonomètre en Ligne Gratuit et Preuve de Bruit Sans App · SOUNDTEST.PRO",
         "description": "Sonomètre en ligne gratuit et enregistreur de preuves sonores sans application. Mesurez les dB, prenez des photos/vidéos horodatées avec filigrane GPS, activez la surveillance nocturne et exportez un dossier PDF infalsifiable pour litiges locatifs et tapage nocturne.",
         "keywords": "sonomètre en ligne gratuit, preuve bruit voisin tapage nocturne, mesurer décibels en ligne, résiliation bail nuisance sonore preuve, photo filigrane décibels gps, constat nuisance sonore appartement, rapport acoustique pdf",
         "eyebrow": "FAQ & Guide Juridique",
@@ -162,7 +162,7 @@ FAQ_DATA = {
         ]
     },
     "ja": {
-        "title": "無料オンライン騒音証拠記録ツール｜アプリ不要 · SOUNDTEST.PRO",
+        "title": "無料オンライン騒音計・騒音証拠記録ツール｜アプリ不要 · SOUNDTEST.PRO",
         "description": "無料オンライン騒音計・音響証拠記録ツール。アプリ不要でスマホからリアルタイムにデシベルを測定し、日時・位置情報付き透かし写真撮影、夜間自動監視、改ざん防止SHA-256付きPDF報告書を出力。上の階の足音や近隣トラブルの証拠化に。",
         "keywords": "騒音計 オンライン 無料, 上の階 足音 騒音 証拠 集め方, マンション 騒音 トラブル 証拠, 賃貸 騒音 退去 家賃減額 証拠, デシベル 透かし カメラ 位置情報, 夜間 騒音 測定 記録 アプリ不要, 騒音 証拠 pdf 報告書",
         "eyebrow": "よくある質問・証拠化ガイド",
@@ -192,7 +192,7 @@ FAQ_DATA = {
         ]
     },
     "ko": {
-        "title": "무료 온라인 소음 증거 녹음 도구 | 앱 설치 불필요 · SOUNDTEST.PRO",
+        "title": "무료 온라인 소음측정기 및 소음 증거 기록 도구 | 앱 설치 불필요 · SOUNDTEST.PRO",
         "description": "무료 온라인 소음측정기 및 층간소음 증거 수집 도구. 앱 설치 없이 브라우저에서 실시간 데시벨 측정, 시간·위치 각인 워터마크 카메라, 야간 무인 감시, 위변조 방지 SHA-256 적용 정식 PDF 보고서를 생성하여 이웃사이센터 및 분쟁 조정 증거로 활용하세요.",
         "keywords": "온라인 소음측정기 무료, 층간소음 증거 수집 방법, 윗집 발소리 층간소음 신고 증거, 층간소음 이웃사이센터 제출용, 데시벨 시간 위치 워터마크 카메라, 원룸 오피스텔 층간소음 계약해지 증거, 층간소음 pdf 보고서",
         "eyebrow": "자주 묻는 질문 및 법적 증거 가이드",
@@ -222,7 +222,7 @@ FAQ_DATA = {
         ]
     },
     "th": {
-        "title": "เครื่องมือบันทึกหลักฐานเสียงรบกวนออนไลน์ฟรี | ไม่ต้องติดตั้งแอป · SOUNDTEST.PRO",
+        "title": "เครื่องมือวัดระดับเสียงและบันทึกหลักฐานออนไลน์ฟรี | ไม่ต้องลงแอป · SOUNDTEST.PRO",
         "description": "เครื่องมือวัดระดับเสียงเดซิเบลออนไลน์ฟรีและบันทึกหลักฐานเสียงรบกวนโดยไม่ต้องติดตั้งแอป วัดระดับ dB แบบเรียลไทม์ ถ่ายภาพติดลายน้ำเวลาและพิกัด GPS โหมดเฝ้าระวังเวลากลางคืน และส่งออกรายงาน PDF เข้ารหัส SHA-256 สำหรับร้องเรียนข้างบ้านหรือนิติบุคคล",
         "keywords": "วัดเดซิเบลออนไลน์ ฟรี, ร้องเรียนเสียงดังข้างบ้าน หลักฐาน, เสียงดังรบกวน แจ้งความ บันทึกเดซิเบล, กล้องถ่ายรูปติดลายน้ำเดซิเบลและพิกัด, ยกเลิกสัญญาเช่าห้อง เสียงดัง, รายงานเสียงรบกวน pdf",
         "eyebrow": "คำถามที่พบบ่อยและแนวทางรวบรวมหลักฐาน",
@@ -252,7 +252,7 @@ FAQ_DATA = {
         ]
     },
     "vi": {
-        "title": "Công cụ ghi nhận tiếng ồn trực tuyến miễn phí | Không cần cài app · SOUNDTEST.PRO",
+        "title": "Máy đo độ ồn decibel & ghi nhận chứng cứ trực tuyến | Không cần app · SOUNDTEST.PRO",
         "description": "Máy đo độ ồn decibel trực tuyến miễn phí và thu thập bằng chứng âm thanh không cần cài ứng dụng. Đo dB thời gian thực, chụp ảnh quay video đóng dấu vị trí GPS và thời gian, chế độ gác đêm tự động và xuất báo cáo PDF mã hóa SHA-256 khiếu nại tiếng ồn.",
         "keywords": "đo độ ồn online miễn phí, bằng chứng tiếng ồn hàng xóm hát karaoke, khiếu nại tiếng ồn chung cư, máy đo decibel trực tuyến, chụp ảnh đóng dấu decibel gps, hủy hợp đồng thuê nhà vì tiếng ồn, báo cáo bằng chứng âm thanh pdf",
         "eyebrow": "Câu hỏi thường gặp & Hướng dẫn chứng cứ",

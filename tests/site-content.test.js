@@ -27,7 +27,7 @@ test('primary keyword set covers global launch use cases', () => {
 });
 
 test('homepage copy uses global noise evidence positioning with safer legal wording', () => {
-  assert.equal(site.homepageCopy.slogan, 'Free Online Noise Evidence Recorder | No App Required');
+  assert.equal(site.homepageCopy.slogan, 'Free Online Decibel Meter & Noise Evidence Recorder | No App Required');
   assert.match(site.homepageCopy.subtitle, /Measure Decibels, Record Sound, Save Time & Location/i);
   assert.match(site.homepageCopy.intro, /browser-based noise monitoring/i);
   assert.match(site.homepageCopy.intro, /No app download/i);
@@ -137,7 +137,7 @@ test('monetization model covers global web-first revenue without cloud overclaim
 
 test('homepage renders launch copy, scenarios, reference limits, and plan cards', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-  assert.match(html, /Free Online Noise Evidence Recorder \| No App Required/);
+  assert.match(html, /Free Online Decibel Meter & Noise Evidence Recorder \| No App Required/);
   assert.match(html, /<a class="button primary" href="soundtest\.html">Start Monitoring<\/a>/);
   assert.match(html, /Perfect For:/);
   assert.match(html, /Neighbor &amp; Apartment Noise/);

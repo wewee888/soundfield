@@ -44,19 +44,19 @@
   ];
 
   const supportedLanguages = [
-    { code: 'en', name: 'English', title: 'Free Online Noise Evidence Recorder', cta: 'Open web app' },
+    { code: 'en', name: 'English', title: 'Free Online Decibel Meter & Noise Evidence Recorder', cta: 'Open web app' },
     { code: 'zh', name: '中文', title: '免费在线噪音分贝测试与取证工具', cta: '打开网页工具' },
-    { code: 'es', name: 'Español', title: 'Grabador web de ruido para reclamaciones', cta: 'Abrir herramienta' },
-    { code: 'fr', name: 'Français', title: 'Outil web pour documenter les nuisances sonores', cta: 'Ouvrir l’outil' },
-    { code: 'de', name: 'Deutsch', title: 'Web-Tool zur Dokumentation von Lärm', cta: 'Tool öffnen' },
-    { code: 'ja', name: '日本語', title: '騒音記録と苦情資料をブラウザーで作成', cta: 'ツールを開く' },
-    { code: 'ko', name: '한국어', title: '소음 기록과 민원 자료를 브라우저에서 작성', cta: '도구 열기' },
-    { code: 'vi', name: 'Tiếng Việt', title: 'Công cụ web ghi nhận tiếng ồn để khiếu nại', cta: 'Mở công cụ' },
-    { code: 'th', name: 'ไทย', title: 'เครื่องมือเว็บสำหรับบันทึกหลักฐานเสียงรบกวน', cta: 'เปิดเครื่องมือ' },
+    { code: 'es', name: 'Español', title: 'Sonómetro online gratis y grabador de evidencia de ruido', cta: 'Abrir herramienta' },
+    { code: 'fr', name: 'Français', title: 'Sonomètre en ligne gratuit et preuve de bruit', cta: 'Ouvrir l’outil' },
+    { code: 'de', name: 'Deutsch', title: 'Kostenloser Online-Dezibelmesser & Lärm-Beweisrekorder', cta: 'Tool öffnen' },
+    { code: 'ja', name: '日本語', title: '無料オンライン騒音計・騒音証拠記録ツール', cta: 'ツールを開く' },
+    { code: 'ko', name: '한국어', title: '무료 온라인 소음측정기 및 소음 증거 기록 도구', cta: '도구 열기' },
+    { code: 'vi', name: 'Tiếng Việt', title: 'Máy đo độ ồn decibel & ghi nhận chứng cứ trực tuyến', cta: 'Mở công cụ' },
+    { code: 'th', name: 'ไทย', title: 'เครื่องมือวัดระดับเสียงและบันทึกหลักฐานออนไลน์ฟรี', cta: 'เปิดเครื่องมือ' },
   ];
 
   const homepageCopy = {
-    slogan: 'Free Online Noise Evidence Recorder | No App Required',
+    slogan: 'Free Online Decibel Meter & Noise Evidence Recorder | No App Required',
     subtitle: 'Measure Decibels, Record Sound, Save Time & Location for Noise Complaint Documentation.',
     intro: 'A professional browser-based noise monitoring and evidence aid. No app download is required: run directly in your browser. Real-time decibel estimates, audio recording, waveform spectrum, timestamp, and location can be saved for neighbor noise, apartment disturbance, construction noise, bar and street noise, and legal complaint preparation.',
     features: [
@@ -103,7 +103,7 @@
 
   const localizedCopy = {
     en: {
-      slogan: 'Free Online Noise Evidence Recorder | No App Required',
+      slogan: 'Free Online Decibel Meter & Noise Evidence Recorder | No App Required',
       subtitle: 'Measure Decibels, Record Sound, Save Time & Location for Noise Complaint Documentation.',
       features: ['Real Time Decibel Meter', 'Audio & Waveform Recording', 'Auto Time & Location Stamp', 'Evidence Report Export'],
       scenarios: 'Neighbor & Apartment Noise / Construction Noise / Bar & Street Disturbance / Rental Dispute & Legal Evidence Aid',
@@ -119,7 +119,7 @@
       disclaimer: '合规与存证说明：本工具提供现场声学事实数字化记录与维权底稿，严密保留时间、频段与位置链条。法定计量认证依各属地行政程序办理，本平台所有音频与传感数据均在本地安全处理，绝不上传私密数据。',
     },
     es: {
-      slogan: 'Grabador de Evidencia de Ruido Online Gratuito | Sin Instalar App',
+      slogan: 'Sonómetro Online Gratis y Grabador de Evidencia de Ruido | Sin App',
       subtitle: 'Mide decibelios, graba sonido y guarda hora y ubicación para documentación de reclamos.',
       features: ['Medidor de decibelios en tiempo real', 'Grabación de audio y forma de onda', 'Sello automático de hora y ubicación', 'Exportar informe de evidencia'],
       scenarios: 'Ruido de vecinos y apartamentos / Ruido de construcción / Molestias de bares y calles / Disputas de alquiler y evidencia legal',
@@ -127,7 +127,7 @@
       disclaimer: 'Protocolo de cumplimiento y evidencia: SOUNDTEST.PRO proporciona un registro digital objetivo e inalterable de eventos acústicos para documentación de reclamos y mediación. Todos los datos se procesan localmente en su dispositivo garantizando total privacidad.',
     },
     fr: {
-      slogan: 'Enregistreur de Bruit Preuve Gratuit Sans Application',
+      slogan: 'Sonomètre en Ligne Gratuit et Preuve de Bruit Sans App',
       subtitle: 'Mesurez les décibels, enregistrez le son, sauvegardez l’heure et la position pour préparer une plainte.',
       features: ['Mesure de décibels en temps réel', 'Enregistrement audio et forme d’onde', 'Horodatage et position automatique', 'Exporter le rapport de preuve'],
       scenarios: 'Bruit de voisins et appartement / Bruit de chantier / Nuisances de bars et rue / Litige locatif et preuve légale',
@@ -135,7 +135,7 @@
       disclaimer: 'Protocole de conformité et de preuve : SOUNDTEST.PRO fournit un enregistrement numérique objectif et infalsifiable des événements acoustiques pour la constitution de dossiers et la médiation. Toutes les données sont traitées localement sur votre appareil en toute confidentialité.',
     },
     de: {
-      slogan: 'Kostenloser Lärmaufzeichner für Beweise | Keine App nötig',
+      slogan: 'Kostenloser Online-Dezibelmesser & Lärm-Beweisrekorder | Keine App nötig',
       subtitle: 'Messung von Dezibel, Tonaufnahme, Zeit- und Standortspeicherung für Beschwerdeunterlagen.',
       features: ['Echtzeit Dezibelmesser', 'Ton- und Wellenformaufnahme', 'Automatische Zeit- und Ortsmarkierung', 'Beweisbericht exportieren'],
       scenarios: 'Nachbar- und Wohnlärm / Baulärm / Lärm von Bars und Straßen / Mietstreitigkeiten & Rechtsbeweise',
@@ -143,7 +143,7 @@
       disclaimer: 'Konformitäts- und Beweisprotokoll: SOUNDTEST.PRO liefert eine objektive, manipulationssichere digitale Dokumentation akustischer Vorfälle für Schlichtungsverfahren und Nachbarschaftsbeschwerden. Sämtliche Daten werden lokal auf Ihrem Endgerät verarbeitet.',
     },
     ja: {
-      slogan: '無料オンライン騒音証拠記録ツール｜アプリ不要',
+      slogan: '無料オンライン騒音計・騒音証拠記録ツール｜アプリ不要',
       subtitle: 'デシベル測定・音録音・時間位置記録で騒音トラブルの資料作成に。',
       features: ['リアルタイムデシベル測定', '音声・波形録音', '時間・位置自動記録', '証拠レポート出力'],
       scenarios: '近所・アパート騒音 / 工事騒音 / 飲食店・街の騒音 / 賃貸トラブル証拠',
@@ -151,7 +151,7 @@
       disclaimer: '適合性および証拠プロトコル：SOUNDTEST.PROは、近隣トラブルや申し立て資料として、現場の音響事象を客観的かつ改ざん防止技術でデジタル記録します。すべてのデータは端末内で安全にローカル処理され、プライバシーを厳格に保護します。',
     },
     ko: {
-      slogan: '무료 온라인 소음 증거 녹음 도구 | 앱 설치 불필요',
+      slogan: '무료 온라인 소음측정기 및 소음 증거 기록 도구 | 앱 설치 불필요',
       subtitle: '데시벨 측정, 소리 녹음, 시간 및 위치 저장으로 민원 자료를 준비하세요.',
       features: ['실시간 데시벨 측정', '음성 및 파형 녹음', '시간 및 위치 자동 기록', '증거 보고서 내보내기'],
       scenarios: '이웃 및 아파트 소음 / 공사 소음 / 술집·거리 소음 / 임대 분쟁 및 법적 증거',
@@ -159,7 +159,7 @@
       disclaimer: '규정 준수 및 증거 프로토콜: SOUNDTEST.PRO는 분쟁 문서화 및 민원 접수를 위해 현장 음향 사건에 대한 객관적이고 위변조 방지 디지털 증거 기록을 제공합니다. 모든 데이터는 기기 내부에서 로컬로 안전하게 처리됩니다.',
     },
     vi: {
-      slogan: 'Công cụ ghi nhận tiếng ồn trực tuyến miễn phí | Không cần cài app',
+      slogan: 'Máy đo độ ồn decibel & ghi nhận chứng cứ trực tuyến | Không cần app',
       subtitle: 'Đo decibel, ghi âm, lưu thời gian và vị trí phục vụ hồ sơ khiếu nại.',
       features: ['Máy đo decibel thời gian thực', 'Ghi âm thanh và dạng sóng', 'Tự động đóng dấu thời gian và vị trí', 'Xuất báo cáo bằng chứng'],
       scenarios: 'Tiếng ồn hàng xóm / Thi công / Quán bar và đường phố / Tranh chấp thuê nhà',
@@ -167,7 +167,7 @@
       disclaimer: 'Quy chuẩn và chứng cứ: SOUNDTEST.PRO cung cấp bản ghi kỹ thuật số khách quan, chống giả mạo về các sự kiện âm thanh hiện trường phục vụ hòa giải và hồ sơ khiếu nại. Mọi dữ liệu được xử lý cục bộ trên thiết bị của bạn.',
     },
     th: {
-      slogan: 'เครื่องมือบันทึกหลักฐานเสียงรบกวนออนไลน์ฟรี | ไม่ต้องติดตั้งแอป',
+      slogan: 'เครื่องมือวัดระดับเสียงและบันทึกหลักฐานออนไลน์ฟรี | ไม่ต้องลงแอป',
       subtitle: 'วัดเดซิเบล บันทึกเสียง บันทึกเวลาและตำแหน่งเพื่อเตรียมการร้องเรียน',
       features: ['เครื่องวัดเดซิเบลแบบเรียลไทม์', 'บันทึกเสียงและรูปคลื่น', 'ประทับเวลาและตำแหน่งอัตโนมัติ', 'ส่งออกรายงานหลักฐาน'],
       scenarios: 'เสียงรบกวนจากเพื่อนบ้าน / การก่อสร้าง / เสียงรบกวนจากบาร์และถนน / ข้อพิพาทการเช่า',
