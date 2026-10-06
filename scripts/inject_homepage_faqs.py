@@ -15,13 +15,13 @@ FAQ_DATA = {
         "title": "免费在线噪音分贝测试与取证工具｜无需安装 App · SOUNDTEST.PRO",
         "description": "免费在线噪音分贝测试与维权存证工具。支持手机麦克风实时测分贝、实景水印拍照录像、夜间哨兵盯守，自动生成符合《民法典》安宁权与GB 22337标准的防篡改PDF证据卷宗。",
         "keywords": "噪音分贝在线检测, 在线分贝测试, 楼上邻居噪音取证, 租房噪音过大退租证据, 带分贝的水印相机, 夜间噪音超标投诉, 物业噪音维权证据, 民法典安宁权起诉证据, 防篡改噪音录音",
-        "eyebrow": "法律维权与纠纷存证 FAQ",
-        "heading": "噪音取证与纠纷维权常见问题解答",
-        "lead": "直击楼上踩踏噪音、租房无责退租、夜间超标认定与法庭证据效力等核心法律与实操痛点。",
+        "eyebrow": "民间调解与纠纷记录 FAQ",
+        "heading": "噪音记录与纠纷维权常见问题解答",
+        "lead": "直击楼上踩踏噪音、租房无责退租、夜间超标认定与民间调解取证等核心维权与实操痛点。",
         "faqs": [
             {
-                "q": "手机测分贝的数据能否作为邻里纠纷、报警或法庭民事诉讼的证据？",
-                "a": "在民事纠纷（如楼上跺脚跑跳、震楼器扰民）与物业居委会调解中，法院与执法部门重点审查证据的“真实性、合法性与关联性”。SOUNDTEST.PRO 采用实景水印相机（同步烧录分贝数值、微秒时间戳、精确小区与楼栋逆地理位置）与 SHA-256 双向哈希防篡改封签，生成带法律条文比对的证据卷宗，可作为强有力的当事人陈述与初步物证支撑，杜绝对方抵赖。"
+                "q": "手机测分贝的数据能否作为邻里纠纷、物业调解与交涉维权的证据？",
+                "a": "可以作为客观的民间自查记录与辅助证据材料。在邻里协商、物业协同与居委会民间调解中，SOUNDTEST.PRO 的实景水印相机（同步烧录分贝数值、时间戳与定位）及 SHA-256 防篡改封签，能清晰证明受扰时序与客观经过，杜绝对方推诿。请注意：本应用提供的是民间自查记录与证据辅助，非国家法定计量认证仪器；若涉及正式行政处罚或司法鉴定，法定程序通常需以经法定计量检定合格的专业声级计检测复核为准。"
             },
             {
                 "q": "夜间几点以后超过多少分贝属于违法扰民？法定标准是多少？",
@@ -37,7 +37,7 @@ FAQ_DATA = {
             },
             {
                 "q": "普通免费在线分贝计与 SOUNDTEST.PRO 存证工作站有何本质区别？",
-                "a": "普通在线分贝计仅显示跳动的即时数字，测完即走，且明文免责“无任何法律效力”；SOUNDTEST.PRO 专为民事维权打造，集成全闭环取证链条：实景水印相机、无人值守哨兵、社区楼栋级定位、SHA-256 电子封签、以及直出物业与法庭认可的声学证据卷宗（PDF/CSV）。"
+                "a": "普通在线分贝计仅显示跳动的即时数字，缺乏时间序列与背景信息；SOUNDTEST.PRO 专为民间维权与调解沟通打造，集成全流程自查记录链条：实景水印相机、无人值守夜间哨兵、社区楼栋级定位、SHA-256 电子封签、以及直呈物业与调解组织的结构化声学证据卷宗（PDF/CSV，民间辅助参考记录）。"
             }
         ]
     },
@@ -45,13 +45,13 @@ FAQ_DATA = {
         "title": "Free Online Decibel Meter & Noise Evidence Recorder | No App Required · SOUNDTEST.PRO",
         "description": "Free online decibel meter and acoustic evidence workstation. Measure dB SPL, record audio with GPS & timestamp watermarks, run overnight sentry monitoring, and export tamper-evident PDF dossiers for tenant disputes and noise complaints.",
         "keywords": "online decibel meter free, sound level meter online, neighbor noise complaint evidence, apartment noise meter, noise disturbance log, quiet enjoyment breach proof, break lease noise evidence, decibel watermark camera, overnight noise sentry, tamper-evident sound report, small claims noise proof, how to prove noise nuisance",
-        "eyebrow": "Legal Evidence & Nuisance FAQ",
-        "heading": "Frequently Asked Questions on Noise Evidence & Legal Action",
-        "lead": "Authoritative guidance on neighbor disputes, constructive eviction, tenancy lease breaking, and tamper-evident acoustic proof.",
+        "eyebrow": "Civilian Documentation & Nuisance FAQ",
+        "heading": "Frequently Asked Questions on Noise Documentation & Dispute Resolution",
+        "lead": "Practical guidance on neighbor disputes, constructive eviction, tenancy lease breaking, and tamper-evident acoustic documentation.",
         "faqs": [
             {
-                "q": "Can browser decibel readings and recordings be used as evidence in tenant disputes or small claims court?",
-                "a": "Yes, as supporting documentary evidence establishing a pattern of disturbance. Under the legal doctrine of the Covenant of Quiet Enjoyment, tenants must prove substantial, recurring interference. SOUNDTEST.PRO pairs timestamped dB trends with residential GPS location tags, photographic watermark evidence, and SHA-256 cryptographic hashes to verify records were not doctored."
+                "q": "Can browser decibel readings and recordings be used as supporting evidence in tenant disputes and mediation?",
+                "a": "Yes, as supporting civilian documentation to establish a factual timeline and pattern of disturbance for landlord communications, HOA mediation, and dispute filings. Formal statutory court proceedings or legal metrology enforcement may require measurements conducted with certified Class 1/2 sound level meters. SOUNDTEST.PRO provides objective civilian logs—pairing timestamped dB trends with residential GPS location tags, photographic watermark evidence, and SHA-256 cryptographic hashes—to demonstrate recurring disturbance documented in good faith."
             },
             {
                 "q": "What decibel level constitutes actionable neighbor noise at night?",
@@ -67,7 +67,7 @@ FAQ_DATA = {
             },
             {
                 "q": "How does SOUNDTEST.PRO differ from generic online decibel meters?",
-                "a": "Generic decibel meters only display a momentary fluctuating number and disclaim all legal value. SOUNDTEST.PRO is an end-to-end evidence workstation: incorporating an in-browser watermark camera, overnight sentry logging, community reverse geocoding, SHA-256 cryptographic hashing, and court-ready PDF dossier exports."
+                "a": "Generic decibel meters only display a momentary fluctuating number without context or timestamps. SOUNDTEST.PRO is an end-to-end civilian documentation tool: incorporating an in-browser watermark camera, overnight sentry logging, community reverse geocoding, SHA-256 cryptographic hashing, and structured civilian PDF evidence dossier exports for mediation and dispute records (not certified metrology measurements)."
             }
         ]
     },
