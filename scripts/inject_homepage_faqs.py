@@ -14,14 +14,14 @@ FAQ_DATA = {
     "zh": {
         "title": "免费在线噪音分贝测试与取证工具｜无需安装 App · SOUNDTEST.PRO",
         "description": "免费在线噪音分贝测试与维权存证工具。支持手机麦克风实时测分贝、实景水印拍照录像、夜间哨兵盯守，自动生成符合《民法典》安宁权与GB 22337标准的防篡改PDF证据卷宗。",
-        "keywords": "噪音分贝在线检测, 在线分贝测试, 楼上邻居噪音取证, 租房噪音过大退租证据, 带分贝的水印相机, 夜间噪音超标投诉, 物业噪音维权证据, 民法典安宁权起诉证据, 防篡改噪音录音",
+        "keywords": "噪音分贝在线检测, 在线分贝测试, 楼上邻居噪音取证, 租房噪音过大退租证据, 带分贝的水印相机, 夜间噪音超标投诉, 物业噪音维权证据, 民法典安宁权调解证据, 防篡改噪音录音",
         "eyebrow": "民间调解与纠纷记录 FAQ",
         "heading": "噪音记录与纠纷维权常见问题解答",
         "lead": "直击楼上踩踏噪音、租房无责退租、夜间超标认定与民间调解取证等核心维权与实操痛点。",
         "faqs": [
             {
                 "q": "手机测分贝的数据能否作为邻里纠纷、物业调解与交涉维权的证据？",
-                "a": "可以作为客观的民间自查记录与辅助证据材料。在邻里协商、物业协同与居委会民间调解中，SOUNDTEST.PRO 的实景水印相机（同步烧录分贝数值、时间戳与定位）及 SHA-256 防篡改封签，能清晰证明受扰时序与客观经过，杜绝对方推诿。请注意：本应用提供的是民间自查记录与证据辅助，非国家法定计量认证仪器；若涉及正式行政处罚或司法鉴定，法定程序通常需以经法定计量检定合格的专业声级计检测复核为准。"
+                "a": "可以作为客观的民间自查记录与辅助证据材料。在邻里协商、物业协同与居委会民间调解中，SOUNDTEST.PRO 的实景水印相机（同步烧录分贝数值、时间戳与定位）及 SHA-256 防篡改封签，能清晰证明受扰时序与客观经过，杜绝对方推诿。请注意：本应用提供的是民间自查记录与证据辅助，非国家法定计量认证仪器；若涉及正式行政裁决或法定计量执法，法定程序通常需以经法定计量检定合格的专业声级计检测复核为准。"
             },
             {
                 "q": "夜间几点以后超过多少分贝属于违法扰民？法定标准是多少？",
@@ -51,7 +51,7 @@ FAQ_DATA = {
         "faqs": [
             {
                 "q": "Can browser decibel readings and recordings be used as supporting evidence in tenant disputes and mediation?",
-                "a": "Yes, as supporting civilian documentation to establish a factual timeline and pattern of disturbance for landlord communications, HOA mediation, and dispute filings. Formal statutory court proceedings or legal metrology enforcement may require measurements conducted with certified Class 1/2 sound level meters. SOUNDTEST.PRO provides objective civilian logs—pairing timestamped dB trends with residential GPS location tags, photographic watermark evidence, and SHA-256 cryptographic hashes—to demonstrate recurring disturbance documented in good faith."
+                "a": "Yes, as supporting civilian documentation to establish a factual timeline and pattern of disturbance for landlord communications, HOA mediation, and dispute filings. Formal statutory dispute proceedings or legal metrology enforcement may require measurements conducted with certified Class 1/2 sound level meters. SOUNDTEST.PRO provides objective civilian logs—pairing timestamped dB trends with residential GPS location tags, photographic watermark evidence, and SHA-256 cryptographic hashes—to demonstrate recurring disturbance documented in good faith."
             },
             {
                 "q": "What decibel level constitutes actionable neighbor noise at night?",
@@ -77,11 +77,11 @@ FAQ_DATA = {
         "keywords": "dezibelmesser online kostenlos, schallpegelmesser online, lärmprotokoll nachbarn mietminderung, lärmbelästigung dokumentieren, ruhestörung beweisen bgb 536, wasserzeichen kamera dezibel uhrzeit, nächtliche ruhestörung dokumentieren, ta lärm grenzwerte wohngebiet, schallpegelmessung browser",
         "eyebrow": "Rechts- & Beweis-FAQ",
         "heading": "Häufige Fragen zu Ruhestörung, Lärmprotokoll und Mietrecht",
-        "lead": "Fundierte Antworten zu Mietminderung nach BGB § 536, TA Lärm Grenzwerten und gerichtsfester Dokumentation.",
+        "lead": "Fundierte Antworten zu Mietminderung nach BGB § 536, TA Lärm Grenzwerten und strukturierter ziviler Dokumentation.",
         "faqs": [
             {
-                "q": "Wird ein Online-Lärmprotokoll von deutschen Gerichten und Vermietern für eine Mietminderung anerkannt?",
-                "a": "Gemäß ständiger Rechtsprechung des BGH verlangen deutsche Gerichte für eine Mietminderung nach BGB § 536 ein detailliertes Lärmprotokoll, das Art, Dauer, Uhrzeit und Intensität der Ruhestörung belegt. SOUNDTEST.PRO erfasst diese Parameter sekundengenau, versieht Fotos mit Dezibel- und Standort-Wasserzeichen und exportiert ein manipulationssicheres PDF-Lärmprotokoll mit SHA-256 Prüfsumme."
+                "q": "Wird ein Online-Lärmprotokoll von Vermietern und Schlichtungsstellen für eine Mietminderung anerkannt?",
+                "a": "Für eine Mietminderung nach BGB § 536 oder Vermietergespräche ist ein detailliertes ziviles Lärmprotokoll erforderlich, das Art, Dauer, Uhrzeit und Intensität belegt. SOUNDTEST.PRO erfasst diese Parameter als zivile Dokumentation mit Zeitstempeln und SHA-256 Prüfsumme (kein amtlich geeichtes Messgerät)."
             },
             {
                 "q": "Welche Dezibel-Grenzwerte gelten während der gesetzlichen Nachtruhe (22:00 bis 06:00 Uhr)?",
@@ -97,7 +97,7 @@ FAQ_DATA = {
             },
             {
                 "q": "Was unterscheidet SOUNDTEST.PRO von einfachen Dezibel-Apps?",
-                "a": "Einfache Web-Dezibelmesser zeigen nur flüchtige Zahlen. SOUNDTEST.PRO ist eine forensische Beweisstation mit integrierter Wasserzeichenkamera, Nacht-Wächterfunktion, Adresszuordnung, SHA-256-Signatur und anwaltsfertigen PDF-Dossiers."
+                "a": "Einfache Web-Dezibelmesser zeigen nur flüchtige Zahlen. SOUNDTEST.PRO ist eine zivile Beweisstation mit integrierter Wasserzeichenkamera, Nacht-Wächterfunktion, Adresszuordnung, SHA-256-Signatur und strukturierten PDF-Dossiers."
             }
         ]
     },
@@ -127,7 +127,7 @@ FAQ_DATA = {
             },
             {
                 "q": "¿En qué se diferencia SOUNDTEST.PRO de un sonómetro online convencional?",
-                "a": "Los sonómetros genéricos solo muestran un número instantáneo sin valor probatorio. SOUNDTEST.PRO integra cámara con marca de agua de decibelios y ubicación, modo centinela nocturno, sellado SHA-256 y exportación de informes PDF preparados para mediación o juicio."
+                "a": "Los sonómetros genéricos solo muestran un número instantáneo sin valor probatorio. SOUNDTEST.PRO integra cámara con marca de agua de decibelios y ubicación, modo centinela nocturno, sellado SHA-256 y exportación de informes PDF preparados para mediación vecinal."
             }
         ]
     },
