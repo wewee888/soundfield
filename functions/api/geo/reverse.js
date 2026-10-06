@@ -14,6 +14,24 @@ function json(data, status = 200, extraHeaders = {}) {
 
 const DEFAULT_BAIDU_AK = 'kdlp0invEEhm1DbHKjmbExA4E0P19qPu';
 
+function pickCommunityPoi(pois = []) {
+  if (!pois || !pois.length) return null;
+  const scored = pois.map((p) => {
+    const text = `${p.name || ''} ${p.tag || ''}`;
+    let score = 0;
+    // High priority for residential community / building / apartment
+    if (/小区|公寓|花园|家园|社区|住宅|大厦|苑|园|府|里|村|别墅|生活区|宿舍/.test(text)) score += 100;
+    else if (/广场|中心|商务|大楼|园区|学校|医院|商场/.test(text)) score += 50;
+    else if (/道路|路口|交口|车站|公交|地铁|桥|立交/.test(text)) score -= 30;
+    if (typeof p.distance === 'number') {
+      score -= Math.min(30, p.distance / 10);
+    }
+    return { poi: p, score };
+  });
+  scored.sort((a, b) => b.score - a.score);
+  return scored[0]?.score > 0 ? scored[0].poi : (pois[0] || null);
+}
+
 export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
@@ -59,8 +77,17 @@ export async function onRequestGet(context) {
 
       if (data && data.status === 0 && data.result) {
         const r = data.result;
-        const mainPoi = (r.pois && r.pois[0]) ? r.pois[0].name : '';
-        const placeName = r.formatted_address_poi || (mainPoi ? `${r.formatted_address} (${mainPoi})` : r.formatted_address);
+        const bestPoi = pickCommunityPoi(r.pois || []);
+        const communityName = bestPoi?.name || '';
+        const rawAddress = r.formatted_address || '';
+
+        // Format small unit/community FIRST: "小区名 · 道路行政地址"
+        let placeName = rawAddress;
+        if (communityName && !rawAddress.startsWith(communityName)) {
+          placeName = `${communityName} · ${rawAddress}`;
+        } else if (r.formatted_address_poi) {
+          placeName = r.formatted_address_poi;
+        }
 
         return json(
           {
@@ -70,7 +97,8 @@ export async function onRequestGet(context) {
             isIp: isIpFallback,
             provider: 'baidu',
             name: placeName,
-            address: r.formatted_address,
+            community: communityName,
+            address: rawAddress,
             component: r.addressComponent || {},
             city: r.addressComponent?.city || '',
             district: r.addressComponent?.district || '',
@@ -104,6 +132,12 @@ export async function onRequestGet(context) {
     const data = await res.json().catch(() => null);
 
     if (data && data.display_name) {
+      const addr = data.address || {};
+      const community = addr.residential || addr.neighbourhood || addr.suburb || addr.building || addr.amenity || '';
+      let placeName = data.display_name;
+      if (community && !placeName.startsWith(community)) {
+        placeName = `${community} · ${placeName}`;
+      }
       return json(
         {
           ok: true,
@@ -111,7 +145,8 @@ export async function onRequestGet(context) {
           lng,
           isIp: isIpFallback,
           provider: 'openstreetmap',
-          name: data.display_name,
+          name: placeName,
+          community,
           address: data.display_name,
           component: data.address || {},
           city: data.address?.city || data.address?.town || '',

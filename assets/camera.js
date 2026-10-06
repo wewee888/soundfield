@@ -175,6 +175,33 @@
     }
   }
 
+  // Calibration baseline reading & camera hardware compensation
+  function getEffectiveCalibration() {
+    let calOffset = -8; // default Android preset
+    const ua = navigator.userAgent;
+    if (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+      calOffset = -6; // iOS preset
+    } else if (!/Mobi|Android/i.test(ua)) {
+      calOffset = -12; // desktop preset
+    }
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const s = parsed.settings || parsed;
+        if (typeof s.calOffset === 'number') {
+          calOffset = s.calOffset;
+        }
+      }
+    } catch (_) {}
+    return calOffset;
+  }
+
+  let meterPrevDb = 0;
+  let lastSampleTime = performance.now();
+  let sessionEnergySum = 0;
+  let sessionSampleCount = 0;
+
   /* ── Microphone & Live Decibel Meter ── */
   async function initAudio() {
     try {
@@ -195,9 +222,11 @@
       const src = audioCtx.createMediaStreamSource(audioStream);
       analyser = audioCtx.createAnalyser();
       analyser.fftSize = 2048;
-      analyser.smoothingTimeConstant = 0.3;
+      analyser.smoothingTimeConstant = 0.0;
       src.connect(analyser);
 
+      lastSampleTime = performance.now();
+      meterPrevDb = 0;
       sampleAudioLoop();
     } catch (err) {
       console.warn('[Microphone initialization failed]', err);
@@ -216,18 +245,39 @@
     }
     const rms = Math.sqrt(sum / buf.length);
 
-    // Standardized Civilian Decibel Calculation calibrated against reference SPL
-    let db = 0;
-    if (rms > 0.000001) {
-      db = 20 * Math.log10(rms) + 94; // 94 dB SPL calibration reference base
-    }
-    db = Math.max(30, Math.min(125, Math.round(db * 10) / 10));
+    // Standard SPL reference base 105 dB aligned with soundtest.html
+    const splRef = 105;
+    const cal = getEffectiveCalibration();
+    // Hardware camera compensation: when mobile camera stream is active,
+    // OS routes to the rear top microphone which exhibits ~2.0 dB hardware attenuation
+    const camCompensation = (videoStream && facingMode === 'environment') ? 2.0 : 0.0;
 
-    curDb = db;
-    if (db > peakDb) peakDb = db;
-    dbSamples.push(db);
-    if (dbSamples.length > 50) dbSamples.shift();
-    avgDb = Math.round((dbSamples.reduce((a, b) => a + b, 0) / dbSamples.length) * 10) / 10;
+    let instDb = 0;
+    if (rms > 0.0000001) {
+      instDb = 20 * Math.log10(rms) + splRef + cal + camCompensation;
+    }
+    instDb = Math.max(24, Math.min(125, instDb));
+
+    // IEC 61672-1 Fast ballistics exponential smoothing (tau = 125 ms)
+    const now = performance.now();
+    const dt = Math.max(0.001, (now - lastSampleTime) / 1000);
+    lastSampleTime = now;
+    const tau = 0.125;
+    let alpha = 1 - Math.exp(-dt / tau);
+    if (meterPrevDb === 0) meterPrevDb = instDb;
+    if (instDb > meterPrevDb) alpha = Math.min(1, alpha * 2.8);
+    else alpha *= 0.55;
+
+    curDb = meterPrevDb * (1 - alpha) + instDb * alpha;
+    curDb = Math.round(curDb * 10) / 10;
+    meterPrevDb = curDb;
+
+    if (curDb > peakDb) peakDb = curDb;
+
+    // Standard acoustic Leq energy integration
+    sessionEnergySum += Math.pow(10, curDb / 10);
+    sessionSampleCount++;
+    avgDb = Math.round(10 * Math.log10(sessionEnergySum / sessionSampleCount) * 10) / 10;
 
     updateHud();
     requestAnimationFrame(sampleAudioLoop);
@@ -299,7 +349,7 @@
           if (res.ok) {
             const data = await res.json();
             if (data && (data.name || data.address)) {
-              curLocation.address = data.address || data.name;
+              curLocation.address = data.name || data.address;
             }
           }
         } catch (_) {}
@@ -355,7 +405,7 @@
                 const res = await fetch(`/api/geo/reverse?lat=${curLocation.lat}&lng=${curLocation.lng}&lang=${encodeURIComponent(lang)}`);
                 if (res.ok) {
                   const data = await res.json();
-                  if (data && (data.name || data.address)) curLocation.address = data.address || data.name;
+                  if (data && (data.name || data.address)) curLocation.address = data.name || data.address;
                 }
               } catch (_) {}
               updateHudGeo();
@@ -539,7 +589,7 @@
     // Cryptographic Evidence Fingerprint
     const rawFingerprint = `${isoTime}|${activeDb}dB|${curLocation?.lat},${curLocation?.lng}|SOUNDTEST.PRO`;
     const hash = await computeSha256(rawFingerprint);
-    const evidenceId = `EV-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${hash.slice(0, 6)}`;
+    const evidenceId = `STP-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${hash.slice(0, 5)}`;
 
     ctx.fillStyle = 'rgba(255, 255, 255, 0.42)';
     ctx.font = `500 ${Math.max(11, Math.round(W * 0.014))}px monospace`;

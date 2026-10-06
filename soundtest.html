@@ -7651,14 +7651,29 @@ function updateMapLinks(loc){
 
 function formatPlaceLabel(place){
   if(!place)return '';
-  const parts=[place.name,place.address,place.provider?`Source: ${place.provider}`:''].filter(Boolean);
-  return parts.join(' · ');
+  if(typeof place==='string')return place;
+  const name=place.name||'';
+  const addr=place.address||'';
+  if(name&&addr){
+    if(name.includes(addr))return name;
+    if(addr.includes(name))return name&&!addr.startsWith(name)?`${name} · ${addr}`:addr;
+    return `${name} · ${addr}`;
+  }
+  return name||addr||'';
 }
 
 function locPlaceText(loc){
-  const place=loc?.place?formatPlaceLabel(loc.place):'';
+  if(!loc)return '';
+  const place=loc.place?formatPlaceLabel(loc.place):'';
   const detail=window.SoundfieldEvidence?.formatLocationDetails?window.SoundfieldEvidence.formatLocationDetails(loc?.details||{},appLanguage):'';
-  return [place,detail].filter(Boolean).join(' · ');
+  if(detail&&place){
+    const sepIdx=place.indexOf(' · ');
+    if(sepIdx>0){
+      return `${place.slice(0,sepIdx)} ${detail} · ${place.slice(sepIdx+3)}`;
+    }
+    return `${place} (${detail})`;
+  }
+  return place||detail||'';
 }
 
 function setPlaceText(place,status){
@@ -7780,9 +7795,13 @@ function normalizeAmapPlace(data){
   const poi=pickBestPlaceName(regeocode.pois||[]);
   const neighborhood=regeocode.addressComponent?.neighborhood?.name||'';
   const building=regeocode.addressComponent?.building?.name||'';
-  const township=regeocode.addressComponent?.township||'';
-  const name=aoi||neighborhood||building||poi||township||regeocode.formatted_address;
-  return {name,address:regeocode.formatted_address||'',provider:appLanguage==='zh-CN'?'高德':'Amap'};
+  const community=neighborhood||building||aoi||poi||'';
+  const rawAddr=regeocode.formatted_address||'';
+  let name=rawAddr;
+  if(community&&!rawAddr.startsWith(community)){
+    name=`${community} · ${rawAddr}`;
+  }
+  return {name,community,address:rawAddr,provider:appLanguage==='zh-CN'?'高德':'Amap'};
 }
 
 function normalizeBaiduPlace(data){
@@ -7790,15 +7809,27 @@ function normalizeBaiduPlace(data){
   if(data?.status!==0)throw new Error(`Baidu status ${data?.status}${data?.message?`: ${data.message}`:''}`);
   if(!result)return null;
   const poi=pickBestPlaceName(result.pois||[]);
-  const name=result.formatted_address_poi||poi||result.sematic_description||result.addressComponent?.street||result.formatted_address;
-  return {name,address:result.formatted_address||'',provider:appLanguage==='zh-CN'?'百度':'Baidu'};
+  const community=poi||'';
+  const rawAddr=result.formatted_address||'';
+  let name=rawAddr;
+  if(community&&!rawAddr.startsWith(community)){
+    name=`${community} · ${rawAddr}`;
+  }else if(result.formatted_address_poi){
+    name=result.formatted_address_poi;
+  }
+  return {name,community,address:rawAddr,provider:appLanguage==='zh-CN'?'百度':'Baidu'};
 }
 
 function normalizeOsmPlace(data){
   if(!data)return null;
   const address=data.address||{};
-  const name=data.name||address.neighbourhood||address.residential||address.suburb||address.road||address.village||address.town||address.city||data.display_name;
-  return {name,address:data.display_name||'',provider:appLanguage==='zh-CN'?'公开地图':'OpenStreetMap'};
+  const community=data.name||address.residential||address.neighbourhood||address.suburb||address.building||'';
+  const rawAddr=data.display_name||'';
+  let name=rawAddr;
+  if(community&&!rawAddr.startsWith(community)){
+    name=`${community} · ${rawAddr}`;
+  }
+  return {name,community,address:rawAddr,provider:appLanguage==='zh-CN'?'公开地图':'OpenStreetMap'};
 }
 
 async function fetchJson(url){
