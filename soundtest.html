@@ -602,7 +602,7 @@
       <div class="rpm-stat"><span id="rpmAvgLabel">平均声级</span><strong id="rpmAvg">-- dB</strong></div>
       <div class="rpm-stat"><span id="rpmPeakLabel">峰值声级</span><strong id="rpmPeak">-- dB</strong></div>
       <div class="rpm-stat"><span id="rpmCountLabel">记录条数</span><strong id="rpmCount">1</strong></div>
-      <div class="rpm-stat"><span id="rpmIdLabel">防篡改 ID</span><strong id="rpmId">SF-VERIFIED</strong></div>
+      <div class="rpm-stat"><span id="rpmIdLabel">防篡改 ID</span><strong id="rpmId">STP-VERIFIED</strong></div>
     </div>
 
     <div class="rpm-comparison">
@@ -5313,7 +5313,7 @@ async function beginCheckout(plan){
     const response=await fetch(`${MEMBERSHIP_API_BASE}/create-checkout`,{
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({plan,email,source:'soundfield-web'}),
+      body:JSON.stringify({plan,email,source:'soundtest-web'}),
     });
     const payload=await response.json().catch(()=>({}));
     if(!response.ok||!payload.checkoutUrl)throw new Error(payload.error||`checkout_${response.status}`);
@@ -6203,7 +6203,7 @@ function buildLocalMetadataBackup(){
     records:DB.records.map(r=>({...r,time:r.time instanceof Date?r.time.toISOString():r.time})),
   };
   return util?.createMetadataBackup?util.createMetadataBackup(payload):{
-    schema:'soundfield-local-backup-v1',exportedAt:new Date().toISOString(),appVersion:LS_KEY,mediaIncluded:false,
+    schema:'soundtest.pro-local-backup-v1',exportedAt:new Date().toISOString(),appVersion:LS_KEY,mediaIncluded:false,
     settings:payload.settings,records:payload.records.map(r=>{const copy={...r};delete copy.url;delete copy.blobId;return copy;}),
   };
 }
@@ -6730,7 +6730,7 @@ function externalMapUrl(loc,provider=defaultMapProvider()){
   if(!loc)return '';
   const lat=Number(loc.lat).toFixed(6),lng=Number(loc.lng).toFixed(6);
   if(provider==='apple')return `https://maps.apple.com/?ll=${lat},${lng}&q=SOUNDTEST.PRO%20Evidence&t=m`;
-  if(provider==='amap')return `https://uri.amap.com/marker?position=${lng},${lat}&name=SOUNDTEST.PRO%E5%99%AA%E9%9F%B3%E8%AE%B0%E5%BD%95&src=soundfield&coordinate=wgs84`;
+  if(provider==='amap')return `https://uri.amap.com/marker?position=${lng},${lat}&name=SOUNDTEST.PRO%E5%99%AA%E9%9F%B3%E8%AE%B0%E5%BD%95&src=soundtest&coordinate=wgs84`;
   if(provider==='baidu')return `https://api.map.baidu.com/marker?location=${lat},${lng}&title=SOUNDTEST.PRO%E5%99%AA%E9%9F%B3%E8%AE%B0%E5%BD%95&content=${lat},${lng}&output=html&coord_type=wgs84`;
   return `https://maps.google.com/?q=${lat},${lng}`;
 }
@@ -7645,7 +7645,7 @@ function updateMapLinks(loc){
   const lat=Number(loc.lat).toFixed(6),lng=Number(loc.lng).toFixed(6);
   document.getElementById('mapGoogle').href=`https://maps.google.com/?q=${lat},${lng}`;
   document.getElementById('mapBaidu').href=`https://api.map.baidu.com/marker?location=${lat},${lng}&title=SOUNDTEST.PRO%E5%99%AA%E9%9F%B3%E8%AE%B0%E5%BD%95&content=${lat},${lng}&output=html&coord_type=wgs84`;
-  document.getElementById('mapAmap').href=`https://uri.amap.com/marker?position=${lng},${lat}&name=SOUNDTEST.PRO%E5%99%AA%E9%9F%B3%E8%AE%B0%E5%BD%95&src=soundfield&coordinate=wgs84`;
+  document.getElementById('mapAmap').href=`https://uri.amap.com/marker?position=${lng},${lat}&name=SOUNDTEST.PRO%E5%99%AA%E9%9F%B3%E8%AE%B0%E5%BD%95&src=soundtest&coordinate=wgs84`;
   wrap.style.display='flex';
 }
 
@@ -8073,7 +8073,7 @@ function renderRecs(){
         </div>
       </div>
       <div class="ri-meta">
-        <div class="ri-time">${ts} · ${fmtTime(r.dur||0)} · ${r.evidenceId||'SF-LEGACY'}</div>
+        <div class="ri-time">${ts} · ${fmtTime(r.dur||0)} · ${r.evidenceId||'STP-LEGACY'}</div>
         <div class="ri-loc">📍 ${r.loc?esc(locPlaceText(r.loc)||`${r.loc.lat}, ${r.loc.lng}`):(appLanguage!=='zh-CN'?'No location':'无位置')}</div>
         ${r.loc&&locPlaceText(r.loc)?`<div class="ri-peak">${r.loc.lat}, ${r.loc.lng} · ±${r.loc.acc}m</div>`:''}
         ${r.note?`<div class="ri-note">"${esc(r.note)}"</div>`:''}
@@ -8095,8 +8095,8 @@ function renderRecs(){
 function exportEvidenceManifest(id){
   const r=DB.records.find(x=>x.id===id);if(!r)return;
   const manifest={
-    schema:'soundfield-evidence-manifest-v1',
-    evidenceId:r.evidenceId||`SF-LEGACY-${r.id}`,
+    schema:'soundtest.pro-evidence-manifest-v1',
+    evidenceId:r.evidenceId||`STP-LEGACY-${r.id}`,
     exportedAt:new Date().toISOString(),
     mediaFile:mediaFileName(r),
     hashes:r.hashes||{},
@@ -8417,7 +8417,7 @@ function openLastEvidencePhoto(){
   if(!lastEvidencePhotoUrl)return toast(appLanguage!=='zh-CN'?'No evidence photo is available yet.':'暂无可打开的声学证据照片。','warn');
   const popup=window.open('about:blank','_blank');
   if(!popup)return toast(appLanguage!=='zh-CN'?'Pop-ups are blocked. Allow pop-ups and try again.':'浏览器阻止了新窗口，请允许弹窗后重试。','warn');
-  popup.document.title='soundfield-acoustic-evidence-preview.png';
+  popup.document.title='soundtest.pro-acoustic-evidence-preview.png';
   popup.document.documentElement.style.margin='0';
   popup.document.documentElement.style.background='#050914';
   popup.document.body.style.margin='0';
@@ -8647,7 +8647,7 @@ async function sha256HexFromText(text){
 }
 
 function createEvidenceId(date=new Date()){
-  return window.SoundfieldEvidence?.createEvidenceId?window.SoundfieldEvidence.createEvidenceId(date):`SF-${date.toISOString().slice(0,10).replace(/-/g,'')}-${String(date.getTime()).slice(-5)}`;
+  return window.SoundfieldEvidence?.createEvidenceId?window.SoundfieldEvidence.createEvidenceId(date):`STP-${date.toISOString().slice(0,10).replace(/-/g,'')}-${String(date.getTime()).slice(-5)}`;
 }
 
 function canonicalEvidenceMetadata(value){
@@ -10170,7 +10170,7 @@ function renderCertificateData(r) {
   const idEl = document.getElementById('rpmId');
   if (avg) avg.textContent = `${activeDb} dB`;
   if (peak) peak.textContent = `${r.peakDb || Math.round(activeDb * 1.2)} dB`;
-  if (idEl) idEl.textContent = (r.evidenceId || 'SF-VERIFIED').slice(0, 10);
+  if (idEl) idEl.textContent = (r.evidenceId || 'STP-VERIFIED').slice(0, 10);
 }
 
 function openLatestReportPreview() {

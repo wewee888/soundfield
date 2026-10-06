@@ -8,7 +8,7 @@
       .toUpperCase()
       .padStart(5, '0')
       .slice(0, 5);
-    return `SF-${stamp}-${code}`;
+    return `STP-${stamp}-${code}`;
   }
 
   function canonicalizeEvidenceMetadata(value) {
@@ -29,9 +29,12 @@
       .join(' · ');
   }
 
-  window.SoundfieldEvidence = {
+  const evidenceExport = {
     createEvidenceId,
     canonicalizeEvidenceMetadata,
     formatLocationDetails,
   };
+
+  window.SoundfieldEvidence = evidenceExport;
+  window.SoundtestEvidence = evidenceExport;
 })();

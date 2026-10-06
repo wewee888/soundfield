@@ -43,7 +43,7 @@ test('creates a metadata-only backup without volatile media URLs', () => {
     records: [
       {
         id: 1,
-        evidenceId: 'SF-20260517-ABCDE',
+        evidenceId: 'STP-20260517-ABCDE',
         url: 'blob:temporary',
         blobId: 'clip-1',
         time: new Date('2026-05-17T08:00:00Z'),
@@ -51,7 +51,7 @@ test('creates a metadata-only backup without volatile media URLs', () => {
     ],
   });
 
-  assert.equal(backup.schema, 'soundfield-local-backup-v1');
+  assert.equal(backup.schema, 'soundtest.pro-local-backup-v1');
   assert.equal(backup.appVersion, 'sf_v5');
   assert.equal(backup.records[0].url, undefined);
   assert.equal(backup.records[0].blobId, undefined);

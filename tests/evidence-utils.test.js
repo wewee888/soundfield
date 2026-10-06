@@ -10,7 +10,7 @@ const evidence = global.window.SoundfieldEvidence;
 test('creates stable evidence IDs with date prefix', () => {
   const id = evidence.createEvidenceId(new Date('2026-05-17T07:30:00Z'), 0.42);
 
-  assert.match(id, /^SF-20260517-[0-9A-Z]{5}$/);
+  assert.match(id, /^STP-20260517-[0-9A-Z]{5}$/);
 });
 
 test('canonicalizes metadata independent of object key order', () => {

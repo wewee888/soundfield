@@ -44,7 +44,7 @@
   function createMetadataBackup(input = {}) {
     const records = Array.isArray(input.records) ? input.records : [];
     return {
-      schema: 'soundfield-local-backup-v1',
+      schema: 'soundtest.pro-local-backup-v1',
       exportedAt: new Date().toISOString(),
       appVersion: input.appVersion || '',
       mediaIncluded: false,
@@ -59,9 +59,12 @@
     };
   }
 
-  window.SoundfieldStorage = {
+  const storageExport = {
     formatStorageBytes,
     buildStorageHealthSummary,
     createMetadataBackup,
   };
+
+  window.SoundfieldStorage = storageExport;
+  window.SoundtestStorage = storageExport;
 })();
