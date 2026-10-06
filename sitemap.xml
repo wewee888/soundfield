@@ -19,7 +19,14 @@
     <loc>https://soundtest.pro/about/</loc>
     <lastmod>2026-10-06</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/about/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/about/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/about/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/about/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/about/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/about/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/about/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/about/"/>
     <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/about/"/>
   </url>
   <url>
@@ -213,7 +220,14 @@
     <loc>https://soundtest.pro/terms/</loc>
     <lastmod>2026-10-06</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/terms/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/terms/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/terms/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/terms/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/terms/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/terms/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/terms/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/terms/"/>
     <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/terms/"/>
   </url>
   <url>
