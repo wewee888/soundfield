@@ -45,7 +45,7 @@
 
   const supportedLanguages = [
     { code: 'en', name: 'English', title: 'Free Online Noise Evidence Recorder', cta: 'Open web app' },
-    { code: 'zh', name: '中文', title: '免费在线噪音取证记录工具', cta: '打开网页工具' },
+    { code: 'zh', name: '中文', title: '免费在线噪音分贝测试与取证工具', cta: '打开网页工具' },
     { code: 'es', name: 'Español', title: 'Grabador web de ruido para reclamaciones', cta: 'Abrir herramienta' },
     { code: 'fr', name: 'Français', title: 'Outil web pour documenter les nuisances sonores', cta: 'Ouvrir l’outil' },
     { code: 'de', name: 'Deutsch', title: 'Web-Tool zur Dokumentation von Lärm', cta: 'Tool öffnen' },
@@ -111,7 +111,7 @@
       disclaimer: 'Compliance & Evidence Protocol: SOUNDTEST.PRO provides an objective, tamper-evident digital record of onsite acoustic events for dispute documentation and municipal filing. All audio and sensor data are securely processed locally on your device with complete privacy.',
     },
     zh: {
-      slogan: '免费在线噪音取证记录工具｜无需安装 App',
+      slogan: '免费在线噪音分贝测试与取证工具｜无需安装 App',
       subtitle: '测量分贝、记录声音、保存时间与位置，用于噪音投诉资料整理。',
       features: ['实时分贝测量', '音频与波形记录', '自动时间与位置标记', '证据报告导出'],
       scenarios: '邻里与公寓噪音 / 装修施工噪音 / 酒吧商铺与街道扰民 / 租房纠纷与证据辅助',
