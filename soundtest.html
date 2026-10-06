@@ -4630,8 +4630,7 @@ function logoutMembership(){
 let clientGeoPricing = null;
 
 function isChinaPricingUser() {
-  const lang = String(appLanguage || '').toLowerCase();
-  const isZh = lang.startsWith('zh');
+  const isZh = appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh'));
 
   // 1. Language strictly controls pricing gateway:
   // If the active app language is NOT Chinese (en, es, de, fr, ja, ko, vi, th),
