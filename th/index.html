@@ -72,7 +72,7 @@
     },
     {
       "@type": "Question",
-      "name": "สามารถยกเลิกสัญญาเช่าคอนโด/หอพักโดยไม่เสียเงินมัดจำจากปัญหาเสียงดังได้หรือไม่?",
+      "name": "จะบันทึกข้อมูลเสียงรบกวนต่อเนื่องเพื่อใช้เจรจากับเจ้าของที่พักหรือนิติบุคคลอย่างไร?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "สามารถทำได้โดยเก็บข้อมูลเสียงเกินมาตรฐานต่อเนื่อง 5–7 วันด้วย SOUNDTEST.PRO แล้วทำหนังสือแจ้งผู้ให้เช่าพร้อมแนบรายงาน PDF หากผู้ให้เช่าไม่แก้ไข ถือว่าผิดหน้าที่ในการส่งมอบทรัพย์สินให้อยู่ในสภาพใช้งานได้อย่างสงบสุข"
@@ -435,11 +435,11 @@
       </div>
     </section>
 
-        <section class="section" id="pricing">
+            <section class="section" id="pricing">
       <div class="section-header reveal">
         <span class="eyebrow">แผนและราคา</span>
-        <h2>วัดระดับเสียงเบื้องต้นฟรี 100% ปลดล็อกหลักฐานทางกฎหมายที่มีผลผูกพันเมื่อคุณต้องการดำเนินการ.</h2>
-        <p class="lead">เครื่องมือวัดเดซิเบลบนเบราว์เซอร์ฟรี 100% เมื่อต้องเผชิญปัญหาเสียงรบกวนต่อเนื่อง ปลดล็อกรายงานหลักฐานป้องกันการปลอมแปลงเริ่มต้นเพียง $1.99.</p>
+        <h2>วัดระดับเสียงเบื้องต้นฟรี 100% ปลดล็อกบันทึกเสียงและเดซิเบลเชิงวัตถุวิสัยสำหรับการเจรจาไกล่เกลี่ย.</h2>
+        <p class="lead">การทดสอบระดับเสียงผ่านเบราว์เซอร์ฟรี 100% เมื่อต้องการหลักฐานประกอบการเจรจากับเจ้าของที่พักหรือนิติบุคคล ปลดล็อกรายงานบันทึกข้อมูลเชิงวัตถุวิสัยเริ่มต้นเพียง $1.99.</p>
       </div>
 
       <div class="launch-discount-banner reveal">
@@ -447,84 +447,105 @@
         <span>สิทธิพิเศษช่วงเปิดตัว: ราคาพิเศษสำหรับผู้ใช้งานช่วงแรก หลังจากนี้จะปรับกลับเป็นราคาปกติ ($4.99 รายครั้ง / $9.99 รายเดือน / $59.99 รายปี / $199 ตลอดชีพ) ล็อกราคาส่วนลดวันนี้!</span>
       </div>
 
-      <!-- Interactive Billing Toggle -->
-      <div class="billing-toggle-wrap reveal">
-        <div class="billing-toggle" role="radiogroup" aria-label="Billing cycle selector">
-          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true" onclick="setPricingBillingCycle('yearly')">
-            <span>ชำระรายปี</span>
-            <span class="billing-discount-badge">ประหยัด 58%</span>
-          </button>
-          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false" onclick="setPricingBillingCycle('monthly')">
-            <span>ชำระรายเดือน</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="pricing-row pricing-three-cards">
+      <div class="pricing-row">
         <!-- Free Tier -->
         <div class="price-card reveal">
-          <span class="price-pill">แผนฟรีพื้นฐาน</span>
-          <span class="price-name">เวอร์ชันฟรี</span>
-          <div class="price-tag">$0<small style="font-size:13px;color:var(--soft);">/forever</small></div>
-          <div class="price-compare-hint">ตรวจสอบระดับเสียงรบกวนและประมาณค่าเดซิเบลแบบเรียลไทม์</div>
+          <span class="price-pill">เวอร์ชันฟรี</span>
+          <span class="price-name">เครื่องมือวัดบนเว็บทันที</span>
+          <div class="price-tag">$0</div>
+          <div class="price-compare-hint">ตรวจสอบระดับเสียงเบื้องต้นว่าเกินค่ามาตรฐานตามกฎหมายหรือไม่</div>
           <ul class="check-list">
-            <li>ตรวจวัดระดับเดซิเบลแบบเรียลไทม์ (การถ่วงน้ำหนัก A-weighting)</li>
-            <li>วิเคราะห์สเปกตรัมความถี่เสียง FFT แบบเรียลไทม์</li>
-            <li>บันทึกเสียงและภาพถ่ายพร้อมลายน้ำชั่วคราวบนเบราว์เซอร์</li>
-            <li>ประทับเวลาและพิกัดตำแหน่ง GPS อัตโนมัติป้องกันการแก้ไข</li>
-            <li>รายงานตัวอย่างพร้อมลายน้ำสำหรับการตรวจสอบด้วยตนเอง</li>
+            <li>เครื่องวัดเดซิเบลแบบเรียลไทม์ (A/C weighting)</li>
+            <li>บันทึกเสียงและแสดงกราฟคลื่นเสียงตามเวลาจริง</li>
+            <li>ประทับเวลาและพิกัดตำแหน่ง GPS อัตโนมัติ</li>
+            <li>รายงานตัวอย่างติดลายน้ำ (สำหรับใช้อ้างอิงส่วนบุคคล)</li>
+            <li>จัดเก็บชั่วคราวในแคชเบราว์เซอร์บนอุปกรณ์ของคุณ</li>
           </ul>
-          <a class="button" href="../soundtest.html">เริ่มใช้งานฟรีทันที</a>
+          <a class="button" href="../soundtest.html">เริ่มทดลองใช้งานฟรี</a>
         </div>
 
-        <!-- Pro Tier (Interactive Toggle Yearly vs Monthly) -->
-        <div class="price-card pro reveal">
-          <span class="price-badge-popular">★ ตัวเลือกยอดนิยม</span>
-          <span class="price-pill">Pro เวอร์ชันรายปี</span>
-          <span class="price-name">แฟ้มหลักฐาน Pro ระยะยาว</span>
-          <div class="price-tag billing-period-yearly">
-            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
-              <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35</span>
+        <!-- Single Official Report -->
+        <div class="price-card single-report reveal">
+          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/forensic_report_preview.webp" alt="Official forensic PDF vs watermarked preview comparison" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center top;display:block;">
           </div>
-          <div class="price-tag billing-period-monthly" style="display:none;">
-            <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
-              <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
+          <span class="price-pill">รายงานแบบรายครั้ง</span>
+          <span class="price-name">รายงานหลักฐานทางการ</span>
+          <div class="price-tag">
+            <del class="price-del">$4.99</del>$1.99
+            <span class="price-discount-tag">ลด 60%</span>
           </div>
-          <div class="price-compare-hint billing-period-yearly">เฝ้าระวังอัตโนมัติตลอด 365 วัน · หมดกังวลเรื่องการอดนอนบันทึกเสียงด้วยตนเอง</div>
-          <div class="price-compare-hint billing-period-monthly" style="display:none;">เหมาะสำหรับข้อพิพาทการเช่าระยะสั้น หรือการก่อสร้างต่อเติมเร่งด่วน</div>
+          <div class="price-compare-hint">ซื้อครั้งเดียวใช้งานได้ทันที · ขจัดข้อโต้แย้งเรื่องการแกล้งเร่งเสียงเพื่อจัดฉาก</div>
           <ul class="check-list">
-            <li><strong>ส่งออกรายงาน PDF หลักฐานทางการแบบไร้ลายน้ำไม่จำกัด</strong> (พร้อมระบบลายนิ้วมือป้องกันการแก้ไข)</li>
-            <li>🌙 <strong>โหมดเวรยามกลางคืน (Sentry Mode)</strong>: บันทึกและทำเครื่องหมายอัตโนมัติเมื่อเสียงเกินเกณฑ์</li>
-            <li>📊 <strong>แฟ้มประเมินการรบกวนต่อเนื่อง</strong>: แผนภูมิแนวโน้มความถี่เสียงสะสมหลายวัน</li>
-            <li>⚖️ <strong>แบบฟอร์มเอกสารร้องเรียนทางกฎหมาย</strong>: สร้างหนังสือร้องเรียนและจดหมายเตือนได้ในคลิกเดียว</li>
-            <li>☁️ <strong>สำรองข้อมูลบนคลาวด์แบบเข้ารหัส</strong>: ซิงค์ข้ามอุปกรณ์ หลักฐานไม่มีวันสูญหาย</li>
+            <li>ส่งออก <strong>รายงานหลักฐาน PDF ทางการไม่มีลายน้ำ</strong> 1 ฉบับ</li>
+            <li><strong>ลายนิ้วมือดิจิทัล SHA-256</strong> พร้อมประทับพิกัด GPS</li>
+            <li>ดัชนีทางอะคูสติกตามมาตรฐาน (LAeq, L10, L90, ค่าเดซิเบลสูงสุด)</li>
+            <li>แนบภาพถ่ายหลักฐานในสถานที่จริงพร้อมพิกัดเวลา</li>
+            <li>เอกสารหลักฐานพร้อมยื่นต่อนิติบุคคล ผู้ให้เช่า หรือใช้ไกล่เกลี่ย</li>
           </ul>
-          <a class="button primary billing-period-yearly" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">สมัคร Pro รายปี · $24.99</a>
-          <a class="button primary billing-period-monthly" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="display:none;border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">สมัคร Pro รายเดือน · $4.99</a>
-          <div class="single-report-link-bar">
-            <span>ต้องการเพียงรายงานฉบับเดียว?</span>
-            <a class="single-link" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">ปลดล็อกรายงานเดี่ยวไร้ลายน้ำ $1.99 →</a>
+          <a class="button" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">ปลดล็อกรายงานเดี่ยว · $1.99</a>
+        </div>
+
+        <!-- Pro Monthly -->
+        <div class="price-card monthly reveal">
+          <span class="price-pill">Pro รายเดือน</span>
+          <span class="price-name">สิทธิ์การใช้งาน Pro รายเดือน</span>
+          <div class="price-tag">
+            <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/เดือน</small>
+            <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">ลด 50%</span>
           </div>
+          <div class="price-compare-hint">เหมาะสำหรับการเช่าระยะสั้น งานก่อสร้างปรับปรุงชั่วคราว หรือรวบรวมหลักฐานเร่งด่วน</div>
+          <ul class="check-list">
+            <li><strong>ส่งออกรายงาน PDF ทางการไม่จำกัด</strong> ในระยะเวลา 30 วัน</li>
+            <li>🌙 <strong>โหมดเซนทรีเฝ้าระวังยามค่ำคืน</strong>: บันทึกอัตโนมัติเมื่อเสียงเกินเกณฑ์</li>
+            <li>📊 <strong>แฟ้มประเมินความเดือดร้อนต่อเนื่อง</strong>: กราฟแนวโน้มเสียง 30 วัน</li>
+            <li>⚖️ <strong>เทมเพลตหนังสือร้องเรียนทางกฎหมาย</strong>: จัดทำหนังสือแจ้งอย่างเป็นทางการ</li>
+            <li>☁️ <strong>การซิงค์คลาวด์เข้ารหัส</strong>: เก็บรักษาหลักฐานปลอดภัยข้ามอุปกรณ์</li>
+          </ul>
+          <a class="button" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">สมัคร Pro รายเดือน · $4.99</a>
+        </div>
+
+        <!-- Pro Yearly (Recommended) -->
+        <div class="price-card pro reveal">
+          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/sentry_night_monitor.webp" alt="Overnight Sentry Mode illustration" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center 40%;display:block;">
+          </div>
+          <span class="price-badge-popular">★ แผนยอดนิยมสูงสุด · เพียง ~$2.08/เดือน</span>
+          <span class="price-pill">Pro รายปีพรีเมียม</span>
+          <span class="price-name">แฟ้มหลักฐานข้อพิพาทระยะยาว</span>
+          <div class="price-tag">
+            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/ปี</small>
+            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">ประหยัด $35</span>
+          </div>
+          <div class="price-compare-hint">เฝ้าระวังอัตโนมัติตลอด 365 วัน · ปลดเปลื้องความเหนื่อยล้าในการเฝ้าบันทึกด้วยตนเอง</div>
+          <ul class="check-list">
+            <li><strong>ส่งออกรายงาน PDF ทางการไม่จำกัด</strong> ตลอด 365 วัน</li>
+            <li>🌙 <strong>โหมดเซนทรีเฝ้าระวังยามค่ำคืน</strong>: บันทึกเหตุการณ์เสียงดังยามวิกาลอัตโนมัติ</li>
+            <li>📊 <strong>แฟ้มประเมินความเดือดร้อนต่อเนื่อง</strong>: กราฟวิเคราะห์แนวโน้มข้ามเดือน</li>
+            <li>⚖️ <strong>เทมเพลตหนังสือร้องเรียนทางกฎหมาย</strong>: แบบฟอร์มสำหรับนิติและเจ้าหน้าที่</li>
+            <li>☁️ <strong>การซิงค์คลาวด์เข้ารหัส</strong>: สำรองข้อมูลถาวรและซิงค์ใช้งานหลายเครื่อง</li>
+          </ul>
+          <a class="button primary" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">รับสิทธิ์ Pro รายปี · $24.99</a>
           <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">มีบัญชีอยู่แล้ว? เข้าสู่ระบบ</a>
         </div>
 
-        <!-- Lifetime Tier -->
+        <!-- Lifetime License -->
         <div class="price-card lifetime reveal">
           <span class="price-pill">ใบอนุญาตตลอดชีพ</span>
-          <span class="price-name">แพ็กเกจตลอดชีพไร้ขีดจำกัด</span>
+          <span class="price-name">สิทธิ์การเข้าถึงถาวรไร้ขีดจำกัด</span>
           <div class="price-tag">
             <del class="price-del">$199.00</del>$79.99
-            <span class="price-discount-tag">60% OFF</span>
+            <span class="price-discount-tag">ลด 60%</span>
           </div>
-          <div class="price-compare-hint">ชำระครั้งเดียวใช้งานได้ตลอดชีพ · ไม่มีการต่ออายุหรือเรียกเก็บเงินซ้ำซ้อน</div>
+          <div class="price-compare-hint">ชำระเพียงครั้งเดียวใช้งานได้ตลอดชีพ · อุ่นใจไร้กังวลเรื่องค่าบริการรายเดือน</div>
           <ul class="check-list">
-            <li><strong>สิทธิ์ใช้งานตลอดชีพถาวร</strong> ปราศจากค่าธรรมเนียมรายเดือนหรือรายปีใดๆ ทั้งสิ้น</li>
-            <li>รวมฟังก์ชันเวรยามกลางคืน แฟ้มสถิติเสียง และเอกสารทางกฎหมายทั้งหมด</li>
-            <li>ซิงค์ข้ามอุปกรณ์และพื้นที่จัดเก็บข้อมูลบนคลาวด์แบบเข้ารหัสถาวร</li>
-            <li>สิทธิ์การบริการระดับ VIP และอัปเกรดฟีเจอร์อะคูสติกใหม่ทั้งหมดในอนาคตฟรี</li>
-            <li>พร้อมใช้งานได้ทันทีเมื่อเกิดข้อพิพาทเพื่อนบ้าน การก่อสร้าง หรือสถานบันเทิง</li>
+            <li><strong>สิทธิ์ความเป็นเจ้าของถาวร</strong> โดยไม่มีค่าธรรมเนียมสมัครสมาชิกรายเดือน</li>
+            <li>ครอบคลุมฟังก์ชันเซนทรี แฟ้มประเมินต่อเนื่อง และเทมเพลตทางกฎหมายครบครัน</li>
+            <li>ซิงค์ข้อมูลข้ามอุปกรณ์และพื้นที่จัดเก็บหลักฐานบนคลาวด์ถาวร</li>
+            <li>บริการช่วยเหลือระดับ VIP และอัปเดตระบบเสียงทั้งหมดในอนาคตฟรีตลอดชีพ</li>
+            <li>พร้อมใช้งานปกป้องสิทธิ์ในการอยู่อาศัยของคุณได้ทุกเมื่อ</li>
           </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">รับสิทธิ์ตลอดชีพ · $79.99</a>
+          <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">ซื้อสิทธิ์ตลอดชีพ · $79.99</a>
           <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">มีบัญชีอยู่แล้ว? เข้าสู่ระบบ</a>
         </div>
       </div>
@@ -560,7 +581,7 @@
               <td class="col-lifetime"><span class="check-yes">✔</span></td>
             </tr>
             <tr>
-              <td class="feature-name">ส่งออกรายงานหลักฐาน PDF ภาคประชาชน<span class="feature-desc">ไร้ลายน้ำ สำหรับนิติบุคคล ผู้ให้เช่า และการไกล่เกลี่ยข้อพิพาท</span></td>
+              <td class="feature-name">ส่งออกรายงานหลักฐาน PDF ทางการ<span class="feature-desc">ไร้ลายน้ำ พร้อมยื่นต่อนิติบุคคล เจ้าหน้าที่ หรือชั้นศาล</span></td>
               <td><span class="check-no">✖</span></td>
               <td><span class="check-yes">✔ 1</span></td>
               <td class="col-monthly"><span class="check-yes">✔ 30d</span></td>
@@ -640,7 +661,7 @@
           <p>เปิด 'โหมดเฝ้าระวังกลางคืน (Sentry Mode)' ของ SOUNDTEST.PRO ตั้งค่าระดับเสียงเตือน (เช่น 50 dB) เมื่อมีเสียงกระแทกหรือเสียงดัง ระบบจะตรวจจับและบันทึกช่วงเวลาพร้อมระดับเดซิเบลสูงสุดไว้ในเครื่องโดยอัตโนมัติ ไม่ส่งข้อมูลขึ้นคลาวด์</p>
         </div>
         <div class="card reveal">
-          <h3>สามารถยกเลิกสัญญาเช่าคอนโด/หอพักโดยไม่เสียเงินมัดจำจากปัญหาเสียงดังได้หรือไม่?</h3>
+          <h3>จะบันทึกข้อมูลเสียงรบกวนต่อเนื่องเพื่อใช้เจรจากับเจ้าของที่พักหรือนิติบุคคลอย่างไร?</h3>
           <p>สามารถทำได้โดยเก็บข้อมูลเสียงเกินมาตรฐานต่อเนื่อง 5–7 วันด้วย SOUNDTEST.PRO แล้วทำหนังสือแจ้งผู้ให้เช่าพร้อมแนบรายงาน PDF หากผู้ให้เช่าไม่แก้ไข ถือว่าผิดหน้าที่ในการส่งมอบทรัพย์สินให้อยู่ในสภาพใช้งานได้อย่างสงบสุข</p>
         </div>
         <div class="card reveal">

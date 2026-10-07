@@ -26,7 +26,7 @@ SCENARIOS_DATA = {
             'es': {
                 'eyebrow': 'Caso de uso · Ruido vecinal y de apartamentos',
                 'headline': 'Convierte el ruido insoportable de vecinos en <em>pruebas legalmente defendibles</em>.',
-                'lead': 'Deja de sufrir noches en vela por pisadas, muebles arrastrados, música con graves o ladridos continuos. Captura pruebas irrefutables con el Modo Centinela nocturno, fotos con marca de agua de dB en tiempo real y dosieres PDF oficiales sin marcas de agua.'
+                'lead': 'Deja de sufrir noches en vela por pisadas, muebles arrastrados, música con graves o ladridos continuos. Captura pruebas objetivos con el Modo Centinela nocturno, fotos con marca de agua de dB en tiempo real y dosieres PDF oficiales sin marcas de agua.'
             },
             'de': {
                 'eyebrow': 'Anwendungsfall · Wohnungs- &amp; Nachbarschaftslärm',

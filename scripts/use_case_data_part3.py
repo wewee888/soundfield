@@ -26,7 +26,7 @@ SCENARIOS_PART_3 = {
             'es': {
                 'eyebrow': 'Caso de uso · Administración de fincas y comunidades',
                 'headline': 'Dote a administradores y comités de una forma estandarizada de <em>verificar y resolver quejas</em>.',
-                'lead': 'Deje atrás las disputas basadas en la palabra de uno contra la de otro. Permita que administradores de fincas, comités y conserjes registren visitas con edificio, planta, vivienda, coordenadas GPS, promedios en dB y fotos irrefutables.'
+                'lead': 'Deje atrás las disputas basadas en la palabra de uno contra la de otro. Permita que administradores de fincas, comités y conserjes registren visitas con edificio, planta, vivienda, coordenadas GPS, promedios en dB y fotos objetivos.'
             },
             'de': {
                 'eyebrow': 'Anwendungsfall · Hausverwaltung &amp; Eigentümergemeinschaft',

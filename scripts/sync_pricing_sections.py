@@ -11,8 +11,8 @@ URL_LIFETIME = "https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV"
 SECTIONS = {
     'de': {
         'eyebrow': 'Tarife &amp; Preise',
-        'title': 'Kostenlos für Schnelltests. Lückenlose Beweiskraft freischalten, wenn Sie handeln müssen.',
-        'lead': 'Dezibelmessungen im Browser sind 100% kostenlos. Bei hartnäckiger Lärmbelästigung schalten Sie offizielle, manipulationssichere Beweisprotokolle ab 1,99 $ frei.',
+        'title': 'Kostenlos für Soforttests. Strukturierte Lärmprotokolle für Vermietergespräche freischalten.',
+        'lead': 'Dezibelmessungen im Browser sind 100% kostenlos. Bei anhaltender Lärmbelästigung schalten Sie detaillierte zivile Lärmprotokolle ab 1,99 $ frei.',
         'banner': 'Frühbucher-Vorteil: Aktuelle Preise sind zeitlich begrenzte Einführungspreise. Nach Ablauf der Startphase gelten wieder die regulären Tarife (4,99 $ Einzel / 9,99 $ Monat / 59,99 $ Jahr / 199 $ Lifetime). Sichern Sie sich den Dauerrabatt!',
         'free': {
             'pill': 'Kostenlose Version',
@@ -104,7 +104,7 @@ SECTIONS = {
             'th_lifetime': 'Lebenslang',
             'f1_name': 'Echtzeit-Dezibelüberwachung', 'f1_desc': 'A/C-Bewertung, Frequenzspektrum-Kurve',
             'f2_name': 'Audio- &amp; Foto-Beweissicherung', 'f2_desc': 'Manipulationssichere Zeit- &amp; GPS-Prägung',
-            'f3_name': 'Offizieller PDF-Beweisbericht', 'f3_desc': 'Ohne Wasserzeichen, für Hausverwaltung &amp; Gerichte',
+            'f3_name': 'Offizieller PDF-Beweisbericht', 'f3_desc': 'Ohne Wasserzeichen, für Hausverwaltung &amp; Schlichtung',
             'f4_name': 'Kryptografischer SHA-256 Fingerabdruck', 'f4_desc': 'Beweist Echtheit gegen Vorwürfe von Lautstärkemanipulation',
             'f5_name': '🌙 Nacht-Wächter-Modus', 'f5_desc': 'Energiesparende Hintergrundüberwachung mit automatischer Ereigniserfassung',
             'f6_name': '📊 Mehrtägiges Stördossier', 'f6_desc': 'Aggregierte Trendkurven &amp; Wiederholungsstatistiken',
@@ -115,8 +115,8 @@ SECTIONS = {
     },
     'fr': {
         'eyebrow': 'Formules &amp; Tarifs',
-        'title': 'Gratuit pour un contrôle immédiat. Déverrouillez des preuves irréfutables quand vous devez agir.',
-        'lead': 'La mesure de décibels dans le navigateur est 100% gratuite. Face à des nuisances répétées, débloquez des constats officiels infalsifiables dès 1,99 $.',
+        'title': 'Gratuit pour les vérifications immédiates. Débloquez des relevés objectifs en cas de besoin.',
+        'lead': 'La mesure de décibels dans le navigateur est 100% gratuite. Pour appuyer vos démarches amiables, débloquez des dossiers de relevés civils structurés dès 1,99 $.',
         'banner': 'Offre de lancement exclusive : Tarifs spéciaux pour les premiers utilisateurs. Après la phase initiale, les prix normaux s\'appliqueront (4,99 $ Unique / 9,99 $ Mois / 59,99 $ An / 199 $ À vie). Profitez de la remise garantie !',
         'free': {
             'pill': 'Version Gratuite',
@@ -173,10 +173,10 @@ SECTIONS = {
             'discount': 'Économisez 35 $',
             'hint': '365 jours de surveillance automatisée · Vous libère de la veille manuelle',
             'items': [
-                '<strong>365 jours de rapports PDF illimités</strong> avec valeur probante',
+                '<strong>365 jours de rapports PDF illimités</strong> détaillés pour médiation',
                 '🌙 <strong>Mode Sentinelle Nocturne</strong> : Capture automatique des dépassements de nuit',
                 '📊 <strong>Dossier de Nuisances Multi-Jours</strong> : Historique complet et courbes d\'exposition',
-                '⚖️ <strong>Modèles de Courriers Juridiques</strong> : Actes pour bailleurs, syndics et justice',
+                '⚖️ <strong>Modèles de Courriers Juridiques</strong> : Actes pour bailleurs, syndics et médiation',
                 '☁️ <strong>Synchronisation Cloud Chiffrée</strong> : Sauvegarde pérenne sans perte de données'
             ],
             'btn': 'Prendre Pro Annuel · 24,99 $',
@@ -208,7 +208,7 @@ SECTIONS = {
             'th_lifetime': 'Licence à Vie',
             'f1_name': 'Mesure dB en Temps Réel', 'f1_desc': 'Pondération A/C, spectre de fréquences en direct',
             'f2_name': 'Capture Audio &amp; Photo de Preuve', 'f2_desc': 'Horodatage infalsifiable &amp; géolocalisation GPS',
-            'f3_name': 'Rapport PDF Probant Officiel', 'f3_desc': 'Sans filigrane, prêt pour syndics, police &amp; tribunaux',
+            'f3_name': 'Rapport PDF Probant Officiel', 'f3_desc': 'Sans filigrane, prêt pour syndics, propriétaires et médiation',
             'f4_name': 'Empreinte Cryptographique SHA-256', 'f4_desc': 'Écarte toute contestation de manipulation du volume',
             'f5_name': '🌙 Mode Sentinelle Nocturne', 'f5_desc': 'Veille basse consommation avec enregistrement automatique',
             'f6_name': '📊 Dossier de Nuisances Multi-Jours', 'f6_desc': 'Courbes d\'évolution &amp; fréquences de dépassement',
@@ -219,8 +219,8 @@ SECTIONS = {
     },
     'es': {
         'eyebrow': 'Planes y Precios',
-        'title': 'Gratis para comprobaciones inmediatas. Desbloquee pruebas irrefutables cuando necesite actuar.',
-        'lead': 'La medición en el navegador es 100% gratuita. Ante ruidos reiterados de vecinos o locales, obtenga informes periciales oficiales e inalterables desde 1,99 $.',
+        'title': 'Gratis para comprobaciones inmediatas. Desbloquee registros de ruido objetivos cuando necesite actuar.',
+        'lead': 'La medición en el navegador es 100% gratuita. Para fundamentar quejas vecinales o mediación, desbloquee informes civiles estructurados desde 1,99 $.',
         'banner': 'Oferta especial de lanzamiento: Precios reducidos de acceso anticipado. Posteriormente se restablecerán los precios estándar (4,99 $ Único / 9,99 $ Mensual / 59,99 $ Anual / 199 $ De por vida). ¡Asegure su tarifa hoy!',
         'free': {
             'pill': 'Versión Gratuita',
@@ -238,13 +238,13 @@ SECTIONS = {
         },
         'single': {
             'pill': 'Informe Único',
-            'name': 'Informe Pericial Oficial',
+            'name': 'Informe Acústico Formal',
             'price': '1,99 $',
             'del': '4,99 $',
             'discount': '60% DTO.',
             'hint': 'Pago único · Desmonta acusaciones de haber subido el volumen',
             'items': [
-                '1 <strong>Informe PDF probatorio completo sin marcas de agua</strong>',
+                '1 <strong>Informe PDF estructurado sin marcas de agua</strong>',
                 '<strong>Firma criptográfica SHA-256</strong> y anclaje GPS',
                 'Métricas acústicas oficiales (LAeq, L10, L90, pico en dB)',
                 'Anexo de evidencias con fotos y coordenadas estampadas',
@@ -323,8 +323,8 @@ SECTIONS = {
     },
     'ja': {
         'eyebrow': '料金プラン',
-        'title': '日常の簡易測定は完全無料。法的に有効な改ざん防止証拠が必要なときに即座にアンロック。',
-        'lead': 'ブラウザ上での騒音測定は100%無料です。悪質な騒音トラブルや苦情申し立てには、1.99ドルからの公式改ざん防止PDFレポートと全自動監視ツールをご活用ください。',
+        'title': '日常の簡易測定は完全無料。近隣・管理会社との相談に役立つ詳細ログを必要時にアンロック。',
+        'lead': 'ブラウザ上での騒音測定は100%無料です。管理会社への相談や近隣トラブルの記録に、客観的な市民記録レポートを1.99ドルからご利用いただけます。',
         'banner': '初期公開特別キャンペーン：現在早期特別割引価格にてご提供中。キャンペーン終了後は通常価格（単回 4.99ドル / 月額 9.99ドル / 年額 59.99ドル / 永久買切 199ドル）に戻ります。今すぐ特別価格で権利を確保！',
         'free': {
             'pill': '無料体験版',
@@ -348,7 +348,7 @@ SECTIONS = {
             'discount': '60% OFF',
             'hint': '1回買い切り · 「音量を故意に上げた」という相手方の言い逃れを完全排除',
             'items': [
-                '透かしのない正式な<strong>法廷・交渉用PDF証拠レポート</strong> 1件出力',
+                '透かしのない正式な<strong>詳細な民事相談用PDF記録レポート</strong> 1件出力',
                 '<strong>SHA-256 電子署名ハッシュ</strong>＆GPS位置情報刻印',
                 '公的音響統計指標（LAeq・L10・L90・ピーク値）完全収録',
                 '現場写真＋緯度経度付き証拠シート添付',
@@ -416,7 +416,7 @@ SECTIONS = {
             'th_lifetime': '永久ライセンス',
             'f1_name': 'リアルタイム高精度騒音測定', 'f1_desc': 'A/C周波数補正、リアルタイムスペクトル波形表示',
             'f2_name': '現場音声・写真の証拠記録', 'f2_desc': '改ざん不能タイムスタンプ＆GPS座標刻印',
-            'f3_name': '公式証拠PDFレポート出力', 'f3_desc': '透かしなし、管理会社・警察・裁判所にそのまま提出可能',
+            'f3_name': '公式証拠PDFレポート出力', 'f3_desc': '透かしなし、管理会社・警察・管理会社・大家・調停の参考資料として活用可能',
             'f4_name': 'SHA-256 電子署名ハッシュ', 'f4_desc': '「音量を操作して捏造した」という反論を科学的に論破',
             'f5_name': '🌙 夜間ノイズ見張り番モード', 'f5_desc': '夜通し省電力監視、基準値超過の瞬間を自動キャプチャ',
             'f6_name': '📊 連続騒音被害鑑定ファイル', 'f6_desc': '複数日・月単位の騒音推移と発生頻度分布図を集計',
@@ -427,8 +427,8 @@ SECTIONS = {
     },
     'ko': {
         'eyebrow': '요금제 및 플랜',
-        'title': '실시간 소음 확인은 100% 무료. 법적 입증을 위한 공식 증거가 필요할 때 즉시 잠금 해제.',
-        'lead': '브라우저 기본 데시벨 측정은 완전 무료입니다. 층간소음, 공사소음 등 분쟁 발생 시 $1.99부터 시작하는 위변조 방지 공식 증거 보고서를 생성하세요.',
+        'title': '실시간 소음 확인은 100% 무료. 임대인·관리사무소 상담을 위한 상세 소음 기록을 필요 시 잠금 해제.',
+        'lead': '브라우저 기본 데시벨 측정은 완전 무료입니다. 층간소음 중재 상담 시 활용할 수 있는 객관적인 민간 소음 기록 리포트를 $1.99부터 생성하세요.',
         'banner': '얼리버드 런칭 특별 할인: 현재 조기 출시 특가로 제공 중입니다. 프로모션 종료 후 정가(단건 $4.99 / 월간 $9.99 / 연간 $59.99 / 평생 소장 $199)로 환원됩니다. 지금 영구 할인 혜택을 잡으세요!',
         'free': {
             'pill': '무료 체험판',
@@ -520,7 +520,7 @@ SECTIONS = {
             'th_lifetime': '평생 소장',
             'f1_name': '실시간 고정밀 데시벨 모니터링', 'f1_desc': 'A/C 가중치 필터, 실시간 주파수 스펙트럼 파형',
             'f2_name': '현장 음성 및 사진 증거 캡처', 'f2_desc': '위변조 방지 타임스탬프 및 GPS 위치 각인',
-            'f3_name': '공식 법적 증거 PDF 내보내기', 'f3_desc': '워터마크 없는 표준 서식으로 관리소 및 법원에 즉시 제출',
+            'f3_name': '상세 민간 소음 기록 PDF 내보내기', 'f3_desc': '워터마크 없는 표준 서식으로 관리소 및 중재 상담 자료로 즉시 활용',
             'f4_name': 'SHA-256 암호화 디지털 지문', 'f4_desc': '"볼륨을 키워 조작했다"는 항변을 과학적으로 반박',
             'f5_name': '🌙 야간 소음 센트리 모드', 'f5_desc': '초저전력 밤샘 감시, 기준 초과 순간 자동 캡처 기록',
             'f6_name': '📊 연속 소음 피해 평가 파일', 'f6_desc': '일/월별 소음 추세 및 초과 빈도 분포도 자동 집계',
@@ -531,8 +531,8 @@ SECTIONS = {
     },
     'vi': {
         'eyebrow': 'Gói &amp; Bảng Giá',
-        'title': 'Đo đạc kiểm tra cơ bản hoàn toàn miễn phí. Mở khóa hồ sơ bằng chứng bất khả tranh cãi khi cần can thiệp pháp lý.',
-        'lead': 'Đo decibel trên trình duyệt miễn phí 100%. Khi gặp tranh chấp tiếng ồn khó giải quyết, mở khóa báo cáo pháp lý chống giả mạo chỉ từ $1.99.',
+        'title': 'Đo đạc kiểm tra cơ bản hoàn toàn miễn phí. Mở khóa nhật ký âm thanh khách quan phục vụ trao đổi và hòa giải.',
+        'lead': 'Đo decibel trên trình duyệt miễn phí 100%. Để hỗ trợ đối thoại với chủ nhà hoặc ban quản lý, mở khóa hồ sơ âm học dân sự có cấu trúc chỉ từ $1.99.',
         'banner': 'Ưu đãi mở bán sớm: Mức giá ưu đãi đặc biệt giai đoạn ra mắt. Sau giai đoạn dùng thử sẽ trở về giá gốc (Đơn lẻ $4.99 / Tháng $9.99 / Năm $59.99 / Trọn đời $199). Đăng ký ngay để giữ giá vĩnh viễn!',
         'free': {
             'pill': 'Bản Miễn Phí',
@@ -550,7 +550,7 @@ SECTIONS = {
         },
         'single': {
             'pill': 'Báo Cáo Đơn Lẻ',
-            'name': 'Báo Cáo Pháp Lý Chính Thức',
+            'name': 'Báo Cáo Âm Học Có Cấu Trúc',
             'price': '$1.99',
             'del': '$4.99',
             'discount': 'GIẢM 60%',
@@ -624,7 +624,7 @@ SECTIONS = {
             'th_lifetime': 'Trọn Đời',
             'f1_name': 'Giám sát dB Thời gian thực', 'f1_desc': 'Trọng số A/C, dạng sóng quang phổ thời gian thực',
             'f2_name': 'Thu thập Bằng chứng Âm thanh &amp; Ảnh', 'f2_desc': 'Dấu thời gian chống giả mạo &amp; tọa độ GPS chính xác',
-            'f3_name': 'Xuất Báo cáo PDF Pháp lý Chính thức', 'f3_desc': 'Không có mờ, định dạng chuẩn nộp ban quản lý &amp; tòa án',
+            'f3_name': 'Xuất Báo cáo PDF Pháp lý Chính thức', 'f3_desc': 'Không có mờ, định dạng chuẩn nộp ban quản lý &amp; hòa giải dân sự',
             'f4_name': 'Vân tay Mã hóa SHA-256', 'f4_desc': 'Bác bỏ lập luận gian lận hay tự ý chỉnh âm lượng',
             'f5_name': '🌙 Chế độ Sentry Ban Đêm', 'f5_desc': 'Giám sát ngầm tiết kiệm pin, tự động ghi khi vượt ngưỡng',
             'f6_name': '📊 Hồ sơ Quấy rối Nhiều Ngày', 'f6_desc': 'Tổng hợp xu hướng ngày/tháng &amp; tần suất vượt quy chuẩn',
@@ -635,8 +635,8 @@ SECTIONS = {
     },
     'th': {
         'eyebrow': 'แผนและราคา',
-        'title': 'วัดระดับเสียงเบื้องต้นฟรี 100% ปลดล็อกหลักฐานทางกฎหมายที่มีผลผูกพันเมื่อคุณต้องการดำเนินการ.',
-        'lead': 'เครื่องมือวัดเดซิเบลบนเบราว์เซอร์ฟรี 100% เมื่อต้องเผชิญปัญหาเสียงรบกวนต่อเนื่อง ปลดล็อกรายงานหลักฐานป้องกันการปลอมแปลงเริ่มต้นเพียง $1.99.',
+        'title': 'วัดระดับเสียงเบื้องต้นฟรี 100% ปลดล็อกบันทึกเสียงและเดซิเบลเชิงวัตถุวิสัยสำหรับการเจรจาไกล่เกลี่ย.',
+        'lead': 'การทดสอบระดับเสียงผ่านเบราว์เซอร์ฟรี 100% เมื่อต้องการหลักฐานประกอบการเจรจากับเจ้าของที่พักหรือนิติบุคคล ปลดล็อกรายงานบันทึกข้อมูลเชิงวัตถุวิสัยเริ่มต้นเพียง $1.99.',
         'banner': 'สิทธิพิเศษช่วงเปิดตัว: ราคาพิเศษสำหรับผู้ใช้งานช่วงแรก หลังจากนี้จะปรับกลับเป็นราคาปกติ ($4.99 รายครั้ง / $9.99 รายเดือน / $59.99 รายปี / $199 ตลอดชีพ) ล็อกราคาส่วนลดวันนี้!',
         'free': {
             'pill': 'เวอร์ชันฟรี',

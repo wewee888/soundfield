@@ -25,7 +25,7 @@ SCENARIOS_PART_4 = {
         'hero': {
             'es': {
                 'eyebrow': 'Caso de uso · Disputas de alquiler y derechos del inquilino',
-                'headline': 'Proteja sus derechos de arrendamiento con un <em>expediente acústico irrefutable</em>.',
+                'headline': 'Proteja sus derechos de arrendamiento con un <em>expediente acústico objetivo</em>.',
                 'lead': '¿Atrapado en un piso con paredes de papel, falsas promesas del propietario o ruidos insoportables de vecinos? No pierda su fianza. Construya un dosier acústico organizado antes de acudir al propietario, la agencia inmobiliaria o el tribunal arbitral.'
             },
             'de': {
@@ -162,7 +162,7 @@ SCENARIOS_PART_4 = {
                 'es': [
                     ('1', '📅', 'Registre un historial de 7 a 14 días', 'Documente las molestias de 1 a 2 semanas. Los tribunales descartan eventos aislados, pero un historial continuo acredita el incumplimiento del contrato.'),
                     ('2', '📸', 'Fotografíe puertas y ventanas cerradas', 'Utilice la cámara de custodia para certificar que las mediciones se realizan con todo cerrado, acreditando que el ruido penetra en la vivienda.'),
-                    ('3', '⚖️', 'Calcule la tasa de exceso en horas de descanso', 'Obtenga el porcentaje de horas nocturnas en que el ruido supera los 45 dBA para ofrecer un dato objetivo e irrefutable a mediadores y jueces.'),
+                    ('3', '⚖️', 'Calcule la tasa de exceso en horas de descanso', 'Obtenga el porcentaje de horas nocturnas en que el ruido supera los 45 dBA para ofrecer un dato objetivo e objetivo a mediadores y jueces.'),
                     ('4', '📑', 'Adjunte el informe a un burofax o requerimiento formal', 'Exporte el informe oficial en PDF con firma SHA-256 y adjúntelo a su requerimiento formal de resolución o reducción de fianza.')
                 ],
                 'de': [
@@ -304,7 +304,7 @@ SCENARIOS_PART_4 = {
                 'es': [
                     ('📬', 'Regla 1: Establezca un requerimiento fehaciente por escrito', 'Nunca confíe en llamadas telefónicas. Envíe un correo o burofax adjuntando el informe PDF de SOUNDTEST.PRO con un plazo de subsanación de 14 días.'),
                     ('🛏️', 'Regla 2: Mida desde la zona de descanso (dormitorio)', 'Los tribunales dan especial relevancia al dormitorio. Registre las mediciones desde la cama para acreditar el impacto directo en la salud y el sueño.'),
-                    ('📑', 'Regla 3: Mantenga un informe objetivo y libre de valoraciones personales', 'Deje que las cifras hablen por sí solas. Una serie de picos reiterados de 68 dBA a medianoche resulta irrefutable ante cualquier juez o mediador.'),
+                    ('📑', 'Regla 3: Mantenga un informe objetivo y libre de valoraciones personales', 'Deje que las cifras hablen por sí solas. Una serie de picos reiterados de 68 dBA a medianoche resulta objetivo ante cualquier juez o mediador.'),
                     ('⚖️', 'Regla 4: Conozca el valor del registro como prueba documental', 'SOUNDTEST.PRO aporta una prueba documental orientativa rigurosa. En procedimientos contenciosos de alta cuantía puede complementarse con peritaje judicial.')
                 ],
                 'de': [
@@ -418,7 +418,7 @@ SCENARIOS_PART_4 = {
             ]
         },
         'cta_band': {
-            'es': ('¿Desea resolver su conflicto de alquiler con un dosier técnico irrefutable?',
+            'es': ('¿Desea resolver su conflicto de alquiler con un dosier técnico objetivo?',
                    'Genere su informe pericial en PDF en 10 segundos directamente en el navegador. Sin descargas, 100% privado en su dispositivo.'),
             'de': ('Wollen Sie Ihren Mietstreit mit einem hieb- und stichfesten Nachweis beilegen?',
                    'Erstellen Sie Ihr vollständiges Lärmdossier in 10 Sekunden direkt im Browser. Keine Installation, 100% datenschutzkonform.'),

@@ -72,7 +72,7 @@
     },
     {
       "@type": "Question",
-      "name": "Làm sao để đơn phương chấm dứt hợp đồng thuê nhà lấy lại tiền cọc vì ô nhiễm tiếng ồn?",
+      "name": "Làm sao để ghi nhận tiếng ồn kéo dài nhằm trao đổi với chủ nhà hoặc ban quản lý?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Thu thập nhật ký vi phạm liên tục trong 5–7 ngày bằng SOUNDTEST.PRO, xuất báo cáo PDF và gửi văn bản yêu cầu chủ nhà can thiệp. Nếu chủ nhà không khắc phục, bạn có căn cứ pháp lý để chấm dứt hợp đồng do không đảm bảo điều kiện sinh hoạt."
@@ -435,11 +435,11 @@
       </div>
     </section>
 
-        <section class="section" id="pricing">
+            <section class="section" id="pricing">
       <div class="section-header reveal">
         <span class="eyebrow">Gói &amp; Bảng Giá</span>
-        <h2>Đo đạc kiểm tra cơ bản hoàn toàn miễn phí. Mở khóa hồ sơ bằng chứng bất khả tranh cãi khi cần can thiệp pháp lý.</h2>
-        <p class="lead">Đo decibel trên trình duyệt miễn phí 100%. Khi gặp tranh chấp tiếng ồn khó giải quyết, mở khóa báo cáo pháp lý chống giả mạo chỉ từ $1.99.</p>
+        <h2>Đo đạc kiểm tra cơ bản hoàn toàn miễn phí. Mở khóa nhật ký âm thanh khách quan phục vụ trao đổi và hòa giải.</h2>
+        <p class="lead">Đo decibel trên trình duyệt miễn phí 100%. Để hỗ trợ đối thoại với chủ nhà hoặc ban quản lý, mở khóa hồ sơ âm học dân sự có cấu trúc chỉ từ $1.99.</p>
       </div>
 
       <div class="launch-discount-banner reveal">
@@ -447,82 +447,103 @@
         <span>Ưu đãi mở bán sớm: Mức giá ưu đãi đặc biệt giai đoạn ra mắt. Sau giai đoạn dùng thử sẽ trở về giá gốc (Đơn lẻ $4.99 / Tháng $9.99 / Năm $59.99 / Trọn đời $199). Đăng ký ngay để giữ giá vĩnh viễn!</span>
       </div>
 
-      <!-- Interactive Billing Toggle -->
-      <div class="billing-toggle-wrap reveal">
-        <div class="billing-toggle" role="radiogroup" aria-label="Billing cycle selector">
-          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true" onclick="setPricingBillingCycle('yearly')">
-            <span>Thanh toán hàng năm</span>
-            <span class="billing-discount-badge">Tiết kiệm 58%</span>
-          </button>
-          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false" onclick="setPricingBillingCycle('monthly')">
-            <span>Thanh toán hàng tháng</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="pricing-row pricing-three-cards">
+      <div class="pricing-row">
         <!-- Free Tier -->
         <div class="price-card reveal">
-          <span class="price-pill">Gói Miễn phí</span>
-          <span class="price-name">Phiên bản Miễn phí</span>
-          <div class="price-tag">$0<small style="font-size:13px;color:var(--soft);">/forever</small></div>
-          <div class="price-compare-hint">Kiểm tra độ ồn tức thì &amp; ước lượng decibel theo thời gian thực</div>
+          <span class="price-pill">Bản Miễn Phí</span>
+          <span class="price-name">Đo Ngay Trên Trình Duyệt</span>
+          <div class="price-tag">$0</div>
+          <div class="price-compare-hint">Kiểm tra nhanh xem cường độ tiếng ồn có vi phạm quy chuẩn hay không</div>
           <ul class="check-list">
-            <li>Đo mức decibel theo thời gian thực (trọng số A-weighting)</li>
-            <li>Phân tích phổ tần số âm thanh FFT động</li>
-            <li>Ghi âm và chụp ảnh kèm tọa độ trực tiếp trong trình duyệt</li>
-            <li>Tự động gắn dấu thời gian và tọa độ GPS chống sửa đổi</li>
-            <li>Báo cáo xem trước có hình mờ phục vụ tham khảo cá nhân</li>
+            <li>Đo decibel thời gian thực (trọng số A/C)</li>
+            <li>Ghi âm và hiển thị dạng sóng tần số</li>
+            <li>Đóng dấu thời gian và tọa độ GPS tự động</li>
+            <li>Báo cáo xem trước có mờ (chỉ dùng tham khảo cá nhân)</li>
+            <li>Lưu tạm thời trong bộ nhớ đệm trình duyệt</li>
           </ul>
-          <a class="button" href="../soundtest.html">Bắt đầu Miễn phí Ngay</a>
+          <a class="button" href="../soundtest.html">Dùng thử miễn phí</a>
         </div>
 
-        <!-- Pro Tier (Interactive Toggle Yearly vs Monthly) -->
-        <div class="price-card pro reveal">
-          <span class="price-badge-popular">★ Lựa chọn Phổ biến Nhất</span>
-          <span class="price-pill">Pro Bản Hàng năm</span>
-          <span class="price-name">Hồ sơ Chứng cứ Pro</span>
-          <div class="price-tag billing-period-yearly">
-            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
-              <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35</span>
+        <!-- Single Official Report -->
+        <div class="price-card single-report reveal">
+          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/forensic_report_preview.webp" alt="Official forensic PDF vs watermarked preview comparison" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center top;display:block;">
           </div>
-          <div class="price-tag billing-period-monthly" style="display:none;">
-            <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
-              <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
+          <span class="price-pill">Báo Cáo Đơn Lẻ</span>
+          <span class="price-name">Báo Cáo Âm Học Có Cấu Trúc</span>
+          <div class="price-tag">
+            <del class="price-del">$4.99</del>$1.99
+            <span class="price-discount-tag">GIẢM 60%</span>
           </div>
-          <div class="price-compare-hint billing-period-yearly">Giám sát tự động liên tục 365 ngày · Giải phóng hoàn toàn khỏi việc thức đêm ghi âm thủ công</div>
-          <div class="price-compare-hint billing-period-monthly" style="display:none;">Phù hợp cho tranh chấp thuê nhà ngắn hạn hoặc tiếng ồn sửa chữa khẩn cấp</div>
+          <div class="price-compare-hint">Mua 1 lần dùng vĩnh viễn · Xóa bỏ cáo buộc vặn to âm lượng để làm giả</div>
           <ul class="check-list">
-            <li><strong>Xuất không giới hạn</strong> các <strong>báo cáo PDF chứng cứ chính thức không hình mờ</strong> (có vân tay chống giả)</li>
-            <li>🌙 <strong>Chế độ Lính gác Đêm</strong>: Tự động ghi lại và đánh dấu khi tiếng ồn vượt ngưỡng</li>
-            <li>📊 <strong>Hồ sơ Đánh giá Quấy nhiễu Liên tục</strong>: Biểu đồ xu hướng âm học tổng hợp nhiều ngày</li>
-            <li>⚖️ <strong>Biểu mẫu Khiếu nại Pháp lý</strong>: Tạo đơn kiến nghị và văn bản yêu cầu xử lý trong 1 cú nhấp</li>
-            <li>☁️ <strong>Đồng bộ Đám mây Mã hóa</strong>: Truy cập đa thiết bị, lưu trữ an toàn trọn đời</li>
+            <li>1 <strong>Báo cáo bằng chứng PDF chính thức không có mờ</strong></li>
+            <li><strong>Dấu vân tay mã hóa SHA-256</strong> &amp; tọa độ GPS</li>
+            <li>Các chỉ số âm học quy chuẩn (LAeq, L10, L90, dB đỉnh)</li>
+            <li>Biên bản bằng chứng kèm ảnh hiện trường có dấu thời gian</li>
+            <li>Hồ sơ chuẩn mực để gửi ban quản lý, chủ nhà hoặc hòa giải</li>
           </ul>
-          <a class="button primary billing-period-yearly" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Nhận thẻ Pro 1 năm · $24.99</a>
-          <a class="button primary billing-period-monthly" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="display:none;border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">Đăng ký Pro hàng tháng · $4.99</a>
-          <div class="single-report-link-bar">
-            <span>Chỉ cần một bản báo cáo duy nhất?</span>
-            <a class="single-link" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Mở khóa 1 báo cáo không hình mờ $1.99 →</a>
+          <a class="button" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Mở khóa báo cáo · $1.99</a>
+        </div>
+
+        <!-- Pro Monthly -->
+        <div class="price-card monthly reveal">
+          <span class="price-pill">Pro Hàng Tháng</span>
+          <span class="price-name">Gói Truy Cập Tháng</span>
+          <div class="price-tag">
+            <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/tháng</small>
+            <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">GIẢM 50%</span>
           </div>
+          <div class="price-compare-hint">Lý tưởng cho các tranh chấp ngắn hạn, thi công cải tạo hoặc thuê nhà</div>
+          <ul class="check-list">
+            <li><strong>30 ngày xuất báo cáo PDF không giới hạn</strong> không có mờ</li>
+            <li>🌙 <strong>Chế độ Sentry Ban Đêm</strong>: Tự động ghi khi tiếng ồn vượt ngưỡng</li>
+            <li>📊 <strong>Hồ sơ Quấy rối Nhiều Ngày</strong>: Đồ thị xu hướng tổng hợp 30 ngày</li>
+            <li>⚖️ <strong>Mẫu Đơn Khiếu nại Pháp lý</strong>: Biểu mẫu văn bản quy chuẩn</li>
+            <li>☁️ <strong>Đồng bộ Đám mây Mã hóa</strong>: Bảo toàn dữ liệu bằng chứng giữa các thiết bị</li>
+          </ul>
+          <a class="button" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">Đăng ký Pro Tháng · $4.99</a>
+        </div>
+
+        <!-- Pro Yearly (Recommended) -->
+        <div class="price-card pro reveal">
+          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/sentry_night_monitor.webp" alt="Overnight Sentry Mode illustration" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center 40%;display:block;">
+          </div>
+          <span class="price-badge-popular">★ Lựa Chọn Phổ Biến Nhất · Chỉ ~2.08 $/tháng</span>
+          <span class="price-pill">Pro Cao Cấp Hàng Năm</span>
+          <span class="price-name">Hồ Sơ Tranh Chấp Dài Hạn</span>
+          <div class="price-tag">
+            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/năm</small>
+            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Tiết kiệm $35</span>
+          </div>
+          <div class="price-compare-hint">365 ngày giám sát tự động hóa · Giải phóng khỏi việc theo dõi thủ công</div>
+          <ul class="check-list">
+            <li><strong>365 ngày xuất báo cáo PDF bằng chứng không giới hạn</strong></li>
+            <li>🌙 <strong>Chế độ Sentry Ban Đêm</strong>: Bắt quả tang vi phạm tiếng ồn lúc nửa đêm</li>
+            <li>📊 <strong>Hồ sơ Quấy rối Nhiều Ngày</strong>: Tổng hợp biểu đồ xu hướng nhiều tháng</li>
+            <li>⚖️ <strong>Mẫu Đơn Khiếu nại Pháp lý</strong>: Trọn bộ công văn cho cơ quan chức năng</li>
+            <li>☁️ <strong>Đồng bộ Đám mây Mã hóa</strong>: Sao lưu vĩnh viễn và đồng bộ nhiều máy</li>
+          </ul>
+          <a class="button primary" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Nhận gói Pro Năm · $24.99</a>
           <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">Đã có tài khoản? Đăng nhập</a>
         </div>
 
-        <!-- Lifetime Tier -->
+        <!-- Lifetime License -->
         <div class="price-card lifetime reveal">
-          <span class="price-pill">Bản quyền Trọn đời</span>
-          <span class="price-name">Gói Trọn đời Không Giới hạn</span>
+          <span class="price-pill">Giấy Phép Trọn Đời</span>
+          <span class="price-name">Toàn Quyền Sở Hữu Vĩnh Viễn</span>
           <div class="price-tag">
             <del class="price-del">$199.00</del>$79.99
-            <span class="price-discount-tag">60% OFF</span>
+            <span class="price-discount-tag">GIẢM 60%</span>
           </div>
-          <div class="price-compare-hint">Thanh toán một lần duy nhất · An tâm bảo vệ quyền lợi lâu dài, không gia hạn</div>
+          <div class="price-compare-hint">Thanh toán 1 lần duy nhất · Yên tâm pháp lý lâu dài, không phát sinh gia hạn</div>
           <ul class="check-list">
-            <li><strong>Bản quyền trọn đời vĩnh viễn</strong>, không bao giờ phải chịu phí gia hạn định kỳ</li>
-            <li>Bao gồm toàn bộ tính năng lính gác đêm, thống kê xu hướng và biểu mẫu pháp lý</li>
-            <li>Đồng bộ tài khoản đa thiết bị và lưu trữ đám mây mã hóa an toàn tuyệt đối</li>
-            <li>Hỗ trợ ưu tiên VIP và miễn phí toàn bộ công cụ âm học nâng cấp trong tương lai</li>
-            <li>Sẵn sàng trích xuất bằng chứng bất cứ khi nào phát sinh tranh chấp tiếng ồn</li>
+            <li><strong>Giấy phép sở hữu vĩnh viễn</strong> không có phí thuê bao định kỳ</li>
+            <li>Bao gồm toàn bộ tính năng Sentry, Hồ sơ phân tích và biểu mẫu pháp lý</li>
+            <li>Đồng bộ đa thiết bị &amp; lưu trữ kho chứng cứ đám mây vĩnh viễn</li>
+            <li>Ưu tiên hỗ trợ &amp; cập nhật toàn bộ thuật toán âm học trong tương lai</li>
+            <li>Sẵn sàng bảo vệ quyền lợi cư trú bất cứ khi nào xảy ra tranh chấp</li>
           </ul>
           <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">Sở hữu Trọn đời · $79.99</a>
           <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">Đã có tài khoản? Đăng nhập</a>
@@ -560,7 +581,7 @@
               <td class="col-lifetime"><span class="check-yes">✔</span></td>
             </tr>
             <tr>
-              <td class="feature-name">Xuất Báo Cáo Ghi Nhận Dân Sự PDF<span class="feature-desc">Không có mờ, phục vụ trao đổi chủ nhà, ban quản lý &amp; hòa giải</span></td>
+              <td class="feature-name">Xuất Báo cáo PDF Pháp lý Chính thức<span class="feature-desc">Không có mờ, định dạng chuẩn nộp ban quản lý &amp; hòa giải dân sự</span></td>
               <td><span class="check-no">✖</span></td>
               <td><span class="check-yes">✔ 1</span></td>
               <td class="col-monthly"><span class="check-yes">✔ 30d</span></td>
@@ -640,7 +661,7 @@
           <p>Sử dụng 'Chế độ Gác đêm (Sentry Mode)' trên SOUNDTEST.PRO. Bạn chỉ cần đặt ngưỡng cảnh báo (ví dụ 50 dBA); thiết bị sẽ tự động ghi nhận các đợt âm thanh xung kích bất thường, thời lượng và đỉnh dBA mà không tải dữ liệu lên đám mây.</p>
         </div>
         <div class="card reveal">
-          <h3>Làm sao để đơn phương chấm dứt hợp đồng thuê nhà lấy lại tiền cọc vì ô nhiễm tiếng ồn?</h3>
+          <h3>Làm sao để ghi nhận tiếng ồn kéo dài nhằm trao đổi với chủ nhà hoặc ban quản lý?</h3>
           <p>Thu thập nhật ký vi phạm liên tục trong 5–7 ngày bằng SOUNDTEST.PRO, xuất báo cáo PDF và gửi văn bản yêu cầu chủ nhà can thiệp. Nếu chủ nhà không khắc phục, bạn có căn cứ pháp lý để chấm dứt hợp đồng do không đảm bảo điều kiện sinh hoạt.</p>
         </div>
         <div class="card reveal">

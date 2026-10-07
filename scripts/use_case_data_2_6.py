@@ -26,7 +26,7 @@ SCENARIOS_2_TO_6 = {
             'es': {
                 'eyebrow': 'Caso de uso · Molestias de bares, terrazas y vía pública',
                 'headline': 'Documente el ruido nocturno y de locales comerciales <em>que le roba el sueño</em>.',
-                'lead': 'Terrazas no autorizadas, graves retumbantes y clientes ruidosos no deberían arruinar su descanso. Capture pruebas irrefutables con análisis LAeq de 15 minutos, fotos con marca de agua y dosieres estructurados para policía local y licencias.'
+                'lead': 'Terrazas no autorizadas, graves retumbantes y clientes ruidosos no deberían arruinar su descanso. Capture pruebas objetivos con análisis LAeq de 15 minutos, fotos con marca de agua y dosieres estructurados para policía local y licencias.'
             },
             'de': {
                 'eyebrow': 'Anwendungsfall · Bars, Gastronomie &amp; Straßenlärm',

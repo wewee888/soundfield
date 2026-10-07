@@ -72,7 +72,7 @@
     },
     {
       "@type": "Question",
-      "name": "Comment résilier un bail sans pénalité pour cause de nuisances sonores répétées ?",
+      "name": "Comment documenter les nuisances sonores répétées pour échanger avec son bailleur ?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Cumulez au moins une semaine d'enregistrements d'infractions avec SOUNDTEST.PRO, exportez le rapport d'expertise PDF et adressez une mise en demeure par lettre recommandée avec AR au bailleur. En cas de carence, vous pourrez invoquer la perte d'usage paisible."
@@ -435,11 +435,11 @@
       </div>
     </section>
 
-        <section class="section" id="pricing">
+            <section class="section" id="pricing">
       <div class="section-header reveal">
         <span class="eyebrow">Formules &amp; Tarifs</span>
-        <h2>Gratuit pour un contrôle immédiat. Déverrouillez des preuves irréfutables quand vous devez agir.</h2>
-        <p class="lead">La mesure de décibels dans le navigateur est 100% gratuite. Face à des nuisances répétées, débloquez des constats officiels infalsifiables dès 1,99 $.</p>
+        <h2>Gratuit pour les vérifications immédiates. Débloquez des relevés objectifs en cas de besoin.</h2>
+        <p class="lead">La mesure de décibels dans le navigateur est 100% gratuite. Pour appuyer vos démarches amiables, débloquez des dossiers de relevés civils structurés dès 1,99 $.</p>
       </div>
 
       <div class="launch-discount-banner reveal">
@@ -447,84 +447,105 @@
         <span>Offre de lancement exclusive : Tarifs spéciaux pour les premiers utilisateurs. Après la phase initiale, les prix normaux s'appliqueront (4,99 $ Unique / 9,99 $ Mois / 59,99 $ An / 199 $ À vie). Profitez de la remise garantie !</span>
       </div>
 
-      <!-- Interactive Billing Toggle -->
-      <div class="billing-toggle-wrap reveal">
-        <div class="billing-toggle" role="radiogroup" aria-label="Billing cycle selector">
-          <button type="button" class="billing-toggle-btn active" data-billing="yearly" role="radio" aria-checked="true" onclick="setPricingBillingCycle('yearly')">
-            <span>Facturation annuelle</span>
-            <span class="billing-discount-badge">-58% de réduction</span>
-          </button>
-          <button type="button" class="billing-toggle-btn" data-billing="monthly" role="radio" aria-checked="false" onclick="setPricingBillingCycle('monthly')">
-            <span>Facturation mensuelle</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="pricing-row pricing-three-cards">
+      <div class="pricing-row">
         <!-- Free Tier -->
         <div class="price-card reveal">
-          <span class="price-pill">Offre Gratuite</span>
-          <span class="price-name">Version Gratuite</span>
-          <div class="price-tag">$0<small style="font-size:13px;color:var(--soft);">/forever</small></div>
-          <div class="price-compare-hint">Vérification acoustique immédiate &amp; estimation des décibels en direct</div>
+          <span class="price-pill">Version Gratuite</span>
+          <span class="price-name">Outil Web instantané</span>
+          <div class="price-tag">$0</div>
+          <div class="price-compare-hint">Contrôle rapide pour vérifier si le bruit dépasse les seuils réglementaires</div>
           <ul class="check-list">
-            <li>Mesure des décibels en temps réel (pondération A)</li>
-            <li>Analyseur de spectre sonore FFT en direct</li>
-            <li>Enregistrement audio et photos horodatées dans le navigateur</li>
-            <li>Horodatage inviolable &amp; géolocalisation GPS automatique</li>
-            <li>Rapport d'évaluation avec filigrane pour vérification personnelle</li>
+            <li>Sonomètre en temps réel (pondération A/C)</li>
+            <li>Enregistrement audio &amp; forme d'onde en direct</li>
+            <li>Horodatage et coordonnées GPS automatiques</li>
+            <li>Rapport d'aperçu filigrané (usage personnel)</li>
+            <li>Stockage local temporaire dans le navigateur</li>
           </ul>
-          <a class="button" href="../soundtest.html">Commencer Gratuitement</a>
+          <a class="button" href="../soundtest.html">Essayer gratuitement</a>
         </div>
 
-        <!-- Pro Tier (Interactive Toggle Yearly vs Monthly) -->
-        <div class="price-card pro reveal">
-          <span class="price-badge-popular">★ Choix le Plus Populaire</span>
-          <span class="price-pill">Version Annuelle Pro</span>
-          <span class="price-name">Dossier Preuve Pro</span>
-          <div class="price-tag billing-period-yearly">
-            <del class="price-del">$59.99</del>$24.99<small style="font-size:13px;color:var(--soft);">/yr</small>
-              <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Save $35</span>
+        <!-- Single Official Report -->
+        <div class="price-card single-report reveal">
+          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/forensic_report_preview.webp" alt="Official forensic PDF vs watermarked preview comparison" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center top;display:block;">
           </div>
-          <div class="price-tag billing-period-monthly" style="display:none;">
-            <del class="price-del">$9.99</del>$4.99<small style="font-size:13px;color:var(--soft);">/mo</small>
-              <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% OFF</span>
+          <span class="price-pill">Export Unique</span>
+          <span class="price-name">Rapport Probant Officiel</span>
+          <div class="price-tag">
+            <del class="price-del">4,99 $</del>1,99 $
+            <span class="price-discount-tag">60% DE RÉDUCTION</span>
           </div>
-          <div class="price-compare-hint billing-period-yearly">365 jours de surveillance continue automatisée · Plus besoin de veiller pour enregistrer</div>
-          <div class="price-compare-hint billing-period-monthly" style="display:none;">Idéal pour litiges locatifs, bruits de travaux urgents ou constatations ponctuelles</div>
+          <div class="price-compare-hint">Achat unique · Écarte toute contestation de manipulation du volume</div>
           <ul class="check-list">
-            <li><strong>Téléchargements illimités</strong> de <strong>rapports PDF certifiés sans filigrane</strong></li>
-            <li>🌙 <strong>Mode Sentinelle Nocturne</strong> : Détection automatique des pics de tapage</li>
-            <li>📊 <strong>Dossier de Nuisances Répétées</strong> : Courbes d'évolution sur plusieurs semaines</li>
-            <li>⚖️ <strong>Modèles Juridiques de Plainte</strong> : Lettres types pour syndic, propriétaire et forces de l'ordre</li>
-            <li>☁️ <strong>Sauvegarde Chiffrée Cloud</strong> : Synchronisation multi-appareils pour ne rien perdre</li>
+            <li>1 <strong>Rapport probant PDF officiel sans filigrane</strong></li>
+            <li><strong>Empreinte numérique SHA-256</strong> &amp; ancrage GPS</li>
+            <li>Indicateurs normalisés (LAeq, L10, L90, niveau de crête)</li>
+            <li>Planche de preuves avec photos horodatées et géolocalisation</li>
+            <li>Dossier opposable pour syndic, propriétaire ou conciliation</li>
           </ul>
-          <a class="button primary billing-period-yearly" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Pass Annuel Pro · $24.99</a>
-          <a class="button primary billing-period-monthly" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="display:none;border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">Prendre Pro Mensuel · $4.99</a>
-          <div class="single-report-link-bar">
-            <span>Besoin d'un seul rapport ?</span>
-            <a class="single-link" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Débloquer un rapport unique sans filigrane $1.99 →</a>
+          <a class="button" href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Débloquer le rapport · 1,99 $</a>
+        </div>
+
+        <!-- Pro Monthly -->
+        <div class="price-card monthly reveal">
+          <span class="price-pill">Pro Mensuel Flexible</span>
+          <span class="price-name">Accès Pro Mensuel</span>
+          <div class="price-tag">
+            <del class="price-del">9,99 $</del>4,99 $<small style="font-size:13px;color:var(--soft);">/mois</small>
+            <span class="price-discount-tag" style="background:rgba(124,155,255,0.2);color:#7c9bff;border-color:rgba(124,155,255,0.4);">50% DE RÉDUCTION</span>
           </div>
+          <div class="price-compare-hint">Idéal pour litiges ponctuels, chantiers temporaires ou baux courts</div>
+          <ul class="check-list">
+            <li><strong>30 jours de rapports PDF illimités</strong> sans filigrane</li>
+            <li>🌙 <strong>Mode Sentinelle Nocturne</strong> : Enregistrement auto dès dépassement du seuil</li>
+            <li>📊 <strong>Dossier de Nuisances Multi-Jours</strong> : Graphiques de tendance sur 30 jours</li>
+            <li>⚖️ <strong>Modèles de Courriers Juridiques</strong> : Mises en demeure et signalements types</li>
+            <li>☁️ <strong>Synchronisation Cloud Chiffrée</strong> : Sauvegarde sécurisée multi-appareils</li>
+          </ul>
+          <a class="button" href="https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ" target="_blank" rel="noopener" style="border-color:rgba(124,155,255,0.45);background:linear-gradient(135deg,rgba(124,155,255,0.2),rgba(255,255,255,0.04));color:#a5b4fc;font-weight:750;">Choisir Pro Mensuel · 4,99 $</a>
+        </div>
+
+        <!-- Pro Yearly (Recommended) -->
+        <div class="price-card pro reveal">
+          <div class="price-card-img" style="border-radius:8px;overflow:hidden;margin:0 0 10px;max-height:100px;">
+            <img src="../assets/images/sentry_night_monitor.webp" alt="Overnight Sentry Mode illustration" loading="lazy" style="width:100%;height:100px;object-fit:cover;object-position:center 40%;display:block;">
+          </div>
+          <span class="price-badge-popular">★ Le Plus Populaire · ~2,08 $/mois seulement</span>
+          <span class="price-pill">Pro Annuel Premium</span>
+          <span class="price-name">Dossier de Litige Continu</span>
+          <div class="price-tag">
+            <del class="price-del">59,99 $</del>24,99 $<small style="font-size:13px;color:var(--soft);">/an</small>
+            <span class="price-discount-tag" style="background:rgba(44,240,193,0.2);color:#2cf0c1;border-color:rgba(44,240,193,0.5);">Économisez 35 $</span>
+          </div>
+          <div class="price-compare-hint">365 jours de surveillance automatisée · Vous libère de la veille manuelle</div>
+          <ul class="check-list">
+            <li><strong>365 jours de rapports PDF illimités</strong> détaillés pour médiation</li>
+            <li>🌙 <strong>Mode Sentinelle Nocturne</strong> : Capture automatique des dépassements de nuit</li>
+            <li>📊 <strong>Dossier de Nuisances Multi-Jours</strong> : Historique complet et courbes d'exposition</li>
+            <li>⚖️ <strong>Modèles de Courriers Juridiques</strong> : Actes pour bailleurs, syndics et médiation</li>
+            <li>☁️ <strong>Synchronisation Cloud Chiffrée</strong> : Sauvegarde pérenne sans perte de données</li>
+          </ul>
+          <a class="button primary" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Prendre Pro Annuel · 24,99 $</a>
           <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">Déjà un compte ? Se connecter</a>
         </div>
 
-        <!-- Lifetime Tier -->
+        <!-- Lifetime License -->
         <div class="price-card lifetime reveal">
           <span class="price-pill">Licence à Vie</span>
-          <span class="price-name">Accès Illimité Définitif</span>
+          <span class="price-name">Accès Intégral Perpétuel</span>
           <div class="price-tag">
-            <del class="price-del">$199.00</del>$79.99
-            <span class="price-discount-tag">60% OFF</span>
+            <del class="price-del">199,00 $</del>79,99 $
+            <span class="price-discount-tag">60% DE RÉDUCTION</span>
           </div>
-          <div class="price-compare-hint">Paiement unique · Sérénité et force probante permanente sans abonnement</div>
+          <div class="price-compare-hint">Paiement unique · Sérénité permanente pour locataires et propriétaires</div>
           <ul class="check-list">
-            <li><strong>Licence permanente à vie</strong> sans aucun frais récurrent ni renouvellement</li>
-            <li>Comprend toutes les fonctionnalités Sentinelle, dossiers d'analyse et modèles légaux</li>
-            <li>Synchronisation multi-appareils et stockage cloud chiffré illimité</li>
-            <li>Support VIP prioritaire et toutes les futures améliorations acoustiques incluses</li>
-            <li>Prêt à être mobilisé à tout moment en cas de litige de voisinage, bail ou chantier</li>
+            <li><strong>Licence perpétuelle sans abonnement</strong> ni frais récurrents</li>
+            <li>Inclut toutes les fonctionnalités Sentinelle, Dossiers et Modèles</li>
+            <li>Synchronisation multi-appareils &amp; stockage cloud illimité</li>
+            <li>Support prioritaire &amp; toutes les futures évolutions acoustiques incluses</li>
+            <li>Prêt à tout moment en cas de litige de voisinage, bail ou chantier</li>
           </ul>
-          <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">Obtenir l'Accès à Vie · $79.99</a>
+          <a class="button" href="https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV" target="_blank" rel="noopener" style="border-color:rgba(245,158,11,0.5);background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(255,255,255,0.04));color:#fbbf24;font-weight:800;">Accès à Vie · 79,99 $</a>
           <a class="button-link" href="auth.html" style="margin-top:6px;font-size:12px;">Déjà un compte ? Se connecter</a>
         </div>
       </div>
@@ -560,7 +581,7 @@
               <td class="col-lifetime"><span class="check-yes">✔</span></td>
             </tr>
             <tr>
-              <td class="feature-name">Rapport PDF Probant Officiel<span class="feature-desc">Sans filigrane, prêt pour syndics, police &amp; tribunaux</span></td>
+              <td class="feature-name">Rapport PDF Probant Officiel<span class="feature-desc">Sans filigrane, prêt pour syndics, propriétaires et médiation</span></td>
               <td><span class="check-no">✖</span></td>
               <td><span class="check-yes">✔ 1</span></td>
               <td class="col-monthly"><span class="check-yes">✔ 30d</span></td>
@@ -640,7 +661,7 @@
           <p>Activez le Mode Sentinelle. Laissez votre smartphone branché dans la pièce concernée. Dès qu'un pic dépasse le seuil défini, le système consigne automatiquement la durée, le pic en dB et la signature spectrale sans envoyer aucune donnée dans le cloud.</p>
         </div>
         <div class="card reveal">
-          <h3>Comment résilier un bail sans pénalité pour cause de nuisances sonores répétées ?</h3>
+          <h3>Comment documenter les nuisances sonores répétées pour échanger avec son bailleur ?</h3>
           <p>Cumulez au moins une semaine d'enregistrements d'infractions avec SOUNDTEST.PRO, exportez le rapport d'expertise PDF et adressez une mise en demeure par lettre recommandée avec AR au bailleur. En cas de carence, vous pourrez invoquer la perte d'usage paisible.</p>
         </div>
         <div class="card reveal">

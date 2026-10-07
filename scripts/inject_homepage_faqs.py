@@ -14,10 +14,10 @@ FAQ_DATA = {
     "zh": {
         "title": "免费在线噪音分贝测试与取证工具｜无需安装 App · SOUNDTEST.PRO",
         "description": "免费在线噪音分贝测试与维权存证工具。支持手机麦克风实时测分贝、实景水印拍照录像、夜间哨兵盯守，自动生成符合《民法典》安宁权与GB 22337标准的防篡改PDF证据卷宗。",
-        "keywords": "噪音分贝在线检测, 在线分贝测试, 楼上邻居噪音取证, 租房噪音过大退租证据, 带分贝的水印相机, 夜间噪音超标投诉, 物业噪音维权证据, 民法典安宁权调解证据, 防篡改噪音录音",
+        "keywords": "噪音分贝在线检测, 在线分贝测试, 楼上邻居噪音取证, 租房噪音记录, 带分贝的水印相机, 夜间噪音超标投诉, 物业噪音维权证据, 民法典安宁权调解证据, 防篡改噪音录音",
         "eyebrow": "民间调解与纠纷记录 FAQ",
         "heading": "噪音记录与纠纷维权常见问题解答",
-        "lead": "直击楼上踩踏噪音、租房无责退租、夜间超标认定与民间调解取证等核心维权与实操痛点。",
+        "lead": "直击楼上踩踏噪音、租房噪音协商、夜间超标认定与民间调解取证等核心维权与实操痛点。",
         "faqs": [
             {
                 "q": "手机测分贝的数据能否作为邻里纠纷、物业调解与交涉维权的证据？",
@@ -28,7 +28,7 @@ FAQ_DATA = {
                 "a": "依据中国《噪声污染防治法》及 GB 22337-2008 规定，城市居住区夜间通常指 22:00 至次日 06:00。在居住区室内，夜间等效声级 Leq 规定不得超过 30 dB 至 35 dB，突发峰值不得超过限值 10 dB；室内低频传导噪声（如电梯井、水泵、低音炮）夜间限值严苛至 30 dB(A)。"
             },
             {
-                "q": "租房遇到楼上或室外严重噪音，如何凭分贝记录申请“无责退租退还押金”？",
+                "q": "租房遇到楼上或室外严重噪音，如何凭分贝记录协助与房东沟通退租事宜？",
                 "a": "依据《民法典》第七百三十一条，租赁物危及承租人安全或健康的，承租人可随时解除合同。建议连续 3 至 7 天使用 SOUNDTEST.PRO 记录夜间超标频次与峰值，生成带防伪哈希的 PDF 证据报告并留存带定位水印照片，向房东或中介出具书面催告函，对方未在合理期限改善即可主张合同法定解除并全额退还押金。"
             },
             {
@@ -44,10 +44,10 @@ FAQ_DATA = {
     "en": {
         "title": "Free Online Decibel Meter & Noise Evidence Recorder | No App Required · SOUNDTEST.PRO",
         "description": "Free online decibel meter and acoustic evidence workstation. Measure dB SPL, record audio with GPS & timestamp watermarks, run overnight sentry monitoring, and export tamper-evident PDF dossiers for tenant disputes and noise complaints.",
-        "keywords": "online decibel meter free, sound level meter online, neighbor noise complaint evidence, apartment noise meter, noise disturbance log, quiet enjoyment breach proof, break lease noise evidence, decibel watermark camera, overnight noise sentry, tamper-evident sound report, small claims noise proof, how to prove noise nuisance",
+        "keywords": "online decibel meter free, sound level meter online, neighbor noise complaint evidence, apartment noise meter, noise disturbance log, quiet enjoyment breach proof, tenant noise dispute evidence, decibel watermark camera, overnight noise sentry, tamper-evident sound report, small claims noise proof, how to prove noise nuisance",
         "eyebrow": "Civilian Documentation & Nuisance FAQ",
         "heading": "Frequently Asked Questions on Noise Documentation & Dispute Resolution",
-        "lead": "Practical guidance on neighbor disputes, constructive eviction, tenancy lease breaking, and tamper-evident acoustic documentation.",
+        "lead": "Practical guidance on neighbor disputes, constructive eviction, tenant noise documentation, and tamper-evident acoustic documentation.",
         "faqs": [
             {
                 "q": "Can browser decibel readings and recordings be used as supporting evidence in tenant disputes and mediation?",
@@ -58,8 +58,8 @@ FAQ_DATA = {
                 "a": "Most municipal noise ordinances in the US and UK set residential nighttime thresholds between 45 dBA and 55 dBA at property boundaries (typically 10 PM/11 PM to 7 AM), with WHO guidelines recommending indoor bedroom sound levels below 30–35 dBA for restful sleep. Sudden impulse noises exceeding ambient levels by 10+ dB are widely considered actionable."
             },
             {
-                "q": "How can I break my apartment lease without penalty due to chronic noise?",
-                "a": "To break a lease without losing your security deposit, you must build an unassailable paper trail proving your landlord failed to remedy a constructive eviction condition. Log at least 5–7 days of persistent exceedances using SOUNDTEST.PRO, export the formal PDF evidence dossier, and deliver written notice demanding abatement before giving notice of termination."
+                "q": "How can I document chronic apartment noise to address lease disputes?",
+                "a": "When dealing with unresolved noise issues, document noise patterns for 5–7 days to support your discussions with landlords, property managers, or legal professionals. SOUNDTEST.PRO provides structured civilian logs with timestamped decibel readings, audio/video evidence, and cryptographic SHA-256 integrity hashes to create an objective, organized timeline of disturbances (supporting civilian records, not certified metrology measurements)."
             },
             {
                 "q": "How do I record sudden stomping or bass vibrations while sleeping without staying awake all night?",
@@ -92,7 +92,7 @@ FAQ_DATA = {
                 "a": "Nutzen Sie den integrierten Sentry-Wächtermodus. Sobald der Schallpegel den eingestellten Schwellenwert überschreitet, startet die Messung automatisch, zeichnet den Frequenzverlauf auf und speichert den Spitzenwert samt Dauer direkt im Browser – 100 % datenschutzkonform ohne Cloud-Upload."
             },
             {
-                "q": "Wie gehe ich rechtssicher vor, um die Miete wegen Ruhestörung zu mindern?",
+                "q": "Wie dokumentiere ich anhaltenden Lärm strukturiert für Gespräche mit dem Vermieter?",
                 "a": "Führen Sie über 7 bis 14 Tage lückenlos Protokoll mit SOUNDTEST.PRO. Exportieren Sie den formalen PDF-Beweisbericht und fordern Sie Ihren Vermieter schriftlich mit Fristsetzung zur Mängelbeseitigung auf. Eine Mietminderung tritt kraft Gesetzes ab Mängelanzeige ein."
             },
             {
@@ -122,7 +122,7 @@ FAQ_DATA = {
                 "a": "El Modo Centinela (Sentry Mode) vigila automáticamente el entorno mientras duerme. Solo tiene que fijar un umbral de activación (por ej. 45 dBA); la aplicación registrará cada evento acústico anómalo, su duración y su espectro de frecuencias directamente en el navegador."
             },
             {
-                "q": "¿Cómo puedo rescindir mi contrato de alquiler por ruidos sin perder la fianza?",
+                "q": "¿Cómo documentar el ruido continuo para negociar con el casero o la comunidad?",
                 "a": "Debe documentar de forma continuada durante al menos 5–7 días los excesos de ruido con SOUNDTEST.PRO, exportar el dossier PDF y enviar un burofax o notificación fehaciente al arrendador exigiendo subsanación por inhabitabilidad. Si no actúa, podrá resolver el contrato."
             },
             {
@@ -152,7 +152,7 @@ FAQ_DATA = {
                 "a": "Activez le Mode Sentinelle. Laissez votre smartphone branché dans la pièce concernée. Dès qu'un pic dépasse le seuil défini, le système consigne automatiquement la durée, le pic en dB et la signature spectrale sans envoyer aucune donnée dans le cloud."
             },
             {
-                "q": "Comment résilier un bail sans pénalité pour cause de nuisances sonores répétées ?",
+                "q": "Comment documenter les nuisances sonores répétées pour échanger avec son bailleur ?",
                 "a": "Cumulez au moins une semaine d'enregistrements d'infractions avec SOUNDTEST.PRO, exportez le rapport d'expertise PDF et adressez une mise en demeure par lettre recommandée avec AR au bailleur. En cas de carence, vous pourrez invoquer la perte d'usage paisible."
             },
             {
@@ -167,10 +167,10 @@ FAQ_DATA = {
         "keywords": "騒音計 オンライン 無料, デシベル 測定 オンライン, 上の階 足音 騒音 証拠 集め方, マンション 騒音 トラブル 証拠, 受忍限度 騒音 証拠, 賃貸 騒音 退去 家賃減額 証拠, 管理会社 騒音 相談 証拠, デシベル 透かし カメラ 位置情報, 夜間 騒音 測定 記録 アプリ不要, 騒音 証拠 pdf 報告書",
         "eyebrow": "よくある質問・証拠化ガイド",
         "heading": "騒音トラブルと客観的証拠収集のよくある質問",
-        "lead": "上の階の足音、受忍限度論、管理会社・警察への通報、違約金なしでの賃貸退去に関する法的実務ガイド。",
+        "lead": "上の階の足音、受忍限度論、管理会社・警察への通報、賃貸トラブルの相談や管理会社への申し入れに役立つ実務ガイド。",
         "faqs": [
             {
-                "q": "スマホブラウザで測定した騒音データは、警察・管理会社への通報や裁判の証拠になりますか？",
+                "q": "スマホブラウザで測定した騒音データは、管理会社への相談や近隣トラブルの調停資料として使えますか？",
                 "a": "はい、民事上の「受忍限度」を超える被害を客観的に立証する有力な初動証拠（証拠書類）として活用できます。SOUNDTEST.PRO は、写真にデシベル値・ミリ秒単位の時刻・詳細なGPS位置情報を焼き付ける透かしカメラ機能や、改ざん防止のSHA-256ハッシュ付きPDF報告書出力を備えており、相手の言い逃れを防ぎます。"
             },
             {
@@ -182,7 +182,7 @@ FAQ_DATA = {
                 "a": "SOUNDTEST.PRO の「夜間セントリー（監視）モード」をご利用ください。設定した閾値（例: 45dB）を超える突発音が発生した際のみ自動で検知し、ピーク値・発生時間・持続秒数を記録します。データは端末内のみに安全に保存されます。"
             },
             {
-                "q": "騒音トラブルで賃貸物件を違約金なしで退去・家賃減額を求める手順は？",
+                "q": "騒音トラブルで賃貸物件の管理会社や大家と円滑に相談するための記録手順は？",
                 "a": "SOUNDTEST.PRO で1〜2週間にわたり継続的な騒音発生データと透かし写真を蓄積し、PDF報告書を作成します。これを添えて管理会社や大家に書面で改善要请を行い、改善されない場合は賃貸借契約の解除（正当事由）を主張できます。"
             },
             {
@@ -200,7 +200,7 @@ FAQ_DATA = {
         "lead": "윗집 쿵쿵거림 발소리 대처, 법정 층간소음 데시벨 기준, 이웃사이센터 제출 및 전월세 계약 해지 핵심 가이드.",
         "faqs": [
             {
-                "q": "스마트폰 웹으로 측정한 데시벨 기록이 층간소음 이웃사이센터나 경찰, 법원 증거로 채택될 수 있나요?",
+                "q": "스마트폰 웹으로 측정한 데시벨 기록이 층간소음 이웃사이센터나 관리사무소 중재 상담 자료로 활용될 수 있나요?",
                 "a": "네, 분쟁 조정 및 민사 손해배상 청구 시 피해 사실과 지속성을 증명하는 핵심 정황 증거 자료로 인정됩니다. SOUNDTEST.PRO는 측정 수치, 초 단위 타임스탬프, 건물 위치를 사진에 영구 각인하는 워터마크 카메라와 위·변조 방지 SHA-256 암호화 해시가 포함된 정식 PDF 보고서를 지원합니다."
             },
             {
@@ -212,7 +212,7 @@ FAQ_DATA = {
                 "a": "SOUNDTEST.PRO의 '야간 센트리(무인 감시) 모드'를 켜두세요. 기준 데시벨(예: 45dB)을 설정해두면 자는 동안 충격 소음이 발생할 때마다 초과 시간, 최대 데시벨, 주파수 파형을 기기 내부에 자동으로 안전하게 기록합니다."
             },
             {
-                "q": "층간소음으로 인해 전월세 계약을 중도 해지하고 보증금을 돌려받으려면?",
+                "q": "지속적인 층간소음 문제를 임대인이나 관리사무소와 원활히 상담하기 위한 기록 방법은?",
                 "a": "SOUNDTEST.PRO로 최소 7일 이상의 초과 기록 및 보고서를 작성하여 집주인에게 내용증명으로 하자 보수(방음 조치 또는 가해 세대 중재)를 요구하세요. 불이행 시 임대차 목적 달성 불능으로 무과실 계약 해지를 주장할 수 있습니다."
             },
             {
@@ -242,7 +242,7 @@ FAQ_DATA = {
                 "a": "เปิด 'โหมดเฝ้าระวังกลางคืน (Sentry Mode)' ของ SOUNDTEST.PRO ตั้งค่าระดับเสียงเตือน (เช่น 50 dB) เมื่อมีเสียงกระแทกหรือเสียงดัง ระบบจะตรวจจับและบันทึกช่วงเวลาพร้อมระดับเดซิเบลสูงสุดไว้ในเครื่องโดยอัตโนมัติ ไม่ส่งข้อมูลขึ้นคลาวด์"
             },
             {
-                "q": "สามารถยกเลิกสัญญาเช่าคอนโด/หอพักโดยไม่เสียเงินมัดจำจากปัญหาเสียงดังได้หรือไม่?",
+                "q": "จะบันทึกข้อมูลเสียงรบกวนต่อเนื่องเพื่อใช้เจรจากับเจ้าของที่พักหรือนิติบุคคลอย่างไร?",
                 "a": "สามารถทำได้โดยเก็บข้อมูลเสียงเกินมาตรฐานต่อเนื่อง 5–7 วันด้วย SOUNDTEST.PRO แล้วทำหนังสือแจ้งผู้ให้เช่าพร้อมแนบรายงาน PDF หากผู้ให้เช่าไม่แก้ไข ถือว่าผิดหน้าที่ในการส่งมอบทรัพย์สินให้อยู่ในสภาพใช้งานได้อย่างสงบสุข"
             },
             {
@@ -272,7 +272,7 @@ FAQ_DATA = {
                 "a": "Sử dụng 'Chế độ Gác đêm (Sentry Mode)' trên SOUNDTEST.PRO. Bạn chỉ cần đặt ngưỡng cảnh báo (ví dụ 50 dBA); thiết bị sẽ tự động ghi nhận các đợt âm thanh xung kích bất thường, thời lượng và đỉnh dBA mà không tải dữ liệu lên đám mây."
             },
             {
-                "q": "Làm sao để đơn phương chấm dứt hợp đồng thuê nhà lấy lại tiền cọc vì ô nhiễm tiếng ồn?",
+                "q": "Làm sao để ghi nhận tiếng ồn kéo dài nhằm trao đổi với chủ nhà hoặc ban quản lý?",
                 "a": "Thu thập nhật ký vi phạm liên tục trong 5–7 ngày bằng SOUNDTEST.PRO, xuất báo cáo PDF và gửi văn bản yêu cầu chủ nhà can thiệp. Nếu chủ nhà không khắc phục, bạn có căn cứ pháp lý để chấm dứt hợp đồng do không đảm bảo điều kiện sinh hoạt."
             },
             {

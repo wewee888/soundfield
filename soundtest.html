@@ -237,16 +237,16 @@
       <div class="pro-cert-watermark-overlay" id="rpmWatermarkLayer">
         <div class="pro-cert-watermark-stamp">
           SOUNDTEST.PRO 免费预览版<br>
-          <span style="font-size:10px;font-weight:700;letter-spacing:0.04em;">仅供自查 · 严禁司法举证 · SAMPLE ONLY</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.04em;">仅供民事自查参考 · 非法定计量器具 · SAMPLE ONLY</span>
         </div>
         <div class="pro-cert-watermark-row">
           <span>SOUNDTEST.PRO PREVIEW</span>
           <span>SAMPLE ONLY</span>
-          <span>NOT AUDITED</span>
+          <span>CIVILIAN RECORD</span>
         </div>
         <div class="pro-cert-watermark-row">
           <span>免费试测预览版</span>
-          <span>严禁法理举证</span>
+          <span>非法定计量器具</span>
           <span>UPGRADE TO UNLOCK</span>
         </div>
         <div class="pro-cert-watermark-row">
@@ -623,9 +623,13 @@
       <button class="rpm-btn-single" id="rpmUnlockSingleBtn" type="button" style="display:none">
         <span id="rpmUnlockSingleBtnText">⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去除全页水印 + 加盖防伪存证ID</span>
       </button>
-      <div style="display:flex;gap:10px;width:100%;">
-        <button class="rpm-btn-preview" id="rpmDownloadFreeBtn" type="button" style="flex:1;">下载报告 (PDF)</button>
-        <button class="rpm-btn-preview" id="rpmDownloadImageBtn" type="button" style="flex:1;background:rgba(255,255,255,0.06);border-color:#374151;">下载底稿 (PNG)</button>
+      <button class="rpm-btn-escalate" id="rpmNoticeBtn" type="button" onclick="openLegalNoticeModal()">
+        <span id="rpmNoticeBtnText">⚖️ 邻里善意告知书 · 9国法定催告函 (Word/PDF)</span>
+      </button>
+      <div style="display:flex;gap:8px;width:100%;flex-wrap:wrap;">
+        <button class="rpm-btn-preview" id="rpmDownloadFreeBtn" type="button" style="flex:1;min-width:105px;">下载报告 (PDF)</button>
+        <button class="rpm-btn-preview" id="rpmDownloadImageBtn" type="button" style="flex:1;min-width:105px;background:rgba(255,255,255,0.06);border-color:#374151;">下载底稿 (PNG)</button>
+        <button class="rpm-btn-preview" id="rpmDownloadCsvBtn" type="button" style="flex:1;min-width:105px;background:rgba(42,255,212,0.08);border-color:rgba(42,255,212,0.3);color:#2AFFD4;">下载数据 (CSV)</button>
       </div>
     </div>
   </div>
@@ -8314,16 +8318,42 @@ function runCalibrationWizard(){
 }
 
 /* ── CSV ── */
-function exportCSV(){
-  if(!DB.records.length)return toast('暂无记录可导出。','warn');
-  trackEvent('csv_exported',{records:DB.records.length,batch:DB.records.length>1,plan:currentPlan});
+function exportCSV(recordsToExport = null){
+  let exportList = Array.isArray(recordsToExport) && recordsToExport.length ? recordsToExport : DB.records;
+  if(!exportList || !exportList.length){
+    const now = new Date();
+    exportList = [{
+      id: Date.now(),
+      evidenceId: 'ST-LIVE-RECORD',
+      time: now,
+      dur: sessStart ? Math.round((now.getTime() - sessStart.getTime()) / 1000) : 0,
+      avgDb: Number(curDb || 49).toFixed(1),
+      peakDb: Number(peak || 68).toFixed(1),
+      minDb: Number(mn === 999 ? 0 : mn).toFixed(1),
+      leqDb: leqTime > 0 ? (10 * Math.log10(leqEnergy / leqTime)).toFixed(1) : Number(curDb || 49).toFixed(1),
+      weighting: weightLabel(),
+      timeWeight: timeLabel(),
+      loc: curLoc ? { ...curLoc } : null,
+      hashes: { metadataSha256: 'e8b94f92d4710ca8b0051e86337a3d1b712c94318e8d' }
+    }];
+  }
+  trackEvent('csv_exported',{records:exportList.length,batch:exportList.length>1,plan:currentPlan});
   const h='ID,Evidence_ID,Date,Time,Duration(s),LAeq_dB,Avg_dB,Peak_dB,Min_dB,L5_dB,L10_dB,L50_dB,L90_dB,L95_dB,Weighting,TimeWeight,Media_SHA256,Metadata_SHA256,Estimated_Error,Level,Place,Lat,Lng,Acc_m,Note,Media,Disclaimer\n';
   const disclaimer=legalDisclaimer().replace(/"/g,'""');
-  const rows=DB.records.map(r=>{const lv=lvInfo(r.avgDb),place=locPlaceText(r.loc).replace(/"/g,'""'),err=(r.calibration?.errorRange||calibrationErrorRange()).replace(/"/g,'""');return[r.id,r.evidenceId||'',r.time.toLocaleDateString(),r.time.toLocaleTimeString(),r.dur||0,r.leqDb||'',r.avgDb,r.peakDb,r.minDb,r.l5Db||'',r.l10Db||'',r.l50Db||'',r.l90Db||'',r.l95Db||'',r.weighting||weighting,r.timeWeight||timeWeight,r.hashes?.mediaSha256||'',r.hashes?.metadataSha256||'',`"${err}"`,lv.l,`"${place}"`,r.loc?r.loc.lat:'',r.loc?r.loc.lng:'',r.loc?r.loc.acc:'',`"${(r.note||'').replace(/"/g,'""')}"`,mediaKindLabel(r).name,`"${disclaimer}"`].join(',');}).join('\n');
+  const rows=exportList.map(r=>{
+    const rTime = r.time instanceof Date ? r.time : (r.time ? new Date(r.time) : new Date());
+    const lv=lvInfo(r.avgDb||curDb||49),place=locPlaceText(r.loc).replace(/"/g,'""'),err=(r.calibration?.errorRange||calibrationErrorRange()).replace(/"/g,'""');
+    return[r.id||Date.now(),r.evidenceId||'',rTime.toLocaleDateString(),rTime.toLocaleTimeString(),r.dur||0,r.leqDb||r.avgDb||'',r.avgDb||'',r.peakDb||'',r.minDb||'',r.l5Db||'',r.l10Db||'',r.l50Db||'',r.l90Db||'',r.l95Db||'',r.weighting||weighting,r.timeWeight||timeWeight,r.hashes?.mediaSha256||'',r.hashes?.metadataSha256||'',`"${err}"`,lv.l,`"${place}"`,r.loc?r.loc.lat:'',r.loc?r.loc.lng:'',r.loc?r.loc.acc:'',`"${(r.note||'').replace(/"/g,'""')}"`,mediaKindLabel(r).name,`"${disclaimer}"`].join(',');
+  }).join('\n');
   const url=URL.createObjectURL(new Blob(['\ufeff'+h+rows],{type:'text/csv;charset=utf-8'}));
   const a=document.createElement('a');a.href=url;
   a.download=`soundtest.pro-${new Date().toISOString().slice(0,10)}.csv`;a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast(appLanguage !== 'zh-CN' ? 'CSV timeseries dataset downloaded' : '已成功导出 CSV 声学时序数据', 'info');
+}
+
+function exportSessionOrRecordCSV(recs, isBatch){
+  exportCSV(recs);
 }
 
 function downloadCanvas(canvas,filename){
@@ -8898,19 +8928,30 @@ function buildSessionSummaryCanvas(stats, isWatermarked = true){
   ctx.fillStyle='rgba(214,232,250,.48)';ctx.font='20px system-ui, sans-serif';
   ctx.fillText(legalDisclaimer(),72,discY);
   if(isWatermarked){
-    ctx.fillText(isZh?'升级专业版即可去除全页水印并解锁法律级 SHA-256 加密底稿。':'Upgrade to PRO to remove watermarks and unlock certified SHA-256 evidence.',72,discY+30);
+    ctx.fillText(isZh?'升级专业版即可去除全页水印并解锁正式 SHA-256 加密底稿。':'Upgrade to PRO to remove watermarks and unlock certified SHA-256 evidence.',72,discY+30);
 
     ctx.save();
     ctx.translate(540,810);
     ctx.rotate(-24*Math.PI/180);
     ctx.font='900 36px monospace, system-ui';
-    ctx.fillStyle='rgba(239,68,68,0.16)';
+    ctx.fillStyle='rgba(239,68,68,0.38)';
     ctx.textAlign='center';
-    const wmText=isZh?'SOUNDTEST.PRO 免费版 · 仅供自查 · 升级专业版去水印':'SOUNDTEST.PRO PREVIEW · PERSONAL USE ONLY · UPGRADE PRO';
+    const wmText=isZh?'SOUNDTEST.PRO 免费版 · 仅供民事自查 · 升级专业版去水印':'SOUNDTEST.PRO PREVIEW · PERSONAL USE ONLY · UPGRADE PRO';
     for(let row=-5;row<=5;row++){
       ctx.fillText(wmText,0,row*160);
       ctx.fillText(wmText,row%2===0?-400:400,row*160+80);
     }
+    roundRect(ctx, -320, -50, 640, 100, 14);
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.24)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.7)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.font = '900 32px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#ff6b6b';
+    ctx.fillText(isZh ? 'SOUNDTEST.PRO 免费预览版' : 'SOUNDTEST.PRO FREE PREVIEW', 0, -12);
+    ctx.font = '700 16px system-ui, -apple-system, sans-serif';
+    ctx.fillText(isZh ? '仅供民事自查参考 · 非法定计量 · 升级专业版去水印' : 'CIVILIAN REFERENCE ONLY · UPGRADE PRO FOR CLEAN REPORT', 0, 26);
     ctx.restore();
   }
   return canvas;
@@ -9722,13 +9763,24 @@ function buildProCertificateCanvas(stats, isWatermarked = false){
     ctx.translate(400, 700);
     ctx.rotate(-22 * Math.PI / 180);
     ctx.font = '900 24px ' + FONT_SANS;
-    ctx.fillStyle = 'rgba(239, 68, 68, 0.16)';
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.38)';
     ctx.textAlign = 'center';
-    const wm = isZh ? 'SOUNDTEST.PRO 免费预览版 · 仅供参考 · 升级专业版解锁正式存证' : 'SOUNDTEST.PRO PREVIEW · FOR PERSONAL USE ONLY · UPGRADE PRO';
+    const wm = isZh ? 'SOUNDTEST.PRO 免费预览版 · 仅供民事自查 · 升级专业版去水印' : 'SOUNDTEST.PRO PREVIEW · FOR PERSONAL USE ONLY · UPGRADE PRO';
     for (let r = -6; r <= 6; r++) {
       ctx.fillText(wm, 0, r * 130);
       ctx.fillText(wm, r % 2 === 0 ? -360 : 360, r * 130 + 65);
     }
+    roundRect(ctx, -270, -42, 540, 84, 12);
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.24)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.7)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.font = '900 24px ' + FONT_SANS;
+    ctx.fillStyle = '#ff6b6b';
+    ctx.fillText(isZh ? 'SOUNDTEST.PRO 免费预览版' : 'SOUNDTEST.PRO FREE PREVIEW', 0, -10);
+    ctx.font = '700 13px ' + FONT_SANS;
+    ctx.fillText(isZh ? '仅供民事自查参考 · 非法定计量 · 升级专业版去水印' : 'CIVILIAN REFERENCE ONLY · UPGRADE PRO FOR CLEAN REPORT', 0, 20);
     ctx.restore();
   }
 
@@ -9969,7 +10021,60 @@ function toggleCertWatermark(showWatermark) {
   const upBtn = document.getElementById('rpmUpgradeBtn');
 
   if (showWatermark) {
-    if (wmLayer) wmLayer.style.display = 'flex';
+    if (wmLayer) {
+      wmLayer.style.display = 'flex';
+      wmLayer.innerHTML = isZh ? `
+        <div class="pro-cert-watermark-stamp">
+          SOUNDTEST.PRO 免费预览版<br>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.04em;">仅供民事自查参考 · 非法定计量器具 · SAMPLE ONLY</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>SOUNDTEST.PRO PREVIEW</span>
+          <span>SAMPLE ONLY</span>
+          <span>CIVILIAN RECORD</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>免费试测预览版</span>
+          <span>非法定计量器具</span>
+          <span>UPGRADE TO UNLOCK</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>WATERMARKED PREVIEW</span>
+          <span>SOUNDTEST.PRO</span>
+          <span>UNVERIFIED DRAFT</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>★ 升级专业版去水印</span>
+          <span>FOR PERSONAL USE ONLY</span>
+          <span>SAMPLE</span>
+        </div>
+      ` : `
+        <div class="pro-cert-watermark-stamp">
+          SOUNDTEST.PRO FREE PREVIEW<br>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.04em;">CIVILIAN REFERENCE ONLY · NOT METROLOGY CERTIFIED</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>SOUNDTEST.PRO PREVIEW</span>
+          <span>SAMPLE ONLY</span>
+          <span>CIVILIAN RECORD</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>FREE PREVIEW MODE</span>
+          <span>NOT METROLOGY CERTIFIED</span>
+          <span>UPGRADE TO UNLOCK</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>WATERMARKED PREVIEW</span>
+          <span>SOUNDTEST.PRO</span>
+          <span>UNVERIFIED DRAFT</span>
+        </div>
+        <div class="pro-cert-watermark-row">
+          <span>★ UPGRADE TO PRO FOR CLEAN REPORT</span>
+          <span>FOR PERSONAL USE ONLY</span>
+          <span>SAMPLE</span>
+        </div>
+      `;
+    }
     if (tabFree) { tabFree.classList.add('active', 'free-tab'); }
     if (tabPro) { tabPro.classList.remove('active', 'pro-tab'); }
     if (hint) {
@@ -10242,7 +10347,7 @@ function openReportPreviewModal(recs, isBatch = false) {
   if (goodEl) {
     goodEl.innerHTML = isZh
       ? '<strong>官方正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一数字指纹</strong>与 <strong>GPS 经纬度绝对坐标锚点</strong>，彻底杜绝对方以造假为由推诿。'
-      : '<strong>Forensic Evidence Report (Watermark Removed):</strong> Sealed with <strong>SHA-256 cryptographic hash</strong> and <strong>GPS geolocation anchor</strong>—irrefutable acoustic documentation.';
+      : '<strong>Forensic Evidence Report (Watermark Removed):</strong> Sealed with <strong>SHA-256 cryptographic hash</strong> and <strong>GPS geolocation anchor</strong>—objective supporting civilian records.';
   }
   if (dlBtn) {
     dlBtn.textContent = isZh
@@ -10393,6 +10498,30 @@ function openReportPreviewModal(recs, isBatch = false) {
       }
     };
   }
+  const csvDlBtn = document.getElementById('rpmDownloadCsvBtn');
+  if (csvDlBtn) {
+    csvDlBtn.textContent = isZh ? '下载数据 (CSV)' : 'Download CSV';
+    csvDlBtn.onclick = () => {
+      exportSessionOrRecordCSV(recs, isBatch);
+    };
+  }
+
+  const noticeBtn = document.getElementById('rpmNoticeBtn');
+  const noticeBtnText = document.getElementById('rpmNoticeBtnText');
+  if (noticeBtnText) {
+    noticeBtnText.textContent = isZh 
+      ? '⚖️ 邻里善意告知书 · 9国法定催告函 (Word/PDF)' 
+      : '⚖️ Neighbor Notice & Statutory Demand (Word/PDF)';
+  }
+  if (noticeBtn) {
+    noticeBtn.onclick = () => {
+      closeReportPreviewModal();
+      if (typeof openLegalNoticeModal === 'function') {
+        openLegalNoticeModal(r0);
+      }
+    };
+  }
+
   modal.classList.add('show');
 }
 

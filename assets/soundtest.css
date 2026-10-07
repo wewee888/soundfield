@@ -926,6 +926,9 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .rpm-btn-single:active{transform:scale(.98);filter:brightness(.95)}
 .rpm-btn-preview{width:100%;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:var(--tx2);font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
 .rpm-btn-preview:hover{background:rgba(255,255,255,.08);color:#fff}
+.rpm-btn-escalate{width:100%;height:42px;border-radius:999px;border:1px solid rgba(124,155,255,.4);background:linear-gradient(135deg,rgba(124,155,255,.22),rgba(59,130,246,.28));color:#EEF2FF;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 0 18px rgba(124,155,255,.25);transition:all .15s}
+.rpm-btn-escalate:hover{background:linear-gradient(135deg,rgba(124,155,255,.32),rgba(59,130,246,.4));box-shadow:0 0 24px rgba(124,155,255,.35)}
+.rpm-btn-escalate:active{transform:scale(.98)}
 
 /* ── Acoustic Measurement Certificate (Stitch Pro Report) ── */
 .pro-cert-toggle-wrap{margin-bottom:12px;display:flex;flex-direction:column;gap:6px}
