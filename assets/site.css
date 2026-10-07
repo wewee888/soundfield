@@ -2974,6 +2974,35 @@ a.card:hover h3 { color: var(--text-strong); }
 
 .footer-brand p { color: var(--soft); font-size: 13px; line-height: 1.6; margin-top: 12px; }
 
+.footer-badges {
+  margin: 14px 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.footer-badge-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 7px;
+  transition: transform 200ms var(--ease), opacity 200ms var(--ease), filter 200ms var(--ease);
+}
+
+.footer-badge-link:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+  filter: brightness(1.08);
+}
+
+.footer-badge-img {
+  height: 38px;
+  width: auto;
+  border-radius: 7px;
+  display: block;
+}
+
 .footer-flags { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .footer-flag {
