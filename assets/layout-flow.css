@@ -66,9 +66,17 @@ body {
   .hero {
     align-self: start;
     height: auto;
-    overflow: visible;
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
     position: sticky;
     top: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(168,196,255,.2) transparent;
+  }
+
+  .settings-drawer,
+  .settings-drawer-backdrop {
+    display: none !important;
   }
 
   .panels {

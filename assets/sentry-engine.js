@@ -39,6 +39,20 @@ function translateSentryWorkstation() {
 
   setText('sentryLedgerTitle', isZh ? '📁 今夜自动抓获的超标证据' : "📁 Tonight's Auto-Captured Proof");
   setText('sentryViewAllBtn', isZh ? '查看全部证据库 ↗' : 'View All Records ↗');
+
+  const statusText = document.getElementById('sentryStatusText');
+  if (statusText && !isMon) {
+    statusText.textContent = isZh ? '待启动监听 · 点击下方按钮开启守夜' : 'Standby · Click button below to start night watch';
+  }
+
+  const deltaText = document.getElementById('sentryDeltaText');
+  if (deltaText && !isMon) {
+    deltaText.textContent = isZh ? `🛡️ 哨兵已就绪：已设阈值 ${alertTh} dB · 点击下方【启动夜间哨兵守护】开启麦克风监听` : `🛡️ Sentry ready: Preset threshold ${alertTh} dB · Click below to start surveillance`;
+  }
+
+  if (typeof renderSentryIncidentsList === 'function') {
+    renderSentryIncidentsList();
+  }
 }
 
 function setSentryPresetThreshold(db) {

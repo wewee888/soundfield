@@ -1364,6 +1364,74 @@
     </div>
   </div>
 
+  <!-- Action bar: Dual 50% / 50% buttons (一人一半：左侧实时监测，右侧录音存证) -->
+  <div class="action-bar" id="actionBar">
+    <!-- Monitor Button (Left 50%) -->
+    <button class="start-btn" id="startBtn" onclick="toggleMon()" type="button" aria-label="Start Meter">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/>
+      </svg>
+      <span class="btn-copy">
+        <span class="btn-title" id="startBtnTitle">Start Meter</span>
+        <span class="btn-sub" id="startBtnSub">Live dB Only</span>
+      </span>
+    </button>
+
+    <!-- Evidence Recording Button (Right 50%) -->
+    <button class="rec-action-btn idle" id="recActionBtn" onclick="toggleRecAction()" type="button" aria-label="Record Audio">
+      <span class="rec-pulse-dot" id="recActionDot"></span>
+      <span class="btn-copy">
+        <span class="btn-title" id="recActionTitle">Record Audio</span>
+        <span class="btn-sub" id="recActionSub">dB + Audio File</span>
+      </span>
+    </button>
+
+    <div class="action-tools" style="display:none!important">
+      <!-- Hidden compatibility elements preserving IDs for background logic -->
+      <div class="rec-wrap" id="recWrap">
+        <div class="rec-ring" id="rring1"></div>
+        <div class="rec-ring2" id="rring2"></div>
+        <button class="rec-btn idle" id="recBtn" onclick="toggleRec()" title="录音/录像保存" data-autostart-recording="true" aria-label="开始录制证据">
+          <svg id="recIco" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="7" stroke="currentColor"/>
+            <circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none" data-icon="recordDotNotPlay"/>
+          </svg>
+        </button>
+      </div>
+      <button class="icon-btn" id="camBtn" onclick="toggleCam()" disabled title="摄像头"></button>
+      <button class="icon-btn" id="locBtn" onclick="getLoc()" disabled title="获取位置"></button>
+    </div>
+  </div>
+
+  <!-- Crimson Stop & Save Action Bar (Active Recording State) -->
+  <div class="stitch-crimson-wrap" id="stitchCrimsonWrap" style="display:none;">
+    <button class="stitch-crimson-stop-btn" id="stitchStopBtn" onclick="toggleRecAction()" type="button" aria-label="停止录音并保存凭证">
+      <div class="stitch-stop-left">
+        <div class="stitch-stop-icon-box">
+          <div class="stitch-stop-sq"></div>
+        </div>
+        <div class="stitch-stop-copy">
+          <div class="stitch-stop-title" id="stitchStopTitle">停止存证并生成报告</div>
+          <p class="stitch-stop-sub" id="stitchStopSub">自动加密封包 · 加盖防伪指纹</p>
+        </div>
+      </div>
+      <div class="stitch-stop-timer-badge">
+        <span class="stitch-rec-blink"></span>
+        <span class="stitch-stop-timer" id="stitchRecTimer">00:00</span>
+      </div>
+    </button>
+    <div class="stitch-quick-utils">
+      <button class="stitch-util-btn" type="button" onclick="openOrRefreshLocation()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span id="stitchGpsBtnText">刷新 GPS 定位</span>
+      </button>
+      <button class="stitch-util-btn" type="button" onclick="sw('r')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <span id="stitchVaultBtnText">进入证据库</span>
+      </button>
+    </div>
+  </div>
+
   <!-- Stats matrix — IEC 61672 SLM standard notation -->
   <section class="stitch-telemetry-sec">
     <div class="stitch-telemetry-head">
@@ -1451,74 +1519,6 @@
     <div id="sAvg">--<span class="u"> dB</span></div>
     <div id="sL5">--<span class="u"> dB</span></div>
     <div id="sL95">--<span class="u"> dB</span></div>
-  </div>
-
-  <!-- Crimson Stop & Save Action Bar (Active Recording State) -->
-  <div class="stitch-crimson-wrap" id="stitchCrimsonWrap" style="display:none;">
-    <button class="stitch-crimson-stop-btn" id="stitchStopBtn" onclick="toggleRecAction()" type="button" aria-label="停止录音并保存凭证">
-      <div class="stitch-stop-left">
-        <div class="stitch-stop-icon-box">
-          <div class="stitch-stop-sq"></div>
-        </div>
-        <div class="stitch-stop-copy">
-          <div class="stitch-stop-title" id="stitchStopTitle">停止存证并生成报告</div>
-          <p class="stitch-stop-sub" id="stitchStopSub">自动加密封包 · 加盖防伪指纹</p>
-        </div>
-      </div>
-      <div class="stitch-stop-timer-badge">
-        <span class="stitch-rec-blink"></span>
-        <span class="stitch-stop-timer" id="stitchRecTimer">00:00</span>
-      </div>
-    </button>
-    <div class="stitch-quick-utils">
-      <button class="stitch-util-btn" type="button" onclick="openOrRefreshLocation()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        <span id="stitchGpsBtnText">刷新 GPS 定位</span>
-      </button>
-      <button class="stitch-util-btn" type="button" onclick="sw('r')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-        <span id="stitchVaultBtnText">进入证据库</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Action bar: Dual 50% / 50% buttons (一人一半：左侧实时监测，右侧录音存证) -->
-  <div class="action-bar" id="actionBar">
-    <!-- Monitor Button (Left 50%) -->
-    <button class="start-btn" id="startBtn" onclick="toggleMon()" type="button" aria-label="Start Meter">
-      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="#07090F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M8 5v14l11-7z" fill="#07090F" stroke="none"/>
-      </svg>
-      <span class="btn-copy">
-        <span class="btn-title" id="startBtnTitle">Start Meter</span>
-        <span class="btn-sub" id="startBtnSub">Live dB Only</span>
-      </span>
-    </button>
-
-    <!-- Evidence Recording Button (Right 50%) -->
-    <button class="rec-action-btn idle" id="recActionBtn" onclick="toggleRecAction()" type="button" aria-label="Record Audio">
-      <span class="rec-pulse-dot" id="recActionDot"></span>
-      <span class="btn-copy">
-        <span class="btn-title" id="recActionTitle">Record Audio</span>
-        <span class="btn-sub" id="recActionSub">dB + Audio File</span>
-      </span>
-    </button>
-
-    <div class="action-tools" style="display:none!important">
-      <!-- Hidden compatibility elements preserving IDs for background logic -->
-      <div class="rec-wrap" id="recWrap">
-        <div class="rec-ring" id="rring1"></div>
-        <div class="rec-ring2" id="rring2"></div>
-        <button class="rec-btn idle" id="recBtn" onclick="toggleRec()" title="录音/录像保存" data-autostart-recording="true" aria-label="开始录制证据">
-          <svg id="recIco" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
-            <circle cx="12" cy="12" r="7" stroke="currentColor"/>
-            <circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none" data-icon="recordDotNotPlay"/>
-          </svg>
-        </button>
-      </div>
-      <button class="icon-btn" id="camBtn" onclick="toggleCam()" disabled title="摄像头"></button>
-      <button class="icon-btn" id="locBtn" onclick="getLoc()" disabled title="获取位置"></button>
-    </div>
   </div>
 
   <!-- Live monitor notice permanently hidden in favor of dual buttons -->
@@ -2447,7 +2447,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
     地图
   </button>
-  <button class="nav-btn" id="nt-s" onclick="openSettingsDrawer()" role="tab">
+  <button class="nav-btn" id="nt-s" onclick="handleSettingsNavClick()" role="tab">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     设置
   </button>
@@ -2704,6 +2704,68 @@ const PDF_REPORT_TEXT={
     ['70-84 dB','Loud','Traffic or construction; hearing protection is recommended'],
     ['85+ dB','Hazardous','Risk of hearing damage; leave or protect hearing quickly'],
   ],
+};
+const REPORT_TEMPLATE_I18N = {
+  general: {
+    zh: { label: '通用测量（常规记录）', purpose: '适用于日常声学取证、常规环境监测、未特定分类的突发或持续声源记录。', guidance: '建议在门窗关闭及开启状态下各测一组，记录等效声级 LAeq、峰值 Lpeak 及背景声 L90 对比。' },
+    en: { label: 'General Environmental Measurement', purpose: 'Suitable for daily acoustic evidence, routine environmental monitoring, and unclassified sound sources.', guidance: 'Recommended to take measurements with windows open and closed, recording LAeq, Lpeak, and background L90 comparison.' }
+  },
+  complaint: {
+    zh: { label: '投诉沟通', purpose: '适用于居民沟通、物业反馈及初步投诉取证记录。', guidance: '建议记录超标时段、突发尖峰声级与背景噪音差值，附带现场照片佐证。' },
+    en: { label: 'Noise Complaint Evidence Report', purpose: 'For resident communication, property feedback, and preliminary complaint records.', guidance: 'Recommended to record exceedance periods, peak noise differential over background, with photo evidence.' }
+  },
+  property: {
+    zh: { label: '物业协同', purpose: '适用于物业工程排查、设备房巡检及业主调解协调。', guidance: '建议在公共区域与业主室内分别采样，记录机房启停前后的声级对比。' },
+    en: { label: 'Property Noise Coordination Report', purpose: 'For property management coordination and site follow-up.', guidance: 'Recommended to sample both public areas and interior rooms, noting sound level delta before/after plant startup.' }
+  },
+  inspection: {
+    zh: { label: '企业巡检', purpose: '适用于日常环境巡检、车间作业噪声摸底及内部安全合规台账。', guidance: '建议按点位巡回记录 8 小时等效声级 LEX,8h 估算，并标注防护装备佩戴情况。' },
+    en: { label: 'Workplace Noise Inspection Report', purpose: 'For routine environmental inspection and internal records.', guidance: 'Recommended to log 8-hour equivalent noise LEX,8h estimates across designated stations.' }
+  },
+  legal: {
+    zh: { label: '律师沟通辅助', purpose: '适用于法务咨询、证据整理和律师诉前评估，非资质机构法定计量。', guidance: '建议导出带 SHA-256 校验指纹及 GPS 地理坐标的 PDF 报告，保存未裁切原始音频。' },
+    en: { label: 'Acoustic Evidence Aid Report', purpose: 'For evidence organization and legal communication aid, not formal metrology.', guidance: 'Recommended to export reports with SHA-256 digital fingerprint and GPS coordinates, keeping untrimmed original audio.' }
+  },
+  neighbor: {
+    zh: { label: '邻里扰民', purpose: '针对持续邻里噪音、夜间喧闹、撞击敲打及调解沟通记录。', guidance: '建议记录发生时段、持续时间、楼栋/楼层/房间、手动噪声标记和 L10/L90 对比。' },
+    en: { label: 'Neighbor Noise Evidence Report', purpose: 'For documenting repeated neighbor noise, night disturbance, impact sounds, and mediation materials.', guidance: 'Recommended to log time intervals, duration, unit/floor/room, manual noise tags, and L10/L90 comparison.' }
+  },
+  footstep: {
+    zh: { label: '楼上脚步/冲击', purpose: '针对楼上跑跳、高跟鞋脚步、拖拽桌椅及重物坠落等结构传声冲击记录。', guidance: '建议在安静背景下抓拍突发峰值，重点记录 Lmax、L10 频次及持续时间，比对背景声差值。' },
+    en: { label: 'Floor Impact & Footstep Noise Report', purpose: 'For documenting upstairs running/jumping, footsteps, dragging furniture, and structure-borne impact noise.', guidance: 'Recommended to capture sudden peaks in quiet background, focusing on Lmax, L10 event frequency, and duration.' }
+  },
+  renovation: {
+    zh: { label: '装修施工', purpose: '针对室内敲墙打钻、电锯切割及工地施工噪音取证。', guidance: '建议在施工开始、峰值阶段和停止后各记录一段，保留施工位置、时间段和峰值事件。' },
+    en: { label: 'Renovation Construction Noise Report', purpose: 'For documenting renovation or construction noise, site communication, and property follow-up.', guidance: 'Recommended to record intervals at start, peak, and pause of work, preserving location, timeframe, and peak events.' }
+  },
+  traffic: {
+    zh: { label: '道路交通', purpose: '针对临街主干道车流、早晚高峰、车辆鸣笛与低频胎噪记录。', guidance: '建议在早晚高峰时段连续采样 10-20 分钟，记录 LAeq 与 L10（代表车流高峰瞬时声级）。' },
+    en: { label: 'Traffic & Transportation Noise Report', purpose: 'For street traffic, morning/evening rush hours, vehicle horns, and low-frequency tire/road noise.', guidance: 'Recommended to sample continuously for 10-20 min during rush hours, recording LAeq and L10 rush percentiles.' }
+  },
+  elevator: {
+    zh: { label: '电梯机房', purpose: '针对电梯机房曳引机、导轨振动、水泵与低频结构传声排查。', guidance: '建议使用 C/Z 计权和 1/3 倍频程，重点观察 31.5-200 Hz 低频段。' },
+    en: { label: 'Elevator Machine Room Low-Frequency Report', purpose: 'For elevator machine room, shaft, pump, and low-frequency equipment noise review.', guidance: 'Recommended to use C/Z weighting and 1/3 octave spectrum, focusing on the 31.5-200 Hz low-frequency band.' }
+  },
+  ktv: {
+    zh: { label: '商铺/KTV', purpose: '针对沿街商铺广播、酒吧夜店、KTV低音炮震动及餐饮排风扰民。', guidance: '建议夜间多段记录，保留室内测点、窗户状态、L5/L10 峰值和连续背景声。' },
+    en: { label: 'Retail or KTV Disturbance Report', purpose: 'For retail, KTV, bar, restaurant, and entertainment venue disturbance documentation.', guidance: 'Recommended to capture multi-segment night recordings, logging indoor points, window state, and L5/L10 peaks.' }
+  },
+  hvac: {
+    zh: { label: '空调外机', purpose: '针对中央空调机组、分体外机压缩机振动及特定频率单音频噪声取证。', guidance: '建议记录开机、稳定运行和停机前后，结合频谱判断低频或高频啸叫。' },
+    en: { label: 'Outdoor AC Unit Noise Report', purpose: 'For HVAC outdoor unit, fan, compressor, and tonal noise documentation.', guidance: 'Recommended to log before, during, and after operation, inspecting the spectrum for tonal whines or humming.' }
+  },
+  pet: {
+    zh: { label: '宠物犬吠', purpose: '针对邻家犬吠、夜间鸣叫、阳台宠物间歇性高分贝扰民记录。', guidance: '建议开启自动超标录音，记录每次吠叫开始时间、单次持续时长与全天累计频次。' },
+    en: { label: 'Pet & Animal Disturbance Noise Report', purpose: 'For neighbor barking, nocturnal animal disturbance, and intermittent high-decibel intrusion.', guidance: 'Recommended to enable threshold auto-recording, logging barking timestamps, burst durations, and daily counts.' }
+  },
+  appliance: {
+    zh: { label: '水泵/家电共振', purpose: '针对二次供水加压泵、暖气管道共振、变压器与大型家电低频嗡鸣。', guidance: '建议夜间低背景声时段测量，切换 C 计权或 1/3 倍频程查看低频能量集中段。' },
+    en: { label: 'Plumbing & Domestic Appliance Noise Report', purpose: 'For water booster pumps, heating pipe resonance, transformers, and low-frequency appliance hums.', guidance: 'Recommended to test during late-night quiet periods, using C-weighting or 1/3 octave to locate resonance frequencies.' }
+  },
+  boundary: {
+    zh: { label: '厂界噪声', purpose: '适用于工业企业厂界、物流装卸点及排风冷却塔周边初步摸底。', guidance: '建议记录测点、边界方向、时间段、气象/门窗状态，并保留非认证测量声明。' },
+    en: { label: 'Factory Boundary Noise Report', purpose: 'For preliminary factory boundary or workplace environmental noise documentation.', guidance: 'Recommended to note boundary direction, weather/window state, and keep the non-certified measurement disclaimer.' }
+  }
 };
 const reportTemplates={
   general:{title:'Environmental Noise Measurement Report',label:'通用测量',purpose:'适用于日常声学取证、常规环境监测、未特定分类的突发或持续声源记录。',guidance:'建议在门窗关闭及开启状态下各测一组，记录等效声级 LAeq、峰值 Lpeak 及背景声 L90 对比。'},
@@ -3012,7 +3074,19 @@ function translateStaticText(){
   });
 }
 function getReportTemplate(key=reportTemplate){
-  return t(`reportTemplates.${key}`,reportTemplates[key]||reportTemplates.complaint);
+  const isZh = appLanguage === 'zh-CN';
+  const tplDef = REPORT_TEMPLATE_I18N[key] || REPORT_TEMPLATE_I18N.complaint;
+  const base = reportTemplates[key] || reportTemplates.complaint;
+  if (tplDef) {
+    const loc = isZh ? tplDef.zh : tplDef.en;
+    return Object.assign({}, base, {
+      title: loc.title || base.title,
+      label: loc.label,
+      purpose: loc.purpose,
+      guidance: loc.guidance
+    });
+  }
+  return t(`reportTemplates.${key}`, base);
 }
 function formatLocaleDate(date,options){
   return date.toLocaleString(i18n().locale,options);
@@ -3025,7 +3099,8 @@ function applyTranslations(){
     subscriptionBannerTitle:t('ui.upgradeTitle'),subscriptionBannerDesc:t('ui.upgradeDesc'),subscriptionBannerCta:t('ui.upgradePro','升级 Pro'),
     dbLevelMain:lvInfo(curDb||0).l,dbWeight:`${weightLabel()} · ${timeLabel()}`,
     recLabel:isRec?'● '+t('ui.recording')+'...':t('ui.notRecording'),videoRecBtn:t('ui.startVideo'),camModePill:t(`camera.${cameraMode}`),
-    camOverlayLevel:t('camera.pending'),camOverlayPlace:curLoc?locPlaceText(curLoc)||t('camera.placePending'):t('camera.placePending'),
+    camOverlayLevel:t('camera.pending', isZh ? '声级待测' : 'Pending dB'),
+    camOverlayPlace:curLoc?locPlaceText(curLoc)||t('camera.placePending', isZh ? '地点待识别' : 'Locating...'):t('camera.placePending', isZh ? '地点待识别' : 'Locating...'),
     camModePreview:t('ui.preview'),camModePhoto:t('ui.photoMode'),camModeVideo:t('ui.videoMode'),camModeHint:t('ui.cameraHint'),photoBtn:t('ui.openPhoto'),
     locVal:curLoc?document.getElementById('locVal')?.textContent||t('ui.noLocation'):t('ui.noLocation'),locPlace:curLoc?(locPlaceText(curLoc)||document.getElementById('locPlace')?.textContent||t('ui.placeNotStarted')):t('ui.placeNotStarted'),
     languageSelect:appLanguage,storeListingText:t('storeListing'),planStatus:document.getElementById('planStatus')?.textContent||'',
@@ -3251,6 +3326,7 @@ function applyTranslations(){
   setText('vtLabelTrend',t('ui.trend',appLanguage!=='zh-CN'?'Trend':'趋势'));
   if(typeof applyPermModalLanguage==='function') applyPermModalLanguage();
   if(typeof translateSettingsDrawer==='function') translateSettingsDrawer();
+  if(typeof translateDesktopSettings==='function') translateDesktopSettings();
 }
 
 function translateSettingsDrawer() {
@@ -3380,16 +3456,427 @@ function translateSettingsDrawer() {
   setText('watermarkLocationLabel', isZh ? '定位' : 'GPS');
   setText('watermarkRecordsLabel', isZh ? '证据库' : 'Records');
 }
+
+function translateDesktopSettings() {
+  const isZh = appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh'));
+  const langKey = (typeof appLanguage === 'string' ? appLanguage.split('-')[0] : 'en');
+  const pum = (typeof PUM_I18N !== 'undefined' && PUM_I18N[langKey]) 
+    ? PUM_I18N[langKey] 
+    : ((typeof window !== 'undefined' && window.PUM_I18N && window.PUM_I18N[langKey]) 
+        ? window.PUM_I18N[langKey] 
+        : ((typeof PUM_I18N !== 'undefined' && PUM_I18N.en) || (window.PUM_I18N && window.PUM_I18N.en) || null));
+
+  // 1. Settings Hub Card
+  setText('settingsHubCardLabel', isZh ? '设置中心' : 'Settings Hub');
+  setText('settingsHubTitle', isZh ? '选择要调整的功能' : 'Choose a settings area');
+  setText('settingsHubDesc', isZh ? '常用设置在前，管理员和发布资料需要超级管理员登录后才显示。' : 'Common settings stay up front. Admin and release assets unlock after super admin sign-in.');
+  setText('settingsHubBadge', isZh ? '快速设置' : 'QUICK SETTINGS');
+
+  // 2. Subscription & Licensing Section (#subscriptionPlans)
+  const subSection = document.getElementById('subscriptionPlans');
+  if (subSection) {
+    const clabel = subSection.querySelector('.clabel');
+    if (clabel) clabel.textContent = isZh ? '订阅权益' : 'Membership & Licensing Plans';
+
+    setPlaceholder('memberEmailInput', isZh ? '会员邮箱 / Billing email' : 'Member email / Billing email');
+    setText('membershipLookupBtn', isZh ? '验证会员' : 'Verify License');
+    setText('membershipLogoutBtn', isZh ? '退出会员' : 'Sign Out');
+
+    // 4 plan cards
+    const singleCard = subSection.querySelector('[data-plan-card="single"]');
+    if (singleCard) {
+      const p = pum?.plans?.single;
+      const nameEl = singleCard.querySelector('.plan-name');
+      if (nameEl) nameEl.textContent = isZh ? '单次报告解锁' : (p?.name || 'Single Report Forensic Pass');
+      const priceEl = singleCard.querySelector('.plan-price');
+      if (priceEl) priceEl.innerHTML = isZh 
+        ? '<del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥9.9</del>¥3.9'
+        : `<del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">${p?.orig || '$4.99'}</del>${p?.price || '$1.99'}`;
+      const subEl = singleCard.querySelector('div[style*="margin:-2px 0 6px"]') || singleCard.children[2];
+      if (subEl) subEl.textContent = isZh ? '限时特惠 · 单份去水印' : (p?.tag || 'Single use · Watermark removed');
+      const featEl = singleCard.querySelector('.plan-features');
+      if (featEl) featEl.textContent = isZh 
+        ? '单次报告去除全页防伪水印、加盖 SHA-256 唯一数字防伪指纹、GPS 经纬度绝对坐标锚点、法务级文书抬头。'
+        : (p?.desc || 'Remove watermark for this report only · Cryptographic SHA-256 digital stamp & verified timestamp.');
+      const btnEl = singleCard.querySelector('button');
+      if (btnEl) btnEl.textContent = isZh ? '解锁单次报告' : 'Unlock Single Pass';
+    }
+
+    const yearlyCard = subSection.querySelector('[data-plan-card="yearly"]');
+    if (yearlyCard) {
+      const p = pum?.plans?.yearly;
+      const badgeEl = yearlyCard.querySelector('div[style*="border-radius:999px"]') || yearlyCard.children[0];
+      if (badgeEl) badgeEl.textContent = isZh ? '★ 最受欢迎 · 立省 67%' : (p?.tag || '★ MOST POPULAR · SAVE 58%');
+      const nameEl = yearlyCard.querySelector('.plan-name');
+      if (nameEl) nameEl.textContent = isZh ? 'Pro 年度全能版' : (p?.name || 'Pro Annual Pass');
+      const priceEl = yearlyCard.querySelector('.plan-price');
+      if (priceEl) priceEl.innerHTML = isZh 
+        ? '<del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥59.9</del>¥19.9<span style="font-size:12px;color:rgba(214,232,250,.6)">/年</span>'
+        : `<del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">${p?.orig || '$59.99'}</del>${p?.price || '$24.99'}<span style="font-size:12px;color:rgba(214,232,250,.6)">/yr</span>`;
+      const subEl = yearlyCard.querySelector('div[style*="margin:-2px 0 6px"]') || yearlyCard.children[3];
+      if (subEl) subEl.textContent = isZh ? '折合仅 ¥1.6/月 · 彻底搞定长期纠纷' : 'Equivalent to $2.08/mo · Long-term dispute solution';
+      const featEl = yearlyCard.querySelector('.plan-features');
+      if (featEl) featEl.textContent = isZh 
+        ? '365天无限次无水印导出、🌙 夜间噪音哨兵模式、📊 《连续噪音滋扰评估档案》、带阅读回执安全分享、云端加密存证。'
+        : (p?.desc || '365 days unlimited clean exports · Overnight Sentry surveillance · Legal notice templates · Tamper-evident cloud seal.');
+      const btnEl = yearlyCard.querySelector('button');
+      if (btnEl) btnEl.textContent = isZh ? '开通年卡 (推荐)' : 'Unlock Annual (Recommended)';
+    }
+
+    const proCard = subSection.querySelector('[data-plan-card="pro"]');
+    if (proCard) {
+      const p = pum?.plans?.pro;
+      const nameEl = proCard.querySelector('.plan-name');
+      if (nameEl) nameEl.textContent = isZh ? 'Pro 月度会员' : (p?.name || 'Pro Monthly Pass');
+      const priceEl = proCard.querySelector('.plan-price');
+      if (priceEl) priceEl.innerHTML = isZh 
+        ? '<del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥19.9</del>¥9.9<span style="font-size:12px;color:rgba(214,232,250,.6)">/月</span>'
+        : `<del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">${p?.orig || '$9.99'}</del>${p?.price || '$4.99'}<span style="font-size:12px;color:rgba(214,232,250,.6)">/mo</span>`;
+      const subEl = proCard.querySelector('div[style*="margin:-2px 0 6px"]') || proCard.children[2];
+      if (subEl) subEl.textContent = isZh ? '30天集中维权首选' : (p?.tag || '30-day intensive dispute pass');
+      const featEl = proCard.querySelector('.plan-features');
+      if (featEl) featEl.textContent = isZh 
+        ? '30天内无限次无水印报告导出、夜间哨兵自动超标录制、批量 CSV/PDF 导出、无广告。'
+        : (p?.desc || '30 days unlimited clean exports · Overnight auto-recording · Batch CSV/PDF exports · Ad-free.');
+      const btnEl = proCard.querySelector('button');
+      if (btnEl) btnEl.textContent = isZh ? '开通月卡' : 'Unlock Monthly';
+    }
+
+    const lifetimeCard = subSection.querySelector('[data-plan-card="lifetime"]');
+    if (lifetimeCard) {
+      const p = pum?.plans?.lifetime;
+      const badgeEl = lifetimeCard.querySelector('div[style*="border-radius:999px"]') || lifetimeCard.children[0];
+      if (badgeEl) badgeEl.textContent = isZh ? '💎 终身买断 · 立省 ¥159.1' : (p?.tag || '💎 LIFETIME · SAVE $119');
+      const nameEl = lifetimeCard.querySelector('.plan-name');
+      if (nameEl) nameEl.textContent = isZh ? '终身永久买断版' : (p?.name || 'Pro Lifetime License');
+      const priceEl = lifetimeCard.querySelector('.plan-price');
+      if (priceEl) priceEl.innerHTML = isZh 
+        ? '<del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥199</del>¥39.9'
+        : `<del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">${p?.orig || '$199.00'}</del>${p?.price || '$79.99'}`;
+      const subEl = lifetimeCard.querySelector('div[style*="margin:-2px 0 6px"]') || lifetimeCard.children[3];
+      if (subEl) subEl.textContent = isZh ? '一次付费 · 永久有效无续费' : 'One-time payment · Permanent access · No renewal fees';
+      const featEl = lifetimeCard.querySelector('.plan-features');
+      if (featEl) featEl.textContent = isZh 
+        ? '永久无限制使用所有 PRO 功能、永久去水印、未来所有升级功能免费享用、终身云端留存。'
+        : (p?.desc || 'Permanent access to all PRO features · Clean exports · Free updates for all future versions.');
+      const btnEl = lifetimeCard.querySelector('button');
+      if (btnEl) btnEl.textContent = isZh ? '终身买断' : 'Unlock Lifetime';
+    }
+
+    const quickActionBtns = subSection.querySelectorAll('.tool-actions button');
+    if (quickActionBtns.length >= 3) {
+      const py = pum?.plans?.yearly;
+      const ps = pum?.plans?.single;
+      const pl = pum?.plans?.lifetime;
+      quickActionBtns[0].textContent = isZh ? '开通 Pro 年卡 (¥19.9)' : `Unlock Pro Annual (${py?.price || '$24.99'})`;
+      quickActionBtns[1].textContent = isZh ? '解锁单次报告 (¥3.9)' : `Unlock Single Report (${ps?.price || '$1.99'})`;
+      quickActionBtns[2].textContent = isZh ? '终身买断 (¥39.9)' : `Unlock Lifetime (${pl?.price || '$79.99'})`;
+    }
+
+    const planStatusEl = document.getElementById('planStatus');
+    if (planStatusEl && (!membershipState || !membershipState.active)) {
+      planStatusEl.textContent = isZh
+        ? '当前方案：Free。已接入安全微信收银台与国际信用卡通道。'
+        : 'Current Plan: Free. Secure checkout via Stripe / Creem (Credit Card, Apple Pay, Google Pay).';
+    }
+  }
+
+  // 3. Measurement Settings Section
+  const measureSection = document.querySelector('.card.layout-settings-measure[data-settings-section="measure"]');
+  if (measureSection) {
+    const clabel = measureSection.querySelector('.clabel');
+    if (clabel) clabel.textContent = isZh ? '测量设置' : 'Measurement Settings';
+    
+    const rows = measureSection.querySelectorAll('.srow');
+    if (rows[1]) {
+      const lbl = rows[1].querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '频率计权' : 'Frequency Weighting';
+      const desc = rows[1].querySelector('.sdesc'); if (desc) desc.textContent = isZh ? 'A 计权贴近人耳感知，C 计权保留更多低频，Z 为近似平直响应。' : 'A-weighting for human hearing, C for low frequencies, Z for unweighted flat response.';
+    }
+    if (rows[2]) {
+      const lbl = rows[2].querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '时间计权' : 'Time Weighting';
+      const desc = rows[2].querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '快响应用于瞬态，慢响应用于稳态' : 'Fast (125ms) for transient spikes, Slow (1s) for steady average';
+    }
+    const timeBtns = measureSection.querySelectorAll('#timeSeg button');
+    if (timeBtns.length >= 2) {
+      timeBtns[0].textContent = isZh ? '快' : 'Fast';
+      timeBtns[1].textContent = isZh ? '慢' : 'Slow';
+    }
+
+    const advTitle = measureSection.querySelector('.advanced-calibration-title');
+    if (advTitle) advTitle.textContent = isZh ? '高级校准' : 'Advanced Calibration';
+    const advDesc = measureSection.querySelector('.advanced-calibration-desc');
+    if (advDesc) advDesc.textContent = isZh ? '系统已针对各类设备内置专业声级计校准基线（实测误差约 1~5 dB）。如需针对特定外接麦克风进一步对齐，可在此精细微调。' : 'Built-in reference baselines verified against certified meters (approx 1~5 dB error). Fine-tune here for external mics.';
+    const advBtn = document.getElementById('advancedCalibrationBtn');
+    if (advBtn) advBtn.textContent = isZh ? '点击进入此设置' : 'Open Calibration Settings';
+    const advWarn = measureSection.querySelector('.advanced-warning');
+    if (advWarn) advWarn.innerHTML = isZh
+      ? '<strong>已通过专业高精度声级计实测校对</strong>预置基准已针对主流设备麦克风经过高精度声级计对比调校，典型实测误差控制在 ±1~5 dB 范围内。若有更高精度需求，亦可使用 94 dB 声学校准器或专业检定声级计进行二次个性化精细对齐。'
+      : '<strong>Verified with Certified Sound Level Meters</strong>Preset baselines calibrated against reference meters (typical error ±1~5 dB). Fine-tune against a 94 dB acoustic calibrator if needed.';
+    
+    const calCard = document.getElementById('calibrationPresetCard');
+    if (calCard) {
+      const lbl = calCard.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '设备推荐校准基线' : 'Device Recommended Baseline';
+      const desc = calCard.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '已内置经专业声级计校对的设备基线（实测误差约 ±1~5 dB），建议保留预设或按需微调。' : 'Built-in calibrated baselines for common devices (approx ±1~5 dB error). Keep default or fine-tune as needed.';
+      const btn = calCard.querySelector('button'); if (btn) btn.textContent = isZh ? '应用当前设备推荐' : 'Apply Device Preset';
+    }
+    const presetSel = document.getElementById('calibrationPresetSelect');
+    if (presetSel && presetSel.options.length >= 4) {
+      presetSel.options[0].textContent = isZh ? 'PC 桌面浏览器 -12 dB' : 'PC Desktop Browser -12 dB';
+      presetSel.options[1].textContent = isZh ? '平板浏览器 -8 dB' : 'Tablet Browser -8 dB';
+      presetSel.options[2].textContent = isZh ? 'Android 浏览器 -8 dB' : 'Android Browser -8 dB';
+      presetSel.options[3].textContent = isZh ? 'iPhone / iPad -6 dB' : 'iPhone / iPad -6 dB';
+    }
+
+    const micRow = document.getElementById('micR')?.closest('.srow');
+    if (micRow) {
+      const lbl = micRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '麦克风增益' : 'Microphone Gain';
+      const desc = micRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '高级功能。仅在了解设备输入链路时调整；过高会削波或放大噪声。' : 'Advanced. Pre-amp gain; values too high may clip audio or amplify noise.';
+    }
+    const calRow = document.getElementById('calR')?.closest('.srow');
+    if (calRow) {
+      const lbl = calRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '校准偏移' : 'Calibration Offset';
+      const desc = calRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '高级功能。根据专业设备对比修正；调整值会写入证据照片和报告。' : 'Advanced. Offsets baseline against reference meters; saved to reports and evidence photos.';
+      const btn = calRow.querySelector('button'); if (btn) btn.textContent = isZh ? '恢复推荐基线' : 'Reset to Recommended';
+    }
+
+    const wizRow = document.getElementById('refMeterDb')?.closest('.srow');
+    if (wizRow) {
+      const lbl = wizRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '校准向导' : 'Calibration Wizard';
+      const desc = wizRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '输入专业声级计读数和本机读数，自动计算校准偏移并保存校准档案。' : 'Enter reference meter and device dB to calculate offset and save calibration profile.';
+      const labels = wizRow.querySelectorAll('.cal-field label');
+      if (labels[0]) labels[0].textContent = isZh ? '专业仪读数 dB' : 'Reference Meter dB';
+      if (labels[1]) labels[1].textContent = isZh ? '本机读数 dB' : 'Device Meter dB';
+      if (labels[2]) labels[2].textContent = isZh ? '标准/设备来源' : 'Standard / Source';
+      if (labels[3]) labels[3].textContent = isZh ? '参考误差 ±dB' : 'Tolerance ±dB';
+      const btn = wizRow.querySelector('button'); if (btn) btn.textContent = isZh ? '应用校准' : 'Apply Calibration';
+    }
+
+    const thRow = document.getElementById('thR')?.closest('.srow');
+    if (thRow) {
+      const lbl = thRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '告警阈值' : 'Alert Threshold';
+      const desc = thRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '超过此分贝值触发警告' : 'Trigger visual warning when noise exceeds this level';
+    }
+    const alertRow = document.getElementById('alertTog')?.closest('.srow');
+    if (alertRow) {
+      const lbl = alertRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '启用告警' : 'Enable Alert Banner';
+      const desc = alertRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '超过阈值时显示横幅提醒' : 'Display banner alert when threshold is exceeded';
+    }
+    const dnRow = document.getElementById('dayNightTog2')?.closest('.srow');
+    if (dnRow) {
+      const lbl = dnRow.querySelector('.slabel');
+      if (lbl) {
+        const isDay = typeof isDaytime === 'function' ? isDaytime() : true;
+        lbl.innerHTML = `${isZh ? '自动切换阈值' : 'Auto Day/Night Threshold'} <span id="dayNightBadge2" class="day-badge" style="${document.getElementById('dayNightBadge2')?.style.display||'none'}">${isZh ? (isDay ? '白天' : '夜间') : (isDay ? 'Day' : 'Night')}</span>`;
+      }
+      const desc = dnRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '白天 55 dB / 夜间 45 dB 自动切换（7:00–22:00 为白天）' : 'Auto switch: 55 dB day / 45 dB night (07:00–22:00 daytime)';
+    }
+    const dnOpts = document.getElementById('dayNightOpts2');
+    if (dnOpts) {
+      const lbl = dnOpts.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '当前阈值' : 'Current Active Threshold';
+    }
+    const susRow = document.getElementById('sustainedAlertTog')?.closest('.srow');
+    if (susRow) {
+      const lbl = susRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '持续超标告警' : 'Sustained Exceedance Alert';
+      const desc = susRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '超标持续设定秒数后才触发告警（区别于瞬时超标告警）' : 'Only alert after noise stays continuously above threshold';
+    }
+    const susOpts = document.getElementById('sustainedAlertOpts2');
+    if (susOpts) {
+      const lbl = susOpts.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '持续超标秒数' : 'Sustained Duration (seconds)';
+      const desc = susOpts.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '持续超过阈值多少秒后告警' : 'Seconds above threshold before alerting';
+    }
+    const autoRecRow = document.getElementById('autoRecTog2')?.closest('.srow');
+    if (autoRecRow) {
+      const lbl = autoRecRow.querySelector('.slabel');
+      if (lbl) {
+        lbl.innerHTML = `<span id="autoRecLockIcon2" style="margin-right:5px;opacity:0.6">${document.getElementById('autoRecLockIcon2')?.textContent||'🔒'}</span>${isZh ? '超标自动录音' : 'Auto-Record on Exceedance'} <span id="autoRecProBadge2" class="pro-feature-badge" style="${document.getElementById('autoRecProBadge2')?.style.display||'none'}">PRO</span>`;
+      }
+      const desc = autoRecRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '超标持续数秒后自动开始录音，停止后继续录制一段时间。Pro 专属功能。' : 'Automatically record audio when noise exceeds threshold. Pro feature.';
+    }
+    const autoRecOpts = document.getElementById('autoRecOpts2');
+    if (autoRecOpts) {
+      const lbls = autoRecOpts.querySelectorAll('.slabel');
+      const descs = autoRecOpts.querySelectorAll('.sdesc');
+      if (lbls[0]) lbls[0].textContent = isZh ? '超标持续秒数' : 'Trigger Delay (seconds)';
+      if (descs[0]) descs[0].textContent = isZh ? '超标持续多久后开始录音' : 'How long noise must exceed threshold before recording starts';
+      if (lbls[1]) lbls[1].textContent = isZh ? '停止后录制秒数' : 'Post-Trigger Duration (seconds)';
+      if (descs[1]) descs[1].textContent = isZh ? '超标结束后继续录制多少秒' : 'Seconds to continue recording after sound drops';
+    }
+    const placeRow = document.getElementById('placeTog')?.closest('.srow');
+    if (placeRow) {
+      const lbl = placeRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '地点识别' : 'Location & Landmark Tagging';
+      const desc = placeRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '定位后识别小区、道路或附近地点；会把坐标发送给地图服务。' : 'Tag neighborhood, street, and coordinates to records.';
+    }
+    const powerRow = document.getElementById('powerSaverTog')?.closest('.srow');
+    if (powerRow) {
+      const lbl = powerRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '长时省电模式' : 'Long-Run Power Saver';
+      const desc = powerRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '默认开启。手机连续监测超过 8 分钟后自动降低分析与动画刷新频率，减少发烫和耗电。' : 'Auto-dims display and optimizes refresh rate after 8 min of continuous monitoring.';
+    }
+    const smRow = document.getElementById('smR')?.closest('.srow');
+    if (smRow) {
+      const lbl = smRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '波形平滑' : 'Waveform Smoothing';
+      const desc = smRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '值越高波形越平滑' : 'Higher values smooth the waveform display';
+    }
+  }
+
+  // 4. Notes & About Section
+  const aboutSection = document.querySelector('.card.layout-settings-about');
+  if (aboutSection) {
+    const clabel = aboutSection.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '说明' : 'Notes & Specifications';
+    const rows = aboutSection.querySelectorAll('.srow');
+    if (rows[0]) {
+      const lbl = rows[0].querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '精度' : 'Accuracy';
+      const desc = rows[0].querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '环境记录与证据辅助，正式检测请以经检定声级计复核为准。' : 'Civilian environmental documentation and dispute support; formal testing requires a certified meter.';
+    }
+    if (rows[1]) {
+      const lbl = rows[1].querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '计权' : 'Weighting';
+      const desc = rows[1].querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '默认 A 计权（dBA），可在设置中切换 Z 计权（dBZ）。' : 'Default A-weighting (dBA); Z-weighting (dBZ) available in settings.';
+    }
+    if (rows[2]) {
+      const lbl = rows[2].querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '版本' : 'Version';
+      const desc = rows[2].querySelector('.sdesc'); if (desc) desc.textContent = isZh ? 'SOUNDTEST.PRO v0.9.0 (预发布) · 本地处理 · 地点识别可联网 · 无需安装' : 'SOUNDTEST.PRO v0.9.0 · On-device processing · Geotagged · No install required';
+    }
+  }
+
+  // 5. Privacy & Compliance Section
+  const privSection = document.getElementById('privacyComplianceCard');
+  if (privSection) {
+    const clabel = privSection.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '隐私与合规' : 'Privacy & Compliance';
+    const items = privSection.querySelectorAll('.compliance-item');
+    if (items[0]) items[0].innerHTML = isZh ? '<strong>麦克风：</strong>仅用于本机实时声级计算；未点击录像时不保存音频。' : '<strong>Microphone:</strong> 100% on-device Web Audio processing; zero audio upload.';
+    if (items[1]) items[1].innerHTML = isZh ? '<strong>摄像头：</strong>仅用于用户主动拍照、录像和声学证据照片。' : '<strong>Camera:</strong> Active only during user-initiated photo/video capture; stamped locally.';
+    if (items[2]) items[2].innerHTML = isZh ? '<strong>定位：</strong>用于地点标注；开启地点识别时，坐标会发送给所选地图服务。' : '<strong>Location:</strong> Used for timestamping and local evidence map display.';
+    if (items[3]) items[3].innerHTML = isZh ? '<strong>数据：</strong>记录默认保存在本机浏览器，可随时导出或清空。' : '<strong>Data:</strong> All records and media stored safely in local browser IndexedDB.';
+    const btns = privSection.querySelectorAll('button');
+    if (btns[0]) btns[0].textContent = isZh ? '清除地图 Key' : 'Clear Map Keys';
+    if (btns[1]) btns[1].textContent = isZh ? '删除全部本地记录' : 'Delete All Local Records';
+  }
+
+  // 6. User Feedback Section
+  const fbSection = document.getElementById('feedbackSupportCard');
+  if (fbSection) {
+    const clabel = fbSection.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '用户反馈与报错' : 'Feedback & Diagnostics';
+    const hint = document.getElementById('feedbackPlanHint');
+    if (hint) hint.innerHTML = isZh ? '<strong>Free 基础反馈</strong>免费版也可以提交问题；Pro / Team 会自动标注为优先支持。' : '<strong>Free Feedback:</strong> All users can submit reports; Pro/Team issues are prioritized.';
+    const fbType = document.getElementById('feedbackType');
+    if (fbType && fbType.options.length >= 5) {
+      fbType.options[0].textContent = isZh ? '报错 / 无法使用' : 'Bug / Unable to use';
+      fbType.options[1].textContent = isZh ? '读数或校准问题' : 'Accuracy / Calibration issue';
+      fbType.options[2].textContent = isZh ? '界面体验建议' : 'UI / UX suggestion';
+      fbType.options[3].textContent = isZh ? '订阅 / 付款问题' : 'Billing / Subscription issue';
+      fbType.options[4].textContent = isZh ? '功能建议' : 'Feature request';
+    }
+    const fbSev = document.getElementById('feedbackSeverity');
+    if (fbSev && fbSev.options.length >= 3) {
+      fbSev.options[0].textContent = isZh ? '一般' : 'Normal';
+      fbSev.options[1].textContent = isZh ? '影响工作' : 'High / Disruptive';
+      fbSev.options[2].textContent = isZh ? '无法完成记录' : 'Critical / Blocking';
+    }
+    const fbText = document.getElementById('feedbackText');
+    if (fbText) fbText.placeholder = isZh ? '请描述你遇到的问题、手机型号/浏览器、复现步骤，或希望增加的功能。' : 'Describe the issue, device/browser, reproduction steps, or requested features.';
+    const fbBtns = fbSection.querySelectorAll('.tool-actions button');
+    if (fbBtns[0]) fbBtns[0].textContent = isZh ? '复制反馈内容' : 'Copy Report';
+    if (fbBtns[1]) fbBtns[1].textContent = isZh ? '下载反馈包' : 'Download Report';
+  }
+
+  // 7. Report Templates Section
+  const repSection = document.querySelector('.card.layout-settings-report');
+  if (repSection) {
+    const clabel = repSection.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '报告模板' : 'Report Templates & Dossier Settings';
+    const row0 = repSection.querySelectorAll('.srow')[0];
+    if (row0) {
+      const lbl = row0.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '模板类型' : 'Report Template Type';
+      const desc = row0.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '根据使用场景调整 PDF 标题、用途说明和报告语气。' : 'Adjust PDF title, purpose notes, and report tone based on the scenario.';
+    }
+    const row1 = repSection.querySelectorAll('.srow')[1];
+    if (row1) {
+      const lbl = row1.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '组织/项目名' : 'Organization / Property Project Name';
+      const desc = row1.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '会显示在 PDF 报告中，可填写小区、公司、项目或客户名。' : 'Shown in PDF reports; enter community, organization, or project name.';
+    }
+    const row2 = repSection.querySelectorAll('.srow')[2];
+    if (row2) {
+      const lbl = row2.querySelector('.slabel');
+      if (lbl) lbl.innerHTML = `${isZh ? '位置修正与测点水印' : 'Custom Point & Watermark'} <span class="pro-feature-badge">PRO</span>`;
+    }
+    setText('settingsLcmBtn', isZh ? '配置专属水印' : 'Configure Watermark');
+  }
+
+  // 8. Media Storage Card
+  const medSection = document.getElementById('mediaStorageCard');
+  if (medSection) {
+    const clabel = medSection.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '媒体文件与会员保存策略' : 'Media Storage & Retention Policy';
+    const shCard = document.getElementById('storageHealthCard');
+    if (shCard) {
+      const st = shCard.querySelector('strong'); if (st) st.textContent = isZh ? '本地存储健康' : 'Local Storage Health';
+    }
+    const shSum = document.getElementById('storageHealthSummary');
+    if (shSum) shSum.textContent = isZh ? '录音/录像仍建议在记录页逐条保存到手机或电脑。' : 'Audio/video clips are recommended to be downloaded individually from the Records tab.';
+    const medBtns = medSection.querySelectorAll('.tool-actions button');
+    if (medBtns[0]) medBtns[0].textContent = isZh ? '刷新存储状态' : 'Refresh Storage';
+    if (medBtns[1]) medBtns[1].textContent = isZh ? '导出本机备份 JSON' : 'Export Local Backup JSON';
+  }
+
+  // 9. Admin Login Card
+  const adminLogCard = document.getElementById('adminLoginCard');
+  if (adminLogCard) {
+    const clabel = adminLogCard.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '超级管理员登录' : 'Super Admin Login';
+    const note = adminLogCard.querySelector('.admin-note');
+    if (note) {
+      note.innerHTML = isZh
+        ? '<strong>静态原型门禁</strong>默认系统管理员账户为 <code>admin</code>。正式版本必须改为后端账号、角色和审计日志控制，不能依赖前端密码。'
+        : '<strong>Static Prototype Gate</strong> Default administrator account is <code>admin</code>. Production requires backend authentication, role policies, and audit logging.';
+    }
+    const adminUser = document.getElementById('adminUserInput');
+    if (adminUser) adminUser.placeholder = isZh ? 'admin' : 'admin';
+    setPlaceholder('adminPassInput', isZh ? '管理员密码' : 'Admin password');
+    const btns = adminLogCard.querySelectorAll('.tool-actions button');
+    if (btns[0]) btns[0].textContent = isZh ? '登录管理员' : 'Sign In Admin';
+    if (btns[1]) btns[1].textContent = isZh ? '退出管理员' : 'Sign Out Admin';
+    const status = document.getElementById('adminLoginStatus');
+    if (status && !isAdminMode()) {
+      status.textContent = isZh ? '未登录。管理员功能不会展示给普通用户。' : 'Not signed in. Admin controls remain hidden from standard users.';
+    }
+  }
+
+  // 10. Admin Ops Card
+  const adminOps = document.getElementById('adminOpsCard');
+  if (adminOps) {
+    const clabel = adminOps.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '运营管理员设置' : 'Operations & Admin Settings';
+    const opsNote = adminOps.querySelector('.admin-note');
+    if (opsNote) {
+      opsNote.innerHTML = isZh
+        ? '<strong>仅超级管理员可见</strong>这些配置用于上架、合规、地图服务 Key、发布自检和运营资料，不应展示给普通订阅用户。当前为静态原型门禁；正式版本应由后端账号权限、角色和审计日志控制。'
+        : '<strong>Super Admin Only</strong> These configurations are used for compliance, map API keys, release checklists, and operations. Hidden from standard subscribers.';
+    }
+  }
+
+  // 11. Ad slot at bottom of Settings panel
+  const adSlots = document.querySelectorAll('#p-s div[style*="border:1px dashed"]');
+  adSlots.forEach(el => {
+    el.textContent = isZh ? '广告位预留 · 设置页底部低干扰展示' : 'Reserved ad slot · Low-interruption display in settings';
+  });
+
+  // 12. Report Template Select & Guidance
+  updateReportTemplateOptions();
+}
+window.translateDesktopSettings = translateDesktopSettings;
 function updateReportTemplateOptions(){
-  const select=document.getElementById('reportTemplate');if(!select)return;
-  [...select.options].forEach(option=>{option.textContent=getReportTemplate(option.value).label;});
+  const isZh = appLanguage === 'zh-CN';
+  const selects = document.querySelectorAll('select#reportTemplate, select[id="reportTemplate"], #p-s #reportTemplate, #settingsDrawer #reportTemplate');
+  selects.forEach(select => {
+    [...select.options].forEach(option => {
+      const tpl = getReportTemplate(option.value);
+      if (tpl && tpl.label) option.textContent = tpl.label;
+    });
+  });
   renderTemplateGuidance();
 }
 
 function renderTemplateGuidance(){
-  const el=document.getElementById('templateGuidance');if(!el)return;
-  const tpl=getReportTemplate(reportTemplate);
-  el.textContent=tpl.guidance||tpl.purpose||'';
+  const isZh = appLanguage === 'zh-CN';
+  const els = document.querySelectorAll('#templateGuidance, [data-report-template-guidance]');
+  const tpl = getReportTemplate(reportTemplate);
+  const text = tpl.guidance || tpl.purpose || (isZh ? '选择模板后，这里会显示采样建议和报告重点。' : 'After selecting a template, sampling advice and report focus will appear here.');
+  els.forEach(el => { el.textContent = text; });
 }
 
 const SCENE_CHIP_DEFS=[
@@ -6051,6 +6538,16 @@ function maybeCaptureImpulseEvent(inst,now){
 
 /* ── Settings Drawer ── */
 let settingsDrawerOpen = false;
+function handleSettingsNavClick() {
+  if (window.innerWidth >= 768) {
+    if (settingsDrawerOpen) closeSettingsDrawer();
+    sw('s');
+  } else {
+    openSettingsDrawer();
+  }
+}
+window.handleSettingsNavClick = handleSettingsNavClick;
+
 function openSettingsDrawer() {
   const drawer = document.getElementById('settingsDrawer');
   const backdrop = document.getElementById('settingsDrawerBackdrop');
@@ -6103,6 +6600,7 @@ function sw(t){
   if(panelsEl) panelsEl.scrollTop = 0;
   if(t==='r')renderRecs();
   if(t==='map')setTimeout(drawMap,40);
+  if(t==='s'&&typeof translateDesktopSettings==='function')translateDesktopSettings();
 }
 
 /* ── Viz tab ── */
@@ -7016,12 +7514,13 @@ function setCameraMode(mode){
 }
 
 function updateCameraOverlay(stats={}){
+  const isZh=appLanguage==='zh-CN';
   const avg=stats.avg??(dbH.length?dbH.reduce((a,b)=>a+b,0)/dbH.length:0);
   const min=stats.min??(mn===999?0:mn);
-  const modeLabel=isRec?(appLanguage!=='zh-CN'?'Recording': '录像中'):cameraModeCopy(cameraMode).label;
+  const modeLabel=isRec?(isZh?'录像中':'Recording'):cameraModeCopy(cameraMode).label;
   const activeDb=Math.round(curDb||avg||0);
   const lv=lvInfo(activeDb);
-  const place=curLoc?(locPlaceText(curLoc)||`${curLoc.lat}, ${curLoc.lng}${curLoc.acc?` · ±${curLoc.acc}m`:''}`):t('camera.placePending');
+  const place=curLoc?(locPlaceText(curLoc)||`${curLoc.lat}, ${curLoc.lng}${curLoc.acc?` · ±${curLoc.acc}m`:''}`):t('camera.placePending', isZh ? '地点待识别' : 'Locating...');
   const dbEl=document.getElementById('camOverlayDb');
   const lvEl=document.getElementById('camOverlayLevel');
   const modeEl=document.getElementById('camModePill');
@@ -7030,7 +7529,7 @@ function updateCameraOverlay(stats={}){
   const minEl=document.getElementById('camOverlayMin');
   const placeEl=document.getElementById('camOverlayPlace');
   if(dbEl){dbEl.textContent=activeDb?`${activeDb}`:'--';dbEl.style.color=activeDb?dbCol(activeDb):'var(--accent)';}
-  if(lvEl)lvEl.textContent=activeDb?`${lv.l} · ${weightLabel()}`:'声级待测';
+  if(lvEl)lvEl.textContent=activeDb?`${lv.l} · ${weightLabel()}`:(isZh?'声级待测':'Pending dB');
   if(modeEl)modeEl.textContent=modeLabel;
   if(avgEl)avgEl.textContent=fmtDb(avg);
   if(peakEl)peakEl.textContent=fmtDb(peak);
@@ -8327,7 +8826,12 @@ function reflowViz(){
   if(curViz==='w')drawWave();else if(curViz==='f')drawFFT();else if(curViz==='o')drawThirdOctave();else drawTrend();
   if(document.getElementById('p-map')?.classList.contains('active'))drawMap();
 }
-function onViewportChange(){setAppHeight();applyPlatformProfile();reflowViz();}
+function onViewportChange(){
+  if(window.innerWidth >= 768 && settingsDrawerOpen) closeSettingsDrawer();
+  setAppHeight();
+  applyPlatformProfile();
+  reflowViz();
+}
 setAppHeight();
 initAppLanguage();
 initSettingsDrawerTabs();

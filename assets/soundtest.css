@@ -817,9 +817,9 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .hero .alert{order:3;width:100%}
 .hero .cap-card{order:4;width:100%}
 .hero .stitch-meter-card, .hero .db-stage{order:5;flex-shrink:0}
-.hero .stitch-telemetry-sec{order:6;flex-shrink:0}
+.hero .action-bar{order:6;flex-shrink:0;margin-top:8px}
 .hero .stitch-crimson-wrap{order:7;flex-shrink:0}
-.hero .action-bar{order:8;flex-shrink:0;margin-top:6px}
+.hero .stitch-telemetry-sec{order:8;flex-shrink:0}
 .hero #liveMonitorNotice{display:none!important}
 .hero .geo-dock{order:9;margin:10px 0 0;width:100%;cursor:pointer;flex-shrink:0}
 .hero .stitch-custody-card{order:10;flex-shrink:0}
