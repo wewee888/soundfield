@@ -6160,9 +6160,9 @@ async function requestMicrophoneStream(){
   // Web Audio's MediaStreamSource and AnalyserNode natively downmix multi-channel audio to mono with full fidelity.
   const professionalConstraints={
     audio:{
-      echoCancellation:false,
-      noiseSuppression:false,
-      autoGainControl:false
+      echoCancellation:{ideal:false},
+      noiseSuppression:{ideal:false},
+      autoGainControl:{ideal:false}
     }
   };
   try{
@@ -6217,17 +6217,19 @@ async function ensureAudioContextReady(){
 async function fallbackToStandardMicStream(){
   try{
     if(!isMon||!audioCtx)return;
-    console.warn('[Audio] Initiating automatic fallback to standard audio stream {audio: true}...');
+    console.warn('[Audio] Digital silence detected (RMS < 1e-9). Self-healing with standard audio pipeline...');
+    if(micSourceNode){
+      try{micSourceNode.disconnect();}catch(_){}
+      micSourceNode=null;
+    }
+    if(micStream){
+      micStream.getTracks().forEach(t=>t.stop());
+      micStream=null;
+    }
     const fallbackStream=await navigator.mediaDevices.getUserMedia({audio:true});
     if(!isMon){
       fallbackStream.getTracks().forEach(t=>t.stop());
       return;
-    }
-    if(micSourceNode){
-      try{micSourceNode.disconnect();}catch(_){}
-    }
-    if(micStream){
-      micStream.getTracks().forEach(t=>t.stop());
     }
     micStream=fallbackStream;
     micSourceNode=audioCtx.createMediaStreamSource(micStream);
@@ -6308,12 +6310,7 @@ async function toggleMon(opts={}){
       micSourceNode.connect(inputGainNode);
       inputGainNode.connect(analyser);
       inputGainNode.connect(fftAn);
-      try{
-        dummyMuteNode=audioCtx.createGain();
-        dummyMuteNode.gain.value=0;
-        inputGainNode.connect(dummyMuteNode);
-        dummyMuteNode.connect(audioCtx.destination);
-      }catch(_){}
+      dummyMuteNode=null;
       primeAudioContext(audioCtx);
       if(audioCtx.state!=='running'){
         try{await audioCtx.resume();}catch(_){}
@@ -6360,7 +6357,7 @@ async function toggleMon(opts={}){
       setStartButtonText();
       const sdot=document.getElementById('sdot');if(sdot)sdot.className='sdot';
       const rdot=document.getElementById('rdot');if(rdot)rdot.className='nav-dot';
-      const stxt=document.getElementById('stxt');if(stxt)stxt.textContent=t('ui.idle');
+      const stxt=document.getElementById('stxt');if(stxt)stxt.textContent=t('ui.ready','Ready');
       const camBtn=document.getElementById('camBtn');if(camBtn)camBtn.disabled=true;
       const locBtn=document.getElementById('locBtn');if(locBtn)locBtn.disabled=true;
       curDb=0;
@@ -6380,6 +6377,7 @@ async function toggleMon(opts={}){
       micStream=null;
       audioCtx&&audioCtx.close().catch(()=>{});
       audioCtx=null;
+      window.audioCtx=null;
       if(e?.name==='NotAllowedError'||e?.name==='PermissionDeniedError'||e?.name==='SecurityError'){
         micPermissionGranted=false;
         cachedMicPermissionState='denied';
@@ -6417,9 +6415,9 @@ function tick(){
   const inst=instantDb();
   if(inst<=0){
     silentTickCount++;
-    if(silentTickCount===45&&!hasAttemptedAudioFallback){
+    if(silentTickCount===18&&!hasAttemptedAudioFallback){
       hasAttemptedAudioFallback=true;
-      console.warn('[Audio] Digital silence detected (45 frames with rms < 1e-9). Self-healing with standard audio pipeline...');
+      console.warn('[Audio] Digital silence detected (18 frames with rms < 1e-9). Self-healing with standard audio pipeline...');
       fallbackToStandardMicStream();
     }
   }else{
@@ -7273,7 +7271,8 @@ function stopAll(){
   ['camBtn','locBtn','recBtn','videoRecBtn'].forEach(id=>document.getElementById(id).disabled=true);
   document.getElementById('sdot').className='sdot';
   document.getElementById('rdot').className='nav-dot';
-  document.getElementById('stxt').textContent=t('ui.ready');
+  document.getElementById('stxt').textContent=t('ui.ready','Ready');
+  const capCardEl=document.getElementById('capCard');if(capCardEl)capCardEl.classList.add('collapsed');
   document.getElementById('alertBox').className='alert';
   animateDbNumber(0);
   document.getElementById('dbLevelMain').textContent=t('levels.quiet','安静');document.getElementById('dbLevelMain').className='db-level-main lv-q';

@@ -259,6 +259,9 @@ test('audio engine supports Web Audio priming, global gesture unlocker, Windows 
   assert.match(html, /gestureUnlockAudio/);
   assert.match(html, /fallbackToStandardMicStream\(\)/);
   assert.match(html, /function setWeighting\(w\)/);
+  assert.match(html, /echoCancellation:\s*\{\s*ideal:\s*false\s*\}/);
+  assert.match(html, /document\.getElementById\('capCard'\)\?\.classList\.add\('collapsed'\)/);
+  assert.match(html, /stxt\.textContent=t\('ui\.ready','Ready'\)/);
   
   const reportEngine = fs.readFileSync(path.join(__dirname, '..', 'assets', 'report-cert-engine.js'), 'utf8');
   assert.match(reportEngine, /capturePhoto:\s*typeof capturePhoto/);

@@ -205,13 +205,17 @@
   /* ── Microphone & Live Decibel Meter ── */
   async function initAudio() {
     try {
-      audioStream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: false,
-          noiseSuppression: false,
-          autoGainControl: false
-        }
-      });
+      try {
+        audioStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: { ideal: false },
+            noiseSuppression: { ideal: false },
+            autoGainControl: { ideal: false }
+          }
+        });
+      } catch (_) {
+        audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      }
 
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       audioCtx = new AudioContextClass();
