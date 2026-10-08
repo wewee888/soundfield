@@ -6,6 +6,8 @@ import path from 'node:path';
 test('soundtest.html: cap-card zero placeholder, custody GPS refresh, scene template report binding, and Pro location correction watermark', () => {
   const htmlPath = path.resolve('soundtest.html');
   const html = fs.readFileSync(htmlPath, 'utf8');
+  const certJs = fs.readFileSync(path.resolve('assets/report-cert-engine.js'), 'utf8');
+  const code = html + '\n' + certJs;
 
   // 1. Cap card zero placeholder gap when collapsed and flexible layout
   assert.match(html, /\.cap-card\.collapsed\s*\{[^}]*display:\s*none\s*!important/, 'cap-card.collapsed must have display: none !important to eliminate empty gap');
@@ -41,14 +43,14 @@ test('soundtest.html: cap-card zero placeholder, custody GPS refresh, scene temp
   assert.match(html, /currentSceneLabel\s*=/, 'currentSceneLabel must be tracked');
   assert.match(html, /currentSceneNote\s*=/, 'currentSceneNote must be tracked');
   assert.match(html, /function fillSceneChip\(id, evt\)/, 'fillSceneChip must exist');
-  assert.match(html, /sceneLabel:\s*activeSceneLabel/, 'buildStatsFromRecord must bind sceneLabel');
-  assert.match(html, /sceneNote:\s*activeSceneNote/, 'buildStatsFromRecord must bind sceneNote');
-  assert.match(html, /customLoc,/, 'buildStatsFromRecord must bind customLoc');
+  assert.match(code, /sceneLabel:\s*activeSceneLabel/, 'buildStatsFromRecord must bind sceneLabel');
+  assert.match(code, /sceneNote:\s*activeSceneNote/, 'buildStatsFromRecord must bind sceneNote');
+  assert.match(code, /customLoc,/, 'buildStatsFromRecord must bind customLoc');
 
   // 6. Canvas & Preview reflect scene template and custom location watermark
-  assert.match(html, /const sceneTitle = stats\.sceneLabel/, 'buildProCertificateCanvas must include sceneTitle');
-  assert.match(html, /const baselinePrefix = stats\.sceneLabel \? `\$\{stats\.sceneLabel\} · ` : '';/, 'buildProCertificateCanvas must prefix baseline metric with sceneLabel');
-  assert.match(html, /cLoc\.point/, 'buildProCertificateCanvas must format custom measurement point watermark');
+  assert.match(code, /const sceneTitle = stats\.sceneLabel/, 'buildProCertificateCanvas must include sceneTitle');
+  assert.match(code, /const baselinePrefix = stats\.sceneLabel \? `\$\{stats\.sceneLabel\} · ` : '';/, 'buildProCertificateCanvas must prefix baseline metric with sceneLabel');
+  assert.match(code, /cLoc\.point/, 'buildProCertificateCanvas must format custom measurement point watermark');
 
   // 7. Settings drawer includes watermark entry
   assert.match(html, /id="settingsLcmBtn"/, 'Settings must include configure watermark button');
