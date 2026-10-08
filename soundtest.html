@@ -42,8 +42,9 @@
     · 底部抽屉作为主设置入口（移动端优选），内嵌面板保留为 Hub
     · 重复的 -2 后缀函数（togDayNightThreshold2 / setSustainedAlertSec2 / setAutoRecMinSec2 / setAutoRecAfterStopSec2 / togAutoRec2）已合并为单一函数，DOM ID 保留以兼容
   任何时候拆这部分，请严格按函数逐个迁移 + 全量回归测试。
--->
 <link rel="stylesheet" href="assets/soundtest.css?v=20261006c">
+<link rel="stylesheet" href="assets/legal-notice.css?v=20261008">
+<script src="assets/legal-notice.js?v=20261008" defer></script>
 <style>
 /* Defensive ad suppression & critical layout overrides */
 .live-monitor-notice{display:none!important}
@@ -1130,6 +1131,7 @@
       <div style="display:flex;gap:7px;flex-wrap:wrap">
         <button class="btn b-cyan" onclick="exportCSV()">导出 CSV</button>
         <button class="btn b-amber" onclick="exportAllPDF()">导出 PDF</button>
+        <button class="btn b-indigo" id="settingsExportNoticeBtn" onclick="openLegalNoticeFromUi()">⚖️ 邻里交涉函</button>
         <button class="btn b-red" onclick="clearAll()">清空记录</button>
       </div>
       <div class="storage-health-stat" style="margin-top:10px">
@@ -1920,6 +1922,7 @@
         <button class="btn b-cyan" id="startRecFromRecsBtn" onclick="startRecordFromRecords()">开始录制</button>
         <button class="btn b-amber" id="recExportCsvBtn" onclick="exportCSV()">导出 CSV</button>
         <button class="btn b-cyan" id="recExportPdfBtn" onclick="exportAllPDF()">导出 PDF</button>
+        <button class="btn b-indigo" id="recExportNoticeBtn" onclick="openLegalNoticeFromUi()">⚖️ 邻里交涉函</button>
         <button class="btn b-red" id="recClearAllBtn" onclick="clearAll()">清空记录</button>
       </div>
     </div>
@@ -3195,6 +3198,7 @@ function applyTranslations(){
   setText('startRecFromRecsBtn',t('ui.startRecord','Start recording'));
   setText('recExportCsvBtn',t('ui.exportCsv','Export CSV'));
   setText('recExportPdfBtn',t('ui.exportPdf','Export PDF'));
+  setText('recExportNoticeBtn', isZh ? '⚖️ 邻里交涉函' : '⚖️ Legal Notice');
   setText('recClearAllBtn',t('ui.clearRecords','Clear records'));
   setText('sumLabelSessions',t('ui.sessions','Sessions'));
   setText('sumLabelAvg',t('ui.avg','Avg'));
@@ -3216,6 +3220,7 @@ function applyTranslations(){
 
   setText('settingsExportCsvBtn',t('ui.exportCsv','Export CSV'));
   setText('settingsExportPdfBtn',t('ui.exportPdf','Export PDF'));
+  setText('settingsExportNoticeBtn', isZh ? '⚖️ 邻里交涉函' : '⚖️ Legal Notice');
   setText('settingsClearAllBtn',t('ui.clearRecords','Clear records'));
 
   const locStatusEl=document.getElementById('locProviderStatus');
@@ -4454,6 +4459,14 @@ function planConfig(plan=currentPlan){
 
 function isProActive(){
   return membershipState.active&&['pro','team','lifetime'].includes(membershipState.plan);
+}
+
+function getUserTier() {
+  if (typeof isProActive === 'function' && isProActive()) return 'pro';
+  if (membershipState && membershipState.active && membershipState.plan === 'single') return 'single';
+  if (typeof currentPlan !== 'undefined' && ['pro','team','lifetime'].includes(currentPlan)) return 'pro';
+  if (typeof currentPlan !== 'undefined' && currentPlan === 'single') return 'single';
+  return 'free';
 }
 
 function syncAutoRecProBadge(){
@@ -8119,6 +8132,7 @@ function renderRecs(){
       <div class="ri-act">
         <button class="btn b-amber" style="height:26px;font-size:10px;padding:0 8px" onclick="shareRecord(${r.id})">${appLanguage!=='zh-CN'?'Share':'分享'}</button>
         <button class="btn b-cyan" style="height:26px;font-size:10px;padding:0 8px" onclick="exportPDF(${r.id})">PDF</button>
+        <button class="btn b-indigo" style="height:26px;font-size:10px;padding:0 8px" onclick="openLegalNoticeForRecord(${r.id})">${appLanguage!=='zh-CN'?'Notice':'交涉函'}</button>
         <button class="btn b-cyan" style="height:26px;font-size:10px;padding:0 8px" onclick="exportEvidenceManifest(${r.id})">${appLanguage!=='zh-CN'?'Manifest':'证据清单'}</button>
         ${mediaCtl}
         <button class="btn b-red" style="height:26px;font-size:10px;padding:0 8px" onclick="delRec(${r.id})">${appLanguage!=='zh-CN'?'Delete':'删除'}</button>
@@ -8153,6 +8167,91 @@ function exportEvidenceManifest(id){
   const a=document.createElement('a');a.href=url;a.download=`soundtest.pro-${manifest.evidenceId}-manifest.json`;a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
+
+function openLegalNoticeFromUi(recId = null) {
+  if (typeof window.SoundTestLegalNotice === 'undefined' || !window.SoundTestLegalNotice.openModal) {
+    if (typeof toast === 'function') {
+      toast(appLanguage !== 'zh-CN' ? 'Notice generator is still loading...' : '交涉函生成器加载中，请稍候...', 'info');
+    }
+    return;
+  }
+  let r = null;
+  if (recId !== null && DB && DB.records) {
+    r = DB.records.find(x => x.id === recId);
+  } else if (DB && DB.records && DB.records.length > 0) {
+    r = DB.records[DB.records.length - 1];
+  }
+
+  let peakDb = '--';
+  let avgDb = '--';
+  let date = '';
+  let timeRange = '';
+  let evidenceId = '';
+  let location = '';
+
+  if (r) {
+    peakDb = r.peakDb ? String(r.peakDb) : '--';
+    avgDb = r.avgDb ? String(r.avgDb) : (r.leqDb ? String(r.leqDb) : '--');
+    evidenceId = r.evidenceId || `STP-${r.id}`;
+    const startTime = r.time instanceof Date ? r.time : (r.time ? new Date(r.time) : new Date());
+    date = startTime.toISOString().slice(0, 10);
+    const endTime = new Date(startTime.getTime() + (r.dur || 0) * 1000);
+    const startStr = startTime.toTimeString().slice(0, 5);
+    const endStr = endTime.toTimeString().slice(0, 5);
+    timeRange = `${startStr} - ${endStr} (${fmtTime(r.dur || 0)})`;
+    if (r.loc) {
+      location = typeof locPlaceText === 'function' ? (locPlaceText(r.loc) || `${r.loc.lat}, ${r.loc.lng}`) : `${r.loc.lat}, ${r.loc.lng}`;
+    }
+  } else {
+    date = new Date().toISOString().slice(0, 10);
+    const nowH = String(new Date().getHours()).padStart(2, '0');
+    const nowM = String(new Date().getMinutes()).padStart(2, '0');
+    timeRange = `${nowH}:${nowM}`;
+    if (typeof curDb !== 'undefined' && curDb > 0) avgDb = curDb.toFixed(1);
+    if (typeof maxDb !== 'undefined' && maxDb > 0) peakDb = maxDb.toFixed(1);
+    if (typeof curLoc !== 'undefined' && curLoc) {
+      location = typeof locPlaceText === 'function' ? (locPlaceText(curLoc) || `${curLoc.lat}, ${curLoc.lng}`) : `${curLoc.lat}, ${curLoc.lng}`;
+    }
+  }
+
+  let noticeLang = 'zh';
+  if (appLanguage) {
+    const l = appLanguage.toLowerCase();
+    if (l.startsWith('zh')) noticeLang = 'zh';
+    else if (l.startsWith('de')) noticeLang = 'de';
+    else if (l.startsWith('fr')) noticeLang = 'fr';
+    else if (l.startsWith('es')) noticeLang = 'es';
+    else if (l.startsWith('ja')) noticeLang = 'ja';
+    else if (l.startsWith('ko')) noticeLang = 'ko';
+    else if (l.startsWith('th')) noticeLang = 'th';
+    else if (l.startsWith('vi')) noticeLang = 'vi';
+    else noticeLang = 'en';
+  }
+
+  window.SoundTestLegalNotice.openModal({
+    peakDb,
+    avgDb,
+    date,
+    timeRange,
+    evidenceId,
+    location
+  }, {
+    lang: noticeLang,
+    userTier: getUserTier(),
+    onUpgrade: function(req) {
+      if (typeof openProUpgradeModal === 'function') {
+        openProUpgradeModal('single');
+      }
+    }
+  });
+}
+
+function openLegalNoticeForRecord(recId) {
+  openLegalNoticeFromUi(recId);
+}
+
+window.openLegalNoticeFromUi = openLegalNoticeFromUi;
+window.openLegalNoticeForRecord = openLegalNoticeForRecord;
 
 function shareRecord(id){
   const r=DB.records.find(x=>x.id===id);if(!r)return;
