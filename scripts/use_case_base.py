@@ -292,4 +292,345 @@ PILL_DATA = {
     }
 }
 
+SIDEBAR_I18N = {
+    'en': {
+        'meter_title': 'Online Decibel Meter',
+        'meter_desc': 'Real-time IEC 61672 sound level monitoring with A/C weighting curves directly in your browser.',
+        'meter_btn': 'Launch Live Meter',
+        'meter_sentry': 'Overnight Sentry Mode',
+        'meter_privacy': '100% In-Browser · Zero Cloud Uploads',
+        'toc_title': 'On This Page',
+        'toc_benchmarks': 'Decibel Benchmarks',
+        'toc_workflow': '4-Step Evidence Workflow',
+        'toc_capabilities': 'Technical Capabilities',
+        'toc_rules': 'Evidentiary Rules',
+        'toc_faq': 'Frequently Asked Questions',
+        'cheat_title': 'Acoustic Reference Scale',
+        'cheat_safe': 'Quiet bedroom ambient',
+        'cheat_mild': 'Nighttime quiet limit',
+        'cheat_mod': 'Actionable disturbance',
+        'cheat_sev': 'Severe statutory violation',
+        'toolkit_badge': 'EVIDENTIARY DOSSIER',
+        'toolkit_title': 'Dispute Notice & Dossier Kit',
+        'toolkit_desc': 'Pair your decibel recordings with pre-drafted mediation letters and cryptographic SHA-256 PDF reports.',
+        'toolkit_btn': 'View Report Samples',
+        'trust_hash': 'SHA-256 Digital Stamp',
+        'trust_standard': 'IEC 61672 Curve Compliant',
+        'trust_local': '100% Local (IndexedDB)'
+    },
+    'zh': {
+        'meter_title': '在线分贝测量仪',
+        'meter_desc': '遵循 IEC 61672 国际标准的 A/C 计权实时声级检测，浏览器即开即测。',
+        'meter_btn': '打开实时测量仪',
+        'meter_sentry': '通宵哨兵监听模式',
+        'meter_privacy': '100% 本地隐私 · 无需安装',
+        'toc_title': '本页内容导览',
+        'toc_benchmarks': '分贝基准对照表',
+        'toc_workflow': '4步闭环举证流程',
+        'toc_capabilities': '专业核心功能',
+        'toc_rules': '协商调解维权铁律',
+        'toc_faq': '常见问题解答 (FAQ)',
+        'cheat_title': '环境噪声速查标尺',
+        'cheat_safe': '卧室安静背景底噪',
+        'cheat_mild': '夜间法定静音上限',
+        'cheat_mod': '受忍限度生活干扰',
+        'cheat_sev': '重大超标违法侵权',
+        'toolkit_badge': '证据公信力套件',
+        'toolkit_title': '调解通告与举证报告',
+        'toolkit_desc': '生成带有 SHA-256 防篡改时间戳的官方 PDF 报告，并配套专业调解交涉文书模板。',
+        'toolkit_btn': '查看报告样例',
+        'trust_hash': 'SHA-256 数字哈希防伪',
+        'trust_standard': 'IEC 61672 计权曲线对齐',
+        'trust_local': '100% 浏览器本地存储'
+    },
+    'es': {
+        'meter_title': 'Sonómetro en línea',
+        'meter_desc': 'Monitorización de decibelios en tiempo real con curvas de ponderación A/C según IEC 61672.',
+        'meter_btn': 'Abrir sonómetro en vivo',
+        'meter_sentry': 'Modo Centinela nocturno',
+        'meter_privacy': '100% en navegador · Sin descargas',
+        'toc_title': 'En esta página',
+        'toc_benchmarks': 'Límites de decibelios',
+        'toc_workflow': 'Flujo de pruebas en 4 pasos',
+        'toc_capabilities': 'Capacidades técnicas',
+        'toc_rules': 'Reglas de prueba legal',
+        'toc_faq': 'Preguntas frecuentes (FAQ)',
+        'cheat_title': 'Escala de referencia acústica',
+        'cheat_safe': 'Ambiente de dormitorio silencioso',
+        'cheat_mild': 'Límite de horario nocturno',
+        'cheat_mod': 'Nuisance o molestia denunciable',
+        'cheat_sev': 'Infracción legal grave',
+        'toolkit_badge': 'DOSIER PROBATORIO',
+        'toolkit_title': 'Kit de cartas y dosier legal',
+        'toolkit_desc': 'Descarga informes PDF oficiales con firma digital SHA-256 y cartas formales de reclamación.',
+        'toolkit_btn': 'Ver ejemplos de informes',
+        'trust_hash': 'Sello digital SHA-256',
+        'trust_standard': 'Curvas conformes a IEC 61672',
+        'trust_local': '100% local (IndexedDB)'
+    },
+    'de': {
+        'meter_title': 'Online-Schallpegelmesser',
+        'meter_desc': 'Echtzeit-Dezibelmessung mit A/C-Bewertungskurven nach IEC 61672 direkt im Browser.',
+        'meter_btn': 'Messung live starten',
+        'meter_sentry': 'Automatischer Nachtwächter',
+        'meter_privacy': '100% im Browser · Keine Installation',
+        'toc_title': 'Auf dieser Seite',
+        'toc_benchmarks': 'Akustische Richtwerte',
+        'toc_workflow': '4-Stufen-Beweisverfahren',
+        'toc_capabilities': 'Technische Leistungsmerkmale',
+        'toc_rules': 'Praxisregeln für die Schlichtung',
+        'toc_faq': 'Häufig gestellte Fragen (FAQ)',
+        'cheat_title': 'Dezibel-Schnellübersicht',
+        'cheat_safe': 'Ruhiges Schlafzimmer / Grundrauschen',
+        'cheat_mild': 'Gesetzliche Nachtruhe-Grenze',
+        'cheat_mod': 'Erhebliche Belästigung',
+        'cheat_sev': 'Schwere Rechtsverletzung',
+        'toolkit_badge': 'BEWEISMITTEL-PAKET',
+        'toolkit_title': 'Musterbriefe & Lärmprotokoll',
+        'toolkit_desc': 'Erstellen Sie offizielle PDF-Dossiers mit SHA-256-Prüfsumme und rechtssichere Abmahnschreiben.',
+        'toolkit_btn': 'Musterberichte ansehen',
+        'trust_hash': 'SHA-256 Manipulationsschutz',
+        'trust_standard': 'IEC 61672 konforme Kurven',
+        'trust_local': '100% lokal im Browser'
+    },
+    'fr': {
+        'meter_title': 'Sonomètre en ligne',
+        'meter_desc': 'Mesure des décibels en temps réel avec courbes de pondération A/C selon IEC 61672.',
+        'meter_btn': 'Lancer la mesure en direct',
+        'meter_sentry': 'Mode Sentinelle nocturne',
+        'meter_privacy': '100% dans le navigateur · Sans installation',
+        'toc_title': 'Sur cette page',
+        'toc_benchmarks': 'Seuils et normes acoustiques',
+        'toc_workflow': 'Méthodologie en 4 étapes',
+        'toc_capabilities': 'Fonctionnalités avancées',
+        'toc_rules': 'Règles de valeur probante',
+        'toc_faq': 'Questions fréquentes (FAQ)',
+        'cheat_title': 'Échelle de référence acoustique',
+        'cheat_safe': 'Ambiance de chambre calme',
+        'cheat_mild': 'Limite légale nocturne',
+        'cheat_mod': 'Nuisance sonore avérée',
+        'cheat_sev': 'Infraction réglementaire majeure',
+        'toolkit_badge': 'DOSSIER PROBATOIRE',
+        'toolkit_title': 'Kit de lettres et dossier officiel',
+        'toolkit_desc': 'Générez des rapports PDF certifiés avec empreinte SHA-256 et modèles de mise en demeure.',
+        'toolkit_btn': 'Consulter les exemples',
+        'trust_hash': 'Empreinte numérique SHA-256',
+        'trust_standard': 'Courbes conformes IEC 61672',
+        'trust_local': '100% local (IndexedDB)'
+    },
+    'ja': {
+        'meter_title': 'オンライン騒音測定器',
+        'meter_desc': 'IEC 61672準拠のA/C特性によるリアルタイムデシベル測定。ブラウザ即起動。',
+        'meter_btn': '今すぐ測定を開始する',
+        'meter_sentry': '夜間自動見張りモード',
+        'meter_privacy': '100% 端末内処理 · インストール不要',
+        'toc_title': '目次ナビゲーション',
+        'toc_benchmarks': '基準値・法令限度比較表',
+        'toc_workflow': '4ステップ証拠化手順',
+        'toc_capabilities': '専用設計の強力な機能',
+        'toc_rules': '交渉を有利に進める鉄則',
+        'toc_faq': 'よくある質問（FAQ）',
+        'cheat_title': 'デシベル簡易基準スケール',
+        'cheat_safe': '静粛な寝室の暗騒音',
+        'cheat_mild': '夜間法令許容限度',
+        'cheat_mod': '受忍限度超過の生活妨害',
+        'cheat_sev': '重大な法令違反・健康被害',
+        'toolkit_badge': '証拠力向上キット',
+        'toolkit_title': '公式申立書＆PDF調書キット',
+        'toolkit_desc': 'SHA-256改ざん防止ハッシュ付き公式PDFレポートと、管理会社・調停用提出書式。',
+        'toolkit_btn': '公式レポート例を見る',
+        'trust_hash': 'SHA-256 デジタル刻印',
+        'trust_standard': 'IEC 61672 規格準拠',
+        'trust_local': '100% ローカル保存'
+    },
+    'ko': {
+        'meter_title': '온라인 데시벨 측정기',
+        'meter_desc': 'IEC 61672 국제 규격 A/C 보정 회로를 통한 실시간 소음 측정. 브라우저 즉시 실행.',
+        'meter_btn': '실시간 측정 시작하기',
+        'meter_sentry': '야간 자동 센트리 모드',
+        'meter_privacy': '100% 브라우저 로컬 · 설치 불필요',
+        'toc_title': '목차 가이드',
+        'toc_benchmarks': '소음 기준치 대조표',
+        'toc_workflow': '4단계 증빙 수집 절차',
+        'toc_capabilities': '특화된 증빙 엔진',
+        'toc_rules': '중재 및 협의 핵심 수칙',
+        'toc_faq': '자주 묻는 질문 (FAQ)',
+        'cheat_title': '환경 소음 간이 기준 척도',
+        'cheat_safe': '조용한 침실 배경 소음',
+        'cheat_mild': '야간 법정 허용 한도',
+        'cheat_mod': '수인한도 초과 생활 방해',
+        'cheat_sev': '중대한 법적 위반 기준',
+        'toolkit_badge': '법적 증거력 패키지',
+        'toolkit_title': '공식 분쟁 통고문 &amp; 증거 조서',
+        'toolkit_desc': 'SHA-256 위변조 방지 해시가 적용된 공식 PDF 리포트와 관리사무소 제출용 내용증명 서식.',
+        'toolkit_btn': '공식 리포트 예시 보기',
+        'trust_hash': 'SHA-256 무결성 디지털 인장',
+        'trust_standard': 'IEC 61672 보정 곡선 준수',
+        'trust_local': '100% 로컬 보안 저장'
+    },
+    'th': {
+        'meter_title': 'เครื่องวัดระดับเดซิเบลออนไลน์',
+        'meter_desc': 'ตรวจวัดระดับเสียงแบบเรียลไทม์ตามมาตรฐาน IEC 61672 ด้วย A/C-Weighting ในเบราว์เซอร์.',
+        'meter_btn': 'เริ่มตรวจวัดเสียงสด',
+        'meter_sentry': 'โหมดเฝ้าระวังอัตโนมัติตอนกลางคืน',
+        'meter_privacy': '100% ในเบราว์เซอร์ · ไม่ต้องติดตั้ง',
+        'toc_title': 'สารบัญในหน้านี้',
+        'toc_benchmarks': 'ตารางเปรียบเทียบค่าเดซิเบล',
+        'toc_workflow': 'ขั้นตอนรวบรวมหลักฐาน 4 ขั้น',
+        'toc_capabilities': 'ฟังก์ชันตรวจวัดขั้นสูง',
+        'toc_rules': 'หลักการเจรจาไกล่เกลี่ย',
+        'toc_faq': 'คำถามที่พบบ่อย (FAQ)',
+        'cheat_title': 'เกณฑ์อ้างอิงระดับเสียง',
+        'cheat_safe': 'เสียงรบกวนต่ำในห้องนอน',
+        'cheat_mild': 'ขีดจำกัดกฎหมายกลางคืน',
+        'cheat_mod': 'เกินเกณฑ์รบกวนการอยู่อาศัย',
+        'cheat_sev': 'ละเมิดเกณฑ์กฎหมายรุนแรง',
+        'toolkit_badge': 'ชุดเอกสารหลักฐาน',
+        'toolkit_title': 'หนังสือร้องเรียน &amp; รายงานทางการ',
+        'toolkit_desc': 'สร้างรายงานสรุป PDF พร้อมรหัสตรวจสอบ SHA-256 และแบบฟอร์มหนังสือร้องเรียนมาตรฐาน.',
+        'toolkit_btn': 'ดูตัวอย่างรายงาน',
+        'trust_hash': 'รหัสตรวจสอบความถูกต้อง SHA-256',
+        'trust_standard': 'มาตรฐานเส้นโค้ง IEC 61672',
+        'trust_local': '100% บันทึกในเครื่อง (IndexedDB)'
+    },
+    'vi': {
+        'meter_title': 'Máy đo decibel trực tuyến',
+        'meter_desc': 'Đo mức âm thanh thời gian thực theo chuẩn IEC 61672 với bộ lọc A/C ngay trên trình duyệt.',
+        'meter_btn': 'Mở máy đo trực tiếp',
+        'meter_sentry': 'Chế độ Trực ban đêm tự động',
+        'meter_privacy': '100% trong trình duyệt · Không cần cài đặt',
+        'toc_title': 'Mục lục trang này',
+        'toc_benchmarks': 'Bảng đối chiếu quy chuẩn decibel',
+        'toc_workflow': 'Quy trình 4 bước thu thập chứng cứ',
+        'toc_capabilities': 'Tính năng chuyên biệt',
+        'toc_rules': 'Quy tắc vàng khi hòa giải',
+        'toc_faq': 'Câu hỏi thường gặp (FAQ)',
+        'cheat_title': 'Thang tham chiếu decibel',
+        'cheat_safe': 'Nền phòng ngủ yên tĩnh',
+        'cheat_mild': 'Giới hạn pháp lý ban đêm',
+        'cheat_mod': 'Vượt ngưỡng khó chịu sinh hoạt',
+        'cheat_sev': 'Vi phạm pháp luật nghiêm trọng',
+        'toolkit_badge': 'BỘ HỒ SƠ CHỨNG CỨ',
+        'toolkit_title': 'Biên bản khiếu nại &amp; Hồ sơ PDF',
+        'toolkit_desc': 'Xuất báo cáo PDF chính thức có dấu băm SHA-256 chống sửa đổi và mẫu thư khiếu nại pháp lý.',
+        'toolkit_btn': 'Xem mẫu báo cáo',
+        'trust_hash': 'Dấu băm kỹ thuật số SHA-256',
+        'trust_standard': 'Chuẩn đường cong IEC 61672',
+        'trust_local': '100% Cục bộ (IndexedDB)'
+    }
+}
+
+def build_sidebar_html(locale, rel_depth='../../'):
+    s = SIDEBAR_I18N.get(locale, SIDEBAR_I18N['en'])
+    app_url = f"{rel_depth}soundtest.html"
+    
+    if locale == 'en':
+        samples_url = f"{rel_depth}samples.html"
+    else:
+        samples_url = f"{rel_depth}{locale}/samples.html"
+        
+    return f'''      <aside class="uc-article-sidebar">
+        <!-- Live Sound Meter Card -->
+        <div class="uc-sb-card uc-sb-meter">
+          <div class="uc-sb-eq" aria-hidden="true">
+            <span class="uc-sb-eq-bar"></span>
+            <span class="uc-sb-eq-bar"></span>
+            <span class="uc-sb-eq-bar"></span>
+            <span class="uc-sb-eq-bar"></span>
+            <span class="uc-sb-eq-bar"></span>
+            <span class="uc-sb-eq-bar"></span>
+          </div>
+          <h3 class="uc-sb-title">{s['meter_title']}</h3>
+          <p class="uc-sb-desc">{s['meter_desc']}</p>
+          <a class="button primary uc-sb-btn" href="{app_url}">{s['meter_btn']} &rarr;</a>
+          <a class="uc-sb-sublink" href="{app_url}?mode=sentry">
+            <span>🌙</span> <span>{s['meter_sentry']}</span>
+          </a>
+          <div class="uc-sb-note">
+            <span class="uc-sb-dot"></span>
+            <span>{s['meter_privacy']}</span>
+          </div>
+        </div>
+
+        <!-- Table of Contents Card -->
+        <div class="uc-sb-card uc-sb-toc">
+          <div class="uc-sb-header">
+            <svg class="uc-sb-header-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+            <strong>{s['toc_title']}</strong>
+          </div>
+          <nav class="uc-sb-toc-links" aria-label="{s['toc_title']}">
+            <a href="#benchmarks" class="uc-sb-toc-link">
+              <span class="uc-sb-toc-icon">📊</span>
+              <span>{s['toc_benchmarks']}</span>
+            </a>
+            <a href="#workflow" class="uc-sb-toc-link">
+              <span class="uc-sb-toc-icon">⚡</span>
+              <span>{s['toc_workflow']}</span>
+            </a>
+            <a href="#capabilities" class="uc-sb-toc-link">
+              <span class="uc-sb-toc-icon">🛠️</span>
+              <span>{s['toc_capabilities']}</span>
+            </a>
+            <a href="#rules" class="uc-sb-toc-link">
+              <span class="uc-sb-toc-icon">⚖️</span>
+              <span>{s['toc_rules']}</span>
+            </a>
+            <a href="#faq-section" class="uc-sb-toc-link">
+              <span class="uc-sb-toc-icon">❓</span>
+              <span>{s['toc_faq']}</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Acoustic Reference Cheat Sheet -->
+        <div class="uc-sb-card uc-sb-cheat">
+          <div class="uc-sb-header">
+            <svg class="uc-sb-header-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <strong>{s['cheat_title']}</strong>
+          </div>
+          <div class="uc-sb-cheat-list">
+            <div class="uc-sb-cheat-item">
+              <span class="db-val db-safe">&lt; 35 dB</span>
+              <span class="uc-sb-cheat-lbl">{s['cheat_safe']}</span>
+            </div>
+            <div class="uc-sb-cheat-item">
+              <span class="db-val db-mild">40–50 dB</span>
+              <span class="uc-sb-cheat-lbl">{s['cheat_mild']}</span>
+            </div>
+            <div class="uc-sb-cheat-item">
+              <span class="db-val db-moderate">55–65 dB</span>
+              <span class="uc-sb-cheat-lbl">{s['cheat_mod']}</span>
+            </div>
+            <div class="uc-sb-cheat-item">
+              <span class="db-val db-severe">70+ dB</span>
+              <span class="uc-sb-cheat-lbl">{s['cheat_sev']}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evidentiary Dossier Toolkit -->
+        <div class="uc-sb-card uc-sb-legal">
+          <span class="uc-sb-badge">{s['toolkit_badge']}</span>
+          <h3 class="uc-sb-title" style="margin-top: 8px;">{s['toolkit_title']}</h3>
+          <p class="uc-sb-desc">{s['toolkit_desc']}</p>
+          <a class="button uc-sb-btn-secondary" href="{samples_url}">{s['toolkit_btn']} &rarr;</a>
+        </div>
+
+        <!-- Trust Badges Strip -->
+        <div class="uc-sb-trust">
+          <div class="uc-sb-trust-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>{s['trust_hash']}</span>
+          </div>
+          <div class="uc-sb-trust-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span>{s['trust_standard']}</span>
+          </div>
+          <div class="uc-sb-trust-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>{s['trust_local']}</span>
+          </div>
+        </div>
+      </aside>'''
+
 print("Base setup loaded successfully.")

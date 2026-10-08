@@ -21,7 +21,7 @@ Each page includes:
 
 import os
 import json
-from use_case_base import LOCALES, ALL_LOCALES, SCENARIO_KEYS, NAV_DATA, COMMON_LABELS, PILL_DATA
+from use_case_base import LOCALES, ALL_LOCALES, SCENARIO_KEYS, NAV_DATA, COMMON_LABELS, PILL_DATA, build_sidebar_html
 from use_case_scenarios_data import SCENARIOS_DATA
 
 # Load all scenario modules
@@ -131,7 +131,7 @@ def build_table_html(locale, scenario_slug, sc_data):
     rows_str = '\n'.join(rows_html)
     
     return f'''    <!-- Scenario Decibel Benchmark Table -->
-    <section class="section reveal">
+    <section class="section reveal" id="benchmarks">
       <div class="section-header">
         <span class="eyebrow">{common['sec_table']}</span>
         <h2>{tbl['title'][locale]}</h2>
@@ -170,7 +170,7 @@ def build_steps_html(locale, scenario_slug, sc_data):
     items_str = '\n'.join(items_html)
     
     return f'''    <!-- 4-Step Defensible Evidence Workflow -->
-    <section class="section reveal">
+    <section class="section reveal" id="workflow">
       <div class="section-header">
         <span class="eyebrow">{common['sec_method']}</span>
         <h2>{st['title'][locale]}</h2>
@@ -196,7 +196,7 @@ def build_features_html(locale, scenario_slug, sc_data):
     items_str = '\n'.join(items_html)
     
     return f'''    <!-- 6 Feature Spotlight Cards -->
-    <section class="section reveal">
+    <section class="section reveal" id="capabilities">
       <div class="section-header">
         <span class="eyebrow">{common['sec_features']}</span>
         <h2>{ft['title'][locale]}</h2>
@@ -224,7 +224,7 @@ def build_rules_html(locale, scenario_slug, sc_data):
     items_str = '\n'.join(items_html)
     
     return f'''    <!-- Evidentiary Rules Strip -->
-    <section class="section reveal">
+    <section class="section reveal" id="rules">
       <div class="section-header">
         <span class="eyebrow">{common['sec_rules']}</span>
         <h2>{rl['title'][locale]}</h2>
@@ -488,6 +488,7 @@ def generate_use_case_page(locale, scenario_slug):
     features_html = build_features_html(locale, scenario_slug, sc_data)
     rules_html = build_rules_html(locale, scenario_slug, sc_data)
     faq_html = build_faq_html(locale, scenario_slug, sc_data)
+    sidebar_html = build_sidebar_html(locale, rel_depth='../../')
     cta_band_html = build_cta_band_html(locale, scenario_slug, sc_data)
     pills_html = build_pill_switcher_html(locale, scenario_slug)
     footer_html = build_footer_html(locale)
@@ -516,6 +517,8 @@ def generate_use_case_page(locale, scenario_slug):
 
 {hero_html}
 
+    <div class="uc-article-layout">
+      <div class="uc-article-main">
 {table_html}
 
 {steps_html}
@@ -525,6 +528,9 @@ def generate_use_case_page(locale, scenario_slug):
 {rules_html}
 
 {faq_html}
+      </div>
+{sidebar_html}
+    </div>
 
 {cta_band_html}
 

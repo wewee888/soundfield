@@ -56,6 +56,8 @@
       "toneFirmDesc": "多次沟通未果，摆出客观声学超标数据，明确作息干扰与底线",
       "toneStrict": "严正法务催告",
       "toneStrictDesc": "正式法律告知书格式，援引法定侵权法规，设定整改限期与通牒",
+      "badgeFree": "免费开放",
+      "badgePro": "🔒 专业版",
       "lblRecipient": "受函方 / 邻居称呼",
       "lblSender": "发函方 / 您的署名",
       "lblJurisdiction": "法律法域与语言 (9国标准)",
@@ -65,7 +67,8 @@
       "lblTime": "监测时段",
       "lblHash": "数字存证指纹",
       "articlesTitle": "法定法规依据与法律条文 (Statutory Provisions)",
-      "previewLabel": "文书实时预览 (Live Preview)",
+      "legalHeaderTitle": "法定法规依据与法律条文",
+      "previewLabel": "文书实时预览",
       "previewHint": "所见即所得 · 自动排版",
       "btnClose": "关闭",
       "btnCopy": "复制文本",
@@ -76,12 +79,12 @@
       "evidence": "存证编号：",
       "recipientDefault": "楼上邻居您好",
       "senderDefault": "楼下邻居",
-      "thMetric": "声学监测指标 (Acoustic Metric)",
-      "thValue": "实测读数 (Recorded Value)",
-      "telemetryHeader": "【现场声学测量数据证据表 / Telemetry Log】",
-      "legalHeader": "【法定法规条文与法律依据 / Statutory Provisions Cited】",
-      "lblSign": "通知方签署 (Signature): ",
-      "lblSignDate": "签署日期 (Date): ",
+      "thMetric": "声学监测指标",
+      "thValue": "实测读数",
+      "telemetryHeader": "【现场声学测量数据证据表】",
+      "legalHeader": "【法定法规条文与法律依据】",
+      "lblSign": "通知方签署: ",
+      "lblSignDate": "签署日期: ",
       "disclaimer": "注：本函及所附声学数据为民事自查事实记录，用于敦促沟通与民事纠纷举证，非国家法定计量检定证书。司法或法定仲裁裁决建议结合具有法定资质的第三方检测机构出具之报告。"
     }
   },
@@ -126,6 +129,8 @@
       "toneFirmDesc": "Presents empirical exceedance data, outlines sleep disturbance and clear boundaries",
       "toneStrict": "Strict Statutory Demand",
       "toneStrictDesc": "Formal legal notice format, cites statutory codes, issues 48h cure deadline",
+      "badgeFree": "Free",
+      "badgePro": "🔒 PRO",
       "lblRecipient": "Recipient / Resident",
       "lblSender": "Sender / Your Name/Unit",
       "lblJurisdiction": "Legal Jurisdiction & Language",
@@ -135,6 +140,7 @@
       "lblTime": "Monitored Window",
       "lblHash": "Audit Fingerprint",
       "articlesTitle": "Statutory Provisions & Legal Standards Cited",
+      "legalHeaderTitle": "Statutory Provisions & Legal Standards Cited",
       "previewLabel": "Document Live Preview",
       "previewHint": "WYSIWYG · Formatted Legal Draft",
       "btnClose": "Close",
@@ -1276,11 +1282,11 @@
     // Preview Labels
     const pLbl = el.querySelector('#lnmPreviewLabel');
     const pHnt = el.querySelector('#lnmPreviewHint');
-    if (pLbl) pLbl.textContent = ui.previewLabel || (currentLang === 'zh' ? '文书实时预览 (Live Preview)' : 'Document Live Preview');
+    if (pLbl) pLbl.textContent = ui.previewLabel || (currentLang === 'zh' ? '文书实时预览' : 'Document Live Preview');
     if (pHnt) pHnt.textContent = ui.previewHint || (currentLang === 'zh' ? '所见即所得 · 自动排版' : 'WYSIWYG · Formatted Legal Draft');
 
     const artHeaderTitle = el.querySelector('#lnmArticlesHeaderTitle');
-    if (artHeaderTitle) artHeaderTitle.textContent = ui.legalHeaderTitle || (currentLang === 'zh' ? '法定法规依据与法律条文 (Statutory Provisions)' : 'Statutory Provisions & Legal Standards Cited');
+    if (artHeaderTitle) artHeaderTitle.textContent = ui.legalHeaderTitle || ui.articlesTitle || (currentLang === 'zh' ? '法定法规依据与法律条文' : 'Statutory Provisions & Legal Standards Cited');
 
     // Telemetry labels
     const lp = el.querySelector('#lnmLblPeak');
@@ -1430,13 +1436,13 @@
       lblAvg: ui.lblAvg || (currentLang === 'zh' ? '等效均值 LAeq' : 'Equivalent LAeq'),
       lblTime: ui.lblTime || (currentLang === 'zh' ? '监测时段' : 'Monitored Window'),
       lblHash: ui.lblHash || (currentLang === 'zh' ? '数字存证指纹' : 'Audit Fingerprint'),
-      thMetric: ui.thMetric || (currentLang === 'zh' ? '声学监测指标 (Acoustic Metric)' : 'Acoustic Metric'),
-      thValue: ui.thValue || (currentLang === 'zh' ? '实测读数 (Recorded Value)' : 'Recorded Value'),
-      telemetryHeader: ui.telemetryHeader || (currentLang === 'zh' ? '【现场声学测量数据证据表 / Telemetry Log】' : '【Acoustic Telemetry Log】'),
-      legalHeader: ui.legalHeader || (currentLang === 'zh' ? '【法定法规条文与法律依据 / Statutory Provisions Cited】' : '【Statutory Provisions & Legal Standards Cited】'),
-      lblSign: ui.lblSign || (currentLang === 'zh' ? '通知方签署 (Signature): ' : 'Signature: '),
-      lblSignDate: ui.lblSignDate || (currentLang === 'zh' ? '签署日期 (Date): ' : 'Date: '),
-      disclaimer: ui.disclaimer || (currentLang === 'zh' ? '注：本函及所附声学数据为民事自查事实记录，用于敦促沟通与民事纠纷事实举证。' : 'Note: This notice and acoustic data serve as civil documentation for communication and dispute resolution.')
+      thMetric: ui.thMetric || (currentLang === 'zh' ? '声学监测指标' : 'Acoustic Metric'),
+      thValue: ui.thValue || (currentLang === 'zh' ? '实测读数' : 'Recorded Value'),
+      telemetryHeader: ui.telemetryHeader || (currentLang === 'zh' ? '【现场声学测量数据证据表】' : '【Acoustic Telemetry Log】'),
+      legalHeader: ui.legalHeader || (currentLang === 'zh' ? '【法定法规条文与法律依据】' : '【Statutory Provisions & Legal Standards Cited】'),
+      lblSign: ui.lblSign || (currentLang === 'zh' ? '通知方签署: ' : 'Sender Signature: '),
+      lblSignDate: ui.lblSignDate || (currentLang === 'zh' ? '签署日期: ' : 'Signed Date: '),
+      disclaimer: ui.disclaimer || (currentLang === 'zh' ? '注：本函及所附声学数据为民事自查事实记录，用于敦促沟通与民事纠纷事实举证。' : 'Notice: This notice and acoustic data serve as civil documentation for communication and dispute resolution.')
     };
   }
 

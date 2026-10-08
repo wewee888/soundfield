@@ -155,65 +155,48 @@
         </svg>
       </div>
       <div>
-        <div class="perm-brand-name" id="permBrandName">SOUNDTEST.PRO 专业声学证据记录</div>
-
-        <div class="perm-brand-sub" id="permBrandSub">用于环境噪声监测、声学取证照片、定位标注和报告导出。</div>
-
+        <div class="perm-brand-name" id="permBrandName">SOUNDTEST.PRO — Acoustic Evidence Recorder</div>
+        <div class="perm-brand-sub" id="permBrandSub">Environmental noise monitoring, forensic photos, GPS tagging and evidence reports.</div>
       </div>
     </div>
-    <div class="perm-kicker" id="permKicker">官方应用提示 · TRUSTED PERMISSION SETUP</div>
-
-    <div class="perm-title" id="permTitle">SOUNDTEST.PRO 正在请求专业监测权限</div>
-
-    <div class="perm-desc" id="permDesc">这是 SOUNDTEST.PRO 的首次授权引导，不是病毒网站或盗版网站弹窗。授权后才能生成带地点、声音和现场画面的完整证据记录；浏览器安全规则要求你点击按鈕后才会弹出系统权限请求。</div>
-
+    <div class="perm-kicker" id="permKicker">Official App Prompt · TRUSTED PERMISSION SETUP</div>
+    <div class="perm-title" id="permTitle">SOUNDTEST.PRO Needs Monitoring Permissions</div>
+    <div class="perm-desc" id="permDesc">This is the first-time permission setup for SOUNDTEST.PRO — not a virus or phishing prompt. Granting access allows the app to generate fully-verified evidence records with location, audio, and photos. The browser only shows permission dialogs after you click the button below.</div>
     <div class="perm-trust">
-      <div class="perm-trust-item"><strong id="permTrust1H">本机实时处理</strong><span id="permTrust1B">麦克风默认只用于分贝计算</span></div>
-
-      <div class="perm-trust-item"><strong id="permTrust2H">主动拍摄</strong><span id="permTrust2B">摄像头只在你点击后开启</span></div>
-
-      <div class="perm-trust-item"><strong id="permTrust3H">可稍后授权</strong><span id="permTrust3B">拒绝定位/摄像头仍可测声级</span></div>
-
+      <div class="perm-trust-item"><strong id="permTrust1H">Local Processing</strong><span id="permTrust1B">Mic data is processed on-device for dB readings only</span></div>
+      <div class="perm-trust-item"><strong id="permTrust2H">On-Demand Camera</strong><span id="permTrust2B">Camera is never activated until you tap the capture button</span></div>
+      <div class="perm-trust-item"><strong id="permTrust3H">Grant Later</strong><span id="permTrust3B">Denying location or camera still allows dB monitoring</span></div>
     </div>
     <div class="perm-browser-warning" id="permDeniedWarning" style="display:none;margin:0 0 16px;padding:11px 12px;border-radius:16px;border:.5px solid rgba(255,63,80,.4);background:rgba(255,63,80,.09);color:var(--tx2);font-size:11.5px;line-height:1.55">
-      <strong id="permDeniedTitle" style="color:var(--red,#FF3F50);display:block;margin-bottom:4px;font-size:12px">⚠️ 麦克风权限已被浏览器拦截</strong>
-      <span id="permDeniedBody">浏览器未授予麦克风访问权限。如需使用分贝仪，请按以下指引开启权限：<br>• <strong>iPhone / iPad (Safari)</strong>：点击地址栏左侧【大小 / AA】➔【网站设置】➔【麦克风】改为【允许】；或系统【设置 ➔ Safari 浏览器 ➔ 麦克风】开启。<br>• <strong>Chrome / 电脑浏览器</strong>：点击地址栏左侧【🔒 锁头图标】➔ 将【麦克风】设为【允许】。<br>开启权限后刷新页面即可正常监测。</span>
+      <strong id="permDeniedTitle" style="color:var(--red,#FF3F50);display:block;margin-bottom:4px;font-size:12px">⚠️ Microphone Permission Blocked by Browser</strong>
+      <span id="permDeniedBody">Microphone access was blocked. To start the sound meter, please enable microphone permissions:<br>• <strong>iPhone / iPad (Safari)</strong>: Tap the "AA" icon in the address bar ➔ Website Settings ➔ Set Microphone to "Allow" (or iOS Settings ➔ Safari ➔ Microphone).<br>• <strong>Chrome / Desktop</strong>: Click the lock icon 🔒 on the left of the address bar ➔ set Microphone to "Allow".<br>Then reload the page to start monitoring.</span>
     </div>
     <div class="perm-browser-warning" id="wechatBrowserWarning" data-browser="wechatBrowserFallback">
-      <strong id="permWechatTitle">微信内置浏览器可能拦截授权</strong>
-
-      <span id="permWechatBody">如果点击“开始授权”后没有任何反应，请点击右上角菜单，选择“在浏览器打开”；也可以先复制链接到系统浏览器（Chrome、Edge、Safari）再打开。</span>
-
-      <button class="btn b-amber" id="permCopyBtn" onclick="copyCurrentLink()">复制链接到系统浏览器</button>
-
+      <strong id="permWechatTitle">WeChat Browser May Block Permissions</strong>
+      <span id="permWechatBody">If nothing happens after tapping Grant, use the top-right menu to open in your system browser (Chrome, Edge, Safari).</span>
+      <button class="btn b-amber" id="permCopyBtn" onclick="copyCurrentLink()">Copy Link to Open in Browser</button>
     </div>
     <div class="perm-list">
-      <div class="perm-item"><span class="perm-dot"></span><strong id="permItem1H">定位</strong><span id="permItem1B">识别小区、道路和附近地点</span></div>
-
-      <div class="perm-item"><span class="perm-dot"></span><strong id="permItem2H">麦克风</strong><span id="permItem2B">实时测量分贝和趋势</span></div>
-
-      <div class="perm-item"><span class="perm-dot"></span><strong id="permItem3H">摄像头</strong><span id="permItem3B">用于录像和拍照取证</span></div>
-
+      <div class="perm-item"><span class="perm-dot"></span><strong id="permItem1H">Location</strong><span id="permItem1B">Identifies neighborhood, street, and nearby landmarks</span></div>
+      <div class="perm-item"><span class="perm-dot"></span><strong id="permItem2H">Microphone</strong><span id="permItem2B">Real-time dB measurement and trend tracking</span></div>
+      <div class="perm-item"><span class="perm-dot"></span><strong id="permItem3H">Camera</strong><span id="permItem3B">Photo and video evidence capture</span></div>
     </div>
     <div class="perm-actions">
-      <button class="btn b-cyan" id="permGrantBtn" onclick="requestStartupPermissions()">开始授权</button>
-
-      <button class="btn" id="permLaterBtn" onclick="dismissPermissionGuide()">稍后</button>
-
+      <button class="btn b-cyan" id="permGrantBtn" onclick="requestStartupPermissions()">Grant Permissions</button>
+      <button class="btn" id="permLaterBtn" onclick="dismissPermissionGuide()">Maybe Later</button>
     </div>
-    <div class="perm-footnote" id="permFootnote">隐私边界：记录默认保存在本机浏览器；手机端请使用 HTTPS 域名打开，普通 http 局域网 IP 可能无法录音。</div>
-
+    <div class="perm-footnote" id="permFootnote">Privacy: All recordings are stored locally in your browser. Access via HTTPS (soundtest.pro) is required for microphone and camera on mobile.</div>
   </div>
 </div>
 
 <div class="report-preview-modal" id="reportPreviewModal" role="dialog" aria-modal="true" aria-labelledby="rpmTitle">
   <div class="rpm-card">
-    <button class="rpm-close" type="button" onclick="closeReportPreviewModal()" aria-label="关闭">×</button>
+    <button class="rpm-close" type="button" onclick="closeReportPreviewModal()" aria-label="Close">×</button>
     <div class="rpm-head">
       <div>
-        <div class="rpm-title" id="rpmTitle">📄 现场声学取证报告已生成</div>
+        <div class="rpm-title" id="rpmTitle">📄 Acoustic Evidence Certificate Ready</div>
       </div>
-      <span class="rpm-badge" id="rpmBadge">预览模式 (含防伪水印)</span>
+      <span class="rpm-badge" id="rpmBadge">Preview Mode (Watermarked)</span>
     </div>
 
     <!-- Free vs Pro Watermark Toggle Switcher -->
@@ -221,15 +204,15 @@
       <div class="pro-cert-toggle-tabs" role="tablist">
         <button type="button" class="pro-cert-tab active free-tab" id="rpmTabFree" onclick="toggleCertWatermark(true)">
           <span class="pro-cert-tab-icon">⚠️</span>
-          <span id="rpmTabFreeText">免费预览版 (含水印)</span>
+          <span id="rpmTabFreeText">Free Preview (Watermarked)</span>
         </button>
         <button type="button" class="pro-cert-tab" id="rpmTabPro" onclick="toggleCertWatermark(false)">
           <span class="pro-cert-tab-icon">★</span>
-          <span id="rpmTabProText">正式专业版 (无水印存证)</span>
+          <span id="rpmTabProText">Official Pro (Clean Forensic PDF)</span>
         </button>
       </div>
       <div class="pro-cert-toggle-hint" id="rpmToggleHint">
-        💡 免费预览版带有全页防伪水印；升级专业版立得 100% 纯净法律存证底稿与数字指纹。
+        💡 Free Preview includes a full-page watermark. Upgrade to Pro for 100% clean legal forensic certificate and digital SHA-256 fingerprint.
       </div>
     </div>
 
@@ -238,8 +221,8 @@
       <!-- Watermark Overlay Layer -->
       <div class="pro-cert-watermark-overlay" id="rpmWatermarkLayer">
         <div class="pro-cert-watermark-stamp">
-          SOUNDTEST.PRO 免费预览版<br>
-          <span style="font-size:10px;font-weight:700;letter-spacing:0.04em;">仅供民事自查参考 · 非法定计量器具 · SAMPLE ONLY</span>
+          SOUNDTEST.PRO FREE PREVIEW<br>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.04em;">CIVILIAN REFERENCE ONLY · NOT METROLOGY CERTIFIED · SAMPLE ONLY</span>
         </div>
         <div class="pro-cert-watermark-row">
           <span>SOUNDTEST.PRO PREVIEW</span>
@@ -247,8 +230,8 @@
           <span>CIVILIAN RECORD</span>
         </div>
         <div class="pro-cert-watermark-row">
-          <span>免费试测预览版</span>
-          <span>非法定计量器具</span>
+          <span>FREE PREVIEW MODE</span>
+          <span>NOT METROLOGY CERTIFIED</span>
           <span>UPGRADE TO UNLOCK</span>
         </div>
         <div class="pro-cert-watermark-row">
@@ -257,7 +240,7 @@
           <span>UNVERIFIED DRAFT</span>
         </div>
         <div class="pro-cert-watermark-row">
-          <span>★ 升级专业版去水印</span>
+          <span>★ UPGRADE TO PRO FOR CLEAN REPORT</span>
           <span>FOR PERSONAL USE ONLY</span>
           <span>SAMPLE</span>
         </div>
@@ -644,39 +627,39 @@
       <div style="display:flex;align-items:center;gap:8px;">
         <span style="font-size:18px;">📍</span>
         <div>
-          <h3 class="lcm-title" id="lcmTitle">位置修正与专属测点水印</h3>
-          <p class="lcm-sub" id="lcmSub">PRO 专业版专属 · 自定义地点将印刻至法律存证底稿与证据照片</p>
+          <h3 class="lcm-title" id="lcmTitle">Location Correction & Custom Watermark</h3>
+          <p class="lcm-sub" id="lcmSub">PRO Exclusive · Custom place & point sealed into legal certificates and photos</p>
         </div>
       </div>
-      <button class="lcm-close" type="button" onclick="closeLocationCorrectionModal()" aria-label="关闭">×</button>
+      <button class="lcm-close" type="button" onclick="closeLocationCorrectionModal()" aria-label="Close">×</button>
     </div>
     <div class="lcm-body">
       <div class="lcm-field">
-        <label id="lcmPlaceLabel">小区 / 建筑物 / 机构名称</label>
-        <input type="text" id="lcmPlaceInput" placeholder="如：保利天汇 / 万科金色家园 / 某某商务中心">
+        <label id="lcmPlaceLabel">Building / Complex / Facility Name</label>
+        <input type="text" id="lcmPlaceInput" placeholder="e.g. Skyline Plaza / Tower 2">
       </div>
       <div class="lcm-grid-2">
         <div class="lcm-field">
-          <label id="lcmBuildingLabel">楼栋 / 单元</label>
-          <input type="text" id="lcmBuildingInput" placeholder="如：3栋2单元">
+          <label id="lcmBuildingLabel">Building / Unit</label>
+          <input type="text" id="lcmBuildingInput" placeholder="e.g. Bldg 3, Unit 2">
         </div>
         <div class="lcm-field">
-          <label id="lcmFloorLabel">楼层 / 房号</label>
-          <input type="text" id="lcmRoomInput" placeholder="如：1202室">
+          <label id="lcmFloorLabel">Floor / Room No.</label>
+          <input type="text" id="lcmRoomInput" placeholder="e.g. Room 1202">
         </div>
       </div>
       <div class="lcm-field">
-        <label id="lcmPointLabel">具体室内测点 (专属水印标记)</label>
-        <input type="text" id="lcmPointInput" placeholder="如：主卧临街飘窗前1米 / 客厅正中 / 次卧床头">
+        <label id="lcmPointLabel">Indoor Measurement Point (Custom Watermark)</label>
+        <input type="text" id="lcmPointInput" placeholder="e.g. Master Bedroom Window 1m / Center Living Room">
       </div>
       <div class="lcm-field">
-        <label id="lcmNoteLabel">现场环境备注</label>
-        <input type="text" id="lcmNoteInput" placeholder="如：门窗紧闭 / 开启双层隔音窗">
+        <label id="lcmNoteLabel">Site Environment Notes</label>
+        <input type="text" id="lcmNoteInput" placeholder="e.g. Windows closed / Double glazing">
       </div>
     </div>
     <div class="lcm-actions">
-      <button type="button" class="btn b-cyan" id="lcmSaveBtn" onclick="saveLocationCorrection()">保存并印刻测点水印</button>
-      <button type="button" class="btn" style="background:rgba(255,255,255,0.06);border:1px solid #334155;color:#94a3b8;" onclick="resetLocationCorrection()">恢复 GPS 默认</button>
+      <button type="button" class="btn b-cyan" id="lcmSaveBtn" onclick="saveLocationCorrection()">Save & Seal Point Watermark</button>
+      <button type="button" class="btn" id="lcmResetBtn" style="background:rgba(255,255,255,0.06);border:1px solid #334155;color:#94a3b8;" onclick="resetLocationCorrection()">Restore GPS Default</button>
     </div>
   </div>
 </div>
@@ -737,49 +720,47 @@
 
 <div class="sentry-modal" id="sentryModal" role="dialog" aria-modal="true" aria-labelledby="sentryModalTitle">
   <div class="sentry-card">
-    <button class="sentry-close" type="button" onclick="closeSentryModal()" aria-label="关闭">×</button>
+    <button class="sentry-close" type="button" onclick="closeSentryModal()" aria-label="Close">×</button>
     <div class="sentry-hero-img" style="margin:-2px 0 14px;border-radius:10px;overflow:hidden;max-height:130px;">
-
-      <img src="assets/images/sentry_night_monitor.webp" alt="旧手机床头待命，夜间噪音超标自动抓取取证示意" loading="lazy" style="width:100%;height:130px;object-fit:cover;object-position:center 40%;display:block;">
-
+      <img src="assets/images/sentry_night_monitor.webp" alt="Smartphone bedside night sentry auto audio capture preview" loading="lazy" style="width:100%;height:130px;object-fit:cover;object-position:center 40%;display:block;">
     </div>
 
     <div class="sentry-header">
       <div class="sentry-icon-wrap" aria-hidden="true">🌙</div>
       <div>
-        <div class="sentry-title" id="sentryModalTitle">夜间噪音哨兵模式 (Sentry Mode)</div>
-        <div class="sentry-subtitle" id="sentryModalSubtitle">“睡你的觉，让系统替你守夜” · 超标自动唤醒抓现行</div>
+        <div class="sentry-title" id="sentryModalTitle">🌙 Overnight Noise Sentry Mode</div>
+        <div class="sentry-subtitle" id="sentryModalSubtitle">“Sleep tight while the system watches” · Auto-triggered forensic capture</div>
       </div>
     </div>
     
     <div class="sentry-pain-box">
       <div class="sentry-pain-item bad">
-        <span class="sentry-badge-tag bad" id="sentryBadTag">人工盯守之痛</span>
-        <p id="sentryBadText">突发邻里噪音、恶犬吠叫、半夜重低音往往只有几秒。等你惊醒摸出手机、解开锁屏、打开录音，声音早已停止，抓不到任何违规证据。</p>
+        <span class="sentry-badge-tag bad" id="sentryBadTag">Manual Monitoring Pain</span>
+        <p id="sentryBadText">Sudden midnight noise (barks, thumps, bass vibrations) lasts only seconds. By the time you wake up and unlock your phone, the noise is gone—leaving no proof.</p>
       </div>
       <div class="sentry-pain-item good">
-        <span class="sentry-badge-tag good" id="sentryGoodTag">PRO 哨兵方案</span>
-        <p id="sentryGoodText">旧手机插上充电器，静置床头待命。<strong>设定分贝阈值，突发超标瞬间全自动抓取音频并加盖时间戳</strong>，静音后自动封存；醒来直接查看《整夜违规超标流水单》。</p>
+        <span class="sentry-badge-tag good" id="sentryGoodTag">PRO Sentry Solution</span>
+        <p id="sentryGoodText">Plug in an old phone by your bedside. <strong>The moment sound spikes past threshold, it automatically records audio with SHA-256 & GPS stamps</strong>. Wake up to a complete violation log.</p>
       </div>
     </div>
 
     <div class="sentry-preview-box">
-      <div class="sentry-preview-title" id="sentryPreviewTitle">哨兵待命参数 (PRO 专属已预设)</div>
+      <div class="sentry-preview-title" id="sentryPreviewTitle">Sentry Standby Parameters (PRO)</div>
       <div class="sentry-preview-grid">
         <div class="sentry-preview-stat">
-          <span>触发阈值</span>
-          <strong>45 dB (国标夜间)</strong>
+          <span>Threshold</span>
+          <strong>45 dB (Night Target)</strong>
         </div>
         <div class="sentry-preview-stat">
-          <span>持续触发</span>
-          <strong>≥ 3 秒自动抓取</strong>
+          <span>Trigger Delay</span>
+          <strong>≥ 3s Sustained</strong>
         </div>
         <div class="sentry-preview-stat">
-          <span>静音封存</span>
-          <strong>超标停止后延录 10s</strong>
+          <span>Post Buffer</span>
+          <strong>10s Tail Record</strong>
         </div>
         <div class="sentry-preview-stat">
-          <span>防篡改</span>
+          <span>Anti-Tamper</span>
           <strong>SHA-256 + GPS</strong>
         </div>
       </div>
@@ -787,15 +768,15 @@
 
     <div class="sentry-actions">
       <button class="sentry-btn-primary" id="sentryUpgradeYearlyBtn" type="button" onclick="checkoutSentry('yearly')">
-        <div class="sentry-btn-text" id="sentryBtnYearlyText">★ 微信特惠开通 PRO 年卡 ¥19.9 / 年 (原价 ¥59.9 · 立省 67%)</div>
-        <div class="sentry-btn-sub" id="sentryBtnYearlySub">折合 ¥1.6/月 · 解锁整夜哨兵 + 长期纠纷档案 + 无限次无水印报告 (最划算)</div>
+        <div class="sentry-btn-text" id="sentryBtnYearlyText">★ Upgrade PRO Yearly · $24.99 / yr</div>
+        <div class="sentry-btn-sub" id="sentryBtnYearlySub">Overnight Sentry + Multi-Day Legal Dossier + Unlimited Clean Reports</div>
       </button>
       <button class="sentry-btn-secondary" id="sentryUpgradeMonthlyBtn" type="button" onclick="checkoutSentry('pro')">
-        <span id="sentryBtnMonthlyText">开通 PRO 月卡 ¥9.9 / 月 (原价 ¥19.9 · 5折) · 30天集中守夜取证</span>
+        <span id="sentryBtnMonthlyText">PRO Monthly Pass · $4.99 / mo · 30-Day Intensive Surveillance</span>
       </button>
       <div class="sentry-more-options" id="sentryMoreOptions">
-        <span>其他方案：</span>
-        <a href="javascript:void(0)" onclick="checkoutSentry('lifetime')">💎 终身买断版 ¥39.9 (原价 ¥199 · 立省 ¥159.1)</a>
+        <span>Other options:</span>
+        <a href="javascript:void(0)" onclick="checkoutSentry('lifetime')">💎 Lifetime All-Access · $79.99</a>
       </div>
     </div>
   </div>
@@ -804,11 +785,11 @@
 <!-- PRO UPGRADE MODAL -->
 <div class="pro-upgrade-modal" id="proUpgradeModal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="pumTitle">
   <div class="pum-card">
-    <button class="pum-close" type="button" onclick="closeProUpgradeModal()" aria-label="关闭">×</button>
+    <button class="pum-close" type="button" onclick="closeProUpgradeModal()" aria-label="Close">×</button>
     <div class="pum-header">
-      <div class="pum-badge" id="pumBadge">★ PRO 官方专业升级</div>
-      <div class="pum-title" id="pumTitle">解锁 SOUNDTEST.PRO 全部专业权益</div>
-      <div class="pum-desc" id="pumDesc">生成物业/法理标准无水印存证底稿 · 加盖 SHA-256 数字指纹与 GPS 坐标</div>
+      <div class="pum-badge" id="pumBadge">★ PRO Forensic Certification</div>
+      <div class="pum-title" id="pumTitle">Unlock Full SOUNDTEST.PRO Features</div>
+      <div class="pum-desc" id="pumDesc">Generate unwatermarked legal-standard evidence dossiers with SHA-256 audit fingerprint</div>
     </div>
 
     <!-- Plan Selection List -->
@@ -818,14 +799,14 @@
         <div class="pum-radio"></div>
         <div class="pum-plan-info">
           <div class="pum-plan-top">
-            <span class="pum-plan-name" id="pumPlanNameYearly">PRO 会员年卡</span>
-            <span class="pum-plan-tag best" id="pumPlanTagYearly">★ 最受欢迎 · 省67%</span>
+            <span class="pum-plan-name" id="pumPlanNameYearly">PRO Annual License</span>
+            <span class="pum-plan-tag best" id="pumPlanTagYearly">★ Best Value · Save 60%</span>
           </div>
-          <div class="pum-plan-desc" id="pumPlanDescYearly">365天无限次去除报告水印 · 夜间长时自动监测 · 现场公函维权模板</div>
+          <div class="pum-plan-desc" id="pumPlanDescYearly">365-day unlimited unwatermarked PDF dossier · Overnight sentry monitoring · Official dispute templates</div>
         </div>
         <div class="pum-plan-price">
-          <div class="pum-price-main" id="pumPriceYearly">¥19.90</div>
-          <div class="pum-price-orig" id="pumPriceOrigYearly">¥59.90</div>
+          <div class="pum-price-main" id="pumPriceYearly">$24.99</div>
+          <div class="pum-price-orig" id="pumPriceOrigYearly">$59.99</div>
         </div>
       </div>
 
@@ -834,14 +815,14 @@
         <div class="pum-radio"></div>
         <div class="pum-plan-info">
           <div class="pum-plan-top">
-            <span class="pum-plan-name" id="pumPlanNameLifetime">终身永久买断版</span>
-            <span class="pum-plan-tag" id="pumPlanTagLifetime">💎 终身买断</span>
+            <span class="pum-plan-name" id="pumPlanNameLifetime">Lifetime All-Access</span>
+            <span class="pum-plan-tag" id="pumPlanTagLifetime">💎 Lifetime</span>
           </div>
-          <div class="pum-plan-desc" id="pumPlanDescLifetime">一次性付费永久有效 · 终身免费升级后续所有专业版功能与算法</div>
+          <div class="pum-plan-desc" id="pumPlanDescLifetime">One-time purchase, lifetime validity · Free future algorithms and professional updates</div>
         </div>
         <div class="pum-plan-price">
-          <div class="pum-price-main" id="pumPriceLifetime">¥39.90</div>
-          <div class="pum-price-orig" id="pumPriceOrigLifetime">¥199.00</div>
+          <div class="pum-price-main" id="pumPriceLifetime">$79.99</div>
+          <div class="pum-price-orig" id="pumPriceOrigLifetime">$199.00</div>
         </div>
       </div>
 
@@ -850,14 +831,14 @@
         <div class="pum-radio"></div>
         <div class="pum-plan-info">
           <div class="pum-plan-top">
-            <span class="pum-plan-name" id="pumPlanNameMonthly">PRO 会员月卡</span>
-            <span class="pum-plan-tag" id="pumPlanTagMonthly">单月体验</span>
+            <span class="pum-plan-name" id="pumPlanNameMonthly">PRO Monthly Pass</span>
+            <span class="pum-plan-tag" id="pumPlanTagMonthly">Monthly</span>
           </div>
-          <div class="pum-plan-desc" id="pumPlanDescMonthly">30天全功能无限制使用 · 适合集中交涉与突发噪声取证周期</div>
+          <div class="pum-plan-desc" id="pumPlanDescMonthly">30-day all-access forensic logging · Ideal for dispute resolution and landlord evidence</div>
         </div>
         <div class="pum-plan-price">
-          <div class="pum-price-main" id="pumPriceMonthly">¥9.90</div>
-          <div class="pum-price-orig" id="pumPriceOrigMonthly">¥19.90</div>
+          <div class="pum-price-main" id="pumPriceMonthly">$4.99</div>
+          <div class="pum-price-orig" id="pumPriceOrigMonthly">$9.99</div>
         </div>
       </div>
 
@@ -866,31 +847,31 @@
         <div class="pum-radio"></div>
         <div class="pum-plan-info">
           <div class="pum-plan-top">
-            <span class="pum-plan-name" id="pumPlanNameSingle">单次报告防伪解锁</span>
-            <span class="pum-plan-tag" id="pumPlanTagSingle">单次可用</span>
+            <span class="pum-plan-name" id="pumPlanNameSingle">Single Report Pass</span>
+            <span class="pum-plan-tag" id="pumPlanTagSingle">Single Use</span>
           </div>
-          <div class="pum-plan-desc" id="pumPlanDescSingle">仅去除本次测定报告水印 · 加盖防伪数字指纹与时间戳</div>
+          <div class="pum-plan-desc" id="pumPlanDescSingle">Removes watermark from current session report · Seals SHA-256 digital stamp and GPS anchor</div>
         </div>
         <div class="pum-plan-price">
-          <div class="pum-price-main" id="pumPriceSingle">¥3.90</div>
-          <div class="pum-price-orig" id="pumPriceOrigSingle">¥9.90</div>
+          <div class="pum-price-main" id="pumPriceSingle">$1.99</div>
+          <div class="pum-price-orig" id="pumPriceOrigSingle">$4.99</div>
         </div>
       </div>
     </div>
 
     <!-- Main Checkout Button -->
     <button class="pum-action-btn" id="pumCheckoutBtn" type="button" onclick="executeProUpgradeCheckout()">
-      <span id="pumCheckoutBtnIcon">🟢</span>
-      <span id="pumCheckoutBtnText">立即微信安全开通 (¥19.90 / 年)</span>
+      <span id="pumCheckoutBtnIcon">💳</span>
+      <span id="pumCheckoutBtnText">Unlock Pro Yearly ($24.99 / yr)</span>
     </button>
 
     <!-- Secondary Links -->
     <div class="pum-footer-links" style="justify-content:center;">
-      <a href="javascript:void(0)" onclick="closeProUpgradeModal();openSettingsDrawerTab('subscription');" id="pumVerifyLink">🔑 已购验证会员</a>
+      <a href="javascript:void(0)" onclick="closeProUpgradeModal();openSettingsDrawerTab('subscription');" id="pumVerifyLink">🔑 Already a Member? Verify License</a>
     </div>
 
     <div class="pum-security-note" id="pumSecurityNote">
-      🔒 虎皮椒安全微信直付 · 支付成功自动激活 · 跨设备通用
+      🔒 Secure Checkout · Instant Activation · Cross-Device License
     </div>
   </div>
 </div>
@@ -898,30 +879,30 @@
 <!-- SETTINGS DRAWER -->
 
 <div class="settings-drawer-backdrop" id="settingsDrawerBackdrop" onclick="closeSettingsDrawer()"></div>
-<div class="settings-drawer" id="settingsDrawer" role="dialog" aria-label="设置">
+<div class="settings-drawer" id="settingsDrawer" role="dialog" aria-label="Settings">
   <div class="settings-drawer-handle" id="settingsDrawerHandle">
     <div class="settings-drawer-handle-bar"></div>
   </div>
   <div class="settings-drawer-header">
-    <span class="settings-drawer-title">设置</span>
-    <button class="settings-drawer-close" onclick="closeSettingsDrawer()" aria-label="关闭">×</button>
+    <span class="settings-drawer-title" id="sdTitle">Settings</span>
+    <button class="settings-drawer-close" onclick="closeSettingsDrawer()" aria-label="Close">×</button>
   </div>
   <div class="settings-drawer-tabs" role="tablist">
-    <button class="settings-drawer-tab active" data-tab="measure" role="tab" aria-selected="true">计量</button>
-    <button class="settings-drawer-tab" data-tab="report" role="tab">报告</button>
-    <button class="settings-drawer-tab" data-tab="privacy" role="tab">隐私</button>
-    <button class="settings-drawer-tab" data-tab="subscription" role="tab">订阅</button>
-    <button class="settings-drawer-tab" data-tab="data" role="tab">数据</button>
-    <button class="settings-drawer-tab admin-only" data-tab="admin" role="tab">管理</button>
+    <button class="settings-drawer-tab active" id="sdTabMeasure" data-tab="measure" role="tab" aria-selected="true" onclick="switchSettingsDrawerTab('measure')">Metering</button>
+    <button class="settings-drawer-tab" id="sdTabReport" data-tab="report" role="tab" aria-selected="false" onclick="switchSettingsDrawerTab('report')">Reports</button>
+    <button class="settings-drawer-tab" id="sdTabPrivacy" data-tab="privacy" role="tab" aria-selected="false" onclick="switchSettingsDrawerTab('privacy')">Privacy</button>
+    <button class="settings-drawer-tab" id="sdTabSubscription" data-tab="subscription" role="tab" aria-selected="false" onclick="switchSettingsDrawerTab('subscription')">Subscription</button>
+    <button class="settings-drawer-tab" id="sdTabData" data-tab="data" role="tab" aria-selected="false" onclick="switchSettingsDrawerTab('data')">Data</button>
+    <button class="settings-drawer-tab admin-only" id="sdTabAdmin" data-tab="admin" role="tab" aria-selected="false" onclick="switchSettingsDrawerTab('admin')">Admin</button>
   </div>
-  <div class="settings-drawer-content">
-    <!-- 计量 Tab -->
+  <div class="settings-drawer-content" id="settingsDrawerContent">
+    <!-- Metering Tab -->
     <div class="settings-drawer-section active" data-section="measure">
-      <div class="settings-drawer-section-title">声级计权与响应</div>
+      <div class="settings-drawer-section-title" id="sdSecTitleMeasure">Acoustic Weighting & Response</div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">计权</div>
-          <div class="settings-drawer-desc">A 适合人耳感知，C 适合机械噪声，Z 为无计权</div>
+          <div class="settings-drawer-label" id="sdLblWeight">Frequency Weighting</div>
+          <div class="settings-drawer-desc" id="sdDescWeight">A-weighting for human hearing, C for mechanical/bass, Z for unweighted flat</div>
         </div>
         <div class="seg" style="width:120px">
           <button class="seg-btn active" id="wtA" onclick="setWeighting('A')">A</button>
@@ -931,18 +912,18 @@
       </div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">响应</div>
-          <div class="settings-drawer-desc">快响应适合瞬时噪声，慢响应适合平均值</div>
+          <div class="settings-drawer-label" id="sdLblResponse">Time Response</div>
+          <div class="settings-drawer-desc" id="sdDescResponse">Fast (125ms) for transient spikes, Slow (1s) for steady average</div>
         </div>
         <div class="seg" style="width:120px">
-          <button class="seg-btn active" id="twF" onclick="setTimeWeight('F')">快</button>
-          <button class="seg-btn" id="twS" onclick="setTimeWeight('S')">慢</button>
+          <button class="seg-btn active" id="twF" onclick="setTimeWeight('F')">Fast</button>
+          <button class="seg-btn" id="twS" onclick="setTimeWeight('S')">Slow</button>
         </div>
       </div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">麦克风增益</div>
-          <div class="settings-drawer-desc">过高会削波，正常保持 2dB</div>
+          <div class="settings-drawer-label" id="sdLblMic">Microphone Gain</div>
+          <div class="settings-drawer-desc" id="sdDescMic">Input pre-amplification; keep around 2dB to prevent audio clipping</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <input type="range" id="micR" min="0" max="24" value="2" step="1" oninput="setMicGain()" style="width:80px">
@@ -951,19 +932,19 @@
       </div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">校准偏移</div>
-          <div class="settings-drawer-desc">根据专业设备对比修正</div>
+          <div class="settings-drawer-label" id="sdLblCal">Calibration Offset</div>
+          <div class="settings-drawer-desc" id="sdDescCal">Fine-tune baseline against certified reference meter</div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
           <input type="range" id="calR" min="-20" max="20" value="-8" step="0.1" oninput="setCal()" style="width:70px">
           <span class="settings-drawer-value" id="calV">-8dB</span>
-          <button class="btn b-cyan" style="height:26px;font-size:9px;padding:0 7px" onclick="applyProMeterCalibration()">推荐</button>
+          <button class="btn b-cyan" id="sdBtnCalRec" style="height:26px;font-size:9px;padding:0 7px" onclick="applyProMeterCalibration()">Recommended</button>
         </div>
       </div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">告警阈值</div>
-          <div class="settings-drawer-desc">超过此分贝值触发警告</div>
+          <div class="settings-drawer-label" id="sdLblTh">Alarm Threshold</div>
+          <div class="settings-drawer-desc" id="sdDescTh">Triggers visual/audio indicator when noise level exceeds this limit</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <input type="range" id="thR" min="45" max="110" value="60" step="5" oninput="setTh()" style="width:80px">
@@ -972,37 +953,37 @@
       </div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">启用告警</div>
+          <div class="settings-drawer-label" id="sdLblAlertTog">Enable Threshold Alert</div>
         </div>
         <div class="tog on" id="alertTog" onclick="togAlert()" role="switch" aria-checked="true" tabindex="0"></div>
       </div>
       <div class="settings-drawer-row">
         <div>
           <div class="settings-drawer-label">
-            自动切换阈值
-            <span id="dayNightBadge" class="day-badge" style="display:none">白天</span>
+            <span id="sdLblDayNight">Day / Night Auto-Threshold</span>
+            <span id="dayNightBadge" class="day-badge" style="display:none">Day</span>
           </div>
-          <div class="settings-drawer-desc">白天 55 dB / 夜间 45 dB 自动切换（7:00–22:00 为白天）</div>
+          <div class="settings-drawer-desc" id="sdDescDayNight">Auto-switches: Day 55 dB / Night 45 dB (07:00–22:00 daytime)</div>
         </div>
         <div class="tog off" id="dayNightTog" onclick="togDayNightThreshold()" role="switch" aria-checked="false" tabindex="0"></div>
       </div>
       <div class="settings-drawer-row" id="dayNightOpts" style="display:none">
         <div>
-          <div class="settings-drawer-label">当前阈值</div>
+          <div class="settings-drawer-label" id="sdLblCurTh">Current Active Threshold</div>
           <div class="settings-drawer-desc" id="dayNightStatus">—</div>
         </div>
       </div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">持续超标告警</div>
-          <div class="settings-drawer-desc">持续超标设定秒数后才触发告警</div>
+          <div class="settings-drawer-label" id="sdLblSustained">Sustained Exceedance Filter</div>
+          <div class="settings-drawer-desc" id="sdDescSustained">Only alarms when noise stays above threshold continuously (filters single bangs)</div>
         </div>
         <div class="tog off" id="sustainedAlertTog" onclick="togSustainedAlert()" role="switch" aria-checked="false" tabindex="0"></div>
       </div>
       <div class="settings-drawer-row" id="sustainedAlertOpts" style="display:none">
         <div>
-          <div class="settings-drawer-label">持续超标秒数</div>
-          <div class="settings-drawer-desc">持续超过阈值多少秒后告警</div>
+          <div class="settings-drawer-label" id="sdLblSustainedSec">Sustained Duration (seconds)</div>
+          <div class="settings-drawer-desc" id="sdDescSustainedSec">Seconds noise must continuously exceed threshold before alerting</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <input type="range" id="susAlertsR" min="5" max="120" value="30" step="5" oninput="setSustainedAlertSec()" style="width:80px">
@@ -1012,25 +993,26 @@
       <div class="settings-drawer-row">
         <div>
           <div class="settings-drawer-label">
-            <span id="autoRecLockIcon" style="margin-right:5px;opacity:0.6">🔒</span>超标自动录音
-            <span id="autoRecProBadge" class="pro-feature-badge" style="display:none">PRO</span>
+            <span id="autoRecLockIcon" style="margin-right:5px;opacity:0.6">🔒</span>
+            <span id="sdLblAutoRec">Auto-Record on Exceedance</span>
+            <span id="autoRecProBadge" class="pro-feature-badge" style="display:inline-block">PRO</span>
           </div>
-          <div class="settings-drawer-desc">超标持续数秒后自动开始录音</div>
+          <div class="settings-drawer-desc" id="sdDescAutoRec">Automatically starts audio recording when noise exceeds threshold overnight</div>
         </div>
         <div class="tog off" id="autoRecTog" onclick="togAutoRec()" role="switch" aria-checked="false" tabindex="0"></div>
       </div>
       <div class="settings-drawer-row" id="autoRecOpts" style="display:none">
         <div>
-          <div class="settings-drawer-label">超标持续秒数</div>
-          <div class="settings-drawer-desc">超标持续多久后开始录音</div>
+          <div class="settings-drawer-label" id="sdLblAutoRecSec">Trigger Delay (seconds)</div>
+          <div class="settings-drawer-desc" id="sdDescAutoRecSec">How long noise must exceed threshold before recording starts</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <input type="range" id="autoRecMinSR" min="1" max="30" value="3" step="1" oninput="setAutoRecMinSec()" style="width:80px">
           <span class="settings-drawer-value" id="autoRecMinSV">3s</span>
         </div>
         <div>
-          <div class="settings-drawer-label">超标停止后录制秒数</div>
-          <div class="settings-drawer-desc">超标结束后继续录制多少秒</div>
+          <div class="settings-drawer-label" id="sdLblAutoRecAfter">Post-Trigger Duration (seconds)</div>
+          <div class="settings-drawer-desc" id="sdDescAutoRecAfter">Seconds to continue recording after sound drops below threshold</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <input type="range" id="autoRecAfterStopSR" min="3" max="60" value="10" step="1" oninput="setAutoRecAfterStopSec()" style="width:80px">
@@ -1039,21 +1021,21 @@
       </div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">地点识别</div>
-          <div class="settings-drawer-desc">定位后识别小区、道路</div>
+          <div class="settings-drawer-label" id="sdLblPlace">Location & Landmark Tagging</div>
+          <div class="settings-drawer-desc" id="sdDescPlace">Tags neighborhood, street, and coordinates to records</div>
         </div>
         <div class="tog on" id="placeTog" onclick="togPlaceLookup()" role="switch" aria-checked="true" tabindex="0"></div>
       </div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">长时省电</div>
-          <div class="settings-drawer-desc">超过8分钟自动降频</div>
+          <div class="settings-drawer-label" id="sdLblPower">Long-Run Power Saver</div>
+          <div class="settings-drawer-desc" id="sdDescPower">Auto-dims display and optimizes polling after 8 min of continuous monitoring</div>
         </div>
         <div class="tog on" id="powerSaverTog" onclick="togPowerSaver()" role="switch" aria-checked="true" tabindex="0"></div>
       </div>
       <div class="settings-drawer-row">
         <div>
-          <div class="settings-drawer-label">波形平滑</div>
+          <div class="settings-drawer-label" id="sdLblSm">Waveform Smoothing</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <input type="range" id="smR" min="1" max="9" value="1" step="1" oninput="setSm()" style="width:80px">
@@ -1061,92 +1043,108 @@
         </div>
       </div>
     </div>
-    <!-- 报告 Tab -->
+
+    <!-- Reports Tab -->
     <div class="settings-drawer-section" data-section="report">
-      <div class="settings-drawer-section-title">报告模板</div>
+      <div class="settings-drawer-section-title" id="sdSecTitleReport">Report Templates & Dossier Settings</div>
       <div class="settings-drawer-row" style="flex-direction:column;align-items:stretch;gap:8px">
-        <div class="settings-drawer-label">模板类型</div>
+        <div class="settings-drawer-label" id="sdLblTpl">Report Template Type</div>
         <select class="setting-select" id="reportTemplate" onchange="setReportTemplate()" style="max-width:none;width:100%">
-          <option value="general">通用测量（常规记录）</option>
-          <option value="complaint">投诉沟通</option>
-          <option value="property">物业协同</option>
-          <option value="inspection">企业巡检</option>
-          <option value="legal">律师沟通辅助</option>
-          <option value="neighbor">邻里扰民</option>
-          <option value="footstep">楼上脚步/冲击</option>
-          <option value="renovation">装修施工</option>
-          <option value="traffic">道路交通</option>
-          <option value="elevator">电梯机房</option>
-          <option value="ktv">商铺/KTV</option>
-          <option value="hvac">空调外机</option>
-          <option value="pet">宠物犬吠</option>
-          <option value="appliance">水泵/家电共振</option>
-          <option value="boundary">厂界噪声</option>
+          <option value="general">General Environmental Measurement</option>
+          <option value="neighbor">Neighbor Noise Evidence Report</option>
+          <option value="footstep">Floor Impact & Footstep Noise Report</option>
+          <option value="renovation">Renovation Construction Noise Report</option>
+          <option value="traffic">Traffic & Transportation Noise Report</option>
+          <option value="elevator">Elevator Machine Room Low-Frequency Report</option>
+          <option value="ktv">Retail or KTV Disturbance Report</option>
+          <option value="hvac">Outdoor AC Unit Noise Report</option>
+          <option value="pet">Pet & Animal Disturbance Noise Report</option>
+          <option value="appliance">Plumbing & Domestic Appliance Noise Report</option>
+          <option value="boundary">Factory Boundary Noise Report</option>
+          <option value="workplace">Workplace Noise Inspection Report</option>
+          <option value="property">Property Noise Coordination Report</option>
+          <option value="legal">Acoustic Evidence Aid Report</option>
+          <option value="complaint">Noise Complaint Evidence Report</option>
         </select>
-        <div class="settings-drawer-desc" id="templateGuidance">选择模板后，这里会显示采样建议</div>
+        <div class="settings-drawer-desc" id="templateGuidance">Choose a template above to view specific measurement guidelines</div>
       </div>
       <div class="settings-drawer-row" style="flex-direction:column;align-items:stretch;gap:6px">
-        <div class="settings-drawer-label">组织/项目名称</div>
-        <input class="setting-input" id="organizationNameInput" type="text" placeholder="可选" onchange="setReportTemplate()" style="max-width:none;width:100%">
+        <div class="settings-drawer-label" id="sdLblOrg">Organization / Property Project Name</div>
+        <input class="setting-input" id="organizationNameInput" type="text" placeholder="Optional (e.g. HOA Management / Resident Association)" onchange="setReportTemplate()" style="max-width:none;width:100%">
+      </div>
+      <div class="settings-drawer-row" style="flex-direction:column;align-items:stretch;gap:6px">
+        <div class="settings-drawer-label" id="sdLblLcmWatermark">Custom Point & Watermark (PRO)</div>
+        <div class="settings-drawer-desc" id="sdDescLcmWatermark">Configure custom complex, building/room and indoor point (e.g. Master Bedroom window sill)</div>
+        <button class="btn b-cyan" id="sdBtnLcmConfig" onclick="openLocationCorrectionModal()" style="align-self:flex-start;height:28px;font-size:11px;padding:0 12px;margin-top:4px">Configure Watermark</button>
       </div>
     </div>
-    <!-- 隐私 Tab -->
+
+    <!-- Privacy Tab -->
     <div class="settings-drawer-section" data-section="privacy">
-      <div class="settings-drawer-section-title">隐私与合规</div>
+      <div class="settings-drawer-section-title" id="sdSecTitlePrivacy">Privacy, Sensors & Metrology Integrity</div>
       <div style="display:grid;gap:8px;margin-bottom:12px">
-        <div class="compliance-item"><strong>麦克风：</strong>仅用于本机实时声级计算</div>
-        <div class="compliance-item"><strong>摄像头：</strong>仅用于用户主动拍照、录像</div>
-        <div class="compliance-item"><strong>定位：</strong>用于地点标注，坐标发送给地图服务</div>
-        <div class="compliance-item"><strong>数据：</strong>记录默认保存在本机浏览器</div>
+        <div class="compliance-item" id="sdComplianceMic"><strong>Microphone:</strong> 100% on-device processing via Web Audio API. Zero remote upload.</div>
+        <div class="compliance-item" id="sdComplianceCam"><strong>Camera:</strong> Only active when user triggers Photo or Video mode. Stamped in local canvas.</div>
+        <div class="compliance-item" id="sdComplianceGps"><strong>Geolocation:</strong> Used exclusively for local evidence timestamping and map display.</div>
+        <div class="compliance-item" id="sdComplianceData"><strong>Data Security:</strong> All audio clips, photos, and telemetry kept in local browser IndexedDB.</div>
+        <div class="compliance-item" id="sdComplianceLegal"><strong>Compliance Notice:</strong> Civilian reference documentation tool; formal litigation requires certified testing.</div>
       </div>
       <div style="display:flex;gap:7px;flex-wrap:wrap">
-        <button class="btn b-red" onclick="clearAll()">删除全部本地记录</button>
+        <button class="btn b-red" id="sdBtnClearAllPrivacy" onclick="clearAll()">Delete All Local Records</button>
+        <button class="btn" id="sdBtnResetCalPrivacy" onclick="setCalibrationPreset('android-browser')">Reset Hardware Calibration</button>
       </div>
     </div>
-    <!-- 订阅 Tab -->
+
+    <!-- Subscription Tab -->
     <div class="settings-drawer-section" data-section="subscription">
-      <div class="settings-drawer-section-title">订阅与会员</div>
-      <div class="feedback-meta" id="membershipStatusHint" style="margin-bottom:10px">会员状态：未登录</div>
+      <div class="settings-drawer-section-title" id="sdSecTitleSub">Membership & Licensing Plans</div>
+      <div class="feedback-meta" id="membershipStatusHint" style="margin-bottom:10px">Membership Status: [FREE]</div>
       <div class="settings-drawer-row" style="flex-direction:column;align-items:stretch;gap:8px">
-        <input class="setting-input" id="memberEmailInput" type="email" placeholder="会员邮箱" autocomplete="email" style="max-width:none;width:100%">
+        <input class="setting-input" id="memberEmailInput" type="email" placeholder="Member email / License key" autocomplete="email" style="max-width:none;width:100%">
         <div style="display:flex;gap:6px">
-          <button class="btn b-cyan" onclick="lookupMembership()">验证</button>
-          <button class="btn" onclick="logoutMembership()">退出</button>
+          <button class="btn b-cyan" id="sdBtnVerifyMember" onclick="lookupMembership()">Verify License</button>
+          <button class="btn" id="sdBtnLogoutMember" onclick="logoutMembership()">Sign Out</button>
         </div>
       </div>
       <div style="margin-top:12px">
-        <div style="font-size:12px;color:var(--tx2);margin-bottom:8px">当前方案：<strong id="currentPlanLabel">Free</strong></div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap">
-          <button class="btn b-cyan" onclick="beginCheckout('pro')">开通 Pro</button>
-          <button class="btn b-amber" onclick="beginCheckout('team')">Team</button>
+        <div style="font-size:12px;color:var(--tx2);margin-bottom:8px"><span id="sdCurrentPlanPrefix">Current Plan: </span><strong id="currentPlanLabel">FREE</strong></div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px">
+          <button class="btn b-cyan" id="sdBtnBuyPro" onclick="beginCheckout('pro')">Upgrade to Pro · $24.99/yr</button>
+          <button class="btn b-amber" id="sdBtnBuyTeam" onclick="beginCheckout('team')">Team · $79.99/yr</button>
+        </div>
+        <div style="font-size:11px;color:var(--tx2);line-height:1.6;display:flex;flex-direction:column;gap:4px">
+          <div id="sdPlanMatrixFree">• <strong>Free Tier:</strong> Core A-weighting meter · 10 records storage · Watermarked PDF summary</div>
+          <div id="sdPlanMatrixPro">• <strong>PRO Tier:</strong> Unwatermarked Forensic PDF Dossier · Overnight Sentry Auto-Recording · Custom Watermark & Point Tagging · 15 Legal Templates · CSV Export · 3 Legal Notice Tones · Unlimited Storage</div>
         </div>
       </div>
     </div>
-    <!-- 数据 Tab -->
+
+    <!-- Data Tab -->
     <div class="settings-drawer-section" data-section="data">
-      <div class="settings-drawer-section-title">数据管理</div>
+      <div class="settings-drawer-section-title" id="sdSecTitleData">Evidence Storage & Export</div>
       <div class="storage-health-grid" id="storageHealthGrid" style="margin-bottom:12px">
-        <div class="storage-health-stat"><strong id="storageUsed">--</strong><span>已用存储</span></div>
-        <div class="storage-health-stat"><strong id="storageQuota">--</strong><span>可用配额</span></div>
+        <div class="storage-health-stat"><strong id="storageUsed">--</strong><span id="sdLblStorageUsed">Storage Used</span></div>
+        <div class="storage-health-stat"><strong id="storageQuota">--</strong><span id="sdLblStorageQuota">Quota Available</span></div>
       </div>
       <div style="display:flex;gap:7px;flex-wrap:wrap">
-        <button class="btn b-cyan" onclick="exportCSV()">导出 CSV</button>
-        <button class="btn b-amber" onclick="exportAllPDF()">导出 PDF</button>
-        <button class="btn b-indigo" id="settingsExportNoticeBtn" onclick="openLegalNoticeFromUi()">⚖️ 邻里交涉函</button>
-        <button class="btn b-red" onclick="clearAll()">清空记录</button>
+        <button class="btn b-cyan" id="sdBtnExportCsv" onclick="exportCSV()">Export CSV Dataset</button>
+        <button class="btn b-amber" id="sdBtnExportPdf" onclick="exportAllPDF()">Export PDF Dossier</button>
+        <button class="btn b-indigo" id="settingsExportNoticeBtn" onclick="openLegalNoticeFromUi()">⚖️ Legal Notice Generator</button>
+        <button class="btn b-red" id="sdBtnClearAllData" onclick="clearAll()">Clear All Records</button>
       </div>
       <div class="storage-health-stat" style="margin-top:10px">
-        <strong id="recordCount">0</strong><span>条记录</span>
+        <strong id="recordCount">0</strong><span id="sdLblRecordCount">Evidence Records</span>
       </div>
     </div>
-    <!-- 管理 Tab -->
+
+    <!-- Admin Tab -->
     <div class="settings-drawer-section" data-section="admin">
-      <div class="settings-drawer-section-title">管理员面板</div>
-      <div class="admin-note" style="margin-bottom:10px">请输入管理员密码解锁或前往管理后台</div>
+      <div class="settings-drawer-section-title" id="sdSecTitleAdmin">System & Administrator Console</div>
+      <div class="admin-note" id="sdAdminNote" style="margin-bottom:10px">Enter administrator credentials to unlock diagnostic surfaces or visit admin portal</div>
       <div class="settings-drawer-row" style="flex-direction:column;align-items:stretch;gap:8px">
-        <input class="setting-input" id="adminPassInput" type="password" placeholder="管理员密码" style="max-width:none;width:100%">
-        <button class="btn b-cyan" onclick="loginSuperAdmin()">登录本地管理员</button>
-        <a class="btn b-amber" href="admin.html" target="_blank" style="text-align:center;text-decoration:none;display:inline-block;padding:8px 12px;font-size:12px;font-weight:700;">打开超级管理后台 (订单流水与用户授权) ↗</a>
+        <input class="setting-input" id="adminPassInput" type="password" placeholder="Admin password" style="max-width:none;width:100%">
+        <button class="btn b-cyan" id="sdBtnAdminLogin" onclick="loginSuperAdmin()">Sign In Local Admin</button>
+        <a class="btn b-amber" id="sdAdminPortalLink" href="admin.html" target="_blank" style="text-align:center;text-decoration:none;display:inline-block;padding:8px 12px;font-size:12px;font-weight:700;">Open Super Admin Dashboard (Orders & User Licensing) ↗</a>
       </div>
     </div>
   </div>
@@ -1156,19 +1154,19 @@
   <video class="watermark-camera-video" id="watermarkCam" autoplay muted playsinline></video>
   <div class="watermark-camera-shade" aria-hidden="true"></div>
   <div class="watermark-topbar">
-    <button class="watermark-icon-btn" id="watermarkBackBtn" type="button" onclick="closeWatermarkCamera()">返回</button>
+    <button class="watermark-icon-btn" id="watermarkBackBtn" type="button" onclick="closeWatermarkCamera()">Back</button>
     <div class="watermark-title-wrap">
-      <div class="watermark-title" id="watermarkModeTitle">水印相机</div>
-      <div class="watermark-subtitle" id="watermarkModeSubtitle">现场画面叠加声级、时间、地址和 GPS</div>
+      <div class="watermark-title" id="watermarkModeTitle">Evidence Camera</div>
+      <div class="watermark-subtitle" id="watermarkModeSubtitle">Real-time sound level, time, address & GPS overlay</div>
     </div>
     <div class="watermark-status-row">
-      <div class="watermark-status-pill" id="watermarkMonitoringPill" onclick="toggleMon({fromAuthModal:true})" role="button" tabindex="0" title="点击开始/切换实时监测"><span class="watermark-monitoring-dot" id="watermarkMonitoringDot"></span><span id="watermarkMonitoringText">未监测</span></div>
-      <div class="watermark-status-pill" id="watermarkRecordingPill" onclick="primaryEvidenceAction()" role="button" tabindex="0" title="点击开始/停止录制"><span class="watermark-recording-dot" id="watermarkRecordingDot"></span><span id="watermarkRecordingText">未录制</span></div>
+      <div class="watermark-status-pill" id="watermarkMonitoringPill" onclick="toggleMon({fromAuthModal:true})" role="button" tabindex="0" title="Click to start/toggle live monitoring"><span class="watermark-monitoring-dot" id="watermarkMonitoringDot"></span><span id="watermarkMonitoringText">Idle</span></div>
+      <div class="watermark-status-pill" id="watermarkRecordingPill" onclick="primaryEvidenceAction()" role="button" tabindex="0" title="Click to start/stop recording"><span class="watermark-recording-dot" id="watermarkRecordingDot"></span><span id="watermarkRecordingText">Standby</span></div>
     </div>
   </div>
-  <div class="watermark-db-card" id="watermarkDbCard" onclick="toggleMon({fromAuthModal:true})" role="button" tabindex="0" title="点击开始实时声级监测">
+  <div class="watermark-db-card" id="watermarkDbCard" onclick="toggleMon({fromAuthModal:true})" role="button" tabindex="0" title="Click to start live monitoring">
     <strong id="watermarkDb">--</strong>
-    <span id="watermarkLevel">声级待测</span>
+    <span id="watermarkLevel">Standby</span>
   </div>
   <div class="watermark-info-stack">
     <div class="watermark-stats-grid">
@@ -1177,23 +1175,23 @@
       <div class="watermark-stat"><span>PEAK</span><strong id="watermarkPeak">--</strong></div>
       <div class="watermark-stat"><span>MIN</span><strong id="watermarkMin">--</strong></div>
     </div>
-    <div class="watermark-meta" id="watermarkMetaBox" onclick="getLoc({forceRefresh:true})" title="点击重新获取高精度 GPS 现场定位" style="cursor:pointer">
-      <strong id="watermarkPlace">位置待获取</strong>
-      <span id="watermarkGps">GPS 坐标：未获取</span>
-      <span id="watermarkCalibration">设备/校准：--</span>
+    <div class="watermark-meta" id="watermarkMetaBox" onclick="getLoc({forceRefresh:true})" title="Click to refresh GPS location" style="cursor:pointer">
+      <strong id="watermarkPlace">Acquiring GPS location...</strong>
+      <span id="watermarkGps">GPS: Pending</span>
+      <span id="watermarkCalibration">Device/Cal: --</span>
       <span id="watermarkTime">--</span>
     </div>
   </div>
   <div class="watermark-actions">
     <!-- Camera Mode Selector (Photo vs Video) -->
-    <div class="watermark-mode-switcher" id="watermarkModeSwitcher" role="tablist" aria-label="取证模式切换">
+    <div class="watermark-mode-switcher" id="watermarkModeSwitcher" role="tablist" aria-label="Evidence capture mode switcher">
       <button type="button" class="watermark-mode-pill active" id="wmModePhotoPill" onclick="setWatermarkCameraMode('photo')" role="tab" aria-selected="true">
         <span class="wm-mode-icon">📷</span>
-        <span id="wmModePhotoText">照片</span>
+        <span id="wmModePhotoText">Photo</span>
       </button>
       <button type="button" class="watermark-mode-pill" id="wmModeVideoPill" onclick="setWatermarkCameraMode('video')" role="tab" aria-selected="false">
         <span class="wm-mode-icon">📹</span>
-        <span id="wmModeVideoText">录像</span>
+        <span id="wmModeVideoText">Video</span>
       </button>
     </div>
 
@@ -1201,38 +1199,38 @@
     <div class="watermark-dock-row">
       <!-- Left Side Zone -->
       <div class="watermark-dock-side left">
-        <button class="watermark-dock-btn watermark-icon-btn" id="watermarkCloseCameraBtn" type="button" onclick="closeWatermarkCamera({closeCamera:true})" title="退出相机">
+        <button class="watermark-dock-btn watermark-icon-btn" id="watermarkCloseCameraBtn" type="button" onclick="closeWatermarkCamera({closeCamera:true})" title="Close Camera">
           <span class="dock-btn-icon">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </span>
-          <span class="dock-btn-label" id="watermarkCloseCameraLabel">关相机</span>
+          <span class="dock-btn-label" id="watermarkCloseCameraLabel">Camera</span>
         </button>
-        <button class="watermark-dock-btn watermark-icon-btn wm-snapshot-btn" id="watermarkSnapshotBtn" type="button" onclick="captureSnapshotDuringRecording()" title="录像中抓拍单张照片" style="display:none">
+        <button class="watermark-dock-btn watermark-icon-btn wm-snapshot-btn" id="watermarkSnapshotBtn" type="button" onclick="captureSnapshotDuringRecording()" title="Capture snapshot photo during video recording" style="display:none">
           <span class="dock-btn-icon">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
           </span>
-          <span class="dock-btn-label" id="watermarkSnapshotLabel">抓拍</span>
+          <span class="dock-btn-label" id="watermarkSnapshotLabel">Snap</span>
         </button>
       </div>
 
       <!-- Center Zone: Strictly Centered Shutter -->
       <div class="watermark-dock-center">
-        <button class="watermark-primary" id="watermarkPrimaryBtn" type="button" onclick="primaryEvidenceAction()">拍照</button>
+        <button class="watermark-primary" id="watermarkPrimaryBtn" type="button" onclick="primaryEvidenceAction()">Capture</button>
       </div>
 
       <!-- Right Side Zone -->
       <div class="watermark-dock-side right">
-        <button class="watermark-dock-btn watermark-icon-btn" id="watermarkLocationBtn" type="button" onclick="getLoc({forceRefresh:true})" title="刷新地址定位">
+        <button class="watermark-dock-btn watermark-icon-btn" id="watermarkLocationBtn" type="button" onclick="getLoc({forceRefresh:true})" title="Refresh GPS coordinates">
           <span class="dock-btn-icon">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
           </span>
-          <span class="dock-btn-label" id="watermarkLocationLabel">定位</span>
+          <span class="dock-btn-label" id="watermarkLocationLabel">GPS</span>
         </button>
-        <button class="watermark-dock-btn watermark-icon-btn" id="watermarkRecordsBtn" type="button" onclick="sw('r');closeWatermarkCamera()" title="查看证据库">
+        <button class="watermark-dock-btn watermark-icon-btn" id="watermarkRecordsBtn" type="button" onclick="sw('r');closeWatermarkCamera()" title="Open Evidence Vault">
           <span class="dock-btn-icon">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"></path><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"></path></svg>
           </span>
-          <span class="dock-btn-label" id="watermarkRecordsLabel">证据库</span>
+          <span class="dock-btn-label" id="watermarkRecordsLabel">Records</span>
         </button>
       </div>
     </div>
@@ -1246,10 +1244,10 @@
   <!-- Top Upgrade Banner (Ad container, hides when paid/upgraded) -->
   <div class="subscription-banner" id="subscriptionBanner" data-upsell="subscription-upgrade" onclick="showSubscriptionPlans()" role="button" tabindex="0">
     <div class="subscription-copy">
-      <div class="subscription-title" id="subscriptionBannerTitle">升级 Pro：一键生成物业/合规标准取证底稿</div>
-      <div class="subscription-desc" id="subscriptionBannerDesc">去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。</div>
+      <div class="subscription-title" id="subscriptionBannerTitle">Upgrade to Pro: 1-Click Forensic Evidence Dossier</div>
+      <div class="subscription-desc" id="subscriptionBannerDesc">Remove all watermarks, unlock overnight sentry monitoring, 15 legal templates and digital SHA-256 seal.</div>
     </div>
-    <button class="subscription-cta" id="subscriptionBannerCta" type="button" onclick="event.stopPropagation();showSubscriptionPlans()">升级 Pro</button>
+    <button class="subscription-cta" id="subscriptionBannerCta" type="button" onclick="event.stopPropagation();showSubscriptionPlans()">Upgrade Pro</button>
   </div>
 
   <!-- Header row -->
@@ -2785,8 +2783,11 @@ function t(path,fallback=''){
   if(value!=null)return value;
   const english=pathValue(I18N['en-US'],path);
   if(english!=null)return english;
-  const chinese=pathValue(I18N['zh-CN'],path);
-  return chinese==null?fallback:chinese;
+  if(appLanguage==='zh-CN'){
+    const chinese=pathValue(I18N['zh-CN'],path);
+    if(chinese!=null)return chinese;
+  }
+  return fallback;
 }
 function detectInitialLanguage(){
   // 1. Explicit URL parameter: ?lang= or ?locale=
@@ -3249,6 +3250,135 @@ function applyTranslations(){
   setText('vtLabelOct',t('ui.octave',appLanguage!=='zh-CN'?'1/3 Octave':'1/3倍频'));
   setText('vtLabelTrend',t('ui.trend',appLanguage!=='zh-CN'?'Trend':'趋势'));
   if(typeof applyPermModalLanguage==='function') applyPermModalLanguage();
+  if(typeof translateSettingsDrawer==='function') translateSettingsDrawer();
+}
+
+function translateSettingsDrawer() {
+  const isZh = appLanguage === 'zh-CN';
+
+  // Drawer Title
+  setText('sdTitle', isZh ? '设置' : 'Settings');
+
+  // Tabs
+  setText('sdTabMeasure', isZh ? '计量' : 'Metering');
+  setText('sdTabReport', isZh ? '报告' : 'Reports');
+  setText('sdTabPrivacy', isZh ? '隐私' : 'Privacy');
+  setText('sdTabSubscription', isZh ? '订阅' : 'Subscription');
+  setText('sdTabData', isZh ? '数据' : 'Data');
+  setText('sdTabAdmin', isZh ? '管理' : 'Admin');
+
+  // Metering Section
+  setText('sdSecTitleMeasure', isZh ? '声级计权与响应' : 'Acoustic Weighting & Response');
+  setText('sdLblWeight', isZh ? '频率计权' : 'Frequency Weighting');
+  setText('sdDescWeight', isZh ? 'A计权贴近人耳感知，C计权用于机械/低频，Z计权为平直未加权' : 'A-weighting for human hearing, C for mechanical/bass, Z for unweighted flat');
+  setText('sdLblResponse', isZh ? '时间响应' : 'Time Response');
+  setText('sdDescResponse', isZh ? '快响应(125ms)抓取突发冲击，慢响应(1s)平滑稳态均值' : 'Fast (125ms) for transient spikes, Slow (1s) for steady average');
+  const twF = document.getElementById('twF'); if (twF) twF.textContent = isZh ? '快' : 'Fast';
+  const twS = document.getElementById('twS'); if (twS) twS.textContent = isZh ? '慢' : 'Slow';
+  setText('sdLblMic', isZh ? '麦克风增益' : 'Microphone Gain');
+  setText('sdDescMic', isZh ? '输入前置放大；建议保持 2dB 左右以防止削波失真' : 'Input pre-amplification; keep around 2dB to prevent audio clipping');
+  setText('sdLblCal', isZh ? '校准偏移' : 'Calibration Offset');
+  setText('sdDescCal', isZh ? '根据专业比对修正；调整值会写入存证照片与报告' : 'Fine-tune baseline against certified reference meter');
+  setText('sdBtnCalRec', isZh ? '推荐预设' : 'Recommended');
+  setText('sdLblTh', isZh ? '告警阈值' : 'Alarm Threshold');
+  setText('sdDescTh', isZh ? '超过此分贝值触发视觉或警示提示' : 'Triggers visual/audio indicator when noise level exceeds this limit');
+  setText('sdLblAlertTog', isZh ? '启用超标告警' : 'Enable Threshold Alert');
+  setText('sdLblDayNight', isZh ? '昼夜自动阈值' : 'Day / Night Auto-Threshold');
+  setText('sdDescDayNight', isZh ? '自动切换：白天 55 dB / 夜间 45 dB (07:00–22:00 为昼间)' : 'Auto-switches: Day 55 dB / Night 45 dB (07:00–22:00 daytime)');
+  const dnBadge = document.getElementById('dayNightBadge');
+  if (dnBadge) {
+    const isDay = typeof isDaytime === 'function' ? isDaytime() : true;
+    dnBadge.textContent = isZh ? (isDay ? '白天' : '夜间') : (isDay ? 'Day' : 'Night');
+  }
+  setText('sdLblCurTh', isZh ? '当前生效阈值' : 'Current Active Threshold');
+  setText('sdLblSustained', isZh ? '持续超标防误触过滤' : 'Sustained Exceedance Filter');
+  setText('sdDescSustained', isZh ? '仅在超标持续指定秒数后触发，有效过滤短暂关门或轻微碰撞' : 'Only alarms when noise stays above threshold continuously (filters single bangs)');
+  setText('sdLblSustainedSec', isZh ? '持续超标判定时长 (秒)' : 'Sustained Duration (seconds)');
+  setText('sdDescSustainedSec', isZh ? '噪声连续超标达此秒数后方判定为超标' : 'Seconds noise must continuously exceed threshold before alerting');
+  setText('sdLblAutoRec', isZh ? '超标自动录音抓拍' : 'Auto-Record on Exceedance');
+  setText('sdDescAutoRec', isZh ? '夜间或监测中超标时自动触发高保真现场录音存证' : 'Automatically starts audio recording when noise exceeds threshold overnight');
+  setText('sdLblAutoRecSec', isZh ? '触发判定延时 (秒)' : 'Trigger Delay (seconds)');
+  setText('sdDescAutoRecSec', isZh ? '噪声持续超标多少秒后正式启动录制' : 'How long noise must exceed threshold before recording starts');
+  setText('sdLblAutoRecAfter', isZh ? '超标结束缓冲录制 (秒)' : 'Post-Trigger Duration (seconds)');
+  setText('sdDescAutoRecAfter', isZh ? '噪声回落至阈值以下后继续录制缓冲秒数' : 'Seconds to continue recording after sound drops below threshold');
+  setText('sdLblPlace', isZh ? '地点识别与地标标注' : 'Location & Landmark Tagging');
+  setText('sdDescPlace', isZh ? '定位后识别小区、道路与附近建筑物，写入存证元数据' : 'Tags neighborhood, street, and coordinates to records');
+  setText('sdLblPower', isZh ? '长时值守省电模式' : 'Long-Run Power Saver');
+  setText('sdDescPower', isZh ? '连续监测超 8 分钟自动降低渲染帧率并防烫降耗' : 'Auto-dims display and optimizes polling after 8 min of continuous monitoring');
+  setText('sdLblSm', isZh ? '波形平滑度' : 'Waveform Smoothing');
+
+  // Reports Section
+  setText('sdSecTitleReport', isZh ? '报告模板与存证底稿' : 'Report Templates & Dossier Settings');
+  setText('sdLblTpl', isZh ? '存证报告模板类型' : 'Report Template Type');
+  setText('sdLblOrg', isZh ? '机构 / 小区物业项目名称' : 'Organization / Property Project Name');
+  setPlaceholder('organizationNameInput', isZh ? '选填 (如：翡翠绿洲物业服务中心 / 业委会)' : 'Optional (e.g. HOA Management / Resident Association)');
+  setText('sdLblLcmWatermark', isZh ? '专属测点与机构水印 (PRO)' : 'Custom Point & Watermark (PRO)');
+  setText('sdDescLcmWatermark', isZh ? '自定义小区名称、楼栋房号及室内专属测点（如：主卧飘窗前1米）' : 'Configure custom complex, building/room and indoor point (e.g. Master Bedroom window sill)');
+  setText('sdBtnLcmConfig', isZh ? '配置专属水印' : 'Configure Watermark');
+
+  // Privacy Section
+  setText('sdSecTitlePrivacy', isZh ? '隐私权限与声学计量合规' : 'Privacy, Sensors & Metrology Integrity');
+  const micComp = document.getElementById('sdComplianceMic');
+  if (micComp) micComp.innerHTML = isZh ? '<strong>麦克风：</strong>100% 本机浏览器 Web Audio 现场解算，音频绝不上传远端服务器。' : '<strong>Microphone:</strong> 100% on-device processing via Web Audio API. Zero remote upload.';
+  const camComp = document.getElementById('sdComplianceCam');
+  if (camComp) camComp.innerHTML = isZh ? '<strong>摄像头：</strong>仅在用户主动开启拍照或录像模式时调用，水印于本地 Canvas 离线加盖。' : '<strong>Camera:</strong> Only active when user triggers Photo or Video mode. Stamped in local canvas.';
+  const gpsComp = document.getElementById('sdComplianceGps');
+  if (gpsComp) gpsComp.innerHTML = isZh ? '<strong>地理定位：</strong>仅用于证据时间戳核验、地名反查与本地证据地图展示。' : '<strong>Geolocation:</strong> Used exclusively for local evidence timestamping and map display.';
+  const dataComp = document.getElementById('sdComplianceData');
+  if (dataComp) dataComp.innerHTML = isZh ? '<strong>数据安全：</strong>全部录音片段、存证照片与声级明细安全驻留于本机浏览器 IndexedDB。' : '<strong>Data Security:</strong> All audio clips, photos, and telemetry kept in local browser IndexedDB.';
+  const legalComp = document.getElementById('sdComplianceLegal');
+  if (legalComp) legalComp.innerHTML = isZh ? '<strong>合规声明：</strong>民事实证自查与初步纠纷举证工具；法定裁判建议结合具 CMA/CNAS 资质机构复核。' : '<strong>Compliance Notice:</strong> Civilian reference documentation tool; formal litigation requires certified testing.';
+  setText('sdBtnClearAllPrivacy', isZh ? '删除全部本地记录' : 'Delete All Local Records');
+  setText('sdBtnResetCalPrivacy', isZh ? '恢复推荐硬件校准基线' : 'Reset Hardware Calibration');
+
+  // Subscription Section
+  setText('sdSecTitleSub', isZh ? '会员方案与授权激活' : 'Membership & Licensing Plans');
+  setText('sdCurrentPlanPrefix', isZh ? '当前方案：' : 'Current Plan: ');
+  setPlaceholder('memberEmailInput', isZh ? '购买会员邮箱 / 授权码' : 'Member email / License key');
+  setText('sdBtnVerifyMember', isZh ? '验证会员' : 'Verify License');
+  setText('sdBtnLogoutMember', isZh ? '退出登录' : 'Sign Out');
+  setText('sdBtnBuyPro', isZh ? '开通 PRO 专业版 · ￥19.9/年起' : 'Upgrade to Pro · $24.99/yr');
+  setText('sdBtnBuyTeam', isZh ? 'Team 团队版 · ￥299/年' : 'Team · $79.99/yr');
+  const matFree = document.getElementById('sdPlanMatrixFree');
+  if (matFree) matFree.innerHTML = isZh ? '• <strong>免费版：</strong>基础 A 计权实时声级计 · 10条本地存证上限 · 水印版简报' : '• <strong>Free Tier:</strong> Core A-weighting meter · 10 records storage · Watermarked PDF summary';
+  const matPro = document.getElementById('sdPlanMatrixPro');
+  if (matPro) matPro.innerHTML = isZh ? '• <strong>PRO 专业版：</strong>无水印司法级取证报告 PDF · 夜间超标自动抓拍录音 · 自定义测点与机构专属水印 · 15大高发场景模板 · CSV 全量数据导出 · 3档语气邻里交涉函 · 无限本地存证' : '• <strong>PRO Tier:</strong> Unwatermarked Forensic PDF Dossier · Overnight Sentry Auto-Recording · Custom Watermark & Point Tagging · 15 Legal Templates · CSV Export · 3 Legal Notice Tones · Unlimited Storage';
+
+  // Data Section
+  setText('sdSecTitleData', isZh ? '存证数据管理与导出' : 'Evidence Storage & Export');
+  setText('sdLblStorageUsed', isZh ? '已用存储' : 'Storage Used');
+  setText('sdLblStorageQuota', isZh ? '可用配额' : 'Quota Available');
+  setText('sdBtnExportCsv', isZh ? '导出 CSV 数据集' : 'Export CSV Dataset');
+  setText('sdBtnExportPdf', isZh ? '导出 PDF 证据底稿' : 'Export PDF Dossier');
+  setText('settingsExportNoticeBtn', isZh ? '⚖️ 邻里交涉函生成器' : '⚖️ Legal Notice Generator');
+  setText('sdBtnClearAllData', isZh ? '清空全部现场记录' : 'Clear All Records');
+  setText('sdLblRecordCount', isZh ? '条现场记录' : 'Evidence Records');
+
+  // Admin Section
+  setText('sdSecTitleAdmin', isZh ? '系统管理员诊断中枢' : 'System & Administrator Console');
+  setText('sdAdminNote', isZh ? '请输入管理员密码解锁底层诊断或进入集中运营控制台' : 'Enter administrator credentials to unlock diagnostic surfaces or visit admin portal');
+  setPlaceholder('adminPassInput', isZh ? '管理员密码' : 'Admin password');
+  setText('sdBtnAdminLogin', isZh ? '登录本地管理员' : 'Sign In Local Admin');
+  setText('sdAdminPortalLink', isZh ? '打开超级管理后台 (订单流水与用户授权) ↗' : 'Open Super Admin Dashboard (Orders & User Licensing) ↗');
+
+  // Watermark Camera Overlay
+  setText('watermarkBackBtn', isZh ? '返回' : 'Back');
+  setText('watermarkModeTitle', isZh ? '水印相机' : 'Evidence Camera');
+  setText('watermarkModeSubtitle', isZh ? '现场画面叠加声级、时间、地址和 GPS' : 'Real-time sound level, time, address & GPS overlay');
+  setText('watermarkMonitoringText', isZh ? (isMon ? '监测中' : '未监测') : (isMon ? 'Active' : 'Idle'));
+  setText('watermarkRecordingText', isZh ? (isRec ? '录制中' : '未录制') : (isRec ? 'Rec' : 'Standby'));
+  setText('watermarkLevel', isZh ? (isMon ? lvInfo(curDb||0).l : '声级待测') : (isMon ? lvInfo(curDb||0).l : 'Standby'));
+  if (!curLoc) {
+    setText('watermarkPlace', isZh ? '位置待获取' : 'Acquiring GPS location...');
+    setText('watermarkGps', isZh ? 'GPS 坐标：未获取' : 'GPS: Pending');
+  }
+  setText('wmModePhotoText', isZh ? '照片' : 'Photo');
+  setText('wmModeVideoText', isZh ? '录像' : 'Video');
+  setText('watermarkCloseCameraLabel', isZh ? '关相机' : 'Camera');
+  setText('watermarkSnapshotLabel', isZh ? '抓拍' : 'Snap');
+  setText('watermarkPrimaryBtn', isZh ? (cameraMode === 'video' ? (isRec ? '停止' : '录像') : '拍照') : (cameraMode === 'video' ? (isRec ? 'Stop' : 'Record') : 'Capture'));
+  setText('watermarkLocationLabel', isZh ? '定位' : 'GPS');
+  setText('watermarkRecordsLabel', isZh ? '证据库' : 'Records');
 }
 function updateReportTemplateOptions(){
   const select=document.getElementById('reportTemplate');if(!select)return;
@@ -4678,17 +4808,28 @@ function executeProUpgradeCheckout() {
   }
 }
 
-function openSettingsDrawerTab(targetTab) {
-  openSettingsDrawer();
+function switchSettingsDrawerTab(targetTab) {
   const tabs = document.querySelectorAll('.settings-drawer-tab');
   tabs.forEach(t => {
     const isTarget = t.dataset.tab === targetTab;
     t.classList.toggle('active', isTarget);
-    t.setAttribute('aria-selected', isTarget);
+    t.setAttribute('aria-selected', isTarget ? 'true' : 'false');
   });
   document.querySelectorAll('.settings-drawer-section').forEach(s => {
-    s.classList.toggle('active', s.dataset.section === targetTab);
+    const isTarget = s.dataset.section === targetTab;
+    s.classList.toggle('active', isTarget);
+    s.style.display = isTarget ? 'block' : 'none';
   });
+  const contentEl = document.getElementById('settingsDrawerContent');
+  if (contentEl) contentEl.scrollTop = 0;
+  if (targetTab === 'data' && typeof updateStorageStats === 'function') {
+    updateStorageStats();
+  }
+}
+
+function openSettingsDrawerTab(targetTab) {
+  openSettingsDrawer();
+  switchSettingsDrawerTab(targetTab);
 }
 
 window.openProUpgradeModal = openProUpgradeModal;
@@ -4696,6 +4837,7 @@ window.closeProUpgradeModal = closeProUpgradeModal;
 window.selectProUpgradePlan = selectProUpgradePlan;
 window.executeProUpgradeCheckout = executeProUpgradeCheckout;
 window.openSettingsDrawerTab = openSettingsDrawerTab;
+window.switchSettingsDrawerTab = switchSettingsDrawerTab;
 
 async function beginCheckout(plan){
   if(!LEMON_PLANS.includes(plan))return;
@@ -5917,6 +6059,13 @@ function openSettingsDrawer() {
   if (backdrop) backdrop.classList.add('show');
   settingsDrawerOpen = true;
   document.body.style.overflow = 'hidden';
+  const activeTab = drawer.querySelector('.settings-drawer-tab.active')?.dataset.tab || 'measure';
+  if (typeof switchSettingsDrawerTab === 'function') {
+    switchSettingsDrawerTab(activeTab);
+  }
+  if (typeof translateSettingsDrawer === 'function') {
+    translateSettingsDrawer();
+  }
 }
 function closeSettingsDrawer() {
   const drawer = document.getElementById('settingsDrawer');
@@ -5933,15 +6082,12 @@ function toggleSettingsDrawer() {
 function initSettingsDrawerTabs() {
   const tabs = document.querySelectorAll('.settings-drawer-tab');
   tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
+    tab.addEventListener('click', (e) => {
+      e.preventDefault();
       const targetTab = tab.dataset.tab;
-      tabs.forEach(t => {
-        t.classList.toggle('active', t.dataset.tab === targetTab);
-        t.setAttribute('aria-selected', t.dataset.tab === targetTab);
-      });
-      document.querySelectorAll('.settings-drawer-section').forEach(s => {
-        s.classList.toggle('active', s.dataset.section === targetTab);
-      });
+      if (typeof switchSettingsDrawerTab === 'function') {
+        switchSettingsDrawerTab(targetTab);
+      }
     });
   });
 }
@@ -7623,7 +7769,10 @@ function toggleAdvancedCalibration(){
 }
 
 function setCal(){calOffset=+document.getElementById('calR').value;document.getElementById('calV').textContent=(calOffset>=0?'+':'')+calOffset+' dB';saveState();}
-function applyProMeterCalibration(){setCalibrationPreset(calibrationPresetKey,{save:true,notify:false});toast('已恢复当前设备推荐校准基线；正式证据仍建议用经检定声级计复核。','info');}
+function applyProMeterCalibration(){
+  setCalibrationPreset(calibrationPresetKey,{save:true,notify:false});
+  toast(appLanguage === 'zh-CN' ? '已恢复当前设备推荐校准基线；正式证据仍建议用经检定声级计复核。' : 'Device calibration baseline applied. Formal testing requires certified meter verification.', 'info');
+}
 function setMicGain(){micGainDb=+document.getElementById('micR').value;document.getElementById('micV').textContent=micGainDb+' dB';updateMicGain();saveState();}
 function setTh(){alertTh=+document.getElementById('thR').value;document.getElementById('thV').textContent=alertTh+' dB';saveState();}
 function togAlert(){alertsOn=!alertsOn;const t=document.getElementById('alertTog');t.classList.toggle('on',alertsOn);t.setAttribute('aria-checked',alertsOn);saveState();}
@@ -7647,14 +7796,16 @@ function applyDayNightThreshold(){
 }
 function syncDayNightBadge(){
   const isDay=isDayPeriod();
+  const isZh=appLanguage==='zh-CN';
   const db1=document.getElementById('dayNightBadge');
   const db2=document.getElementById('dayNightBadge2');
   const st1=document.getElementById('dayNightStatus');
   const st2=document.getElementById('dayNightStatus2');
-  if(db1){db1.textContent=isDay?'白天':'夜间';db1.className=isDay?'day-badge':'night-badge';}
-  if(db2){db2.textContent=isDay?'白天':'夜间';db2.className=isDay?'day-badge':'night-badge';}
-  if(st1)st1.textContent=isDay?`白天模式，当前 ${dayThresholdDb} dB`:`夜间模式，当前 ${nightThresholdDb} dB`;
-  if(st2)st2.textContent=isDay?`白天模式，当前 ${dayThresholdDb} dB`:`夜间模式，当前 ${nightThresholdDb} dB`;
+  if(db1){db1.textContent=isZh?(isDay?'白天':'夜间'):(isDay?'Day':'Night');db1.className=isDay?'day-badge':'night-badge';}
+  if(db2){db2.textContent=isZh?(isDay?'白天':'夜间'):(isDay?'Day':'Night');db2.className=isDay?'day-badge':'night-badge';}
+  const statusTxt=isZh?(isDay?`白天模式，当前 ${dayThresholdDb} dB`:`夜间模式，当前 ${nightThresholdDb} dB`):(isDay?`Day mode: active ${dayThresholdDb} dB`:`Night mode: active ${nightThresholdDb} dB`);
+  if(st1)st1.textContent=statusTxt;
+  if(st2)st2.textContent=statusTxt;
 }
 function togDayNightThreshold(){
   autoDayNightMode=!autoDayNightMode;
@@ -7713,15 +7864,18 @@ function setReportTemplate(){
   organizationName=document.getElementById('organizationNameInput')?.value.trim()||'';
   renderTemplateGuidance();
   saveState();
-  toast('报告模板已更新。','info');
+  toast(appLanguage === 'zh-CN' ? '报告模板已更新。' : 'Report template updated.', 'info');
 }
 
 function renderCalibrationHistory(){
   const el=document.getElementById('calHistory');if(!el)return;
   renderCalibrationErrorRange();
-  if(!calibrationHistory.length){el.textContent='暂无校准记录';return;}
+  const isZh = appLanguage === 'zh-CN';
+  if(!calibrationHistory.length){el.textContent=isZh?'暂无校准记录':'No calibration records yet';return;}
   const last=calibrationHistory[0];
-  el.textContent=`最近校准：${last.time} · 专业仪 ${last.referenceDb} dB · 本机 ${last.phoneDb} dB · 偏移 ${last.offsetDb>=0?'+':''}${last.offsetDb} dB · ${last.standard||'未填写标准来源'}`;
+  el.textContent=isZh
+    ? `最近校准：${last.time} · 专业仪 ${last.referenceDb} dB · 本机 ${last.phoneDb} dB · 偏移 ${last.offsetDb>=0?'+':''}${last.offsetDb} dB · ${last.standard||'未填写标准来源'}`
+    : `Latest Cal: ${last.time} · Ref ${last.referenceDb} dB · Phone ${last.phoneDb} dB · Offset ${last.offsetDb>=0?'+':''}${last.offsetDb} dB · ${last.standard||'Default standard'}`;
 }
 
 function runCalibrationWizard(){
@@ -7729,7 +7883,7 @@ function runCalibrationWizard(){
   const phoneDb=Number(document.getElementById('phoneMeterDb').value);
   const standard=document.getElementById('calibrationStandard')?.value.trim()||'';
   const toleranceDb=Number(document.getElementById('calibrationTolerance')?.value);
-  if(!Number.isFinite(referenceDb)||!Number.isFinite(phoneDb))return toast('请输入专业仪读数和本机读数。','warn');
+  if(!Number.isFinite(referenceDb)||!Number.isFinite(phoneDb))return toast(appLanguage === 'zh-CN' ? '请输入专业仪读数和本机读数。' : 'Please enter reference and device readings.', 'warn');
   const offsetDb=Math.max(-20,Math.min(20,Math.round((referenceDb-phoneDb)*10)/10));
   calOffset=offsetDb;
   document.getElementById('calR').value=String(offsetDb);
@@ -7737,7 +7891,7 @@ function runCalibrationWizard(){
   calibrationHistory.unshift({time:new Date().toLocaleString(i18n().locale),referenceDb,phoneDb,offsetDb,standard,toleranceDb:Number.isFinite(toleranceDb)&&toleranceDb>0?toleranceDb:null});
   calibrationHistory=calibrationHistory.slice(0,5);
   renderCalibrationHistory();saveState();
-  toast('校准偏移已应用，并保存到校准档案。','info');
+  toast(appLanguage === 'zh-CN' ? '校准偏移已应用，并保存到校准档案。' : 'Calibration offset applied and saved to profile.', 'info');
 }
 
 /* ── CSV ── */

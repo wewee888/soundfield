@@ -1492,8 +1492,11 @@ function showPaywall(featureName) {
     'UPGRADE', 
     8000
   );
-  setSettingsSection('subscription');
-  sw('s');
+  if (typeof openProUpgradeModal === 'function') {
+    openProUpgradeModal('yearly');
+  } else if (typeof openSettingsDrawerTab === 'function') {
+    openSettingsDrawerTab('subscription');
+  }
 }
 
 const CREEM_CHECKOUT_URLS = (typeof window !== 'undefined' && window.CREEM_CHECKOUT_URLS) ? window.CREEM_CHECKOUT_URLS : {
