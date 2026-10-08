@@ -759,7 +759,7 @@
         const val = customInput.value.trim();
         if (!val) return;
         if (titleEl) titleEl.textContent = (isZh ? '自定义场景：' : 'Custom Scenario: ') + val;
-        if (descEl) descEl.textContent = isZh ? '正在根据您的输入匹配声学滤波与防篡改存证参数。' : 'Configuring acoustic filters and tamper-proof evidence rules for your input.';
+        if (descEl) descEl.textContent = isZh ? '正在根据您的输入匹配声学滤波与防伪可信存证参数。' : 'Configuring acoustic filters and tamper-evident documentation rules for your input.';
         if (ctaBtn) {
           ctaBtn.href = `${basePrefix}soundtest.html?scenario=custom&note=${encodeURIComponent(val)}&lang=${langKey}`;
           const ctaSpan = ctaBtn.querySelector('span');
@@ -1863,7 +1863,7 @@
           steps: [
             { num: '1', title: 'Press Ctrl + D on your keyboard', desc: 'Or click the star icon (⭐) at the right end of your address bar.' },
             { num: '2', title: 'Select "Bookmarks bar" folder', desc: 'Keep SOUNDTEST.PRO pinned to your browser top bar for immediate access.' },
-            { num: '3', title: 'Instant 1-second launch when disturbance strikes', desc: 'Capture decibels, audio, and GPS tamper-proof timestamps with zero delay.' }
+            { num: '3', title: 'Instant 1-second launch when disturbance strikes', desc: 'Capture decibels, audio, and GPS tamper-evident timestamps with zero delay.' }
           ]
         }
       },

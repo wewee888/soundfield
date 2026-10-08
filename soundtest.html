@@ -3959,13 +3959,13 @@ function translateReportPreviewModal(){
         : '✨ <strong>Official Pro Preview</strong>: Full watermark removed, sealed with SHA-256 digital signature and GPS geofence.';
     } else {
       toggleHint.innerHTML = isZh
-        ? '💡 免费预览版带有全页防伪水印；升级专业版立得 100% 纯净法律存证底稿与数字指纹。'
-        : '💡 Free Preview includes full-page security watermarks. Upgrade to Pro for 100% clean legal forensic certificate.';
+        ? '💡 免费预览版带有全页防伪水印；升级专业版立得 100% 纯净民间调解存证底稿与数字指纹。'
+        : '💡 Free Preview includes full-page security watermarks. Upgrade to Pro for clean unwatermarked dispute reports with SHA-256 seal.';
     }
   }
   setText('rpmDesc', isZh
-    ? '别再用无法证明真伪的普通手机录音去争论。免费版带有全页防伪水印，极易被物业或邻居以“音量造假、自己调大”为由推诿驳回；解锁正式版，加盖 SHA-256 唯一数字指纹与 GPS 坐标锚点，让对方无法以任何借口敷衍你。'
-    : 'Stop arguing with plain voice memos that anyone can dispute. Free reports include full-page security watermarks that landlords or property managers easily dismiss. Unlock the official report with unique SHA-256 digital fingerprint and GPS coordinates.');
+    ? '别再用无法证明真伪的普通手机录音去争论。免费版带有全页防伪水印，极易被物业或邻居以“音量造假、自己调大”为由推诿驳回；解锁正式版，加盖 SHA-256 唯一数字指纹与 GPS 坐标锚点，让对方无法以任何借口敷衍你（民用参考，非法定强制计量认证）。'
+    : 'Stop arguing with plain voice memos that anyone can dispute. Free reports include full-page security watermarks that landlords or property managers easily dismiss. Unlock the official report with unique SHA-256 digital fingerprint and GPS coordinates (civilian reference; formal proceedings may require certified measurements).');
   setText('rpmAvgLabel', isZh ? '平均声级' : 'Average dB');
   setText('rpmPeakLabel', isZh ? '峰值声级' : 'Peak dB');
   setText('rpmCountLabel', isZh ? '记录条数' : 'Record count');
@@ -3976,8 +3976,8 @@ function translateReportPreviewModal(){
     : '<strong>Current Preview (Watermarked):</strong> For personal reference only; easily dismissed by landlords claiming volume was manipulated.';
   const goodEl = document.getElementById('rpmCompGoodText');
   if(goodEl) goodEl.innerHTML = isZh
-    ? '<strong>正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一防伪指纹</strong>与 <strong>GPS 经纬度锚点</strong>，彻底杜绝对方以造假为由推诿。'
-    : '<strong>Official Forensic Report (No Watermark):</strong> Clean legal-grade document with <strong>SHA-256 unique digital fingerprint</strong> and <strong>GPS anchor</strong>.';
+    ? '<strong>正式取证版 (去水印)：</strong>去除全部水印，生成标准化民间调解存证底稿，加盖 <strong>SHA-256 唯一防伪指纹</strong>与 <strong>GPS 经纬度锚点</strong>，有效防止对方以造假为由推诿（民用自查与调解参考）。'
+    : '<strong>Official Pro Report (No Watermark):</strong> Clean dispute-ready civilian document with <strong>SHA-256 unique digital fingerprint</strong> and <strong>GPS anchor</strong> (civilian reference; not certified metrology).';
   setText('rpmUpgradeBtnText', isZh
     ? '★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限次无水印 + 长期纠纷档案 + 夜间哨兵'
     : '★ Upgrade to Pro ($9.9/yr) · Unlimited Clean Reports + Vault Storage + Sentry Mode');
@@ -9996,7 +9996,7 @@ function buildPDF(recs, isWatermarked = null){
 function showPaywall(featureName) {
   showCapTemporarily('warn', 
     appLanguage !== 'zh-CN' ? 'PRO Feature Required' : '需要 PRO 版本', 
-    appLanguage !== 'zh-CN' ? `Exporting forensic-grade ${featureName} requires a PRO subscription.` : `导出带有防篡改水印的 ${featureName} 报告需要 PRO 订阅。`, 
+    appLanguage !== 'zh-CN' ? `Exporting clean unwatermarked ${featureName} requires a PRO subscription.` : `导出无水印完整 ${featureName} 报告需要 PRO 订阅。`, 
     'UPGRADE', 
     8000
   );
@@ -10352,7 +10352,7 @@ function openReportPreviewModal(recs, isBatch = false) {
   if (dlBtn) {
     dlBtn.textContent = isZh
       ? (isPro ? '导出正式无水印存证 PDF' : '先下载带水印预览版 (仅供个人自查)')
-      : (isPro ? 'Export Official Forensic PDF (Clean)' : 'Download Watermarked Preview (Reference Only)');
+      : (isPro ? 'Export Official Pro Report (Clean)' : 'Download Watermarked Preview (Reference Only)');
   }
 
   // Pricing & Payment Gateway (Strictly IP-determined)
@@ -10460,7 +10460,7 @@ function openReportPreviewModal(recs, isBatch = false) {
   if (freeDlBtn) {
     freeDlBtn.textContent = isZh 
       ? (isPro ? '导出正式无水印存证 PDF' : '下载预览报告 (PDF·含水印)') 
-      : (isPro ? 'Export Official Forensic PDF (Clean)' : 'Download Preview PDF (Watermarked)');
+      : (isPro ? 'Export Official Pro Report (Clean)' : 'Download Preview PDF (Watermarked)');
     freeDlBtn.onclick = () => {
       closeReportPreviewModal();
       try {

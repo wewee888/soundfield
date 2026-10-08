@@ -18,7 +18,7 @@ SECTIONS = {
             'pill': 'Kostenlose Version',
             'name': 'Web-Tool sofort starten',
             'tag': '$0',
-            'hint': 'Schneller Schnelltest zur Überprüfung gesetzlicher Lärmrichtwerte',
+            'hint': 'Schnelle akustische Basismessung zum Abgleich mit IEC-Normen &amp; Richtwerten',
             'items': [
                 'Echtzeit-Dezibelmessung (A/C-Bewertung)',
                 'Audioaufnahme &amp; Frequenzwellenform',
@@ -112,6 +112,8 @@ SECTIONS = {
             'f8_name': 'Multi-Device-Sync &amp; Cloud-Speicher', 'f8_desc': 'Sicherer Erhalt der Beweise auch bei Gerätewechsel',
             'f9_name': 'Gültigkeitsdauer &amp; Aktionspreis', 'f9_desc': 'Einführungspreise für Frühbucher; spätere Rückkehr zu Standardpreisen'
         }
+    ,
+        'disclaimer_note': 'SOUNDTEST.PRO dient als ziviles Dokumentationswerkzeug für Schlichtungsverfahren und Nachbarschaftsdialoge, nicht als amtlich geeichtes Schallpegelmessgerät. Gesetzliche Verwaltungsverfahren erfordern Messungen mit kalibrierten Klasse-1/2-Geräten.'
     },
     'fr': {
         'eyebrow': 'Formules &amp; Tarifs',
@@ -122,7 +124,7 @@ SECTIONS = {
             'pill': 'Version Gratuite',
             'name': 'Outil Web instantané',
             'tag': '$0',
-            'hint': 'Contrôle rapide pour vérifier si le bruit dépasse les seuils réglementaires',
+            'hint': 'Mesure acoustique de référence pour comparer vos niveaux aux normes IEC &amp; seuils recommandés',
             'items': [
                 'Sonomètre en temps réel (pondération A/C)',
                 'Enregistrement audio &amp; forme d\'onde en direct',
@@ -216,6 +218,8 @@ SECTIONS = {
             'f8_name': 'Synchronisation &amp; Sauvegarde Cloud', 'f8_desc': 'Preuves préservées même en changeant de téléphone',
             'f9_name': 'Durée &amp; Tarif Promotionnel', 'f9_desc': 'Tarifs de lancement anticipé ; retour aux prix standards ensuite'
         }
+    ,
+        'disclaimer_note': 'SOUNDTEST.PRO est un outil d\'estimation et de documentation civile pour la médiation, et non un sonomètre légalement certifié. Les procédures formelles d\'exécution peuvent nécessiter des mesures avec un appareil de métrologie homologué.'
     },
     'es': {
         'eyebrow': 'Planes y Precios',
@@ -226,7 +230,7 @@ SECTIONS = {
             'pill': 'Versión Gratuita',
             'name': 'Medición Web Inmediata',
             'tag': '$0',
-            'hint': 'Comprobación rápida para verificar si el ruido supera los límites legales',
+            'hint': 'Medición acústica de referencia rápida para comparar niveles frente a normas IEC y umbrales acústicos',
             'items': [
                 'Sonómetro en tiempo real (ponderación A/C)',
                 'Grabación de audio y visualización de onda',
@@ -320,6 +324,8 @@ SECTIONS = {
             'f8_name': 'Sincronización y Respaldo Cloud', 'f8_desc': 'Pruebas a salvo aunque cambie de móvil o limpie datos',
             'f9_name': 'Duración del Plan y Precio Promocional', 'f9_desc': 'Tarifas especiales de lanzamiento; vuelven a precios base después'
         }
+    ,
+        'disclaimer_note': 'SOUNDTEST.PRO es una herramienta de estimación y documentación civil para mediación vecinal, no un sonómetro legalmente certificado. Los procedimientos sancionadores formales requieren mediciones con instrumental calibrado de Clase 1 o 2.'
     },
     'ja': {
         'eyebrow': '料金プラン',
@@ -330,7 +336,7 @@ SECTIONS = {
             'pill': '無料体験版',
             'name': 'Web測定ツール',
             'tag': '$0',
-            'hint': '環境基準や受忍限度を超えているか即座に確認する簡易チェック',
+            'hint': '音響規格（IEC基準）に基づくリアルタイム測定と騒音基準値の照合',
             'items': [
                 'リアルタイム高精度騒音計（A/C特性）',
                 '音声録音＆リアルタイム周波数スペクトル波形',
@@ -424,6 +430,8 @@ SECTIONS = {
             'f8_name': '複数端末同期＆クラウド保存', 'f8_desc': '機種変更やブラウザ消去時も証拠を安全に保護',
             'f9_name': '有効期間および特別価格', 'f9_desc': '初期公開限定の割引価格（期間終了後は通常価格に戻ります）'
         }
+    ,
+        'disclaimer_note': 'SOUNDTEST.PROは民間調停や自主記録のための民用推定ツールであり、法定計量認定を受けた騒音計ではありません。正式な法的行政手続きには検定合格機器による測定が必要となる場合があります。'
     },
     'ko': {
         'eyebrow': '요금제 및 플랜',
@@ -434,7 +442,7 @@ SECTIONS = {
             'pill': '무료 체험판',
             'name': '웹 즉시 측정 도구',
             'tag': '$0',
-            'hint': '환경 소음이 법적 허용 한도를 초과하는지 현장에서 바로 확인',
+            'hint': '음향 규격(IEC 및 환경 기준) 기반 실시간 기준치 측정 및 소음 한도 대조',
             'items': [
                 '실시간 고정밀 데시벨 측정 (A/C 가중치)',
                 '실시간 오디오 녹음 및 주파수 파형 표시',
@@ -528,6 +536,8 @@ SECTIONS = {
             'f8_name': '다중 기기 동기화 및 클라우드 보관', 'f8_desc': '기기를 교체하거나 브라우저를 지워도 증거 안전 보존',
             'f9_name': '이용 기간 및 프로모션 가격', 'f9_desc': '신규 런칭 얼리버드 특가 제공 (프로모션 종료 후 정상가 환원)'
         }
+    ,
+        'disclaimer_note': 'SOUNDTEST.PRO는 일상 분쟁 조정 및 개인 참고를 위한 민간 간이 추정 도구이며, 법적 공인 소음측정기가 아닙니다. 공식적인 법적 절차에는 교정된 전문 계측기를 통한 측정이 필요할 수 있습니다.'
     },
     'vi': {
         'eyebrow': 'Gói &amp; Bảng Giá',
@@ -538,7 +548,7 @@ SECTIONS = {
             'pill': 'Bản Miễn Phí',
             'name': 'Đo Ngay Trên Trình Duyệt',
             'tag': '$0',
-            'hint': 'Kiểm tra nhanh xem cường độ tiếng ồn có vi phạm quy chuẩn hay không',
+            'hint': 'Đo lường cơ sở âm học nhanh chóng đối chiếu tiêu chuẩn âm học IEC và ngưỡng giới hạn',
             'items': [
                 'Đo decibel thời gian thực (trọng số A/C)',
                 'Ghi âm và hiển thị dạng sóng tần số',
@@ -632,6 +642,8 @@ SECTIONS = {
             'f8_name': 'Đồng bộ Đa thiết bị &amp; Đám mây', 'f8_desc': 'Đổi máy hoặc xóa bộ nhớ đệm cũng không lo mất chứng cứ',
             'f9_name': 'Thời hạn Gói &amp; Giá Ưu đãi', 'f9_desc': 'Giá mở bán sớm; sẽ dần khôi phục về mức giá chuẩn sau đó'
         }
+    ,
+        'disclaimer_note': 'SOUNDTEST.PRO là công cụ ước tính và lập hồ sơ dân sự phục vụ hòa giải, không phải máy đo độ ồn được chứng nhận theo luật định. Các thủ tục pháp lý chính thức có thể yêu cầu thiết bị đo chuyên dụng đã được kiểm định.'
     },
     'th': {
         'eyebrow': 'แผนและราคา',
@@ -642,7 +654,7 @@ SECTIONS = {
             'pill': 'เวอร์ชันฟรี',
             'name': 'เครื่องมือวัดบนเว็บทันที',
             'tag': '$0',
-            'hint': 'ตรวจสอบระดับเสียงเบื้องต้นว่าเกินค่ามาตรฐานตามกฎหมายหรือไม่',
+            'hint': 'การวัดระดับเสียงเบื้องต้นเทียบเคียงกับมาตรฐานอะคูสติก IEC และเกณฑ์เสียงรบกวน',
             'items': [
                 'เครื่องวัดเดซิเบลแบบเรียลไทม์ (A/C weighting)',
                 'บันทึกเสียงและแสดงกราฟคลื่นเสียงตามเวลาจริง',
@@ -736,6 +748,8 @@ SECTIONS = {
             'f8_name': 'การซิงค์หลายอุปกรณ์และสำรองบนคลาวด์', 'f8_desc': 'หลักฐานไม่สูญหายแม้จะเปลี่ยนโทรศัพท์หรือล้างแคช',
             'f9_name': 'ระยะเวลาและราคาโปรโมชัน', 'f9_desc': 'ราคาพิเศษสำหรับผู้ใช้ช่วงแรก (จะปรับเป็นราคาปกติในภายหลัง)'
         }
+    ,
+        'disclaimer_note': 'SOUNDTEST.PRO เป็นเครื่องมือบันทึกและประเมินระดับบุคคลสำหรับการไกล่เกลี่ยข้อพิพาท ไม่ใช่เครื่องวัดระดับเสียงที่ได้รับการรับรองตามกฎหมาย กระบวนการทางกฎหมายอย่างเป็นทางการอาจต้องใช้การตรวจวัดด้วยเครื่องมือที่ผ่านการสอบเทียบ'
     }
 }
 
@@ -931,6 +945,7 @@ def generate_pricing_section(d):
             </tr>
           </tbody>
         </table>
+        <p class="muted" style="margin-top:1.5rem; font-size:13px; text-align:center;">{d['disclaimer_note']}</p>
       </div>
     </section>"""
 

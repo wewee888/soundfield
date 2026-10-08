@@ -5,9 +5,9 @@ const rootDir = process.cwd();
 
 // 1. Update HTML files: remove bookmark buttons and restore neon gradient H1 structure
 const indexFiles = [
-  { path: 'index.html', titleMain: 'Free Online Noise Evidence Recorder', hook: 'No App Required', sep: ' | ', subhead: 'Accurate Decibel Monitoring &amp; Tamper-Proof Evidence' },
-  { path: 'en/index.html', titleMain: 'Free Online Noise Evidence Recorder', hook: 'No App Required', sep: ' | ', subhead: 'Accurate Decibel Monitoring &amp; Tamper-Proof Evidence' },
-  { path: 'zh/index.html', titleMain: '免费在线噪音取证记录工具', hook: '无需安装 App', sep: ' ｜ ', subhead: '精准捕捉环境分贝，锁定客观防伪证据' },
+  { path: 'index.html', titleMain: 'Free Online Decibel Meter &amp; Noise Evidence Recorder', hook: 'No App Required', sep: ' | ', subhead: 'Accurate Decibel Estimation &amp; Tamper-Evident Civilian Records' },
+  { path: 'en/index.html', titleMain: 'Free Online Decibel Meter &amp; Noise Evidence Recorder', hook: 'No App Required', sep: ' | ', subhead: 'Accurate Decibel Estimation &amp; Tamper-Evident Civilian Records' },
+  { path: 'zh/index.html', titleMain: '免费在线噪音分贝测试与取证工具', hook: '无需安装 App', sep: ' ｜ ', subhead: '客观估算环境分贝，留存防伪可信民间底稿' },
   { path: 'de/index.html', titleMain: 'Kostenloser Lärmaufzeichner für Beweise', hook: 'Keine App nötig', sep: ' | ', subhead: 'dB messen. Beweise sichern. Privat bleiben.' },
   { path: 'es/index.html', titleMain: 'Grabador de Evidencia de Ruido Online Gratuito', hook: 'Sin Instalar App', sep: ' | ', subhead: 'Mide dB. Bloquea la evidencia. Mantén la privacidad.' },
   { path: 'fr/index.html', titleMain: 'Enregistreur de Bruit Preuve Gratuit', hook: 'Sans Application', sep: ' | ', subhead: 'Mesurez les dB. Verrouillez la preuve. Restez privé.' },
