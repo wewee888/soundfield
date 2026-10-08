@@ -96,3 +96,28 @@ test('SEO & GEO Standard: llms.txt and llms-full.txt are compliant and configure
   assert.match(headers, /\/llms\.txt[\s\S]*?Content-Type:\s*text\/plain/i, '_headers must set text/plain for /llms.txt');
   assert.match(headers, /\/llms-full\.txt[\s\S]*?Content-Type:\s*text\/plain/i, '_headers must set text/plain for /llms-full.txt');
 });
+
+test('HTML Syntax Integrity: All HTML files have properly closed HTML comments', () => {
+  function scanDir(dir) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const ent of entries) {
+      const fullPath = path.join(dir, ent.name);
+      const relPath = path.relative(rootDir, fullPath).replace(/\\/g, '/');
+      if (ent.isDirectory()) {
+        if (['node_modules', '.git', '_temp', 'test-results', 'scripts', 'functions', 'assets'].includes(ent.name)) continue;
+        scanDir(fullPath);
+      } else if (ent.isFile() && ent.name.endsWith('.html')) {
+        const html = fs.readFileSync(fullPath, 'utf8');
+        const openMatches = html.match(/<!--/g) || [];
+        const closeMatches = html.match(/-->/g) || [];
+        assert.equal(
+          openMatches.length,
+          closeMatches.length,
+          `${relPath} has unmatched HTML comments: <!-- (${openMatches.length}) vs --> (${closeMatches.length})`
+        );
+      }
+    }
+  }
+  scanDir(rootDir);
+});
+
