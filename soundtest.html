@@ -2465,13 +2465,22 @@
 <script src="assets/pro-meter.js?v=20260823b" data-cfasync="false"></script>
 <script src="assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
-<script src="assets/report-cert-engine.js?v=20261008" data-cfasync="false"></script>
+<script src="assets/report-cert-engine.js?v=20261008b" data-cfasync="false"></script>
 <script src="assets/sentry-engine.js?v=20261008" data-cfasync="false"></script>
-<script src="assets/membership-pricing.js?v=20261008" data-cfasync="false"></script>
+<script src="assets/membership-pricing.js?v=20261008b" data-cfasync="false"></script>
 <script src="assets/geo-location.js?v=20261008" data-cfasync="false"></script>
 <script>
 /* ══ GLOBALS: define esc() before any other code to prevent ReferenceError ══ */
 function esc(s){const d=document.createElement('div');d.textContent=String(s??'');return d.innerHTML;}
+const CREEM_CHECKOUT_URLS = (typeof window !== 'undefined' && window.CREEM_CHECKOUT_URLS) ? window.CREEM_CHECKOUT_URLS : {
+  single: 'https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC',
+  monthly: 'https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ',
+  yearly: 'https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c',
+  lifetime: 'https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV',
+};
+if (typeof window !== 'undefined') {
+  window.CREEM_CHECKOUT_URLS = CREEM_CHECKOUT_URLS;
+}
 /* ══ STATE ══ */
 const LS_KEY='sf_v5';
 const MEDIA_DB='soundfield_media_v1';
@@ -4647,16 +4656,27 @@ function closeProUpgradeModal() {
 
 function executeProUpgradeCheckout() {
   const plan = selectedProUpgradePlan || 'yearly';
-  closeProUpgradeModal();
   if (isChinaPricingUser()) {
+    closeProUpgradeModal();
     openWeChatPayModal(plan);
+    return;
+  }
+  const creemKey = plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : (plan === 'single' ? 'single' : 'monthly'));
+  const urls = window.CREEM_CHECKOUT_URLS || (typeof CREEM_CHECKOUT_URLS !== 'undefined' ? CREEM_CHECKOUT_URLS : null);
+  const url = urls ? urls[creemKey] : null;
+  if (!url) {
+    console.error('Creem checkout URL not found for plan:', plan, creemKey);
+    toast('Checkout error: payment link not configured', 'err');
+    return;
+  }
+  closeProUpgradeModal();
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  if (isMobile) {
+    window.location.href = url;
   } else {
-    const creemKey = plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : (plan === 'single' ? 'single' : 'monthly'));
-    const url = CREEM_CHECKOUT_URLS[creemKey];
-    if (url) {
-      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-      if (isMobile) window.location.href = url;
-      else window.open(url, '_blank', 'noopener');
+    const newWin = window.open(url, '_blank', 'noopener');
+    if (!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
+      window.location.href = url;
     }
   }
 }
@@ -4688,11 +4708,18 @@ async function beginCheckout(plan){
     return;
   }
   const creemKey = plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : (plan === 'single' ? 'single' : 'monthly'));
-  const creemUrl = CREEM_CHECKOUT_URLS[creemKey];
+  const urls = window.CREEM_CHECKOUT_URLS || (typeof CREEM_CHECKOUT_URLS !== 'undefined' ? CREEM_CHECKOUT_URLS : null);
+  const creemUrl = urls ? urls[creemKey] : null;
   if (creemUrl) {
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-    if (isMobile) window.location.href = creemUrl;
-    else window.open(creemUrl, '_blank', 'noopener');
+    if (isMobile) {
+      window.location.href = creemUrl;
+    } else {
+      const newWin = window.open(creemUrl, '_blank', 'noopener');
+      if (!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
+        window.location.href = creemUrl;
+      }
+    }
     return;
   }
   const email=(document.getElementById('memberEmailInput')?.value||membershipState.email||'').trim();
@@ -7714,8 +7741,15 @@ function openReportPreviewModal(recs, isBatch = false) {
         : '⚡ Unlock Single Report $1.99 (Reg. $4.99 · Save 60%) · Clean PDF & Cryptographic ID';
       singleBtn.onclick = () => {
         closeReportPreviewModal();
-        if (isMobile) window.location.href = CREEM_CHECKOUT_URLS.single;
-        else window.open(CREEM_CHECKOUT_URLS.single, '_blank', 'noopener');
+        const urls = window.CREEM_CHECKOUT_URLS || (typeof CREEM_CHECKOUT_URLS !== 'undefined' ? CREEM_CHECKOUT_URLS : null);
+        const url = urls ? urls.single : null;
+        if (url) {
+          if (isMobile) window.location.href = url;
+          else {
+            const win = window.open(url, '_blank', 'noopener');
+            if (!win || win.closed || typeof win.closed === 'undefined') window.location.href = url;
+          }
+        }
       };
     }
     if (upBtnText) {
@@ -7727,8 +7761,15 @@ function openReportPreviewModal(recs, isBatch = false) {
       upBtn.onclick = () => {
         if (!isPro) {
           closeReportPreviewModal();
-          if (isMobile) window.location.href = CREEM_CHECKOUT_URLS.yearly;
-          else window.open(CREEM_CHECKOUT_URLS.yearly, '_blank', 'noopener');
+          const urls = window.CREEM_CHECKOUT_URLS || (typeof CREEM_CHECKOUT_URLS !== 'undefined' ? CREEM_CHECKOUT_URLS : null);
+          const url = urls ? urls.yearly : null;
+          if (url) {
+            if (isMobile) window.location.href = url;
+            else {
+              const win = window.open(url, '_blank', 'noopener');
+              if (!win || win.closed || typeof win.closed === 'undefined') window.location.href = url;
+            }
+          }
         }
       };
     }
@@ -7743,14 +7784,14 @@ function openReportPreviewModal(recs, isBatch = false) {
       wxOptEl.style.display = isPro ? 'none' : 'flex';
       wxOptEl.innerHTML = isZh ? `
         <span style="color:var(--soft);">其他方案：</span>
-        <a href="javascript:void(0)" onclick="closeReportPreviewModal();if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=CREEM_CHECKOUT_URLS.monthly}else{window.open(CREEM_CHECKOUT_URLS.monthly, '_blank', 'noopener')}" style="color:var(--text-dim);text-decoration:underline;">月度卡 $4.99 (<del>$9.99</del>)</a>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).monthly;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">月度卡 $4.99 (<del>$9.99</del>)</a>
         <span>·</span>
-        <a href="javascript:void(0)" onclick="closeReportPreviewModal();if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=CREEM_CHECKOUT_URLS.lifetime}else{window.open(CREEM_CHECKOUT_URLS.lifetime, '_blank', 'noopener')}" style="color:var(--text-dim);text-decoration:underline;">终身买断 $79.99 (<del>$199</del>)</a>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).lifetime;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">终身买断 $79.99 (<del>$199</del>)</a>
       ` : `
         <span style="color:var(--soft);">Other options:</span>
-        <a href="javascript:void(0)" onclick="closeReportPreviewModal();if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=CREEM_CHECKOUT_URLS.monthly}else{window.open(CREEM_CHECKOUT_URLS.monthly, '_blank', 'noopener')}" style="color:var(--text-dim);text-decoration:underline;">Monthly $4.99 (<del>$9.99</del>)</a>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).monthly;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">Monthly $4.99 (<del>$9.99</del>)</a>
         <span>·</span>
-        <a href="javascript:void(0)" onclick="closeReportPreviewModal();if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=CREEM_CHECKOUT_URLS.lifetime}else{window.open(CREEM_CHECKOUT_URLS.lifetime, '_blank', 'noopener')}" style="color:var(--text-dim);text-decoration:underline;">Lifetime $79.99 (<del>$199</del>)</a>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).lifetime;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">Lifetime $79.99 (<del>$199</del>)</a>
       `;
     }
   }
@@ -7909,11 +7950,18 @@ function checkoutSentry(plan) {
     openWeChatPayModal(plan);
   } else {
     const creemKey = plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : (plan === 'single' ? 'single' : 'monthly'));
-    const url = CREEM_CHECKOUT_URLS[creemKey];
+    const urls = window.CREEM_CHECKOUT_URLS || (typeof CREEM_CHECKOUT_URLS !== 'undefined' ? CREEM_CHECKOUT_URLS : null);
+    const url = urls ? urls[creemKey] : null;
     if (url) {
       const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-      if (isMobile) window.location.href = url;
-      else window.open(url, '_blank', 'noopener');
+      if (isMobile) {
+        window.location.href = url;
+      } else {
+        const win = window.open(url, '_blank', 'noopener');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+          window.location.href = url;
+        }
+      }
     }
   }
 }

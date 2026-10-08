@@ -382,6 +382,16 @@ const PUM_I18N = {
   }
 };
 
+const CREEM_CHECKOUT_URLS = {
+  single: 'https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC',
+  monthly: 'https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ',
+  yearly: 'https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c',
+  lifetime: 'https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV',
+};
+if (typeof window !== 'undefined') {
+  window.CREEM_CHECKOUT_URLS = CREEM_CHECKOUT_URLS;
+}
+
 let weChatPollTimer = null;
 let currentPendingExport = null;
 
@@ -398,11 +408,18 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
   if (!isChinaPricingUser()) {
     toast('WeChat Pay test pricing is only available for mainland China IP addresses. Redirecting to international checkout in USD...', 'warn', 5000);
     const creemKey = plan === 'yearly' ? 'yearly' : (plan === 'lifetime' ? 'lifetime' : (plan === 'single' ? 'single' : 'monthly'));
-    const creemUrl = CREEM_CHECKOUT_URLS[creemKey];
+    const urls = window.CREEM_CHECKOUT_URLS || CREEM_CHECKOUT_URLS;
+    const creemUrl = urls ? urls[creemKey] : null;
     if (creemUrl) {
       const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-      if (isMobile) window.location.href = creemUrl;
-      else window.open(creemUrl, '_blank', 'noopener');
+      if (isMobile) {
+        window.location.href = creemUrl;
+      } else {
+        const win = window.open(creemUrl, '_blank', 'noopener');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+          window.location.href = creemUrl;
+        }
+      }
     }
     return;
   }
@@ -563,6 +580,7 @@ function handleWeChatPaymentSuccess(plan, orderId) {
 
 
   return {
+    CREEM_CHECKOUT_URLS: typeof CREEM_CHECKOUT_URLS !== 'undefined' ? CREEM_CHECKOUT_URLS : {},
     PUM_I18N: typeof PUM_I18N !== 'undefined' ? PUM_I18N : {},
     closeWeChatPayModal: typeof closeWeChatPayModal !== 'undefined' ? closeWeChatPayModal : undefined,
     openWeChatPayModal: typeof openWeChatPayModal !== 'undefined' ? openWeChatPayModal : undefined,
@@ -573,6 +591,7 @@ function handleWeChatPaymentSuccess(plan, orderId) {
 
 if (typeof window !== 'undefined') {
   if (window.SoundTestPayment) {
+    window.CREEM_CHECKOUT_URLS = window.SoundTestPayment.CREEM_CHECKOUT_URLS;
     window.PUM_I18N = window.SoundTestPayment.PUM_I18N;
     Object.assign(window, window.SoundTestPayment);
   }

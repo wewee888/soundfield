@@ -960,6 +960,28 @@ test('Device-aware PWA prompt suppression on desktop and clean visitor pricing p
   assert.ok(!authJs.includes('auth-gw-badge'), 'site-auth.js must not display awkward geo badges in visitor pay modal');
 });
 
+test('Creem international checkout URLs are declared, exported, and wired across app modules', async () => {
+  const pricingJs = fs.readFileSync(path.join(rootDir, 'assets/membership-pricing.js'), 'utf8');
+  const reportCertJs = fs.readFileSync(path.join(rootDir, 'assets/report-cert-engine.js'), 'utf8');
+  const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+
+  // 1. All 4 tiers must exist in membership-pricing.js, report-cert-engine.js, and soundtest.html
+  const tiers = ['single', 'monthly', 'yearly', 'lifetime'];
+  for (const tier of tiers) {
+    assert.ok(pricingJs.includes(`${tier}: 'https://www.creem.io/payment/prod_`), `pricingJs must have ${tier} Creem payment link`);
+    assert.ok(reportCertJs.includes(`${tier}: 'https://www.creem.io/payment/prod_`), `reportCertJs must have ${tier} Creem payment link`);
+    assert.ok(soundtestHtml.includes(`${tier}: 'https://www.creem.io/payment/prod_`), `soundtest.html must have ${tier} Creem payment link`);
+  }
+
+  // 2. membership-pricing.js must expose CREEM_CHECKOUT_URLS on window
+  assert.ok(pricingJs.includes('window.CREEM_CHECKOUT_URLS = CREEM_CHECKOUT_URLS'), 'pricingJs must export window.CREEM_CHECKOUT_URLS');
+
+  // 3. soundtest.html executeProUpgradeCheckout must have popup blocker fallback
+  assert.ok(soundtestHtml.includes('function executeProUpgradeCheckout()'), 'soundtest.html has executeProUpgradeCheckout');
+  assert.ok(soundtestHtml.includes('window.CREEM_CHECKOUT_URLS || (typeof CREEM_CHECKOUT_URLS'), 'soundtest.html has defensive CREEM_CHECKOUT_URLS resolution');
+  assert.ok(soundtestHtml.includes('if (!newWin || newWin.closed || typeof newWin.closed === \'undefined\')'), 'soundtest.html has popup fallback');
+});
+
 
 
 

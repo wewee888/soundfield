@@ -1496,12 +1496,15 @@ function showPaywall(featureName) {
   sw('s');
 }
 
-const CREEM_CHECKOUT_URLS = {
+const CREEM_CHECKOUT_URLS = (typeof window !== 'undefined' && window.CREEM_CHECKOUT_URLS) ? window.CREEM_CHECKOUT_URLS : {
   single: 'https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC',
   monthly: 'https://www.creem.io/payment/prod_4jTdMPIau4Pzn1HKHPW9NQ',
   yearly: 'https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c',
   lifetime: 'https://www.creem.io/payment/prod_18nHbuAQNpc4n334rM9hGV',
 };
+if (typeof window !== 'undefined') {
+  window.CREEM_CHECKOUT_URLS = CREEM_CHECKOUT_URLS;
+}
 
 function toggleCertWatermark(showWatermark) {
   const isZh = appLanguage === 'zh-CN';
@@ -1802,6 +1805,7 @@ function renderCertificateData(r) {
 }
 
   return {
+    CREEM_CHECKOUT_URLS: typeof CREEM_CHECKOUT_URLS !== 'undefined' ? CREEM_CHECKOUT_URLS : undefined,
     downloadCanvas: typeof downloadCanvas !== 'undefined' ? downloadCanvas : undefined,
     openCanvas: typeof openCanvas !== 'undefined' ? openCanvas : undefined,
     openLastEvidencePhoto: typeof openLastEvidencePhoto !== 'undefined' ? openLastEvidencePhoto : undefined,
@@ -1829,5 +1833,6 @@ function renderCertificateData(r) {
 
 // Expose onto window/global for legacy and inline DOM callers
 if (typeof window !== 'undefined' && window.SoundTestReportCertEngine) {
+  window.CREEM_CHECKOUT_URLS = window.SoundTestReportCertEngine.CREEM_CHECKOUT_URLS;
   Object.assign(window, window.SoundTestReportCertEngine);
 }
