@@ -252,6 +252,21 @@ test('toggleMon implements re-entrancy locking and defensive rollback upon micro
   assert.match(html, /isTogglingMon=false;\s*setButtonBusy\('startBtn',false\);/);
 });
 
+test('audio engine supports Web Audio priming, global gesture unlocker, Windows multi-mic compatibility, and silence self-healing', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+  assert.match(html, /function primeAudioContext\(ctx\)/);
+  assert.match(html, /async function fallbackToStandardMicStream\(\)/);
+  assert.match(html, /gestureUnlockAudio/);
+  assert.match(html, /fallbackToStandardMicStream\(\)/);
+  assert.match(html, /function setWeighting\(w\)/);
+  
+  const reportEngine = fs.readFileSync(path.join(__dirname, '..', 'assets', 'report-cert-engine.js'), 'utf8');
+  assert.match(reportEngine, /capturePhoto:\s*typeof capturePhoto/);
+  assert.match(reportEngine, /captureSnapshotDuringRecording:\s*typeof captureSnapshotDuringRecording/);
+  assert.match(reportEngine, /formatEvidencePlaceLine:\s*typeof formatEvidencePlaceLine/);
+  assert.match(reportEngine, /formatGpsLine:\s*typeof formatGpsLine/);
+});
+
 test('watermark camera UI does not reference block-scoped isVideo outside scope', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
   assert.match(html, /const isVideo=\(watermarkCameraMode\|\|evidenceMode\)==='video';\s*const primary=document\.getElementById\('watermarkPrimaryBtn'\)/);

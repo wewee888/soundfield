@@ -1827,7 +1827,29 @@ function renderCertificateData(r) {
     buildPDF: typeof buildPDF !== 'undefined' ? buildPDF : undefined,
     showPaywall: typeof showPaywall !== 'undefined' ? showPaywall : undefined,
     toggleCertWatermark: typeof toggleCertWatermark !== 'undefined' ? toggleCertWatermark : undefined,
-    renderCertificateData: typeof renderCertificateData !== 'undefined' ? renderCertificateData : undefined
+    renderCertificateData: typeof renderCertificateData !== 'undefined' ? renderCertificateData : undefined,
+    wrapEvidenceText: typeof wrapEvidenceText !== 'undefined' ? wrapEvidenceText : undefined,
+    drawEvidenceLineBlock: typeof drawEvidenceLineBlock !== 'undefined' ? drawEvidenceLineBlock : undefined,
+    formatEvidencePlaceLine: typeof formatEvidencePlaceLine !== 'undefined' ? formatEvidencePlaceLine : undefined,
+    formatGpsLine: typeof formatGpsLine !== 'undefined' ? formatGpsLine : undefined,
+    evidenceDeviceLine: typeof evidenceDeviceLine !== 'undefined' ? evidenceDeviceLine : undefined,
+    sha256HexFromBuffer: typeof sha256HexFromBuffer !== 'undefined' ? sha256HexFromBuffer : undefined,
+    sha256HexFromBlob: typeof sha256HexFromBlob !== 'undefined' ? sha256HexFromBlob : undefined,
+    sha256HexFromText: typeof sha256HexFromText !== 'undefined' ? sha256HexFromText : undefined,
+    createEvidenceId: typeof createEvidenceId !== 'undefined' ? createEvidenceId : undefined,
+    canonicalEvidenceMetadata: typeof canonicalEvidenceMetadata !== 'undefined' ? canonicalEvidenceMetadata : undefined,
+    drawEvidenceMetaPill: typeof drawEvidenceMetaPill !== 'undefined' ? drawEvidenceMetaPill : undefined,
+    buildAcousticEvidencePhoto: typeof buildAcousticEvidencePhoto !== 'undefined' ? buildAcousticEvidencePhoto : undefined,
+    captureEvidencePhoto: typeof captureEvidencePhoto !== 'undefined' ? captureEvidencePhoto : undefined,
+    capturePhoto: typeof capturePhoto !== 'undefined' ? capturePhoto : undefined,
+    captureSnapshotDuringRecording: typeof captureSnapshotDuringRecording !== 'undefined' ? captureSnapshotDuringRecording : undefined,
+    roundRect: typeof roundRect !== 'undefined' ? roundRect : undefined,
+    localTimeStr: typeof localTimeStr !== 'undefined' ? localTimeStr : undefined,
+    localDateStr: typeof localDateStr !== 'undefined' ? localDateStr : undefined,
+    drawOfficialBrandIcon: typeof drawOfficialBrandIcon !== 'undefined' ? drawOfficialBrandIcon : undefined,
+    extractPlaceText: typeof extractPlaceText !== 'undefined' ? extractPlaceText : undefined,
+    cleanErrorRange: typeof cleanErrorRange !== 'undefined' ? cleanErrorRange : undefined,
+    truncateCanvasText: typeof truncateCanvasText !== 'undefined' ? truncateCanvasText : undefined
   };
 }));
 

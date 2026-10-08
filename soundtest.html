@@ -2544,6 +2544,7 @@ let watermarkCameraOpen=false,watermarkCameraMode='video';
 let locWatchId=null,locRefineTmr=null;
 let calibrationPresetKey=DEFAULT_CALIBRATION_PRESET;
 let calOffset=DEFAULT_CAL_OFFSET_DB,micGainDb=18,alertTh=DEFAULT_ALERT_THRESHOLD_DB,alertsOn=true,smoothing=3,curViz='w';
+let silentTickCount=0,hasAttemptedAudioFallback=false;
 let autoRecOnThreshold=false,autoRecMinSeconds=3,autoRecAfterStopSeconds=10,autoRecAboveSince=0,autoRecTimeout=null,autoRecCooldownUntil=0;
 let sustainedAlertOn=false,sustainedAlertMinSeconds=30,sustainedAlertAboveSince=0,sustainedAlertFired=false;
 let autoDayNightThreshold=false,autoDayNightMode=false,dayThresholdDb=55,nightThresholdDb=45;
@@ -5653,11 +5654,24 @@ function updateWeightUi(){
 }
 
 function setWeight(w){
-  weighting=['A','C','Z'].includes(w)?w:'A';syncSeg('weightSeg','data-weight',weighting);updateWeightUi();saveState();
+  weighting=['A','C','Z'].includes(w)?w:'A';
+  syncSeg('weightSeg','data-weight',weighting);
+  ['wtA','wtC','wtZ'].forEach(id=>{
+    const b=document.getElementById(id);
+    if(b)b.classList.toggle('active',id==='wt'+weighting);
+  });
+  updateWeightUi();saveState();
 }
+function setWeighting(w){ return setWeight(w); }
+window.setWeighting = setWeight;
 
 function setTimeWeight(w){
-  timeWeight=w==='S'?'S':'F';syncSeg('timeSeg','data-time',timeWeight);updateWeightUi();saveState();
+  timeWeight=w==='S'?'S':'F';
+  syncSeg('timeSeg','data-time',timeWeight);
+  const twF=document.getElementById('twF'), twS=document.getElementById('twS');
+  if(twF)twF.classList.toggle('active',timeWeight==='F');
+  if(twS)twS.classList.toggle('active',timeWeight==='S');
+  updateWeightUi();saveState();
 }
 
 function aWeightLin(f){
@@ -6142,7 +6156,15 @@ async function requestMicrophoneStream(){
   if(isIOS){
     return navigator.mediaDevices.getUserMedia({audio:true});
   }
-  const professionalConstraints={audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false,channelCount:1}};
+  // DO NOT force channelCount: 1 on Windows / multi-mic arrays; WASAPI raw exclusive mono often outputs 0s without error.
+  // Web Audio's MediaStreamSource and AnalyserNode natively downmix multi-channel audio to mono with full fidelity.
+  const professionalConstraints={
+    audio:{
+      echoCancellation:false,
+      noiseSuppression:false,
+      autoGainControl:false
+    }
+  };
   try{
     return await navigator.mediaDevices.getUserMedia(professionalConstraints);
   }catch(err){
@@ -6160,8 +6182,22 @@ async function requestMicrophoneStream(){
   }
 }
 
+function primeAudioContext(ctx){
+  if(!ctx)return;
+  try{
+    if(ctx.state==='suspended'||ctx.state==='interrupted'){
+      ctx.resume().catch(()=>{});
+    }
+    const buffer=ctx.createBuffer(1,1,ctx.sampleRate||44100);
+    const source=ctx.createBufferSource();
+    source.buffer=buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+  }catch(_){}
+}
+
 async function ensureAudioContextReady(){
-  if(!audioCtx){
+  if(!audioCtx||audioCtx.state==='closed'){
     const AudioContextCtor=window.AudioContext||window.webkitAudioContext;
     if(!AudioContextCtor){
       const err=new Error(appLanguage!=='zh-CN'?'AudioContext is not available in this browser.':'当前浏览器缺少 AudioContext。');
@@ -6169,11 +6205,55 @@ async function ensureAudioContextReady(){
       throw err;
     }
     audioCtx=new AudioContextCtor();
+    window.audioCtx=audioCtx;
   }
-  if(audioCtx.state==='suspended'){
+  primeAudioContext(audioCtx);
+  if(audioCtx.state==='suspended'||audioCtx.state==='interrupted'){
     try{await audioCtx.resume();}catch(_){}
   }
   return audioCtx;
+}
+
+async function fallbackToStandardMicStream(){
+  try{
+    if(!isMon||!audioCtx)return;
+    console.warn('[Audio] Initiating automatic fallback to standard audio stream {audio: true}...');
+    const fallbackStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    if(!isMon){
+      fallbackStream.getTracks().forEach(t=>t.stop());
+      return;
+    }
+    if(micSourceNode){
+      try{micSourceNode.disconnect();}catch(_){}
+    }
+    if(micStream){
+      micStream.getTracks().forEach(t=>t.stop());
+    }
+    micStream=fallbackStream;
+    micSourceNode=audioCtx.createMediaStreamSource(micStream);
+    micSourceNode.connect(inputGainNode);
+    primeAudioContext(audioCtx);
+    if(audioCtx.state!=='running'){
+      try{await audioCtx.resume();}catch(_){}
+    }
+    console.log('[Audio] Successfully switched to standard audio pipeline!');
+    toast(appLanguage!=='zh-CN'?'Switched to compatible audio pipeline.':'已自动切换至兼容音频通道。','info',3500);
+  }catch(err){
+    console.error('[Audio] Fallback audio stream failed:',err);
+  }
+}
+
+// Global user-gesture AudioContext resumer for Chromium/WebKit autoplay policies
+if(typeof window!=='undefined'){
+  const gestureUnlockAudio=()=>{
+    const ctx=window.audioCtx||audioCtx;
+    if(ctx&&(ctx.state==='suspended'||ctx.state==='interrupted')){
+      ctx.resume().catch(()=>{});
+    }
+  };
+  ['click','touchstart','touchend','pointerdown','keydown'].forEach(evt=>{
+    window.addEventListener(evt,gestureUnlockAudio,{passive:true});
+  });
 }
 
 /* ── Monitor toggle ── */
@@ -6207,6 +6287,20 @@ async function toggleMon(opts={}){
       try{sessionStorage.setItem('sf_mic_granted','1');}catch(_){}
       markPermissionGuideSeen('authorized');
       dismissPermissionGuide();
+
+      const audioTrack=micStream.getAudioTracks()[0];
+      if(audioTrack){
+        if(audioTrack.muted){
+          toast(appLanguage!=='zh-CN'?'Warning: Microphone is muted in system settings or hardware switch.':'提示：麦克风已被系统静音或物理按键关闭，请检查系统设置。','warn',8000);
+        }
+        audioTrack.onmute=()=>{
+          toast(appLanguage!=='zh-CN'?'Microphone hardware/system muted.':'麦克风已被系统静音或物理按键关闭。','warn',6000);
+        };
+        audioTrack.onunmute=()=>{
+          toast(appLanguage!=='zh-CN'?'Microphone input restored.':'麦克风已恢复输入。','info',3000);
+        };
+      }
+
       analyser=audioCtx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=analyserSmooth(smoothing);
       fftAn=audioCtx.createAnalyser();fftAn.fftSize=2048;fftAn.smoothingTimeConstant=.18;
       inputGainNode=audioCtx.createGain();updateMicGain();
@@ -6220,6 +6314,7 @@ async function toggleMon(opts={}){
         inputGainNode.connect(dummyMuteNode);
         dummyMuteNode.connect(audioCtx.destination);
       }catch(_){}
+      primeAudioContext(audioCtx);
       if(audioCtx.state!=='running'){
         try{await audioCtx.resume();}catch(_){}
       }
@@ -6230,7 +6325,9 @@ async function toggleMon(opts={}){
       };
       wBuf=new Uint8Array(analyser.frequencyBinCount);fBuf=new Uint8Array(fftAn.frequencyBinCount);
       floatTBuf=new Float32Array(analyser.fftSize);floatFBuf=new Float32Array(fftAn.frequencyBinCount);
-      isMon=true;peak=0;mn=999;dbH=[];trendH=[];noiseEvents=[];lastImpulseEventAt=0;curDb=0;tickN=0;lastTick=performance.now();lastAnalysisAt=0;lastVisualAt=0;lastOverlayAt=0;powerSaverNotified=false;leqEnergy=0;leqTime=0;sessStart=new Date();
+      isMon=true;peak=0;mn=999;dbH=[];trendH=[];noiseEvents=[];lastImpulseEventAt=0;curDb=0;tickN=0;
+      silentTickCount=0;hasAttemptedAudioFallback=false;
+      lastTick=performance.now();lastAnalysisAt=0;lastVisualAt=0;lastOverlayAt=0;powerSaverNotified=false;leqEnergy=0;leqTime=0;sessStart=new Date();
       if(monTmr)clearInterval(monTmr);
       monTmr=setInterval(()=>{const s=Math.round((Date.now()-sessStart)/1000);const el=document.getElementById('sTime');if(el)el.textContent=fmtTime(s);},1000);
       const startBtn=document.getElementById('startBtn');
@@ -6318,6 +6415,16 @@ function tick(){
   lastTick=now;
   analyser.getByteTimeDomainData(wBuf);fftAn.getByteFrequencyData(fBuf);
   const inst=instantDb();
+  if(inst<=0){
+    silentTickCount++;
+    if(silentTickCount===45&&!hasAttemptedAudioFallback){
+      hasAttemptedAudioFallback=true;
+      console.warn('[Audio] Digital silence detected (45 frames with rms < 1e-9). Self-healing with standard audio pipeline...');
+      fallbackToStandardMicStream();
+    }
+  }else{
+    silentTickCount=0;
+  }
   maybeCaptureImpulseEvent(inst,now);
   curDb=applyMeterBallistics(inst,curDb,dt);
   if(inst>peak)peak=inst;if(inst>0&&inst<mn)mn=inst;
@@ -7145,6 +7252,9 @@ function stopAll(){
   if(micSourceNode){try{micSourceNode.disconnect();}catch(_){}micSourceNode=null;}
   if(inputGainNode){try{inputGainNode.disconnect();}catch(_){}inputGainNode=null;}
   audioCtx=null;
+  window.audioCtx=null;
+  silentTickCount=0;
+  hasAttemptedAudioFallback=false;
   micStream=null;
   isMon=false;isCam=false;
   document.getElementById('cam').style.display='none';document.getElementById('camPh').style.display='flex';

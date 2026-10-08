@@ -279,6 +279,7 @@ async function lookupPlaceName(loc){
     exportMapImage: typeof exportMapImage !== 'undefined' ? exportMapImage : undefined,
     drawMap: typeof drawMap !== 'undefined' ? drawMap : undefined,
     wgs84ToGcj02: typeof wgs84ToGcj02 !== 'undefined' ? wgs84ToGcj02 : undefined,
+    isInChina: typeof isInChina !== 'undefined' ? isInChina : undefined,
     lookupPlaceName: typeof lookupPlaceName !== 'undefined' ? lookupPlaceName : undefined
   };
 }));
