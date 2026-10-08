@@ -242,6 +242,16 @@ test('core tool retries microphone startup with basic constraints', () => {
   assert.match(html, /SOUNDTEST\.PRO 会自动改用基础麦克风模式重试/);
 });
 
+test('toggleMon implements re-entrancy locking and defensive rollback upon microphone error', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+  assert.match(html, /isTogglingMon=false/);
+  assert.match(html, /if\(isTogglingMon\)return false/);
+  assert.match(html, /isTogglingMon=true/);
+  assert.match(html, /isMon=false;\s*if\(monTmr\)\{clearInterval\(monTmr\);monTmr=null;\}/);
+  assert.match(html, /if\(startBtn\)startBtn\.className='start-btn';\s*setStartButtonText\(\);/);
+  assert.match(html, /isTogglingMon=false;\s*setButtonBusy\('startBtn',false\);/);
+});
+
 test('watermark camera UI does not reference block-scoped isVideo outside scope', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
   assert.match(html, /const isVideo=\(watermarkCameraMode\|\|evidenceMode\)==='video';\s*const primary=document\.getElementById\('watermarkPrimaryBtn'\)/);

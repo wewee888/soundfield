@@ -2528,7 +2528,7 @@ const DB={records:[]};
 let audioCtx,analyser,fftAn,micStream,camStream,mediaRec,wakeLock;
 let micSourceNode=null,dummyMuteNode=null;
 let watermarkRecorderCanvas=null,watermarkRecorderCtx=null,watermarkRecorderStream=null,watermarkRecorderAnimId=null;
-let isMon=false,isRec=false,isCam=false;
+let isMon=false,isRec=false,isCam=false,isTogglingMon=false;
 let micPermissionGranted=false;
 let cachedMicPermissionState='unknown';
 try{if(sessionStorage.getItem('sf_mic_granted')==='1'){micPermissionGranted=true;cachedMicPermissionState='granted';}}catch(_){}
@@ -3727,9 +3727,9 @@ function collapsePromptAfterImageSave(delayMs=1200){
 function explainMediaError(err){
   if(!supports.secure)return secureContextHelp();
   if(!supports.media)return appLanguage!=='zh-CN'?'This browser does not support microphone access. Use Chrome, Edge, or Safari.':'当前浏览器不支持麦克风 API，请使用 Chrome、Edge 或 Safari。';
-  if(err?.name==='NotAllowedError')return appLanguage!=='zh-CN'?'Oops! Microphone access was blocked. Please click the lock icon 🔒 in the address bar to allow it.':'Oops! 需要麦克风权限才能听到噪音哦，请点击浏览器地址栏的小锁头 🔒 开启。';
+  if(err?.name==='NotAllowedError'||err?.name==='PermissionDeniedError')return appLanguage!=='zh-CN'?'Oops! Microphone access was blocked. Please click the lock icon 🔒 or site settings in the address bar to allow it.':'Oops! 需要麦克风权限才能听到噪音哦，请点击浏览器地址栏的小锁头 🔒 或站点设置开启。';
   if(err?.name==='NotFoundError')return appLanguage!=='zh-CN'?'No microphone was found. Check your system input device.':'未检测到可用麦克风，请检查系统输入设备。';
-  if(err?.name==='NotReadableError')return appLanguage!=='zh-CN'?'Another app is using the microphone. Close it and try again.':'麦克风正被其他应用占用，请关闭占用后重试。';
+  if(err?.name==='NotReadableError')return appLanguage!=='zh-CN'?'Microphone hardware is busy or in use by another app. Please close other audio apps and try again.':'麦克风正被其他应用占用或音频硬件冲突，请关闭占用后重试。';
   if(err?.name==='AbortError')return appLanguage!=='zh-CN'?'The microphone startup was interrupted. Try again from a normal browser tab.':'麦克风启动被系统中断，请在普通浏览器标签页中重试。';
   if(err?.name==='OverconstrainedError')return appLanguage!=='zh-CN'?'This browser rejected the professional microphone settings. SOUNDTEST.PRO will retry with basic microphone access.':'当前浏览器不接受专业麦克风参数，SOUNDTEST.PRO 会自动改用基础麦克风模式重试。';
   return appLanguage!=='zh-CN'?'Could not start the microphone. Check browser permissions and input devices.':'无法启动麦克风，请检查浏览器权限和系统输入设备。';
@@ -6146,32 +6146,45 @@ async function requestMicrophoneStream(){
   try{
     return await navigator.mediaDevices.getUserMedia(professionalConstraints);
   }catch(err){
-    if(['NotAllowedError','NotFoundError','NotReadableError','SecurityError','AbortError'].includes(err?.name))throw err;
+    if(['NotAllowedError','NotFoundError','NotReadableError','SecurityError','AbortError'].includes(err?.name)){
+      if(err?.name==='NotReadableError'||err?.name==='AbortError'){
+        try{
+          console.warn('[Microphone] Professional constraints rejected ('+err.name+'), retrying standard compatibility mode...');
+          return await navigator.mediaDevices.getUserMedia({audio:true});
+        }catch(_){}
+      }
+      throw err;
+    }
     showCapTemporarily('warn',appLanguage!=='zh-CN'?'Retrying microphone':'正在改用兼容模式',explainMediaError(err),'RETRY',5000);
     return navigator.mediaDevices.getUserMedia({audio:true});
   }
 }
 
 async function ensureAudioContextReady(){
-  if(audioCtx)return audioCtx;
-  const AudioContextCtor=window.AudioContext||window.webkitAudioContext;
-  if(!AudioContextCtor){
-    const err=new Error(appLanguage!=='zh-CN'?'AudioContext is not available in this browser.':'当前浏览器缺少 AudioContext。');
-    err.name='AudioContextUnavailable';
-    throw err;
+  if(!audioCtx){
+    const AudioContextCtor=window.AudioContext||window.webkitAudioContext;
+    if(!AudioContextCtor){
+      const err=new Error(appLanguage!=='zh-CN'?'AudioContext is not available in this browser.':'当前浏览器缺少 AudioContext。');
+      err.name='AudioContextUnavailable';
+      throw err;
+    }
+    audioCtx=new AudioContextCtor();
   }
-  audioCtx=new AudioContextCtor();
+  if(audioCtx.state==='suspended'){
+    try{await audioCtx.resume();}catch(_){}
+  }
   return audioCtx;
 }
 
 /* ── Monitor toggle ── */
 async function toggleMon(opts={}){
+  if(isTogglingMon)return false;
   if(!isMon){
     if(!supports.secure||!supports.media){
       const msg=explainMediaError();
       showCapTemporarily('err',appLanguage!=='zh-CN'?'Cannot start monitoring':'无法启动监测',msg,'CHECK');
       toast(msg,'err',5600);
-      return;
+      return false;
     }
 
     // Check authorization: if mic is explicitly denied in browser settings, show modal with recovery steps.
@@ -6179,10 +6192,11 @@ async function toggleMon(opts={}){
     if(!opts?.fromAuthModal && !micPermissionGranted){
       if(cachedMicPermissionState==='denied'){
         openPermissionModal({denied:true});
-        return;
+        return false;
       }
     }
 
+    isTogglingMon=true;
     try{
       setButtonBusy('startBtn',true);
       showCapTemporarily('info',appLanguage!=='zh-CN'?'Allow microphone':'正在请求麦克风',appLanguage!=='zh-CN'?'Choose Allow in the browser permission prompt.':'请在浏览器权限弹窗中选择允许。','WAIT',8000);
@@ -6217,20 +6231,47 @@ async function toggleMon(opts={}){
       wBuf=new Uint8Array(analyser.frequencyBinCount);fBuf=new Uint8Array(fftAn.frequencyBinCount);
       floatTBuf=new Float32Array(analyser.fftSize);floatFBuf=new Float32Array(fftAn.frequencyBinCount);
       isMon=true;peak=0;mn=999;dbH=[];trendH=[];noiseEvents=[];lastImpulseEventAt=0;curDb=0;tickN=0;lastTick=performance.now();lastAnalysisAt=0;lastVisualAt=0;lastOverlayAt=0;powerSaverNotified=false;leqEnergy=0;leqTime=0;sessStart=new Date();
-      monTmr=setInterval(()=>{const s=Math.round((Date.now()-sessStart)/1000);document.getElementById('sTime').textContent=fmtTime(s);},1000);
-      document.getElementById('startBtn').className='start-btn stop';
+      if(monTmr)clearInterval(monTmr);
+      monTmr=setInterval(()=>{const s=Math.round((Date.now()-sessStart)/1000);const el=document.getElementById('sTime');if(el)el.textContent=fmtTime(s);},1000);
+      const startBtn=document.getElementById('startBtn');
+      if(startBtn)startBtn.className='start-btn stop';
       setStartButtonText();
       updateLiveMonitorNotice();
-      document.getElementById('camBtn').disabled=false;
-      document.getElementById('locBtn').disabled=false;
+      const camBtn=document.getElementById('camBtn');if(camBtn)camBtn.disabled=false;
+      const locBtn=document.getElementById('locBtn');if(locBtn)locBtn.disabled=false;
       setRecordingButtonsAvailability();
-      document.getElementById('sdot').className='sdot on';
-      document.getElementById('rdot').className='nav-dot on';
-      document.getElementById('stxt').textContent=t('ui.monitoring');
+      const sdot=document.getElementById('sdot');if(sdot)sdot.className='sdot on';
+      const rdot=document.getElementById('rdot');if(rdot)rdot.className='nav-dot on';
+      const stxt=document.getElementById('stxt');if(stxt)stxt.textContent=t('ui.monitoring');
       showCapTemporarily('info',t('ui.monitoring'),appLanguage!=='zh-CN'?'Live mic analysis is running on this device. Tap Record to save evidence.':'正在本机实时分析麦克风输入；点击录制可保存本次会话证据。','LIVE');
-      trackEvent('monitor_start',{mode:evidenceMode,weighting,timeWeight});
-      updateWeightUi();requestWakeLock();getLoc();syncEvidenceModeUi();tick();
+      try{trackEvent('monitor_start',{mode:evidenceMode,weighting,timeWeight});}catch(_){}
+      updateWeightUi();
+      requestWakeLock();
+      try{getLoc();}catch(_){}
+      syncEvidenceModeUi();
+      tick();
+      return true;
     }catch(e){
+      console.error('[toggleMon error]',e);
+      // DEFENSIVE ROLLBACK: Fully reset all monitoring states so UI never freezes in zombie 'Stop Meter' mode
+      isMon=false;
+      if(monTmr){clearInterval(monTmr);monTmr=null;}
+      if(animId){cancelAnimationFrame(animId);animId=null;}
+      releaseWakeLock();
+      const startBtn=document.getElementById('startBtn');
+      if(startBtn)startBtn.className='start-btn';
+      setStartButtonText();
+      const sdot=document.getElementById('sdot');if(sdot)sdot.className='sdot';
+      const rdot=document.getElementById('rdot');if(rdot)rdot.className='nav-dot';
+      const stxt=document.getElementById('stxt');if(stxt)stxt.textContent=t('ui.idle');
+      const camBtn=document.getElementById('camBtn');if(camBtn)camBtn.disabled=true;
+      const locBtn=document.getElementById('locBtn');if(locBtn)locBtn.disabled=true;
+      curDb=0;
+      animateDbNumber(0);
+      setRecordingButtonsAvailability();
+      syncEvidenceModeUi();
+      updateLiveMonitorNotice();
+
       const detail=mediaErrorDetail(e);
       const msg=detail?`${explainMediaError(e)} (${detail})`:explainMediaError(e);
       showCapTemporarily('err',appLanguage!=='zh-CN'?'Startup failed':'启动失败',msg,'ERROR');
@@ -6251,9 +6292,13 @@ async function toggleMon(opts={}){
       if(opts?.rethrow)throw e;
       return false;
     }finally{
+      isTogglingMon=false;
       setButtonBusy('startBtn',false);
     }
-  }else{stopAll();}
+  }else{
+    stopAll();
+    return true;
+  }
 }
 
 /* ── Tick ── */
