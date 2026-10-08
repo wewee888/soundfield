@@ -86,7 +86,7 @@
     }
   },
   "en": {
-    "name": "🇺🇸/🇬🇧 欧美英美法系 (Common Law & Quiet Enjoyment)",
+    "name": "🇺🇸/🇬🇧 US & UK (Common Law & Quiet Enjoyment)",
     "laws": [
       "Common Law Covenant of Quiet Enjoyment: Every residential tenant and property owner possesses the implied covenant of quiet enjoyment, guaranteeing peaceful occupation free from unreasonable interference.",
       "Doctrine of Private Nuisance: Actionable nuisance arises when sound transmissions create substantial and unreasonable interference with the comfortable use and enjoyment of real property.",
@@ -156,7 +156,7 @@
     }
   },
   "de": {
-    "name": "🇩🇪 德国 (BGB §906 & TA Lärm 宁静权)",
+    "name": "🇩🇪 Germany / Deutschland (BGB §906 & TA Lärm)",
     "laws": [
       "Bürgerliches Gesetzbuch (BGB) § 906: Schutz vor Zuführung unwägbarer Stoffe und unzumutbaren Geräuschimmissionen von Nachbargrundstücken.",
       "Gesetz über Ordnungswidrigkeiten (OWiG) § 117: Unzulässiger Lärm, der geeignet ist, die Allgemeinheit oder die Nachbarschaft erheblich zu belästigen.",
@@ -226,7 +226,7 @@
     }
   },
   "fr": {
-    "name": "🇫🇷 法国 (Code de la santé publique 扰民法典)",
+    "name": "🇫🇷 France (Code de la santé publique)",
     "laws": [
       "Code de la santé publique Art. R. 1336-5: Aucun bruit particulier ne doit, par sa durée, sa répétition ou son intensité, porter atteinte à la tranquillité du voisinage.",
       "Code civil Article 1253: Le propriétaire, locataire ou occupant qui cause à un voisin un trouble excédant les inconvénients normaux de voisinage est responsable de plein droit.",
@@ -296,7 +296,7 @@
     }
   },
   "es": {
-    "name": "🇪🇸 西班牙/拉美 (Ley del Ruido 噪音法)",
+    "name": "🇪🇸 Spain / España (Ley del Ruido)",
     "laws": [
       "Ley 37/2003 del Ruido: Regula la prevención, vigilancia y reducción de la contaminación acústica para evitar daños en la salud humana y bienes.",
       "Código Civil Artículos 1902 y 590: Responsabilidad extracontractual por daño y deber de no causar inmisiones perjudiciales a fundos vecinos.",
@@ -366,7 +366,7 @@
     }
   },
   "ja": {
-    "name": "🇯🇵 日本 (民法相邻关系 & 受忍限度论)",
+    "name": "🇯🇵 日本 (民法相隣関係 & 受忍限度論)",
     "laws": [
       "民法 第209条・第709条: 相隣関係および不法行為に基づく損害賠償・妨害排除（差止）請求権。",
       "裁判所判例法理における「受忍限度論」: 社会通念上受忍すべき限度を超える騒音は違法と認定され、損害賠償義務が発生します。",
@@ -436,7 +436,7 @@
     }
   },
   "ko": {
-    "name": "🇰🇷 韩国 (共同住宅管理法 & 噪音基准)",
+    "name": "🇰🇷 대한민국 (공동주택관리법 & 층간소음 기준)",
     "laws": [
       "공동주택관리법 제20조 (층간소음의 방지 등): 입주자등은 공동주택에서 층간소음으로 인하여 다른 입주자등에게 피해를 주지 아니하도록 노력하여야 한다.",
       "공동주택 층간소음의 범위와 기준에 관한 규칙: 야간 직접충격 1분 등가소음도 34 dB(A), 최고소음도 52 dB(A) 초과 시 위법성 인정.",
@@ -506,7 +506,7 @@
     }
   },
   "th": {
-    "name": "🇹🇭 泰国 (公共卫生法 พ.ร.บ.การสาธารณสุข)",
+    "name": "🇹🇭 ประเทศไทย (พ.ร.บ.การสาธารณสุข)",
     "laws": [
       "พระราชบัญญัติการสาธารณสุข พ.ศ. 2535 (มาตรา 25 และมาตรา 28): การกระทำใดๆ อันเป็นเหตุให้เกิดกลิ่น แสง รังสี เสียง ความสั่นสะเทือน จนเป็นเหตุให้เสื่อมหรืออาจเป็นอันตรายต่อสุขภาพ ถือเป็นเหตุรำคาญ.",
       "ประมวลกฎหมายแพ่งและพาณิชย์ มาตรา 420: ผู้ใดจงใจหรือประมาทเลินเล่อทำต่อบุคคลอื่นโดยผิดกฎหมาย เป็นเหตุให้เขาเสียหายแก่ร่างกาย อนามัย หรือเสรีภาพ ผู้นั้นต้องชดใช้ค่าสินไหมทดแทน.",
@@ -576,7 +576,7 @@
     }
   },
   "vi": {
-    "name": "🇻🇳 越南 (民法典 Bộ luật Dân sự 2015)",
+    "name": "🇻🇳 Việt Nam (Bộ luật Dân sự 2015 & QCVN 26)",
     "laws": [
       "Bộ luật Dân sự 2015, Điều 172: Nghĩa vụ của chủ sở hữu trong việc thực hiện quyền sở hữu không được gây thiệt hại hoặc làm ảnh hưởng đến quyền, lợi ích hợp pháp của người khác.",
       "Bộ luật Dân sự 2015, Điều 605: Bồi thường thiệt hại do vi phạm quy tắc láng giềng và trật tự xây dựng, sinh hoạt.",
@@ -876,9 +876,37 @@
       : zipBytes;
   }
 
+  function getJurisdictionName(jurKey, lang) {
+    const isZh = typeof lang === 'string' && lang.toLowerCase().startsWith('zh');
+    const namesZh = {
+      zh: "🇨🇳 中国 (民法典第288条相邻权 & 噪声污染防治法)",
+      en: "🇺🇸/🇬🇧 欧美英美法系 (Common Law & Quiet Enjoyment)",
+      de: "🇩🇪 德国 (BGB §906 & TA Lärm 宁静权)",
+      fr: "🇫🇷 法国 (Code de la santé publique 扰民法典)",
+      es: "🇪🇸 西班牙/拉美 (Ley del Ruido 噪音法)",
+      ja: "🇯🇵 日本 (民法相邻关系 & 受忍限度论)",
+      ko: "🇰🇷 韩国 (共同住宅管理法 & 噪音基准)",
+      th: "🇹🇭 泰国 (公共卫生法 พ.ร.บ.การสาธารณสุข)",
+      vi: "🇻🇳 越南 (民法典 Bộ luật Dân sự 2015)"
+    };
+    const namesEn = {
+      zh: "🇨🇳 China (Civil Code Art. 288 & Noise Control Law)",
+      en: "🇺🇸/🇬🇧 US & UK (Common Law & Quiet Enjoyment)",
+      de: "🇩🇪 Germany (BGB §906 & TA Lärm)",
+      fr: "🇫🇷 France (Code de la santé publique)",
+      es: "🇪🇸 Spain / LatAm (Ley del Ruido)",
+      ja: "🇯🇵 Japan (Civil Code & Tolerance Limit)",
+      ko: "🇰🇷 South Korea (Multi-Family Housing & Noise Rules)",
+      th: "🇹🇭 Thailand (Public Health Act)",
+      vi: "🇻🇳 Vietnam (Civil Code 2015 & QCVN 26)"
+    };
+    if (isZh) return namesZh[jurKey] || LEGAL_DATA[jurKey]?.name || jurKey;
+    return namesEn[jurKey] || LEGAL_DATA[jurKey]?.name || jurKey;
+  }
+
   // --- UI Component & Runtime State ---
   let modalEl = null;
-  let currentLang = 'zh';
+  let currentLang = 'en';
   let currentTone = 'gentle';
   let selectedScenarios = new Set(['footstep']);
   let userTier = 'free'; // 'free' | 'single' | 'pro'
@@ -902,8 +930,8 @@
           <div class="lnm-title-wrap">
             <div class="lnm-badge-icon">⚖️</div>
             <div>
-              <h3 class="lnm-title" id="lnmTitle">邻里沟通函与法定催告函生成器</h3>
-              <p class="lnm-subtitle" id="lnmSubtitle">基于真实声学存证数据 · 3种沟通语气 · 9国/地区法律条文智能援引</p>
+              <h3 class="lnm-title" id="lnmTitle">Neighbor Notice & Statutory Demand Generator</h3>
+              <p class="lnm-subtitle" id="lnmSubtitle">Backed by Verified Acoustic Telemetry · 3 Tones · 9 Global Legal Jurisdictions</p>
             </div>
           </div>
           <button type="button" class="lnm-close-btn" id="lnmCloseBtn" aria-label="Close">×</button>
@@ -913,36 +941,36 @@
           <!-- Section: Tone Selection -->
           <div class="lnm-tone-section">
             <div class="lnm-section-label">
-              <span id="lnmToneLabel">沟通语气策略</span>
-              <span id="lnmToneHint" style="font-size:10.5px;color:#64748b;font-weight:normal;">阶梯式维权：温和提醒 → 理性交涉 → 严正催告</span>
+              <span id="lnmToneLabel">Communication Strategy</span>
+              <span id="lnmToneHint" style="font-size:10.5px;color:#64748b;font-weight:normal;">Escalation Path: Friendly Reminder → Formal Negotiation → Statutory Demand</span>
             </div>
             <div class="lnm-tone-grid">
               <!-- Gentle Card -->
               <div class="lnm-tone-card tone-gentle active" data-tone="gentle">
                 <div class="lnm-tone-header">
                   <span>🌱</span>
-                  <span id="lnmToneGentleTitle">温和友善提醒</span>
-                  <span class="lnm-free-badge" style="font-size:9.5px;background:rgba(34,197,94,0.2);color:#4ade80;padding:1px 6px;border-radius:10px;margin-left:auto;">免费开放</span>
+                  <span id="lnmToneGentleTitle">Gentle Friendly Reminder</span>
+                  <span class="lnm-free-badge" style="font-size:9.5px;background:rgba(34,197,94,0.2);color:#4ade80;padding:1px 6px;border-radius:10px;margin-left:auto;">Free</span>
                 </div>
-                <div class="lnm-tone-desc" id="lnmToneGentleDesc">以和为贵，初次提醒，理解可能不知情，倡导友好邻里互助</div>
+                <div class="lnm-tone-desc" id="lnmToneGentleDesc">Good neighbor approach, assumes unintentional, asks for cooperative mindfulness</div>
               </div>
               <!-- Firm Card -->
               <div class="lnm-tone-card tone-firm" data-tone="firm">
                 <div class="lnm-tone-header">
                   <span>⚖️</span>
-                  <span id="lnmToneFirmTitle">正式理性交涉</span>
+                  <span id="lnmToneFirmTitle">Firm Rational Negotiation</span>
                   <span class="lnm-lock-badge" id="lnmLockFirm" style="font-size:9.5px;background:rgba(59,130,246,0.2);color:#60a5fa;padding:1px 6px;border-radius:10px;margin-left:auto;">🔒 PRO</span>
                 </div>
-                <div class="lnm-tone-desc" id="lnmToneFirmDesc">多次沟通未果，摆出客观声学超标数据，明确作息干扰与底线</div>
+                <div class="lnm-tone-desc" id="lnmToneFirmDesc">Presents empirical exceedance data, outlines sleep disturbance and clear boundaries</div>
               </div>
               <!-- Strict Card -->
               <div class="lnm-tone-card tone-strict" data-tone="strict">
                 <div class="lnm-tone-header">
                   <span>🛑</span>
-                  <span id="lnmToneStrictTitle">严正法务催告</span>
+                  <span id="lnmToneStrictTitle">Strict Statutory Demand</span>
                   <span class="lnm-lock-badge" id="lnmLockStrict" style="font-size:9.5px;background:rgba(239,68,68,0.2);color:#f87171;padding:1px 6px;border-radius:10px;margin-left:auto;">🔒 PRO</span>
                 </div>
-                <div class="lnm-tone-desc" id="lnmToneStrictDesc">正式法律告知书格式，援引法定侵权法规，设定整改限期与通牒</div>
+                <div class="lnm-tone-desc" id="lnmToneStrictDesc">Formal legal notice format, cites statutory codes, issues 48h cure deadline</div>
               </div>
             </div>
           </div>
@@ -950,39 +978,39 @@
           <!-- Section: Parameters Grid -->
           <div class="lnm-form-grid">
             <div class="lnm-field">
-              <label id="lnmLblRecipient" for="lnmInputRecipient">受函方 / 邻居称呼</label>
-              <input type="text" class="lnm-input" id="lnmInputRecipient" value="楼上邻居您好" placeholder="如：402室邻居">
+              <label id="lnmLblRecipient" for="lnmInputRecipient">Recipient / Resident</label>
+              <input type="text" class="lnm-input" id="lnmInputRecipient" value="Upstairs Neighbor" placeholder="e.g. Apt 402 Resident">
             </div>
             <div class="lnm-field">
-              <label id="lnmLblSender" for="lnmInputSender">发函方 / 您的署名</label>
-              <input type="text" class="lnm-input" id="lnmInputSender" value="楼下邻居" placeholder="如：302室住户">
+              <label id="lnmLblSender" for="lnmInputSender">Sender / Your Name/Unit</label>
+              <input type="text" class="lnm-input" id="lnmInputSender" value="Downstairs Neighbor" placeholder="e.g. Apt 302 Resident">
             </div>
             <div class="lnm-field">
-              <label id="lnmLblJurisdiction" for="lnmSelectJurisdiction">法律法域与语言 (9国标准)</label>
+              <label id="lnmLblJurisdiction" for="lnmSelectJurisdiction">Legal Jurisdiction & Language</label>
               <select class="lnm-select" id="lnmSelectJurisdiction"></select>
             </div>
           </div>
 
           <!-- Section: Scenario Chips -->
           <div class="lnm-scenarios-section">
-            <div class="lnm-section-label" id="lnmScenarioLabel">常见噪音类型 (快速勾选)</div>
+            <div class="lnm-section-label" id="lnmScenarioLabel">Noise Categories (Select Applicable)</div>
             <div class="lnm-chips-wrap" id="lnmChipsWrap"></div>
           </div>
 
           <!-- Section: Live Preview Box -->
           <div class="lnm-preview-wrap">
             <div class="lnm-section-label" style="display:flex;justify-content:space-between;">
-              <span id="lnmPreviewLabel">文书实时预览 (Live Preview)</span>
-              <span id="lnmPreviewHint" style="font-size:10.5px;color:#64748b;font-weight:normal;">所见即所得 · 自动排版</span>
+              <span id="lnmPreviewLabel">Document Live Preview</span>
+              <span id="lnmPreviewHint" style="font-size:10.5px;color:#64748b;font-weight:normal;">WYSIWYG · Formatted Legal Draft</span>
             </div>
             <div class="lnm-preview-box" id="lnmPreviewBox">
               <div class="lnm-preview-header">
                 <div style="font-size:10px;letter-spacing:0.1em;color:#64748b;margin-bottom:2px;">SOUNDTEST.PRO · CIVILIAN ACOUSTIC EVIDENCE CHAIN</div>
-                <div class="lnm-preview-title" id="lnmDocTitle">民事侵害生活安宁停止妨害催告函与法律告知书</div>
+                <div class="lnm-preview-title" id="lnmDocTitle">Friendly Neighborhood Note: Sound & Rest Hours</div>
                 <div class="lnm-preview-meta">
-                  <span id="lnmMetaRecipient">受函方：楼上邻居您好</span>
-                  <span id="lnmMetaSender">发函方：楼下邻居</span>
-                  <span id="lnmMetaDate">日期：2026-10-08</span>
+                  <span id="lnmMetaRecipient">To: Upstairs Neighbor</span>
+                  <span id="lnmMetaSender">From: Downstairs Neighbor</span>
+                  <span id="lnmMetaDate">Date: 2026-10-08</span>
                 </div>
               </div>
               <div class="lnm-preview-body" id="lnmDocBody"></div>
@@ -990,19 +1018,19 @@
               <!-- Acoustic Telemetry Badge Row -->
               <div class="lnm-telemetry-badge-row">
                 <div class="lnm-tb-item">
-                  <span class="lnm-tb-label" id="lnmLblPeak">实测峰值 Lmax</span>
+                  <span class="lnm-tb-label" id="lnmLblPeak">Recorded Peak Lmax</span>
                   <span class="lnm-tb-val val-red" id="lnmValPeak">-- dB</span>
                 </div>
                 <div class="lnm-tb-item">
-                  <span class="lnm-tb-label" id="lnmLblAvg">等效均值 LAeq</span>
+                  <span class="lnm-tb-label" id="lnmLblAvg">Equivalent LAeq</span>
                   <span class="lnm-tb-val val-blue" id="lnmValAvg">-- dB</span>
                 </div>
                 <div class="lnm-tb-item">
-                  <span class="lnm-tb-label" id="lnmLblTime">监测时段</span>
+                  <span class="lnm-tb-label" id="lnmLblTime">Monitored Window</span>
                   <span class="lnm-tb-val val-cyan" id="lnmValTime" style="font-size:11.5px;">--:-- - --:--</span>
                 </div>
                 <div class="lnm-tb-item">
-                  <span class="lnm-tb-label" id="lnmLblHash">数字存证指纹</span>
+                  <span class="lnm-tb-label" id="lnmLblHash">Audit Fingerprint</span>
                   <span class="lnm-tb-val" id="lnmValHash" style="font-size:10px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">SHA-256...</span>
                 </div>
               </div>
@@ -1011,7 +1039,7 @@
               <div class="lnm-articles-box" id="lnmArticlesBox">
                 <div class="lnm-articles-title" id="lnmArticlesTitle">
                   <span>⚖️</span>
-                  <span id="lnmArticlesHeaderTitle">法定法规依据与法律条文 (Statutory Provisions)</span>
+                  <span id="lnmArticlesHeaderTitle">Statutory Provisions & Legal Standards Cited</span>
                 </div>
                 <div id="lnmArticlesList"></div>
               </div>
@@ -1022,16 +1050,16 @@
         <!-- Footer Actions -->
         <div class="lnm-footer">
           <div class="lnm-footer-left">
-            <button type="button" class="lnm-btn lnm-btn-cancel" id="lnmBtnCancel">关闭</button>
+            <button type="button" class="lnm-btn lnm-btn-cancel" id="lnmBtnCancel">Close</button>
           </div>
           <div class="lnm-footer-right">
             <button type="button" class="lnm-btn lnm-btn-copy" id="lnmBtnCopy">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span id="lnmBtnCopyText">复制文本</span>
+              <span id="lnmBtnCopyText">Copy Text</span>
             </button>
             <button type="button" class="lnm-btn lnm-btn-docx" id="lnmBtnDocx">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              <span id="lnmBtnDocxText">导出 Word (.docx)</span>
+              <span id="lnmBtnDocxText">Export Word (.docx)</span>
               <span id="lnmDocxLockBadge" style="display:none;font-size:9.5px;background:rgba(255,255,255,0.25);padding:1px 5px;border-radius:6px;margin-left:4px;">🔒 PRO</span>
             </button>
           </div>
@@ -1200,20 +1228,26 @@
 
   function renderFullUi() {
     const el = ensureModal();
-    const conf = LEGAL_DATA[currentLang] || LEGAL_DATA.zh;
+    const conf = LEGAL_DATA[currentLang] || LEGAL_DATA.en || LEGAL_DATA.zh;
     const ui = conf.ui || {};
 
     // Titles
     const tTitle = el.querySelector('#lnmTitle');
     const tSub = el.querySelector('#lnmSubtitle');
-    if (tTitle) tTitle.textContent = ui.title || '邻里沟通函与法定催告函生成器';
-    if (tSub) tSub.textContent = ui.subtitle || '基于真实声学存证数据 · 3种沟通语气 · 9国/地区法律条文智能援引';
+    if (tTitle) tTitle.textContent = ui.title || (currentLang === 'zh' ? '邻里沟通函与法定催告函生成器' : 'Neighbor Notice & Statutory Demand Generator');
+    if (tSub) tSub.textContent = ui.subtitle || (currentLang === 'zh' ? '基于真实声学存证数据 · 3种沟通语气 · 9国/地区法律条文智能援引' : 'Backed by Verified Acoustic Telemetry · 3 Tones · 9 Global Legal Jurisdictions');
 
     // Tone labels
     const tLbl = el.querySelector('#lnmToneLabel');
     const tHnt = el.querySelector('#lnmToneHint');
-    if (tLbl) tLbl.textContent = ui.toneLabel || '沟通语气策略';
-    if (tHnt) tHnt.textContent = ui.toneHint || '阶梯式维权：温和提醒 → 理性交涉 → 严正催告';
+    if (tLbl) tLbl.textContent = ui.toneLabel || (currentLang === 'zh' ? '沟通语气策略' : 'Communication Strategy');
+    if (tHnt) tHnt.textContent = ui.toneHint || (currentLang === 'zh' ? '阶梯式维权：温和提醒 → 理性交涉 → 严正催告' : 'Escalation Path: Friendly Reminder → Formal Negotiation → Statutory Demand');
+
+    // Free Badge
+    const badgeFree = el.querySelector('.lnm-free-badge');
+    if (badgeFree) {
+      badgeFree.textContent = ui.badgeFree || (currentLang === 'zh' ? '免费开放' : 'Free');
+    }
 
     // Tone cards text
     const tgT = el.querySelector('#lnmToneGentleTitle');
@@ -1222,11 +1256,11 @@
     const tfD = el.querySelector('#lnmToneFirmDesc');
     const tsT = el.querySelector('#lnmToneStrictTitle');
     const tsD = el.querySelector('#lnmToneStrictDesc');
-    if (tgT) tgT.textContent = ui.toneGentle || '温和友善提醒';
+    if (tgT) tgT.textContent = ui.toneGentle || (currentLang === 'zh' ? '温和友善提醒' : 'Gentle Friendly Reminder');
     if (tgD) tgD.textContent = ui.toneGentleDesc || '';
-    if (tfT) tfT.textContent = ui.toneFirm || '正式理性交涉';
+    if (tfT) tfT.textContent = ui.toneFirm || (currentLang === 'zh' ? '正式理性交涉' : 'Firm Rational Negotiation');
     if (tfD) tfD.textContent = ui.toneFirmDesc || '';
-    if (tsT) tsT.textContent = ui.toneStrict || '严正法务催告';
+    if (tsT) tsT.textContent = ui.toneStrict || (currentLang === 'zh' ? '严正法务催告' : 'Strict Statutory Demand');
     if (tsD) tsD.textContent = ui.toneStrictDesc || '';
 
     // Form labels
@@ -1234,40 +1268,49 @@
     const lSnd = el.querySelector('#lnmLblSender');
     const lJur = el.querySelector('#lnmLblJurisdiction');
     const lScn = el.querySelector('#lnmScenarioLabel');
-    if (lRec) lRec.textContent = ui.lblRecipient || '受函方';
-    if (lSnd) lSnd.textContent = ui.lblSender || '发函方';
-    if (lJur) lJur.textContent = ui.lblJurisdiction || '法律法域与语言';
-    if (lScn) lScn.textContent = ui.scenarioLabel || '常见噪音类型';
+    if (lRec) lRec.textContent = ui.lblRecipient || (currentLang === 'zh' ? '受函方' : 'Recipient / Resident');
+    if (lSnd) lSnd.textContent = ui.lblSender || (currentLang === 'zh' ? '发函方' : 'Sender / Your Name/Unit');
+    if (lJur) lJur.textContent = ui.lblJurisdiction || (currentLang === 'zh' ? '法律法域与语言' : 'Legal Jurisdiction & Language');
+    if (lScn) lScn.textContent = ui.scenarioLabel || (currentLang === 'zh' ? '常见噪音类型' : 'Noise Categories (Select Applicable)');
+
+    // Preview Labels
+    const pLbl = el.querySelector('#lnmPreviewLabel');
+    const pHnt = el.querySelector('#lnmPreviewHint');
+    if (pLbl) pLbl.textContent = ui.previewLabel || (currentLang === 'zh' ? '文书实时预览 (Live Preview)' : 'Document Live Preview');
+    if (pHnt) pHnt.textContent = ui.previewHint || (currentLang === 'zh' ? '所见即所得 · 自动排版' : 'WYSIWYG · Formatted Legal Draft');
+
+    const artHeaderTitle = el.querySelector('#lnmArticlesHeaderTitle');
+    if (artHeaderTitle) artHeaderTitle.textContent = ui.legalHeaderTitle || (currentLang === 'zh' ? '法定法规依据与法律条文 (Statutory Provisions)' : 'Statutory Provisions & Legal Standards Cited');
 
     // Telemetry labels
     const lp = el.querySelector('#lnmLblPeak');
     const la = el.querySelector('#lnmLblAvg');
     const lt = el.querySelector('#lnmLblTime');
     const lh = el.querySelector('#lnmLblHash');
-    if (lp) lp.textContent = ui.lblPeak || '实测峰值 Lmax';
-    if (la) la.textContent = ui.lblAvg || '等效均值 LAeq';
-    if (lt) lt.textContent = ui.lblTime || '监测时段';
-    if (lh) lh.textContent = ui.lblHash || '数字存证指纹';
+    if (lp) lp.textContent = ui.lblPeak || (currentLang === 'zh' ? '实测峰值 Lmax' : 'Recorded Peak Lmax');
+    if (la) la.textContent = ui.lblAvg || (currentLang === 'zh' ? '等效均值 LAeq' : 'Equivalent LAeq');
+    if (lt) lt.textContent = ui.lblTime || (currentLang === 'zh' ? '监测时段' : 'Monitored Window');
+    if (lh) lh.textContent = ui.lblHash || (currentLang === 'zh' ? '数字存证指纹' : 'Audit Fingerprint');
 
     // Button labels
     const bCp = el.querySelector('#lnmBtnCopyText');
     const bDx = el.querySelector('#lnmBtnDocxText');
     const bCn = el.querySelector('#lnmBtnCancel');
-    if (bCp) bCp.textContent = ui.btnCopy || '复制文本';
-    if (bDx) bDx.textContent = ui.btnDocx || '导出 Word (.docx)';
-    if (bCn) bCn.textContent = ui.btnClose || '关闭';
+    if (bCp) bCp.textContent = ui.btnCopy || (currentLang === 'zh' ? '复制文本' : 'Copy Text');
+    if (bDx) bDx.textContent = ui.btnDocx || (currentLang === 'zh' ? '导出 Word (.docx)' : 'Export Word (.docx)');
+    if (bCn) bCn.textContent = ui.btnClose || (currentLang === 'zh' ? '关闭' : 'Close');
 
-    // Populate Jurisdiction select options if empty
+    // Populate Jurisdiction select options localized to currentLang
     const select = el.querySelector('#lnmSelectJurisdiction');
-    if (select && select.options.length === 0) {
+    if (select) {
+      select.innerHTML = '';
       Object.keys(LEGAL_DATA).forEach(function (k) {
         const opt = document.createElement('option');
         opt.value = k;
-        opt.textContent = LEGAL_DATA[k].name || k;
+        opt.textContent = getJurisdictionName(k, currentLang);
         if (k === currentLang) opt.selected = true;
         select.appendChild(opt);
       });
-    } else if (select) {
       select.value = currentLang;
     }
 
@@ -1330,7 +1373,7 @@
 
   function compileDocumentData() {
     const el = ensureModal();
-    const conf = LEGAL_DATA[currentLang] || LEGAL_DATA.zh;
+    const conf = LEGAL_DATA[currentLang] || LEGAL_DATA.en || LEGAL_DATA.zh;
     const toneObj = conf.tones?.[currentTone] || conf.tones?.gentle || {};
     const ui = conf.ui || {};
 
@@ -1344,13 +1387,17 @@
 
     const recipientInput = el.querySelector('#lnmInputRecipient');
     const senderInput = el.querySelector('#lnmInputSender');
-    const recipient = (recipientInput?.value || ui.recipientDefault || '楼上邻居').trim();
-    const sender = (senderInput?.value || ui.senderDefault || '楼下邻居').trim();
+    const defaultRecipient = ui.recipientDefault || (currentLang === 'zh' ? '楼上邻居' : 'Upstairs Neighbor');
+    const defaultSender = ui.senderDefault || (currentLang === 'zh' ? '楼下邻居' : 'Downstairs Neighbor');
+    const recipient = (recipientInput?.value || defaultRecipient).trim();
+    const sender = (senderInput?.value || defaultSender).trim();
 
     // Noise types string
     const scMap = conf.scenarios || {};
     const noiseList = Array.from(selectedScenarios).map(k => scMap[k] || k);
-    const noiseTypes = noiseList.join('、') || '生活撞击声';
+    const sep = (currentLang === 'zh' || currentLang === 'ja') ? '、' : ', ';
+    const fallbackNoise = (currentLang === 'zh') ? '生活撞击声' : 'residential impact noise';
+    const noiseTypes = noiseList.join(sep) || fallbackNoise;
 
     // Replace template variables
     let bodyText = toneObj.body || '';
@@ -1376,20 +1423,20 @@
       evidenceId: evidenceId,
       body: bodyText,
       articles: conf.laws || [],
-      lblRecipient: ui.lblRecipient || '受函方：',
-      lblSender: ui.lblSender || '发函方：',
-      lblDate: ui.date || '日期：',
-      lblPeak: ui.lblPeak || '实测峰值 Lmax',
-      lblAvg: ui.lblAvg || '等效均值 LAeq',
-      lblTime: ui.lblTime || '监测时段',
-      lblHash: ui.lblHash || '数字存证指纹',
-      thMetric: ui.thMetric || '声学监测指标 (Acoustic Metric)',
-      thValue: ui.thValue || '实测读数 (Recorded Value)',
-      telemetryHeader: ui.telemetryHeader || '【现场声学测量数据证据表 / Telemetry Log】',
-      legalHeader: ui.legalHeader || '【法定法规条文与法律依据 / Statutory Provisions Cited】',
-      lblSign: ui.lblSign || '通知方签署 (Signature): ',
-      lblSignDate: ui.lblSignDate || '签署日期 (Date): ',
-      disclaimer: ui.disclaimer || '注：本函及所附声学数据为民事自查事实记录，用于敦促沟通与民事纠纷事实举证。'
+      lblRecipient: ui.lblRecipient || (currentLang === 'zh' ? '受函方：' : 'Recipient: '),
+      lblSender: ui.lblSender || (currentLang === 'zh' ? '发函方：' : 'Sender: '),
+      lblDate: ui.date || (currentLang === 'zh' ? '日期：' : 'Date: '),
+      lblPeak: ui.lblPeak || (currentLang === 'zh' ? '实测峰值 Lmax' : 'Recorded Peak Lmax'),
+      lblAvg: ui.lblAvg || (currentLang === 'zh' ? '等效均值 LAeq' : 'Equivalent LAeq'),
+      lblTime: ui.lblTime || (currentLang === 'zh' ? '监测时段' : 'Monitored Window'),
+      lblHash: ui.lblHash || (currentLang === 'zh' ? '数字存证指纹' : 'Audit Fingerprint'),
+      thMetric: ui.thMetric || (currentLang === 'zh' ? '声学监测指标 (Acoustic Metric)' : 'Acoustic Metric'),
+      thValue: ui.thValue || (currentLang === 'zh' ? '实测读数 (Recorded Value)' : 'Recorded Value'),
+      telemetryHeader: ui.telemetryHeader || (currentLang === 'zh' ? '【现场声学测量数据证据表 / Telemetry Log】' : '【Acoustic Telemetry Log】'),
+      legalHeader: ui.legalHeader || (currentLang === 'zh' ? '【法定法规条文与法律依据 / Statutory Provisions Cited】' : '【Statutory Provisions & Legal Standards Cited】'),
+      lblSign: ui.lblSign || (currentLang === 'zh' ? '通知方签署 (Signature): ' : 'Signature: '),
+      lblSignDate: ui.lblSignDate || (currentLang === 'zh' ? '签署日期 (Date): ' : 'Date: '),
+      disclaimer: ui.disclaimer || (currentLang === 'zh' ? '注：本函及所附声学数据为民事自查事实记录，用于敦促沟通与民事纠纷事实举证。' : 'Note: This notice and acoustic data serve as civil documentation for communication and dispute resolution.')
     };
   }
 
@@ -1421,9 +1468,9 @@
 
     if (tEl) tEl.textContent = doc.title;
     if (bEl) bEl.textContent = doc.body;
-    if (rEl) rEl.textContent = (doc.lblRecipient || '受函方：') + ' ' + doc.recipient;
-    if (sEl) sEl.textContent = (doc.lblSender || '发函方：') + ' ' + doc.sender;
-    if (dEl) dEl.textContent = (doc.lblDate || '日期：') + ' ' + doc.date;
+    if (rEl) rEl.textContent = (doc.lblRecipient || (currentLang === 'zh' ? '受函方：' : 'To: ')) + ' ' + doc.recipient;
+    if (sEl) sEl.textContent = (doc.lblSender || (currentLang === 'zh' ? '发函方：' : 'From: ')) + ' ' + doc.sender;
+    if (dEl) dEl.textContent = (doc.lblDate || (currentLang === 'zh' ? '日期：' : 'Date: ')) + ' ' + doc.date;
 
     if (vpEl) vpEl.textContent = doc.peakDb + ' dB(A)';
     if (vaEl) vaEl.textContent = doc.avgDb + ' dB(A)';
@@ -1490,14 +1537,14 @@
     }
 
     // Set recipient and sender from options if provided
-    const conf = LEGAL_DATA[currentLang] || LEGAL_DATA.zh;
+    const conf = LEGAL_DATA[currentLang] || LEGAL_DATA.en || LEGAL_DATA.zh;
     const inputRec = el.querySelector('#lnmInputRecipient');
     const inputSnd = el.querySelector('#lnmInputSender');
     if (inputRec) {
-      inputRec.value = opts.recipient || currentRecord.recipient || conf.ui?.recipientDefault || '楼上邻居您好';
+      inputRec.value = opts.recipient || currentRecord.recipient || conf.ui?.recipientDefault || (currentLang === 'zh' ? '楼上邻居您好' : 'Upstairs Neighbor');
     }
     if (inputSnd) {
-      inputSnd.value = opts.sender || currentRecord.sender || conf.ui?.senderDefault || '楼下邻居';
+      inputSnd.value = opts.sender || currentRecord.sender || conf.ui?.senderDefault || (currentLang === 'zh' ? '楼下邻居' : 'Downstairs Neighbor');
     }
 
     // Sync active tone card

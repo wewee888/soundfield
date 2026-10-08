@@ -545,7 +545,7 @@
               </div>
               <div class="pro-cert-cal-row">
                 <span style="color:#8c95a4;">麦克风前置增益 (Preamp Gain):</span>
-                <span style="color:#fff;font-weight:600;" id="certMicGain">+18.0 dB</span>
+                <span style="color:#fff;font-weight:600;" id="certMicGain">+2.0 dB</span>
               </div>
               <div class="pro-cert-cal-row" style="border-top:1px solid #181b21;padding-top:3px;">
                 <span style="color:#c2c8d2;font-weight:600;">基准估计综合误差:</span>
@@ -610,28 +610,28 @@
     <div class="rpm-comparison">
       <div class="rpm-comp-row">
         <span class="rpm-comp-bad">✕</span>
-        <span id="rpmCompBadText"><strong>当前预览版 (带全页水印)：</strong>仅供个人参考初筛，极易被物业或房东以“证据可被私自调大音量篡改”为由推诿不予采信。</span>
+        <span id="rpmCompBadText"><strong>Current Preview (Watermarked):</strong> For personal reference only; easily contested by landlords or property managers as unverified.</span>
       </div>
       <div class="rpm-comp-row">
         <span class="rpm-comp-good">✓</span>
-        <span id="rpmCompGoodText"><strong>正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一防伪指纹</strong>与 <strong>GPS 经纬度锚点</strong>，彻底杜绝对方以造假为由推诿。</span>
+        <span id="rpmCompGoodText"><strong>Official Evidence (Clean):</strong> Removes all watermarks, generates certified legal acoustic certificate, sealed with <strong>unique SHA-256 fingerprint</strong> and <strong>GPS coordinates</strong>.</span>
       </div>
     </div>
 
     <div class="rpm-actions">
       <button class="rpm-btn-pro" id="rpmUpgradeBtn" type="button">
-        <span id="rpmUpgradeBtnText">★ 微信特惠 ¥19.9 / 年 (原价 ¥59.9 · 立省 67% · 最推荐) · 365天无限次无水印 + 长期纠纷档案 + 夜间哨兵</span>
+        <span id="rpmUpgradeBtnText">★ Unlock Pro Yearly Access · Unlimited Watermark-Free Reports + Dispute Dossiers + Sentry Mode</span>
       </button>
       <button class="rpm-btn-single" id="rpmUnlockSingleBtn" type="button" style="display:none">
-        <span id="rpmUnlockSingleBtnText">⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去除全页水印 + 加盖防伪存证ID</span>
+        <span id="rpmUnlockSingleBtnText">⚡ Unlock Single Report · Remove Watermark + Add Audit Fingerprint</span>
       </button>
       <button class="rpm-btn-escalate" id="rpmNoticeBtn" type="button" onclick="openLegalNoticeModal()">
-        <span id="rpmNoticeBtnText">⚖️ 邻里善意告知书 · 9国法定催告函 (Word/PDF)</span>
+        <span id="rpmNoticeBtnText">⚖️ Neighbor Notice & Statutory Demand (Word/PDF)</span>
       </button>
       <div style="display:flex;gap:8px;width:100%;flex-wrap:wrap;">
-        <button class="rpm-btn-preview" id="rpmDownloadFreeBtn" type="button" style="flex:1;min-width:105px;">下载报告 (PDF)</button>
-        <button class="rpm-btn-preview" id="rpmDownloadImageBtn" type="button" style="flex:1;min-width:105px;background:rgba(255,255,255,0.06);border-color:#374151;">下载底稿 (PNG)</button>
-        <button class="rpm-btn-preview" id="rpmDownloadCsvBtn" type="button" style="flex:1;min-width:105px;background:rgba(42,255,212,0.08);border-color:rgba(42,255,212,0.3);color:#2AFFD4;">下载数据 (CSV)</button>
+        <button class="rpm-btn-preview" id="rpmDownloadFreeBtn" type="button" style="flex:1;min-width:105px;">Download Report (PDF)</button>
+        <button class="rpm-btn-preview" id="rpmDownloadImageBtn" type="button" style="flex:1;min-width:105px;background:rgba(255,255,255,0.06);border-color:#374151;">Download Certificate (PNG)</button>
+        <button class="rpm-btn-preview" id="rpmDownloadCsvBtn" type="button" style="flex:1;min-width:105px;background:rgba(42,255,212,0.08);border-color:rgba(42,255,212,0.3);color:#2AFFD4;">Download CSV</button>
       </div>
     </div>
   </div>
@@ -942,11 +942,11 @@
       <div class="settings-drawer-row">
         <div>
           <div class="settings-drawer-label">麦克风增益</div>
-          <div class="settings-drawer-desc">过高会削波，正常保持 18dB</div>
+          <div class="settings-drawer-desc">过高会削波，正常保持 2dB</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
-          <input type="range" id="micR" min="0" max="24" value="18" step="1" oninput="setMicGain()" style="width:80px">
-          <span class="settings-drawer-value" id="micV">18dB</span>
+          <input type="range" id="micR" min="0" max="24" value="2" step="1" oninput="setMicGain()" style="width:80px">
+          <span class="settings-drawer-value" id="micV">2dB</span>
         </div>
       </div>
       <div class="settings-drawer-row">
@@ -1056,8 +1056,8 @@
           <div class="settings-drawer-label">波形平滑</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
-          <input type="range" id="smR" min="1" max="9" value="3" step="1" oninput="setSm()" style="width:80px">
-          <span class="settings-drawer-value" id="smV">3</span>
+          <input type="range" id="smR" min="1" max="9" value="1" step="1" oninput="setSm()" style="width:80px">
+          <span class="settings-drawer-value" id="smV">1</span>
         </div>
       </div>
     </div>
@@ -2073,7 +2073,7 @@
           </div>
           <div class="srow">
             <div><div class="slabel">麦克风增益</div><div class="sdesc">高级功能。仅在了解设备输入链路时调整；过高会削波或放大噪声。</div></div>
-            <div class="sctrl"><input type="range" id="micR" min="0" max="24" value="18" step="1" oninput="setMicGain()"><span class="sval" id="micV">18 dB</span></div>
+            <div class="sctrl"><input type="range" id="micR" min="0" max="24" value="2" step="1" oninput="setMicGain()"><span class="sval" id="micV">2 dB</span></div>
           </div>
           <div class="srow">
             <div><div class="slabel">校准偏移</div><div class="sdesc">高级功能。根据专业设备对比修正；调整值会写入证据照片和报告。</div></div>
@@ -2164,7 +2164,7 @@
       </div>
       <div class="srow">
         <div><div class="slabel">波形平滑</div><div class="sdesc">值越高波形越平滑</div></div>
-        <div class="sctrl"><input type="range" id="smR" min="1" max="9" value="3" step="1" oninput="setSm()"><span class="sval" id="smV">3</span></div>
+        <div class="sctrl"><input type="range" id="smR" min="1" max="9" value="1" step="1" oninput="setSm()"><span class="sval" id="smV">1</span></div>
       </div>
     </div>
     <div class="card layout-settings-about" data-settings-section="privacy">
@@ -2543,7 +2543,7 @@ let evidenceMode='audio';
 let watermarkCameraOpen=false,watermarkCameraMode='video';
 let locWatchId=null,locRefineTmr=null;
 let calibrationPresetKey=DEFAULT_CALIBRATION_PRESET;
-let calOffset=DEFAULT_CAL_OFFSET_DB,micGainDb=18,alertTh=DEFAULT_ALERT_THRESHOLD_DB,alertsOn=true,smoothing=3,curViz='w';
+let calOffset=DEFAULT_CAL_OFFSET_DB,micGainDb=2,alertTh=DEFAULT_ALERT_THRESHOLD_DB,alertsOn=true,smoothing=1,curViz='w';
 let silentTickCount=0,hasAttemptedAudioFallback=false;
 let autoRecOnThreshold=false,autoRecMinSeconds=3,autoRecAfterStopSeconds=10,autoRecAboveSince=0,autoRecTimeout=null,autoRecCooldownUntil=0;
 let sustainedAlertOn=false,sustainedAlertMinSeconds=30,sustainedAlertAboveSince=0,sustainedAlertFired=false;
@@ -2726,7 +2726,7 @@ const reportTemplates={
 };
 const LANG_KEY='sf_language';
 const SITE_LANG_KEY='soundtest_locale';
-let appLanguage='zh-CN';
+let appLanguage='en-US';
 let displayDb=null;
 let dbAnimRaf=null;
 const SUPPORTED_APP_LANGUAGES=window.__sfSupportedAppLanguages||[
@@ -2825,12 +2825,7 @@ function detectInitialLanguage(){
   const savedLanguage = normalizeAppLanguage(saved);
   if (savedLanguage) return savedLanguage;
 
-  // 6. Browser languages
-  const languages = navigator.languages?.length ? navigator.languages : [navigator.language || navigator.userLanguage || ''];
-  for (const lang of languages) {
-    const match = normalizeAppLanguage(lang);
-    if (match) return match;
-  }
+  // 6. Default strictly to English
   return 'en-US';
 }
 function setText(id,text){const el=document.getElementById(id);if(!el)return;const lbl=el.querySelector?.('.dock-btn-label');if(lbl){lbl.textContent=text;return;}el.textContent=text;}
@@ -3253,6 +3248,7 @@ function applyTranslations(){
   setText('vtLabelSpec',t('ui.spectrum',appLanguage!=='zh-CN'?'Spectrum':'频谱'));
   setText('vtLabelOct',t('ui.octave',appLanguage!=='zh-CN'?'1/3 Octave':'1/3倍频'));
   setText('vtLabelTrend',t('ui.trend',appLanguage!=='zh-CN'?'Trend':'趋势'));
+  if(typeof applyPermModalLanguage==='function') applyPermModalLanguage();
 }
 function updateReportTemplateOptions(){
   const select=document.getElementById('reportTemplate');if(!select)return;
@@ -5408,7 +5404,7 @@ function loadState(){
     const raw=localStorage.getItem(LS_KEY);if(!raw)return;
     const s=JSON.parse(raw);
     calibrationPresetKey=CALIBRATION_PRESETS[s.calibrationPresetKey]?s.calibrationPresetKey:detectCalibrationPresetKey();
-    calOffset=s.calOffset??getCalibrationPreset(calibrationPresetKey).offset;micGainDb=s.micGainDb??18;alertTh=s.alertTh??DEFAULT_ALERT_THRESHOLD_DB;alertsOn=s.alertsOn!==false;smoothing=s.smoothing??3;curViz=['w','f','o','t'].includes(s.curViz)?s.curViz:'w';
+    calOffset=s.calOffset??getCalibrationPreset(calibrationPresetKey).offset;micGainDb=(s.micGainDb===18||s.micGainDb==null)?2:s.micGainDb;alertTh=s.alertTh??DEFAULT_ALERT_THRESHOLD_DB;alertsOn=s.alertsOn!==false;smoothing=(s.smoothing===3||s.smoothing==null)?1:s.smoothing;curViz=['w','f','o','t'].includes(s.curViz)?s.curViz:'w';
     autoRecOnThreshold=s.autoRecOnThreshold??false;autoRecMinSeconds=s.autoRecMinSeconds??3;autoRecAfterStopSeconds=s.autoRecAfterStopSeconds??10;
     sustainedAlertOn=s.sustainedAlertOn??false;sustainedAlertMinSeconds=s.sustainedAlertMinSeconds??30;
     autoDayNightMode=s.autoDayNightMode??false;dayThresholdDb=s.dayThresholdDb??55;nightThresholdDb=s.nightThresholdDb??45;
@@ -6010,18 +6006,31 @@ function drawWave(){
     ctx.fillStyle='rgba(214,232,250,0.15)';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.font='12px sans-serif';ctx.fillText(appLanguage!=='zh-CN'?'Start monitoring to display waveform':'开始监测后显示波形',W/2,H/2);ctx.restore();return;
   }
-  const col=dbCol(curDb);const step=Math.max(1,Math.floor((floatTBuf?floatTBuf.length:wBuf.length)/W));
+  const col=dbCol(curDb);
+  const bufLen=floatTBuf?floatTBuf.length:wBuf.length;
+  // Dynamic visual gain ensures lively, rich dynamic range oscillations at 2dB default mic gain
+  const visualGain=3.2;
+  const sampleAt=i=>{
+    const start=Math.floor(i*bufLen/W);
+    const end=Math.min(bufLen,Math.max(start+1,Math.floor((i+1)*bufLen/W)));
+    let maxDev=0,peak=0;
+    for(let k=start;k<end;k++){
+      const v=floatTBuf?floatTBuf[k]:((wBuf[k]-128)/128);
+      const absV=Math.abs(v);
+      if(absV>maxDev){maxDev=absV;peak=v;}
+    }
+    return peak;
+  };
+  const amp=(H*.45)*visualGain;
   const grd=ctx.createLinearGradient(0,0,0,H);
-  grd.addColorStop(0,col+'55');grd.addColorStop(.5,col+'18');grd.addColorStop(1,col+'00');
-  const sampleAt=i=>floatTBuf?floatTBuf[i*step]||0:((wBuf[i*step]||128)-128)/128;
-  const amp=H*.42;
+  grd.addColorStop(0,col+'44');grd.addColorStop(.5,col+'14');grd.addColorStop(1,col+'00');
   ctx.beginPath();
   for(let i=0;i<W;i++){const s=sampleAt(i);ctx.lineTo(i,clampVizY(H/2-s*amp,H));}
   ctx.lineTo(W,H/2);ctx.lineTo(0,H/2);ctx.fillStyle=grd;ctx.fill();
   ctx.beginPath();
   for(let i=0;i<W;i++){const s=sampleAt(i);const y=clampVizY(H/2-s*amp,H);i===0?ctx.moveTo(i,y):ctx.lineTo(i,y);}
-  ctx.shadowBlur=10+Math.min(10,curDb/8);ctx.shadowColor=col;ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();
-  ctx.shadowBlur=0;ctx.globalAlpha=.55;ctx.lineWidth=1.1;ctx.stroke();ctx.globalAlpha=1;ctx.restore();
+  ctx.shadowBlur=4;ctx.shadowColor=col;ctx.strokeStyle=col;ctx.lineWidth=1.4;ctx.stroke();
+  ctx.shadowBlur=0;ctx.globalAlpha=.45;ctx.lineWidth=1.0;ctx.stroke();ctx.globalAlpha=1;ctx.restore();
 }
 
 /* ── FFT ── */
@@ -6032,7 +6041,7 @@ function drawFFT(){
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#111E30';ctx.fillRect(0,0,W,H);
   if(!fBuf||!isMon||!audioCtx){
     ctx.fillStyle='rgba(214,232,250,0.15)';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.font='12px sans-serif';ctx.fillText('开始监测后显示频谱',W/2,H/2);ctx.restore();return;
+    ctx.font='12px sans-serif';ctx.fillText(appLanguage!=='zh-CN'?'Start monitoring to display spectrum':'开始监测后显示频谱',W/2,H/2);ctx.restore();return;
   }
   const sr=audioCtx.sampleRate,bars=Math.max(24,Math.floor(W/5)),bW=Math.max(2,W/bars-1);
   const fMin=60,fMax=16000,logMin=Math.log10(fMin),logMax=Math.log10(fMax);
@@ -6064,7 +6073,7 @@ function drawThirdOctave(){
   ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.shadowBlur=0;
   if(!fftAn||!audioCtx||!isMon){
     ctx.fillStyle='rgba(214,232,250,0.15)';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.font='12px sans-serif';ctx.fillText('开始监测后显示 1/3 倍频程',W/2,H/2);ctx.textAlign='left';ctx.restore();return;
+    ctx.font='12px sans-serif';ctx.fillText(appLanguage!=='zh-CN'?'Start monitoring to display 1/3 octave bands':'开始监测后显示 1/3 倍频程',W/2,H/2);ctx.textAlign='left';ctx.restore();return;
   }
   if(!floatFBuf)floatFBuf=new Float32Array(fftAn.frequencyBinCount);
   fftAn.getFloatFrequencyData(floatFBuf);
@@ -6087,7 +6096,7 @@ function drawThirdOctave(){
   }
   if(!bands.length){
     ctx.fillStyle='rgba(214,232,250,0.18)';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.font='12px sans-serif';ctx.fillText('频谱信号过弱，请靠近噪声源或提高麦克风输入',W/2,H/2);ctx.textAlign='left';ctx.restore();return;
+    ctx.font='12px sans-serif';ctx.fillText(appLanguage!=='zh-CN'?'Signal too weak, move closer to source or increase mic gain':'频谱信号过弱，请靠近噪声源或提高麦克风输入',W/2,H/2);ctx.textAlign='left';ctx.restore();return;
   }
   [63,250,1000,4000,12000].forEach(freq=>{
     const x=Math.round((Math.log10(freq)-Math.log10(31.5))/(Math.log10(16000)-Math.log10(31.5))*W);
@@ -6130,7 +6139,7 @@ function drawTrend(){
   ctx.beginPath();ctx.moveTo(0,thY);ctx.lineTo(W,thY);ctx.stroke();ctx.setLineDash([]);
   if(!isMon||trendH.length<2){
     ctx.fillStyle='rgba(214,232,250,0.15)';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.font='12px sans-serif';ctx.fillText('开始监测后显示趋势',W/2,H/2);ctx.restore();return;
+    ctx.font='12px sans-serif';ctx.fillText(appLanguage!=='zh-CN'?'Start monitoring to display trend':'开始监测后显示趋势',W/2,H/2);ctx.restore();return;
   }
   const col=dbCol(curDb);
   const grd=ctx.createLinearGradient(0,0,0,H);grd.addColorStop(0,col+'44');grd.addColorStop(1,col+'00');
@@ -7525,7 +7534,7 @@ function openLegalNoticeFromUi(recId = null) {
     }
   }
 
-  let noticeLang = 'zh';
+  let noticeLang = 'en';
   if (appLanguage) {
     const l = appLanguage.toLowerCase();
     if (l.startsWith('zh')) noticeLang = 'zh';
@@ -7563,6 +7572,10 @@ function openLegalNoticeForRecord(recId) {
 
 window.openLegalNoticeFromUi = openLegalNoticeFromUi;
 window.openLegalNoticeForRecord = openLegalNoticeForRecord;
+window.openLegalNoticeModal = function(rec) {
+  if (rec && rec.id) openLegalNoticeFromUi(rec.id);
+  else openLegalNoticeFromUi();
+};
 
 function shareRecord(id){
   const r=DB.records.find(x=>x.id===id);if(!r)return;
