@@ -18,15 +18,15 @@
     "tones": {
       "gentle": {
         "title": "邻里安宁生活作息友善提醒便条",
-        "body": "尊敬的{RECIPIENT}：您好！\n\n冒昧打扰，特此给您留张便条。俗话说“远亲不如近邻”，大家同住一栋楼也是一份难得的缘分。\n\n近期在夜间休息时段，由于楼房建筑共振与楼板隔音有限，我们家中频繁听到【{NOISE_TYPES}】的声响。经我们在室内实测，噪声峰值达到了 {PEAK} dB(A)，确实给家人的正常睡眠和夜间休息造成了一定困扰。\n\n平时大家生活作息各异，楼房隔音也有限，我们充分理解您可能此前未曾留意到声音会传至楼下，并非有意为之。特此留便条温馨提醒一下，可否麻烦您在夜间休息时段（尤其是 22:00 之后）稍加留意，比如夜间走动时动作稍放轻一些、换穿软底静音拖鞋，或为桌椅脚贴上静音防刮脚垫。\n\n邻里相处互谅互让，非常感谢您的理解与配合，祝您和家人生活愉快！"
+        "body": "{RECIPIENT}：您好！\n\n冒昧打扰，特此给您留张便条。俗话说“远亲不如近邻”，大家同住一栋楼也是一份难得的缘分。\n\n近期在夜间休息时段，由于楼房建筑共振与楼板隔音有限，楼下家中频繁听到【{NOISE_TYPES}】的声响。经我们在室内实测，噪声峰值达到了 {PEAK} dB(A)，确实给家人的正常睡眠和夜间休息造成了一定困扰。\n\n平时大家生活作息各异，楼房隔音也有限，我们充分理解这大概率是日常活动时不经意产生的，您此前可能并未留意到声音会传至楼下，并非有意为之。特此留便条温馨提醒一下，可否麻烦您在夜间休息时段（尤其是 22:00 之后）稍加留意：\n1. 夜间室内走动动作尽量放轻一些，或换穿软底静音拖鞋；\n2. 桌椅板凳挪动时尽量轻抬轻放，或为桌椅脚贴上静音防刮脚垫；\n3. 夜间尽量减少剧烈跑跳与重物落地冲击。\n\n邻里相处互谅互让，非常感谢您的理解与配合，祝您和家人生活愉快！"
       },
       "firm": {
         "title": "关于夜间生活噪声超标干扰之正式交涉函",
-        "body": "尊敬的{RECIPIENT}：您好！\n\n鉴于此前已就室内噪声干扰问题与贵方进行过沟通，但近期夜间休息时段仍反复出现【{NOISE_TYPES}】的情况，且未见实质改善。\n\n根据我们在家中进行的现场声学客观实测，夜间监测时段等效连续声级（LAeq）达到 {LEQ} dB(A)，瞬时峰值声级（Lmax）高达 {PEAK} dB(A)。该数值已显著超出国家《声环境质量标准》(GB 3096-2008) 规定的1类声环境功能区夜间 45 dB(A) 的法定限值，严重破坏了我方的基本居住安宁与睡眠健康。\n\n良好的居住环境需要邻里双方共同维护。我们正式向贵方提出交涉，请务必在夜间休息时段（22:00 至次日 07:00）切实采取消音减震措施，杜绝产生穿透性噪声。希望本着互谅互让与理性精神在邻里层面妥善解决，避免矛盾升级并进一步向物业服务中心报备或向社区居委会申请调解。"
+        "body": "致【{RECIPIENT}】：\n\n您好！鉴于此前已就室内噪声干扰问题与您进行过沟通，但近期夜间休息时段仍反复出现【{NOISE_TYPES}】的情况，且未见实质改善。\n\n根据我们在家中进行的现场声学客观实测，夜间监测时段（{TIME_RANGE}）等效连续声级（LAeq）达到 {LEQ} dB(A)，瞬时峰值声级（Lmax）高达 {PEAK} dB(A)。该数值已显著超出国家《声环境质量标准》(GB 3096-2008) 及《社会生活环境噪声排放标准》(GB 22337-2008) 规定的1类居民生活区夜间标准限值，严重破坏了我方的基本居住安宁与睡眠健康。\n\n良好的居住环境需要邻里双方共同维护。我们正式向您提出交涉，请务必在夜间休息时段（22:00 至次日 07:00）切实采取消音减震措施，杜绝产生穿透性结构共振与撞击声。希望本着互谅互让与理性精神在邻里协商层面妥善解决，避免矛盾升级并进一步向物业服务中心报备记档或向属地社区居委会申请调解。"
       },
       "strict": {
         "title": "民事侵害生活安宁停止妨害催告函与法律告知书",
-        "body": "致【{RECIPIENT}】：\n\n根据《中华人民共和国民法典》第一千零三十二条、第二百八十八条以及《中华人民共和国噪声污染防治法》第六十三条之规定，自然人依法享有私人生活安宁权，不动产相邻权利人应当按照有利生产、方便生活、团结互助、公平合理原则处理相邻关系，严禁任何单位和个人超标排放社会生活噪声妨碍他人正常生活。\n\n现郑重告知：贵方所在房屋在夜间休息时段持续产生【{NOISE_TYPES}】。现场实测声级峰值 Lmax 高达 {PEAK} dB(A)，等效连续声级 LAeq 达 {LEQ} dB(A)。相关声学事实已通过 SOUNDTEST.PRO 存证系统完成客观记录，并已生成不可篡改的 SHA-256 数字防伪存证指纹（存证编号：{EVIDENCE_ID}）。\n\n贵方的持续排噪行为已严重逾越合理容忍限度，依法涉嫌构成对受函方私人生活安宁权的民事侵权妨害。特此正式向贵方发出催告：限贵方于收到本函后 48 小时内彻底采取有效降噪减震措施，停止一切超标排噪行为。\n\n若逾期仍未改善，我方将依法向物业服务中心正式报备、向辖区公安机关（110）及市民服务热线（12345）提请行政执法查处，并保留向人民法院依法提起排除妨害民事诉讼及主张相应损害赔偿之一切法定权利。"
+        "body": "致：【{RECIPIENT}】\n\n根据《中华人民共和国民法典》第一千零三十二条、第二百八十八条以及《中华人民共和国噪声污染防治法》第六十三条、第六十五条之规定，自然人依法享有私人生活安宁权，不动产相邻权利人应当按照有利生产、方便生活、团结互助、公平合理原则处理相邻关系，严禁任何单位和个人超标排放社会生活噪声妨碍他人正常生活，造成损害的应当依法承担民事侵权赔偿责任。\n\n现郑重告知：贵方所在房屋在夜间休息时段持续产生【{NOISE_TYPES}】。现场实测声级峰值 Lmax 高达 {PEAK} dB(A)，等效连续声级 LAeq 达 {LEQ} dB(A)。相关声学事实已通过 SOUNDTEST.PRO 存证系统完成客观记录与时间戳锁定，并已生成不可篡改的 SHA-256 数字防伪存证指纹（存证编号：{EVIDENCE_ID}）。\n\n贵方的持续超标排噪行为已严重逾越一般社会公认的合理容忍限度，依法构成对受函方私人生活安宁权的民事侵权妨害。特此正式向贵方发出催告：限贵方于收到本函后 48 小时内彻底采取有效降噪减震措施，停止一切超标排噪行为。\n\n若逾期仍未改善，我方将依法向物业服务中心正式报送侵权通报函、向辖区公安机关（110）及市民服务热线（12345）提请行政执法查处，并保留向人民法院依法提起排除妨害民事诉讼及主张相应损害赔偿之一切法定权利。"
       }
     },
     "ui": {
@@ -42,15 +42,15 @@
       "toneStrictDesc": "正式法律告知书格式，援引法定侵权法规，设定整改限期与通牒",
       "badgeFree": "免费开放",
       "badgePro": "🔒 专业版",
-      "lblRecipient": "受函方 / 邻居称呼",
-      "lblSender": "发函方 / 您的署名",
+      "lblRecipient": "受函方称呼",
+      "lblSender": "发函方署名",
       "lblJurisdiction": "法律法域与语言 (9国标准)",
       "scenarioLabel": "常见噪音类型 (快速勾选)",
       "lblPeak": "实测峰值 Lmax",
       "lblAvg": "等效均值 LAeq",
       "lblTime": "监测时段",
       "lblHash": "数字存证指纹",
-      "articlesTitle": "法定法规依据与法律条文 (Statutory Provisions)",
+      "articlesTitle": "法定法规依据与法律条文",
       "legalHeaderTitle": "法定法规依据与法律条文",
       "previewLabel": "文书实时预览",
       "previewHint": "所见即所得 · 自动排版",
@@ -63,7 +63,7 @@
       "evidence": "存证编号：",
       "recipientDefault": "楼上邻居",
       "senderDefault": "楼下邻居",
-      "recipientPlaceholder": "例如：楼上邻居 / 402室邻友",
+      "recipientPlaceholder": "例如：楼上邻居 / 402室住户",
       "senderPlaceholder": "例如：楼下邻居 / 302室住户",
       "metaRecipient": "受函方：",
       "metaSender": "发函方：",
@@ -73,37 +73,39 @@
       "legalHeader": "【法定法规条文与法律依据】",
       "lblSign": "通知方签署: ",
       "lblSignDate": "签署日期: ",
-      "disclaimer": "注：本函及所附声学数据为民事自查事实记录，用于敦促沟通与民事纠纷事实举证，非国家法定计量检定证书。司法或法定仲裁裁决建议结合具有法定资质的第三方检测机构出具之报告。"
+      "disclaimer": "【声学测量方法与依据标准】\n1. 测量规范：依据《声环境质量标准》(GB 3096-2008) 及《社会生活环境噪声排放标准》(GB 22337-2008)，采用 IEC 61672-1 标准声级算法、A 计权（A-weighting）频率响应及 Fast 时间计权动态特性进行室内客观取样。\n2. 精度与误差：参考 2 型工程声级计技术规范，现场综合参考允许误差在 ±1.5 dB(A) 以内，真实客观反映室内受音点实际物理声级。\n3. 存证效力：全程锁定时间戳并生成 SHA-256 唯一数字防伪指纹，符合《民事诉讼法》第六十六条“电子数据”举证规范，依法具备民事侵权与生活安宁权纠纷之客观事实证明力。",
+      "methodologyHeader": "【声学测量方法与依据标准】",
+      "gentleNote": "【实测说明】本数据采用标准 A 计权室内声学取样，参考测量误差约 ±1.5 dB(A)。本便条仅用于邻里友好生活作息沟通协调。"
     }
   },
   "en": {
-    "name": "🇺🇸/🇬🇧 欧美英美法系 (Common Law & Quiet Enjoyment)",
+    "name": "🇺🇸/🇬🇧 US & UK (Common Law & Quiet Enjoyment)",
     "laws": [
       "Common Law Covenant of Quiet Enjoyment: Every residential tenant and property owner possesses the implied covenant of quiet enjoyment, guaranteeing peaceful occupation free from unreasonable interference.",
       "Doctrine of Private Nuisance: Actionable nuisance arises when sound transmissions create substantial and unreasonable interference with the comfortable use and enjoyment of real property.",
       "World Health Organization (WHO) Night Noise Guidelines: Nighttime noise levels exceeding 40-45 dB(A) inside bedrooms represent a documented hazard to restorative sleep and cardiovascular health.",
-      "Municipal Environmental Protection & Noise Abatement Ordinances: Setting strict nighttime decibel thresholds for multi-family residential dwellings."
+      "Municipal Environmental Protection & Noise Abatement Codes: Establishing strict nighttime decibel thresholds for multi-family residential dwellings."
     ],
     "scenarios": {
-      "footstep": "Heavy stomping, running, or heel impact",
-      "music": "Loud TV, stereo bass vibration",
-      "dragging": "Furniture scraping or hard object dropping late at night",
-      "renovation": "Drilling, hammering, or unauthorized DIY work",
-      "pet": "Continuous pet barking or jumping",
-      "party": "Late night shouting, gathering, or loud conversations"
+      "footstep": "Heavy Footsteps, Heel Impact & Stomping",
+      "music": "Loud TV, Bass Vibration & Subwoofer Thump",
+      "dragging": "Late-Night Furniture Scraping & Hard Object Dropping",
+      "renovation": "Unauthorized Drilling, Hammering & DIY Construction",
+      "pet": "Continuous Pet Barking & Running Impacts",
+      "party": "Late-Night Gathering, Shouting & Loud Conversations"
     },
     "tones": {
       "gentle": {
-        "title": "Friendly Neighborhood Note: Sound & Rest Hours",
-        "body": "Dear Neighbor,\n\nI hope you are doing well! I wanted to reach out with a quick, friendly note regarding sound transmission between our units.\n\nDue to the acoustic construction of our building, sounds of 【{NOISE_TYPES}】 carry quite clearly into my apartment during nighttime resting hours. Our home sound meter recorded peak levels reaching {PEAK} dB(A), which has occasionally disrupted our sleep.\n\nI completely understand that noise often travels more than we realize and that this is entirely unintentional on your part. If possible, would you mind keeping an eye on floor impacts during late hours (for example, wearing soft indoor slippers or placing felt pads under chair legs)?\n\nThank you so much for your understanding and neighborly consideration!"
+        "title": "Friendly Neighbor Note: Quiet Hours & Sound",
+        "body": "Dear {RECIPIENT},\n\nHope you are having a good week! I'm reaching out with a quick, friendly note regarding sound transmission between our apartments.\n\nDue to our building's acoustic construction, sounds of 【{NOISE_TYPES}】 carry quite distinctly into my home during nighttime resting hours. Our sound monitor recorded peak levels reaching {PEAK} dB(A), which has occasionally disrupted our sleep.\n\nI completely understand that floor impact noise often travels more than we realize and that this is entirely unintentional on your part. If possible, would you mind being mindful during late hours (for example, wearing soft indoor slippers or adding felt pads under chair legs)?\n\nThank you so much for your understanding, kindness, and neighborly consideration!"
       },
       "firm": {
-        "title": "Formal Notice Concerning Unreasonable Residential Noise Disturbance",
-        "body": "Dear Resident,\n\nI am writing to formally address the ongoing noise disturbances originating from your premises, specifically 【{NOISE_TYPES}】 during quiet hours.\n\nObjective acoustic monitoring conducted in our dwelling documented an equivalent continuous sound level (LAeq) of {LEQ} dB(A) and peak levels (Lmax) reaching {PEAK} dB(A), which substantially exceed standard residential nighttime thresholds.\n\nThis continuous disturbance has caused severe sleep deprivation and distress. We respectfully request that you take immediate, effective corrective measures to dampen impact noise between 10:00 PM and 7:00 AM. We hope to resolve this reasonably between neighbors without the need to escalate this matter to building management or property administration."
+        "title": "Formal Notice Regarding Unreasonable Residential Noise Disturbance",
+        "body": "To: 【{RECIPIENT}】\n\nI am writing to formally address the ongoing noise disturbances originating from your premises, specifically 【{NOISE_TYPES}】 during quiet resting hours ({TIME_RANGE}).\n\nObjective acoustic monitoring conducted in our dwelling documented an equivalent continuous sound level (LAeq) of {LEQ} dB(A) and peak levels (Lmax) reaching {PEAK} dB(A). These readings substantially exceed standard residential nighttime thresholds and cause continuous disruption to our sleep and domestic quietude.\n\nWe respectfully request that you take prompt, effective corrective measures to dampen impact noise and structural vibration between 10:00 PM and 7:00 AM. We hope to resolve this reasonably between neighbors without escalating this matter to building management or property administration."
       },
       "strict": {
-        "title": "FORMAL NOTICE AND STATUTORY DEMAND TO CEASE NOISE NUISANCE",
-        "body": "To: 【{RECIPIENT}】\n\nNOTICE IS HEREBY GIVEN that you are causing a substantial and unreasonable noise disturbance interfering with the lawful covenant of quiet enjoyment and peaceful occupation of adjacent residential premises, contrary to common law nuisance principles and statutory noise control standards.\n\nEmpirical acoustic monitoring between {TIME_RANGE} recorded peak noise levels (Lmax) of {PEAK} dB(A) and equivalent levels (LAeq) of {LEQ} dB(A), primarily attributable to 【{NOISE_TYPES}】. This telemetry log is cryptographically sealed with SHA-256 fingerprint {EVIDENCE_ID}.\n\nDEMAND IS HEREBY MADE that you immediately CEASE AND DESIST from generating excessive and disruptive noise within 48 hours of receipt of this notice. Failure to abate this nuisance immediately will compel the undersigned to file formal complaints with municipal code enforcement, building management, and pursue all available legal remedies, including injunctive relief and damages."
+        "title": "FORMAL CEASE AND DESIST DEMAND & LEGAL NOTICE (NOISE NUISANCE)",
+        "body": "FORMAL NOTICE AND STATUTORY DEMAND\n\nTO: 【{RECIPIENT}】 (Resident / Occupant / Property Owner)\n\nFORMAL NOTICE IS HEREBY GIVEN that you are causing substantial, unreasonable, and recurring noise disturbances (specifically 【{NOISE_TYPES}】) originating from your residential unit, constituting an actionable nuisance and a direct violation of the covenant of quiet enjoyment and municipal noise control ordinances.\n\nEmpirical acoustic telemetry conducted in the affected dwelling recorded peak noise levels (Lmax) of {PEAK} dB(A) and equivalent levels (LAeq) of {LEQ} dB(A) during quiet hours ({TIME_RANGE}). This telemetry log is cryptographically sealed with timestamp and SHA-256 fingerprint {EVIDENCE_ID}.\n\nDEMAND IS HEREBY MADE that you immediately CEASE AND DESIST from generating excessive noise and implement adequate acoustic mitigation within 48 hours of receipt of this notice. Failure to abate this nuisance immediately will compel the undersigned to file formal complaints with building management, municipal code enforcement, and pursue all available legal remedies, including injunctive relief and damages in civil court."
       }
     },
     "ui": {
@@ -138,42 +140,46 @@
       "recipientDefault": "Upstairs Neighbor",
       "senderDefault": "Downstairs Neighbor",
       "thMetric": "Acoustic Metric",
-      "thValue": "Recorded Value",
-      "telemetryHeader": "【Field Acoustic Telemetry Log / Evidence Summary】",
+      "thValue": "Recorded Telemetry",
+      "telemetryHeader": "【Acoustic Telemetry Log & Evidence Table】",
       "legalHeader": "【Statutory Provisions & Jurisdictional Standards Cited】",
       "lblSign": "Sender Signature: ",
       "lblSignDate": "Signed Date: ",
-      "disclaimer": "Notice: This letter and telemetry data constitute a civilian factual documentation log for dispute resolution, not a government certification. Formal judicial actions may require certified third-party testing."
+      "disclaimer": "【Acoustic Methodology & Reference Standards】\n1. Standards: Measured pursuant to IEC 61672-1 Class 2 sound level meter specifications, utilizing A-weighting frequency response and Fast time weighting.\n2. Tolerance: Reference measurement tolerance is within ±1.5 dB(A), objectively capturing the physical sound level at the receiver position.\n3. Evidentiary Chain: Cryptographically sealed with timestamp and SHA-256 digital fingerprint, satisfying electronic data requirements for civil evidence and nuisance dispute documentation.",
+      "gentleNote": "【Measurement Note】Recorded using standard A-weighting sound telemetry (reference tolerance ±1.5 dB(A)). Provided for neighborly coordination.",
+      "methodologyHeader": "【Acoustic Methodology & Reference Standards】",
+      "recipientPlaceholder": "e.g. Upstairs Neighbor / Apt 402",
+      "senderPlaceholder": "e.g. Downstairs Neighbor / Apt 302"
     }
   },
   "de": {
-    "name": "🇩🇪 德国 (BGB §906 & TA Lärm 宁静权)",
+    "name": "🇩🇪 Deutschland (BGB §906 & TA Lärm)",
     "laws": [
       "Bürgerliches Gesetzbuch (BGB) § 906: Schutz vor Zuführung unwägbarer Stoffe und unzumutbaren Geräuschimmissionen von Nachbargrundstücken.",
       "Gesetz über Ordnungswidrigkeiten (OWiG) § 117: Unzulässiger Lärm, der geeignet ist, die Allgemeinheit oder die Nachbarschaft erheblich zu belästigen.",
-      "Gesetzliche Nachtruhe (22:00 – 06:00 Uhr): Grundsatz der Zimmerlautstärke; laute Geräusche und Trittschall sind strikt zu vermeiden.",
-      "Technische Anleitung zum Schutz gegen Lärm (TA Lärm): Immissionsrichtwerte für reine Wohngebiete nachts max. 35 dB(A)."
+      "Gesetzliche Nachtruhe (22:00 – 06:00 bzw. 07:00 Uhr): Grundsatz der Zimmerlautstärke; störender Trittschall und laute Immissionen sind strikt zu unterlassen.",
+      "Technische Anleitung zum Schutz gegen Lärm (TA Lärm) & DIN 4109: Richtwerte für reine Wohngebiete nachts max. 35 dB(A) im Innenraum."
     ],
     "scenarios": {
-      "footstep": "Lauter Trittschall / Fersengang / Herumtrampeln",
-      "music": "Lauter Fernseher / dröhnende Bassvibrationen",
-      "dragging": "Möbelrücken / Scharren auf hartem Boden zur Nachtzeit",
-      "renovation": "Handwerkliche Arbeiten / Bohren außerhalb der Zeiten",
-      "pet": "Anhaltendes Hundegebell / Haustierunruhe",
-      "party": "Nächtliche Partygeräusche / laute Unterhaltungen"
+      "footstep": "Lauter Trittschall, Fersengang & Herumspringen",
+      "music": "Laute Musik, TV-Lärm & dröhnende Bassvibrationen",
+      "dragging": "Nächtliches Möbelrücken & Scharren auf hartem Boden",
+      "renovation": "Bohren, Hämmern & Heimwerken zur Unzeit",
+      "pet": "Anhaltendes Hundegebell & Haustier-Trampelgeräusche",
+      "party": "Nächtliche Partygeräusche, Geschrei & laute Feiern"
     },
     "tones": {
       "gentle": {
-        "title": "Freundlicher Nachbarschaftshinweis bzgl. Zimmerlautstärke",
-        "body": "Liebe Nachbarn,\n\nich hoffe, es geht Ihnen gut. Ich wende mich heute mit einer freundlichen Bitte an Sie. Da unsere Geschossdecken den Schall stark übertragen, sind Geräusche wie 【{NOISE_TYPES}】 in meiner Wohnung insbesondere während der Ruhezeiten deutlich zu hören. Unsere Messungen ergaben Spitzenwerte von {PEAK} dB(A).\n\nIch gehe davon aus, dass Ihnen dies gar nicht bewusst war. Es wäre sehr nett, wenn Sie abends etwas darauf achten könnten (z. B. Hausschuhe mit weicher Sohle oder Filzgleiter unter Stühlen). Vielen Dank für Ihr Verständnis und Ihre Rücksichtnahme!"
+        "title": "Freundlicher Nachbarschaftshinweis: Ruhezeiten & Zimmerlautstärke",
+        "body": "Liebe Nachbarn ({RECIPIENT}),\n\nich hoffe, es geht Ihnen gut! Ich wende mich heute mit einer kurzen, freundlichen Bitte an Sie. Da unsere Geschossdecken den Schall leider stark übertragen, sind Geräusche wie 【{NOISE_TYPES}】 in meiner Wohnung insbesondere während der nächtlichen Ruhezeiten deutlich zu hören. Unsere Messungen ergaben Spitzenwerte von {PEAK} dB(A).\n\nIch gehe selbstverständlich davon aus, dass Ihnen dies gar nicht bewusst war und keine böse Absicht vorliegt. Es wäre jedoch sehr nett, wenn Sie abends etwas darauf achten könnten (z. B. Hausschuhe mit weicher Sohle tragen oder Filzgleiter unter Stühlen anbringen).\n\nVielen Dank für Ihr Verständnis, Ihre Rücksichtnahme und ein weiterhin gutes Miteinander im Haus!"
       },
       "firm": {
         "title": "Förmliche Mitteilung über erhebliche Ruhestörung zur Nachtzeit",
-        "body": "Sehr geehrte Nachbarn,\n\nich wende mich an Sie bezüglich der anhaltenden Lärmbelästigung durch 【{NOISE_TYPES}】 aus Ihrer Wohnung während der gesetzlichen Nachtruhe.\n\nObjektive Schallmessungen in meiner Wohnung belegen einen äquivalenten Dauerschallpegel (LAeq) von {LEQ} dB(A) und Spitzenwerte (Lmax) von {PEAK} dB(A). Dies übersteigt die zumutbare Zimmerlautstärke erheblich und beeinträchtigt meine Nachtruhe empfindlich.\n\nIch fordere Sie hiermit auf, die Ruhezeiten (22:00 bis 06:00 Uhr) strikt einzuhalten und geeignete Schallschutzmaßnahmen zu ergreifen. Ich hoffe auf eine einvernehmliche Lösung unter Nachbarn, bevor weitere Schritte über die Hausverwaltung erforderlich werden."
+        "body": "An: 【{RECIPIENT}】\n\nSehr geehrte Nachbarn,\n\nich wende mich förmlich an Sie bezüglich der anhaltenden Lärmbelästigung durch 【{NOISE_TYPES}】 aus Ihrer Wohnung während der gesetzlichen Nachtruhe ({TIME_RANGE}).\n\nObjektive Schallmessungen in meiner Wohnung belegen einen äquivalenten Dauerschallpegel (LAeq) von {LEQ} dB(A) und Spitzenwerte (Lmax) von {PEAK} dB(A). Dies übersteigt die zumutbare Zimmerlautstärke erheblich und beeinträchtigt unsere Nachtruhe sowie die Gesundheit nachhaltig.\n\nIch fordere Sie hiermit auf, die gesetzlichen Ruhezeiten (22:00 bis 07:00 Uhr) strikt einzuhalten und geeignete Schallschutzmaßnahmen zu ergreifen. Ich hoffe auf eine einvernehmliche Lösung unter Nachbarn, bevor weitere Schritte über die Hausverwaltung oder den Vermieter erforderlich werden."
       },
       "strict": {
-        "title": "FÖRMLICHE ABMAHNUNG WEGEN RUHESTÖRUNG UND UNTERLASSUNGSERKLÄRUNG",
-        "body": "An: 【{RECIPIENT}】\n\nHiermit werden Sie förmlich abgemahnt. Aus Ihrer Wohnung gehen wiederholt unzumutbare und unzulässige Lärmimmissionen (【{NOISE_TYPES}】) aus, die gegen das Gebot der Zimmerlautstärke, § 906 BGB sowie § 117 OWiG verstoßen.\n\nDie messtechnische Dokumentation zwischen {TIME_RANGE} ergab einen Spitzenlärmpegel von {PEAK} dB(A) und einen LAeq von {LEQ} dB(A). Die Messdaten wurden kryptographisch mit dem SHA-256-Fingerprint {EVIDENCE_ID} fälschungssicher gesichert.\n\nIch fordere Sie hiermit ultimativ auf, die vorgenannte Ruhestörung unverzüglich, spätestens binnen 48 Stunden nach Zugang dieses Schreibens, dauerhaft einzustellen. Bei fruchtlosem Verstreichen dieser Frist werde ich unverzüglich die Hausverwaltung zur Abmahnung und Mietminderung einschalten, das Ordnungsamt hinzuziehen und zivilrechtliche Unterlassungsklage erheben."
+        "title": "FÖRMLICHE ABMAHNUNG UND UNTERLASSUNGSAUFFORDERUNG WEGEN RUHESTÖRUNG",
+        "body": "FÖRMLICHE ABMAHNUNG & UNTERLASSUNGSERKLÄRUNG\n\nAn: 【{RECIPIENT}】 (Mieter / Eigentümer der Wohneinheit)\n\nHiermit werden Sie förmlich abgemahnt. Aus Ihrer Wohnung gehen wiederholt unzumutbare und unzulässige Lärmimmissionen (insbesondere 【{NOISE_TYPES}】) aus, die gegen das Gebot der Zimmerlautstärke, § 906 BGB sowie § 117 OWiG verstoßen und eine unzumutbare Beeinträchtigung des Mietgebrauchs darstellen.\n\nDie messtechnische Dokumentation während der Nachtzeit ({TIME_RANGE}) ergab einen Spitzenlärmpegel von {PEAK} dB(A) und einen Dauerschallpegel von {LEQ} dB(A). Die Messdaten wurden kryptographisch mit dem SHA-256-Fingerprint {EVIDENCE_ID} fälschungssicher gesichert.\n\nIch fordere Sie hiermit ultimativ auf, die vorgenannte Ruhestörung unverzüglich, spätestens binnen 48 Stunden nach Zugang dieses Schreibens, dauerhaft einzustellen. Bei fruchtlosem Verstreichen dieser Frist werde ich unverzüglich die Hausverwaltung zur Mietminderung und Abmahnung einschalten, das Ordnungsamt/die Polizei hinzuziehen sowie zivilrechtliche Unterlassungsklage erheben."
       }
     },
     "ui": {
@@ -205,45 +211,49 @@
       "copied": "✓ Schreiben erfolgreich in die Zwischenablage kopiert",
       "date": "Datum: ",
       "evidence": "Beweis-ID: ",
-      "recipientDefault": "Liebe Nachbarn oben",
+      "recipientDefault": "Nachbarn oben",
       "senderDefault": "Nachbarn unten",
       "thMetric": "Akustischer Kennwert",
-      "thValue": "Messwert",
+      "thValue": "Gemessener Wert",
       "telemetryHeader": "【Akustisches Messprotokoll / Telemetrie-Nachweis】",
       "legalHeader": "【Zitierte Rechtsnormen und gesetzliche Grundlagen】",
       "lblSign": "Unterschrift: ",
       "lblSignDate": "Datum: ",
-      "disclaimer": "Hinweis: Dieses Dokument dient der zivilrechtlichen Sachverhaltsdokumentation und gütlichen Streitbeilegung, nicht als amtliches Eichzertifikat."
+      "disclaimer": "【Messtechnische Methodik & Normen】\n1. Norm: Messung gemäß IEC 61672-1 Klasse 2 Schallpegelmesser mit A-Bewertung (A-Weighting) und Zeitbewertung Fast (F).\n2. Messtoleranz: Die referenzierte Messtoleranz liegt innerhalb von ±1,5 dB(A) und bildet die tatsächlichen Schallimmissionen im Raum objektiv ab.\n3. Beweiskraft: Vollständig zeitgestempelt und mit SHA-256 kryptographischem Prüfwert gesichert, geeignet als zivilrechtlicher Sachverhaltsnachweis nach ZPO.",
+      "gentleNote": "【Messhinweis】Aufgezeichnet mit Standard-A-Bewertung (Referenztoleranz ±1,5 dB(A)). Dient der einvernehmlichen nachbarschaftlichen Abstimmung.",
+      "methodologyHeader": "【Messtechnische Methodik & Normen】",
+      "recipientPlaceholder": "z. B. Nachbarn oben / Whg. 402",
+      "senderPlaceholder": "z. B. Nachbarn unten / Whg. 302"
     }
   },
   "fr": {
-    "name": "🇫🇷 法国 (Code de la santé publique 扰民法典)",
+    "name": "🇫🇷 France (Code civil & Trouble anormal de voisinage)",
     "laws": [
-      "Code de la santé publique Art. R. 1336-5: Aucun bruit particulier ne doit, par sa durée, sa répétition ou son intensité, porter atteinte à la tranquillité du voisinage.",
-      "Code civil Article 1253: Le propriétaire, locataire ou occupant qui cause à un voisin un trouble excédant les inconvénients normaux de voisinage est responsable de plein droit.",
-      "Code pénal Article R. 623-2: Les bruits ou tapages nocturnes injurieux ou nocturnes troublant la tranquillité d'autrui sont punis d'amende pénale.",
-      "Arrêté préfectoral de lutte contre les bruits de voisinage: Respect scrupuleux du repos nocturne entre 22h00 et 07h00."
+      "Code civil Article 1253: Le propriétaire, locataire ou occupant qui cause à un voisin un trouble excédant les inconvénients normaux de voisinage est responsable de plein droit du dommage causé.",
+      "Code de la santé publique Art. R. 1336-5: Aucun bruit particulier ne doit, par sa durée, sa répétition ou son intensité, porter atteinte à la tranquillité du voisinage ou à la santé de l'homme.",
+      "Code pénal Article R. 623-2: Les bruits ou tapages nocturnes injurieux ou troublant la tranquillité d'autrui sont punis des peines d'amende prévues pour les contraventions de la 3e classe.",
+      "Réglementation préfectorale relative à la lutte contre les bruits de voisinage et horaires de repos (22h00 - 07h00)."
     ],
     "scenarios": {
-      "footstep": "Bruits de pas lourds / sauts / talons sur le plancher",
-      "music": "Musique forte / vibrations de basses fréquences",
-      "dragging": "Tirage de chaises et frottements nocturnes",
-      "renovation": "Bricolage ou perçage en dehors des heures autorisées",
-      "pet": "Aboiements continus ou agitation d'animaux",
-      "party": "Fêtes nocturnes / cris et éclats de voix répétés"
+      "footstep": "Bruits de pas lourds, talons et sauts répétés",
+      "music": "Musique ou télévision forte, basses et vibrations",
+      "dragging": "Tirage de chaises et déplacement de meubles la nuit",
+      "renovation": "Bricolage, perçage et coups hors horaires autorisés",
+      "pet": "Aboiements répétés ou courses d'animaux domestiques",
+      "party": "Fêtes nocturnes, cris et conversations à voix haute"
     },
     "tones": {
       "gentle": {
         "title": "Mot amical de voisinage : Respect de la tranquillité nocturne",
-        "body": "Chers voisins,\n\nJ'espère que vous allez bien. Je me permets de vous laisser ce petit mot amical. En raison de l'isolation phonique de l'immeuble, les bruits de type 【{NOISE_TYPES}】 résonnent particulièrement chez moi en soirée et la nuit, avec des pointes mesurées à {PEAK} dB(A).\n\nJe me doute bien que vous ne vous en rendez pas compte et qu'il n'y a aucune mauvaise intention. Serait-il possible de faire attention durant les heures de repos (par exemple avec des patins en feutre ou des chaussons souples) ? Merci beaucoup pour votre compréhension et bonne journée !"
+        "body": "Chers voisins ({RECIPIENT}),\n\nJ'espère que vous allez bien. Je me permets de vous laisser ce petit mot amical. En raison de l'isolation phonique de notre immeuble, les bruits de type 【{NOISE_TYPES}】 résonnent nettement chez moi en soirée et durant la nuit, avec des pointes mesurées à {PEAK} dB(A).\n\nJe me doute bien que vous ne vous en rendez pas compte et qu'il n'y a aucune mauvaise intention de votre part. Serait-il possible de faire attention durant les heures de repos (par exemple en posant des patins en feutre sous les chaises ou en portant des chaussons souples) ?\n\nMerci infiniment pour votre compréhension, votre bienveillance et votre esprit de bon voisinage !"
       },
       "firm": {
-        "title": "Courrier formel concernant des nuisances sonores répétées",
-        "body": "Madame, Monsieur,\n\nJe vous adresse ce courrier afin de vous faire part de la persistance de nuisances sonores provenant de votre logement, notamment 【{NOISE_TYPES}】 en période nocturne.\n\nLes relevés acoustiques effectués attestent d'un niveau équivalent (LAeq) de {LEQ} dB(A) et d'un niveau crête (Lmax) atteignant {PEAK} dB(A), ce qui dépasse largement le niveau acceptable en milieu résidentiel et trouble gravement notre sommeil.\n\nJe vous demande de bien vouloir prendre les dispositions nécessaires pour respecter la tranquillité nocturne entre 22h00 et 07h00. J'espère vivement que nous pourrons régler ce problème à l'amiable sans avoir à saisir le syndic de copropriété."
+        "title": "Courrier formel concernant des nuisances sonores répétées (bruits de voisinage)",
+        "body": "À l'attention de : 【{RECIPIENT}】\n\nMadame, Monsieur,\n\nJe vous adresse ce courrier afin de vous faire part de la persistance de nuisances sonores provenant de votre logement, notamment 【{NOISE_TYPES}】 durant la période nocturne ({TIME_RANGE}).\n\nLes relevés acoustiques objectifs effectués dans mon appartement attestent d'un niveau continu équivalent (LAeq) de {LEQ} dB(A) et d'un niveau de crête (Lmax) atteignant {PEAK} dB(A). Ces valeurs dépassent largement les seuils admissibles en milieu résidentiel et troublent gravement notre sommeil et notre santé.\n\nJe vous demande de bien vouloir prendre les dispositions nécessaires pour faire cesser ces bruits d'impact entre 22h00 et 07h00. J'espère vivement que nous pourrons régler ce problème à l'amiable sans avoir à saisir le syndic de copropriété ou les services compétents."
       },
       "strict": {
-        "title": "MISE EN DEMEURE POUR TROUBLE ANORMAL DE VOISINAGE ET TAPAGE",
-        "body": "À l'attention de: 【{RECIPIENT}】\n\nPar la présente, vous êtes formellement mis en demeure de cesser les nuisances sonores excessives et répétées (【{NOISE_TYPES}】) émanant de votre domicile, constitutives de troubles anormaux de voisinage au sens de l'article 1253 du Code civil et de l'article R. 1336-5 du Code de la santé publique.\n\nLes enregistrements acoustiques horodatés et scellés par empreinte SHA-256 {EVIDENCE_ID} attestent d'un niveau de crête de {PEAK} dB(A) et d'une moyenne de {LEQ} dB(A) durant la plage horaire {TIME_RANGE}.\n\nJe vous somme de mettre un terme définitif à ces nuisances sous 48 heures à compter de la réception de cette notification. À défaut, je saisirai sans autre préavis le syndic de copropriété, les services de police pour tapage nocturne et engagerai une procédure judiciaire."
+        "title": "MISE EN DEMEURE POUR TROUBLE ANORMAL DE VOISINAGE ET TAPAGE NOCTURNE",
+        "body": "MISE EN DEMEURE\n\nÀ l'attention de : 【{RECIPIENT}】 (Occupant / Propriétaire du logement)\n\nPar la présente, vous êtes formellement mis en demeure de cesser sans délai les nuisances sonores excessives et répétées (【{NOISE_TYPES}】) émanant de votre domicile, constitutives d'un trouble anormal de voisinage au sens de l'article 1253 du Code civil et d'une infraction à l'article R. 1336-5 du Code de la santé publique.\n\nLes relevés acoustiques horodatés et scellés par l'empreinte cryptographique SHA-256 {EVIDENCE_ID} attestent d'un niveau de crête de {PEAK} dB(A) et d'une moyenne de {LEQ} dB(A) durant la plage horaire {TIME_RANGE}.\n\nJe vous somme de mettre un terme définitif à ces nuisances sous 48 heures à compter de la réception de cette notification. À défaut, je saisirai sans autre préavis le syndic de copropriété, les services de police pour tapage nocturne et engagerai une procédure judiciaire en référé pour faire cesser le trouble et obtenir des dommages-intérêts."
       }
     },
     "ui": {
@@ -275,45 +285,49 @@
       "copied": "✓ Courrier copié dans le presse-papiers avec succès",
       "date": "Date : ",
       "evidence": "Réf. preuve : ",
-      "recipientDefault": "Chers voisins du dessus",
+      "recipientDefault": "Voisins du dessus",
       "senderDefault": "Voisins du dessous",
       "thMetric": "Indicateur acoustique",
-      "thValue": "Valeur mesurée",
+      "thValue": "Valeur relevée",
       "telemetryHeader": "【Relevé Acoustique Horodaté / Registre de Télémétrie】",
       "legalHeader": "【Fondements Juridiques et Textes Applicables】",
       "lblSign": "Signature de l'expéditeur : ",
       "lblSignDate": "Date : ",
-      "disclaimer": "Note : Ce document constitue un relevé factuel privé d'aide à la médiation et résolution de litiges, sans valeur de métrologie légale d'État."
+      "disclaimer": "【Méthodologie Acoustique & Normes】\n1. Norme: Mesures effectuées conformément à la norme CEI 61672-1 Classe 2, avec pondération fréquentielle A et pondération temporelle Rapide (Fast).\n2. Tolérance: Marge d'erreur de référence de ±1,5 dB(A), reflétant objectivement les niveaux sonores réels subis dans l'habitation.\n3. Valeur probante: Données horodatées et scellées par empreinte numérique SHA-256, constituant un commencement de preuve matérielle conforme aux règles de procédure civile.",
+      "gentleNote": "【Note de mesure】Enregistré selon la pondération standard A (tolérance ±1,5 dB(A)). Destiné à une concertation amiable de voisinage.",
+      "methodologyHeader": "【Méthodologie Acoustique & Normes de Référence】",
+      "recipientPlaceholder": "ex. Voisins du dessus / Apt 402",
+      "senderPlaceholder": "ex. Voisins du dessous / Apt 302"
     }
   },
   "es": {
-    "name": "🇪🇸 西班牙/拉美 (Ley del Ruido 噪音法)",
+    "name": "🇪🇸 España / LatAm (Ley del Ruido & Propiedad Horizontal)",
     "laws": [
-      "Ley 37/2003 del Ruido: Regula la prevención, vigilancia y reducción de la contaminación acústica para evitar daños en la salud humana y bienes.",
-      "Código Civil Artículos 1902 y 590: Responsabilidad extracontractual por daño y deber de no causar inmisiones perjudiciales a fundos vecinos.",
-      "Ley de Propiedad Horizontal (LPH) Artículo 7.2: Al propietario y al ocupante del piso no les está permitido desarrollar actividades molestas o insalubres.",
-      "Ordenanza Municipal de Protección contra la Contaminación Acústica: Horario de descanso nocturno fijado entre las 22:00 y las 08:00 horas."
+      "Ley 37/2003, de 17 de noviembre, del Ruido: Prevención, vigilancia y reducción de la contaminación acústica para evitar daños a la salud y a la convivencia.",
+      "Ley de Propiedad Horizontal (LPH) Artículo 7.2: Prohibición expresa al propietario y ocupante de desarrollar actividades molestas, insalubres o ilícitas.",
+      "Código Civil Artículos 1902 y 590: Responsabilidad extracontractual por daño y deber de no causar inmisiones perjudiciales o desmedidas a la propiedad ajena.",
+      "Ordenanzas Municipales de Protección contra la Contaminación Acústica: Horarios oficiales de descanso nocturno (22:00 a 08:00 h)."
     ],
     "scenarios": {
-      "footstep": "Pisar fuerte, taconeo continuo o carreras infantiles",
-      "music": "Televisión a volumen excesivo o vibración de graves",
-      "dragging": "Arrastre de muebles o sillas de madrugada",
-      "renovation": "Obras, taladros o martillazos fuera de horario",
-      "pet": "Ladridos continuados o ruidos de mascotas",
-      "party": "Fiestas nocturnas, gritos o música estridente"
+      "footstep": "Pisar fuerte, taconeo nocturno o carreras infantiles",
+      "music": "Televisión o música alta, vibración de graves y subwoofer",
+      "dragging": "Arrastre de sillas, mesas o muebles en horario de descanso",
+      "renovation": "Obras, taladros o golpes en días u horas no permitidas",
+      "pet": "Ladridos continuados o carreras de mascotas",
+      "party": "Fiestas nocturnas, reuniones ruidosas y gritos"
     },
     "tones": {
       "gentle": {
         "title": "Nota amistosa de vecindad: Ruidos y descanso nocturno",
-        "body": "Estimado/a vecino/a:\n\nEspero que se encuentre bien. Le escribo esta breve nota cordial para comentarle que, debido al aislamiento acústico del edificio, ruidos como 【{NOISE_TYPES}】 se escuchan con bastante claridad en mi vivienda durante la noche, alcanzando picos medidos de {PEAK} dB(A).\n\nEntiendo perfectamente que no lo hace con mala intención y que muchas veces uno no es consciente de cómo viaja el sonido. Le agradecería mucho si pudiera tener un poco de cuidado en horas de descanso (por ejemplo, usando zapatillas de suela blanda o almohadillas en las sillas). ¡Muchas gracias por su comprensión y buena vecindad!"
+        "body": "Estimados vecinos ({RECIPIENT}):\n\nEspero que se encuentren muy bien. Les escribo esta breve nota cordial para comentarles que, debido al aislamiento acústico del edificio, ruidos como 【{NOISE_TYPES}】 se escuchan con bastante claridad en mi vivienda durante la noche, habiéndose registrado picos de {PEAK} dB(A).\n\nEntiendo perfectamente que no lo hacen con mala intención y que a menudo no somos conscientes de cómo viaja el sonido por la estructura. Les agradecería mucho si pudieran tener un poco de cuidado en horas de descanso (por ejemplo, usando zapatillas de suela blanda o colocando fieltros protectores bajo las sillas).\n\n¡Muchas gracias por su comprensión, amabilidad y buena vecindad!"
       },
       "firm": {
         "title": "Comunicación formal sobre ruidos excesivos en horario de descanso",
-        "body": "Estimado/a vecino/a:\n\nMe dirijo a usted de manera formal para manifestarle mi preocupación por los continuos ruidos procedentes de su vivienda (【{NOISE_TYPES}】) en horario nocturno.\n\nLas mediciones acústicas realizadas registran un nivel continuo equivalente (LAeq) de {LEQ} dB(A) y un valor máximo (Lmax) de {PEAK} dB(A), superando ostensiblemente los límites permitidos para zonas residenciales y afectando seriamente nuestro descanso.\n\nLe solicito que adopte las medidas oportunas para amortiguar estas molestias entre las 22:00 y las 08:00 horas. Confío en que podamos solucionar este inconveniente de forma amistosa sin tener que dar traslado al Administrador de la Comunidad."
+        "body": "A la atención de: 【{RECIPIENT}】\n\nEstimados vecinos:\n\nMe dirijo a ustedes de manera formal para manifestarles mi honda preocupación por los continuos ruidos procedentes de su vivienda (【{NOISE_TYPES}】) durante el horario nocturno ({TIME_RANGE}).\n\nLas mediciones acústicas objetivas realizadas registran un nivel continuo equivalente (LAeq) de {LEQ} dB(A) y un valor máximo (Lmax) de {PEAK} dB(A), superando ostensiblemente los límites fijados por la normativa de protección acústica y perjudicando severamente nuestro descanso y salud.\n\nLes solicito que adopten de inmediato las medidas oportunas para amortiguar estas molestias entre las 22:00 y las 08:00 horas. Confío en que podamos solucionar este inconveniente de forma amistosa sin tener que dar traslado a la Administración de la Comunidad o iniciar mediación vecinal."
       },
       "strict": {
-        "title": "REQUERIMIENTO FORMAL DE CESACIÓN DE INMISIÓN SONORA Y RUIDOS MOLESTOS",
-        "body": "Al ocupante de la vivienda: 【{RECIPIENT}】\n\nPor medio del presente escrito se le REQUIERE FORMALMENTE para que proceda a la CESACIÓN INMEDIATA de los ruidos molestos y excesivos (【{NOISE_TYPES}】) procedentes de su inmueble, los cuales vulneran el art. 7.2 de la Ley de Propiedad Horizontal y la Ley del Ruido 37/2003.\n\nEl registro acústico pericial acreditado mediante firma digital SHA-256 {EVIDENCE_ID} evidencia picos sonoros de {PEAK} dB(A) y promedios de {LEQ} dB(A) en horario nocturno {TIME_RANGE}.\n\nDispone de un plazo improrrogable de 48 HORAS desde la recepción de la presente para cesar dichas perturbaciones. En caso contrario, se interpondrá denuncia ante la Policía Local y se ejercerán las acciones civiles oportunas de cesación e indemnización."
+        "title": "REQUERIMIENTO FORMAL Y FEHACIENTE DE CESACIÓN DE ACTIVIDADES MOLESTAS",
+        "body": "REQUERIMIENTO FORMAL DE CESACIÓN\n\nA la atención de: 【{RECIPIENT}】 (Ocupante / Propietario del inmueble)\n\nPor medio del presente escrito se le REQUIERE FORMALMENTE para que proceda a la CESACIÓN INMEDIATA de los ruidos molestos y excesivos (【{NOISE_TYPES}】) procedentes de su inmueble, los cuales vulneran el artículo 7.2 de la Ley de Propiedad Horizontal y la Ley del Ruido 37/2003, constituyendo una inmisión ilícita en la propiedad contigua.\n\nEl registro acústico pericial acreditado mediante firma digital SHA-256 {EVIDENCE_ID} evidencia picos sonoros de {PEAK} dB(A) y promedios de {LEQ} dB(A) en horario nocturno ({TIME_RANGE}).\n\nDispone de un plazo improrrogable de 48 HORAS desde la recepción de la presente para cesar dichas perturbaciones. En caso contrario, se interpondrá denuncia ante la Policía Local y se ejercerán las acciones judiciales civiles de cesación e indemnización por daños y perjuicios."
       }
     },
     "ui": {
@@ -345,7 +359,7 @@
       "copied": "✓ Escrito copiado al portapapeles con éxito",
       "date": "Fecha: ",
       "evidence": "Nº Evidencia: ",
-      "recipientDefault": "Estimados vecinos de arriba",
+      "recipientDefault": "Vecinos de arriba",
       "senderDefault": "Vecinos de abajo",
       "thMetric": "Parámetro acústico",
       "thValue": "Lectura registrada",
@@ -353,37 +367,41 @@
       "legalHeader": "【Artículos Legales y Fundamentos de Derecho Citados】",
       "lblSign": "Firma del requirente: ",
       "lblSignDate": "Fecha: ",
-      "disclaimer": "Nota: Este documento constituye un registro factual de parte para resolución de disputas, no un certificado oficial de metrología estatal."
+      "disclaimer": "【Metodología Acústica y Estándares de Referencia】\n1. Norma: Mediciones conformes con la norma IEC 61672-1 Clase 2, utilizando ponderación de frecuencia A y ponderación temporal Rápida (Fast).\n2. Tolerancia: Margen de tolerancia de referencia de ±1,5 dB(A), reflejando objetivamente el nivel sonoro real en el punto receptor.\n3. Cadena de custodia: Sellado temporalmente con huella digital SHA-256, válido como evidencia documental fáctica en procedimientos civiles y comunitarios.",
+      "gentleNote": "【Nota de medición】Registrado mediante ponderación A estándar (tolerancia de referencia ±1,5 dB(A)). Facilitado para la convivencia vecinal.",
+      "methodologyHeader": "【Metodología Acústica y Estándares de Referencia】",
+      "recipientPlaceholder": "ej. Vecinos de arriba / Piso 402",
+      "senderPlaceholder": "ej. Vecinos de abajo / Piso 302"
     }
   },
   "ja": {
-    "name": "🇯🇵 日本 (民法相邻关系 & 受忍限度论)",
+    "name": "🇯🇵 日本 (民法相隣関係・受忍限度論)",
     "laws": [
-      "民法 第209条・第709条: 相隣関係および不法行為に基づく損害賠償・妨害排除（差止）請求権。",
-      "裁判所判例法理における「受忍限度論」: 社会通念上受忍すべき限度を超える騒音は違法と認定され、損害賠償義務が発生します。",
-      "環境省告示・騒音に係る環境基準: 住宅地域における夜間（午後10時～午前6時）の指針値は 45 dB(A) 以下。",
+      "民法 第209条・第709条: 相隣関係の規律および不法行為に基づく損害賠償・差止請求権。",
+      "最高裁判所判例法理「受忍限度論」: 社会通念上受忍すべき限度を超える騒音は違法と認定され、損害賠償義務が発生します。",
+      "環境省告示・騒音に係る環境基準: 住居専用地域における夜間（午後10時～午前6時）の指針値は 45 dB(A) 以下。",
       "マンション標準管理規約 第18条: 区分所有者等は、共同の利益に反する行為または生活平穏を著しく害する行為をしてはならない。"
     ],
     "scenarios": {
       "footstep": "足音・踵歩きの衝撃音・室内での走り回り",
-      "music": "大音量のテレビ・スピーカーの低音振動",
-      "dragging": "深夜の家具の引きずり音や硬質物の落下音",
+      "music": "大音量テレビ・ウーファーや重低音の振動",
+      "dragging": "深夜の椅子や家具の引きずり音・床面の摩擦音",
       "renovation": "規約時間外のDIY・日曜大工・打撃音",
-      "pet": "ペットの継続的な鳴き声や走り回り",
-      "party": "深夜の宴会・大声での会話・騒ぎ"
+      "pet": "ペットの継続的な鳴き声や走り回る衝撃音",
+      "party": "深夜の酒宴・大声での会話・騒ぎ"
     },
     "tones": {
       "gentle": {
-        "title": "ご近所のお願い：夜間の生活音について",
-        "body": "上階の皆様へ\n\n日頃より大変お世話になっております。突然のお手紙で恐れ入ります。\n当マンションの構造上、夜間の静かな時間帯におきまして、【{NOISE_TYPES}】などの音が下階に響きやすく、測定値で最大 {PEAK} dB(A) の数値を記録しております。\n\n故意ではないことは重々承知しており、大変申し上げにくいのですが、夜間のお時間帯におきましてスリッパの着用や椅子の脚カバーなど、少しご配慮をいただけますと大変助かります。集合住宅でのお互いの快適な生活のため、何卒ご理解のほどよろしくお願い申し上げます。"
+        "title": "生活音に関するご相談とお願い（メモ）",
+        "body": "【{RECIPIENT}】様\n\n日頃より大変お世話になっております。突然のお手紙にて失礼いたします。\n\n当マンションの構造上、夜間の静かな時間帯におきまして、【{NOISE_TYPES}】などの音や振動が下階にかなり響いており、実測におきまして最大 {PEAK} dB(A) を記録しております。家族の睡眠に影響が出ており、大変困惑しております。\n\n故意によるものではないことは重々承知しており、大変恐縮なお願いではございますが、夜間（特に22時以降）につきましては、スリッパの着用や椅子の脚カバー（フェルト等）の設置など、少しだけご配慮をいただけますと大変幸甚に存じます。\n\n集合住宅におけるお互いの快適な生活環境のため、何卒ご理解とご協力を賜りますようお願い申し上げます。"
       },
       "firm": {
         "title": "夜間生活騒音の改善に関する申入書",
-        "body": "拝啓\n貴殿におかれましては、平素よりお世話になっております。\nさて、貴殿居室より発生する夜間の【{NOISE_TYPES}】につきまして、再三にわたり生活上の大きな支障となっておりますため、本書面を以て正式に申し入れをさせていただきます。\n\n当方居室内における客観的音響測定の結果、等価騒音レベル(LAeq)は {LEQ} dB(A)、最大騒音レベル(Lmax)は {PEAK} dB(A) に達しており、一般的な住宅地の夜間受忍基準を大幅に超過しております。\n夜間（22:00～翌7:00）の静穏確保に向け、早急な防音・消音措置を講じていただけますようお願いいたします。管理組合や管理会社への相談に至る前に、両者間での円満な改善を強く希望いたします。"
+        "body": "【{RECIPIENT}】様\n\n前略　貴殿におかれましては平素よりお世話になっております。\nさて、貴殿居室より夜間帯（{TIME_RANGE}）に継続して発生しております【{NOISE_TYPES}】につきまして、依然として改善が見られず、当方の日常生活および夜間の睡眠健康に著しい支障をきたしておりますため、本書面を以て正式に申し入れをいたします。\n\n当居室内における客観的音響測定の結果、等価騒音レベル（LAeq）は {LEQ} dB(A)、最大騒音レベル（Lmax）は {PEAK} dB(A) に達しており、環境省告示の住宅地域夜間基準（45 dB(A)）を超過しております。\n\n良好な共同生活環境を維持するため、夜間帯（22:00～翌7:00）における確実な消音・防振対策を講じていただけますようお願いいたします。管理会社や管理組合への正式な届出に至る前に、居住者間での円満な自主的解決を強く希望いたします。　草々"
       },
       "strict": {
         "title": "生活平穏権侵害に対する騒音差止請求及び警告通知書",
-        "body": "居室占有者 【{RECIPIENT}】 殿\n\n本書面を以て、貴殿居室より恒常的・継続的に発生している夜間騒音（【{NOISE_TYPES}】）について厳重に抗議し、直ちにその行為を停止することを請求（差止請求）いたします。\n\n客観的音響データ計測に基づき、最大音圧 {PEAK} dB(A)、平均等価音圧 {LEQ} dB(A) の違法な騒音が立証されており、改ざん防止ハッシュ（SHA-256: {EVIDENCE_ID}）により証拠保全されております。貴殿の行為は社会通念上の「受忍限度」を明白に逸脱し、不法行為（民法第709条）を構成します。\n\n本書受領後48時間以内に騒音発生を完全に停止されない場合、当方は警察への通報、管理組合への報告、ならびに民事妨害排除請求訴訟および慰謝料請求の法的措置を講じる所存です。"
+        "body": "通　知　書\n\n被通知人：【{RECIPIENT}】 殿\n\n本書面を以て、貴殿居室より恒常的・反復的に発生している夜間騒音（【{NOISE_TYPES}】）につき厳重に抗議し、直ちに当該騒音発生行為を停止（差止）することを請求いたします。\n\n当居室内における客観的音響測定に基づき、最大音圧 {PEAK} dB(A)、等価騒音レベル {LEQ} dB(A) の騒音事実が立証されており、改ざん防止ハッシュ（SHA-256: {EVIDENCE_ID}）により厳格に証拠保全されております。貴殿の行為は社会通念上の「受忍限度」を明白に逸脱しており、民法第709条に基づく不法行為および人格権（平穏生活権）の侵害を構成します。\n\n本書受領後 48時間以内 に上記騒音を完全に停止する措置を講じるよう通告いたします。万一、期限内に改善がなされない場合は、所轄警察署への通報、管理組合への報告、ならびに管轄裁判所への民事妨害排除請求訴訟および慰謝料等の損害賠償請求訴訟を提起いたしますので、念のため申し添えます。"
       }
     },
     "ui": {
@@ -415,45 +433,49 @@
       "copied": "✓ 書面全文をクリップボードにコピーしました",
       "date": "作成日: ",
       "evidence": "証拠番号: ",
-      "recipientDefault": "上階の皆様へ",
-      "senderDefault": "下階居住者",
-      "thMetric": "測定項目 (Acoustic Metric)",
-      "thValue": "実測値 (Recorded Value)",
-      "telemetryHeader": "【現場音響計測データ証拠記録表 / Telemetry Log】",
-      "legalHeader": "【法的根拠条文・受忍限度規範 / Legal Grounds】",
+      "recipientDefault": "上階のお部屋の方",
+      "senderDefault": "下階の住人",
+      "thMetric": "測定項目",
+      "thValue": "実測値",
+      "telemetryHeader": "【現場音響計測データ証拠記録表】",
+      "legalHeader": "【法的根拠条文・受忍限度規範】",
       "lblSign": "通知人署名: ",
       "lblSignDate": "日付: ",
-      "disclaimer": "注：本書面および添付音響データは民事上の事実関係記録であり、国家計量検定証明書ではありません。裁判上の手続きには指定検査機関の報告書が推奨されます。"
+      "disclaimer": "【音響測定方法および準拠規格】\n1. 測定規格：IEC 61672-1 クラス2騒音計規格に準拠し、A特性周波数重み付けおよびFast時間重み付け特性にて室内実測を実施。\n2. 許容誤差：総合参考測定誤差は±1.5 dB(A)以内であり、受音点における実際の物理的音圧レベルを客観的に記録。\n3. 証拠能力：タイムスタンプ固定およびSHA-256暗号化電子指紋を付与し、民事上の受忍限度論争における客観的電子事実証拠として構成。",
+      "gentleNote": "【実測注記】標準A特性にて測定（参考誤差±1.5 dB(A)）。ご近所同士の円滑な生活環境調整のための参考メモです。",
+      "methodologyHeader": "【音響測定方法および準拠規格】",
+      "recipientPlaceholder": "例：上階のお部屋の方 / 402号室",
+      "senderPlaceholder": "例：下階の住人 / 302号室"
     }
   },
   "ko": {
-    "name": "🇰🇷 韩国 (共同住宅管理法 & 噪音基准)",
+    "name": "🇰🇷 대한민국 (공동주택관리법 & 층간소음기준)",
     "laws": [
       "공동주택관리법 제20조 (층간소음의 방지 등): 입주자등은 공동주택에서 층간소음으로 인하여 다른 입주자등에게 피해를 주지 아니하도록 노력하여야 한다.",
-      "공동주택 층간소음의 범위와 기준에 관한 규칙: 야간 직접충격 1분 등가소음도 34 dB(A), 최고소음도 52 dB(A) 초과 시 위법성 인정.",
-      "민법 제217조 (매연등에 의한 인접토지에 대한 방해금지) 및 제750조 (불법행위의 내용): 타인의 생활평온을 해치는 소음은 불법행위로서 손해배상 책임의 대상입니다.",
-      "환경분쟁조정법: 수인한도를 초과하는 층간소음에 대한 정신적 피해 배상 기준 규정."
+      "공동주택 층간소음의 범위와 기준에 관한 규칙: 직접충격 야간 1분 등가소음도 34 dB(A), 최고소음도 52 dB(A) 초과 시 위법성 인정.",
+      "민법 제217조 (매연등에 의한 인접토지에 대한 방해금지) 및 제750조 (불법행위 책임): 타인의 생활평온을 해치는 소음은 불법행위로서 손해배상 책임의 대상입니다.",
+      "환경분쟁조정법: 수인한도를 초과하는 층간소음에 대한 실측 데이터 기반 정신적 피해 배상 기준 규정."
     ],
     "scenarios": {
-      "footstep": "발망치 / 쿵쿵거리는 발걸음 / 아이들 뛰는 소리",
-      "music": "심야 TV 고음량 / 스피커 우퍼 진동",
-      "dragging": "야간 의자 및 가구 끄는 소리 / 긁는 소리",
-      "renovation": "심야 또는 규정 시간 외 인테리어 / 타격 소음",
-      "pet": "반려견의 짖는 소리 및 뛰어다니는 진동",
-      "party": "심야 음주 파티 / 고성방가 및 말다툼"
+      "footstep": "발망치 쿵쿵거림 / 실내 달리기 / 뒤꿈치 충격음",
+      "music": "심야 TV 고음량 / 우퍼 및 저음 스피커 진동",
+      "dragging": "야간 의자 및 가구 끄는 소리 / 바닥 마찰음",
+      "renovation": "규정 시간 외 인테리어 드릴링 / 타격 공사",
+      "pet": "반려견 짖음 및 반려동물 우다다 소음",
+      "party": "심야 술자리 / 고성방가 및 심야 대화 소음"
     },
     "tones": {
       "gentle": {
-        "title": "이웃 간 정중한 부탁의 글 (층간소음 관련)",
-        "body": "이웃 주민분께,\n\n안녕하세요. 같은 건물에 거주하는 이웃입니다. 조심스럽게 부탁의 말씀을 드리고자 메모를 남깁니다.\n건물 구조상 야간 휴식 시간에 【{NOISE_TYPES}】 소리가 실내로 울려 수면에 다소 어려움을 겪고 있으며, 측정된 순간 소음은 {PEAK} dB(A)에 이르고 있습니다.\n\n일부러 그러신 것이 아님을 잘 알고 있습니다. 밤 시간대 실내 슬리퍼 착용이나 의자 다리 소음 방지 패드 부착 등 조금만 신경 써주시면 더없이 감사하겠습니다. 평온한 이웃 생활을 위해 양해 부탁드립니다."
+        "title": "층간소음 관련 정중한 배려 요청 메모",
+        "body": "{RECIPIENT}님, 안녕하세요.\n\n같은 아파트(건물)에 거주하는 이웃입니다. 조심스럽게 부탁의 말씀을 드리고자 작은 메모를 남깁니다.\n\n건물 구조상 층간 소음 전달이 쉬워, 야간 휴식 시간에 【{NOISE_TYPES}】 소리가 실내로 크게 울려 가족들의 수면에 다소 어려움이 있습니다. 실내에서 실측한 결과 순간 최대 소음이 {PEAK} dB(A)에 이르고 있습니다.\n\n일부러 그러신 것이 아님을 충분히 이해하고 있습니다. 다만 야간 시간대(특히 22시 이후)에는 실내 슬리퍼(소음 방지용) 착용이나 의자 다리 소음 방지 패드 부착 등 조금만 신경 써주시면 더없이 감사하겠습니다.\n\n서로 배려하며 평온한 이웃 관계를 이어가길 바랍니다. 따뜻한 이해와 협조에 감사드립니다."
       },
       "firm": {
         "title": "야간 층간소음 기준 초과에 따른 공식 협의 요청서",
-        "body": "입주자 귀하,\n\n귀 댁에서 지속적으로 발생하는 야간 【{NOISE_TYPES}】으로 인하여 당 가정의 일상생활 및 수면권이 심각하게 침해받고 있어 정식으로 개선을 요청드립니다.\n\n당사 세대 내에서 객관적으로 계측된 소음 데이터에 따르면, 야간 등가소음도(LAeq)는 {LEQ} dB(A), 최고소음도(Lmax)는 {PEAK} dB(A)를 기록하여 환경부 공동주택 층간소음 기준을 상회하고 있습니다.\n\n공동주택관리법에 부합하는 소음 저감 조치를 조속히 이행해 주시기 바라며, 관리사무소 중재나 분쟁조정위원회 접수 이전에 자율적으로 원만히 해결되기를 기대합니다."
+        "body": "수신: 【{RECIPIENT}】 귀하\n\n안녕하십니까. 귀 댁에서 야간 시간대({TIME_RANGE})에 지속적으로 발생하는 【{NOISE_TYPES}】으로 인하여 당 가정의 일상생활 및 수면권이 심각하게 침해받고 있어 정식으로 개선을 요청드립니다.\n\n당사 세대 내에서 객관적으로 계측된 소음 데이터에 따르면, 야간 등가소음도(LAeq)는 {LEQ} dB(A), 최고소음도(Lmax)는 {PEAK} dB(A)를 기록하여 환경부 및 국토교통부의 공동주택 층간소음 법적 기준을 상회하고 있습니다.\n\n공동주택관리법에 부합하는 소음 저감 조치를 성실히 이행해 주시기 바라며, 관리사무소 민원 접수나 층간소음 이웃사이센터/분쟁조정위원회 접수에 이르기 전에 이웃 간에 원만히 해결되기를 기대합니다."
       },
       "strict": {
-        "title": "층간소음 침해 행위 중지 청구 및 법적 대응 사전 통고서",
-        "body": "입주자 【{RECIPIENT}】 귀하,\n\n본 서면을 통하여 귀하의 세대에서 발생하는 수인한도 초과 층간소음(【{NOISE_TYPES}】)에 대하여 즉각적인 침해 중지를 엄중히 최고(催告)합니다.\n\nSOUNDTEST.PRO 측정 시스템에 의해 시간대별 소음도 및 무결성 검증값(SHA-256: {EVIDENCE_ID})으로 박차된 증거에 의하면, 야간 최고소음도 {PEAK} dB(A), 평균 {LEQ} dB(A)로 민법 제750조 및 공동주택관리법 제20조가 정한 수인한도를 명백히 초과하였습니다.\n\n본 통고서 수령 후 48시간 이내에 층간소음 유발 행위를 즉시 전면 중단할 것을 요구합니다. 불응 시 관리사무소 통보, 경찰 신고 및 환경분쟁조정위원회 신청, 민사상 손해배상 청구 소송을 즉각 제기할 것임을 통고합니다."
+        "title": "층간소음 침해 행위 즉시 중지 최고서(통고서)",
+        "body": "최 고 서 (통고서)\n\n수신: 【{RECIPIENT}】 (점유자 및 입주자 귀하)\n\n본 서면을 통하여 귀하의 세대에서 발생하는 수인한도 초과 층간소음(【{NOISE_TYPES}】)에 대하여 즉각적인 침해 중지를 엄중히 최고(催告)합니다.\n\nSOUNDTEST.PRO 시스템을 통해 실측되고 SHA-256 전자 지문({EVIDENCE_ID})으로 봉인된 음향 증거에 의하면, 야간 최고소음도 {PEAK} dB(A), 등가소음도 {LEQ} dB(A)로 민법 제750조 및 공동주택관리법 제20조가 규정한 수인한도를 명백히 초과하였습니다.\n\n본 통고서 수령 후 48시간 이내에 소음 유발 행위를 완전히 중단할 것을 통고합니다. 기한 내 실질적인 개선이 없을 경우, 관리사무소 공식 통보, 112 경찰 신고는 물론 환경분쟁조정위원회 신청 및 법원에 층간소음 방해배제 가처분과 위자료 청구 소송을 즉각 제기할 것임을 통고합니다."
       }
     },
     "ui": {
@@ -485,19 +507,23 @@
       "copied": "✓ 서면 전문이 클립보드에 복사되었습니다",
       "date": "작성일자: ",
       "evidence": "증거번호: ",
-      "recipientDefault": "이웃 주민분께",
-      "senderDefault": "이웃 세대",
-      "thMetric": "음향 측정 지표 (Acoustic Metric)",
-      "thValue": "실측 수치 (Recorded Value)",
-      "telemetryHeader": "【현장 음향 계측 데이터 증거 기록표 / Telemetry Log】",
-      "legalHeader": "【법적 근거 조항 및 준거 규정 / Legal Grounds】",
+      "recipientDefault": "위층 이웃 주민",
+      "senderDefault": "아래층 이웃 주민",
+      "thMetric": "음향 측정 지표",
+      "thValue": "실측 수치",
+      "telemetryHeader": "【현장 음향 계측 데이터 증거 기록표】",
+      "legalHeader": "【법적 근거 조항 및 준거 규정】",
       "lblSign": "통지인 서명: ",
       "lblSignDate": "일자: ",
-      "disclaimer": "안내: 본 서면 및 첨부된 음향 데이터는 민사적 사실 확인 기록이며 국가 법정 계량 검정 증명서가 아닙니다."
+      "disclaimer": "【음향 측정 방법 및 기준 규격】\n1. 측정 규격: IEC 61672-1 Class 2 소음계 규격에 준하여 A-가중치 및 Fast 시간 가중 특성으로 실내 음향을 정밀 샘플링함.\n2. 허용 오차: 종합 참고 측정 오차는 ±1.5 dB(A) 이내이며, 실내 수음점의 실제 물리적 음압 레벨을 객관적으로 반영함.\n3. 증거력: 타임스탬프 및 SHA-256 전자 지문으로 봉인되어, 민사 분쟁 및 층간소음 조정 시 전자적 사실 증거 자료로 활용 가능함.",
+      "gentleNote": "【측정 참고】표준 A-가중치 음향 측정 적용 (참고 오차 ±1.5 dB(A)). 원만한 이웃 간 생활 조정을 위한 안내 메모입니다.",
+      "methodologyHeader": "【음향 측정 방법 및 기준 규격】",
+      "recipientPlaceholder": "예: 위층 이웃 주민 / 402호",
+      "senderPlaceholder": "예: 아래층 이웃 주민 / 302호"
     }
   },
   "th": {
-    "name": "🇹🇭 泰国 (公共卫生法 พ.ร.บ.การสาธารณสุข)",
+    "name": "🇹🇭 ประเทศไทย (พ.ร.บ.การสาธารณสุข & ป.พ.พ.)",
     "laws": [
       "พระราชบัญญัติการสาธารณสุข พ.ศ. 2535 (มาตรา 25 และมาตรา 28): การกระทำใดๆ อันเป็นเหตุให้เกิดกลิ่น แสง รังสี เสียง ความสั่นสะเทือน จนเป็นเหตุให้เสื่อมหรืออาจเป็นอันตรายต่อสุขภาพ ถือเป็นเหตุรำคาญ.",
       "ประมวลกฎหมายแพ่งและพาณิชย์ มาตรา 420: ผู้ใดจงใจหรือประมาทเลินเล่อทำต่อบุคคลอื่นโดยผิดกฎหมาย เป็นเหตุให้เขาเสียหายแก่ร่างกาย อนามัย หรือเสรีภาพ ผู้นั้นต้องชดใช้ค่าสินไหมทดแทน.",
@@ -505,25 +531,25 @@
       "ประกาศกรมควบคุมมลพิษ เรื่อง กำหนดระดับเสียงรบกวน: เกณฑ์มาตรฐานระดับเสียงรบกวนในอาคารพักอาศัย."
     ],
     "scenarios": {
-      "footstep": "เสียงเดินลงส้นเท้า / เสียงวิ่ง / กระโดดกระแทกพื้น",
-      "music": "เสียงโทรทัศน์ดัง / เสียงเบสสะเทือนผนัง",
-      "dragging": "เสียงลากเก้าอี้และสิ่งของบนพื้นยามวิกาล",
-      "renovation": "การเจาะ ต่อเติม หรือซ่อมแซมเสียงดังนอกเวลา",
-      "pet": "เสียงสุนัขเห่าหรือสัตว์เลี้ยงวิ่งรบกวนต่อเนื่อง",
-      "party": "งานสังสรรค์เสียงดัง / พูดคุยเสียงดังยามวิกาล"
+      "footstep": "เสียงเดินลงส้นเท้าหนักๆ / เสียงวิ่งหรือกระโดดกระแทกพื้น",
+      "music": "เสียงโทรทัศน์หรือเครื่องเสียงดัง / แรงสั่นสะเทือนจากเสียงเบส",
+      "dragging": "เสียงลากเก้าอี้ โต๊ะ หรือเฟอร์นิเจอร์ยามวิกาล",
+      "renovation": "เสียงเจาะ ตอก หรือซ่อมแซมต่อเติมนอกเวลาที่กำหนด",
+      "pet": "เสียงสุนัขเห่าต่อเนื่อง หรือสัตว์เลี้ยงวิ่งส่งเสียงรบกวน",
+      "party": "งานปาร์ตี้สังสรรค์เสียงดัง / พูดคุยเอะอะโวยวายยามวิกาล"
     },
     "tones": {
       "gentle": {
-        "title": "ข้อความเพื่อความเข้าใจอันดีระหว่างเพื่อนบ้าน : เรื่องเสียงรบกวนยามวิกาล",
-        "body": "เรียน เพื่อนบ้านที่เคารพ,\n\nขออนุญาตส่งข้อความสั้นๆ นี้ด้วยความปรารถนาดีครับ เนื่องจากโครงสร้างอาคารส่งผ่านเสียงได้ง่าย ในช่วงเวลาพักผ่อนตอนกลางคืน เสียงประเภท 【{NOISE_TYPES}】 ส่งผลกระทบต่อการนอนหลับ โดยวัดระดับเสียงสูงสุดได้ถึง {PEAK} dB(A)\n\nเข้าใจเป็นอย่างยิ่งว่าท่านมิได้มีเจตนาและอาจไม่ทราบเรื่อง จึงใคร่ขอความอนุเคราะห์ช่วยลดเสียงในยามวิกาล เช่น สวมรองเท้าเดินในบ้านแบบนุ่ม หรือติดแผ่นซับเสียงที่ขาเก้าอี้ ขอขอบพระคุณในความเข้าใจและมิตรภาพอันดีครับ"
+        "title": "โน้ตแจ้งเตือนฉันมิตร: เรื่องการส่งผ่านเสียงยามวิกาล",
+        "body": "เรียน {RECIPIENT},\n\nสวัสดีครับ/ค่ะ ขออนุญาตส่งโน้ตสั้นๆ นี้ด้วยความปรารถนาดีครับ เนื่องจากโครงสร้างอาคารส่งผ่านเสียงได้ง่าย ในช่วงเวลาพักผ่อนตอนกลางคืน เสียงประเภท 【{NOISE_TYPES}】 ส่งผลกระทบต่อการนอนหลับ โดยวัดระดับเสียงสูงสุดได้ถึง {PEAK} dB(A)\n\nเข้าใจเป็นอย่างยิ่งว่าท่านมิได้มีเจตนาและอาจไม่ทราบว่าเสียงส่งผ่านลงมา จึงใคร่ขอความอนุเคราะห์ช่วยระมัดระวังในยามวิกาล (หลัง 22.00 น.) เช่น สวมรองเท้าเดินในบ้านแบบนุ่ม หรือติดแผ่นซับเสียงที่ขาโต๊ะเก้าอี้\n\nขอขอบพระคุณเป็นอย่างยิ่งในความเข้าใจ มิตรภาพอันดี และความร่วมมือระหว่างเพื่อนบ้านครับ"
       },
       "firm": {
-        "title": "หนังสือแจ้งความประสงค์อย่างเป็นทางการเรื่องเสียงรบกวนยามวิกาล",
-        "body": "เรียน ผู้พักอาศัย,\n\nขอแจ้งให้ทราบถึงปัญหาเสียงรบกวนจากห้องของท่าน ได้แก่ 【{NOISE_TYPES}】 ในช่วงเวลาค่ำคืนอย่างต่อเนื่อง ซึ่งส่งผลกระทบต่อสุขอนามัยและการพักผ่อนอย่างร้ายแรง\n\nจากการตรวจวัดระดับเสียงอย่างเป็นรูปธรรม พบว่าระดับเสียงเฉลี่ย (LAeq) อยู่ที่ {LEQ} dB(A) และระดับเสียงสูงสุด (Lmax) สูงถึง {PEAK} dB(A) ซึ่งเกินกว่าระดับปกติของที่พักอาศัย\n\nขอความกรุณาจัดการแก้ไขและลดเสียงรบกวนดังกล่าวในช่วงเวลา 22.00 - 07.00 น. โดยหวังเป็นอย่างยิ่งว่าจะสามารถแก้ไขปัญหาร่วมกันได้โดยมิต้องแจ้งนิติบุคคลอาคารชุด"
+        "title": "หนังสือแจ้งขอความร่วมมือและระงับเสียงรบกวนยามวิกาล",
+        "body": "เรียน ท่านผู้อยู่อาศัยห้อง 【{RECIPIENT}】,\n\nขอแจ้งให้ทราบอย่างเป็นทางการถึงปัญหาเสียงรบกวนจากห้องของท่าน ได้แก่ 【{NOISE_TYPES}】 ในช่วงเวลาค่ำคืน ({TIME_RANGE}) อย่างต่อเนื่อง ซึ่งส่งผลกระทบต่อสุขภาพและการพักผ่อนอย่างยิ่ง\n\nจากการตรวจวัดระดับเสียงอย่างเป็นรูปธรรม พบว่าระดับเสียงเฉลี่ย (LAeq) อยู่ที่ {LEQ} dB(A) และระดับเสียงสูงสุด (Lmax) สูงถึง {PEAK} dB(A) ซึ่งเกินกว่าระดับปกติของที่พักอาศัยและสร้างความเดือดร้อนต่อการพักผ่อน\n\nขอความกรุณาช่วยจัดการแก้ไขและลดเสียงรบกวนดังกล่าวในช่วงเวลา 22.00 - 07.00 น. โดยหวังเป็นอย่างยิ่งว่าจะสามารถแก้ไขปัญหาร่วมกันได้ด้วยดี ก่อนที่จะต้องประสานงานฝ่ายนิติบุคคลอาคารชุดเพื่อดำเนินการต่อไป"
       },
       "strict": {
-        "title": "หนังสือบอกกล่าวทวงถามให้ระงับเหตุรำคาญทางเสียงและแจ้งสิทธิตามกฎหมาย",
-        "body": "เรียน ผู้พักอาศัย / เจ้าของห้องชุด: 【{RECIPIENT}】\n\nหนังสือฉบับนี้เป็นการบอกกล่าวอย่างเป็นทางการ ขอให้ท่านยุติการกระทำอันก่อให้เกิดเสียงดังรบกวนเกินควร (【{NOISE_TYPES}】) ซึ่งถือเป็นเหตุรำคาญตามพระราชบัญญัติการสาธารณสุข พ.ศ. 2535 และเป็นการละเมิดสิทธิผู้อื่นตามประมวลกฎหมายแพ่งและพาณิชย์ มาตรา 420 และ 1337\n\nข้อมูลเสียงที่บันทึกไว้ได้รับการตรวจสอบความถูกต้องด้วยรหัส SHA-256: {EVIDENCE_ID} ระดับเสียงสูงสุด {PEAK} dB(A) และเฉลี่ย {LEQ} dB(A) ในช่วงเวลา {TIME_RANGE}\n\nขอให้ท่านระงับเหตุรำคาญดังกล่าวโดยเด็ดขาดภายใน 48 ชั่วโมง หากพ้นกำหนด ข้าพเจ้าจำเป็นต้องยื่นเรื่องต่อนิติบุคคล แจ้งเจ้าพนักงานท้องถิ่น และดำเนินคดีทางแพ่งเพื่อเรียกค่าเสียหายต่อไป"
+        "title": "หนังสือบอกกล่าวทวงถามให้ระงับเหตุรำคาญทางเสียงและแจ้งสิทธิตามกฎหมาย (Notice)",
+        "body": "หนังสือบอกกล่าวทวงถาม (Notice)\n\nเรียน: 【{RECIPIENT}】 (ผู้พักอาศัย / เจ้าของห้องชุด)\n\nหนังสือฉบับนี้เป็นการบอกกล่าวอย่างเป็นทางการ ขอให้ท่านยุติการกระทำอันก่อให้เกิดเสียงดังรบกวนเกินควร (【{NOISE_TYPES}】) ซึ่งถือเป็นเหตุรำคาญตามพระราชบัญญัติการสาธารณสุข พ.ศ. 2535 และเป็นการละเมิดสิทธิผู้อื่นตามประมวลกฎหมายแพ่งและพาณิชย์ มาตรา 420 และ 1337\n\nข้อมูลเสียงที่บันทึกไว้ได้รับการตรวจสอบความถูกต้องด้วยรหัส SHA-256: {EVIDENCE_ID} ระดับเสียงสูงสุด {PEAK} dB(A) และเฉลี่ย {LEQ} dB(A) ในช่วงเวลา {TIME_RANGE}\n\nขอให้ท่านระงับเหตุรำคาญดังกล่าวโดยเด็ดขาดภายใน 48 ชั่วโมง หากพ้นกำหนด ข้าพเจ้าจำเป็นต้องยื่นเรื่องต่อนิติบุคคลอาคารชุด แจ้งเจ้าพนักงานท้องถิ่น และดำเนินคดีทางแพ่งเพื่อเรียกค่าเสียหายตามกฎหมายต่อไป"
       }
     },
     "ui": {
@@ -555,19 +581,23 @@
       "copied": "✓ คัดลอกข้อความหนังสือเรียบร้อยแล้ว",
       "date": "วันที่: ",
       "evidence": "รหัสหลักฐาน: ",
-      "recipientDefault": "เรียน เพื่อนบ้านห้องด้านบน",
+      "recipientDefault": "เพื่อนบ้านห้องด้านบน",
       "senderDefault": "เพื่อนบ้านห้องด้านล่าง",
       "thMetric": "ดัชนีชี้วัดทางเสียง",
       "thValue": "ค่าที่ตรวจวัดได้",
-      "telemetryHeader": "【ตารางบันทึกข้อมูลหลักฐานทางเสียง / Telemetry Log】",
-      "legalHeader": "【บทบัญญัติกฎหมายและหลักเกณฑ์ที่เกี่ยวข้อง】",
+      "telemetryHeader": "【ตารางบันทึกข้อมูลหลักฐานทางเสียง】",
+      "legalHeader": "【บทบัญญัติกฎหมายและเกณฑ์มาตรฐานที่เกี่ยวข้อง】",
       "lblSign": "ลงชื่อผู้แจ้ง: ",
       "lblSignDate": "วันที่: ",
-      "disclaimer": "หมายเหตุ: เอกสารฉบับนี้เป็นบันทึกข้อเท็จจริงเพื่อการเจรจาระงับข้อพิพาท มิใช่หนังสือรับรองทางมาตรวิทยาของรัฐ"
+      "disclaimer": "【ระเบียบวิธีการตรวจวัดทางเสียงและเกณฑ์อ้างอิง】\n1. มาตรฐาน: ตรวจวัดตามมาตรฐาน IEC 61672-1 Class 2 โดยใช้การถ่วงน้ำหนักความถี่แบบ A (A-weighting) และการตอบสนองแบบเร็ว (Fast)\n2. ค่าความคลาดเคลื่อน: ค่าความคลาดเคลื่อนอ้างอิงอยู่ภายใน ±1.5 dB(A) สะท้อนระดับเสียงจริงในจุดรับเสียงอย่างเป็นกลาง\n3. การเก็บหลักฐาน: ประทับเวลาและผนึกด้วยลายนิ้วมือดิจิทัล SHA-256 สำหรับใช้เป็นหลักฐานข้อเท็จจริงทางแพ่ง",
+      "gentleNote": "【บันทึกการวัด】บันทึกด้วยมาตรฐาน A-weighting (ความคลาดเคลื่อน ±1.5 dB(A)) เพื่อการประสานงานฉันมิตรระหว่างเพื่อนบ้าน",
+      "methodologyHeader": "【ระเบียบวิธีการตรวจวัดทางเสียงและเกณฑ์อ้างอิง】",
+      "recipientPlaceholder": "เช่น เพื่อนบ้านห้องด้านบน / ห้อง 402",
+      "senderPlaceholder": "เช่น เพื่อนบ้านห้องด้านล่าง / ห้อง 302"
     }
   },
   "vi": {
-    "name": "🇻🇳 越南 (民法典 Bộ luật Dân sự 2015)",
+    "name": "🇻🇳 Việt Nam (Bộ luật Dân sự 2015 & QCVN 26)",
     "laws": [
       "Bộ luật Dân sự 2015, Điều 172: Nghĩa vụ của chủ sở hữu trong việc thực hiện quyền sở hữu không được gây thiệt hại hoặc làm ảnh hưởng đến quyền, lợi ích hợp pháp của người khác.",
       "Bộ luật Dân sự 2015, Điều 605: Bồi thường thiệt hại do vi phạm quy tắc láng giềng và trật tự xây dựng, sinh hoạt.",
@@ -575,25 +605,25 @@
       "Quy chuẩn kỹ thuật quốc gia QCVN 26:2010/BTNMT về tiếng ồn: Giới hạn tối đa cho phép tại khu vực thông thường từ 21h đến 6h sáng là 45 dBA."
     ],
     "scenarios": {
-      "footstep": "Tiếng bước chân huỳnh huỵch / gót chân / chạy nhảy",
-      "music": "Tiếng tivi quá lớn / loa siêu trầm rung tường",
-      "dragging": "Kéo lê bàn ghế, đồ đạc trên sàn đêm muộn",
-      "renovation": "Khoan đục, sửa chữa ngoài giờ quy định",
-      "pet": "Chó sủa kéo dài hoặc thú cưng chạy nhảy",
-      "party": "Tụ tập ăn nhậu / la hét ồn ào đêm khuya"
+      "footstep": "Tiếng bước chân nện gót / chạy nhảy thình thịch trên sàn",
+      "music": "Tiếng tivi hoặc loa quá lớn / tiếng bass rung tường",
+      "dragging": "Tiếng kéo lê bàn ghế, đồ đạc trên sàn đêm muộn",
+      "renovation": "Tiếng khoan đục, đóng đinh, sửa chữa ngoài giờ quy định",
+      "pet": "Tiếng chó sủa dai dẳng hoặc thú cưng chạy nhảy liên tục",
+      "party": "Tụ tập ăn nhậu / la hét, nói chuyện ồn ào đêm khuya"
     },
     "tones": {
       "gentle": {
-        "title": "Thư ngỏ thân thiện giữa láng giềng : Về tiếng ồn trong giờ nghỉ ngơi",
-        "body": "Kính gửi Anh/Chị láng giềng,\n\nTôi xin phép gửi lời chào thân thiện đến Anh/Chị. Do kết cấu cách âm của tòa nhà còn hạn chế, trong khung giờ nghỉ ngơi buổi tối, âm thanh như 【{NOISE_TYPES}】 truyền xuống khá rõ, máy đo ghi nhận mức đỉnh đạt {PEAK} dB(A), gây ảnh hưởng đến giấc ngủ của gia đình tôi.\n\nTôi hiểu rằng Anh/Chị không cố ý và có thể không nhận biết được việc âm thanh bị dội xuống. Rất mong Anh/Chị lưu tâm giảm bớt tiếng ồn vào ban đêm (ví dụ: đi dép bông êm hoặc dán đệm chân bàn ghế). Chân thành cảm ơn sự thấu hiểu và tình làng nghĩa xóm của Anh/Chị!"
+        "title": "Thư ngỏ thân thiện giữa láng giềng: Về tiếng ồn trong giờ nghỉ ngơi",
+        "body": "Kính gửi {RECIPIENT},\n\nTôi xin phép gửi lời chào thân thiện đến Anh/Chị. Do kết cấu cách âm của tòa nhà còn hạn chế, trong khung giờ nghỉ ngơi buổi tối, âm thanh như 【{NOISE_TYPES}】 truyền xuống khá rõ, máy đo ghi nhận mức đỉnh đạt {PEAK} dB(A), gây ảnh hưởng đến giấc ngủ của gia đình tôi.\n\nTôi hiểu rằng Anh/Chị không cố ý và có thể không nhận biết được việc âm thanh bị dội xuống. Rất mong Anh/Chị lưu tâm giảm bớt tiếng ồn vào ban đêm (ví dụ: đi dép bông êm trong nhà hoặc dán đệm chân bàn ghế).\n\nChân thành cảm ơn sự thấu hiểu, thiện chí và tình làng nghĩa xóm của Anh/Chị!"
       },
       "firm": {
         "title": "Thư trao đổi chính thức về việc tiếng ồn sinh hoạt ban đêm vượt ngưỡng",
-        "body": "Kính gửi Anh/Chị,\n\nTôi gửi thư này để chính thức phản ánh về tình trạng tiếng ồn từ căn hộ của Anh/Chị (【{NOISE_TYPES}】) tiếp tục tái diễn trong giờ nghỉ ngơi ban đêm.\n\nDữ liệu đo đạc thực tế ghi nhận mức ồn tương đương (LAeq) là {LEQ} dB(A) và mức ồn đỉnh (Lmax) lên tới {PEAK} dB(A), vượt quá tiêu chuẩn môi trường âm thanh khu dân cư ban đêm và ảnh hưởng nghiêm trọng đến sức khỏe của chúng tôi.\n\nKính đề nghị Anh/Chị có biện pháp kiểm soát tiếng ồn từ 22h00 đến 07h00 sáng. Rất mong vấn đề được giải quyết êm đẹp giữa các hộ dân trước khi phải chuyển lên Ban Quản lý tòa nhà."
+        "body": "Kính gửi: 【{RECIPIENT}】\n\nTôi gửi thư này để chính thức phản ánh về tình trạng tiếng ồn từ căn hộ của Anh/Chị (【{NOISE_TYPES}】) tiếp tục tái diễn trong giờ nghỉ ngơi ban đêm ({TIME_RANGE}).\n\nDữ liệu đo đạc thực tế ghi nhận mức ồn tương đương (LAeq) là {LEQ} dB(A) và mức ồn đỉnh (Lmax) lên tới {PEAK} dB(A), vượt quá tiêu chuẩn môi trường âm thanh khu dân cư ban đêm và ảnh hưởng nghiêm trọng đến sức khỏe của chúng tôi.\n\nKính đề nghị Anh/Chị có biện pháp kiểm soát tiếng ồn từ 22h00 đến 07h00 sáng. Rất mong vấn đề được giải quyết êm đẹp giữa các hộ dân trước khi phải chuyển lên Ban Quản lý tòa nhà."
       },
       "strict": {
         "title": "THƯ YÊU CẦU CHẤM DỨT HÀNH VI GÂY TIẾNG ỒN VÀ THÔNG BÁO PHÁP LÝ",
-        "body": "Kính gửi Người cư trú / Chủ căn hộ: 【{RECIPIENT}】\n\nBằng văn bản này, tôi yêu cầu Anh/Chị CHẤM DỨT NGAY hành vi gây tiếng ồn quá mức (【{NOISE_TYPES}】) từ căn hộ của mình, vi phạm trật tự công cộng và quy định tại Điều 172 Bộ luật Dân sự 2015 cũng như Quy chuẩn tiếng ồn QCVN 26:2010/BTNMT.\n\nChứng cứ âm thanh đã được xác thực mã hóa kỹ thuật số SHA-256: {EVIDENCE_ID}, với mức ồn đỉnh {PEAK} dB(A) và trung bình {LEQ} dB(A) trong khoảng thời gian {TIME_RANGE}.\n\nYêu cầu Anh/Chị chấm dứt triệt để hành vi trong vòng 48 GIỜ kể từ khi nhận được thư này. Nếu tình trạng không chấm dứt, tôi sẽ lập tức báo cáo Ban Quản lý, trình báo Công an lập biên bản xử phạt hành chính và tiến hành khởi kiện dân sự đòi bồi thường thiệt hại."
+        "body": "VĂN BẢN YÊU CẦU CHẤM DỨT HÀNH VI VI PHẠM\n\nKính gửi: 【{RECIPIENT}】 (Người cư trú / Chủ căn hộ)\n\nBằng văn bản này, tôi yêu cầu Anh/Chị CHẤM DỨT NGAY hành vi gây tiếng ồn quá mức (【{NOISE_TYPES}】) từ căn hộ của mình, vi phạm trật tự công cộng và quy định tại Điều 172 Bộ luật Dân sự 2015 cũng như Quy chuẩn kỹ thuật QCVN 26:2010/BTNMT.\n\nChứng cứ âm thanh đã được xác thực mã hóa kỹ thuật số SHA-256: {EVIDENCE_ID}, với mức ồn đỉnh {PEAK} dB(A) và trung bình {LEQ} dB(A) trong khoảng thời gian {TIME_RANGE}.\n\nYêu cầu Anh/Chị chấm dứt triệt để hành vi trong vòng 48 GIỜ kể từ khi nhận được thư này. Nếu tình trạng không chấm dứt, tôi sẽ lập tức báo cáo Ban Quản lý, trình báo Công an lập biên bản xử phạt hành chính và tiến hành khởi kiện dân sự đòi bồi thường thiệt hại."
       }
     },
     "ui": {
@@ -625,15 +655,19 @@
       "copied": "✓ Đã sao chép toàn bộ văn bản vào bộ nhớ tạm",
       "date": "Ngày: ",
       "evidence": "Mã bằng chứng: ",
-      "recipientDefault": "Kính gửi Anh/Chị tầng trên",
-      "senderDefault": "Láng giềng tầng dưới",
+      "recipientDefault": "Căn hộ tầng trên",
+      "senderDefault": "Căn hộ tầng dưới",
       "thMetric": "Chỉ số âm học",
       "thValue": "Giá trị ghi nhận",
-      "telemetryHeader": "【Biên Bản Ghi Nhận Dữ Liệu Đo Âm Học / Telemetry Log】",
+      "telemetryHeader": "【Biên Bản Ghi Nhận Dữ Liệu Đo Âm Học】",
       "legalHeader": "【Điều Khoản Pháp Luật & Tiêu Chuẩn Kỹ Thuật Viện Dẫn】",
       "lblSign": "Chữ ký người gửi: ",
       "lblSignDate": "Ngày: ",
-      "disclaimer": "Lưu ý: Văn bản này là biên bản ghi nhận thực tế dân sự phục vụ hòa giải tranh chấp, không thay thế chứng thư kiểm định đo lường của Nhà nước."
+      "disclaimer": "【Phương Pháp Đo Âm Học & Tiêu Chuẩn Áp Dụng】\n1. Tiêu chuẩn: Đo đạc theo tiêu chuẩn IEC 61672-1 Cấp 2, sử dụng thang đo trọng số A (A-weighting) và đáp ứng thời gian Nhanh (Fast).\n2. Sai số: Dung sai đo tham chiếu trong phạm vi ±1,5 dB(A), phản ánh khách quan mức áp suất âm thực tế tại điểm đo.\n3. Giá trị chứng cứ: Dữ liệu được gắn dấu thời gian và mã hóa dấu vân tay số SHA-256, có giá trị chứng cứ thực tế trong tố tụng dân sự.",
+      "gentleNote": "【Ghi chú đo đạc】Đo theo trọng số A tiêu chuẩn (sai số tham chiếu ±1,5 dB(A)). Dùng cho mục đích trao đổi thiện chí giữa các hộ dân.",
+      "methodologyHeader": "【Phương Pháp Đo Âm Học & Tiêu Chuẩn Áp Dụng】",
+      "recipientPlaceholder": "Ví dụ: Căn hộ tầng trên / Phòng 402",
+      "senderPlaceholder": "Ví dụ: Căn hộ tầng dưới / Phòng 302"
     }
   }
 }

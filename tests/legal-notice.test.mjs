@@ -92,3 +92,118 @@ test('legal notice enforces user tier permissions (Free vs Single vs Pro)', asyn
   assert.equal(legalEngine.getUserTier(), 'pro');
 });
 
+test('legal notice enforces native greetings and objective acoustic standards across all 9 languages', async () => {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const legalEngine = require(path.join(rootDir, 'assets', 'legal-notice.js'));
+
+  const data = legalEngine.getLegalData();
+  const langs = ['zh', 'en', 'de', 'fr', 'es', 'ja', 'ko', 'th', 'vi'];
+
+  for (const lang of langs) {
+    const locale = data[lang];
+    const ui = locale.ui;
+
+    // 1. Must NOT contain negative self-defeating disclaimers
+    const allText = JSON.stringify(locale);
+    assert.ok(!allText.includes('非国家法定计量检定证书'), `${lang} must not contain negative disclaimer`);
+    assert.ok(!allText.includes('尊重的邻居'), `${lang} must not contain awkward machine translation '尊重的邻居'`);
+
+    // 2. Must contain objective acoustic methodology and error tolerance
+    assert.ok(ui.disclaimer.includes('61672-1'), `${lang} disclaimer references IEC/CEI 61672-1`);
+    assert.ok(ui.disclaimer.includes('1.5 dB(A)') || ui.disclaimer.includes('1,5 dB(A)'), `${lang} disclaimer references ±1.5 dB(A) tolerance`);
+    assert.ok(ui.disclaimer.includes('SHA-256'), `${lang} disclaimer references SHA-256 fingerprint`);
+
+    // 3. Gentle note must be friendly, polite and mention reference tolerance
+    assert.ok(ui.gentleNote.includes('1.5 dB(A)') || ui.gentleNote.includes('1,5 dB(A)'), `${lang} gentle note mentions ±1.5 dB(A)`);
+
+    // 4. Scenarios must have all 6 categories
+    assert.equal(Object.keys(locale.scenarios).length, 6, `${lang} has 6 scenarios`);
+  }
+
+  // 5. Check Chinese specific natural salutation
+  const zhGentle = data.zh.tones.gentle.body;
+  assert.ok(zhGentle.startsWith('{RECIPIENT}：您好！'), 'Chinese gentle note must start with {RECIPIENT}：您好！');
+  assert.ok(zhGentle.includes('远亲不如近邻'), 'Chinese gentle note has neighborly warmth');
+});
+
+test('buildPlainText formats valid, professional notices across all 9 languages for gentle & firm tones', async () => {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const legalEngine = require(path.join(rootDir, 'assets', 'legal-notice.js'));
+
+  const data = legalEngine.getLegalData();
+  const langs = ['zh', 'en', 'de', 'fr', 'es', 'ja', 'ko', 'th', 'vi'];
+
+  for (const lang of langs) {
+    const locale = data[lang];
+    const recDefault = locale.ui?.recipientDefault || 'Neighbor';
+    const sndDefault = locale.ui?.senderDefault || 'Resident';
+
+    // Test Gentle Tone
+    const gentleDoc = {
+      title: locale.tones.gentle.title,
+      recipient: recDefault,
+      sender: sndDefault,
+      date: '2026-10-09',
+      location: 'Unit 301',
+      peakDb: '71.5',
+      avgDb: '56.2',
+      timeRange: '23:00 - 01:30',
+      evidenceId: 'STP-TEST-001',
+      body: locale.tones.gentle.body
+        .replace('{RECIPIENT}', recDefault)
+        .replace('{PEAK}', '71.5')
+        .replace('{LEQ}', '56.2')
+        .replace('{NOISE_TYPES}', 'footsteps')
+        .replace('{TIME_RANGE}', '23:00 - 01:30'),
+      gentleNote: locale.ui?.gentleNote || '',
+      lblSign: locale.ui?.lblSign || 'Signature: ',
+      lblSignDate: locale.ui?.lblSignDate || 'Date: '
+    };
+
+    // Test with tone gentle
+    legalEngine.setUserTier('free');
+    const gentleText = legalEngine.buildPlainText({ ...gentleDoc, tone: 'gentle' });
+    assert.ok(gentleText.length > 100, `${lang} gentle notice has valid content`);
+    assert.ok(!gentleText.includes('undefined'), `${lang} gentle notice must not contain undefined`);
+    assert.ok(!gentleText.includes('{RECIPIENT}'), `${lang} gentle notice must have replaced {RECIPIENT}`);
+
+    // Test Firm Tone
+    const firmDoc = {
+      title: locale.tones.firm.title,
+      recipient: recDefault,
+      sender: sndDefault,
+      date: '2026-10-09',
+      location: 'Unit 301',
+      peakDb: '75.2',
+      avgDb: '60.4',
+      timeRange: '23:30 - 02:00',
+      evidenceId: 'STP-TEST-FIRM',
+      body: locale.tones.firm.body
+        .replace('{RECIPIENT}', recDefault)
+        .replace('{PEAK}', '75.2')
+        .replace('{LEQ}', '60.4')
+        .replace('{NOISE_TYPES}', 'impact noise')
+        .replace('{TIME_RANGE}', '23:30 - 02:00'),
+      articles: locale.laws,
+      disclaimer: locale.ui?.disclaimer || '',
+      telemetryHeader: locale.ui?.telemetryHeader || 'Acoustic Telemetry Log',
+      legalHeader: locale.ui?.legalHeader || 'Statutory Provisions Cited',
+      lblPeak: locale.ui?.lblPeak || 'Peak Lmax',
+      lblAvg: locale.ui?.lblAvg || 'Equivalent LAeq',
+      lblTime: locale.ui?.lblTime || 'Monitored Window',
+      lblHash: locale.ui?.lblHash || 'Audit Fingerprint',
+      lblSign: locale.ui?.lblSign || 'Signature: ',
+      lblSignDate: locale.ui?.lblSignDate || 'Date: '
+    };
+
+    legalEngine.setUserTier('pro');
+    const firmText = legalEngine.buildPlainText({ ...firmDoc, tone: 'firm' });
+    assert.ok(firmText.length > 200, `${lang} firm notice has full statutory content`);
+    assert.ok(!firmText.includes('undefined'), `${lang} firm notice must not contain undefined`);
+    assert.ok(firmText.includes('STP-TEST-FIRM'), `${lang} firm notice contains hash`);
+    assert.ok(firmText.includes('75.2 dB(A)'), `${lang} firm notice contains peak dB`);
+  }
+});
+
