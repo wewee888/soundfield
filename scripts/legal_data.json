@@ -149,7 +149,8 @@
       "gentleNote": "【Measurement Note】Recorded using standard A-weighting sound telemetry (reference tolerance ±1.5 dB(A)). Provided for neighborly coordination.",
       "methodologyHeader": "【Acoustic Methodology & Reference Standards】",
       "recipientPlaceholder": "e.g. Upstairs Neighbor / Apt 402",
-      "senderPlaceholder": "e.g. Downstairs Neighbor / Apt 302"
+      "senderPlaceholder": "e.g. Downstairs Neighbor / Apt 302",
+      "badgeFree": "FREE"
     }
   },
   "de": {
@@ -223,7 +224,8 @@
       "gentleNote": "【Messhinweis】Aufgezeichnet mit Standard-A-Bewertung (Referenztoleranz ±1,5 dB(A)). Dient der einvernehmlichen nachbarschaftlichen Abstimmung.",
       "methodologyHeader": "【Messtechnische Methodik & Normen】",
       "recipientPlaceholder": "z. B. Nachbarn oben / Whg. 402",
-      "senderPlaceholder": "z. B. Nachbarn unten / Whg. 302"
+      "senderPlaceholder": "z. B. Nachbarn unten / Whg. 302",
+      "badgeFree": "Kostenlos"
     }
   },
   "fr": {
@@ -297,7 +299,8 @@
       "gentleNote": "【Note de mesure】Enregistré selon la pondération standard A (tolérance ±1,5 dB(A)). Destiné à une concertation amiable de voisinage.",
       "methodologyHeader": "【Méthodologie Acoustique & Normes de Référence】",
       "recipientPlaceholder": "ex. Voisins du dessus / Apt 402",
-      "senderPlaceholder": "ex. Voisins du dessous / Apt 302"
+      "senderPlaceholder": "ex. Voisins du dessous / Apt 302",
+      "badgeFree": "Gratuit"
     }
   },
   "es": {
@@ -371,7 +374,8 @@
       "gentleNote": "【Nota de medición】Registrado mediante ponderación A estándar (tolerancia de referencia ±1,5 dB(A)). Facilitado para la convivencia vecinal.",
       "methodologyHeader": "【Metodología Acústica y Estándares de Referencia】",
       "recipientPlaceholder": "ej. Vecinos de arriba / Piso 402",
-      "senderPlaceholder": "ej. Vecinos de abajo / Piso 302"
+      "senderPlaceholder": "ej. Vecinos de abajo / Piso 302",
+      "badgeFree": "Gratis"
     }
   },
   "ja": {
@@ -445,7 +449,8 @@
       "gentleNote": "【実測注記】標準A特性にて測定（参考誤差±1.5 dB(A)）。ご近所同士の円滑な生活環境調整のための参考メモです。",
       "methodologyHeader": "【音響測定方法および準拠規格】",
       "recipientPlaceholder": "例：上階のお部屋の方 / 402号室",
-      "senderPlaceholder": "例：下階の住人 / 302号室"
+      "senderPlaceholder": "例：下階の住人 / 302号室",
+      "badgeFree": "無料"
     }
   },
   "ko": {
@@ -519,7 +524,8 @@
       "gentleNote": "【측정 참고】표준 A-가중치 음향 측정 적용 (참고 오차 ±1.5 dB(A)). 원만한 이웃 간 생활 조정을 위한 안내 메모입니다.",
       "methodologyHeader": "【음향 측정 방법 및 기준 규격】",
       "recipientPlaceholder": "예: 위층 이웃 주민 / 402호",
-      "senderPlaceholder": "예: 아래층 이웃 주민 / 302호"
+      "senderPlaceholder": "예: 아래층 이웃 주민 / 302호",
+      "badgeFree": "무료"
     }
   },
   "th": {
@@ -593,7 +599,8 @@
       "gentleNote": "【บันทึกการวัด】บันทึกด้วยมาตรฐาน A-weighting (ความคลาดเคลื่อน ±1.5 dB(A)) เพื่อการประสานงานฉันมิตรระหว่างเพื่อนบ้าน",
       "methodologyHeader": "【ระเบียบวิธีการตรวจวัดทางเสียงและเกณฑ์อ้างอิง】",
       "recipientPlaceholder": "เช่น เพื่อนบ้านห้องด้านบน / ห้อง 402",
-      "senderPlaceholder": "เช่น เพื่อนบ้านห้องด้านล่าง / ห้อง 302"
+      "senderPlaceholder": "เช่น เพื่อนบ้านห้องด้านล่าง / ห้อง 302",
+      "badgeFree": "ฟรี"
     }
   },
   "vi": {
@@ -667,7 +674,8 @@
       "gentleNote": "【Ghi chú đo đạc】Đo theo trọng số A tiêu chuẩn (sai số tham chiếu ±1,5 dB(A)). Dùng cho mục đích trao đổi thiện chí giữa các hộ dân.",
       "methodologyHeader": "【Phương Pháp Đo Âm Học & Tiêu Chuẩn Áp Dụng】",
       "recipientPlaceholder": "Ví dụ: Căn hộ tầng trên / Phòng 402",
-      "senderPlaceholder": "Ví dụ: Căn hộ tầng dưới / Phòng 302"
+      "senderPlaceholder": "Ví dụ: Căn hộ tầng dưới / Phòng 302",
+      "badgeFree": "Miễn phí"
     }
   }
 }

@@ -31,10 +31,12 @@ function openCanvas(canvas,filename){
       popup.document.documentElement.style.background='#050914';
       popup.document.body.style.margin='0';
       popup.document.body.style.background='#050914';
+      const altText = appLanguage !== 'zh-CN' ? 'Acoustic Evidence Photo' : '声学证据照片';
+      const hintText = appLanguage !== 'zh-CN' ? 'Fullscreen Preview · Long-press or right-click to save' : '全屏查看 · 长按/右键可保存图片';
       popup.document.body.innerHTML=`<main data-viewer="fullscreenEvidenceViewer" style="width:100vw;height:100vh;display:grid;place-items:center;background:#050914;overflow:hidden">
-        <img src="${url}" alt="声学证据照片" style="width:100vw;height:100vh;object-fit:contain;display:block;background:#050914">
+        <img src="${url}" alt="${altText}" style="width:100vw;height:100vh;object-fit:contain;display:block;background:#050914">
         <div style="position:fixed;left:12px;right:12px;bottom:12px;display:flex;justify-content:center;gap:8px;pointer-events:none">
-          <span style="padding:7px 10px;border-radius:999px;background:rgba(5,9,20,.72);border:1px solid rgba(255,255,255,.14);color:rgba(214,232,250,.86);font:12px system-ui,sans-serif;backdrop-filter:blur(12px)">全屏查看 · 长按/右键可保存图片</span>
+          <span style="padding:7px 10px;border-radius:999px;background:rgba(5,9,20,.72);border:1px solid rgba(255,255,255,.14);color:rgba(214,232,250,.86);font:12px system-ui,sans-serif;backdrop-filter:blur(12px)">${hintText}</span>
         </div>
       </main>`;
       popup.addEventListener('beforeunload',()=>URL.revokeObjectURL(url),{once:true});
@@ -48,16 +50,18 @@ function openCanvas(canvas,filename){
 function openLastEvidencePhoto(){
   if(!lastEvidencePhotoUrl)return toast(appLanguage!=='zh-CN'?'No evidence photo is available yet.':'暂无可打开的声学证据照片。','warn');
   const popup=window.open('about:blank','_blank');
-  if(!popup)return toast(appLanguage!=='zh-CN'?'Pop-ups are blocked. Allow pop-ups and try again.':'浏览器阻止了新窗口，请允许弹窗后重试。','warn');
+  if(!popup)return toast(appLanguage!=='zh-CN'?'Pop-ups are blocked. Allow pop-ups and try again.':'浏览器阻止了新窗口，请允许弹出窗口后重试。','warn');
   popup.document.title='soundtest.pro-acoustic-evidence-preview.png';
   popup.document.documentElement.style.margin='0';
   popup.document.documentElement.style.background='#050914';
   popup.document.body.style.margin='0';
   popup.document.body.style.background='#050914';
+  const altText = appLanguage !== 'zh-CN' ? 'Acoustic Evidence Photo' : '声学证据照片';
+  const hintText = appLanguage !== 'zh-CN' ? 'Fullscreen Preview · Long-press or right-click to save' : '全屏查看 · 长按/右键可保存图片';
   popup.document.body.innerHTML=`<main data-viewer="fullscreenEvidenceViewer" style="width:100vw;height:100vh;display:grid;place-items:center;background:#050914;overflow:hidden">
-    <img src="${lastEvidencePhotoUrl}" alt="声学证据照片" style="width:100vw;height:100vh;object-fit:contain;display:block;background:#050914">
+    <img src="${lastEvidencePhotoUrl}" alt="${altText}" style="width:100vw;height:100vh;object-fit:contain;display:block;background:#050914">
     <div style="position:fixed;left:12px;right:12px;bottom:12px;display:flex;justify-content:center;gap:8px;pointer-events:none">
-      <span style="padding:7px 10px;border-radius:999px;background:rgba(5,9,20,.72);border:1px solid rgba(255,255,255,.14);color:rgba(214,232,250,.86);font:12px system-ui,sans-serif;backdrop-filter:blur(12px)">全屏查看 · 长按/右键可保存图片</span>
+      <span style="padding:7px 10px;border-radius:999px;background:rgba(5,9,20,.72);border:1px solid rgba(255,255,255,.14);color:rgba(214,232,250,.86);font:12px system-ui,sans-serif;backdrop-filter:blur(12px)">${hintText}</span>
     </div>
   </main>`;
 }

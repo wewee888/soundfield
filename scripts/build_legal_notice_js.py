@@ -299,8 +299,19 @@ template = r"""/* ==============================================================
       th: "🇹🇭 泰国 (公共卫生法 พ.ร.บ.การสาธารณสุข & ป.พ.พ.)",
       vi: "🇻🇳 越南 (民法典 Bộ luật Dân sự 2015 & QCVN 26)"
     };
+    const namesEn = {
+      zh: "🇨🇳 China (Civil Code & Noise Pollution Prevention Law)",
+      en: "🇺🇸/🇬🇧 US & UK (Common Law & Quiet Enjoyment)",
+      de: "🇩🇪 Germany (BGB §906 & TA Lärm Quiet Standards)",
+      fr: "🇫🇷 France (Code civil & Neighbor Nuisance Regulations)",
+      es: "🇪🇸 Spain & LatAm (Ley del Ruido & Horizontal Property)",
+      ja: "🇯🇵 Japan (Civil Code Neighbor Relations & Tolerable Limits)",
+      ko: "🇰🇷 South Korea (Multi-Family Housing Management Act & Floor Noise)",
+      th: "🇹🇭 Thailand (Public Health Act & Civil/Commercial Code)",
+      vi: "🇻🇳 Vietnam (Civil Code 2015 & National Noise Regulations)"
+    };
     if (isZh) return namesZh[jurKey] || LEGAL_DATA[jurKey]?.name || jurKey;
-    return LEGAL_DATA[jurKey]?.name || namesZh[jurKey] || jurKey;
+    return namesEn[jurKey] || LEGAL_DATA[jurKey]?.name || jurKey;
   }
 
   // --- UI Component & Runtime State ---
@@ -329,8 +340,8 @@ template = r"""/* ==============================================================
           <div class="lnm-title-wrap">
             <div class="lnm-badge-icon">⚖️</div>
             <div>
-              <h3 class="lnm-title" id="lnmTitle">邻里沟通函与法定催告函生成器</h3>
-              <p class="lnm-subtitle" id="lnmSubtitle">基于真实声学存证数据 · 3种沟通语气 · 9国/地区法律条文智能援引</p>
+              <h3 class="lnm-title" id="lnmTitle">Neighbor Notice & Statutory Demand Generator</h3>
+              <p class="lnm-subtitle" id="lnmSubtitle">Backed by Verified Acoustic Telemetry · 3 Tones · 9 Global Legal Jurisdictions</p>
             </div>
           </div>
           <button type="button" class="lnm-close-btn" id="lnmCloseBtn" aria-label="Close">×</button>
@@ -340,36 +351,36 @@ template = r"""/* ==============================================================
           <!-- Section: Tone Selection -->
           <div class="lnm-tone-section">
             <div class="lnm-section-label">
-              <span id="lnmToneLabel">沟通语气策略</span>
-              <span id="lnmToneHint" style="font-size:10.5px;color:#64748b;font-weight:normal;">阶梯式维权：温和提醒 → 理性交涉 → 严正催告</span>
+              <span id="lnmToneLabel">Communication Strategy</span>
+              <span id="lnmToneHint" style="font-size:10.5px;color:#64748b;font-weight:normal;">Escalation Path: Friendly Reminder → Formal Negotiation → Statutory Demand</span>
             </div>
             <div class="lnm-tone-grid">
               <!-- Gentle Card -->
               <div class="lnm-tone-card tone-gentle active" data-tone="gentle">
                 <div class="lnm-tone-header">
                   <span>🌱</span>
-                  <span id="lnmToneGentleTitle">温和友善提醒</span>
-                  <span class="lnm-free-badge" style="font-size:9.5px;background:rgba(34,197,94,0.2);color:#4ade80;padding:1px 6px;border-radius:10px;margin-left:auto;">免费开放</span>
+                  <span id="lnmToneGentleTitle">Gentle Friendly Reminder</span>
+                  <span class="lnm-free-badge" style="font-size:9.5px;background:rgba(34,197,94,0.2);color:#4ade80;padding:1px 6px;border-radius:10px;margin-left:auto;">FREE</span>
                 </div>
-                <div class="lnm-tone-desc" id="lnmToneGentleDesc">以和为贵，初次提醒，理解可能不知情，倡导友好邻里互助</div>
+                <div class="lnm-tone-desc" id="lnmToneGentleDesc">Good neighbor approach, assumes unintentional, asks for cooperative mindfulness</div>
               </div>
               <!-- Firm Card -->
               <div class="lnm-tone-card tone-firm" data-tone="firm">
                 <div class="lnm-tone-header">
                   <span>⚖️</span>
-                  <span id="lnmToneFirmTitle">正式理性交涉</span>
+                  <span id="lnmToneFirmTitle">Firm Rational Negotiation</span>
                   <span class="lnm-lock-badge" id="lnmLockFirm" style="font-size:9.5px;background:rgba(59,130,246,0.2);color:#60a5fa;padding:1px 6px;border-radius:10px;margin-left:auto;">🔒 PRO</span>
                 </div>
-                <div class="lnm-tone-desc" id="lnmToneFirmDesc">多次沟通未果，摆出客观声学超标数据，明确作息干扰与底线</div>
+                <div class="lnm-tone-desc" id="lnmToneFirmDesc">Presents empirical exceedance data, outlines sleep disturbance and clear boundaries</div>
               </div>
               <!-- Strict Card -->
               <div class="lnm-tone-card tone-strict" data-tone="strict">
                 <div class="lnm-tone-header">
                   <span>🛑</span>
-                  <span id="lnmToneStrictTitle">严正法务催告</span>
+                  <span id="lnmToneStrictTitle">Strict Statutory Demand</span>
                   <span class="lnm-lock-badge" id="lnmLockStrict" style="font-size:9.5px;background:rgba(239,68,68,0.2);color:#f87171;padding:1px 6px;border-radius:10px;margin-left:auto;">🔒 PRO</span>
                 </div>
-                <div class="lnm-tone-desc" id="lnmToneStrictDesc">正式法律告知书格式，援引法定侵权法规，设定整改限期与通牒</div>
+                <div class="lnm-tone-desc" id="lnmToneStrictDesc">Formal legal notice format, cites statutory codes, issues 48h cure deadline</div>
               </div>
             </div>
           </div>
@@ -377,39 +388,39 @@ template = r"""/* ==============================================================
           <!-- Section: Parameters Grid -->
           <div class="lnm-form-grid">
             <div class="lnm-field">
-              <label id="lnmLblRecipient" for="lnmInputRecipient">受函方称呼</label>
-              <input type="text" class="lnm-input" id="lnmInputRecipient" value="楼上邻居" placeholder="例如：楼上邻居 / 402室住户">
+              <label id="lnmLblRecipient" for="lnmInputRecipient">Recipient / Resident</label>
+              <input type="text" class="lnm-input" id="lnmInputRecipient" value="Upstairs Neighbor" placeholder="e.g. Upstairs Neighbor / Apt 402">
             </div>
             <div class="lnm-field">
-              <label id="lnmLblSender" for="lnmInputSender">发函方署名</label>
-              <input type="text" class="lnm-input" id="lnmInputSender" value="楼下邻居" placeholder="例如：楼下邻居 / 302室住户">
+              <label id="lnmLblSender" for="lnmInputSender">Sender / Your Name/Unit</label>
+              <input type="text" class="lnm-input" id="lnmInputSender" value="Downstairs Neighbor" placeholder="e.g. Downstairs Neighbor / Apt 302">
             </div>
             <div class="lnm-field">
-              <label id="lnmLblJurisdiction" for="lnmSelectJurisdiction">法律法域与语言 (9国标准)</label>
+              <label id="lnmLblJurisdiction" for="lnmSelectJurisdiction">Legal Jurisdiction & Language (9 Jurisdictions)</label>
               <select class="lnm-select" id="lnmSelectJurisdiction"></select>
             </div>
           </div>
 
           <!-- Section: Scenario Chips -->
           <div class="lnm-scenarios-section">
-            <div class="lnm-section-label" id="lnmScenarioLabel">常见噪音类型 (快速勾选)</div>
+            <div class="lnm-section-label" id="lnmScenarioLabel">Noise Categories (Select Applicable)</div>
             <div class="lnm-chips-wrap" id="lnmChipsWrap"></div>
           </div>
 
           <!-- Section: Live Preview Box -->
           <div class="lnm-preview-wrap">
             <div class="lnm-section-label" style="display:flex;justify-content:space-between;">
-              <span id="lnmPreviewLabel">文书实时预览</span>
-              <span id="lnmPreviewHint" style="font-size:10.5px;color:#64748b;font-weight:normal;">所见即所得 · 自动排版</span>
+              <span id="lnmPreviewLabel">Document Live Preview</span>
+              <span id="lnmPreviewHint" style="font-size:10.5px;color:#64748b;font-weight:normal;">WYSIWYG · Formatted Legal Draft</span>
             </div>
             <div class="lnm-preview-box" id="lnmPreviewBox">
               <div class="lnm-preview-header">
                 <div style="font-size:10px;letter-spacing:0.1em;color:#64748b;margin-bottom:2px;">SOUNDTEST.PRO · CIVILIAN ACOUSTIC EVIDENCE CHAIN</div>
-                <div class="lnm-preview-title" id="lnmDocTitle">邻里安宁生活作息友善提醒便条</div>
+                <div class="lnm-preview-title" id="lnmDocTitle">Friendly Neighborhood Note: Sound & Rest Hours</div>
                 <div class="lnm-preview-meta">
-                  <span id="lnmMetaRecipient">受函方：楼上邻居</span>
-                  <span id="lnmMetaSender">发函方：楼下邻居</span>
-                  <span id="lnmMetaDate">日期：2026-10-09</span>
+                  <span id="lnmMetaRecipient">Recipient: Upstairs Neighbor</span>
+                  <span id="lnmMetaSender">Sender: Downstairs Neighbor</span>
+                  <span id="lnmMetaDate">Date: 2026-10-09</span>
                 </div>
               </div>
               <div class="lnm-preview-body" id="lnmDocBody"></div>
@@ -417,19 +428,19 @@ template = r"""/* ==============================================================
               <!-- Acoustic Telemetry Badge Row -->
               <div class="lnm-telemetry-badge-row" id="lnmTelemetryBadgeRow">
                 <div class="lnm-tb-item">
-                  <span class="lnm-tb-label" id="lnmLblPeak">实测峰值 Lmax</span>
+                  <span class="lnm-tb-label" id="lnmLblPeak">Recorded Peak Lmax</span>
                   <span class="lnm-tb-val val-red" id="lnmValPeak">-- dB</span>
                 </div>
                 <div class="lnm-tb-item">
-                  <span class="lnm-tb-label" id="lnmLblAvg">等效均值 LAeq</span>
+                  <span class="lnm-tb-label" id="lnmLblAvg">Equivalent LAeq</span>
                   <span class="lnm-tb-val val-blue" id="lnmValAvg">-- dB</span>
                 </div>
                 <div class="lnm-tb-item">
-                  <span class="lnm-tb-label" id="lnmLblTime">监测时段</span>
+                  <span class="lnm-tb-label" id="lnmLblTime">Monitored Window</span>
                   <span class="lnm-tb-val val-cyan" id="lnmValTime" style="font-size:11.5px;">--:-- - --:--</span>
                 </div>
                 <div class="lnm-tb-item">
-                  <span class="lnm-tb-label" id="lnmLblHash">数字存证指纹</span>
+                  <span class="lnm-tb-label" id="lnmLblHash">Audit Fingerprint</span>
                   <span class="lnm-tb-val" id="lnmValHash" style="font-size:10px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">SHA-256...</span>
                 </div>
               </div>
@@ -438,7 +449,7 @@ template = r"""/* ==============================================================
               <div class="lnm-articles-box" id="lnmArticlesBox">
                 <div class="lnm-articles-title" id="lnmArticlesTitle">
                   <span>⚖️</span>
-                  <span id="lnmArticlesHeaderTitle">法定法规依据与法律条文</span>
+                  <span id="lnmArticlesHeaderTitle">Statutory Provisions & Jurisdictional Standards Cited</span>
                 </div>
                 <div id="lnmArticlesList"></div>
               </div>
@@ -449,16 +460,16 @@ template = r"""/* ==============================================================
         <!-- Footer Actions -->
         <div class="lnm-footer">
           <div class="lnm-footer-left">
-            <button type="button" class="lnm-btn lnm-btn-cancel" id="lnmBtnCancel">关闭</button>
+            <button type="button" class="lnm-btn lnm-btn-cancel" id="lnmBtnCancel">Close</button>
           </div>
           <div class="lnm-footer-right">
             <button type="button" class="lnm-btn lnm-btn-copy" id="lnmBtnCopy">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span id="lnmBtnCopyText">复制文本</span>
+              <span id="lnmBtnCopyText">Copy Text</span>
             </button>
             <button type="button" class="lnm-btn lnm-btn-docx" id="lnmBtnDocx">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              <span id="lnmBtnDocxText">导出 Word (.docx)</span>
+              <span id="lnmBtnDocxText">Export Word (.docx)</span>
               <span id="lnmDocxLockBadge" style="display:none;font-size:9.5px;background:rgba(255,255,255,0.25);padding:1px 5px;border-radius:6px;margin-left:4px;">🔒 PRO</span>
             </button>
           </div>

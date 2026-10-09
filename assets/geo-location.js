@@ -37,19 +37,19 @@ function externalMapUrl(loc,provider=defaultMapProvider()){
 
 function openRecordInMap(id,provider=defaultMapProvider()){
   const r=DB.records.find(x=>x.id===id);
-  if(!r?.loc)return toast('这条记录没有 GPS 坐标。','warn');
+  if(!r?.loc)return toast(appLanguage!=='zh-CN'?'This record has no GPS coordinates.':'这条记录没有 GPS 坐标。','warn');
   window.open(externalMapUrl(r.loc,provider),'_blank','noopener');
 }
 
 function openLatestLocationMap(){
   const r=latestGeoRecord();
-  if(!r)return toast('暂无带 GPS 的记录，请先在监测页获取位置并保存记录。','warn');
+  if(!r)return toast(appLanguage!=='zh-CN'?'No records with GPS yet. Acquire location in monitoring and save a record first.':'暂无带 GPS 的记录，请先在监测页获取位置并保存记录。','warn');
   openRecordInMap(r.id,defaultMapProvider());
 }
 
 function exportMapImage(){
   const c=document.getElementById('mapCvs');
-  if(!geoRecords().length)return toast('暂无带 GPS 的记录，无法导出地图。','warn');
+  if(!geoRecords().length)return toast(appLanguage!=='zh-CN'?'No records with GPS yet. Cannot export map.':'暂无带 GPS 的记录，无法导出地图。','warn');
   drawMap();
   downloadCanvas(c,`soundtest.pro-map-${new Date().toISOString().replace(/[:.]/g,'-')}.png`);
   toast(appLanguage!=='zh-CN'?'Noise distribution map exported.':'噪音分布地图已导出。','info');

@@ -27,7 +27,7 @@
   let recordedChunks = [];
   let recordTimer = null;
   let recordSeconds = 0;
-  let lang = 'zh-CN';
+  let lang = 'en-US';
 
   // Elements
   const videoEl = document.getElementById('camVideo');

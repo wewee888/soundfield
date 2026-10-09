@@ -19,10 +19,11 @@
     return JSON.stringify(value ?? null);
   }
 
-  function formatLocationDetails(details = {}, locale = 'zh-CN') {
-    const labels = locale === 'en-US'
-      ? { building: 'Building', floor: 'Floor', room: 'Room', point: 'Point' }
-      : { building: '楼栋', floor: '楼层', room: '房间', point: '测点' };
+  function formatLocationDetails(details = {}, locale = 'en-US') {
+    const isZh = locale === 'zh-CN' || (typeof locale === 'string' && locale.startsWith('zh'));
+    const labels = isZh
+      ? { building: '楼栋', floor: '楼层', room: '房间', point: '测点' }
+      : { building: 'Building', floor: 'Floor', room: 'Room', point: 'Point' };
     return ['building', 'floor', 'room', 'point']
       .filter((key) => details[key])
       .map((key) => `${labels[key]} ${details[key]}`)
