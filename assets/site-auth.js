@@ -1789,19 +1789,35 @@
             throw new Error(data.error || (isZh ? '创建订单失败' : 'Failed to create order'));
           }
 
-          if (qrLoading) qrLoading.style.display = 'none';
+          if (data.url && mobileAction && mobileBtn) {
+            mobileAction.style.display = isMobile ? 'block' : 'none';
+            mobileBtn.href = data.url;
+          }
+
+          const primaryQr = data.url_qrcode || (data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '');
+          const fallbackQr = data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '';
+
+          if (qrImg && (primaryQr || fallbackQr)) {
+            qrImg.onload = () => {
+              if (qrLoading) qrLoading.style.display = 'none';
+              qrImg.style.display = 'block';
+            };
+            qrImg.onerror = () => {
+              if (fallbackQr && qrImg.src !== fallbackQr) {
+                qrImg.src = fallbackQr;
+              } else if (qrLoading) {
+                qrLoading.style.display = 'flex';
+                qrLoading.innerHTML = `<span style="font-size:11.5px;color:#94a3b8;padding:8px;text-align:center;">${isZh ? '二维码加载受限，请点击下方按钮直接微信支付' : 'Tap the button below to complete payment in WeChat'}</span>`;
+              }
+            };
+            qrImg.src = primaryQr;
+          } else if (qrLoading) {
+            qrLoading.style.display = 'none';
+          }
 
           if (isMobile) {
-            if (mobileAction && mobileBtn && data.url) {
-              mobileAction.style.display = 'block';
-              mobileBtn.href = data.url;
-            }
-            if (statusText) statusText.textContent = isZh ? '请点击上方按钮唤起微信支付…' : 'Click the button above to pay in WeChat…';
+            if (statusText) statusText.textContent = isZh ? '请点击下方按钮唤起微信，或截图扫码支付…' : 'Tap button below to launch WeChat or scan QR…';
           } else {
-            if (qrImg && data.url_qrcode) {
-              qrImg.src = data.url_qrcode;
-              qrImg.style.display = 'block';
-            }
             if (statusText) statusText.textContent = isZh ? '请使用手机微信扫码支付，完成后自动激活…' : 'Please scan with WeChat, auto-activates when done…';
           }
 

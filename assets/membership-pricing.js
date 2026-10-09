@@ -472,8 +472,14 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
 
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-    if (qrcodeImg && data.url_qrcode) {
-      qrcodeImg.src = data.url_qrcode;
+    if (qrcodeImg && (data.url_qrcode || data.url)) {
+      const fallbackUrl = data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '';
+      qrcodeImg.onerror = () => {
+        if (fallbackUrl && qrcodeImg.src !== fallbackUrl) {
+          qrcodeImg.src = fallbackUrl;
+        }
+      };
+      qrcodeImg.src = data.url_qrcode || fallbackUrl;
     }
     if (h5Btn && data.url) {
       h5Btn.href = data.url;

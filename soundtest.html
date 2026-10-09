@@ -92,9 +92,7 @@
   display: flex !important;
   justify-content: center !important;
   pointer-events: auto !important;
-  background: rgba(8, 12, 22, 0.96) !important;
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  background: #080c16 !important;
   border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-bottom: none !important;
   border-left: none !important;
@@ -110,7 +108,7 @@
   width: 100% !important;
   max-width: 580px !important;
   margin: 0 auto !important;
-  padding: 3px 6px calc(3px + var(--safe-b, env(safe-area-inset-bottom, 0px))) !important;
+  padding: 3px 6px max(6px, env(safe-area-inset-bottom, 0px)) !important;
   border: none !important;
   border-radius: 0 !important;
   background: transparent !important;
@@ -2505,6 +2503,7 @@ let calOffset=DEFAULT_CAL_OFFSET_DB,micGainDb=2,alertTh=DEFAULT_ALERT_THRESHOLD_
 let silentTickCount=0,hasAttemptedAudioFallback=false;
 let autoRecOnThreshold=false,autoRecMinSeconds=3,autoRecAfterStopSeconds=10,autoRecAboveSince=0,autoRecTimeout=null,autoRecCooldownUntil=0;
 let sustainedAlertOn=false,sustainedAlertMinSeconds=30,sustainedAlertAboveSince=0,sustainedAlertFired=false;
+let instantAlertHoldUntil=0,instantAlertBelowSince=0;
 let autoDayNightThreshold=false,autoDayNightMode=false,dayThresholdDb=55,nightThresholdDb=45;
 const AUTO_REC_EVENTS_KEY='sf_auto_rec_events_v1';
 let autoRecEvents=[],autoRecCurrentEvent=null;
@@ -2901,6 +2900,9 @@ function setStartButtonText(){
 async function toggleRecAction(){
   if(isRec){
     await toggleRec();
+    if(isMon) await toggleMon();
+  } else if(isMon){
+    await toggleMon();
   } else {
     await primaryEvidenceAction();
   }
@@ -7238,7 +7240,7 @@ function tick(){
         ?`Sustained ${Math.round(susSec)}s above ${alertTh} dB — ${Math.round(inst)} ${weightLabel()}`
         :`持续超标 ${Math.round(susSec)} 秒，当前 ${Math.round(inst)} ${weightLabel()}，超过阈值 ${alertTh} dB`;
     }
-  }else{
+  }else if(sustainedAlertOn){
     sustainedAlertAboveSince=0;
     sustainedAlertFired=false;
     if(!alertsOn||!isAbove){
@@ -7246,12 +7248,35 @@ function tick(){
     }
   }
 
-  // ── Instant alert (only when sustained alert is off) ──
-  if(alertsOn&&!sustainedAlertOn&&isAbove){
-    ab.className=`alert show ${inst>=85?'ad':'aw'}`;
-    document.getElementById('alertMsg').textContent=appLanguage!=='zh-CN'
-      ?`Now ${Math.round(inst)} ${weightLabel()} · ${lv.l} · above ${alertTh} dB`
-      :`当前 ${Math.round(inst)} ${weightLabel()}，${lv.l}，已超过阈值 ${alertTh} dB`;
+  // ── Instant alert with acoustic hysteresis & hold timer (Anti-Jitter) ──
+  if(alertsOn&&!sustainedAlertOn){
+    if(isAbove){
+      instantAlertBelowSince=0;
+      instantAlertHoldUntil=Math.max(instantAlertHoldUntil, nowTs + 3500);
+      ab.className=`alert show ${inst>=85?'ad':'aw'}`;
+      document.getElementById('alertMsg').textContent=appLanguage!=='zh-CN'
+        ?`Now ${Math.round(inst)} ${weightLabel()} · ${lv.l} · above ${alertTh} dB`
+        :`当前 ${Math.round(inst)} ${weightLabel()}，${lv.l}，已超过阈值 ${alertTh} dB`;
+    }else{
+      // Acoustic hysteresis: sound must drop 2.5 dB below threshold to begin recovery
+      const isComfortablyBelow = inst < (alertTh - 2.5) || inst <= 0;
+      if(isComfortablyBelow){
+        if(!instantAlertBelowSince) instantAlertBelowSince = nowTs;
+      } else {
+        instantAlertBelowSince = 0;
+      }
+      const holdExpired = nowTs >= instantAlertHoldUntil;
+      const quietExpired = instantAlertBelowSince > 0 && (nowTs - instantAlertBelowSince >= 2500);
+      if(holdExpired && quietExpired){
+        ab.className='alert';
+        instantAlertHoldUntil = 0;
+        instantAlertBelowSince = 0;
+      }
+    }
+  }else if(!alertsOn){
+    ab.className='alert';
+    instantAlertHoldUntil = 0;
+    instantAlertBelowSince = 0;
   }
 
   // ── Update Sentry Surveillance HUD ──

@@ -314,5 +314,30 @@ test('soundtest.html Pro upgrade modal removes sample report link and locks Chin
   assert.equal(zhData.pricingTier, 'china_test');
 });
 
+test('WeChat Pay QR code rendering supports multi-tier fallback and mobile visibility in site-auth.js', () => {
+  const jsContent = fs.readFileSync(path.join(rootDir, 'assets', 'site-auth.js'), 'utf8');
+  assert.ok(jsContent.includes('primaryQr'), 'site-auth.js must compute primaryQr');
+  assert.ok(jsContent.includes('fallbackQr'), 'site-auth.js must compute fallbackQr');
+  assert.ok(jsContent.includes('qrImg.onerror'), 'site-auth.js must attach onerror fallback handler to qrImg');
+  assert.ok(jsContent.includes('qrImg.onload'), 'site-auth.js must attach onload handler to qrImg');
+});
+
+test('soundtest.html implements dual-stop, anti-jitter acoustic hysteresis, and flush bottom shell', () => {
+  const htmlContent = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+
+  // Dual-stop: stops both recording and monitoring in a single click
+  assert.ok(htmlContent.includes('if(isMon) await toggleMon();'), 'toggleRecAction must stop monitoring when stopping recording');
+
+  // Anti-jitter: acoustic hysteresis and hold duration
+  assert.ok(htmlContent.includes('instantAlertHoldUntil'), 'soundtest.html must define instantAlertHoldUntil');
+  assert.ok(htmlContent.includes('instantAlertBelowSince'), 'soundtest.html must define instantAlertBelowSince');
+  assert.ok(htmlContent.includes('nowTs + 3500'), 'soundtest.html must hold alert for minimum duration to prevent rapid flutter');
+  assert.ok(htmlContent.includes('alertTh - 2.5'), 'soundtest.html must require 2.5 dB hysteresis recovery');
+
+  // Solid flush bottom shell
+  assert.ok(htmlContent.includes('background: #080c16 !important;'), '.bottom-shell must use solid background to prevent bleed-through');
+  assert.ok(htmlContent.includes('max(6px, env(safe-area-inset-bottom, 0px)) !important;'), '.bottom-nav must pad above Android/iOS home indicator');
+});
+
 
 

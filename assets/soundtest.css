@@ -309,10 +309,10 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
   min-height:0;max-height:0;padding:0 12px;
   border-radius:var(--rs);font-size:12px;font-weight:600;border:0 solid transparent;
   margin:0;opacity:0;overflow:hidden;pointer-events:none;
-  transition:max-height .55s cubic-bezier(0.16,1,0.3,1),opacity .5s ease,margin .45s ease,padding .45s ease,border-width .3s ease;
+  transition:max-height .3s ease,opacity .25s ease,margin .25s ease,padding .25s ease;
 }
 .alert.show{
-  max-height:64px;min-height:34px;padding:8px 12px;margin-bottom:6px;
+  max-height:48px;min-height:34px;padding:7px 12px;margin-bottom:6px;
   opacity:1;border-width:.5px;pointer-events:auto;
 }
 .aw{background:var(--amber-d);color:var(--amber);border-color:rgba(255,181,32,.35)}
@@ -560,9 +560,7 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
   pointer-events:auto;
   margin:0;
   padding:0;
-  background:rgba(8,12,22,.96);
-  backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  background:#080c16;
   border-top:1px solid rgba(255,255,255,.08);
   border-bottom:none;border-left:none;border-right:none;
   box-shadow:0 -4px 24px rgba(0,0,0,.45);
@@ -570,7 +568,7 @@ body{font-family:var(--sans);color:var(--tx1);background:radial-gradient(circle 
 .bottom-nav{
   flex-shrink:0;display:flex;align-items:center;justify-content:space-around;
   width:100%;max-width:580px;margin:0 auto;
-  padding:3px 6px calc(3px + var(--safe-b, env(safe-area-inset-bottom, 0px)));
+  padding:3px 6px max(6px, env(safe-area-inset-bottom, 0px));
   border:none!important;border-radius:0!important;
   background:transparent!important;backdrop-filter:none!important;
   box-shadow:none!important;gap:2px;
@@ -2232,9 +2230,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     pointer-events:auto;
     padding:0;
     margin:0;
-    background:rgba(8,12,22,.96);
-    backdrop-filter:blur(20px) saturate(180%);
-    -webkit-backdrop-filter:blur(20px) saturate(180%);
+    background:#080c16;
     border-top:1px solid rgba(255,255,255,.08);
     box-shadow:0 -4px 24px rgba(0,0,0,.45);
   }
@@ -2248,7 +2244,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
     backdrop-filter:none!important;
     box-shadow:none!important;
     border:none!important;
-    padding:3px 10px!important;
+    padding:3px 6px max(6px, env(safe-area-inset-bottom, 0px))!important;
   }
   .db-stage{height:200px}
   .db-hero{padding:20px 14px 16px}

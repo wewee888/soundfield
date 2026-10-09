@@ -207,3 +207,45 @@ test('buildPlainText formats valid, professional notices across all 9 languages 
   }
 });
 
+test('legal notice jurisdiction names contain zero Chinese characters for Western locales', async () => {
+  const jsContent = fs.readFileSync(path.join(rootDir, 'assets', 'legal-notice.js'), 'utf8');
+  const fnMatch = jsContent.match(/function getJurisdictionName[\s\S]*?\n  \}/);
+  assert.ok(fnMatch, 'getJurisdictionName must be defined');
+
+  const getJurisdictionName = new Function('return ' + fnMatch[0])();
+  const testLangs = ['en', 'fr', 'de', 'es'];
+  const jurKeys = ['zh', 'en', 'de', 'fr', 'es', 'ja', 'ko', 'th', 'vi'];
+  const chineseCharRegex = /[\u4e00-\u9fff]/;
+
+  for (const lang of testLangs) {
+    for (const key of jurKeys) {
+      const name = getJurisdictionName(key, lang);
+      assert.ok(name && name.length > 0, `Name for ${key} in ${lang} must exist`);
+      assert.ok(!chineseCharRegex.test(name), `Jurisdiction ${key} in locale ${lang} ("${name}") must not contain Chinese characters`);
+    }
+  }
+});
+
+test('legal notice badgeFree is properly localized for all 9 languages without hardcoded Chinese fallback in non-zh', async () => {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const legalEngine = require(path.join(rootDir, 'assets', 'legal-notice.js'));
+  const data = legalEngine.getLegalData();
+
+  const expectedBadges = {
+    zh: '免费开放',
+    en: 'FREE',
+    de: 'Kostenlos',
+    fr: 'Gratuit',
+    es: 'Gratis',
+    ja: '無料',
+    ko: '무료',
+    th: 'ฟรี',
+    vi: 'Miễn phí'
+  };
+
+  for (const [lang, expected] of Object.entries(expectedBadges)) {
+    assert.strictEqual(data[lang]?.ui?.badgeFree, expected, `Language ${lang} badgeFree must be ${expected}`);
+  }
+});
+

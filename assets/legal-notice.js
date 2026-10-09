@@ -955,7 +955,7 @@
   }
 
   function getJurisdictionName(jurKey, lang) {
-    const isZh = typeof lang === 'string' && lang.toLowerCase().startsWith('zh');
+    const l = typeof lang === 'string' ? lang.toLowerCase() : 'en';
     const namesZh = {
       zh: "🇨🇳 中国 (民法典第288条相邻权 & 噪声污染防治法)",
       en: "🇺🇸/🇬🇧 欧美英美法系 (Common Law & Quiet Enjoyment)",
@@ -978,8 +978,44 @@
       th: "🇹🇭 Thailand (Public Health Act & Civil/Commercial Code)",
       vi: "🇻🇳 Vietnam (Civil Code 2015 & National Noise Regulations)"
     };
-    if (isZh) return namesZh[jurKey] || LEGAL_DATA[jurKey]?.name || jurKey;
-    return namesEn[jurKey] || LEGAL_DATA[jurKey]?.name || jurKey;
+    const namesFr = {
+      zh: "🇨🇳 Chine (Code civil et protection sonore)",
+      en: "🇺🇸/🇬🇧 États-Unis & Royaume-Uni (Common Law & Quiet Enjoyment)",
+      de: "🇩🇪 Allemagne (BGB §906 & TA Lärm)",
+      fr: "🇫🇷 France (Code civil & Troubles anormaux de voisinage)",
+      es: "🇪🇸 Espagne & Amérique latine (Ley del Ruido)",
+      ja: "🇯🇵 Japon (Code civil et limites de tolérance)",
+      ko: "🇰🇷 Corée du Sud (Loi sur l'habitat collectif)",
+      th: "🇹🇭 Thaïlande (Loi sur la santé publique)",
+      vi: "🇻🇳 Vietnam (Code civil 2015 & Normes de bruit)"
+    };
+    const namesDe = {
+      zh: "🇨🇳 China (Zivilgesetzbuch & Lärmschutzgesetz)",
+      en: "🇺🇸/🇬🇧 USA & UK (Common Law & Quiet Enjoyment)",
+      de: "🇩🇪 Deutschland (BGB §906 & TA Lärm)",
+      fr: "🇫🇷 Frankreich (Code civil & Nachbarschaftsstörungen)",
+      es: "🇪🇸 Spanien & LatAm (Ley del Ruido)",
+      ja: "🇯🇵 Japan (Zivilrecht Nachbarschaft & Toleranzgrenzen)",
+      ko: "🇰🇷 Südkorea (Wohnungsverwaltungsgesetz)",
+      th: "🇹🇭 Thailand (Gesundheitsgesetz)",
+      vi: "🇻🇳 Vietnam (Zivilgesetzbuch 2015)"
+    };
+    const namesEs = {
+      zh: "🇨🇳 China (Código Civil y Ley contra el Ruido)",
+      en: "🇺🇸/🇬🇧 EE.UU. y Reino Unido (Common Law & Quiet Enjoyment)",
+      de: "🇩🇪 Alemania (BGB §906 & TA Lärm)",
+      fr: "🇫🇷 Francia (Code civil & Inmisiones molestas)",
+      es: "🇪🇸 España y LatAm (Ley del Ruido & Propiedad Horizontal)",
+      ja: "🇯🇵 Japón (Código Civil & Relaciones de vecindad)",
+      ko: "🇰🇷 Corea del Sur (Ley de gestión de vivienda)",
+      th: "🇹🇭 Tailandia (Ley de salud pública)",
+      vi: "🇻🇳 Vietnam (Código Civil 2015)"
+    };
+    if (l.startsWith('zh')) return namesZh[jurKey] || jurKey;
+    if (l.startsWith('fr')) return namesFr[jurKey] || namesEn[jurKey] || jurKey;
+    if (l.startsWith('de')) return namesDe[jurKey] || namesEn[jurKey] || jurKey;
+    if (l.startsWith('es')) return namesEs[jurKey] || namesEn[jurKey] || jurKey;
+    return namesEn[jurKey] || jurKey;
   }
 
   // --- UI Component & Runtime State ---
