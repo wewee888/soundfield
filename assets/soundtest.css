@@ -1009,11 +1009,34 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 /* ==================== Stitch Dark-Mode Pro Live Meter ==================== */
 .stitch-meter-card{position:relative;background:radial-gradient(130% 115% at 50% 0%,#151923 0%,#0d1017 65%,#080b11 100%);border:1px solid #1f2536;border-radius:clamp(14px, 2vh, 20px);padding:clamp(8px, 1.3vh, 14px) clamp(10px, 2vw, 16px) clamp(6px, 1vh, 10px);box-shadow:0 16px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);overflow:hidden;text-align:center;margin-bottom:clamp(6px, 1vh, 10px)}
 .stitch-ambient-glow{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:220px;height:220px;background:radial-gradient(circle,rgba(0,242,254,.14) 0%,rgba(0,242,254,0) 70%);pointer-events:none;filter:blur(28px)}
-.stitch-meter-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:clamp(2px, 0.5vh, 6px);position:relative;z-index:2}
-.stitch-cal-pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.28);font-family:var(--mono,monospace);font-size:clamp(8.5px, 1.2vh, 9.5px);color:#10b981}
-.stitch-ping-dot{width:5px;height:5px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:stitchPing 2s infinite cubic-bezier(0,0,0.2,1)}
+.stitch-meter-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:clamp(4px, 0.8vh, 8px);position:relative;z-index:2;gap:8px}
+.stitch-meter-header .stitch-cal-pill,
+.stitch-meter-header .status-pill{
+  height:24px;
+  box-sizing:border-box;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:0 10px;
+  border-radius:999px;
+  white-space:nowrap;
+  font-size:clamp(8.5px, 1.2vh, 10px);
+  line-height:1;
+  flex-shrink:0;
+  cursor:pointer;
+  transition:all .18s ease;
+  user-select:none;
+}
+.stitch-meter-header .stitch-cal-pill{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.28);font-family:var(--mono,monospace);color:#10b981}
+.stitch-meter-header .stitch-cal-pill:hover{background:rgba(16,185,129,.18);border-color:rgba(16,185,129,.45)}
+.stitch-ping-dot{width:5px;height:5px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:stitchPing 2s infinite cubic-bezier(0,0,0.2,1);flex-shrink:0}
 @keyframes stitchPing{0%{transform:scale(.95);opacity:.9}50%{transform:scale(1.3);opacity:.4}100%{transform:scale(.95);opacity:.9}}
-.stitch-cal-time{color:#656d7b;font-size:8.5px}
+.stitch-cal-time{color:#656d7b;font-size:8.5px;margin-left:2px}
+.stitch-meter-header .status-pill{background:rgba(13,21,37,.72);border:1px solid rgba(42,255,212,.22);font-family:var(--mono,monospace);color:var(--tx2,#94a3b8);box-shadow:inset 0 0 10px rgba(42,255,212,.04)}
+.stitch-meter-header .status-pill:hover{border-color:rgba(42,255,212,.45);color:#f1f5f9}
+.stitch-meter-header .status-pill .stxt{white-space:nowrap;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.stitch-meter-header .status-pill.sentry-mode{border-color:rgba(192,132,252,.45);background:rgba(192,132,252,.12);color:#c084fc}
+.stitch-meter-header .status-pill.sentry-mode .sdot{background:#c084fc;box-shadow:0 0 7px #c084fc}
 .stitch-gauge-container{position:relative;width:clamp(156px, 22vh, 212px);height:clamp(156px, 22vh, 212px);margin:0 auto;display:flex;align-items:center;justify-content:center}
 .stitch-gauge-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
 .stitch-track-bg{stroke:#181d29}

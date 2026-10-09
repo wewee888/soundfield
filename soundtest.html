@@ -1405,18 +1405,19 @@
     <!-- Background Ambient Glow -->
     <div class="stitch-ambient-glow"></div>
 
-    <!-- Top Meter Meta Labels -->
+    <!-- Top Meter Meta Labels (Plan 1: Symmetrical Dual-Pill Acoustic HUD) -->
     <div class="stitch-meter-header">
-      <div class="stitch-cal-pill">
+      <div class="stitch-cal-pill" onclick="openSettingsDrawerTab('measure')" role="button" tabindex="0" title="Click to adjust acoustic weighting & calibration">
         <span class="stitch-ping-dot"></span>
         <span class="stitch-cal-txt" id="dbWeight">dBA · FAST</span>
         <span class="stitch-cal-time">125ms</span>
       </div>
-      <div class="status-pill" id="statusPill">
+      <div class="status-pill" id="statusPill" onclick="toggleMon()" role="button" tabindex="0" title="Click to start/toggle live monitoring">
         <span class="sdot" id="sdot"></span>
         <span class="stxt" id="stxt">Ready</span>
       </div>
-      <button class="sentry-hero-badge" id="heroSentryBtn" onclick="triggerSentryModeHook()" type="button" title="Auto-record and capture when night noise threshold is exceeded">
+      <!-- heroSentryBtn kept for JS hook backwards compatibility; Sentry Mode is centrally accessed in the Evidence Modes switcher -->
+      <button class="sentry-hero-badge" id="heroSentryBtn" onclick="triggerSentryModeHook()" type="button" title="Auto-record and capture when night noise threshold is exceeded" style="display:none!important;" aria-hidden="true">
         <span>🌙</span>
         <span id="heroSentryBtnText">Sentry Mode</span>
       </button>
@@ -4426,6 +4427,10 @@ function syncEvidenceModeUi(){
     if (textEl) {
       textEl.textContent = isSentryActive ? (sentryCopy.on || (isZh ? '哨兵已开启' : 'Sentry On')) : (sentryCopy.label || (isZh ? '哨兵模式' : 'Sentry Mode'));
     }
+    const stPill = document.getElementById('statusPill');
+    if (stPill) {
+      stPill.classList.toggle('sentry-mode', isSentryActive);
+    }
   }
   // Decoupled camera panel: permanently hidden in soundtest.html to keep core tool clean & uncluttered
   const camPanel = document.getElementById('cameraModePanel');
@@ -6384,6 +6389,8 @@ function updateWeightUi(){
     const tm=timeWeight==='S'?'Slow':'Fast';
     el.textContent=`${wt} · ${tm}`;
   }
+  const timeEl=document.querySelector('.stitch-cal-time');
+  if(timeEl) timeEl.textContent=timeWeight==='S'?'1s':'125ms';
 }
 
 function setWeight(w){
