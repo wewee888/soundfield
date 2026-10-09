@@ -2294,45 +2294,45 @@
       <div class="active-member-dossier" id="activeMemberDossier" style="display:none">
         <div class="dossier-header">
           <div class="dossier-tier-wrap">
-            <span class="dossier-tier-badge" id="dossierTierBadge">👑 TEAM 超级管理员</span>
-            <span class="dossier-valid-pill" id="dossierValidPill">终身永久授权</span>
+            <span class="dossier-tier-badge" id="dossierTierBadge">👑 TEAM Super Admin</span>
+            <span class="dossier-valid-pill" id="dossierValidPill">Lifetime License</span>
           </div>
-          <div class="dossier-email" id="dossierEmail">wewee1@gmail.com</div>
+          <div class="dossier-email" id="dossierEmail">member@soundtest.pro</div>
         </div>
 
         <div class="dossier-meta-grid">
           <div class="dossier-meta-item">
-            <div class="dossier-meta-k" id="dossierLblStatus">会员状态</div>
-            <div class="dossier-meta-v text-emerald" id="dossierValStatus">已认证 · 全功能生效中</div>
+            <div class="dossier-meta-k" id="dossierLblStatus">Membership Status</div>
+            <div class="dossier-meta-v text-emerald" id="dossierValStatus">Active &amp; Verified</div>
           </div>
           <div class="dossier-meta-item">
-            <div class="dossier-meta-k" id="dossierLblExpiry">有效期至</div>
+            <div class="dossier-meta-k" id="dossierLblExpiry">Valid Until</div>
             <div class="dossier-meta-v" id="dossierValExpiry">2099-12-31</div>
           </div>
           <div class="dossier-meta-item">
-            <div class="dossier-meta-k" id="dossierLblSecurity">存证安全级别</div>
-            <div class="dossier-meta-v text-cyan" id="dossierValSecurity">SHA-256 司法采信级</div>
+            <div class="dossier-meta-k" id="dossierLblSecurity">Security Level</div>
+            <div class="dossier-meta-v text-cyan" id="dossierValSecurity">SHA-256 Forensic Grade</div>
           </div>
           <div class="dossier-meta-item">
-            <div class="dossier-meta-k" id="dossierLblSync">多端同步</div>
-            <div class="dossier-meta-v text-emerald" id="dossierValSync">手机/电脑端互通</div>
+            <div class="dossier-meta-k" id="dossierLblSync">Multi-Device Sync</div>
+            <div class="dossier-meta-v text-emerald" id="dossierValSync">Active (Mobile/Desktop)</div>
           </div>
         </div>
 
-        <div class="dossier-benefits-title" id="dossierBenefitsTitle">已解锁 VIP 专业特权</div>
+        <div class="dossier-benefits-title" id="dossierBenefitsTitle">Unlocked VIP Privileges</div>
         <div class="dossier-benefits-grid" id="dossierBenefitsGrid">
-          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB1">无限制无水印高清声学证据导出</span></div>
-          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB2">🌙 夜间噪音超标自动抓拍与阈值录音</span></div>
-          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB3">IEC 61672-1 标定与 SHA-256 司法数字存证</span></div>
-          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB4">双声道高精 FFT 频谱与 LAeq / LN 参量矩阵</span></div>
-          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB5">长期纠纷综合评估档案 (Dossier) 生成</span></div>
-          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB6">团队多设备协同与专属高优先通道</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB1">Unlimited Watermark-Free HD Acoustic Exports</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB2">🌙 Overnight Sentry Auto-Capture &amp; Threshold Recording</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB3">IEC 61672-1 Calibration &amp; SHA-256 Cryptographic Stamp</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB4">Dual-Channel FFT Spectrum &amp; LAeq / LN Matrix</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB5">Long-Term Disturbance Assessment Dossier Generation</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB6">Multi-Device Team Fleet &amp; Root Admin Access</span></div>
         </div>
 
         <div class="dossier-actions">
-          <a class="btn b-cyan" id="dossierManageBtn" href="auth.html" target="_blank">管理账户与凭证</a>
-          <button class="btn" id="dossierRefreshBtn" onclick="lookupMembership()" type="button">刷新权限</button>
-          <button class="btn b-red-outline" id="dossierLogoutBtn" onclick="logoutMembership()" type="button">退出登录</button>
+          <a class="btn b-cyan" id="dossierManageBtn" href="auth.html" target="_blank">Manage Account &amp; Keys</a>
+          <button class="btn" id="dossierRefreshBtn" onclick="lookupMembership()" type="button">Refresh License</button>
+          <button class="btn b-red-outline" id="dossierLogoutBtn" onclick="logoutMembership()" type="button">Sign Out</button>
         </div>
       </div>
 
@@ -2497,27 +2497,41 @@ const CALIBRATION_PRESETS={
     offset:-12,
     label:'PC / Desktop Browser',
     zh:'PC 桌面浏览器',
-    reason:'已预置专业噪声计校对基准（-12 dB 偏移），桌面声卡实测典型误差约 ±2~5 dB。',
+    reason:'Preset baseline calibrated against reference meters (-12 dB offset, typical error approx ±2~5 dB).',
+    zhReason:'已预置专业噪声计校对基准（-12 dB 偏移），桌面声卡实测典型误差约 ±2~5 dB。',
   },
   'tablet-browser':{
     offset:-8,
     label:'Tablet Browser',
     zh:'平板浏览器',
-    reason:'已预置专业噪声计校对基准（-8 dB 偏移），平板麦克风实测典型误差约 ±2~4 dB。',
+    reason:'Preset baseline calibrated against reference meters (-8 dB offset, typical error approx ±2~4 dB).',
+    zhReason:'已预置专业噪声计校对基准（-8 dB 偏移），平板麦克风实测典型误差约 ±2~4 dB。',
   },
   'android-browser':{
     offset:-8,
     label:'Android Browser',
     zh:'Android 浏览器',
-    reason:'已预置专业噪声计校对基准（-8 dB 偏移），主流安卓机型实测典型误差约 ±2~4 dB。',
+    reason:'Preset baseline calibrated against reference meters (-8 dB offset, typical error approx ±2~4 dB).',
+    zhReason:'已预置专业噪声计校对基准（-8 dB 偏移），主流安卓机型实测典型误差约 ±2~4 dB。',
   },
   'ios-browser':{
     offset:-6,
     label:'iPhone / iPad Safari',
     zh:'iPhone / iPad',
-    reason:'已预置专业噪声计校对基准（-6 dB 偏移），iOS 麦克风高一致性实测典型误差约 ±1~3 dB。',
+    reason:'Preset baseline calibrated against reference meters (-6 dB offset, high consistency error approx ±1~3 dB).',
+    zhReason:'已预置专业噪声计校对基准（-6 dB 偏移），iOS 麦克风高一致性实测典型误差约 ±1~3 dB。',
   },
 };
+function getPresetLabel(preset){
+  if(!preset)return '';
+  if(typeof appLanguage==='string'&&appLanguage.startsWith('zh'))return preset.zh||preset.label;
+  return preset.label||preset.zh;
+}
+function getPresetReason(preset){
+  if(!preset)return '';
+  if(typeof appLanguage==='string'&&appLanguage.startsWith('zh'))return preset.zhReason||preset.reason;
+  return preset.reason||preset.zhReason;
+}
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
@@ -4078,7 +4092,7 @@ function closeLocationCorrectionModal(){
 
 function saveLocationCorrection(){
   if (!isProActive()) {
-    showPaywall('位置修正与专属测点水印');
+    showPaywall(typeof appLanguage === 'string' && appLanguage.startsWith('zh') ? '位置修正与专属测点水印' : 'Custom Location & Station Watermark');
     return;
   }
   const place = document.getElementById('lcmPlaceInput')?.value.trim() || '';
@@ -4247,17 +4261,18 @@ async function copyCurrentLink(){
   const url=location.href.split('#')[0];
   if(navigator.clipboard?.writeText){
     await navigator.clipboard.writeText(url);
-    toast('链接已复制，请粘贴到系统浏览器打开。','info',5200);
+    toast(t('toasts.linkCopied', 'Link copied. Please paste into your system browser.'),'info',5200);
   }else{
-    toast('当前浏览器不支持自动复制，请从地址栏手动复制链接。','warn',5600);
+    toast(t('toasts.clipboardManual', 'Automatic copy unsupported. Please copy from the address bar manually.'),'warn',5600);
   }
 }
 
 function handleWeChatPermissionFallback(){
   const warning=document.getElementById('wechatBrowserWarning');
   warning?.classList.add('show');
-  showCapTemporarily('warn','微信内置浏览器限制','微信内置浏览器可能拦截麦克风、摄像头和定位授权；请用右上角菜单选择“在浏览器打开”。','WECHAT',10000);
-  toast('微信内置浏览器可能不支持网页录音授权，请在系统浏览器打开。','warn',6200);
+  const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
+  showCapTemporarily('warn', isZh ? '内置浏览器限制' : 'In-app browser restriction', isZh ? '内置浏览器可能拦截麦克风、摄像头和定位授权；请在右上角菜单中选择在系统浏览器中打开。' : 'In-app browser may restrict microphone or camera access. Please open in your system browser.', 'BROWSER', 10000);
+  toast(t('toasts.wechatBrowserWarn', 'In-app browser may restrict microphone access. Please open in system browser.'),'warn',6200);
 }
 
 function setSettingsSection(section='measure',opts={}){
@@ -5199,7 +5214,6 @@ async function fetchMembershipConfig(){
 }
 
 function populateActiveMemberDossier() {
-  const isZh = appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh'));
   const plan = (membershipState?.plan || currentPlan || 'pro').toLowerCase();
   const isSuper = Boolean(
     (membershipState?.email && membershipState.email.toLowerCase() === 'wewee1@gmail.com') ||
@@ -5213,15 +5227,15 @@ function populateActiveMemberDossier() {
   const tierBadgeEl = document.getElementById('dossierTierBadge');
   if (tierBadgeEl) {
     if (isSuper) {
-      tierBadgeEl.textContent = isZh ? '👑 TEAM 超级管理员' : '👑 TEAM Super Admin';
+      tierBadgeEl.textContent = t('dossier.tierSuper', '👑 TEAM Super Admin');
     } else if (isLifetime) {
-      tierBadgeEl.textContent = isZh ? '💎 终身永久授权会员' : '💎 Lifetime Pro License';
+      tierBadgeEl.textContent = t('dossier.tierLifetime', '💎 Lifetime Pro License');
     } else if (isYearly) {
-      tierBadgeEl.textContent = isZh ? '👑 PRO 年卡会员' : '👑 PRO Annual Member';
+      tierBadgeEl.textContent = t('dossier.tierYearly', '👑 PRO Annual Member');
     } else if (isSingle) {
-      tierBadgeEl.textContent = isZh ? '⭐ 单次报告特权' : '⭐ Single Report Pass';
+      tierBadgeEl.textContent = t('dossier.tierSingle', '⭐ Single Report Pass');
     } else {
-      tierBadgeEl.textContent = isZh ? '👑 PRO 专业会员' : '👑 PRO Member';
+      tierBadgeEl.textContent = t('dossier.tierPro', '👑 PRO Member');
     }
   }
 
@@ -5229,11 +5243,11 @@ function populateActiveMemberDossier() {
   const validPill = document.getElementById('dossierValidPill');
   if (validPill) {
     if (membershipState.renewsAt === '2099-12-31' || isSuper || isLifetime) {
-      validPill.textContent = isZh ? '永久有效 · 终身授权' : 'Permanent · Lifetime License';
+      validPill.textContent = t('dossier.permanentLicense', 'Permanent · Lifetime License');
     } else if (membershipState.renewsAt) {
-      validPill.textContent = isZh ? `续期至 ${membershipState.renewsAt}` : `Renews: ${membershipState.renewsAt}`;
+      validPill.textContent = `${t('dossier.renewsPrefix', 'Renews: ')}${membershipState.renewsAt}`;
     } else {
-      validPill.textContent = isZh ? '长期有效' : 'Active Pass';
+      validPill.textContent = t('dossier.activePass', 'Active Pass');
     }
   }
 
@@ -5244,35 +5258,37 @@ function populateActiveMemberDossier() {
   }
 
   // 4. Meta labels and values
-  setText('dossierLblStatus', isZh ? '会员状态' : 'Status');
-  setText('dossierValStatus', isZh ? '已认证 · 全功能生效中' : 'Active & Verified');
-  setText('dossierLblExpiry', isZh ? '有效期至' : 'Valid Until');
-  setText('dossierValExpiry', (membershipState.renewsAt === '2099-12-31' || isSuper || isLifetime) ? (isZh ? '2099-12-31 (永久)' : '2099-12-31 (Permanent)') : (membershipState.renewsAt || 'Permanent'));
-  setText('dossierLblSecurity', isZh ? '存证安全级别' : 'Security Level');
-  setText('dossierValSecurity', isZh ? 'SHA-256 司法采信级' : 'SHA-256 Forensic Grade');
-  setText('dossierLblSync', isZh ? '多端同步' : 'Multi-Device Sync');
-  setText('dossierValSync', isZh ? '已连接 (手机/电脑端互通)' : 'Active (Mobile/Desktop Sync)');
+  setText('dossierLblStatus', t('dossier.lblStatus', 'Membership Status'));
+  setText('dossierValStatus', t('dossier.valStatus', 'Active & Verified'));
+  setText('dossierLblExpiry', t('dossier.lblExpiry', 'Valid Until'));
+  setText('dossierValExpiry', (membershipState.renewsAt === '2099-12-31' || isSuper || isLifetime)
+    ? t('dossier.valExpiryPermanent', '2099-12-31 (Permanent)')
+    : (membershipState.renewsAt || 'Permanent'));
+  setText('dossierLblSecurity', t('dossier.lblSecurity', 'Security Level'));
+  setText('dossierValSecurity', t('dossier.valSecurity', 'SHA-256 Forensic Grade'));
+  setText('dossierLblSync', t('dossier.lblSync', 'Multi-Device Sync'));
+  setText('dossierValSync', t('dossier.valSync', 'Active (Mobile/Desktop Sync)'));
 
   // 5. Benefits Title & Items
-  setText('dossierBenefitsTitle', isZh ? '已解锁 VIP 专业特权' : 'Unlocked VIP Privileges');
-  setText('dossierB1', isZh ? '无限制无水印高清声学证据导出' : 'Unlimited Watermark-Free HD Acoustic Exports');
-  setText('dossierB2', isZh ? '🌙 夜间噪音超标自动抓拍与阈值录音' : '🌙 Overnight Sentry Auto-Capture & Threshold Recording');
-  setText('dossierB3', isZh ? 'IEC 61672-1 标定与 SHA-256 司法数字存证' : 'IEC 61672-1 Calibration & SHA-256 Cryptographic Stamp');
-  setText('dossierB4', isZh ? '双声道高精 FFT 频谱与 LAeq / LN 参量矩阵' : 'Dual-Channel FFT Spectrum & LAeq/LN Matrix');
-  setText('dossierB5', isZh ? '长期纠纷综合评估档案 (Dossier) 生成' : 'Long-Term Disturbance Assessment Dossier Generation');
+  setText('dossierBenefitsTitle', t('dossier.benefitsTitle', 'Unlocked VIP Privileges'));
+  setText('dossierB1', t('dossier.b1', 'Unlimited Watermark-Free HD Acoustic Exports'));
+  setText('dossierB2', t('dossier.b2', '🌙 Overnight Sentry Auto-Capture & Threshold Recording'));
+  setText('dossierB3', t('dossier.b3', 'IEC 61672-1 Calibration & SHA-256 Cryptographic Stamp'));
+  setText('dossierB4', t('dossier.b4', 'Dual-Channel FFT Spectrum & LAeq / LN Matrix'));
+  setText('dossierB5', t('dossier.b5', 'Long-Term Disturbance Assessment Dossier Generation'));
   setText('dossierB6', isSuper 
-    ? (isZh ? '团队多设备协同与超级管理后台权限' : 'Multi-Device Team Fleet & Root Admin Access')
-    : (isZh ? '手机/电脑端凭证秒级同步与优先服务' : 'Mobile/Desktop Instant Sync & Priority Service')
+    ? t('dossier.b6_team', 'Multi-Device Team Fleet & Root Admin Access')
+    : t('dossier.b6_user', 'Mobile/Desktop Instant Sync & Priority Service')
   );
 
   // 6. Action buttons
   const manageBtn = document.getElementById('dossierManageBtn');
   if (manageBtn) {
     manageBtn.href = getLocalizedAuthUrl();
-    manageBtn.textContent = isZh ? '管理账户与凭证' : 'Manage Account & Keys';
+    manageBtn.textContent = t('dossier.manageBtn', 'Manage Account & Keys');
   }
-  setText('dossierRefreshBtn', isZh ? '刷新权限' : 'Refresh License');
-  setText('dossierLogoutBtn', isZh ? '退出登录' : 'Sign Out');
+  setText('dossierRefreshBtn', t('dossier.refreshBtn', 'Refresh License'));
+  setText('dossierLogoutBtn', t('dossier.logoutBtn', 'Sign Out'));
 }
 
 function renderMembershipPanel(){
@@ -5944,9 +5960,9 @@ async function copyFeedbackReport(){
   const payload=buildFeedbackPayload();
   if(navigator.clipboard?.writeText){
     await navigator.clipboard.writeText(payload);
-    toast('反馈内容已复制，可粘贴给客服或开发人员。','info',5200);
+    toast(t('toasts.feedbackCopied', 'Feedback report copied to clipboard.'),'info',5200);
   }else{
-    toast('当前浏览器不支持复制，请下载反馈包。','warn',5200);
+    toast(t('toasts.feedbackCopyFail', 'Clipboard unavailable. Please download the diagnostics package.'),'warn',5200);
   }
 }
 
@@ -5958,7 +5974,7 @@ function downloadFeedbackReport(){
   a.download=`soundtest.pro-feedback-${currentPlan}-${new Date().toISOString().replace(/[:.]/g,'-')}.md`;
   a.click();
   URL.revokeObjectURL(url);
-  toast('反馈包已生成。','info');
+  toast(t('toasts.feedbackPackGenerated', 'Diagnostics package generated.'),'info');
 }
 
 function detectPlatformProfile(){
@@ -6001,14 +6017,26 @@ function setCalibrationPreset(key,{save=true,notify=true}={}){
   if(calV)calV.textContent=(calOffset>=0?'+':'')+calOffset+' dB';
   renderCalibrationPresetInfo();
   if(save)saveState();
-  if(notify)toast(`已应用${preset.zh}推荐校准基线：${calOffset} dB。`,'info',5200);
+  if(notify){
+    const lbl=getPresetLabel(preset);
+    const msg=t('toasts.applied', 'Applied {label} calibration baseline: {offset} dB.')
+      .replace('{label}', lbl)
+      .replace('{offset}', String(calOffset));
+    toast(msg,'info',5200);
+  }
 }
 
 function renderCalibrationPresetInfo(){
   const preset=getCalibrationPreset();
   const recommended=getRecommendedCalibrationPreset();
   const info=document.getElementById('calibrationPresetInfo');
-  if(info)info.innerHTML=`<strong>${preset.zh}：${preset.offset} dB</strong>${esc(preset.reason)} 当前设备推荐为 ${recommended.zh}（${recommended.offset} dB）。`;
+  const curLabel=getPresetLabel(preset);
+  const curReason=getPresetReason(preset);
+  const recLabel=getPresetLabel(recommended);
+  const recNote=typeof appLanguage==='string'&&appLanguage.startsWith('zh')
+    ? `当前设备推荐为 ${recLabel}（${recommended.offset} dB）。`
+    : `Recommended for this device: ${recLabel} (${recommended.offset} dB).`;
+  if(info)info.innerHTML=`<strong>${esc(curLabel)}：${preset.offset} dB</strong>${esc(curReason)} ${esc(recNote)}`;
   renderCalibrationErrorRange();
 }
 
@@ -6371,7 +6399,7 @@ const _saveStateImpl=function(){
       calibrationBaseline:CALIBRATION_BASELINE,
       records:DB.records.map(r=>({...r,url:undefined,time:r.time instanceof Date?r.time.toISOString():r.time}))
     }));
-  }catch(e){toast('本地存储空间不足，记录可能无法保存。','warn');}
+  }catch(e){toast(typeof appLanguage==='string'&&appLanguage.startsWith('zh')?'本地存储空间不足，记录可能无法保存。':'Storage full. Records may not be saved.','warn');}
 };
 const _debouncedSave=(window.__sfUtils&&window.__sfUtils.debounce)
   ?window.__sfUtils.debounce(_saveStateImpl,500)
@@ -6484,7 +6512,7 @@ function loadState(){
     el('dayNightTog2')?.classList.toggle('on',autoDayNightMode);el('dayNightTog2')?.setAttribute('aria-checked',autoDayNightMode);
     const dnOpts2=el('dayNightOpts2');if(dnOpts2)dnOpts2.style.display=autoDayNightMode?'flex':'none';
     if(autoDayNightMode)syncDayNightBadge();
-  }catch(e){console.error('[loadState]',e);toast('历史数据读取失败，已使用空记录启动。','warn');}
+  }catch(e){console.error('[loadState]',e);toast(t('toasts.loadStateFailed', 'Failed to load history data. Started with empty records.'),'warn');}
 }
 
 function openMediaDb(){
@@ -6516,7 +6544,7 @@ async function saveMediaBlob(id,blob){
     await withMediaStore('readwrite',store=>store.put(blob,String(id)));
     return true;
   }catch(e){
-    toast('视频保存到本地失败，刷新后可能无法下载。','warn');
+    toast(t('toasts.videoSaveFailed', 'Failed to save video locally. Download may be unavailable after refresh.'),'warn');
     return false;
   }
 }
@@ -6650,7 +6678,7 @@ function downloadLocalMetadataBackup(){
   a.download=`soundtest.pro-backup-${new Date().toISOString().slice(0,10)}.json`;
   a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
-  toast('本机备份 JSON 已导出；音视频请在记录页单独保存。','info',6200);
+  toast(t('toasts.backupExported', 'JSON backup exported. Save media files separately from Records.'),'info',6200);
 }
 
 function syncSeg(id,attr,val){
@@ -7753,7 +7781,7 @@ async function toggleRec(){
     try{
       const storageStatus=await requestPersistentRecordingStorage();
       if(storageStatus.supported&&!storageStatus.persisted){
-        toast('浏览器未授予持久存储；停止后请立即在记录页保存文件。','warn',6200);
+        toast(t('toasts.persistStorageWarn', 'Persistent storage not granted. Please save files from Records before closing.'),'warn',6200);
       }
       chunks=[];
       recHasVideo=!!(camStream&&camStream.getVideoTracks().length);
@@ -7773,7 +7801,7 @@ async function toggleRec(){
       const mime=mimeCandidates.find(t=>MediaRecorder.isTypeSupported?.(t));
       mediaRec=mime?new MediaRecorder(recordingStream,{mimeType:mime}):new MediaRecorder(recordingStream);
       mediaRec.ondataavailable=e=>{if(e.data&&e.data.size>0)chunks.push(e.data);};
-      mediaRec.onerror=()=>{toast('录制过程中出现错误，已尝试保存已有片段。','err');};
+      mediaRec.onerror=()=>{toast(t('toasts.recError', 'Error during recording. Attempted to save existing chunks.'),'err');};
       mediaRec.onstop=saveRec;
       mediaRec.start(1000);
       isRec=true;recStart=new Date();let s=0;
@@ -7788,7 +7816,7 @@ async function toggleRec(){
       const vrb=document.getElementById('videoRecBtn');
       rb.className='rec-btn recording-state';
       vrb.className='video-rec-btn recording';
-      vrb.textContent='停止录像并保存';
+      vrb.textContent=t('modes.video.stop', 'Stop & save');
       rb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><rect x="6" y="6" width="12" height="12" rx="2" fill="white"/></svg>';
       document.getElementById('recWrap').classList.add('recording-active');
       document.getElementById('recDot').style.cssText='width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);flex-shrink:0;animation:dp 1s infinite';
@@ -7959,7 +7987,7 @@ async function openCameraFromPreview(){
 
 async function toggleCam(){
   if(!isCam){
-    if(!supports.secure||!supports.media)return toast(!supports.secure?secureContextHelp():'当前浏览器不支持摄像头权限。','err');
+    if(!supports.secure||!supports.media)return toast(!supports.secure?secureContextHelp():t('toasts.noCamSupport', 'Camera is not supported or permission denied in this browser.'),'err');
     try{
       const videoConstraints={facingMode:'environment',width:{ideal:1280},height:{ideal:720},frameRate:{ideal:24,max:30}};
       try{camStream=await navigator.mediaDevices.getUserMedia({video:videoConstraints,audio:false});}
@@ -8083,8 +8111,8 @@ function getLoc(opts={forceRefresh:true}){
   if(!supports.geolocation){
     fallbackIpLocation().then(ok=>{
       if(!ok){
-        document.getElementById('locVal').textContent='不支持 GPS';
-        toast('当前浏览器不支持定位。','warn');
+        document.getElementById('locVal').textContent=t('ui.noGps', 'GPS Unsupported');
+        toast(t('toasts.noGeoSupport', 'Geolocation is not supported by this browser.'),'warn');
       }
     });
     return;
@@ -8092,7 +8120,7 @@ function getLoc(opts={forceRefresh:true}){
   if(!supports.secure){
     fallbackIpLocation().then(ok=>{
       if(!ok){
-        document.getElementById('locVal').textContent='需要 HTTPS';
+        document.getElementById('locVal').textContent=t('ui.requireHttps', 'HTTPS Required');
         toast(secureContextHelp(),'warn',6200);
       }
     });
@@ -8269,7 +8297,7 @@ function applyManualPlace(){
   updateCameraOverlay();
   updateGeoDock();
   saveState();
-  toast('地点已修正，之后保存的记录会使用这个名称。','info');
+  toast(t('toasts.placeCorrected', 'Location updated. New records will use this place name.'),'info');
 }
 
 function readLocationDetails(){
@@ -8293,7 +8321,7 @@ function applyLocationDetails(){
 
 async function rerunPlaceLookup(){
   if(!curLoc)return getLoc();
-  if(!placeLookupOn)return toast('请先在设置中开启地点识别。','warn');
+  if(!placeLookupOn)return toast(t('toasts.enablePlaceLookupFirst', 'Please enable Place Lookup in settings first.'),'warn');
   setPlaceText(null,'loading');
   const place=await lookupPlaceName(curLoc);
   curLoc.place=place;
@@ -8678,9 +8706,9 @@ function toggleAdvancedCalibration(){
   const btn=document.getElementById('advancedCalibrationBtn');
   const open=!panel?.classList.contains('show');
   panel?.classList.toggle('show',open);
-  if(btn)btn.textContent=open?'收起高级校准':'点击进入此设置';
+  if(btn)btn.textContent=open?t('ui.collapseAdvCal', 'Collapse Advanced Calibration'):t('ui.expandAdvCal', 'Advanced Calibration Details');
   if(open)renderCalibrationPresetInfo();
-  if(open)toast('高级校准会影响证据解释，请仅在有专业校正设备或校准知识时调整。','warn',6200);
+  if(open)toast(t('toasts.advancedCalWarn', 'Advanced calibration alters acoustic evidence. Adjust only with reference equipment.'),'warn',6200);
 }
 
 function setCal(){calOffset=+document.getElementById('calR').value;document.getElementById('calV').textContent=(calOffset>=0?'+':'')+calOffset+' dB';saveState();}
@@ -9029,25 +9057,21 @@ function openReportPreviewModal(recs, isBatch = false) {
     }
     if (wxOptEl) {
       wxOptEl.style.display = isPro ? 'none' : 'flex';
-      wxOptEl.innerHTML = isZh ? `
-        <span style="color:var(--soft);">其他方案：</span>
-        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).monthly;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">月度卡 $4.99 (<del>$9.99</del>)</a>
+      const otherLabel = t('reports.otherPlans', isZh ? '其他方案：' : 'Other options: ');
+      wxOptEl.innerHTML = `
+        <span style="color:var(--soft);">${esc(otherLabel)}</span>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).monthly;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">${isZh ? '月度卡 $4.99' : 'Monthly $4.99'} (<del>$9.99</del>)</a>
         <span>·</span>
-        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).lifetime;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">终身买断 $79.99 (<del>$199</del>)</a>
-      ` : `
-        <span style="color:var(--soft);">Other options:</span>
-        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).monthly;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">Monthly $4.99 (<del>$9.99</del>)</a>
-        <span>·</span>
-        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).lifetime;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">Lifetime $79.99 (<del>$199</del>)</a>
+        <a href="javascript:void(0)" onclick="closeReportPreviewModal();const u=(window.CREEM_CHECKOUT_URLS||CREEM_CHECKOUT_URLS).lifetime;if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){window.location.href=u}else{const w=window.open(u,'_blank','noopener');if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=u}}" style="color:var(--text-dim);text-decoration:underline;">${isZh ? '终身买断 $79.99' : 'Lifetime $79.99'} (<del>$199</del>)</a>
       `;
     }
   }
 
   const freeDlBtn = dlBtn || document.getElementById('rpmDownloadFreeBtn');
   if (freeDlBtn) {
-    freeDlBtn.textContent = isZh 
-      ? (isPro ? '导出正式无水印存证 PDF' : '下载预览报告 (PDF·含水印)') 
-      : (isPro ? 'Export Official Pro Report (Clean)' : 'Download Preview PDF (Watermarked)');
+    freeDlBtn.textContent = isPro 
+      ? t('reports.exportOfficial', isZh ? '导出正式无水印存证 PDF' : 'Export Official Pro Report (Clean)') 
+      : t('reports.downloadWatermark', isZh ? '下载预览报告 (PDF·含水印)' : 'Download Preview PDF (Watermarked)');
     freeDlBtn.onclick = () => {
       closeReportPreviewModal();
       try {

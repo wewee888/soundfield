@@ -7602,7 +7602,7 @@
 
   const EXTRA_I18N = {
     'en-US': {
-      ui: { brandSub: "Field Acoustic Recorder", savePoint: "Save Point" },
+      ui: { brandSub: "Field Acoustic Recorder", savePoint: "Save Point", noGps: "GPS Unsupported", requireHttps: "HTTPS Required", collapseAdvCal: "Collapse Advanced Calibration", expandAdvCal: "Advanced Calibration Details" },
       placeholders: { building: "Building", floor: "Floor", room: "Room", point: "Point (e.g. window)" },
       scale: { quiet: "Quiet", urban: "Urban", danger: "Danger" },
       telemetry: {
@@ -7620,9 +7620,68 @@
         lblL90: "L90 Residual",
         subL90: "Ambient Background Floor"
       }
+    ,
+      dossier: {
+        "tierSuper": "👑 TEAM Super Admin",
+        "tierLifetime": "💎 Lifetime Pro License",
+        "tierYearly": "👑 PRO Annual Member",
+        "tierSingle": "⭐ Single Report Pass",
+        "tierPro": "👑 PRO Member",
+        "permanentLicense": "Permanent · Lifetime License",
+        "renewsPrefix": "Renews: ",
+        "activePass": "Active Pass",
+        "lblStatus": "Membership Status",
+        "valStatus": "Active & Verified",
+        "lblExpiry": "Valid Until",
+        "valExpiryPermanent": "2099-12-31 (Permanent)",
+        "lblSecurity": "Security Level",
+        "valSecurity": "SHA-256 Forensic Grade",
+        "lblSync": "Multi-Device Sync",
+        "valSync": "Active (Mobile/Desktop Sync)",
+        "benefitsTitle": "Unlocked VIP Privileges",
+        "b1": "Unlimited Watermark-Free HD Acoustic Exports",
+        "b2": "🌙 Overnight Sentry Auto-Capture & Threshold Recording",
+        "b3": "IEC 61672-1 Calibration & SHA-256 Cryptographic Stamp",
+        "b4": "Dual-Channel FFT Spectrum & LAeq / LN Matrix",
+        "b5": "Long-Term Disturbance Assessment Dossier Generation",
+        "b6_team": "Multi-Device Team Fleet & Root Admin Access",
+        "b6_user": "Mobile/Desktop Instant Sync & Priority Service",
+        "manageBtn": "Manage Account & Keys",
+        "refreshBtn": "Refresh License",
+        "logoutBtn": "Sign Out"
+},
+      toasts: {
+        "linkCopied": "Link copied. Please paste into your system browser.",
+        "clipboardManual": "Automatic copy unsupported. Please copy from the address bar manually.",
+        "wechatBrowserWarn": "In-app browser may restrict microphone access. Please open in system browser.",
+        "feedbackCopied": "Feedback report copied to clipboard.",
+        "feedbackCopyFail": "Clipboard unavailable. Please download the diagnostics package.",
+        "feedbackPackGenerated": "Diagnostics package generated.",
+        "noAudio": "No audio recording found.",
+        "noVideo": "No video recording found.",
+        "videoSaveFailed": "Failed to save video locally. Download may be unavailable after refresh.",
+        "loadStateFailed": "Failed to load history data. Started with empty records.",
+        "backupExported": "JSON backup exported. Save media files separately from Records.",
+        "persistStorageWarn": "Persistent storage not granted. Please save files from Records before closing.",
+        "recError": "Error during recording. Attempted to save existing chunks.",
+        "noCamSupport": "Camera is not supported or permission denied in this browser.",
+        "noGeoSupport": "Geolocation is not supported by this browser.",
+        "geoTimeout": "GPS timeout. Fallback to network location.",
+        "placeCorrected": "Location updated. New records will use this place name.",
+        "enablePlaceLookupFirst": "Please enable Place Lookup in settings first.",
+        "advancedCalWarn": "Advanced calibration alters acoustic evidence. Adjust only with reference equipment.",
+        "applied": "Applied {label} calibration baseline: {offset} dB."
+},
+      reports: {
+        "otherPlans": "Other options: ",
+        "singleUnlock": "Single Pass $2.99",
+        "teamPass": "Team License $79.99/yr",
+        "exportOfficial": "Export Official PDF Dossier (Watermark-Free)",
+        "downloadWatermark": "Download Preview Report (PDF · Watermarked)"
+}
     },
     'zh-CN': {
-      ui: { brandSub: "现场声学事实记录", savePoint: "保存测点" },
+      ui: { brandSub: "现场声学事实记录", savePoint: "保存测点", noGps: "不支持 GPS", requireHttps: "需要 HTTPS", collapseAdvCal: "折叠高级声学硬件校准", expandAdvCal: "展开高级声学硬件校准" },
       placeholders: { building: "楼栋", floor: "楼层", room: "房间号", point: "测点名，如窗边" },
       scale: { quiet: "安静", urban: "市井", danger: "危险" },
       telemetry: {
@@ -7640,9 +7699,68 @@
         lblL90: "L90 本底",
         subL90: "持续背景噪声"
       }
+    ,
+      dossier: {
+        "tierSuper": "👑 TEAM 超级管理员",
+        "tierLifetime": "💎 终身永久授权会员",
+        "tierYearly": "👑 PRO 年卡会员",
+        "tierSingle": "⭐ 单次报告特权",
+        "tierPro": "👑 PRO 专业会员",
+        "permanentLicense": "永久有效 · 终身授权",
+        "renewsPrefix": "续期至 ",
+        "activePass": "长期有效",
+        "lblStatus": "会员状态",
+        "valStatus": "已认证 · 全功能生效中",
+        "lblExpiry": "有效期至",
+        "valExpiryPermanent": "2099-12-31 (永久)",
+        "lblSecurity": "存证安全级别",
+        "valSecurity": "SHA-256 司法采信级",
+        "lblSync": "多端同步",
+        "valSync": "已连接 (手机/电脑端互通)",
+        "benefitsTitle": "已解锁 VIP 专业特权",
+        "b1": "无限制无水印高清声学证据导出",
+        "b2": "🌙 夜间噪音超标自动抓拍与阈值录音",
+        "b3": "IEC 61672-1 标定与 SHA-256 司法数字存证",
+        "b4": "双声道高精 FFT 频谱与 LAeq / LN 参量矩阵",
+        "b5": "长期纠纷综合评估档案 (Dossier) 生成",
+        "b6_team": "团队多设备协同与超级管理后台权限",
+        "b6_user": "手机/电脑端凭证秒级同步与优先服务",
+        "manageBtn": "管理账户与凭证",
+        "refreshBtn": "刷新权限",
+        "logoutBtn": "退出登录"
+},
+      toasts: {
+        "linkCopied": "链接已复制，请粘贴到系统浏览器打开。",
+        "clipboardManual": "当前浏览器不支持自动复制，请从地址栏手动复制链接。",
+        "wechatBrowserWarn": "内置浏览器可能不支持网页录音授权，请在系统浏览器打开。",
+        "feedbackCopied": "反馈内容已复制，可粘贴给客服或开发人员。",
+        "feedbackCopyFail": "当前浏览器不支持复制，请下载反馈包。",
+        "feedbackPackGenerated": "反馈包已生成。",
+        "noAudio": "无录音数据。",
+        "noVideo": "无录像数据。",
+        "videoSaveFailed": "视频保存到本地失败，刷新后可能无法下载。",
+        "loadStateFailed": "历史数据读取失败，已使用空记录启动。",
+        "backupExported": "本机备份 JSON 已导出；音视频请在记录页单独保存。",
+        "persistStorageWarn": "浏览器未授予持久存储；停止后请立即在记录页保存文件。",
+        "recError": "录制过程中出现错误，已尝试保存已有片段。",
+        "noCamSupport": "当前浏览器不支持摄像头或未授予权限。",
+        "noGeoSupport": "当前浏览器不支持定位。",
+        "geoTimeout": "定位超时，已尝试使用网络定位。",
+        "placeCorrected": "地点已修正，之后保存的记录会使用这个名称。",
+        "enablePlaceLookupFirst": "请先在设置中开启地点识别。",
+        "advancedCalWarn": "高级校准会影响证据解释，请仅在有专业校正设备或校准知识时调整。",
+        "applied": "已应用{label}推荐校准基线：{offset} dB。"
+},
+      reports: {
+        "otherPlans": "其他方案：",
+        "singleUnlock": "单次解锁 $2.99",
+        "teamPass": "Team 团队版 $79.99/yr",
+        "exportOfficial": "导出正式无水印存证 PDF",
+        "downloadWatermark": "下载预览报告 (PDF·含水印)"
+}
     },
     'es': {
-      ui: { brandSub: "Grabador de audio pericial", savePoint: "Guardar punto" },
+      ui: { brandSub: "Grabador de audio pericial", savePoint: "Guardar punto", noGps: "Sin GPS", requireHttps: "Requiere HTTPS", collapseAdvCal: "Plegar Calibración Avanzada", expandAdvCal: "Desplegar Calibración Avanzada" },
       placeholders: { building: "Edificio", floor: "Planta", room: "Habitación", point: "Punto (ej. ventana)" },
       scale: { quiet: "Tranquilo", urban: "Urbano", danger: "Peligro" },
       telemetry: {
@@ -7660,9 +7778,68 @@
         lblL90: "L90 Ruido residual",
         subL90: "Ruido de fondo continuo"
       }
+    ,
+      dossier: {
+        "tierSuper": "👑 TEAM Superadministrador",
+        "tierLifetime": "💎 Licencia Pro de por Vida",
+        "tierYearly": "👑 Miembro Anual PRO",
+        "tierSingle": "⭐ Pase de Informe Único",
+        "tierPro": "👑 Miembro PRO",
+        "permanentLicense": "Permanente · Licencia de por vida",
+        "renewsPrefix": "Renueva: ",
+        "activePass": "Pase Activo",
+        "lblStatus": "Estado de Membresía",
+        "valStatus": "Activo y Verificado",
+        "lblExpiry": "Válido Hasta",
+        "valExpiryPermanent": "2099-12-31 (Permanente)",
+        "lblSecurity": "Nivel de Seguridad",
+        "valSecurity": "Grado Forense SHA-256",
+        "lblSync": "Sincronización Multi-dispositivo",
+        "valSync": "Conectado (Móvil / Escritorio)",
+        "benefitsTitle": "Beneficios VIP Desbloqueados",
+        "b1": "Exportaciones acústicas HD ilimitadas sin marca de agua",
+        "b2": "🌙 Centinela nocturno: captura automática y grabación por umbral",
+        "b3": "Calibración IEC 61672-1 y sello criptográfico SHA-256",
+        "b4": "Espectro FFT de doble canal y matriz de parámetros LAeq / LN",
+        "b5": "Generación de informe pericial integral de molestias a largo plazo",
+        "b6_team": "Colaboración de equipo multidispositivo y acceso de superadministrador",
+        "b6_user": "Sincronización instantánea móvil/escritorio y soporte prioritario",
+        "manageBtn": "Gestionar Cuenta y Claves",
+        "refreshBtn": "Actualizar Licencia",
+        "logoutBtn": "Cerrar Sesión"
+},
+      toasts: {
+        "linkCopied": "Enlace copiado. Péguelo en el navegador de su sistema.",
+        "clipboardManual": "Copia automática no admitida. Copie desde la barra de direcciones.",
+        "wechatBrowserWarn": "El navegador integrado puede restringir el micrófono. Ábralo en el navegador del sistema.",
+        "feedbackCopied": "Informe de comentarios copiado al portapapeles.",
+        "feedbackCopyFail": "Portapapeles no disponible. Descargue el paquete de diagnóstico.",
+        "feedbackPackGenerated": "Paquete de diagnóstico generado.",
+        "noAudio": "No hay grabación de audio.",
+        "noVideo": "No hay grabación de video.",
+        "videoSaveFailed": "Error al guardar el video localmente. Podría no estar disponible tras recargar.",
+        "loadStateFailed": "Error al leer datos históricos. Iniciado con registros vacíos.",
+        "backupExported": "Copia JSON exportada; guarde los archivos multimedia en Registros.",
+        "persistStorageWarn": "Almacenamiento persistente no concedido; guarde archivos desde Registros.",
+        "recError": "Error durante la grabación. Se intentaron guardar los fragmentos existentes.",
+        "noCamSupport": "Cámara no compatible o permiso denegado en este navegador.",
+        "noGeoSupport": "La geolocalización no es compatible con este navegador.",
+        "geoTimeout": "Tiempo de GPS agotado. Usando ubicación por red.",
+        "placeCorrected": "Ubicación actualizada. Los nuevos registros usarán este nombre.",
+        "enablePlaceLookupFirst": "Active primero el reconocimiento de lugares en Ajustes.",
+        "advancedCalWarn": "La calibración avanzada altera la evidencia acústica. Ajuste solo con equipo de referencia.",
+        "applied": "Línea base aplicada {label}: {offset} dB."
+},
+      reports: {
+        "otherPlans": "Otras opciones: ",
+        "singleUnlock": "Pase Único $2.99",
+        "teamPass": "Licencia de Equipo $79.99/año",
+        "exportOfficial": "Exportar PDF Pericial Oficial (Sin marca de agua)",
+        "downloadWatermark": "Descargar informe de vista previa (PDF con marca de agua)"
+}
     },
     'fr': {
-      ui: { brandSub: "Enregistreur de preuve acoustique", savePoint: "Enregistrer point" },
+      ui: { brandSub: "Enregistreur de preuve acoustique", savePoint: "Enregistrer point", noGps: "GPS non supporté", requireHttps: "HTTPS requis", collapseAdvCal: "Replier l'Étalonnage Avancé", expandAdvCal: "Déplier l'Étalonnage Avancé" },
       placeholders: { building: "Bâtiment", floor: "Étage", room: "Pièce", point: "Point (ex. fenêtre)" },
       scale: { quiet: "Calme", urban: "Urbain", danger: "Danger" },
       telemetry: {
@@ -7680,9 +7857,68 @@
         lblL90: "L90 Bruit résiduel",
         subL90: "Bruit de fond ambiant continu"
       }
+    ,
+      dossier: {
+        "tierSuper": "👑 TEAM Super Administrateur",
+        "tierLifetime": "💎 Licence Pro à Vie",
+        "tierYearly": "👑 Membre Annuel PRO",
+        "tierSingle": "⭐ Pass Rapport Unique",
+        "tierPro": "👑 Membre PRO",
+        "permanentLicense": "Permanent · Licence à vie",
+        "renewsPrefix": "Renouvellement: ",
+        "activePass": "Pass Actif",
+        "lblStatus": "Statut de Membre",
+        "valStatus": "Actif et Vérifié",
+        "lblExpiry": "Valable Jusqu'au",
+        "valExpiryPermanent": "2099-12-31 (Permanent)",
+        "lblSecurity": "Niveau de Sécurité",
+        "valSecurity": "Niveau Judiciaire SHA-256",
+        "lblSync": "Synchronisation Multi-appareils",
+        "valSync": "Connecté (Mobile / Bureau)",
+        "benefitsTitle": "Privilèges VIP Débloqués",
+        "b1": "Exportations acoustiques HD illimitées sans filigrane",
+        "b2": "🌙 Sentinelle de nuit: capture automatique et enregistrement sur seuil",
+        "b3": "Étalonnage IEC 61672-1 et sceau cryptographique SHA-256",
+        "b4": "Spectre FFT bicanal et matrice de paramètres LAeq / LN",
+        "b5": "Génération de dossier d'évaluation complet des nuisances durables",
+        "b6_team": "Flotte d'appareils en équipe et accès super administrateur",
+        "b6_user": "Synchronisation instantanée mobile/ordinateur et support prioritaire",
+        "manageBtn": "Gérer Compte et Clés",
+        "refreshBtn": "Actualiser la Licence",
+        "logoutBtn": "Déconnexion"
+},
+      toasts: {
+        "linkCopied": "Lien copié. Veuillez le coller dans votre navigateur système.",
+        "clipboardManual": "Copie automatique non prise en charge. Copiez depuis la barre d'adresse.",
+        "wechatBrowserWarn": "Le navigateur intégré peut restreindre le micro. Ouvrez dans le navigateur système.",
+        "feedbackCopied": "Rapport de commentaires copié dans le presse-papiers.",
+        "feedbackCopyFail": "Presse-papiers indisponible. Veuillez télécharger le pack de diagnostic.",
+        "feedbackPackGenerated": "Pack de diagnostic généré.",
+        "noAudio": "Aucun enregistrement audio trouvé.",
+        "noVideo": "Aucun enregistrement vidéo trouvé.",
+        "videoSaveFailed": "Échec de l'enregistrement vidéo local. Téléchargement indisponible après actualisation.",
+        "loadStateFailed": "Échec du chargement des données. Démarré avec des enregistrements vides.",
+        "backupExported": "Sauvegarde JSON exportée; enregistrez les fichiers multimédias séparément.",
+        "persistStorageWarn": "Stockage persistant non accordé; enregistrez les fichiers depuis Enregistrements.",
+        "recError": "Erreur lors de l'enregistrement. Tentative de sauvegarde des segments existants.",
+        "noCamSupport": "Caméra non prise en charge ou autorisation refusée.",
+        "noGeoSupport": "La géolocalisation n'est pas prise en charge par ce navigateur.",
+        "geoTimeout": "Délai GPS dépassé. Utilisation de la localisation réseau.",
+        "placeCorrected": "Lieu mis à jour. Les futurs enregistrements utiliseront ce nom.",
+        "enablePlaceLookupFirst": "Veuillez d'abord activer l'identification des lieux dans les paramètres.",
+        "advancedCalWarn": "L'étalonnage avancé modifie la preuve acoustique. N'ajustez qu'avec un équipement certifié.",
+        "applied": "Ligne de base appliquée {label}: {offset} dB."
+},
+      reports: {
+        "otherPlans": "Autres options: ",
+        "singleUnlock": "Pass Unique 2,99 $",
+        "teamPass": "Licence Équipe 79,99 $/an",
+        "exportOfficial": "Exporter le Dossier PDF Officiel (Sans filigrane)",
+        "downloadWatermark": "Télécharger le rapport d'aperçu (PDF avec filigrane)"
+}
     },
     'de': {
-      ui: { brandSub: "Akustischer Beweisrekorder", savePoint: "Punkt speichern" },
+      ui: { brandSub: "Akustischer Beweisrekorder", savePoint: "Punkt speichern", noGps: "Kein GPS", requireHttps: "HTTPS erforderlich", collapseAdvCal: "Erweiterte Kalibrierung einklappen", expandAdvCal: "Erweiterte Kalibrierung ausklappen" },
       placeholders: { building: "Gebäude", floor: "Etage", room: "Raum", point: "Messpunkt (z. B. Fenster)" },
       scale: { quiet: "Ruhig", urban: "Städtisch", danger: "Gefahr" },
       telemetry: {
@@ -7700,9 +7936,68 @@
         lblL90: "L90 Grundgeräusch",
         subL90: "Kontinuierliches Hintergrundgeräusch"
       }
+    ,
+      dossier: {
+        "tierSuper": "👑 TEAM Super-Administrator",
+        "tierLifetime": "💎 Lebenslange Pro-Lizenz",
+        "tierYearly": "👑 PRO Jahresmitglied",
+        "tierSingle": "⭐ Einzelbericht-Pass",
+        "tierPro": "👑 PRO Mitglied",
+        "permanentLicense": "Dauerhaft · Lebenslange Lizenz",
+        "renewsPrefix": "Verlängert am: ",
+        "activePass": "Aktiver Pass",
+        "lblStatus": "Mitgliedsstatus",
+        "valStatus": "Aktiv & Verifiziert",
+        "lblExpiry": "Gültig bis",
+        "valExpiryPermanent": "2099-12-31 (Dauerhaft)",
+        "lblSecurity": "Sicherheitsstufe",
+        "valSecurity": "SHA-256 Forensik-Standard",
+        "lblSync": "Multi-Geräte-Synchronisation",
+        "valSync": "Verbunden (Mobil & Desktop)",
+        "benefitsTitle": "Freigeschaltete VIP-Vorteile",
+        "b1": "Unbegrenzte wasserzeichenfreie HD-Akustikexporte",
+        "b2": "🌙 Nachtwächter-Modus: Auto-Erfassung & Schwellenwertaufzeichnung",
+        "b3": "IEC 61672-1 Kalibrierung & SHA-256 kryptografischer Zeitstempel",
+        "b4": "Zweikanal-FFT-Spektrum & LAeq / LN Parametermatrix",
+        "b5": "Erstellung umfassender Langzeit-Lärmstörungs-Gutachten (Dossier)",
+        "b6_team": "Multi-Geräte-Teamflotte & Root-Administratorzugriff",
+        "b6_user": "Sofortige Mobil/Desktop-Synchronisation & Prioritätsservice",
+        "manageBtn": "Konto & Schlüssel verwalten",
+        "refreshBtn": "Lizenz aktualisieren",
+        "logoutBtn": "Abmelden"
+},
+      toasts: {
+        "linkCopied": "Link kopiert. Bitte im Systembrowser einfügen.",
+        "clipboardManual": "Automatisches Kopieren nicht unterstützt. Bitte manuell kopieren.",
+        "wechatBrowserWarn": "In-App-Browser kann Mikrofon sperren. Bitte im Systembrowser öffnen.",
+        "feedbackCopied": "Feedback-Bericht in die Zwischenablage kopiert.",
+        "feedbackCopyFail": "Zwischenablage nicht verfügbar. Bitte Diagnosepaket herunterladen.",
+        "feedbackPackGenerated": "Diagnosepaket erstellt.",
+        "noAudio": "Keine Audioaufnahme gefunden.",
+        "noVideo": "Keine Videoaufnahme gefunden.",
+        "videoSaveFailed": "Video konnte lokal nicht gespeichert werden. Download nach Aktualisierung evtl. nicht verfügbar.",
+        "loadStateFailed": "Verlaufsdaten konnten nicht geladen werden. Mit leeren Datensätzen gestartet.",
+        "backupExported": "JSON-Backup exportiert; Mediendateien bitte in Aufzeichnungen sichern.",
+        "persistStorageWarn": "Dauerhafter Speicher nicht gewährt; Dateien vor dem Schließen sichern.",
+        "recError": "Fehler während der Aufnahme. Vorhandene Abschnitte wurden gesichert.",
+        "noCamSupport": "Kamera nicht unterstützt oder Zugriff verweigert.",
+        "noGeoSupport": "Geolokalisierung wird von diesem Browser nicht unterstützt.",
+        "geoTimeout": "GPS-Zeitüberschreitung. Fallback auf Netzwerkstandort.",
+        "placeCorrected": "Ort aktualisiert. Neue Datensätze nutzen diesen Namen.",
+        "enablePlaceLookupFirst": "Bitte aktivieren Sie zuerst die Standorterkennung in den Einstellungen.",
+        "advancedCalWarn": "Erweiterte Kalibrierung verändert Beweise. Nur mit Referenzgeräten anpassen.",
+        "applied": "Kalibrierungs-Basislinie angewendet {label}: {offset} dB."
+},
+      reports: {
+        "otherPlans": "Weitere Optionen: ",
+        "singleUnlock": "Einmalpass 2,99 $",
+        "teamPass": "Team-Lizenz 79,99 $/Jahr",
+        "exportOfficial": "Offizielles PDF-Dossier exportieren (Wasserzeichenfrei)",
+        "downloadWatermark": "Vorschau-Bericht herunterladen (PDF mit Wasserzeichen)"
+}
     },
     'ja': {
-      ui: { brandSub: "現場音響証拠レコーダー", savePoint: "測定点を保存" },
+      ui: { brandSub: "現場音響証拠レコーダー", savePoint: "測定点を保存", noGps: "GPS未対応", requireHttps: "HTTPS必須", collapseAdvCal: "高度な音響ハードウェア校正を折りたたむ", expandAdvCal: "高度な音響ハードウェア校正を展開" },
       placeholders: { building: "建物", floor: "階", room: "部屋", point: "測定点（例：窓際）" },
       scale: { quiet: "静穏", urban: "市街地", danger: "危険" },
       telemetry: {
@@ -7720,9 +8015,68 @@
         lblL90: "L90 暗騒音",
         subL90: "定常的背景ノイズ"
       }
+    ,
+      dossier: {
+        "tierSuper": "👑 TEAM スーパー管理者",
+        "tierLifetime": "💎 終身永久ライセンス会員",
+        "tierYearly": "👑 PRO 年間会員",
+        "tierSingle": "⭐ 1回レポート利用権",
+        "tierPro": "👑 PRO 専門会員",
+        "permanentLicense": "永久有効 · 終身ライセンス",
+        "renewsPrefix": "更新日: ",
+        "activePass": "有効パス",
+        "lblStatus": "会員ステータス",
+        "valStatus": "認証済み · 全機能有効",
+        "lblExpiry": "有効期限",
+        "valExpiryPermanent": "2099-12-31 (無期限)",
+        "lblSecurity": "証拠セキュリティ",
+        "valSecurity": "SHA-256 司法証拠等級",
+        "lblSync": "マルチデバイス同期",
+        "valSync": "接続中 (スマホ/PC連携)",
+        "benefitsTitle": "解放済み VIP 特権",
+        "b1": "無制限・透かしなし高精細音響証拠エクスポート",
+        "b2": "🌙 夜間騒音監視・自動キャプチャ＆しきい値録音",
+        "b3": "IEC 61672-1 校正＆SHA-256 司法暗号タイムスタンプ",
+        "b4": "デュアルチャンネル高精度FFTスペクトル＆LAeq / LN マトリクス",
+        "b5": "長期紛争・総合評価報告書 (Dossier) 生成",
+        "b6_team": "チーム複数端末連携＆スーパー管理者アクセス",
+        "b6_user": "スマホ/PC即時同期＆優先サポート",
+        "manageBtn": "アカウントと証拠キーの管理",
+        "refreshBtn": "ライセンス更新",
+        "logoutBtn": "ログアウト"
+},
+      toasts: {
+        "linkCopied": "リンクをコピーしました。ブラウザに貼り付けて開いてください。",
+        "clipboardManual": "自動コピーに対応していません。アドレスバーから手動でコピーしてください。",
+        "wechatBrowserWarn": "アプリ内ブラウザはマイク権限を制限する場合があります。システムブラウザで開いてください。",
+        "feedbackCopied": "フィードバック内容をクリップボードにコピーしました。",
+        "feedbackCopyFail": "コピーに対応していません。診断パッケージをダウンロードしてください。",
+        "feedbackPackGenerated": "診断パッケージが生成されました。",
+        "noAudio": "録音データがありません。",
+        "noVideo": "録画データがありません。",
+        "videoSaveFailed": "動画のローカル保存に失敗しました。再読み込み後はダウンロードできない可能性があります。",
+        "loadStateFailed": "履歴データの読み込みに失敗しました。空の記録で起動しました。",
+        "backupExported": "バックアップ JSON を出力しました。メディアファイルは記録一覧から個別に保存してください。",
+        "persistStorageWarn": "永続的ストレージが未承認です。停止後は速やかに記録一覧から保存してください。",
+        "recError": "録音/録画中にエラーが発生しました。既存のセグメントの保存を試みました。",
+        "noCamSupport": "ブラウザがカメラをサポートしていないか、権限が拒否されています。",
+        "noGeoSupport": "このブラウザは位置情報をサポートしていません。",
+        "geoTimeout": "位置情報取得がタイムアウトしたため、ネットワーク位置情報を試行しました。",
+        "placeCorrected": "地点が修正されました。以降の記録にこの名称が反映されます。",
+        "enablePlaceLookupFirst": "設定で「地点の識別」を有効にしてください。",
+        "advancedCalWarn": "高度な校正は音響証拠に影響します。基準測定器がある場合のみ調整してください。",
+        "applied": "{label} 推奨校正ベースライン（{offset} dB）を適用しました。"
+},
+      reports: {
+        "otherPlans": "その他のプラン: ",
+        "singleUnlock": "単回利用 $2.99",
+        "teamPass": "Team チーム版 $79.99/年",
+        "exportOfficial": "正式な透かしなし証拠 PDF を出力",
+        "downloadWatermark": "プレビューレポートをダウンロード (PDF・透かしあり)"
+}
     },
     'ko': {
-      ui: { brandSub: "현장 음향 증거 레코더", savePoint: "측정 위치 저장" },
+      ui: { brandSub: "현장 음향 증거 레코더", savePoint: "측정 위치 저장", noGps: "GPS 미지원", requireHttps: "HTTPS 필요", collapseAdvCal: "고급 음향 하드웨어 교정 접기", expandAdvCal: "고급 음향 하드웨어 교정 펼치기" },
       placeholders: { building: "동/건물", floor: "층", room: "호수", point: "측정 위치 (예: 창가)" },
       scale: { quiet: "조용함", urban: "도심", danger: "위험" },
       telemetry: {
@@ -7740,9 +8094,68 @@
         lblL90: "L90 지속 배경소음",
         subL90: "지속적 주변 배경 소음"
       }
+    ,
+      dossier: {
+        "tierSuper": "👑 TEAM 최고 관리자",
+        "tierLifetime": "💎 평생 영구 라이선스 회원",
+        "tierYearly": "👑 PRO 연간 회원",
+        "tierSingle": "⭐ 1회 리포트 이용권",
+        "tierPro": "👑 PRO 전문 회원",
+        "permanentLicense": "영구 유효 · 평생 라이선스",
+        "renewsPrefix": "갱신일: ",
+        "activePass": "활성 패스",
+        "lblStatus": "회원 상태",
+        "valStatus": "인증 완료 · 전 기능 활성화",
+        "lblExpiry": "유효 기간",
+        "valExpiryPermanent": "2099-12-31 (영구)",
+        "lblSecurity": "증거 보안 등급",
+        "valSecurity": "SHA-256 법적 증거 등급",
+        "lblSync": "멀티 디바이스 동기화",
+        "valSync": "연결됨 (모바일/PC 동기화)",
+        "benefitsTitle": "잠금 해제된 VIP 전문 혜택",
+        "b1": "무제한 워터마크 없는 HD 음향 증거 내보내기",
+        "b2": "🌙 야간 센트리 소음 초과 자동 캡처 및 임계값 녹음",
+        "b3": "IEC 61672-1 교정 및 SHA-256 법적 암호화 스탬프",
+        "b4": "듀얼 채널 고정밀 FFT 스펙트럼 및 LAeq / LN 매트릭스",
+        "b5": "장기 소음 분쟁 종합 평가 보고서 (Dossier) 생성",
+        "b6_team": "다중 기기 팀 협업 및 최고 관리자 권한",
+        "b6_user": "모바일/PC 실시간 동기화 및 우선 고객 지원",
+        "manageBtn": "계정 및 인증키 관리",
+        "refreshBtn": "라이선스 새로고침",
+        "logoutBtn": "로그아웃"
+},
+      toasts: {
+        "linkCopied": "링크가 복사되었습니다. 브라우저에 붙여넣어 여세요.",
+        "clipboardManual": "자동 복사를 지원하지 않습니다. 주소창에서 수동으로 복사하세요.",
+        "wechatBrowserWarn": "인앱 브라우저는 마이크 권한을 제한할 수 있습니다. 시스템 브라우저에서 열어주세요.",
+        "feedbackCopied": "피드백 내용이 클립보드에 복사되었습니다.",
+        "feedbackCopyFail": "클립보드를 사용할 수 없습니다. 진단 패키지를 다운로드하세요.",
+        "feedbackPackGenerated": "진단 패키지가 생성되었습니다.",
+        "noAudio": "녹음 데이터가 없습니다.",
+        "noVideo": "녹화 데이터가 없습니다.",
+        "videoSaveFailed": "동영상을 로컬에 저장하지 못했습니다. 새로고침 후 다운로드가 불가능할 수 있습니다.",
+        "loadStateFailed": "기록 데이터를 불러오지 못했습니다. 빈 기록으로 시작합니다.",
+        "backupExported": "JSON 백업을 내보냈습니다. 미디어 파일은 기록 페이지에서 별도로 저장하세요.",
+        "persistStorageWarn": "영구 저장소 권한이 부여되지 않았습니다. 종료 전 기록에서 파일을 저장하세요.",
+        "recError": "녹음/녹화 중 오류가 발생하여 기존 세그먼트 저장을 시도했습니다.",
+        "noCamSupport": "브라우저에서 카메라를 지원하지 않거나 권한이 거부되었습니다.",
+        "noGeoSupport": "현재 브라우저는 위치 정보를 지원하지 않습니다.",
+        "geoTimeout": "GPS 시간 초과. 네트워크 위치로 대체 시도합니다.",
+        "placeCorrected": "위치가 수정되었습니다. 이후 저장되는 기록에 이 이름이 적용됩니다.",
+        "enablePlaceLookupFirst": "설정에서 먼저 위치 인식을 활성화하세요.",
+        "advancedCalWarn": "고급 교정은 음향 증거에 영향을 줍니다. 전문 기준 장비가 있을 때만 조정하세요.",
+        "applied": "{label} 권장 교정 기준선({offset} dB)이 적용되었습니다."
+},
+      reports: {
+        "otherPlans": "기타 옵션: ",
+        "singleUnlock": "1회 이용권 $2.99",
+        "teamPass": "Team 팀 라이선스 $79.99/년",
+        "exportOfficial": "공식 워터마크 없는 증거 PDF 내보내기",
+        "downloadWatermark": "미리보기 보고서 다운로드 (PDF·워터마크 포함)"
+}
     },
     'vi': {
-      ui: { brandSub: "Máy ghi bằng chứng âm thanh", savePoint: "Lưu điểm đo" },
+      ui: { brandSub: "Máy ghi bằng chứng âm thanh", savePoint: "Lưu điểm đo", noGps: "Không hỗ trợ GPS", requireHttps: "Yêu cầu HTTPS", collapseAdvCal: "Thu gọn hiệu chuẩn phần cứng nâng cao", expandAdvCal: "Mở rộng hiệu chuẩn phần cứng nâng cao" },
       placeholders: { building: "Tòa nhà", floor: "Tầng", room: "Phòng", point: "Điểm đo (vd: cạnh cửa sổ)" },
       scale: { quiet: "Yên tĩnh", urban: "Đô thị", danger: "Nguy hiểm" },
       telemetry: {
@@ -7760,9 +8173,68 @@
         lblL90: "L90 Tạp âm nền",
         subL90: "Mức ồn nền liên tục"
       }
+    ,
+      dossier: {
+        "tierSuper": "👑 TEAM Siêu Quản trị viên",
+        "tierLifetime": "💎 Giấy phép Pro trọn đời",
+        "tierYearly": "👑 Hội viên PRO hàng năm",
+        "tierSingle": "⭐ Vé Báo cáo Đơn",
+        "tierPro": "👑 Hội viên PRO Chuyên nghiệp",
+        "permanentLicense": "Vĩnh viễn · Giấy phép trọn đời",
+        "renewsPrefix": "Gia hạn: ",
+        "activePass": "Vé đang kích hoạt",
+        "lblStatus": "Trạng thái Hội viên",
+        "valStatus": "Đã xác minh · Toàn bộ tính năng đang hoạt động",
+        "lblExpiry": "Có hiệu lực đến",
+        "valExpiryPermanent": "2099-12-31 (Vĩnh viễn)",
+        "lblSecurity": "Cấp độ bảo mật",
+        "valSecurity": "Cấp pháp y SHA-256",
+        "lblSync": "Đồng bộ đa thiết bị",
+        "valSync": "Đã kết nối (Đồng bộ di động/máy tính)",
+        "benefitsTitle": "Đặc quyền VIP đã mở khóa",
+        "b1": "Xuất bằng chứng âm học HD không giới hạn không hình mờ",
+        "b2": "🌙 Canh gác ban đêm: Tự động chụp & ghi âm theo ngưỡng",
+        "b3": "Hiệu chuẩn IEC 61672-1 & Dấu xác thực mã hóa SHA-256",
+        "b4": "Phổ FFT kênh đôi độ chính xác cao & Ma trận LAeq / LN",
+        "b5": "Tạo hồ sơ đánh giá toàn diện về tranh chấp tiếng ồn dài hạn",
+        "b6_team": "Cộng tác nhóm đa thiết bị & Quyền siêu quản trị",
+        "b6_user": "Đồng bộ hóa tức thì di động/máy tính & Dịch vụ ưu tiên",
+        "manageBtn": "Quản lý tài khoản & khóa",
+        "refreshBtn": "Làm mới giấy phép",
+        "logoutBtn": "Đăng xuất"
+},
+      toasts: {
+        "linkCopied": "Đã sao chép liên kết. Dán vào trình duyệt hệ thống để mở.",
+        "clipboardManual": "Trình duyệt không hỗ trợ sao chép tự động. Vui lòng sao chép thủ công.",
+        "wechatBrowserWarn": "Trình duyệt trong ứng dụng có thể hạn chế micro. Vui lòng mở trong trình duyệt hệ thống.",
+        "feedbackCopied": "Nội dung phản hồi đã được sao chép vào khay nhớ tạm.",
+        "feedbackCopyFail": "Không thể sao chép. Vui lòng tải xuống gói chẩn đoán.",
+        "feedbackPackGenerated": "Đã tạo gói chẩn đoán.",
+        "noAudio": "Không có bản ghi âm.",
+        "noVideo": "Không có bản ghi video.",
+        "videoSaveFailed": "Không thể lưu video cục bộ. Có thể không tải xuống được sau khi làm mới.",
+        "loadStateFailed": "Không thể tải dữ liệu lịch sử. Khởi động với bản ghi trống.",
+        "backupExported": "Đã xuất bản sao lưu JSON; lưu tệp đa phương tiện từ mục Bản ghi.",
+        "persistStorageWarn": "Chưa cấp quyền lưu trữ lâu dài; vui lòng lưu tệp từ mục Bản ghi.",
+        "recError": "Có lỗi trong khi ghi. Đã cố gắng lưu các đoạn hiện có.",
+        "noCamSupport": "Trình duyệt không hỗ trợ máy ảnh hoặc quyền bị từ chối.",
+        "noGeoSupport": "Trình duyệt hiện tại không hỗ trợ định vị.",
+        "geoTimeout": "Hết thời gian GPS. Đã thử định vị qua mạng.",
+        "placeCorrected": "Địa điểm đã được sửa, các bản ghi tiếp theo sẽ sử dụng tên này.",
+        "enablePlaceLookupFirst": "Vui lòng bật nhận dạng địa điểm trong Cài đặt trước.",
+        "advancedCalWarn": "Hiệu chuẩn nâng cao ảnh hưởng đến bằng chứng. Chỉ điều chỉnh khi có thiết bị chuẩn.",
+        "applied": "Đã áp dụng đường cơ sở hiệu chuẩn {label}: {offset} dB."
+},
+      reports: {
+        "otherPlans": "Các phương án khác: ",
+        "singleUnlock": "Mở khóa đơn $2.99",
+        "teamPass": "Bản nhóm Team $79.99/năm",
+        "exportOfficial": "Xuất hồ sơ PDF chính thức (Không hình mờ)",
+        "downloadWatermark": "Tải báo cáo xem trước (PDF có hình mờ)"
+}
     },
     'th': {
-      ui: { brandSub: "เครื่องบันทึกหลักฐานเสียงภาคสนาม", savePoint: "บันทึกจุดตรวจวัด" },
+      ui: { brandSub: "เครื่องบันทึกหลักฐานเสียงภาคสนาม", savePoint: "บันทึกจุดตรวจวัด", noGps: "ไม่รองรับ GPS", requireHttps: "ต้องใช้ HTTPS", collapseAdvCal: "ยุบการสอบเทียบฮาร์ดแวร์เสียงขั้นสูง", expandAdvCal: "ขยายการสอบเทียบฮาร์ดแวร์เสียงขั้นสูง" },
       placeholders: { building: "อาคาร", floor: "ชั้น", room: "ห้อง", point: "จุดตรวจวัด (เช่น ริมหน้าต่าง)" },
       scale: { quiet: "เงียบ", urban: "ในเมือง", danger: "อันตราย" },
       telemetry: {
@@ -7780,6 +8252,65 @@
         lblL90: "L90 เสียงรบกวนคงที่",
         subL90: "ระดับเสียงพื้นหลังต่อเนื่อง"
       }
+    ,
+      dossier: {
+        "tierSuper": "👑 TEAM ซูเปอร์แอดมิน",
+        "tierLifetime": "💎 สิทธิ์ใช้งาน Pro ตลอดชีพ",
+        "tierYearly": "👑 สมาชิกรายปี PRO",
+        "tierSingle": "⭐ บัตรผ่านรายงานครั้งเดียว",
+        "tierPro": "👑 สมาชิกมืออาชีพ PRO",
+        "permanentLicense": "ถาวร · สิทธิ์ใช้งานตลอดชีพ",
+        "renewsPrefix": "ต่ออายุ: ",
+        "activePass": "บัตรผ่านใช้งานอยู่",
+        "lblStatus": "สถานะสมาชิก",
+        "valStatus": "ยืนยันแล้ว · ฟังก์ชันทั้งหมดเปิดใช้งาน",
+        "lblExpiry": "ใช้ได้ถึง",
+        "valExpiryPermanent": "2099-12-31 (ถาวร)",
+        "lblSecurity": "ระดับความปลอดภัย",
+        "valSecurity": "เกรดนิติวิทยาศาสตร์ SHA-256",
+        "lblSync": "ซิงค์หลายอุปกรณ์",
+        "valSync": "เชื่อมต่อแล้ว (ซิงค์มือถือ/คอม)",
+        "benefitsTitle": "สิทธิพิเศษ VIP ที่ปลดล็อกแล้ว",
+        "b1": "ส่งออกหลักฐานเสียง HD แบบไร้ลายน้ำไม่จำกัด",
+        "b2": "🌙 เซนทรีเฝ้าระวังกลางคืน: บันทึกภาพอัตโนมัติและอัดเสียงตามเกณฑ์",
+        "b3": "การสอบเทียบ IEC 61672-1 และตราประทับดิจิทัล SHA-256",
+        "b4": "สเปกตรัม FFT ความแม่นยำสูงคู่ & เมทริกซ์ LAeq / LN",
+        "b5": "สร้างแฟ้มรายงานประเมินข้อพิพาทเสียงรบกวนระยะยาว (Dossier)",
+        "b6_team": "การทำงานร่วมกันหลายอุปกรณ์ในทีมและการเข้าถึงระดับรูท",
+        "b6_user": "ซิงค์มือถือ/คอมพิวเตอร์ทันทีและบริการลำดับความสำคัญ",
+        "manageBtn": "จัดการบัญชีและคีย์",
+        "refreshBtn": "รีเฟรชสิทธิ์",
+        "logoutBtn": "ออกจากระบบ"
+},
+      toasts: {
+        "linkCopied": "คัดลอกลิงก์แล้ว โปรดวางในเบราว์เซอร์ของระบบ",
+        "clipboardManual": "ไม่รองรับการคัดลอกอัตโนมัติ โปรดคัดลอกจากแถบที่อยู่ด้วยตนเอง",
+        "wechatBrowserWarn": "เบราว์เซอร์ในแอปอาจจำกัดไมโครโฟน โปรดเปิดในเบราว์เซอร์ของระบบ",
+        "feedbackCopied": "คัดลอกเนื้อหาความคิดเห็นไปยังคลิปบอร์ดแล้ว",
+        "feedbackCopyFail": "ไม่สามารถคัดลอกได้ โปรดดาวน์โหลดแพ็กเกจวินิจฉัย",
+        "feedbackPackGenerated": "สร้างแพ็กเกจวินิจฉัยแล้ว",
+        "noAudio": "ไม่พบข้อมูลเสียงที่บันทึก",
+        "noVideo": "ไม่พบข้อมูลวิดีโอที่บันทึก",
+        "videoSaveFailed": "บันทึกวิดีโอลงในเครื่องไม่สำเร็จ อาจไม่สามารถดาวน์โหลดได้หลังจากรีเฟรช",
+        "loadStateFailed": "โหลดประวัติไม่สำเร็จ เริ่มต้นด้วยบันทึกว่าง",
+        "backupExported": "ส่งออกข้อมูลสำรอง JSON แล้ว โปรดบันทึกไฟล์สื่อแยกต่างหากจากหน้าบันทึก",
+        "persistStorageWarn": "ไม่ได้รับสิทธิ์พื้นที่เก็บข้อมูลถาวร โปรดบันทึกไฟล์จากหน้าบันทึกก่อนปิด",
+        "recError": "เกิดข้อผิดพลาดระหว่างบันทึก พยายามบันทึกส่วนที่มีอยู่แล้ว",
+        "noCamSupport": "เบราว์เซอร์นี้ไม่รองรับกล้องหรือไม่ได้รับอนุญาต",
+        "noGeoSupport": "เบราว์เซอร์ปัจจุบันไม่รองรับตำแหน่งทางภูมิศาสตร์",
+        "geoTimeout": "หมดเวลา GPS เปลี่ยนไปใช้ตำแหน่งจากเครือข่าย",
+        "placeCorrected": "อัปเดตสถานที่แล้ว บันทึกใหม่จะใช้ชื่อนี้",
+        "enablePlaceLookupFirst": "โปรดเปิดการระบุสถานที่ในการตั้งค่าก่อน",
+        "advancedCalWarn": "การสอบเทียบขั้นสูงมีผลต่อหลักฐาน ปรับเมื่อมีอุปกรณ์อ้างอิงเท่านั้น",
+        "applied": "ใช้ค่าพื้นฐานการสอบเทียบ {label}: {offset} dB แล้ว"
+},
+      reports: {
+        "otherPlans": "ตัวเลือกอื่น: ",
+        "singleUnlock": "ปลดล็อกครั้งเดียว $2.99",
+        "teamPass": "Team ทีม $79.99/ปี",
+        "exportOfficial": "ส่งออกแฟ้ม PDF ทางการ (ไร้ลายน้ำ)",
+        "downloadWatermark": "ดาวน์โหลดรายงานตัวอย่าง (PDF มีลายน้ำ)"
+}
     }
   };
   Object.keys(EXTRA_I18N).forEach((loc) => {
@@ -7788,6 +8319,15 @@
       if (EXTRA_I18N[loc].placeholders) Object.assign(I18N_DATA[loc].placeholders, EXTRA_I18N[loc].placeholders);
       if (EXTRA_I18N[loc].scale) I18N_DATA[loc].scale = Object.assign({}, EXTRA_I18N[loc].scale);
       if (EXTRA_I18N[loc].telemetry) I18N_DATA[loc].telemetry = Object.assign({}, EXTRA_I18N[loc].telemetry);
+      if (EXTRA_I18N[loc].dossier) I18N_DATA[loc].dossier = Object.assign({}, EXTRA_I18N[loc].dossier);
+      if (EXTRA_I18N[loc].toasts) {
+        if (!I18N_DATA[loc].toasts) I18N_DATA[loc].toasts = {};
+        Object.assign(I18N_DATA[loc].toasts, EXTRA_I18N[loc].toasts);
+      }
+      if (EXTRA_I18N[loc].reports) {
+        if (!I18N_DATA[loc].reports) I18N_DATA[loc].reports = {};
+        Object.assign(I18N_DATA[loc].reports, EXTRA_I18N[loc].reports);
+      }
     }
   });
 

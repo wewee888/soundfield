@@ -386,6 +386,59 @@ test('soundtest.html hides purchase plans upon member login and upgrades top Pro
   assert.ok(cssContent.includes('.dossier-benefits-grid'), 'assets/soundtest.css must define .dossier-benefits-grid');
 });
 
+test('i18n integrity: activeMemberDossier has zero hardcoded Chinese in default DOM and all 9 locales have complete language packs', () => {
+  const htmlContent = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf-8');
+  const i18nCode = fs.readFileSync(path.join(rootDir, 'assets/i18n-data.js'), 'utf-8');
+
+  // 1. Static HTML of #activeMemberDossier must NOT contain any Chinese characters in markup
+  const match = htmlContent.match(/<div class="active-member-dossier" id="activeMemberDossier"[\s\S]*?<\/div>\s*<\/div>/);
+  assert.ok(match, 'activeMemberDossier markup must exist in soundtest.html');
+  const dossierMarkup = match[0];
+  assert.doesNotMatch(dossierMarkup, /[\u4e00-\u9fff]/, 'activeMemberDossier static HTML must not contain hardcoded Chinese');
+
+  // 2. populateActiveMemberDossier must use t('dossier.')
+  assert.ok(htmlContent.includes("t('dossier.tierSuper'"), 'populateActiveMemberDossier must query t(dossier.tierSuper)');
+  assert.ok(htmlContent.includes("t('dossier.permanentLicense'"), 'populateActiveMemberDossier must query t(dossier.permanentLicense)');
+  assert.ok(htmlContent.includes("t('dossier.lblStatus'"), 'populateActiveMemberDossier must query t(dossier.lblStatus)');
+  assert.ok(htmlContent.includes("t('dossier.b1'"), 'populateActiveMemberDossier must query t(dossier.b1)');
+  assert.ok(htmlContent.includes("t('dossier.manageBtn'"), 'populateActiveMemberDossier must query t(dossier.manageBtn)');
+
+  // 3. Verify evaluate i18n data across all 9 locales
+  const win = {};
+  eval(i18nCode.replace('window.__sfI18N = I18N_DATA;', 'win.__sfI18N = I18N_DATA;').replace('window.__sfSupportedAppLanguages', 'win.__sfSupportedAppLanguages'));
+  const locales = ['en-US', 'zh-CN', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'];
+
+  const requiredDossierKeys = [
+    'tierSuper', 'tierLifetime', 'tierYearly', 'tierSingle', 'tierPro',
+    'permanentLicense', 'renewsPrefix', 'activePass',
+    'lblStatus', 'valStatus', 'lblExpiry', 'valExpiryPermanent',
+    'lblSecurity', 'valSecurity', 'lblSync', 'valSync',
+    'benefitsTitle', 'b1', 'b2', 'b3', 'b4', 'b5', 'b6_team', 'b6_user',
+    'manageBtn', 'refreshBtn', 'logoutBtn'
+  ];
+
+  locales.forEach((loc) => {
+    const data = win.__sfI18N[loc];
+    assert.ok(data, `${loc} translation data must exist`);
+    assert.ok(data.dossier, `${loc} must have dossier dictionary`);
+    for (const key of requiredDossierKeys) {
+      assert.ok(data.dossier[key], `${loc} dossier must contain key ${key}`);
+    }
+    assert.ok(data.toasts, `${loc} must have toasts dictionary`);
+    assert.ok(data.toasts.linkCopied, `${loc} toasts must have linkCopied`);
+    assert.ok(data.toasts.feedbackCopied, `${loc} toasts must have feedbackCopied`);
+    assert.ok(data.toasts.applied, `${loc} toasts must have applied`);
+    assert.ok(data.reports, `${loc} must have reports dictionary`);
+    assert.ok(data.reports.exportOfficial, `${loc} reports must have exportOfficial`);
+    assert.ok(data.ui.noGps, `${loc} ui must have noGps`);
+    assert.ok(data.ui.requireHttps, `${loc} ui must have requireHttps`);
+  });
+
+  // 4. Verify helper functions for presets
+  assert.ok(htmlContent.includes('function getPresetLabel('), 'soundtest.html must implement getPresetLabel');
+  assert.ok(htmlContent.includes('function getPresetReason('), 'soundtest.html must implement getPresetReason');
+});
+
 
 
 
