@@ -1381,7 +1381,7 @@
           <option value="th">🇹🇭 TH</option>
         </select>
       </div>
-      <button class="app-pro-btn" type="button" onclick="showSubscriptionPlans()">★ Upgrade Pro</button>
+      <button class="app-pro-btn" id="appProBtn" type="button" onclick="handleTopProBtnClick()">★ Upgrade Pro</button>
     </div>
   </div>
 
@@ -2280,8 +2280,8 @@
       </div>
     </div>
     <div class="card layout-settings-subscription" id="subscriptionPlans" data-settings-section="subscription">
-      <div class="clabel">Membership & Plans</div>
-      <div class="feedback-card" style="margin-bottom:10px">
+      <div class="clabel" id="subscriptionCardLabel">Membership & Plans</div>
+      <div class="feedback-card" id="membershipUnauthedBox" style="margin-bottom:10px">
         <div class="feedback-meta" id="membershipStatusHint"><strong>Membership Status:</strong> Not logged in. Enter your purchase email to verify membership.</div>
         <div class="feedback-row">
           <input class="setting-input" id="memberEmailInput" type="email" placeholder="Billing email / Account email" autocomplete="email">
@@ -2289,44 +2289,94 @@
           <button class="btn" id="membershipLogoutBtn" onclick="logoutMembership()">Log Out</button>
         </div>
       </div>
-      <div class="plan-grid">
-        <div class="plan-card" data-plan-card="single">
-          <div class="plan-name">Single Report Unlock</div>
-          <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥9.9</del>¥3.9</div>
-          <div style="font-size:10px;color:var(--accent);margin:-2px 0 6px">Special Offer · Single Clean Report</div>
-          <div class="plan-features">Remove watermark for one report, add unique SHA-256 digital fingerprint, GPS coordinates, and legal header.</div>
-          <button class="btn" onclick="beginCheckout('single')">Unlock Single Report</button>
+
+      <!-- Active Member VIP Dossier Card (shown only when membership is active) -->
+      <div class="active-member-dossier" id="activeMemberDossier" style="display:none">
+        <div class="dossier-header">
+          <div class="dossier-tier-wrap">
+            <span class="dossier-tier-badge" id="dossierTierBadge">👑 TEAM 超级管理员</span>
+            <span class="dossier-valid-pill" id="dossierValidPill">终身永久授权</span>
+          </div>
+          <div class="dossier-email" id="dossierEmail">wewee1@gmail.com</div>
         </div>
-        <div class="plan-card pro" data-plan-card="yearly">
-          <div style="display:inline-block;padding:2px 8px;border-radius:999px;background:linear-gradient(135deg,var(--accent),#00d4ff);color:#040711;font-size:9px;font-weight:900;letter-spacing:.05em;margin-bottom:4px">★ Most Popular · Save 67%</div>
-          <div class="plan-name">Pro Annual Pass</div>
-          <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥59.9</del>¥19.9<span style="font-size:12px;color:rgba(214,232,250,.6)">/yr</span></div>
-          <div style="font-size:10px;color:rgba(214,232,250,.8);margin:-2px 0 6px">Full protection for continuous noise disputes</div>
-          <div class="plan-features">365 days unlimited clean exports, 🌙 Overnight Sentry Mode, 📊 Continuous Disturbance Assessment Dossier, secure link sharing with read receipts, encrypted cloud custody.</div>
-          <button class="btn b-cyan" onclick="beginCheckout('yearly')">Get Annual Pass (Recommended)</button>
+
+        <div class="dossier-meta-grid">
+          <div class="dossier-meta-item">
+            <div class="dossier-meta-k" id="dossierLblStatus">会员状态</div>
+            <div class="dossier-meta-v text-emerald" id="dossierValStatus">已认证 · 全功能生效中</div>
+          </div>
+          <div class="dossier-meta-item">
+            <div class="dossier-meta-k" id="dossierLblExpiry">有效期至</div>
+            <div class="dossier-meta-v" id="dossierValExpiry">2099-12-31</div>
+          </div>
+          <div class="dossier-meta-item">
+            <div class="dossier-meta-k" id="dossierLblSecurity">存证安全级别</div>
+            <div class="dossier-meta-v text-cyan" id="dossierValSecurity">SHA-256 司法采信级</div>
+          </div>
+          <div class="dossier-meta-item">
+            <div class="dossier-meta-k" id="dossierLblSync">多端同步</div>
+            <div class="dossier-meta-v text-emerald" id="dossierValSync">手机/电脑端互通</div>
+          </div>
         </div>
-        <div class="plan-card" data-plan-card="pro">
-          <div class="plan-name">Pro Monthly Pass</div>
-          <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥19.9</del>¥9.9<span style="font-size:12px;color:rgba(214,232,250,.6)">/mo</span></div>
-          <div style="font-size:10px;color:rgba(214,232,250,.6);margin:-2px 0 6px">First choice for 30-day dispute resolution</div>
-          <div class="plan-features">30 days unlimited unwatermarked report exports, night sentry auto-recording, batch CSV/PDF export, zero ads.</div>
-          <button class="btn" onclick="beginCheckout('pro')">Get Monthly Pass</button>
+
+        <div class="dossier-benefits-title" id="dossierBenefitsTitle">已解锁 VIP 专业特权</div>
+        <div class="dossier-benefits-grid" id="dossierBenefitsGrid">
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB1">无限制无水印高清声学证据导出</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB2">🌙 夜间噪音超标自动抓拍与阈值录音</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB3">IEC 61672-1 标定与 SHA-256 司法数字存证</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB4">双声道高精 FFT 频谱与 LAeq / LN 参量矩阵</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB5">长期纠纷综合评估档案 (Dossier) 生成</span></div>
+          <div class="dossier-benefit-item"><span class="dossier-check">✔</span><span id="dossierB6">团队多设备协同与专属高优先通道</span></div>
         </div>
-        <div class="plan-card lifetime" data-plan-card="lifetime">
-          <div style="display:inline-block;padding:2px 8px;border-radius:999px;background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;font-weight:900;letter-spacing:.05em;margin-bottom:4px">💎 Lifetime License · Best Value</div>
-          <div class="plan-name">Lifetime License</div>
-          <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥199</del>¥39.9</div>
-          <div style="font-size:10px;color:rgba(214,232,250,.6);margin:-2px 0 6px">One-time payment · Lifetime access with zero renewals</div>
-          <div class="plan-features">Unlimited lifetime access to all PRO features, forever unwatermarked, all future upgrades included, permanent cloud custody.</div>
-          <button class="btn b-amber" onclick="beginCheckout('lifetime')">Get Lifetime License</button>
+
+        <div class="dossier-actions">
+          <a class="btn b-cyan" id="dossierManageBtn" href="auth.html" target="_blank">管理账户与凭证</a>
+          <button class="btn" id="dossierRefreshBtn" onclick="lookupMembership()" type="button">刷新权限</button>
+          <button class="btn b-red-outline" id="dossierLogoutBtn" onclick="logoutMembership()" type="button">退出登录</button>
         </div>
       </div>
-      <div class="benefit-grid" id="planBenefitGrid" data-commercial="plan-benefit-grid"></div>
-      <div class="sdesc" id="planStatus" style="margin-top:10px">Current Plan: Free. Secure checkout supported.</div>
-      <div class="tool-actions" style="margin-top:10px">
-        <button class="btn b-cyan" onclick="beginCheckout('yearly')">Get Pro Annual Pass</button>
-        <button class="btn" onclick="beginCheckout('single')">Unlock Single Report</button>
-        <button class="btn b-amber" onclick="beginCheckout('lifetime')">Get Lifetime License</button>
+
+      <!-- Purchase & Upgrade Pricing Tiers Wrap (hidden when member is active) -->
+      <div id="purchasePlansWrap">
+        <div class="plan-grid">
+          <div class="plan-card" data-plan-card="single">
+            <div class="plan-name">Single Report Unlock</div>
+            <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥9.9</del>¥3.9</div>
+            <div style="font-size:10px;color:var(--accent);margin:-2px 0 6px">Special Offer · Single Clean Report</div>
+            <div class="plan-features">Remove watermark for one report, add unique SHA-256 digital fingerprint, GPS coordinates, and legal header.</div>
+            <button class="btn" onclick="beginCheckout('single')">Unlock Single Report</button>
+          </div>
+          <div class="plan-card pro" data-plan-card="yearly">
+            <div style="display:inline-block;padding:2px 8px;border-radius:999px;background:linear-gradient(135deg,var(--accent),#00d4ff);color:#040711;font-size:9px;font-weight:900;letter-spacing:.05em;margin-bottom:4px">★ Most Popular · Save 67%</div>
+            <div class="plan-name">Pro Annual Pass</div>
+            <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥59.9</del>¥19.9<span style="font-size:12px;color:rgba(214,232,250,.6)">/yr</span></div>
+            <div style="font-size:10px;color:rgba(214,232,250,.8);margin:-2px 0 6px">Full protection for continuous noise disputes</div>
+            <div class="plan-features">365 days unlimited clean exports, 🌙 Overnight Sentry Mode, 📊 Continuous Disturbance Assessment Dossier, secure link sharing with read receipts, encrypted cloud custody.</div>
+            <button class="btn b-cyan" onclick="beginCheckout('yearly')">Get Annual Pass (Recommended)</button>
+          </div>
+          <div class="plan-card" data-plan-card="pro">
+            <div class="plan-name">Pro Monthly Pass</div>
+            <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥19.9</del>¥9.9<span style="font-size:12px;color:rgba(214,232,250,.6)">/mo</span></div>
+            <div style="font-size:10px;color:rgba(214,232,250,.6);margin:-2px 0 6px">First choice for 30-day dispute resolution</div>
+            <div class="plan-features">30 days unlimited unwatermarked report exports, night sentry auto-recording, batch CSV/PDF export, zero ads.</div>
+            <button class="btn" onclick="beginCheckout('pro')">Get Monthly Pass</button>
+          </div>
+          <div class="plan-card lifetime" data-plan-card="lifetime">
+            <div style="display:inline-block;padding:2px 8px;border-radius:999px;background:linear-gradient(135deg,#c084fc,#818cf8);color:#040711;font-size:9px;font-weight:900;letter-spacing:.05em;margin-bottom:4px">💎 Lifetime License · Best Value</div>
+            <div class="plan-name">Lifetime License</div>
+            <div class="plan-price"><del style="font-size:12px;color:rgba(214,232,250,.4);margin-right:4px;">¥199</del>¥39.9</div>
+            <div style="font-size:10px;color:rgba(214,232,250,.6);margin:-2px 0 6px">One-time payment · Lifetime access with zero renewals</div>
+            <div class="plan-features">Unlimited lifetime access to all PRO features, forever unwatermarked, all future upgrades included, permanent cloud custody.</div>
+            <button class="btn b-amber" onclick="beginCheckout('lifetime')">Get Lifetime License</button>
+          </div>
+        </div>
+        <div class="benefit-grid" id="planBenefitGrid" data-commercial="plan-benefit-grid"></div>
+        <div class="sdesc" id="planStatus" style="margin-top:10px">Current Plan: Free. Secure checkout supported.</div>
+        <div class="tool-actions" style="margin-top:10px">
+          <button class="btn b-cyan" onclick="beginCheckout('yearly')">Get Pro Annual Pass</button>
+          <button class="btn" onclick="beginCheckout('single')">Unlock Single Report</button>
+          <button class="btn b-amber" onclick="beginCheckout('lifetime')">Get Lifetime License</button>
+        </div>
       </div>
     </div>
     <div class="card layout-settings-report" data-settings-section="report">
@@ -3067,7 +3117,10 @@ function applyTranslations(){
   const select=document.getElementById('languageSelect');if(select)select.value=appLanguage;
   const hsel=document.getElementById('headerLanguageSelect');if(hsel)hsel.value=appLanguage;
   syncLanguageSelectOptions();
-  const proBtn=document.querySelector('.app-pro-btn');if(proBtn)proBtn.textContent='★ '+t('ui.upgradePro');
+  updateTopProBtn();
+  if (typeof isUserPaidMember === 'function' && isUserPaidMember()) {
+    if (typeof populateActiveMemberDossier === 'function') populateActiveMemberDossier();
+  }
   setText('appBrandSub',t('ui.brandSub',isZh?'现场声学事实记录':'Field Acoustic Recorder'));
   const stxtEl=document.getElementById('stxt');
   if(stxtEl){stxtEl.textContent=isRec?t('ui.recording'):(isMon?t('ui.monitoring'):t('ui.ready'));}
@@ -4874,14 +4927,129 @@ function planConfig(plan=currentPlan){
   return PLAN_CONFIG[plan]||PLAN_CONFIG.free;
 }
 
+const MEMBER_TIER_BADGES = {
+  team: {
+    'zh-CN': '👑 TEAM 管理员',
+    'en-US': '👑 TEAM Admin',
+    'es': '👑 TEAM Admin',
+    'fr': '👑 TEAM Admin',
+    'de': '👑 TEAM Admin',
+    'ja': '👑 TEAM 管理者',
+    'ko': '👑 TEAM 관리자',
+    'vi': '👑 TEAM Quản trị',
+    'th': '👑 TEAM แอดมิน',
+  },
+  lifetime: {
+    'zh-CN': '💎 终身会员',
+    'en-US': '💎 Lifetime Pro',
+    'es': '💎 Pro Vitalicio',
+    'fr': '💎 Pro À Vie',
+    'de': '💎 Lebenslang Pro',
+    'ja': '💎 永久ライセンス',
+    'ko': '💎 평생 Pro',
+    'vi': '💎 Pro Trọn đời',
+    'th': '💎 Pro ตลอดชีพ',
+  },
+  yearly: {
+    'zh-CN': '👑 PRO 年卡',
+    'en-US': '👑 PRO Yearly',
+    'es': '👑 PRO Anual',
+    'fr': '👑 PRO Annuel',
+    'de': '👑 PRO Jahrespass',
+    'ja': '👑 PRO 年間パス',
+    'ko': '👑 PRO 연간 패스',
+    'vi': '👑 PRO Năm',
+    'th': '👑 PRO รายปี',
+  },
+  single: {
+    'zh-CN': '⭐ 单次特权',
+    'en-US': '⭐ Single Pass',
+    'es': '⭐ Pase Único',
+    'fr': '⭐ Pass Unique',
+    'de': '⭐ Einmalpass',
+    'ja': '⭐ 単回パス',
+    'ko': '⭐ 단일 패스',
+    'vi': '⭐ Vé Đơn',
+    'th': '⭐ บัตรครั้งเดียว',
+  },
+  pro: {
+    'zh-CN': '👑 PRO 会员',
+    'en-US': '👑 PRO Member',
+    'es': '👑 Miembro PRO',
+    'fr': '👑 Membre PRO',
+    'de': '👑 PRO Mitglied',
+    'ja': '👑 PRO 会員',
+    'ko': '👑 PRO 회원',
+    'vi': '👑 Thành viên PRO',
+    'th': '👑 สมาชิก PRO',
+  },
+};
+
+function getMemberBadgeText(plan = 'pro', isSuper = false) {
+  const p = isSuper ? 'team' : (plan || 'pro').toLowerCase();
+  const lang = (appLanguage || 'en-US');
+  const primary = lang.split('-')[0];
+  const dict = MEMBER_TIER_BADGES[p] || MEMBER_TIER_BADGES.pro;
+  return dict[lang] || dict[primary] || dict['en-US'] || '👑 PRO Member';
+}
+
+function isUserPaidMember() {
+  if (typeof isProActive === 'function' && isProActive()) return true;
+  if (membershipState && membershipState.active && ['pro', 'team', 'lifetime', 'yearly', 'single'].includes(membershipState.plan)) return true;
+  if (typeof currentPlan !== 'undefined' && ['pro', 'team', 'lifetime', 'yearly', 'single'].includes(currentPlan)) return true;
+  return false;
+}
+
+function handleTopProBtnClick() {
+  if (isUserPaidMember()) {
+    sw('s');
+    setTimeout(() => {
+      const target = document.getElementById('activeMemberDossier') || document.getElementById('subscriptionPlans');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 120);
+  } else {
+    showSubscriptionPlans();
+  }
+}
+
+function updateTopProBtn() {
+  const proBtn = document.getElementById('appProBtn') || document.querySelector('.app-pro-btn');
+  if (!proBtn) return;
+  const isZh = appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh'));
+  const isPaid = isUserPaidMember();
+
+  if (isPaid) {
+    const plan = (membershipState?.plan || currentPlan || 'pro').toLowerCase();
+    const isSuper = Boolean(
+      (membershipState?.email && membershipState.email.toLowerCase() === 'wewee1@gmail.com') ||
+      plan === 'team'
+    );
+    const badgeText = getMemberBadgeText(plan, isSuper);
+
+    proBtn.textContent = badgeText;
+    proBtn.classList.add('member-active-badge');
+    proBtn.setAttribute('data-member-active', 'true');
+    proBtn.setAttribute('title', isZh ? '已激活会员特权 · 点击查看会员权益' : 'Active VIP Membership · Click to view benefits');
+    proBtn.onclick = handleTopProBtnClick;
+  } else {
+    proBtn.textContent = '★ ' + t('ui.upgradePro', isZh ? '升级 Pro' : 'Upgrade Pro');
+    proBtn.classList.remove('member-active-badge');
+    proBtn.removeAttribute('data-member-active');
+    proBtn.setAttribute('title', isZh ? '升级至 Pro 会员，解锁全部专业功能' : 'Upgrade to Pro for full forensic features');
+    proBtn.onclick = showSubscriptionPlans;
+  }
+}
+
 function isProActive(){
-  return membershipState.active&&['pro','team','lifetime'].includes(membershipState.plan);
+  return Boolean(membershipState && membershipState.active && ['pro','team','lifetime','yearly'].includes(membershipState.plan));
 }
 
 function getUserTier() {
   if (typeof isProActive === 'function' && isProActive()) return 'pro';
   if (membershipState && membershipState.active && membershipState.plan === 'single') return 'single';
-  if (typeof currentPlan !== 'undefined' && ['pro','team','lifetime'].includes(currentPlan)) return 'pro';
+  if (typeof currentPlan !== 'undefined' && ['pro','team','lifetime','yearly'].includes(currentPlan)) return 'pro';
   if (typeof currentPlan !== 'undefined' && currentPlan === 'single') return 'single';
   return 'free';
 }
@@ -4901,7 +5069,7 @@ function syncAutoRecProBadge(){
 function normalizeMembership(input={}){
   const email=(input.email||'').trim();
   const isSuperAdmin = email.toLowerCase() === 'wewee1@gmail.com';
-  let plan=['free','pro','team','lifetime'].includes(input.plan)?input.plan:'free';
+  let plan=['free','pro','yearly','team','lifetime','single'].includes(input.plan)?input.plan:'free';
   let active=Boolean(input.active)&&plan!=='free';
   if(isSuperAdmin){
     active = true;
@@ -4942,6 +5110,7 @@ function loadMembershipState(){
         membershipState.active=true;
         membershipState.plan='team';
         membershipState.status='paid';
+        if(!membershipState.renewsAt)membershipState.renewsAt='2099-12-31';
       } else if(sess.plan && sess.plan !== 'free'){
         membershipState.active=true;
         membershipState.plan=sess.plan;
@@ -4951,6 +5120,7 @@ function loadMembershipState(){
       membershipState.active=true;
       membershipState.plan='team';
       membershipState.status='paid';
+      if(!membershipState.renewsAt)membershipState.renewsAt='2099-12-31';
     }
   }catch(e){
     membershipState=normalizeMembership();
@@ -5028,15 +5198,99 @@ async function fetchMembershipConfig(){
   }
 }
 
+function populateActiveMemberDossier() {
+  const isZh = appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh'));
+  const plan = (membershipState?.plan || currentPlan || 'pro').toLowerCase();
+  const isSuper = Boolean(
+    (membershipState?.email && membershipState.email.toLowerCase() === 'wewee1@gmail.com') ||
+    plan === 'team'
+  );
+  const isLifetime = plan === 'lifetime';
+  const isYearly = plan === 'yearly';
+  const isSingle = plan === 'single';
+
+  // 1. Tier Badge
+  const tierBadgeEl = document.getElementById('dossierTierBadge');
+  if (tierBadgeEl) {
+    if (isSuper) {
+      tierBadgeEl.textContent = isZh ? '👑 TEAM 超级管理员' : '👑 TEAM Super Admin';
+    } else if (isLifetime) {
+      tierBadgeEl.textContent = isZh ? '💎 终身永久授权会员' : '💎 Lifetime Pro License';
+    } else if (isYearly) {
+      tierBadgeEl.textContent = isZh ? '👑 PRO 年卡会员' : '👑 PRO Annual Member';
+    } else if (isSingle) {
+      tierBadgeEl.textContent = isZh ? '⭐ 单次报告特权' : '⭐ Single Report Pass';
+    } else {
+      tierBadgeEl.textContent = isZh ? '👑 PRO 专业会员' : '👑 PRO Member';
+    }
+  }
+
+  // 2. Validity Pill
+  const validPill = document.getElementById('dossierValidPill');
+  if (validPill) {
+    if (membershipState.renewsAt === '2099-12-31' || isSuper || isLifetime) {
+      validPill.textContent = isZh ? '永久有效 · 终身授权' : 'Permanent · Lifetime License';
+    } else if (membershipState.renewsAt) {
+      validPill.textContent = isZh ? `续期至 ${membershipState.renewsAt}` : `Renews: ${membershipState.renewsAt}`;
+    } else {
+      validPill.textContent = isZh ? '长期有效' : 'Active Pass';
+    }
+  }
+
+  // 3. Email
+  const emailEl = document.getElementById('dossierEmail');
+  if (emailEl) {
+    emailEl.textContent = membershipState?.email || 'Authenticated User';
+  }
+
+  // 4. Meta labels and values
+  setText('dossierLblStatus', isZh ? '会员状态' : 'Status');
+  setText('dossierValStatus', isZh ? '已认证 · 全功能生效中' : 'Active & Verified');
+  setText('dossierLblExpiry', isZh ? '有效期至' : 'Valid Until');
+  setText('dossierValExpiry', (membershipState.renewsAt === '2099-12-31' || isSuper || isLifetime) ? (isZh ? '2099-12-31 (永久)' : '2099-12-31 (Permanent)') : (membershipState.renewsAt || 'Permanent'));
+  setText('dossierLblSecurity', isZh ? '存证安全级别' : 'Security Level');
+  setText('dossierValSecurity', isZh ? 'SHA-256 司法采信级' : 'SHA-256 Forensic Grade');
+  setText('dossierLblSync', isZh ? '多端同步' : 'Multi-Device Sync');
+  setText('dossierValSync', isZh ? '已连接 (手机/电脑端互通)' : 'Active (Mobile/Desktop Sync)');
+
+  // 5. Benefits Title & Items
+  setText('dossierBenefitsTitle', isZh ? '已解锁 VIP 专业特权' : 'Unlocked VIP Privileges');
+  setText('dossierB1', isZh ? '无限制无水印高清声学证据导出' : 'Unlimited Watermark-Free HD Acoustic Exports');
+  setText('dossierB2', isZh ? '🌙 夜间噪音超标自动抓拍与阈值录音' : '🌙 Overnight Sentry Auto-Capture & Threshold Recording');
+  setText('dossierB3', isZh ? 'IEC 61672-1 标定与 SHA-256 司法数字存证' : 'IEC 61672-1 Calibration & SHA-256 Cryptographic Stamp');
+  setText('dossierB4', isZh ? '双声道高精 FFT 频谱与 LAeq / LN 参量矩阵' : 'Dual-Channel FFT Spectrum & LAeq/LN Matrix');
+  setText('dossierB5', isZh ? '长期纠纷综合评估档案 (Dossier) 生成' : 'Long-Term Disturbance Assessment Dossier Generation');
+  setText('dossierB6', isSuper 
+    ? (isZh ? '团队多设备协同与超级管理后台权限' : 'Multi-Device Team Fleet & Root Admin Access')
+    : (isZh ? '手机/电脑端凭证秒级同步与优先服务' : 'Mobile/Desktop Instant Sync & Priority Service')
+  );
+
+  // 6. Action buttons
+  const manageBtn = document.getElementById('dossierManageBtn');
+  if (manageBtn) {
+    manageBtn.href = getLocalizedAuthUrl();
+    manageBtn.textContent = isZh ? '管理账户与凭证' : 'Manage Account & Keys';
+  }
+  setText('dossierRefreshBtn', isZh ? '刷新权限' : 'Refresh License');
+  setText('dossierLogoutBtn', isZh ? '退出登录' : 'Sign Out');
+}
+
 function renderMembershipPanel(){
   const hints=document.querySelectorAll('#membershipStatusHint');
   const inputs=document.querySelectorAll('#memberEmailInput');
   const lookupBtns=document.querySelectorAll('#membershipLookupBtn');
   const logoutBtns=document.querySelectorAll('#membershipLogoutBtn');
   const planLabel=document.getElementById('currentPlanLabel');
+  const purchasePlansWrap=document.getElementById('purchasePlansWrap');
+  const activeMemberDossier=document.getElementById('activeMemberDossier');
+  const membershipUnauthedBox=document.getElementById('membershipUnauthedBox');
+  const subCardLabel=document.getElementById('subscriptionCardLabel');
+
+  const isZh = appLanguage === 'zh-CN' || (typeof appLanguage === 'string' && appLanguage.startsWith('zh'));
+  const isPaid = isUserPaidMember();
 
   if(planLabel){
-    if(membershipState.active){
+    if(isPaid){
       planLabel.textContent = membershipState.plan.toUpperCase();
       planLabel.style.color = 'var(--accent, #00f2fe)';
     }else{
@@ -5046,7 +5300,27 @@ function renderMembershipPanel(){
   }
 
   inputs.forEach(inp => { if(inp) inp.value = membershipState.email || ''; });
-  
+
+  if (isPaid) {
+    // Member logged in & active: HIDE purchase pricing cards and SHOW active member dossier
+    if (purchasePlansWrap) purchasePlansWrap.style.display = 'none';
+    if (membershipUnauthedBox) membershipUnauthedBox.style.display = 'none';
+    if (activeMemberDossier) activeMemberDossier.style.display = 'block';
+    if (subCardLabel) subCardLabel.textContent = isZh ? '会员权益与凭证' : 'VIP Membership & Rights';
+
+    // Populate active member dossier
+    populateActiveMemberDossier();
+  } else {
+    // Free / unauthenticated: SHOW purchase pricing cards and HIDE active member dossier
+    if (purchasePlansWrap) purchasePlansWrap.style.display = 'block';
+    if (membershipUnauthedBox) membershipUnauthedBox.style.display = 'block';
+    if (activeMemberDossier) activeMemberDossier.style.display = 'none';
+    if (subCardLabel) subCardLabel.textContent = isZh ? '订阅权益' : 'Membership & Licensing Plans';
+  }
+
+  // Update top header button
+  updateTopProBtn();
+
   const checkedAt=membershipState.lastCheckedAt?` · ${new Date(membershipState.lastCheckedAt).toLocaleString(i18n().locale)}`:'';
   const authUrl=getLocalizedAuthUrl();
 

@@ -339,5 +339,53 @@ test('soundtest.html implements dual-stop, anti-jitter acoustic hysteresis, and 
   assert.ok(htmlContent.includes('max(6px, env(safe-area-inset-bottom, 0px)) !important;'), '.bottom-nav must pad above Android/iOS home indicator');
 });
 
+test('soundtest.html hides purchase plans upon member login and upgrades top Pro button to VIP tier badge', () => {
+  const htmlContent = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
+  const cssContent = fs.readFileSync(path.join(rootDir, 'assets/soundtest.css'), 'utf8');
+
+  // 1. Verify Top Pro Button markup & dynamic handlers
+  assert.ok(htmlContent.includes('id="appProBtn"'), 'Top Pro button must have id="appProBtn"');
+  assert.ok(htmlContent.includes('onclick="handleTopProBtnClick()"'), 'Top Pro button must call handleTopProBtnClick');
+  assert.ok(htmlContent.includes('function updateTopProBtn()'), 'soundtest.html must implement updateTopProBtn');
+  assert.ok(htmlContent.includes('function handleTopProBtnClick()'), 'soundtest.html must implement handleTopProBtnClick');
+  assert.ok(htmlContent.includes('function getMemberBadgeText('), 'soundtest.html must implement getMemberBadgeText');
+  assert.ok(htmlContent.includes('function isUserPaidMember()'), 'soundtest.html must implement isUserPaidMember');
+
+  // 2. Verify Member Tier Badges dictionary across multiple locales
+  assert.ok(htmlContent.includes('MEMBER_TIER_BADGES'), 'soundtest.html must define MEMBER_TIER_BADGES');
+  assert.ok(htmlContent.includes('👑 TEAM 管理员'), 'MEMBER_TIER_BADGES must have Chinese TEAM admin badge');
+  assert.ok(htmlContent.includes('👑 TEAM Admin'), 'MEMBER_TIER_BADGES must have English TEAM admin badge');
+  assert.ok(htmlContent.includes('💎 终身会员'), 'MEMBER_TIER_BADGES must have lifetime badge');
+  assert.ok(htmlContent.includes('👑 PRO 会员'), 'MEMBER_TIER_BADGES must have pro member badge');
+
+  // 3. Verify Active Member VIP Dossier markup
+  assert.ok(htmlContent.includes('id="activeMemberDossier"'), 'soundtest.html must contain activeMemberDossier');
+  assert.ok(htmlContent.includes('id="purchasePlansWrap"'), 'soundtest.html must wrap purchase tier cards in purchasePlansWrap');
+  assert.ok(htmlContent.includes('id="membershipUnauthedBox"'), 'soundtest.html must have membershipUnauthedBox');
+  assert.ok(htmlContent.includes('id="dossierTierBadge"'), 'activeMemberDossier must have dossierTierBadge');
+  assert.ok(htmlContent.includes('id="dossierValidPill"'), 'activeMemberDossier must have dossierValidPill');
+  assert.ok(htmlContent.includes('id="dossierEmail"'), 'activeMemberDossier must have dossierEmail');
+  assert.ok(htmlContent.includes('id="dossierBenefitsGrid"'), 'activeMemberDossier must have dossierBenefitsGrid');
+  assert.ok(htmlContent.includes('id="dossierManageBtn"'), 'activeMemberDossier must have dossierManageBtn');
+  assert.ok(htmlContent.includes('id="dossierRefreshBtn"'), 'activeMemberDossier must have dossierRefreshBtn');
+  assert.ok(htmlContent.includes('id="dossierLogoutBtn"'), 'activeMemberDossier must have dossierLogoutBtn');
+
+  // 4. Verify renderMembershipPanel toggles purchase plans vs active dossier
+  assert.ok(htmlContent.includes("purchasePlansWrap.style.display = 'none'"), 'renderMembershipPanel must hide purchasePlansWrap when paid');
+  assert.ok(htmlContent.includes("activeMemberDossier.style.display = 'block'"), 'renderMembershipPanel must show activeMemberDossier when paid');
+  assert.ok(htmlContent.includes("membershipUnauthedBox.style.display = 'none'"), 'renderMembershipPanel must hide unauthed box when paid');
+  assert.ok(htmlContent.includes("purchasePlansWrap.style.display = 'block'"), 'renderMembershipPanel must show purchasePlansWrap when unpaid');
+  assert.ok(htmlContent.includes("activeMemberDossier.style.display = 'none'"), 'renderMembershipPanel must hide activeMemberDossier when unpaid');
+  assert.ok(htmlContent.includes('populateActiveMemberDossier()'), 'renderMembershipPanel must call populateActiveMemberDossier');
+
+  // 5. Verify CSS styling for VIP active badge and active member dossier
+  assert.ok(cssContent.includes('.app-pro-btn.member-active-badge'), 'assets/soundtest.css must define .app-pro-btn.member-active-badge');
+  assert.ok(cssContent.includes('.active-member-dossier'), 'assets/soundtest.css must define .active-member-dossier');
+  assert.ok(cssContent.includes('.dossier-tier-badge'), 'assets/soundtest.css must define .dossier-tier-badge');
+  assert.ok(cssContent.includes('.dossier-meta-grid'), 'assets/soundtest.css must define .dossier-meta-grid');
+  assert.ok(cssContent.includes('.dossier-benefits-grid'), 'assets/soundtest.css must define .dossier-benefits-grid');
+});
+
+
 
 
