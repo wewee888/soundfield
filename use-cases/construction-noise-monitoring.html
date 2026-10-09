@@ -70,11 +70,18 @@
     <section class="hero">
       <div class="hero-split">
         <div class="hero-split-text reveal">
+          <nav class="breadcrumb-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="../index.html">Home</a></li>
+              <li><a href="../use-cases/">Use Cases</a></li>
+              <li aria-current="page">Construction &amp; Renovation Noise</li>
+            </ol>
+          </nav>
           <span class="eyebrow">Use Case · Construction &amp; Renovation Monitoring</span>
           <h1 class="hero-headline">Record construction noise violations with <em>undeniable context</em>.</h1>
           <p class="hero-lead">Don't let unauthorized 6 AM jackhammering, illegal weekend demolition, or unmitigated heavy machinery shatter your quality of life. Capture start, peak, and quiet-after periods with tamper-evident watermark photos, GPS timestamps, exceedance logs, and contractor-ready PDF dossiers.</p>
           <div class="hero-actions" style="justify-content: flex-start;">
-            <a class="button primary" href="../soundtest.html">Start documenting noise</a>
+            <a class="button primary" href="../soundtest.html?threshold=75&scene=construction">Start documenting noise</a>
             <a class="button" href="../samples.html">View report samples</a>
           </div>
           <div class="uc-stats">
@@ -111,7 +118,7 @@
       <div class="section-header">
         <span class="eyebrow">Acoustic Reference</span>
         <h2>Construction noise benchmarks &amp; curfew standards</h2>
-        <p class="lead">Compare your measured readings against standard environmental protection agency limits and permitted municipal working hours.</p>
+        <p class="lead">Compare your measured readings against standard <a class="in-content-link" href="../standards.html">environmental protection agency limits</a> and <a class="in-content-link" href="../noise-levels.html">permitted municipal working hours</a>.</p>
       </div>
       <div class="uc-db-section">
         <table class="uc-db-table">
@@ -145,13 +152,13 @@
             <tr>
               <td><span class="db-val db-severe">85 – 92 dBA</span></td>
               <td>Pneumatic jackhammers, concrete breakers, rock drills</td>
-              <td>High-impact noise; illegal during early mornings or weekends; triggers immediate city inspection</td>
+              <td>High-impact noise (<a class="in-content-link" href="../noise-levels.html#quick-reference">85-92 dB hazard level</a>); illegal during early mornings or weekends; triggers immediate city inspection</td>
               <td><span class="uc-db-badge badge-severe">Violation if Off-Hour</span></td>
             </tr>
             <tr>
               <td><span class="db-val db-severe">95+ dBA</span></td>
               <td>Hydraulic pile drivers, heavy demolition shears, blasting</td>
-              <td>Severe structural vibration &amp; hearing hazard; requires special variance and resident notice</td>
+              <td>Severe structural vibration &amp; hearing hazard (<a class="in-content-link" href="../standards.html">OSHA construction limits</a>); requires special variance and resident notice</td>
               <td><span class="uc-db-badge badge-severe">Stop-Work Level</span></td>
             </tr>
           </tbody>
@@ -177,7 +184,7 @@
           <div class="uc-step-num">2</div>
           <div class="uc-step-icon">📸</div>
           <h3 class="uc-step-title">Watermark Active Equipment</h3>
-          <p class="uc-step-desc">Photograph the offending generator, jackhammer, or excavator with live dB, GPS coordinates, and time stamped onto the image, proving the exact machinery involved.</p>
+          <p class="uc-step-desc">Photograph the offending generator, jackhammer, or excavator with live dB, GPS coordinates, and time stamped onto the image via the in-app <a class="in-content-link" href="../camera.html">Custody Camera</a>.</p>
         </div>
         <div class="uc-step">
           <div class="uc-step-num">3</div>
@@ -189,7 +196,7 @@
           <div class="uc-step-num">4</div>
           <div class="uc-step-icon">📑</div>
           <h3 class="uc-step-title">Export Contractor Dossier</h3>
-          <p class="uc-step-desc">Export the official PDF report with SHA-256 verification hash and CSV time-series. Present it to the general contractor's superintendent or your local building department.</p>
+          <p class="uc-step-desc">Export the official PDF report with SHA-256 verification hash and CSV time-series (<a class="in-content-link" href="../samples.html">review contractor dossier format</a>). Present it to the general contractor's superintendent or your local building department.</p>
         </div>
       </div>
     </section>
@@ -261,14 +268,14 @@
           <div class="uc-evidence-icon">👷</div>
           <div class="uc-evidence-text">
             <strong>Rule 3: Give the site manager one written warning first</strong>
-            <span>Hand the job superintendent a copy of your initial SOUNDTEST.PRO PDF report. This proves they were formally notified, destroying their defense that they "weren't aware."</span>
+            <span>Hand the job superintendent a copy of your initial SOUNDTEST.PRO PDF report (<a class="in-content-link" href="../samples.html">sample dossier</a>). This proves they were formally notified, destroying their defense that they "weren't aware."</span>
           </div>
         </div>
         <div class="uc-evidence-item">
           <div class="uc-evidence-icon">⚖️</div>
           <div class="uc-evidence-text">
             <strong>Rule 4: Understand the civilian enforcement boundary</strong>
-            <span>SOUNDTEST.PRO provides civilian reference records to trigger building inspections. Statutory fines and formal stop-work orders are issued by municipal code enforcement officers.</span>
+            <span>SOUNDTEST.PRO provides civilian reference records to trigger building inspections. Statutory fines and formal stop-work orders are issued by municipal code enforcement officers using calibrated meters (<a class="in-content-link" href="../standards.html">Acoustic Standards</a> &amp; <a class="in-content-link" href="../accuracy.html">Microphone Accuracy</a>).</span>
           </div>
         </div>
       </div>
@@ -293,21 +300,21 @@
             <span>What dB level is too loud during construction or renovation?</span>
             <svg class="uc-faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="uc-faq-a">Standard municipal construction permits allow daytime boundary levels around 70 to 80 dBA, with short peaks up to 85 dBA for necessary heavy machinery. Any construction noise exceeding 50 to 55 dBA during restricted curfew hours (evenings, nights, and Sundays) is generally actionable. SOUNDTEST.PRO displays real-time dBA and LAeq to compare against local rules.</div>
+          <div class="uc-faq-a">Standard municipal construction permits allow daytime boundary levels around 70 to 80 dBA, with short peaks up to 85 dBA for necessary heavy machinery. Any construction noise exceeding 50 to 55 dBA during restricted curfew hours (evenings, nights, and Sundays) is generally actionable. SOUNDTEST.PRO displays real-time dBA and LAeq to compare against local rules and <a class="in-content-link" href="../noise-levels.html">decibel benchmark levels</a>.</div>
         </div>
         <div class="uc-faq-item">
           <button type="button" class="uc-faq-q" onclick="toggleUcFaq(this)" aria-expanded="false">
             <span>Do I need a calibrated meter to file a construction noise complaint?</span>
             <svg class="uc-faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="uc-faq-a">For initial contractor dialogue, site meetings, and building department stop-work requests, a structured civilian dossier with timestamped dB trends, photos, and GPS coordinates is usually sufficient to trigger on-site enforcement. Formal court injunctions or punitive fines will typically be finalized by an official municipal inspector using calibrated Class 1 hardware.</div>
+          <div class="uc-faq-a">For initial contractor dialogue, site meetings, and building department stop-work requests, a structured civilian dossier with timestamped dB trends, photos, and GPS coordinates is usually sufficient to trigger on-site enforcement. Formal court injunctions or punitive fines will typically be finalized by an official municipal inspector using calibrated Class 1 hardware (<a class="in-content-link" href="../standards.html">view IEC 61672 specifications</a>).</div>
         </div>
         <div class="uc-faq-item">
           <button type="button" class="uc-faq-q" onclick="toggleUcFaq(this)" aria-expanded="false">
             <span>How do I report a construction site for noise violations?</span>
             <svg class="uc-faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="uc-faq-a">Start by documenting 3 to 5 separate incidents. Deliver a copy to the on-site general contractor or developer. If work continues outside allowed hours, submit your exported PDF dossier to your city's building inspection division, environmental health department, or non-emergency police dispatch.</div>
+          <div class="uc-faq-a">Start by documenting 3 to 5 separate incidents. Deliver a copy to the on-site general contractor or developer. If work continues outside allowed hours, submit your exported PDF dossier (<a class="in-content-link" href="../samples.html">see PDF format</a>) to your city's building inspection division, environmental health department, or non-emergency police dispatch.</div>
         </div>
       </div>
       <p class="muted" style="margin-top:1.5rem; font-size:13px; text-align:center;">SOUNDTEST.PRO is a documentation-grade civilian estimation tool, not a legally certified sound level meter. Formal statutory enforcement requires verified measurement by certified technicians.</p>
@@ -426,7 +433,7 @@
         <h2>Enforce legal quiet hours on your block</h2>
         <p>Start recording unpermitted construction noise immediately in your browser. No equipment to buy, 100% private.</p>
         <div class="uc-cta-actions">
-          <a class="button primary" href="../soundtest.html">Start documenting noise</a>
+          <a class="button primary" href="../soundtest.html?threshold=75&scene=construction">Start free noise measurement</a>
           <a class="button" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Get Pro Yearly · $24.99</a>
         </div>
         <div class="uc-cta-note">Need only a single report? <a href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Unlock single official report for $1.99 &rarr;</a></div>
@@ -482,6 +489,13 @@
             <small>OSHA compliance, open offices</small>
           </div>
         </a>
+      </div>
+      <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; font-size: 13px;">
+        <span class="muted">Related Acoustic References:</span>
+        <a class="in-content-link" href="../noise-levels.html">Decibel Benchmark Chart</a> ·
+        <a class="in-content-link" href="../standards.html">IEC &amp; WHO Standards</a> ·
+        <a class="in-content-link" href="../accuracy.html">Microphone Calibration &amp; Accuracy</a> ·
+        <a class="in-content-link" href="../samples.html">Official Dossier Samples</a>
       </div>
     </section>
 

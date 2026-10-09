@@ -70,11 +70,18 @@
     <section class="hero">
       <div class="hero-split">
         <div class="hero-split-text reveal">
+          <nav class="breadcrumb-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="../index.html">Home</a></li>
+              <li><a href="../use-cases/">Use Cases</a></li>
+              <li aria-current="page">Workplace &amp; Occupational Noise</li>
+            </ol>
+          </nav>
           <span class="eyebrow">Use Case · Workplace &amp; Occupational Health</span>
           <h1 class="hero-headline">Fast, repeatable workplace noise checks <em>without bulky hardware</em>.</h1>
           <p class="hero-lead">Screen open-plan offices, server rooms, machine shops, retail floors, and manufacturing lines for acoustic comfort and preliminary OSHA compliance. Features A/C/Z weighting, Fast/Slow response, LAeq statistical percentiles, live-dB photos, and exportable CSV/PDF records.</p>
           <div class="hero-actions" style="justify-content: flex-start;">
-            <a class="button primary" href="../soundtest.html">Start documenting noise</a>
+            <a class="button primary" href="../soundtest.html?weighting=c&scene=workplace">Start documenting noise</a>
             <a class="button" href="../samples.html">View report samples</a>
           </div>
           <div class="uc-stats">
@@ -111,7 +118,7 @@
       <div class="section-header">
         <span class="eyebrow">Acoustic Reference</span>
         <h2>Workplace &amp; occupational noise exposure thresholds</h2>
-        <p class="lead">Compare your facility measurements against international OSHA, ISO 3382-3, and European Directive 2003/10/EC standards.</p>
+        <p class="lead">Compare your facility measurements against international <a class="in-content-link" href="../standards.html">OSHA &amp; ISO acoustic standards</a>, ISO 3382-3, and European Directive 2003/10/EC standards.</p>
       </div>
       <div class="uc-db-section">
         <table class="uc-db-table">
@@ -145,13 +152,13 @@
             <tr>
               <td><span class="db-val db-severe">80 – 85 dBA</span></td>
               <td>Packaging line, light fabrication, automotive repair bay</td>
-              <td>OSHA / EU Action Level (85 dBA 8-hr TWA); hearing protection recommended and baseline audiograms offered</td>
+              <td>OSHA / EU Action Level (<a class="in-content-link" href="../noise-levels.html#quick-reference">85 dBA 8-hr TWA</a>); hearing protection recommended and baseline audiograms offered</td>
               <td><span class="uc-db-badge badge-severe">Hearing PPE Advised</span></td>
             </tr>
             <tr>
               <td><span class="db-val db-severe">90+ dBA</span></td>
               <td>Heavy stamping press, wood saw, CNC milling without enclosure</td>
-              <td>Exceeds Permissible Exposure Limit (PEL); mandatory hearing protection, noise controls, and signage required</td>
+              <td>Exceeds Permissible Exposure Limit (PEL; <a class="in-content-link" href="../standards.html">review PEL standards</a>); mandatory hearing protection, noise controls, and signage required</td>
               <td><span class="uc-db-badge badge-severe">Mandatory PPE</span></td>
             </tr>
           </tbody>
@@ -183,13 +190,13 @@
           <div class="uc-step-num">3</div>
           <div class="uc-step-icon">📸</div>
           <h3 class="uc-step-title">Photograph Machine State</h3>
-          <p class="uc-step-desc">Capture photos with live decibels, timestamp, and station labels embedded directly into the image to verify operating conditions during measurement.</p>
+          <p class="uc-step-desc">Capture photos with live decibels, timestamp, and station labels embedded directly into the image via the in-app <a class="in-content-link" href="../camera.html">Custody Camera</a>.</p>
         </div>
         <div class="uc-step">
           <div class="uc-step-num">4</div>
           <div class="uc-step-icon">📊</div>
           <h3 class="uc-step-title">Export EHS Audit Pack</h3>
-          <p class="uc-step-desc">Download complete CSV time-series data and formatted PDF executive summaries with SHA-256 integrity hashes for safety committee records.</p>
+          <p class="uc-step-desc">Download complete CSV time-series data and formatted PDF executive summaries with SHA-256 integrity hashes (<a class="in-content-link" href="../samples.html">preview EHS audit sample</a>).</p>
         </div>
       </div>
     </section>
@@ -268,7 +275,7 @@
           <div class="uc-evidence-icon">⚖️</div>
           <div class="uc-evidence-text">
             <strong>Rule 4: Understand the civilian screening boundary</strong>
-            <span>SOUNDTEST.PRO is an evidentiary screening tool. Formal statutory regulatory audits or OSHA citation defense require certified Type 1 dosimeters and certified industrial hygienists.</span>
+            <span>SOUNDTEST.PRO is an evidentiary screening tool. Formal statutory regulatory audits or OSHA citation defense require certified Type 1 dosimeters and certified industrial hygienists (<a class="in-content-link" href="../standards.html">Acoustic Standards</a> &amp; <a class="in-content-link" href="../accuracy.html">Microphone Accuracy</a>).</span>
           </div>
         </div>
       </div>
@@ -286,21 +293,21 @@
             <span>What decibel level requires hearing protection at work?</span>
             <svg class="uc-faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="uc-faq-a">Most occupational safety standards require hearing protection at 85 dB averaged over an 8-hour shift (TWA), with action levels starting at 80 dB TWA. Short peaks above 100 to 115 dB require double protection. SOUNDTEST.PRO shows LAeq and peak readings, which are useful as supporting documentation, but formal workplace noise assessments should be performed with calibrated equipment by a qualified professional.</div>
+          <div class="uc-faq-a">Most occupational safety standards require hearing protection at 85 dB averaged over an 8-hour shift (TWA), with action levels starting at 80 dB TWA (<a class="in-content-link" href="../noise-levels.html#quick-reference">see 85 dB OSHA exposure limits</a>). Short peaks above 100 to 115 dB require double protection. SOUNDTEST.PRO shows LAeq and peak readings, which are useful as supporting documentation, but formal workplace noise assessments should be performed with calibrated equipment by a qualified professional.</div>
         </div>
         <div class="uc-faq-item">
           <button type="button" class="uc-faq-q" onclick="toggleUcFaq(this)" aria-expanded="false">
             <span>Who enforces occupational noise rules?</span>
             <svg class="uc-faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="uc-faq-a">Enforcement varies by country. In the United States, OSHA sets and enforces workplace noise limits for general industry and construction. In the European Union, the Noise Directive (2003/10/EC) sets exposure limits and required protective measures. Many other countries have equivalent agencies. If you suspect unsafe noise at work, document it, then report to your safety officer or the relevant agency.</div>
+          <div class="uc-faq-a">Enforcement varies by country. In the United States, OSHA sets and enforces workplace noise limits for general industry and construction (<a class="in-content-link" href="../standards.html">review OSHA 1910.95 standards</a>). In the European Union, the Noise Directive (2003/10/EC) sets exposure limits and required protective measures. Many other countries have equivalent agencies. If you suspect unsafe noise at work, document it, then report to your safety officer or the relevant agency.</div>
         </div>
         <div class="uc-faq-item">
           <button type="button" class="uc-faq-q" onclick="toggleUcFaq(this)" aria-expanded="false">
             <span>Can I record noise levels at my workplace?</span>
             <svg class="uc-faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="uc-faq-a">Personal documentation is generally allowed in common work areas where you have a reasonable expectation of recording, but policies vary by employer and jurisdiction. Treat your records as supporting documentation, not a substitute for an employer-conducted noise assessment. SOUNDTEST.PRO records are documentation-grade estimates, not certified measurements.</div>
+          <div class="uc-faq-a">Personal documentation is generally allowed in common work areas where you have a reasonable expectation of recording, but policies vary by employer and jurisdiction. Treat your records as supporting documentation, not a substitute for an employer-conducted noise assessment. SOUNDTEST.PRO records are documentation-grade estimates (<a class="in-content-link" href="../samples.html">inspect report formats</a>), not certified measurements.</div>
         </div>
         <div class="uc-faq-item">
           <button type="button" class="uc-faq-q" onclick="toggleUcFaq(this)" aria-expanded="false">
@@ -426,7 +433,7 @@
         <h2>Start screening your workplace acoustics today</h2>
         <p>Run immediate occupational noise surveys in 10 seconds right in your mobile or desktop browser. No special apps, 100% private.</p>
         <div class="uc-cta-actions">
-          <a class="button primary" href="../soundtest.html">Start free noise measurement</a>
+          <a class="button primary" href="../soundtest.html?weighting=c&scene=workplace">Start free noise measurement</a>
           <a class="button" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Get Pro Yearly · $24.99</a>
         </div>
         <div class="uc-cta-note">Need only a single report? <a href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Unlock single official report for $1.99 &rarr;</a></div>
@@ -482,6 +489,13 @@
             <small>OSHA compliance, open offices</small>
           </div>
         </a>
+      </div>
+      <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; font-size: 13px;">
+        <span class="muted">Related Acoustic References:</span>
+        <a class="in-content-link" href="../noise-levels.html">Decibel Benchmark Chart</a> ·
+        <a class="in-content-link" href="../standards.html">IEC &amp; WHO Standards</a> ·
+        <a class="in-content-link" href="../accuracy.html">Microphone Calibration &amp; Accuracy</a> ·
+        <a class="in-content-link" href="../samples.html">Official Dossier Samples</a>
       </div>
     </section>
 

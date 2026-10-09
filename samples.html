@@ -68,6 +68,15 @@
       </div>
     </nav>
 
+    <!-- Breadcrumb Trail -->
+    <nav class="breadcrumb-trail" aria-label="Breadcrumbs">
+      <div class="breadcrumb-trail-inner">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb-separator" aria-hidden="true">&rsaquo;</span>
+        <span class="breadcrumb-current">Forensic Evidence Samples</span>
+      </div>
+    </nav>
+
     <!-- Page Hero Banner -->
     <section class="hero page-hero">
       <div class="hero-split">
@@ -146,7 +155,7 @@
             </div>
             <h2 class="sample-title">A4 Official Forensic Certificate (Pro Clean Edition)</h2>
             <p class="sample-desc">
-              Engineered for landlord-tenant mediation, HOA dispute hearings, municipal noise complaints, and preliminary legal consultation. Formatted to ISO A4 standard with automated national noise threshold comparisons, exceedance calculations, Leq trendline curves, and cryptographic SHA-256 integrity verification.
+              Engineered for <a class="in-content-link" href="use-cases/neighbor-noise-evidence.html">landlord-tenant dispute mediation</a>, <a class="in-content-link" href="use-cases/property-noise-complaint-report.html">HOA dispute hearings</a>, municipal noise complaints, and preliminary legal consultation. Formatted to ISO A4 standard with automated <a class="in-content-link" href="noise-levels.html">decibel threshold comparisons</a>, exceedance calculations, Leq trendline curves, and cryptographic SHA-256 integrity verification.
             </p>
 
             <div class="sample-metrics-strip">
@@ -185,6 +194,9 @@
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download Sample PNG
             </a>
+            <a href="use-cases/neighbor-noise-evidence.html" class="button" style="font-size:13px;padding:9px 18px;">
+              Read Neighbor Guide
+            </a>
             <a href="soundtest.html" class="button primary" style="font-size:13px;padding:9px 18px;">
               Generate Your Report
             </a>
@@ -213,7 +225,7 @@
             </div>
             <h2 class="sample-title">Acoustic HUD Evidence Photo</h2>
             <p class="sample-desc">
-              Leverages browser-native Camera and Web Audio APIs to burn the live decibel HUD directly into the pixel raster at the exact microsecond of shutter capture. Includes live dB, acoustic classification, four-quadrant metric cards (LAeq, AVG, PEAK, MIN), GPS coordinates, and calibration offsets.
+              Leverages browser-native <a class="in-content-link" href="camera.html">Camera Evidence HUD Mode</a> and Web Audio APIs to burn the live decibel HUD directly into the pixel raster at the exact microsecond of shutter capture. Includes live dB, acoustic classification, four-quadrant metric cards (LAeq, AVG, PEAK, MIN), GPS coordinates, and calibration offsets. Essential for <a class="in-content-link" href="use-cases/rental-dispute-evidence.html">tenant habitability claims</a> and landlord notices.
             </p>
 
             <div class="sample-metrics-strip">
@@ -251,6 +263,9 @@
             <a href="assets/images/sample_photo_watermark.png" download="soundtest-photo-watermark-sample.png" class="btn-sample-dl">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download Photo PNG
+            </a>
+            <a href="camera.html" class="button" style="font-size:13px;padding:9px 18px;">
+              Open Camera HUD
             </a>
             <a href="soundtest.html" class="button primary" style="font-size:13px;padding:9px 18px;">
               Snap Live Photo
@@ -342,7 +357,7 @@
             </div>
             <h2 class="sample-title">Night Construction Sentry Audit Report</h2>
             <p class="sample-desc">
-              Tailored for illegal night construction activities (pile drivers, excavators, and concrete pumps between 22:00 and 06:00). Sentry Mode runs quietly in low-power standby and automatically locks onto severe spikes exceeding statutory night limits (55 dB boundary limits), isolating transient peaks and recording exceedance durations.
+              Tailored for illegal night construction activities (pile drivers, excavators, and concrete pumps between 22:00 and 06:00). Sentry Mode runs quietly in low-power standby and automatically locks onto severe spikes exceeding statutory night limits (55 dB boundary limits per <a class="in-content-link" href="standards.html">environmental noise standards</a>), isolating transient peaks and recording exceedance durations.
             </p>
 
             <div class="sample-metrics-strip">
@@ -397,7 +412,7 @@
             </div>
             <h2 class="sample-title">Raw Second-by-Second CSV Data Table</h2>
             <p class="sample-desc">
-              Every monitoring session exports into a standard UTF-8 BOM-encoded CSV time series. Open directly in Microsoft Excel, Google Sheets, Python Pandas, or R for advanced temporal and spectral acoustic analysis.
+              Every monitoring session exports into a standard UTF-8 BOM-encoded CSV time series. Open directly in Microsoft Excel, Google Sheets, Python Pandas, or R for advanced temporal and spectral acoustic analysis. Ideal for <a class="in-content-link" href="use-cases/workplace-noise-inspection.html">OSHA workplace inspections</a> and engineering noise audits.
             </p>
 
             <ul class="sample-checklist">
@@ -416,6 +431,9 @@
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download Sample .CSV
             </button>
+            <a href="soundtest.html?mode=sentry" class="button primary" style="font-size:13px;padding:9px 18px;">
+              Start Sentry Monitor
+            </a>
           </div>
         </div>
 
@@ -544,7 +562,7 @@
             </div>
             <h2 class="sample-title">Cryptographic Evidence Manifest (JSON)</h2>
             <p class="sample-desc">
-              In legal disputes and electronic evidence discovery, standalone audio clips or screenshots are vulnerable to claims of digital alteration. SOUNDTEST.PRO pairs each session with an immutable JSON manifest containing the SHA-256 fingerprint of the raw audio buffer, environment snapshots, and verification parameters.
+              In legal disputes and electronic evidence discovery, standalone audio clips or screenshots are vulnerable to claims of digital alteration. SOUNDTEST.PRO pairs each session with an immutable JSON manifest complying with <a class="in-content-link" href="standards.html">ISO 1996 and IEC 61672</a>, containing the SHA-256 fingerprint of the raw audio buffer, environment snapshots, and verification parameters calibrated per our <a class="in-content-link" href="accuracy.html">accuracy protocol</a>.
             </p>
 
             <ul class="sample-checklist">
@@ -623,8 +641,8 @@
         <h2 style="font-size:1.35rem;font-weight:800;color:#fff;margin-bottom:0.75rem;">Building an Effective Civilian Evidence Chain</h2>
         <ul class="check-list">
           <li><strong>Triad of Admissibility:</strong> Authenticity (HUD stamps &amp; unedited video), relevance (timestamps matched to disturbances), and legality (recorded inside your private residence).</li>
-          <li><strong>Documenting Habitual Nuisance:</strong> Single isolated readings lack persuasive weight; use Sentry Mode to capture multi-day consecutive exceedance curves.</li>
-          <li><strong>Progressive Escalation:</strong> Present evidence first to building management, then to mediation boards, followed by municipal non-emergency hotlines.</li>
+          <li><strong>Documenting Habitual Nuisance:</strong> Single isolated readings lack persuasive weight; use <a class="in-content-link" href="soundtest.html?mode=sentry">Sentry Mode</a> to capture multi-day consecutive exceedance curves.</li>
+          <li><strong>Progressive Escalation:</strong> Present evidence first to <a class="in-content-link" href="use-cases/property-noise-complaint-report.html">building management</a>, then to mediation boards, followed by municipal non-emergency hotlines.</li>
         </ul>
       </div>
 
@@ -632,11 +650,52 @@
         <div class="card-badge" style="background:rgba(239,68,68,0.2);color:#fca5a5;border-color:rgba(239,68,68,0.4);">Boundaries &amp; Privacy</div>
         <h2 style="font-size:1.35rem;font-weight:800;color:#fff;margin-bottom:0.75rem;">Compliance Boundaries &amp; Data Privacy</h2>
         <p style="font-size:0.92rem;color:var(--tx2);line-height:1.65;margin-bottom:1rem;">
-          SOUNDTEST.PRO is a civilian acoustic documentation aid. Operating on browser Web Audio APIs, microphone hardware differences may introduce an estimated tolerance of ±1.2 dB.
+          SOUNDTEST.PRO is a civilian acoustic documentation aid. Operating on browser Web Audio APIs, microphone hardware differences may introduce an estimated tolerance of ±1.2 dB (review our <a class="in-content-link" href="accuracy.html">Microphone Calibration &amp; Accuracy Protocol</a>).
         </p>
         <p style="font-size:0.92rem;color:var(--tx2);line-height:1.65;">
-          When sharing reports publicly, blur private apartment numbers and bystanders' faces. Always conduct noise monitoring strictly within lawful dispute resolution boundaries.
+          When sharing reports publicly, blur private apartment numbers and bystanders' faces. Always conduct noise monitoring strictly within lawful dispute resolution boundaries per <a class="in-content-link" href="standards.html">Global Noise Standards</a>.
         </p>
+      </div>
+    </section>
+
+    <!-- Scenario Evidentiary Guides Cluster -->
+    <section class="section reveal" style="padding-top: 1rem;">
+      <div class="section-header" style="margin-bottom: 1.5rem;">
+        <span class="eyebrow">Explore Actionable Scenario Guides</span>
+        <h2 style="font-size: 1.4rem;">How to Use These Dossiers in Field Disputes</h2>
+        <p class="muted">Step-by-step evidentiary workflows tailored to specific dispute arenas and authorities.</p>
+      </div>
+      <div class="topic-cluster-grid">
+        <a class="topic-cluster-card" href="use-cases/neighbor-noise-evidence.html">
+          <div class="topic-cluster-badge">Apartment Disturbances</div>
+          <h4>Apartment &amp; Neighbor Noise Evidence</h4>
+          <p>Document stomping, late-night music, and structural transmission using Sentry mode.</p>
+        </a>
+        <a class="topic-cluster-card" href="use-cases/rental-dispute-evidence.html">
+          <div class="topic-cluster-badge">Lease Break &amp; Tribunal</div>
+          <h4>Tenant Rights &amp; Lease Break Evidence</h4>
+          <p>Establish persistent uninhabitable conditions for tenancy tribunal filings.</p>
+        </a>
+        <a class="topic-cluster-card" href="use-cases/construction-noise-monitoring.html">
+          <div class="topic-cluster-badge">Night Curfew Violations</div>
+          <h4>Construction &amp; Renovation Monitoring</h4>
+          <p>Capture curfew boundary violations and continuous Leq machine noise logs.</p>
+        </a>
+        <a class="topic-cluster-card" href="use-cases/property-noise-complaint-report.html">
+          <div class="topic-cluster-badge">Building Operations</div>
+          <h4>Property Management Noise Dossier</h4>
+          <p>Standardized acoustic intake logs for condo boards and onsite building managers.</p>
+        </a>
+        <a class="topic-cluster-card" href="use-cases/bar-street-disturbance.html">
+          <div class="topic-cluster-badge">Commercial Licences</div>
+          <h4>Bar, Nightclub &amp; Patio Disturbance</h4>
+          <p>Isolate thumping bass and commercial entertainment boundary breaches.</p>
+        </a>
+        <a class="topic-cluster-card" href="use-cases/workplace-noise-inspection.html">
+          <div class="topic-cluster-badge">OSHA Compliance</div>
+          <h4>Workplace &amp; Industrial Inspection</h4>
+          <p>Screen industrial machinery and open office acoustic stress factors.</p>
+        </a>
       </div>
     </section>
 

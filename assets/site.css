@@ -5785,3 +5785,119 @@ a.card:hover h3 { color: var(--text-strong); }
   flex-shrink: 0;
 }
 
+/* ─── Breadcrumb Navigation ─── */
+.breadcrumb-trail {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: var(--soft);
+  margin-bottom: 20px;
+}
+.breadcrumb-trail ol {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumb-trail li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.breadcrumb-trail li + li::before {
+  content: "/";
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 11px;
+}
+.breadcrumb-trail a {
+  color: var(--tx2);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.breadcrumb-trail a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.breadcrumb-trail [aria-current="page"] {
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+/* ─── Contextual In-Content Links ─── */
+.in-content-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: rgba(44, 240, 193, 0.35);
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: all 0.18s ease;
+}
+.in-content-link:hover {
+  color: #fff;
+  text-decoration-color: var(--accent);
+  background: rgba(44, 240, 193, 0.08);
+  border-radius: 3px;
+}
+
+/* ─── Topic Cluster Action & Evidentiary Hub ─── */
+.topic-cluster-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+@media (max-width: 860px) {
+  .topic-cluster-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 540px) {
+  .topic-cluster-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.topic-cluster-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 18px;
+  text-decoration: none;
+  transition: all 0.22s var(--ease);
+}
+.topic-cluster-card:hover {
+  background: rgba(44, 240, 193, 0.04);
+  border-color: rgba(44, 240, 193, 0.3);
+  transform: translateY(-2px);
+}
+.topic-cluster-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.topic-cluster-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-bottom: 6px;
+}
+.topic-cluster-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 12px;
+  flex-grow: 1;
+}
+.topic-cluster-cta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+

@@ -70,11 +70,18 @@
     <section class="hero">
       <div class="hero-split">
         <div class="hero-split-text reveal">
+          <nav class="breadcrumb-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="../index.html">Home</a></li>
+              <li><a href="../use-cases/">Use Cases</a></li>
+              <li aria-current="page">Apartment &amp; Neighbor Noise</li>
+            </ol>
+          </nav>
           <span class="eyebrow">Use Case · Apartment &amp; Neighbor Noise</span>
           <h1 class="hero-headline">Turn intolerable neighbor noise into <em>legally defensible evidence</em>.</h1>
           <p class="hero-lead">Stop enduring sleepless nights from stomping upstairs, dragging furniture, loud bass, or constant barking. Capture undeniable proof with Overnight Sentry Mode, live-dB watermark photos, multi-day trend graphs, and unwatermarked official PDF dossiers.</p>
           <div class="hero-actions" style="justify-content: flex-start;">
-            <a class="button primary" href="../soundtest.html">Start documenting noise</a>
+            <a class="button primary" href="../soundtest.html?mode=sentry&scene=neighbor">Start documenting noise</a>
             <a class="button" href="../samples.html">View report samples</a>
           </div>
           <div class="uc-stats">
@@ -111,7 +118,7 @@
       <div class="section-header">
         <span class="eyebrow">Acoustic Reference</span>
         <h2>Apartment &amp; residential noise benchmark levels</h2>
-        <p class="lead">Compare your measured decibels against international WHO guidelines and typical municipal quiet-hour ordinances.</p>
+        <p class="lead">Compare your measured decibels against international <a class="in-content-link" href="../noise-levels.html">WHO decibel guidelines</a> and typical municipal quiet-hour ordinances.</p>
       </div>
       <div class="uc-db-section">
         <table class="uc-db-table">
@@ -127,7 +134,7 @@
             <tr>
               <td><span class="db-val db-safe">&lt; 30 dBA</span></td>
               <td>Quiet bedroom, whisper, soft background breathing</td>
-              <td>WHO recommended nighttime sleep target inside bedrooms</td>
+              <td>WHO recommended nighttime sleep target inside bedrooms (<a class="in-content-link" href="../noise-levels.html#quick-reference">30 dB standard</a>)</td>
               <td><span class="uc-db-badge badge-safe">Normal Ambient</span></td>
             </tr>
             <tr>
@@ -145,7 +152,7 @@
             <tr>
               <td><span class="db-val db-severe">60 – 72 dBA</span></td>
               <td>Heavy heel stomping, furniture dragging, loud gaming, dog barking</td>
-              <td>Exceeds statutory residential limits by 15–25 dB; causes sleep disruption and distress</td>
+              <td>Exceeds <a class="in-content-link" href="../standards.html">statutory residential limits</a> by 15–25 dB; causes sleep disruption and distress</td>
               <td><span class="uc-db-badge badge-severe">Actionable Violation</span></td>
             </tr>
             <tr>
@@ -171,13 +178,13 @@
           <div class="uc-step-num">1</div>
           <div class="uc-step-icon">🌙</div>
           <h3 class="uc-step-title">Arm Overnight Sentry</h3>
-          <p class="uc-step-desc">Set your trigger threshold (e.g. 50 dBA). Phone screen auto-dims with Wake Lock, continuously monitoring and capturing noise spikes while you sleep.</p>
+          <p class="uc-step-desc">Set your trigger threshold (e.g. 50 dBA). Phone screen auto-dims with Wake Lock, continuously monitoring and capturing noise spikes while you sleep with <a class="in-content-link" href="../soundtest.html?mode=sentry&scene=neighbor">Overnight Sentry Mode</a>.</p>
         </div>
         <div class="uc-step">
           <div class="uc-step-num">2</div>
           <div class="uc-step-icon">📸</div>
           <h3 class="uc-step-title">Capture Watermark Proof</h3>
-          <p class="uc-step-desc">Use the in-app Custody Camera to photograph ceiling impact points or vibrating walls with live dB, GPS coordinates, and millisecond time stamped directly into the image.</p>
+          <p class="uc-step-desc">Use the in-app <a class="in-content-link" href="../camera.html">Custody Camera</a> to photograph ceiling impact points or vibrating walls with live dB, GPS coordinates, and millisecond time stamped directly into the image.</p>
         </div>
         <div class="uc-step">
           <div class="uc-step-num">3</div>
@@ -189,7 +196,7 @@
           <div class="uc-step-num">4</div>
           <div class="uc-step-icon">⚖️</div>
           <h3 class="uc-step-title">Export Official Dossier</h3>
-          <p class="uc-step-desc">Generate an unwatermarked PDF evidence report with SHA-256 integrity hash, pair it with our pre-drafted legal dispute letters, and deliver it to your landlord or HOA board.</p>
+          <p class="uc-step-desc">Generate an unwatermarked PDF evidence report with SHA-256 integrity hash, pair it with our pre-drafted legal dispute letters, and deliver it to your landlord or HOA board (<a class="in-content-link" href="../samples.html">inspect sample dossier</a>).</p>
         </div>
       </div>
     </section>
@@ -261,14 +268,14 @@
           <div class="uc-evidence-icon">📄</div>
           <div class="uc-evidence-text">
             <strong>Rule 3: Hand over clean PDF dossiers with SHA-256 hashes</strong>
-            <span>Never send loose audio files via text message. Present a formatted PDF summary that includes calibration offsets, charts, and verification hashes so management can act immediately.</span>
+            <span>Never send loose audio files via text message. Present a formatted PDF summary (<a class="in-content-link" href="../samples.html">inspect sample dossier</a>) that includes calibration offsets, charts, and verification hashes so management can act immediately.</span>
           </div>
         </div>
         <div class="uc-evidence-item">
           <div class="uc-evidence-icon">⚖️</div>
           <div class="uc-evidence-text">
             <strong>Rule 4: Understand civilian vs certified legal boundaries</strong>
-            <span>SOUNDTEST.PRO provides high-precision civilian documentation that resolves 95% of landlord and mediation disputes. If entering formal litigation, pair with certified class meters.</span>
+            <span>SOUNDTEST.PRO provides high-precision civilian documentation that resolves 95% of landlord and mediation disputes. If entering formal litigation, pair with certified class meters (<a class="in-content-link" href="../standards.html">Acoustic Standards</a> &amp; <a class="in-content-link" href="../accuracy.html">Microphone Accuracy</a>).</span>
           </div>
         </div>
       </div>
@@ -286,21 +293,21 @@
             <span>Can phone recordings be used as evidence of neighbor noise?</span>
             <svg class="uc-faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="uc-faq-a">In most jurisdictions, audio you record in your own home without trespassing is admissible as supporting evidence in mediation, landlord disputes, and HOA hearings. Pairing audio with timestamped dB trends, photos with live dB overlays, and a multi-day dossier makes it substantially more persuasive than a raw audio clip. SOUNDTEST.PRO is an evidentiary documentation tool engineered to civilian standards; for statutory enforcement, verify with a calibrated Class 1/2 sound level meter.</div>
+          <div class="uc-faq-a">In most jurisdictions, audio you record in your own home without trespassing is admissible as supporting evidence in mediation, landlord disputes, and HOA hearings. Pairing audio with timestamped dB trends, photos with live dB overlays, and a multi-day dossier makes it substantially more persuasive than a raw audio clip. SOUNDTEST.PRO is an evidentiary documentation tool engineered to civilian standards; for statutory enforcement, verify with a calibrated Class 1/2 sound level meter (<a class="in-content-link" href="../standards.html">learn about IEC 61672</a>).</div>
         </div>
         <div class="uc-faq-item">
           <button type="button" class="uc-faq-q" onclick="toggleUcFaq(this)" aria-expanded="false">
             <span>What decibel level is considered illegal neighbor harassment?</span>
             <svg class="uc-faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="uc-faq-a">WHO public-health guidelines treat sustained indoor noise above 30-35 dBA at night as a sleep disturbance risk. Most municipal noise ordinances treat repeated indoor nighttime noise exceeding 40-50 dBA (or 60-70 dBA for daytime impact) as actionable violations. The key to winning a dispute is proving a chronic pattern rather than a single isolated peak.</div>
+          <div class="uc-faq-a"><a class="in-content-link" href="../noise-levels.html">WHO public-health guidelines</a> treat sustained indoor noise above 30-35 dBA at night as a sleep disturbance risk. Most municipal noise ordinances treat repeated indoor nighttime noise exceeding 40-50 dBA (or 60-70 dBA for daytime impact) as actionable violations. The key to winning a dispute is proving a chronic pattern rather than a single isolated peak.</div>
         </div>
         <div class="uc-faq-item">
           <button type="button" class="uc-faq-q" onclick="toggleUcFaq(this)" aria-expanded="false">
             <span>How long should I record noise before making a formal complaint?</span>
             <svg class="uc-faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="uc-faq-a">A multi-day log of 7 to 14 days with 5-10 documented exceedance sessions is far more defensible than a single long recording. Use Overnight Sentry Mode to capture spontaneous nighttime spikes without manual fatigue, then export a structured PDF dossier.</div>
+          <div class="uc-faq-a">A multi-day log of 7 to 14 days with 5-10 documented exceedance sessions is far more defensible than a single long recording. Use <a class="in-content-link" href="../soundtest.html?mode=sentry&scene=neighbor">Overnight Sentry Mode</a> to capture spontaneous nighttime spikes without manual fatigue, then export a structured PDF dossier.</div>
         </div>
         <div class="uc-faq-item">
           <button type="button" class="uc-faq-q" onclick="toggleUcFaq(this)" aria-expanded="false">
@@ -426,7 +433,7 @@
         <h2>Ready to put an end to neighbor noise disturbance?</h2>
         <p>Start recording your baseline for free in 10 seconds right inside your browser. No hardware purchases, no app store downloads, 100% private.</p>
         <div class="uc-cta-actions">
-          <a class="button primary" href="../soundtest.html">Start free noise measurement</a>
+          <a class="button primary" href="../soundtest.html?mode=sentry&scene=neighbor">Start free noise measurement</a>
           <a class="button" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">Get Pro Yearly · $24.99</a>
         </div>
         <div class="uc-cta-note">Need only a single report? <a href="https://www.creem.io/payment/prod_2Xc2ichF1Xk2mmzrhBxyYC" target="_blank" rel="noopener">Unlock single official report for $1.99 &rarr;</a></div>
@@ -482,6 +489,13 @@
             <small>OSHA compliance, open offices</small>
           </div>
         </a>
+      </div>
+      <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; font-size: 13px;">
+        <span class="muted">Related Acoustic References:</span>
+        <a class="in-content-link" href="../noise-levels.html">Decibel Benchmark Chart</a> ·
+        <a class="in-content-link" href="../standards.html">IEC &amp; WHO Standards</a> ·
+        <a class="in-content-link" href="../accuracy.html">Microphone Calibration &amp; Accuracy</a> ·
+        <a class="in-content-link" href="../samples.html">Official Dossier Samples</a>
       </div>
     </section>
 
