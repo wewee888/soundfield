@@ -225,3 +225,29 @@ test('Security Scan: _headers and robots.txt enforce HSTS, COOP, and admin index
   assert.ok(robots.includes('Disallow: /admin.html'), 'robots.txt must disallow /admin.html');
   assert.ok(robots.includes('Disallow: /api/'), 'robots.txt must disallow /api/');
 });
+
+test('Security Scan: Telemetry reset endpoint /api/reset enforces admin authorization', async () => {
+  const resetPath = path.join(rootDir, 'functions/api/reset.js');
+  const resetMod = await import(`file://${resetPath.replace(/\\/g, '/')}`);
+
+  const mockEnv = {
+    ADMIN_SECRET: 'soundtest_admin_2026',
+    ab_test: {
+      delete: async () => {},
+    },
+  };
+
+  // 1. Unauthenticated POST -> 401
+  const unauthReq = new Request('https://soundtest.pro/api/reset', { method: 'POST' });
+  const unauthRes = await resetMod.onRequestPost({ request: unauthReq, env: mockEnv });
+  assert.equal(unauthRes.status, 401, '/api/reset must reject unauthenticated POST');
+
+  // 2. Authenticated POST with Bearer token -> 200
+  const authReq = new Request('https://soundtest.pro/api/reset', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer soundtest_admin_2026' },
+  });
+  const authRes = await resetMod.onRequestPost({ request: authReq, env: mockEnv });
+  assert.equal(authRes.status, 200, '/api/reset must succeed with valid admin token');
+});
+

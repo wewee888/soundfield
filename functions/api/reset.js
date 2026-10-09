@@ -15,7 +15,20 @@ const CTAS = [
 ];
 
 export async function onRequestPost(context) {
-  const { env } = context;
+  const { request, env } = context;
+  const authHeader = request?.headers?.get('authorization') || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+  const adminSecret = String(env.ADMIN_SECRET || 'soundtest_admin_2026');
+  if (!token || token !== adminSecret) {
+    return new Response(JSON.stringify({ error: 'unauthorized', message: 'Admin authorization required to reset A/B test data.' }), {
+      status: 401,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+      },
+    });
+  }
+
   if (!env.ab_test) {
     return new Response(JSON.stringify({ error: 'KV not bound' }, null, 2), {
       status: 503,
