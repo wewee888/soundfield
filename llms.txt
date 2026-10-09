@@ -6,6 +6,7 @@ SOUNDTEST.PRO operates entirely client-side in modern web browsers (mobile and d
 
 ## Core Capabilities
 - [Real-Time Sound Meter](https://soundtest.pro/): High-precision Web Audio API decibel estimation with IEC 61672-1 modeled A-weighting (dBA), C-weighting (dBC), and Z-weighting (dBZ), Fast (125 ms) and Slow (1000 ms) time response, and real-time peak hold.
+- [Acoustic Evidence Camera HUD](https://soundtest.pro/camera.html): Browser-native camera stamping real-time decibel HUD, GPS coordinates, and cryptographic timestamps onto dispute photos and videos.
 - [Sentry Surveillance Workstation](https://soundtest.pro/): Background unattended noise event monitoring with impulse trigger detection and automatic audio incident capture.
 - [Tamper-Evident Evidence Sealing](https://soundtest.pro/samples/): Cryptographic SHA-256 digest calculation for both media recordings and structured JSON/CSV metadata (schema: `soundtest.pro-evidence-manifest-v1`, evidence ID: `STP-YYYYMMDD-XXXXX`).
 - [Forensic PDF Dossier Generator](https://soundtest.pro/samples/): In-browser generation of multi-page PDF reports containing Leq exceedance charts, GPS accuracy radius, and device environment logs.
