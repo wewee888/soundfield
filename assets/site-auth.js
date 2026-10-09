@@ -2352,114 +2352,24 @@
       }
     });
 
-    // ── Super Admin Console Handlers ──
+    // ── Super Admin Credential Sync & Client Boundary Isolation ──
+    // Admin management capabilities are strictly isolated in /admin.html (RBAC protected & isolated from crawler/client UI)
     const adminCard = document.getElementById('adminConsoleCard');
     const isSuperAdmin = checkIsSuperAdmin(session?.email, session?.role);
 
+    if (isSuperAdmin) {
+      try {
+        localStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+        sessionStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
+        if (session?.email) localStorage.setItem('soundtest_admin_email', session.email);
+      } catch (_) {}
+    }
+
+    // Administrative card is strictly hidden in user-facing dashboard
     if (adminCard) {
-      if (isSuperAdmin) {
-        try {
-          localStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
-          sessionStorage.setItem('soundtest_admin_token', 'soundtest_admin_2026');
-          if (session?.email) localStorage.setItem('soundtest_admin_email', session.email);
-        } catch (_) {}
-        adminCard.style.display = 'block';
-        const btnGrant = document.getElementById('btnAdminGrant');
-        const btnQuery = document.getElementById('btnAdminQuery');
-        const inputTarget = document.getElementById('adminTargetEmail');
-        const selectPlan = document.getElementById('adminTargetPlan');
-        const selectDuration = document.getElementById('adminTargetDuration');
-        const feedbackBox = document.getElementById('adminFeedbackBox');
-
-        function setFeedback(msg, isSuccess = true) {
-          if (!feedbackBox) return;
-          feedbackBox.textContent = msg;
-          feedbackBox.className = 'admin-result-box ' + (isSuccess ? 'is-success' : 'is-error');
-          feedbackBox.style.display = 'block';
-        }
-
-        if (btnGrant && !btnGrant.hasAttribute('data-bound')) {
-          btnGrant.setAttribute('data-bound', 'true');
-          btnGrant.addEventListener('click', async () => {
-            const targetEmail = String(inputTarget?.value || '').trim().toLowerCase();
-            if (!targetEmail || !targetEmail.includes('@')) {
-              setFeedback('请输入有效的目标用户邮箱地址', false);
-              return;
-            }
-            btnGrant.disabled = true;
-            btnGrant.textContent = '正在授权…';
-            try {
-              const res = await fetch('/api/admin/membership', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'x-admin-email': session.email,
-                  'x-session-token': session.token || '',
-                },
-                body: JSON.stringify({
-                  admin_email: session.email,
-                  admin_token: session.token,
-                  target_email: targetEmail,
-                  plan: selectPlan?.value || 'team',
-                  duration_days: parseInt(selectDuration?.value || '3650', 10),
-                }),
-              });
-              const data = await res.json().catch(() => ({}));
-              if (!res.ok || !data.ok) {
-                setFeedback(data.message || '授权配置失败，请检查网络或权限', false);
-              } else {
-                setFeedback(`✅ ${data.message}（到期时间: ${data.record?.expires_at ? new Date(data.record.expires_at).toLocaleDateString() : '永久'}）`, true);
-                showToast('会员权限配置已生效！', 'success');
-              }
-            } catch (err) {
-              setFeedback('网络请求异常，请稍后重试: ' + err.message, false);
-            } finally {
-              btnGrant.disabled = false;
-              btnGrant.textContent = '⚡ 立即生效';
-            }
-          });
-        }
-
-        if (btnQuery && !btnQuery.hasAttribute('data-bound')) {
-          btnQuery.setAttribute('data-bound', 'true');
-          btnQuery.addEventListener('click', async () => {
-            const targetEmail = String(inputTarget?.value || '').trim().toLowerCase();
-            if (!targetEmail || !targetEmail.includes('@')) {
-              setFeedback('请输入要查询的目标用户邮箱地址', false);
-              return;
-            }
-            btnQuery.disabled = true;
-            btnQuery.textContent = '正在查询…';
-            try {
-              const res = await fetch(`/api/admin/membership?email=${encodeURIComponent(targetEmail)}`, {
-                headers: {
-                  'x-admin-email': session.email,
-                  'x-session-token': session.token || '',
-                },
-              });
-              const data = await res.json().catch(() => ({}));
-              if (!res.ok || !data.ok) {
-                setFeedback(data.message || '查询失败', false);
-              } else {
-                const mem = data.membership;
-                if (!mem || !mem.active || mem.plan === 'free') {
-                  setFeedback(`ℹ️ 用户 ${targetEmail} 当前为【免费版】或无有效会员记录。`, false);
-                } else {
-                  const exp = mem.expires_at ? new Date(mem.expires_at).toLocaleDateString() : '永久有效';
-                  setFeedback(`🌟 用户 ${targetEmail} 当前权限: 【${(mem.plan_display || mem.plan).toUpperCase()}】 | 状态: ${mem.status} | 有效期至: ${exp}`, true);
-                }
-              }
-            } catch (err) {
-              setFeedback('网络请求异常: ' + err.message, false);
-            } finally {
-              btnQuery.disabled = false;
-              btnQuery.textContent = '🔍 查询状态';
-            }
-          });
-        }
-      } else {
-        adminCard.style.display = 'none';
-      }
+      adminCard.style.display = 'none';
+      adminCard.setAttribute('aria-hidden', 'true');
+      adminCard.hidden = true;
     }
   }
 

@@ -1587,7 +1587,7 @@ video#cam{width:100%;border-radius:var(--rs);display:block;aspect-ratio:16/9;obj
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 8px calc(var(--safe-b, 0px) + 16px);
+  padding: 12px 8px max(32px, calc(var(--safe-b, 0px) + 16px));
   background: linear-gradient(180deg, transparent 0%, rgba(2, 6, 14, 0.60) 24%, rgba(2, 6, 14, 0.92) 100%);
   gap: 10px;
   box-sizing: border-box;

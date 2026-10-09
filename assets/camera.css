@@ -39,8 +39,13 @@ html, body {
 
 /* ── Fullscreen Camera Stage ── */
 .cam-stage {
-  position: relative;
-  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   height: 100dvh;
   overflow: hidden;
   display: flex;
@@ -94,6 +99,7 @@ html, body {
   justify-content: space-between;
   padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px;
   background: linear-gradient(180deg, rgba(3, 6, 12, 0.85) 0%, rgba(3, 6, 12, 0) 100%);
+  flex-shrink: 0;
 }
 
 .cam-back-link {
@@ -177,7 +183,7 @@ html, body {
 .cam-watermark-overlay {
   position: relative;
   z-index: 10;
-  margin: 0 16px 14px;
+  margin: 0 16px 8px;
   max-width: 480px;
   align-self: center;
   width: calc(100% - 32px);
@@ -187,9 +193,10 @@ html, body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(42, 255, 212, 0.35);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(42, 255, 212, 0.12);
-  padding: 14px 16px;
+  padding: 12px 14px;
   pointer-events: auto;
   transition: all 200ms ease;
+  flex-shrink: 1;
 }
 
 .hud-header {
@@ -362,8 +369,9 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 12px 24px calc(18px + env(safe-area-inset-bottom, 0px));
-  background: linear-gradient(0deg, rgba(3, 6, 12, 0.92) 0%, rgba(3, 6, 12, 0.6) 70%, rgba(3, 6, 12, 0) 100%);
+  padding: 12px 24px max(34px, calc(18px + env(safe-area-inset-bottom, 0px)));
+  background: linear-gradient(0deg, rgba(3, 6, 12, 0.95) 0%, rgba(3, 6, 12, 0.65) 70%, rgba(3, 6, 12, 0) 100%);
+  flex-shrink: 0;
 }
 
 .cam-mode-tabs {
@@ -648,4 +656,15 @@ html, body {
 .cam-toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* ── Mobile Safe Area & Android Gesture Inset Handling ── */
+@media (max-width: 600px) {
+  .cam-bottom-bar {
+    padding-bottom: max(38px, calc(20px + env(safe-area-inset-bottom, 0px)));
+  }
+  .cam-shutter-btn {
+    width: clamp(70px, 18vw, 78px);
+    height: clamp(70px, 18vw, 78px);
+  }
 }
