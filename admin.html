@@ -979,6 +979,11 @@
           <span class="adm-nav-icon">🔑</span>
           <span class="adm-nav-label">VIP 授权发卡</span>
         </button>
+        <button class="adm-nav-item" data-tab="meter-config" onclick="switchTab('meter-config')">
+          <span class="adm-nav-icon">⚙️</span>
+          <span class="adm-nav-label">噪音计初始功能与预设</span>
+          <span class="adm-nav-badge badge-teal">超管</span>
+        </button>
       </nav>
 
       <!-- Sidebar Footer -->
@@ -1710,8 +1715,253 @@
             </a>
           </div>
         </div>
-      </div>
     </div> <!-- /viewAnalytics -->
+
+    <!-- TAB 6: 噪音计初始预设与全局功能配置 -->
+    <div id="viewmeter-config" class="tab-view">
+      <!-- Top Actions Bar -->
+      <div class="adm-card" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; background: linear-gradient(135deg, rgba(44, 240, 193, 0.08), rgba(59, 130, 246, 0.05)); border: 1px solid rgba(44, 240, 193, 0.3);">
+        <div>
+          <div style="font-size: 16px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">⚙️</span>
+            <span>噪音计出厂初始预设与全局功能中枢 (Sound Meter Default Config)</span>
+            <span class="adm-nav-badge badge-teal" style="font-size: 11px;">超级管理员专属</span>
+          </div>
+          <div style="font-size: 12.5px; color: var(--adm-muted); margin-top: 4px;">
+            设置全网所有新访客与未定制用户的初始声级计权、响应速度、基准校准偏移、超标告警、昼夜哨兵标准及地图 API 密钥。用户端将自动以此作为基线运行。
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn-action btn-primary" onclick="saveAdminMeterDefaults()">
+            <span>💾</span> 保存全局预设
+          </button>
+          <button class="btn-action" onclick="resetAdminMeterDefaults()" style="border-color: rgba(251, 191, 36, 0.4); color: var(--adm-amber);">
+            <span>🔄</span> 恢复出厂推荐值
+          </button>
+          <button class="btn-action" onclick="exportAdminMeterDefaultsJson()">
+            <span>📋</span> 导出 JSON
+          </button>
+          <button class="btn-action" onclick="copyAdminMeterDefaultsJson()">
+            <span>📄</span> 复制配置
+          </button>
+          <a href="soundtest.html" target="_blank" class="btn-action" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; text-decoration: none;">
+            <span>🚀</span> 启动噪音计测试 ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Config Grid (2 Columns) -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; margin-bottom: 24px;">
+
+        <!-- Card 1: 声学计量出厂基准 -->
+        <div class="adm-card">
+          <div style="font-size: 14px; font-weight: 800; color: var(--adm-accent); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+            <span>🎚️</span> 声学计量出厂基准 (Acoustic Meter Baseline)
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px;">默认频率计权 (Frequency Weighting)</label>
+              <select id="cfgWeighting" class="adm-select" style="width: 100%;">
+                <option value="A">A 计权 (模拟人耳听觉感知，环境噪声国家标准 GB 22337 默认)</option>
+                <option value="C">C 计权 (低频与机械动力噪声，保留更多低频能量)</option>
+                <option value="Z">Z 计权 (零计权平直响应 10Hz-20kHz，科研物理量测)</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px;">默认时间计权响应速度 (Time Weighting)</label>
+              <select id="cfgTimeWeight" class="adm-select" style="width: 100%;">
+                <option value="F">Fast 快响应 (125ms 积分常数，捕捉瞬态与突发冲击噪声)</option>
+                <option value="S">Slow 慢响应 (1000ms 积分常数，平滑稳态与设备背景噪声)</option>
+              </select>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label style="font-size: 12px; color: var(--adm-muted);">默认声学基准校准偏移 (Calibration Offset)</label>
+                <span id="cfgCalOffsetVal" style="font-family: monospace; font-size: 13px; color: var(--adm-accent); font-weight: 700;">-8.0 dB</span>
+              </div>
+              <input type="range" id="cfgCalOffset" min="-20" max="20" step="0.1" value="-8.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+              <div style="font-size: 11px; color: var(--adm-muted); margin-top: 4px;">由国家一级声级计在消音室比对定标；标准移动端推荐基准为 -8.0 dB。</div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label style="font-size: 12px; color: var(--adm-muted);">默认麦克风软件增益 (Microphone Gain)</label>
+                <span id="cfgMicGainVal" style="font-family: monospace; font-size: 13px; color: var(--adm-accent); font-weight: 700;">2 dB</span>
+              </div>
+              <input type="range" id="cfgMicGain" min="0" max="24" step="1" value="2" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgMicGainVal').textContent=this.value+' dB'">
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label style="font-size: 12px; color: var(--adm-muted);">波形与频谱平滑滤波 (Smoothing Filter)</label>
+                <span id="cfgSmoothingVal" style="font-family: monospace; font-size: 13px; color: var(--adm-accent); font-weight: 700;">1 档 (标准)</span>
+              </div>
+              <input type="range" id="cfgSmoothing" min="1" max="9" step="1" value="1" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgSmoothingVal').textContent=this.value+' 档'+(this.value==1?' (标准)':' (平滑)')">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: 告警阈值与昼夜监测标准 -->
+        <div class="adm-card">
+          <div style="font-size: 14px; font-weight: 800; color: var(--adm-gold); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+            <span>🚨</span> 告警阈值与昼夜标准 (Alert & Sentry Standards)
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label style="font-size: 12px; color: var(--adm-muted);">默认通用超标告警阈值 (Universal Alarm Threshold)</label>
+                <span id="cfgAlertThVal" style="font-family: monospace; font-size: 13px; color: var(--adm-gold); font-weight: 700;">60 dB</span>
+              </div>
+              <input type="range" id="cfgAlertTh" min="30" max="110" step="5" value="60" style="width: 100%; accent-color: var(--adm-gold);" oninput="document.getElementById('cfgAlertThVal').textContent=this.value+' dB'">
+            </div>
+            <div>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #fff; cursor: pointer;">
+                <input type="checkbox" id="cfgAlertsOn" checked style="accent-color: var(--adm-accent); width: 16px; height: 16px;">
+                <span>默认开启超标告警高亮提示</span>
+              </label>
+            </div>
+            <div>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #fff; cursor: pointer;">
+                <input type="checkbox" id="cfgAutoDayNight" style="accent-color: var(--adm-accent); width: 16px; height: 16px;">
+                <span>默认启用昼夜双重限值切换 (符合 GB 22337 1类居住区)</span>
+              </label>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label style="display: block; font-size: 11.5px; color: var(--adm-muted); margin-bottom: 4px;">昼间限值 (06:00-22:00)</label>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <input type="number" id="cfgDayTh" value="55" min="30" max="90" class="adm-input" style="width: 100%;">
+                  <span style="font-size: 12px; color: var(--adm-muted);">dB</span>
+                </div>
+              </div>
+              <div>
+                <label style="display: block; font-size: 11.5px; color: var(--adm-muted); margin-bottom: 4px;">夜间限值 (22:00-06:00)</label>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <input type="number" id="cfgNightTh" value="45" min="30" max="80" class="adm-input" style="width: 100%;">
+                  <span style="font-size: 12px; color: var(--adm-muted);">dB</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label style="font-size: 12px; color: var(--adm-muted);">持续超标延迟触发时间 (Sustained Delay)</label>
+                <span id="cfgSusAlertMinSecVal" style="font-family: monospace; font-size: 13px; color: var(--adm-gold); font-weight: 700;">30 秒</span>
+              </div>
+              <input type="range" id="cfgSusAlertMinSec" min="5" max="120" step="5" value="30" style="width: 100%; accent-color: var(--adm-gold);" oninput="document.getElementById('cfgSusAlertMinSecVal').textContent=this.value+' 秒'">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: 自动化存证、省电与系统预设 -->
+        <div class="adm-card">
+          <div style="font-size: 14px; font-weight: 800; color: #60a5fa; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+            <span>⏱️</span> 存证录音、省电与体验预设 (Evidence & UX Policies)
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px;">默认首发系统语言 (Default App Language)</label>
+              <select id="cfgDefaultLang" class="adm-select" style="width: 100%;">
+                <option value="auto">自动探测浏览器语言 (Auto Detect)</option>
+                <option value="zh-CN">🇨🇳 中文 (简体)</option>
+                <option value="en-US">🇺🇸 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="vi">🇻🇳 Tiếng Việt</option>
+                <option value="th">🇹🇭 ไทย</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px;">默认纠纷维权报告模板 (Default Report Template)</label>
+              <select id="cfgReportTemplate" class="adm-select" style="width: 100%;">
+                <option value="complaint">投诉沟通 (通用严谨)</option>
+                <option value="neighbor">邻里扰民 (友好交涉)</option>
+                <option value="renovation">装修施工噪声 (超标取证)</option>
+                <option value="property">物业协同 (现场核验)</option>
+                <option value="legal">律师沟通辅助 (存证报告)</option>
+                <option value="traffic">道路交通噪声 (常态监测)</option>
+                <option value="elevator">电梯机房噪声 (低频振动)</option>
+                <option value="hvac">空调外机噪声 (共振测试)</option>
+                <option value="general">通用测量记录</option>
+              </select>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label style="font-size: 12px; color: var(--adm-muted);">超标自动录音触发延时 (Auto-Record Min Duration)</label>
+                <span id="cfgAutoRecMinSecVal" style="font-family: monospace; font-size: 13px; color: #60a5fa; font-weight: 700;">3 秒</span>
+              </div>
+              <input type="range" id="cfgAutoRecMinSec" min="1" max="30" step="1" value="3" style="width: 100%; accent-color: #60a5fa;" oninput="document.getElementById('cfgAutoRecMinSecVal').textContent=this.value+' 秒'">
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label style="font-size: 12px; color: var(--adm-muted);">超标停止后追加缓冲时长 (Post-Stop Retention)</label>
+                <span id="cfgAutoRecAfterStopVal" style="font-family: monospace; font-size: 13px; color: #60a5fa; font-weight: 700;">10 秒</span>
+              </div>
+              <input type="range" id="cfgAutoRecAfterStop" min="3" max="60" step="1" value="10" style="width: 100%; accent-color: #60a5fa;" oninput="document.getElementById('cfgAutoRecAfterStopVal').textContent=this.value+' 秒'">
+            </div>
+            <div>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #fff; cursor: pointer;">
+                <input type="checkbox" id="cfgPowerSaver" checked style="accent-color: var(--adm-accent); width: 16px; height: 16px;">
+                <span>默认开启长时省电模式 (连续监测 8 分钟后自动降低刷新率，防止发烫)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: 全球底图与地理编码 API 密钥总线 -->
+        <div class="adm-card">
+          <div style="font-size: 14px; font-weight: 800; color: #a78bfa; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+            <span>🗺️</span> 地图与逆地理编码 API 密钥总线 (Map Services Hub)
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px; font-size: 12px; color: var(--adm-muted); line-height: 1.5;">
+              <strong style="color: #fff;">集约化策略：</strong>普通用户在客户端无需配置任何地图 Key。平台管理员在此统一部署后，端上自动调取执行逆地理编码与声学证据照片 GPS 水印标注。
+            </div>
+            <div>
+              <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px;">百度地图 Web 服务 Key (国内主流推荐)</label>
+              <input type="text" id="cfgBaiduKey" class="adm-input" style="width: 100%; font-family: monospace;" value="kdlp0invEEhm1DbHKjmbExA4E0P19qPu">
+            </div>
+            <div>
+              <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px;">高德地图 Web 服务 Key (国内备用)</label>
+              <input type="password" id="cfgAmapKey" class="adm-input" style="width: 100%; font-family: monospace;" placeholder="可选留空，备用">
+            </div>
+            <div>
+              <label style="display: block; font-size: 12px; color: var(--adm-muted); margin-bottom: 6px;">Google Maps JavaScript / Geocoding Key (海外市场)</label>
+              <input type="password" id="cfgGoogleKey" class="adm-input" style="width: 100%; font-family: monospace;" placeholder="可选留空，国际版逆地理编码">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5: 集成发版自检、媒体存证策略与法务合规中心 -->
+      <div class="adm-card" style="margin-bottom: 24px;">
+        <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+          <span>📑</span> 发版核验清单、媒体存证策略与法务合规中心 (Release & Governance)
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+          <!-- 媒体策略 -->
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 14px;">
+            <div style="font-size: 13px; font-weight: 700; color: var(--adm-accent); margin-bottom: 8px;">📦 本地与云端存证策略</div>
+            <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--adm-muted); line-height: 1.6;">
+              <li>音视频切片保存在浏览器 IndexedDB (<code>soundfield_media_v1</code>)；</li>
+              <li>记录摘要与时间戳防篡改哈希存储于 localStorage (<code>sf_v5</code>)；</li>
+              <li>Free 用户可免费下载单条存证；Pro/Team 用户解锁长时录音与批量导出；</li>
+              <li>跨端备份仅打包数据结构与 SHA-256 签名，保障用户隐私与存储健康。</li>
+            </ul>
+          </div>
+          <!-- 发版自检 -->
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 14px;">
+            <div style="font-size: 13px; font-weight: 700; color: var(--adm-gold); margin-bottom: 8px;">✅ 客户端发版验证核验清单</div>
+            <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--adm-muted); line-height: 1.6;">
+              <li><strong>权限防呆：</strong>拒绝摄像头/定位仍可测声级；拒绝麦克风弹出授权指引；</li>
+              <li><strong>证据闭环：</strong>完成监测、声学证据照片、测点水印、PDF 与 CSV 导出；</li>
+              <li><strong>多端覆盖：</strong>iOS Safari、Android Chrome、Windows Edge、macOS Safari；</li>
+              <li><strong>合规边界：</strong>严格标明“民事辅助记录与事实举证”，严禁暗示国家检定。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
     </div> <!-- /adm-main-views -->
   </main> <!-- /adm-main-body -->
 </div> <!-- /adm-layout (adminApp) -->
@@ -2335,6 +2585,7 @@
         document.getElementById('adminGateModal').style.display = 'none';
         document.getElementById('adminApp').style.display = 'flex';
         fetchAdminData();
+        loadAdminMeterDefaultsForm();
       } else {
         document.getElementById('adminGateModal').style.display = 'flex';
         document.getElementById('adminApp').style.display = 'none';
@@ -2426,6 +2677,7 @@
           btn.disabled = false;
           btn.textContent = '验证并进入管理控制台';
           fetchAdminData();
+          loadAdminMeterDefaultsForm();
         } else {
           errEl.textContent = data.message || '管理员账号或密码错误，请核对后重试';
           errEl.style.display = 'block';
@@ -2466,7 +2718,8 @@
       orders: '📦 订单流水与待付催付管理',
       users: '👥 注册用户与会员档案中心',
       analytics: '🌐 访客画像与全站流量追踪',
-      operations: '🔑 VIP 专属授权发卡与运维'
+      operations: '🔑 VIP 专属授权发卡与运维',
+      'meter-config': '⚙️ 超级管理员 · 噪音计初始预设与全局功能配置'
     };
 
     // Tab Navigation
@@ -2489,6 +2742,177 @@
 
       if (tabId === 'analytics') {
         fetchAnalyticsData();
+      } else if (tabId === 'meter-config') {
+        loadAdminMeterDefaultsForm();
+      }
+    }
+
+    // =========================================================================
+    // 超级管理员 · 噪音计出厂初始预设与全局功能引擎 (Meter Defaults Engine)
+    // =========================================================================
+    const ADMIN_METER_DEFAULTS_KEY = 'sf_admin_meter_defaults_v1';
+
+    const FACTORY_METER_DEFAULTS = {
+      weighting: 'A',
+      timeWeight: 'F',
+      calOffset: -8.0,
+      micGainDb: 2,
+      smoothing: 1,
+      alertTh: 60,
+      alertsOn: true,
+      autoDayNightMode: false,
+      dayThresholdDb: 55,
+      nightThresholdDb: 45,
+      sustainedAlertMinSeconds: 30,
+      defaultLanguage: 'auto',
+      reportTemplate: 'complaint',
+      autoRecMinSeconds: 3,
+      autoRecAfterStopSeconds: 10,
+      longRunPowerSaver: true,
+      baiduKey: 'kdlp0invEEhm1DbHKjmbExA4E0P19qPu',
+      amapKey: '',
+      googleMapsKey: '',
+      updatedAt: new Date().toISOString()
+    };
+
+    function getAdminMeterDefaultsFromStorage() {
+      try {
+        const raw = localStorage.getItem(ADMIN_METER_DEFAULTS_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return { ...FACTORY_METER_DEFAULTS };
+    }
+
+    function loadAdminMeterDefaultsForm() {
+      const cfg = getAdminMeterDefaultsFromStorage();
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      };
+      const setChecked = (id, checked) => {
+        const el = document.getElementById(id);
+        if (el) el.checked = Boolean(checked);
+      };
+
+      setVal('cfgWeighting', cfg.weighting || 'A');
+      setVal('cfgTimeWeight', cfg.timeWeight || 'F');
+
+      const cal = typeof cfg.calOffset === 'number' ? cfg.calOffset : -8.0;
+      setVal('cfgCalOffset', cal);
+      const calValEl = document.getElementById('cfgCalOffsetVal');
+      if (calValEl) calValEl.textContent = (cal >= 0 ? '+' : '') + cal + ' dB';
+
+      const mic = typeof cfg.micGainDb === 'number' ? cfg.micGainDb : 2;
+      setVal('cfgMicGain', mic);
+      const micValEl = document.getElementById('cfgMicGainVal');
+      if (micValEl) micValEl.textContent = mic + ' dB';
+
+      const sm = typeof cfg.smoothing === 'number' ? cfg.smoothing : 1;
+      setVal('cfgSmoothing', sm);
+      const smValEl = document.getElementById('cfgSmoothingVal');
+      if (smValEl) smValEl.textContent = sm + ' 档' + (sm == 1 ? ' (标准)' : ' (平滑)');
+
+      const th = typeof cfg.alertTh === 'number' ? cfg.alertTh : 60;
+      setVal('cfgAlertTh', th);
+      const alValEl = document.getElementById('cfgAlertThVal');
+      if (alValEl) alValEl.textContent = th + ' dB';
+
+      setChecked('cfgAlertsOn', cfg.alertsOn !== false);
+      setChecked('cfgAutoDayNight', Boolean(cfg.autoDayNightMode));
+      setVal('cfgDayTh', cfg.dayThresholdDb ?? 55);
+      setVal('cfgNightTh', cfg.nightThresholdDb ?? 45);
+
+      const sus = typeof cfg.sustainedAlertMinSeconds === 'number' ? cfg.sustainedAlertMinSeconds : 30;
+      setVal('cfgSusAlertMinSec', sus);
+      const susValEl = document.getElementById('cfgSusAlertMinSecVal');
+      if (susValEl) susValEl.textContent = sus + ' 秒';
+
+      setVal('cfgDefaultLang', cfg.defaultLanguage || 'auto');
+      setVal('cfgReportTemplate', cfg.reportTemplate || 'complaint');
+
+      const rMin = typeof cfg.autoRecMinSeconds === 'number' ? cfg.autoRecMinSeconds : 3;
+      setVal('cfgAutoRecMinSec', rMin);
+      const recMinValEl = document.getElementById('cfgAutoRecMinSecVal');
+      if (recMinValEl) recMinValEl.textContent = rMin + ' 秒';
+
+      const rStop = typeof cfg.autoRecAfterStopSeconds === 'number' ? cfg.autoRecAfterStopSeconds : 10;
+      setVal('cfgAutoRecAfterStop', rStop);
+      const recStopValEl = document.getElementById('cfgAutoRecAfterStopVal');
+      if (recStopValEl) recStopValEl.textContent = rStop + ' 秒';
+
+      setChecked('cfgPowerSaver', cfg.longRunPowerSaver !== false);
+      setVal('cfgBaiduKey', cfg.baiduKey || 'kdlp0invEEhm1DbHKjmbExA4E0P19qPu');
+      setVal('cfgAmapKey', cfg.amapKey || '');
+      setVal('cfgGoogleKey', cfg.googleMapsKey || '');
+    }
+
+    function saveAdminMeterDefaults() {
+      const getVal = (id, fallback) => {
+        const el = document.getElementById(id);
+        return el ? el.value : fallback;
+      };
+      const getNum = (id, fallback) => {
+        const el = document.getElementById(id);
+        return el ? Number(el.value) : fallback;
+      };
+      const getChecked = (id, fallback) => {
+        const el = document.getElementById(id);
+        return el ? el.checked : fallback;
+      };
+
+      const newConfig = {
+        weighting: getVal('cfgWeighting', 'A'),
+        timeWeight: getVal('cfgTimeWeight', 'F'),
+        calOffset: getNum('cfgCalOffset', -8.0),
+        micGainDb: getNum('cfgMicGain', 2),
+        smoothing: getNum('cfgSmoothing', 1),
+        alertTh: getNum('cfgAlertTh', 60),
+        alertsOn: getChecked('cfgAlertsOn', true),
+        autoDayNightMode: getChecked('cfgAutoDayNight', false),
+        dayThresholdDb: getNum('cfgDayTh', 55),
+        nightThresholdDb: getNum('cfgNightTh', 45),
+        sustainedAlertMinSeconds: getNum('cfgSusAlertMinSec', 30),
+        defaultLanguage: getVal('cfgDefaultLang', 'auto'),
+        reportTemplate: getVal('cfgReportTemplate', 'complaint'),
+        autoRecMinSeconds: getNum('cfgAutoRecMinSec', 3),
+        autoRecAfterStopSeconds: getNum('cfgAutoRecAfterStop', 10),
+        longRunPowerSaver: getChecked('cfgPowerSaver', true),
+        baiduKey: getVal('cfgBaiduKey', 'kdlp0invEEhm1DbHKjmbExA4E0P19qPu').trim(),
+        amapKey: getVal('cfgAmapKey', '').trim(),
+        googleMapsKey: getVal('cfgGoogleKey', '').trim(),
+        updatedAt: new Date().toISOString()
+      };
+
+      localStorage.setItem(ADMIN_METER_DEFAULTS_KEY, JSON.stringify(newConfig));
+      showToast('✅ 噪音计出厂初始预设已成功保存！');
+    }
+
+    function resetAdminMeterDefaults() {
+      if (confirm('确定要将噪音计所有出厂预设重置为国家标准与平台推荐默认值吗？')) {
+        localStorage.setItem(ADMIN_METER_DEFAULTS_KEY, JSON.stringify(FACTORY_METER_DEFAULTS));
+        loadAdminMeterDefaultsForm();
+        showToast('🔄 已恢复为出厂标准推荐基准。');
+      }
+    }
+
+    function exportAdminMeterDefaultsJson() {
+      const cfg = getAdminMeterDefaultsFromStorage();
+      const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `soundtest_meter_defaults_${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      showToast('📁 已导出出厂预设 JSON 文件');
+    }
+
+    function copyAdminMeterDefaultsJson() {
+      const cfg = getAdminMeterDefaultsFromStorage();
+      const text = JSON.stringify(cfg, null, 2);
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text);
+        showToast('📋 配置 JSON 已成功复制到剪贴板！');
+      } else {
+        showToast('当前浏览器不支持直接写入剪贴板');
       }
     }
 

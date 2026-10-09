@@ -1890,8 +1890,8 @@ video#cam{width:100%;border-radius:var(--rs);display:block;aspect-ratio:16/9;obj
 .settings-hub-desc{font-size:10.5px;line-height:1.45;color:var(--tx3);margin-top:3px;text-wrap:pretty}
 .settings-hub-badge{font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:var(--accent);border:.5px solid rgba(42,255,212,.28);background:rgba(42,255,212,.08);border-radius:999px;padding:4px 7px;white-space:nowrap}
 .settings-hub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-@media(min-width:600px){.settings-hub{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(min-width:1024px){.settings-hub{grid-template-columns:repeat(7,minmax(0,1fr))}}
+@media(min-width:600px){.settings-hub{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1024px){.settings-hub{grid-template-columns:repeat(6,minmax(0,1fr))}}
 .settings-chip{min-height:48px;border:.5px solid var(--bdr2);border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(13,21,37,.70));color:var(--tx2);padding:8px 10px;text-align:left;cursor:pointer;transition:background-color .15s,border-color .15s,box-shadow .15s,transform .15s}
 .settings-chip:active{transform:scale(.985)}
 .settings-chip.active{border-color:rgba(42,255,212,.48);background:linear-gradient(180deg,rgba(42,255,212,.12),rgba(13,21,37,.78));color:var(--tx1);box-shadow:0 10px 26px rgba(42,255,212,.07)}

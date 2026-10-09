@@ -1013,7 +1013,6 @@
     <button class="settings-drawer-tab" id="sdTabPrivacy" data-tab="privacy" role="tab" aria-selected="false" onclick="switchSettingsDrawerTab('privacy')">Privacy</button>
     <button class="settings-drawer-tab" id="sdTabSubscription" data-tab="subscription" role="tab" aria-selected="false" onclick="switchSettingsDrawerTab('subscription')">Subscription</button>
     <button class="settings-drawer-tab" id="sdTabData" data-tab="data" role="tab" aria-selected="false" onclick="switchSettingsDrawerTab('data')">Data</button>
-    <button class="settings-drawer-tab admin-only" id="sdTabAdmin" data-tab="admin" role="tab" aria-selected="false" onclick="switchSettingsDrawerTab('admin')">Admin</button>
   </div>
   <div class="settings-drawer-content" id="settingsDrawerContent">
     <!-- Metering Tab -->
@@ -1254,17 +1253,6 @@
       </div>
       <div class="storage-health-stat" style="margin-top:10px">
         <strong id="recordCount">0</strong><span id="sdLblRecordCount">Evidence Records</span>
-      </div>
-    </div>
-
-    <!-- Admin Tab -->
-    <div class="settings-drawer-section" data-section="admin">
-      <div class="settings-drawer-section-title" id="sdSecTitleAdmin">System & Administrator Console</div>
-      <div class="admin-note" id="sdAdminNote" style="margin-bottom:10px">Enter administrator credentials to unlock diagnostic surfaces or visit admin portal</div>
-      <div class="settings-drawer-row" style="flex-direction:column;align-items:stretch;gap:8px">
-        <input class="setting-input" id="adminPassInput" type="password" placeholder="Admin password" style="max-width:none;width:100%">
-        <button class="btn b-cyan" id="sdBtnAdminLogin" onclick="loginSuperAdmin()">Sign In Local Admin</button>
-        <a class="btn b-amber" id="sdAdminPortalLink" href="admin.html" target="_blank" style="text-align:center;text-decoration:none;display:inline-block;padding:8px 12px;font-size:12px;font-weight:700;">Open Super Admin Dashboard (Orders & User Licensing) ↗</a>
       </div>
     </div>
   </div>
@@ -2111,7 +2099,7 @@
         <div>
           <div class="clabel" id="settingsHubCardLabel">设置中心</div>
           <div class="settings-hub-title" id="settingsHubTitle">选择要调整的功能</div>
-          <div class="settings-hub-desc" id="settingsHubDesc">常用设置在前，管理员和发布资料需要超级管理员登录后才显示。</div>
+          <div class="settings-hub-desc" id="settingsHubDesc">按分类便捷配置声学计量、报告模板、隐私合规与会员方案。</div>
         </div>
         <div class="settings-hub-badge" id="settingsHubBadge">QUICK SETTINGS</div>
       </div>
@@ -2121,7 +2109,6 @@
         <button class="settings-chip" type="button" role="tab" aria-selected="false" data-settings-nav="privacy" onclick="setSettingsSection('privacy',{scroll:true})"><strong>隐私</strong><span>权限、合规、数据删除</span></button>
         <button class="settings-chip" type="button" role="tab" aria-selected="false" data-settings-nav="support" onclick="setSettingsSection('support',{scroll:true})"><strong>反馈</strong><span>报错、诊断、支持优先级</span></button>
         <button class="settings-chip" type="button" role="tab" aria-selected="false" data-settings-nav="subscription" onclick="setSettingsSection('subscription',{scroll:true})"><strong>订阅</strong><span>Free、Pro、Team、买断</span></button>
-        <button class="settings-chip" type="button" role="tab" aria-selected="false" data-settings-nav="admin" onclick="setSettingsSection('admin',{scroll:true})"><strong>管理员</strong><span>系统配置、发布自检、素材</span></button>
         <button class="settings-chip" type="button" role="tab" aria-selected="false" data-settings-nav="all" onclick="setSettingsSection('all',{scroll:true})"><strong>全部</strong><span>展开所有设置卡片</span></button>
       </div>
     </div>
@@ -2131,27 +2118,10 @@
         <div class="settings-detail-title" id="settingsDetailTitle">测量设置</div>
         <div class="settings-detail-desc" id="settingsDetailDesc">调整声级计权、响应速度、校准和长时省电行为。</div>
       </div>
-      <div class="settings-detail-count" id="settingsDetailCount">1 / 7</div>
+      <div class="settings-detail-count" id="settingsDetailCount">1 / 6</div>
     </div>
     <div class="card layout-settings-measure" data-settings-section="measure">
       <div class="clabel">测量设置</div>
-      <div class="srow">
-        <div><div class="slabel" id="languageLabel">语言 / Language</div><div class="sdesc" id="languageDesc">默认跟随系统，也可以手动切换中文或 English。</div></div>
-        <div class="sctrl lang-setting-ctrl">
-          <div id="settingsLangPickerMount" data-lang-picker-mount></div>
-          <select class="setting-select app-lang-select-hidden" id="languageSelect" aria-hidden="true" tabindex="-1" onchange="setAppLanguage(this.value)">
-            <option value="en-US">English</option>
-            <option value="zh-CN">中文</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="vi">Tiếng Việt</option>
-            <option value="th">ไทย</option>
-          </select>
-        </div>
-      </div>
       <div class="srow">
         <div><div class="slabel">频率计权</div><div class="sdesc">A 计权贴近人耳感知，C 计权保留更多低频，Z 为近似平直响应。</div></div>
         <div class="sctrl"><div class="seg" id="weightSeg"><button class="seg-btn active" data-weight="A" onclick="setWeight('A')">A</button><button class="seg-btn" data-weight="C" onclick="setWeight('C')">C</button><button class="seg-btn" data-weight="Z" onclick="setWeight('Z')">Z</button></div></div>
@@ -2267,19 +2237,6 @@
         <div><div class="slabel">长时省电模式</div><div class="sdesc">默认开启。手机连续监测超过 8 分钟后自动降低分析与动画刷新频率，减少发烫和耗电。</div></div>
         <div class="sctrl"><div class="tog on" id="powerSaverTog" onclick="togPowerSaver()" role="switch" aria-checked="true" tabindex="0"></div></div>
       </div>
-      <div class="admin-note admin-only" id="mapServiceStrategy" data-admin="mapServiceStrategy"><strong>地图服务策略</strong>普通用户不需要地图 Key。Key 由平台管理员统一配置：地点识别优先使用百度地图 API，百度不可用或无结果时再用公开地图兜底；外部地图跳转可直接使用 Google/高德/百度 URL，不需要用户自己申请 Key。</div>
-      <div class="srow admin-only">
-        <div><div class="slabel">Google Maps Key</div><div class="sdesc">管理员配置。海外逆地理编码和未来 Google 地图服务使用；普通用户不应看到或填写。</div></div>
-        <div class="sctrl"><input class="setting-input" id="googleMapsKeyInput" type="password" placeholder="可留空" onchange="setGeoKeys()" autocomplete="off"></div>
-      </div>
-      <div class="srow admin-only">
-        <div><div class="slabel">高德 Key</div><div class="sdesc">可选。保留作未来备用；当前地点识别优先使用百度 Key。</div></div>
-        <div class="sctrl"><input class="setting-input" id="amapKeyInput" type="password" placeholder="可留空" onchange="setGeoKeys()" autocomplete="off"></div>
-      </div>
-      <div class="srow admin-only">
-        <div><div class="slabel">百度 Key</div><div class="sdesc">可选。填写后优先使用百度逆地理编码；百度无结果时再用公开地图兜底。</div></div>
-        <div class="sctrl"><input class="setting-input" id="baiduKeyInput" type="password" placeholder="可留空" onchange="setGeoKeys()" autocomplete="off"></div>
-      </div>
       <div class="srow">
         <div><div class="slabel">波形平滑</div><div class="sdesc">值越高波形越平滑</div></div>
         <div class="sctrl"><input type="range" id="smR" min="1" max="9" value="1" step="1" oninput="setSm()"><span class="sval" id="smV">1</span></div>
@@ -2291,34 +2248,6 @@
       <div class="srow"><div><div class="slabel">计权</div><div class="sdesc">默认 A 计权（dBA），可在设置中切换 Z 计权（dBZ）。</div></div></div>
       <div class="srow"><div><div class="slabel">版本</div><div class="sdesc">SOUNDTEST.PRO v0.9.0 (预发布) · 本地处理 · 地点识别可联网 · 无需安装</div></div></div>
     </div>
-    <div class="card layout-settings-admin" id="adminLoginCard" data-settings-section="admin">
-      <div class="clabel">超级管理员登录</div>
-      <div class="admin-note"><strong>静态原型门禁</strong>默认系统管理员账户为 <code>admin</code>。正式版本必须改为后端账号、角色和审计日志控制，不能依赖前端密码。</div>
-      <div class="feedback-row" style="margin-top:10px">
-        <input class="setting-input" id="adminUserInput" type="text" placeholder="admin" autocomplete="username">
-        <input class="setting-input" id="adminPassInput" type="password" placeholder="管理员密码" autocomplete="current-password">
-      </div>
-      <div class="tool-actions" style="margin-top:10px">
-        <button class="btn b-cyan" onclick="loginSuperAdmin()">登录管理员</button>
-        <button class="btn b-red" onclick="logoutSuperAdmin()">退出管理员</button>
-      </div>
-      <div class="sdesc" id="adminLoginStatus" style="margin-top:8px">未登录。管理员功能不会展示给普通用户。</div>
-    </div>
-    <div class="card admin-only layout-settings-admin" id="adminOpsCard" data-admin="adminOnlySettings" data-settings-section="admin">
-      <div class="clabel">运营管理员设置</div>
-      <div class="admin-note"><strong>仅超级管理员可见</strong>这些配置用于上架、合规、地图服务 Key、发布自检和运营资料，不应展示给普通订阅用户。当前为静态原型门禁；正式版本应由后端账号权限、角色和审计日志控制。</div>
-    </div>
-    <div class="card admin-only layout-settings-admin" data-settings-section="admin">
-      <div class="clabel">设备与系统适配</div>
-      <div class="platform-card">
-        <div class="platform-icon" id="platformIcon">OS</div>
-        <div>
-          <div class="platform-title" id="platformStatus">正在识别设备环境</div>
-          <div class="platform-desc" id="platformDesc">SOUNDTEST.PRO 会根据手机、平板和桌面浏览器调整布局密度与操作提示。</div>
-          <div class="device-layout-hint" id="deviceLayoutHint">device-layout: pending</div>
-        </div>
-      </div>
-    </div>
     <div class="card layout-settings-privacy" id="privacyComplianceCard" data-settings-section="privacy">
       <div class="clabel">隐私与合规</div>
       <div class="compliance-list">
@@ -2328,7 +2257,6 @@
         <div class="compliance-item"><strong>数据：</strong>记录默认保存在本机浏览器，可随时导出或清空。</div>
       </div>
       <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
-        <button class="btn b-amber inline-admin-only admin-only" onclick="clearGeoKeys()">清除地图 Key</button>
         <button class="btn b-red" onclick="clearAll()">删除全部本地记录</button>
       </div>
     </div>
@@ -2407,28 +2335,6 @@
         <button class="btn b-amber" onclick="beginCheckout('lifetime')">终身买断 (¥39.9)</button>
       </div>
     </div>
-    <div class="card admin-only layout-settings-admin" id="mediaStorageCard" data-settings-section="admin">
-      <div class="clabel">媒体文件与会员保存策略</div>
-      <div class="media-storage-card">
-        <div class="media-storage-row storage-health-warn" id="storageHealthCard">
-          <strong>本地存储健康</strong>
-          <div class="storage-health-grid" id="storageHealthGrid">
-            <div class="storage-health-stat"><strong>检查中</strong><span>正在读取浏览器存储状态</span></div>
-          </div>
-          <div class="storage-meter"><div class="storage-meter-fill" id="storageUsageFill"></div></div>
-          <div id="storageHealthSummary">录音/录像仍建议在记录页逐条保存到手机或电脑。</div>
-        </div>
-        <div class="media-storage-row"><strong>文件在哪儿</strong>录音/录像先保存在浏览器 IndexedDB：<code>soundfield_media_v1</code> / <code>clips</code>；记录摘要保存在 localStorage：<code>sf_v5</code>。</div>
-        <div class="media-storage-row"><strong>用户如何保存</strong>到“记录”页点击“保存录音”或“保存视频”，文件会下载到系统默认下载目录。删除记录会同步删除本机浏览器里的媒体片段。</div>
-        <div class="tool-actions">
-          <button class="btn b-cyan" onclick="refreshStorageHealth()">刷新存储状态</button>
-          <button class="btn b-amber" onclick="downloadLocalMetadataBackup()">导出本机备份 JSON</button>
-        </div>
-        <div class="media-storage-row"><strong>备份边界</strong>本机备份只包含设置、记录摘要、证据编号、哈希和报告字段；不打包录音/录像 Blob。重要媒体请在“记录”页逐条保存。</div>
-        <div class="media-storage-row" id="membershipSavePolicy"><strong>会员边界</strong>用户自己的单条证据下载不应被锁死；会员适合解锁长时录制、批量导出、无广告、云备份、团队共享和高级报告模板。</div>
-        <div class="media-storage-row"><strong>全球合规提示</strong>云保存前必须补隐私政策、保留期限、删除机制、加密和地区合规；不同国家/地区对录音录像同意要求不同，录制前应提示用户遵守当地法律。</div>
-      </div>
-    </div>
     <div class="card layout-settings-report" data-settings-section="report">
       <div class="clabel">报告模板</div>
       <div class="srow">
@@ -2469,68 +2375,6 @@
         <div class="sctrl">
           <button type="button" class="btn b-cyan" style="font-size:11px;padding:0 12px;height:32px;" onclick="openLocationCorrectionModal()" id="settingsLcmBtn">配置专属水印</button>
         </div>
-      </div>
-    </div>
-    <div class="card admin-only layout-settings-admin" id="releaseChecklistCard" data-settings-section="admin">
-      <div class="clabel">发布验证清单</div>
-      <div class="release-checklist">
-        <div class="release-item"><div class="release-mark">1</div><div><strong>权限降级：</strong>拒绝摄像头或定位时仍可测量；拒绝麦克风时明确提示无法监测。</div></div>
-        <div class="release-item"><div class="release-mark">2</div><div><strong>证据闭环：</strong>完成一次监测、声学证据照片、水印录像保存后回放、地点确认、PDF 与 CSV 导出。</div></div>
-        <div class="release-item"><div class="release-mark">3</div><div><strong>设备覆盖：</strong>iOS Safari、Android Chrome、Windows Edge、macOS Safari/Chrome 均需手动验证。</div></div>
-        <div class="release-item"><div class="release-mark">4</div><div><strong>合规边界：</strong>所有报告和页面均使用“环境记录与证据辅助”，不暗示法定计量认证。</div></div>
-        <div class="release-item"><div class="release-mark">5</div><div><strong>测试记录：</strong>每台设备都填写 Stage 1 Smoke Test Matrix，保存失败原因和已知浏览器限制。</div></div>
-      </div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
-        <button class="btn b-amber" onclick="downloadBetaTestChecklist()">导出测试清单</button>
-      </div>
-    </div>
-    <div class="card admin-only layout-settings-admin" id="releaseAuditCard" data-audit="audit-current-ui" data-settings-section="admin">
-      <div class="clabel">发布前自检</div>
-      <div class="sdesc">本地检查浏览器能力、合规文案、PWA、导出入口和数据控制；摄像头、麦克风、定位仍需在真机上人工验证。</div>
-      <div class="readiness-summary" id="releaseReadinessVerdict">
-        <div class="readiness-card ok"><strong>阶段 1 Web/PWA</strong><div class="readiness-score">72 / 100</div>适合 HTTPS 小范围公开测试：核心监测、证据照片、录音录像保存、PDF/CSV 导出和合规边界已具备原型闭环。</div>
-        <div class="readiness-card blocked"><strong>正式商店上架仍阻塞</strong>管理员、会员、支付、隐私协议、真机矩阵、相册/文件保存和平台支付合规还需要正式实现与审核材料。</div>
-      </div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
-        <button class="btn b-cyan" onclick="runPreflightAudit()">运行自检</button>
-      </div>
-      <div class="audit-results" id="auditResults">
-        <div class="audit-row"><div class="audit-status audit-status-warn">!</div><div><strong>尚未运行</strong>点击“运行自检”生成发布前核对结果。</div></div>
-      </div>
-    </div>
-    <div class="card admin-only layout-settings-admin" id="commercialMetricsCard" data-commercial="commercialMetricsSummary" data-settings-section="admin">
-      <div class="clabel">阶段 1 商业化指标</div>
-      <div class="sdesc">只保存在本机 localStorage，不上传网络；用于验证免费版、升级入口和导出行为是否成立。</div>
-      <div class="metric-grid" id="commercialMetricsSummary">
-        <div class="metric-box"><div class="metric-val">0</div><div class="metric-lbl">尚未记录指标</div></div>
-      </div>
-      <div class="tool-actions" style="margin-top:10px">
-        <button class="btn b-cyan" onclick="downloadCommercialMetrics()">导出指标摘要</button>
-        <button class="btn b-red" onclick="clearCommercialMetrics()">清空指标</button>
-      </div>
-    </div>
-    <div class="card admin-only layout-settings-admin" id="policyCenterCard" data-settings-section="admin">
-      <div class="clabel">政策中心</div>
-      <div class="policy-grid">
-        <div class="policy-pill"><strong>隐私政策摘要</strong>麦克风在本机计算声级；拍照/录像由用户主动触发；定位仅用于地点标注和地图识别；历史记录默认保存在本机浏览器。</div>
-        <div class="policy-pill"><strong>录音录像同意提醒</strong>录音录像可能包含人声、人物、私人空间和精确位置。不同地区对录制同意要求不同，用户应遵守当地法律并在需要时取得同意。</div>
-        <div class="policy-pill"><strong>数据删除说明</strong>用户可在本页删除全部本地记录、清除地图 Key；正式账号版需提供账户删除和云端数据删除入口。</div>
-        <div class="policy-pill"><strong>测试版边界</strong>阶段 1 Web/PWA 只验证本地记录闭环；Pro、Team 和 Lifetime Offline 仍是权益原型或咨询入口，不收真实费用。</div>
-        <div class="policy-pill"><strong>儿童与敏感场景</strong>不面向儿童主动收集数据；学校、医院、住宅投诉等场景应避免公开分享精确位置和人物画面。</div>
-        <div class="policy-pill"><strong>服务条款边界</strong>本工具用于环境记录、趋势分析和证据整理，正式检测应以经检定声级计复核为准。</div>
-        <div class="policy-pill"><strong>退款政策</strong>Pro / Team / Lifetime Offline 各档权益的退款条件、申请流程与处理时效请见 <a href="refund.html" target="_blank" rel="noopener">refund.html</a>，账单咨询 <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>。</div>
-      </div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
-        <button class="btn b-cyan" onclick="downloadPolicyPack()">下载政策草案</button>
-        <a class="btn b-cyan" href="refund.html" target="_blank" rel="noopener" style="text-decoration:none">退款政策</a>
-      </div>
-    </div>
-    <div class="card admin-only layout-settings-admin" id="storeListingCard" data-settings-section="admin">
-      <div class="clabel">应用商店素材</div>
-      <div class="store-copy" id="storeListingText">SOUNDTEST.PRO 是一款面向居民投诉、物业协同、施工巡检、企业环境管理和个人专业测评的噪声记录工具。适合邻里噪音取证、装修施工噪音记录、物业投诉处理、办公室与工厂噪声巡检、学校/医院/酒店等安静环境管理，以及看房、家电、车内噪音和设备评测。应用支持实时分贝、dBA/dBZ、Fast/Slow、LAeq、地点标注、声学证据照片、录音录像、PDF/CSV 报告导出和用户校准。环境记录与证据辅助，正式检测请以经检定声级计复核为准。</div>
-      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
-        <button class="btn b-cyan" onclick="copyStoreListing()">复制上架简介</button>
-        <button class="btn b-amber" onclick="downloadPolicyPack()">导出合规资料</button>
       </div>
     </div>
     <div class="ad-slot layout-settings-ad" data-ad-slot="settings" data-settings-section="subscription">广告位预留 · 设置页底部低干扰展示</div>
@@ -2683,9 +2527,14 @@ const COMMERCIAL_METRICS_LIMIT=300;
 const MEMBERSHIP_KEY='sf_membership_v1';
 const MEMBERSHIP_API_BASE='/api/membership';
 const LEMON_PLANS=['single','pro','yearly','team','lifetime'];
-const SUPER_ADMIN_USERNAME='admin';
-const SUPER_ADMIN_PASSWORD='SOUNDTEST.PRO@2026';
-const SUPER_ADMIN_SESSION_KEY='sf_super_admin_session_v1';
+const ADMIN_METER_DEFAULTS_KEY='sf_admin_meter_defaults_v1';
+function getAdminMeterDefaults(){
+  try{
+    const raw=localStorage.getItem(ADMIN_METER_DEFAULTS_KEY);
+    if(raw)return JSON.parse(raw);
+  }catch(e){}
+  return null;
+}
 const PLAN_CONFIG={
   free:{
     label:'Free',
@@ -2760,7 +2609,6 @@ const SETTINGS_SECTION_COPY={
   privacy:{kicker:'PRIVACY',zhTitle:'隐私与合规',zhDesc:'查看权限用途、数据保存位置和本地删除入口。',enTitle:'Privacy & compliance',enDesc:'Review permission usage, local storage, and deletion controls.',zhChip:'隐私',enChip:'Privacy',zhHint:'权限、合规、数据删除',enHint:'Permissions, data, deletion'},
   support:{kicker:'SUPPORT',zhTitle:'反馈与诊断',zhDesc:'复制反馈内容或下载诊断包，便于排查设备和浏览器问题。',enTitle:'Support & diagnostics',enDesc:'Copy feedback or download a diagnostic bundle for device and browser issues.',zhChip:'反馈',enChip:'Support',zhHint:'报错、诊断、支持优先级',enHint:'Bugs, diagnostics, priority'},
   subscription:{kicker:'PLANS',zhTitle:'订阅与买断',zhDesc:'查看 Free、Pro、Team 和 Lifetime Offline 的能力边界。',enTitle:'Plans & lifetime',enDesc:'Review the boundaries for Free, Pro, Team, and Lifetime Offline.',zhChip:'订阅',enChip:'Plans',zhHint:'Free、Pro、Team、买断',enHint:'Free, Pro, Team, lifetime'},
-  admin:{kicker:'ADMIN',zhTitle:'超级管理员',zhDesc:'登录后管理系统配置、发布自检、政策素材和运营指标。',enTitle:'Super admin',enDesc:'Sign in to manage system config, release checks, policy assets, and metrics.',zhChip:'管理员',enChip:'Admin',zhHint:'系统配置、发布自检、素材',enHint:'System, release, assets'},
   all:{kicker:'ALL SETTINGS',zhTitle:'全部设置',zhDesc:'展开所有设置卡片，适合一次性检查完整配置。',enTitle:'All settings',enDesc:'Show every settings card for a full configuration review.',zhChip:'全部',enChip:'All',zhHint:'展开所有设置卡片',enHint:'Show every settings card'}
 };
 
@@ -2928,28 +2776,20 @@ function appLangPickerOptions(){
   }));
 }
 function syncLanguageSelectOptions(){
-  ['headerLanguageSelect','languageSelect'].forEach((id)=>{
-    const sel=document.getElementById(id);
-    if(!sel)return;
-    sel.value=appLanguage;
-  });
+  const sel=document.getElementById('headerLanguageSelect');
+  if(sel) sel.value=appLanguage;
 }
 function renderAppLangPickers(){
   if(!window.LangFlags)return;
-  [
-    {mountId:'headerLangPickerMount',selectId:'headerLanguageSelect'},
-    {mountId:'settingsLangPickerMount',selectId:'languageSelect'},
-  ].forEach(({mountId,selectId})=>{
-    const mount=document.getElementById(mountId);
-    const hidden=document.getElementById(selectId);
-    if(!mount||!hidden)return;
-    LangFlags.renderPicker({
-      mount,
-      value:appLanguage,
-      options:appLangPickerOptions(),
-      ariaLabel:'Switch language',
-      onChange:(next)=>setAppLanguage(next,{persist:true,notify:true}),
-    });
+  const mount=document.getElementById('headerLangPickerMount');
+  const hidden=document.getElementById('headerLanguageSelect');
+  if(!mount||!hidden)return;
+  LangFlags.renderPicker({
+    mount,
+    value:appLanguage,
+    options:appLangPickerOptions(),
+    ariaLabel:'Switch language',
+    onChange:(next)=>setAppLanguage(next,{persist:true,notify:true}),
   });
 }
 // I18N translations moved to assets/i18n-data.js
@@ -3461,7 +3301,6 @@ function translateSettingsDrawer() {
   setText('sdTabPrivacy', isZh ? '隐私' : 'Privacy');
   setText('sdTabSubscription', isZh ? '订阅' : 'Subscription');
   setText('sdTabData', isZh ? '数据' : 'Data');
-  setText('sdTabAdmin', isZh ? '管理' : 'Admin');
 
   // Metering Section
   setText('sdSecTitleMeasure', isZh ? '声级计权与响应' : 'Acoustic Weighting & Response');
@@ -3549,13 +3388,6 @@ function translateSettingsDrawer() {
   setText('settingsExportNoticeBtn', isZh ? '⚖️ 邻里交涉函生成器' : '⚖️ Legal Notice Generator');
   setText('sdBtnClearAllData', isZh ? '清空全部现场记录' : 'Clear All Records');
   setText('sdLblRecordCount', isZh ? '条现场记录' : 'Evidence Records');
-
-  // Admin Section
-  setText('sdSecTitleAdmin', isZh ? '系统管理员诊断中枢' : 'System & Administrator Console');
-  setText('sdAdminNote', isZh ? '请输入管理员密码解锁底层诊断或进入集中运营控制台' : 'Enter administrator credentials to unlock diagnostic surfaces or visit admin portal');
-  setPlaceholder('adminPassInput', isZh ? '管理员密码' : 'Admin password');
-  setText('sdBtnAdminLogin', isZh ? '登录本地管理员' : 'Sign In Local Admin');
-  setText('sdAdminPortalLink', isZh ? '打开超级管理后台 (订单流水与用户授权) ↗' : 'Open Super Admin Dashboard (Orders & User Licensing) ↗');
 
   // Watermark Camera Overlay
   setText('watermarkBackBtn', isZh ? '返回' : 'Back');
@@ -3920,56 +3752,7 @@ function translateDesktopSettings() {
     setText('settingsLcmBtn', isZh ? '配置专属水印' : 'Configure Watermark');
   }
 
-  // 8. Media Storage Card
-  const medSection = document.getElementById('mediaStorageCard');
-  if (medSection) {
-    const clabel = medSection.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '媒体文件与会员保存策略' : 'Media Storage & Retention Policy';
-    const shCard = document.getElementById('storageHealthCard');
-    if (shCard) {
-      const st = shCard.querySelector('strong'); if (st) st.textContent = isZh ? '本地存储健康' : 'Local Storage Health';
-    }
-    const shSum = document.getElementById('storageHealthSummary');
-    if (shSum) shSum.textContent = isZh ? '录音/录像仍建议在记录页逐条保存到手机或电脑。' : 'Audio/video clips are recommended to be downloaded individually from the Records tab.';
-    const medBtns = medSection.querySelectorAll('.tool-actions button');
-    if (medBtns[0]) medBtns[0].textContent = isZh ? '刷新存储状态' : 'Refresh Storage';
-    if (medBtns[1]) medBtns[1].textContent = isZh ? '导出本机备份 JSON' : 'Export Local Backup JSON';
-  }
-
-  // 9. Admin Login Card
-  const adminLogCard = document.getElementById('adminLoginCard');
-  if (adminLogCard) {
-    const clabel = adminLogCard.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '超级管理员登录' : 'Super Admin Login';
-    const note = adminLogCard.querySelector('.admin-note');
-    if (note) {
-      note.innerHTML = isZh
-        ? '<strong>静态原型门禁</strong>默认系统管理员账户为 <code>admin</code>。正式版本必须改为后端账号、角色和审计日志控制，不能依赖前端密码。'
-        : '<strong>Static Prototype Gate</strong> Default administrator account is <code>admin</code>. Production requires backend authentication, role policies, and audit logging.';
-    }
-    const adminUser = document.getElementById('adminUserInput');
-    if (adminUser) adminUser.placeholder = isZh ? 'admin' : 'admin';
-    setPlaceholder('adminPassInput', isZh ? '管理员密码' : 'Admin password');
-    const btns = adminLogCard.querySelectorAll('.tool-actions button');
-    if (btns[0]) btns[0].textContent = isZh ? '登录管理员' : 'Sign In Admin';
-    if (btns[1]) btns[1].textContent = isZh ? '退出管理员' : 'Sign Out Admin';
-    const status = document.getElementById('adminLoginStatus');
-    if (status && !isAdminMode()) {
-      status.textContent = isZh ? '未登录。管理员功能不会展示给普通用户。' : 'Not signed in. Admin controls remain hidden from standard users.';
-    }
-  }
-
-  // 10. Admin Ops Card
-  const adminOps = document.getElementById('adminOpsCard');
-  if (adminOps) {
-    const clabel = adminOps.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '运营管理员设置' : 'Operations & Admin Settings';
-    const opsNote = adminOps.querySelector('.admin-note');
-    if (opsNote) {
-      opsNote.innerHTML = isZh
-        ? '<strong>仅超级管理员可见</strong>这些配置用于上架、合规、地图服务 Key、发布自检和运营资料，不应展示给普通订阅用户。当前为静态原型门禁；正式版本应由后端账号权限、角色和审计日志控制。'
-        : '<strong>Super Admin Only</strong> These configurations are used for compliance, map API keys, release checklists, and operations. Hidden from standard subscribers.';
-    }
-  }
-
-  // 11. Data Management Card
+  // 8. Data Management Card
   const dataCard = document.querySelector('.card.layout-settings-data');
   if (dataCard) {
     const clabel = dataCard.querySelector('.clabel');
@@ -4362,7 +4145,6 @@ function setAppLanguage(lang,{persist=true,notify=true}={}){
   try {
     const activeSettings=document.querySelector('[data-settings-nav].active')?.dataset.settingsNav||'measure';
     setSettingsSection(activeSettings);
-    applyAdminMode();
     renderRecs();
     drawMap();
   } catch(e){ console.warn('[settings translation error]', e); }
@@ -4427,46 +4209,6 @@ function handleWeChatPermissionFallback(){
   toast('微信内置浏览器可能不支持网页录音授权，请在系统浏览器打开。','warn',6200);
 }
 
-function isAdminMode(){
-  const params=new URLSearchParams(location.search);
-  if(params.get('admin')==='0'){
-    localStorage.removeItem(SUPER_ADMIN_SESSION_KEY);
-    return false;
-  }
-  return localStorage.getItem(SUPER_ADMIN_SESSION_KEY)==='1';
-}
-
-function applyAdminMode(){
-  const enabled=isAdminMode();
-  document.documentElement.classList.toggle('admin-mode',enabled);
-  const status=document.getElementById('adminLoginStatus');
-  if(status)status.textContent=appLanguage!=='zh-CN'
-    ?(enabled?'Signed in as super admin. Admin tools are unlocked.':'Not signed in. Admin tools stay hidden for regular users.')
-    :(enabled?'已登录超级管理员。管理员功能已解锁。':'未登录。管理员功能不会展示给普通用户。');
-}
-
-function loginSuperAdmin(){
-  const user=document.getElementById('adminUserInput')?.value.trim();
-  const pass=document.getElementById('adminPassInput')?.value||'';
-  if(user===SUPER_ADMIN_USERNAME&&pass===SUPER_ADMIN_PASSWORD){
-    localStorage.setItem(SUPER_ADMIN_SESSION_KEY,'1');
-    document.getElementById('adminPassInput').value='';
-    applyAdminMode();
-    setSettingsSection('admin');
-    toast(appLanguage!=='zh-CN'?'Signed in as super admin.':'已登录超级管理员。','info');
-    return;
-  }
-  toast(appLanguage!=='zh-CN'?'Admin username or password is incorrect.':'管理员账号或密码不正确。','err',5200);
-}
-
-function logoutSuperAdmin(){
-  localStorage.removeItem(SUPER_ADMIN_SESSION_KEY);
-  applyAdminMode();
-  const activeSettings=document.querySelector('[data-settings-nav].active')?.dataset.settingsNav||'measure';
-  setSettingsSection(activeSettings);
-  toast(appLanguage!=='zh-CN'?'Signed out of super admin.':'已退出超级管理员。','info');
-}
-
 function setSettingsSection(section='measure',opts={}){
   const active=SETTINGS_SECTION_COPY[section]?section:'measure';
   const pS=document.getElementById('p-s');
@@ -4474,7 +4216,6 @@ function setSettingsSection(section='measure',opts={}){
   const isEnglish=appLanguage!=='zh-CN';
   const copy=SETTINGS_SECTION_COPY[active];
   const allKeys=Object.keys(SETTINGS_SECTION_COPY);
-  const adminEnabled=isAdminMode();
   document.querySelectorAll('[data-settings-nav]').forEach(btn=>{
     const key=btn.dataset.settingsNav;
     const item=SETTINGS_SECTION_COPY[key];
@@ -4491,7 +4232,7 @@ function setSettingsSection(section='measure',opts={}){
   let visibleCount=0;
   document.querySelectorAll('[data-settings-section]').forEach(card=>{
     const show=active==='all'||card.dataset.settingsSection===active;
-    if(show&&(!card.classList.contains('admin-only')||adminEnabled))visibleCount+=1;
+    if(show)visibleCount+=1;
     card.classList.toggle('settings-section-hidden',!show);
   });
   const totalSections=allKeys.length;
@@ -4504,7 +4245,7 @@ function setSettingsSection(section='measure',opts={}){
   const desc=document.getElementById('settingsDetailDesc');
   const count=document.getElementById('settingsDetailCount');
   if(hubTitle)hubTitle.textContent=isEnglish?'Choose a settings area':'选择要调整的功能';
-  if(hubDesc)hubDesc.textContent=isEnglish?'Common settings stay up front. Admin and release assets unlock after super admin sign-in.':'常用设置在前，管理员和发布资料需要超级管理员登录后才显示。';
+  if(hubDesc)hubDesc.textContent=isEnglish?'Choose a category to customize metering, reports, privacy, and preferences.':'按分类便捷配置声学计量、报告模板、隐私合规与会员方案。';
   if(hubBadge)hubBadge.textContent=isEnglish?'QUICK SETTINGS':'快速设置';
   if(kicker)kicker.textContent=copy.kicker;
   if(title)title.textContent=isEnglish?copy.enTitle:copy.zhTitle;
@@ -6363,29 +6104,68 @@ const saveState=()=>_debouncedSave();
 
 function loadState(){
   try{
-    const raw=localStorage.getItem(LS_KEY);if(!raw)return;
-    const s=JSON.parse(raw);
-    calibrationPresetKey=CALIBRATION_PRESETS[s.calibrationPresetKey]?s.calibrationPresetKey:detectCalibrationPresetKey();
-    calOffset=s.calOffset??getCalibrationPreset(calibrationPresetKey).offset;micGainDb=(s.micGainDb===18||s.micGainDb==null)?2:s.micGainDb;alertTh=s.alertTh??DEFAULT_ALERT_THRESHOLD_DB;alertsOn=s.alertsOn!==false;smoothing=(s.smoothing===3||s.smoothing==null)?1:s.smoothing;curViz=['w','f','o','t'].includes(s.curViz)?s.curViz:'w';
-    autoRecOnThreshold=s.autoRecOnThreshold??false;autoRecMinSeconds=s.autoRecMinSeconds??3;autoRecAfterStopSeconds=s.autoRecAfterStopSeconds??10;
-    sustainedAlertOn=s.sustainedAlertOn??false;sustainedAlertMinSeconds=s.sustainedAlertMinSeconds??30;
-    autoDayNightMode=s.autoDayNightMode??false;dayThresholdDb=s.dayThresholdDb??55;nightThresholdDb=s.nightThresholdDb??45;
-    if(s.calibrationBaseline!==CALIBRATION_BASELINE&&typeof s.calOffset!=='number')calOffset=getCalibrationPreset(calibrationPresetKey).offset;
-    weighting=['A','C','Z'].includes(s.weighting)?s.weighting:'A';timeWeight=s.timeWeight==='S'?'S':'F';
-    evidenceMode=['audio','video','photo','sentry'].includes(s.evidenceMode)?s.evidenceMode:'audio';
-    if(evidenceMode==='sentry') autoRecOnThreshold=true;
-    placeLookupOn=s.placeLookupOn!==false;longRunPowerSaver=s.longRunPowerSaver!==false;googleMapsKey=s.googleMapsKey||'';amapKey=s.amapKey||'';baiduKey=s.baiduKey||DEFAULT_BAIDU_KEY;
-    longMonitorPlan={autoStopMinutes:Number(s.longMonitorPlan?.autoStopMinutes)||0,eventThresholdDb:Number(s.longMonitorPlan?.eventThresholdDb)||75};
-    if (membershipState.active && membershipState.plan && membershipState.plan !== 'free') {
-      currentPlan = membershipState.plan;
-    } else {
-      currentPlan = ['free','pro','team'].includes(s.currentPlan)?s.currentPlan:'free';
-      if(currentPlan!=='free'&&(!membershipState.active||membershipState.plan!==currentPlan))currentPlan='free';
+    const admDef = getAdminMeterDefaults() || {};
+    if(admDef.weighting && ['A','C','Z'].includes(admDef.weighting)) weighting = admDef.weighting;
+    if(admDef.timeWeight) timeWeight = admDef.timeWeight === 'S' ? 'S' : 'F';
+    if(typeof admDef.calOffset === 'number') calOffset = admDef.calOffset;
+    if(typeof admDef.micGainDb === 'number') micGainDb = admDef.micGainDb;
+    if(typeof admDef.alertTh === 'number') alertTh = admDef.alertTh;
+    if(typeof admDef.alertsOn === 'boolean') alertsOn = admDef.alertsOn;
+    if(typeof admDef.smoothing === 'number') smoothing = admDef.smoothing;
+    if(typeof admDef.autoDayNightMode === 'boolean') autoDayNightMode = admDef.autoDayNightMode;
+    if(typeof admDef.dayThresholdDb === 'number') dayThresholdDb = admDef.dayThresholdDb;
+    if(typeof admDef.nightThresholdDb === 'number') nightThresholdDb = admDef.nightThresholdDb;
+    if(typeof admDef.autoRecOnThreshold === 'boolean') autoRecOnThreshold = admDef.autoRecOnThreshold;
+    if(typeof admDef.autoRecMinSeconds === 'number') autoRecMinSeconds = admDef.autoRecMinSeconds;
+    if(typeof admDef.autoRecAfterStopSeconds === 'number') autoRecAfterStopSeconds = admDef.autoRecAfterStopSeconds;
+    if(typeof admDef.sustainedAlertOn === 'boolean') sustainedAlertOn = admDef.sustainedAlertOn;
+    if(typeof admDef.sustainedAlertMinSeconds === 'number') sustainedAlertMinSeconds = admDef.sustainedAlertMinSeconds;
+    if(typeof admDef.longRunPowerSaver === 'boolean') longRunPowerSaver = admDef.longRunPowerSaver;
+    if(admDef.reportTemplate && reportTemplates[admDef.reportTemplate]) reportTemplate = admDef.reportTemplate;
+    if(admDef.googleMapsKey) googleMapsKey = admDef.googleMapsKey;
+    if(admDef.amapKey) amapKey = admDef.amapKey;
+    if(admDef.baiduKey) baiduKey = admDef.baiduKey;
+
+    const raw=localStorage.getItem(LS_KEY);
+    if(raw){
+      const s=JSON.parse(raw);
+      calibrationPresetKey=CALIBRATION_PRESETS[s.calibrationPresetKey]?s.calibrationPresetKey:detectCalibrationPresetKey();
+      if(typeof s.calOffset === 'number') calOffset=s.calOffset;
+      else if(s.calibrationBaseline!==CALIBRATION_BASELINE) calOffset=getCalibrationPreset(calibrationPresetKey).offset;
+      if(s.micGainDb!==undefined) micGainDb=(s.micGainDb===18||s.micGainDb==null)?2:s.micGainDb;
+      if(s.alertTh!==undefined) alertTh=s.alertTh??DEFAULT_ALERT_THRESHOLD_DB;
+      if(s.alertsOn!==undefined) alertsOn=s.alertsOn!==false;
+      if(s.smoothing!==undefined) smoothing=(s.smoothing===3||s.smoothing==null)?1:s.smoothing;
+      curViz=['w','f','o','t'].includes(s.curViz)?s.curViz:'w';
+      if(s.autoRecOnThreshold!==undefined) autoRecOnThreshold=s.autoRecOnThreshold;
+      if(s.autoRecMinSeconds!==undefined) autoRecMinSeconds=s.autoRecMinSeconds;
+      if(s.autoRecAfterStopSeconds!==undefined) autoRecAfterStopSeconds=s.autoRecAfterStopSeconds;
+      if(s.sustainedAlertOn!==undefined) sustainedAlertOn=s.sustainedAlertOn;
+      if(s.sustainedAlertMinSeconds!==undefined) sustainedAlertMinSeconds=s.sustainedAlertMinSeconds;
+      if(s.autoDayNightMode!==undefined) autoDayNightMode=s.autoDayNightMode;
+      if(s.dayThresholdDb!==undefined) dayThresholdDb=s.dayThresholdDb;
+      if(s.nightThresholdDb!==undefined) nightThresholdDb=s.nightThresholdDb;
+      if(s.weighting && ['A','C','Z'].includes(s.weighting)) weighting=s.weighting;
+      if(s.timeWeight) timeWeight=s.timeWeight==='S'?'S':'F';
+      if(s.evidenceMode && ['audio','video','photo','sentry'].includes(s.evidenceMode)) evidenceMode=s.evidenceMode;
+      if(evidenceMode==='sentry') autoRecOnThreshold=true;
+      if(s.placeLookupOn!==undefined) placeLookupOn=s.placeLookupOn!==false;
+      if(s.longRunPowerSaver!==undefined) longRunPowerSaver=s.longRunPowerSaver!==false;
+      if(s.googleMapsKey) googleMapsKey=s.googleMapsKey;
+      if(s.amapKey) amapKey=s.amapKey;
+      if(s.baiduKey) baiduKey=s.baiduKey;
+      longMonitorPlan={autoStopMinutes:Number(s.longMonitorPlan?.autoStopMinutes)||0,eventThresholdDb:Number(s.longMonitorPlan?.eventThresholdDb)||75};
+      if (membershipState.active && membershipState.plan && membershipState.plan !== 'free') {
+        currentPlan = membershipState.plan;
+      } else {
+        currentPlan = ['free','pro','team'].includes(s.currentPlan)?s.currentPlan:'free';
+        if(currentPlan!=='free'&&(!membershipState.active||membershipState.plan!==currentPlan))currentPlan='free';
+      }
+      calibrationHistory=Array.isArray(s.calibrationHistory)?s.calibrationHistory:[];
+      if(s.reportTemplate && reportTemplates[s.reportTemplate]) reportTemplate=s.reportTemplate;
+      organizationName=s.organizationName||'';
+      DB.records=(s.records||[]).map(r=>({...r,time:new Date(r.time)}));
     }
-    calibrationHistory=Array.isArray(s.calibrationHistory)?s.calibrationHistory:[];
-    reportTemplate=reportTemplates[s.reportTemplate]?s.reportTemplate:'complaint';
-    organizationName=s.organizationName||'';
-    DB.records=(s.records||[]).map(r=>({...r,time:new Date(r.time)}));
     const el=id=>document.getElementById(id);
     if(el('calR'))el('calR').value=calOffset;if(el('calV'))el('calV').textContent=(calOffset>=0?'+':'')+calOffset+' dB';
     const micR=el('micR');
@@ -9186,7 +8966,6 @@ loadMembershipState();
 applyMembershipToPlan();
 syncAutoRecProBadge();
 applyPlatformProfile();
-applyAdminMode();
 if(!localStorage.getItem(LS_KEY))setCalibrationPreset(detectCalibrationPresetKey(),{save:false,notify:false});
 updateCapabilityUi();
 applyPermissionGuideState();
