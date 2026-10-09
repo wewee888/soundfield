@@ -66,6 +66,126 @@
   overflow: hidden !important;
 }
 
+/* Settings Hub & Header Full-Width Alignment */
+#settingsHubCard, .settings-hub-card {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  order: -2 !important;
+  margin-bottom: 8px !important;
+}
+#settingsDetailHeader, .settings-detail-header {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  order: -1 !important;
+  margin-bottom: 8px !important;
+}
+#p-s:not([data-active-section="all"]) .card:not(.settings-hub-card) {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+}
+
+/* Bottom Bar Flush to Bottom & Compact Mobile Height */
+.bottom-shell {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 120 !important;
+  display: flex !important;
+  justify-content: center !important;
+  pointer-events: auto !important;
+  background: rgba(8, 12, 22, 0.96) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-radius: 0 !important;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.45) !important;
+}
+.bottom-nav {
+  pointer-events: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  width: 100% !important;
+  max-width: 580px !important;
+  margin: 0 auto !important;
+  padding: 3px 6px calc(3px + var(--safe-b, env(safe-area-inset-bottom, 0px))) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  gap: 2px !important;
+}
+.nav-btn {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  padding: 3px 2px 2px !important;
+  min-height: 44px !important;
+  height: auto !important;
+  border-radius: 6px !important;
+  border: none !important;
+  background: transparent !important;
+  color: var(--tx3) !important;
+  font-family: var(--sans) !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  line-height: 1.1 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: color 0.15s ease, background 0.15s ease, transform 0.1s ease !important;
+  position: relative !important;
+}
+.nav-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+  stroke: currentColor !important;
+  transition: transform 0.15s ease !important;
+}
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--tx2) !important;
+}
+.nav-btn:active {
+  transform: scale(0.95) !important;
+}
+.nav-btn.active {
+  color: var(--accent) !important;
+  background: rgba(42, 255, 212, 0.08) !important;
+  font-weight: 600 !important;
+}
+.nav-btn.active svg {
+  stroke: var(--accent) !important;
+  filter: drop-shadow(0 0 6px rgba(42, 255, 212, 0.35)) !important;
+  transform: none !important;
+}
+.nav-dot {
+  position: absolute !important;
+  top: 3px !important;
+  right: calc(50% - 12px) !important;
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: var(--red) !important;
+}
+.shell,
+.panels,
+.panel,
+.hero {
+  padding-bottom: calc(56px + var(--safe-b, env(safe-area-inset-bottom, 0px))) !important;
+}
+
+
 /* Critical fallback for PRO Upgrade Modal (prevents unstyled flash / cache-miss rendering) */
 .pro-upgrade-modal {
   position: fixed; inset: 0; z-index: 240; display: none; align-items: center; justify-content: center;
@@ -1985,8 +2105,8 @@
   </div>
 
   <!-- Settings -->
-  <div class="panel" id="p-s">
-    <div class="card layout-settings-measure settings-hub-card" id="settingsHubCard">
+  <div class="panel" id="p-s" data-active-section="measure">
+    <div class="card settings-hub-card" id="settingsHubCard">
       <div class="settings-hub-head">
         <div>
           <div class="clabel" id="settingsHubCardLabel">设置中心</div>
@@ -4349,6 +4469,8 @@ function logoutSuperAdmin(){
 
 function setSettingsSection(section='measure',opts={}){
   const active=SETTINGS_SECTION_COPY[section]?section:'measure';
+  const pS=document.getElementById('p-s');
+  if(pS) pS.setAttribute('data-active-section', active);
   const isEnglish=appLanguage!=='zh-CN';
   const copy=SETTINGS_SECTION_COPY[active];
   const allKeys=Object.keys(SETTINGS_SECTION_COPY);

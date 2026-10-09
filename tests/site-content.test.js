@@ -618,3 +618,26 @@ test('dedicated camera exists in all 9 locales, header logo is protected, and bo
   assert.match(soundtestHtml, /setButtonTextWithSvg\('nt-cam'/);
 });
 
+test('settings hub card is aligned full-width and bottom nav is flush with compact mobile height', () => {
+  const soundtestHtml = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+  const soundtestCss = fs.readFileSync(path.join(__dirname, '..', 'assets', 'soundtest.css'), 'utf8');
+  const layoutFlowCss = fs.readFileSync(path.join(__dirname, '..', 'assets', 'layout-flow.css'), 'utf8');
+
+  // 1. settingsHubCard must NOT have layout-settings-measure class
+  assert.doesNotMatch(soundtestHtml, /class="card layout-settings-measure settings-hub-card"/, 'settingsHubCard must not have layout-settings-measure class');
+  assert.match(soundtestHtml, /id="settingsHubCard"/);
+
+  // 2. Settings hub and detail header must span full width
+  assert.match(soundtestHtml, /#settingsHubCard,\s*\.settings-hub-card[\s\S]*?grid-column:\s*1\s*\/\s*-1/);
+  assert.match(soundtestHtml, /#settingsDetailHeader,\s*\.settings-detail-header[\s\S]*?grid-column:\s*1\s*\/\s*-1/);
+
+  // 3. Bottom bar must be flush to bottom (bottom: 0) without floating pill margin or radius
+  assert.match(soundtestHtml, /\.bottom-shell\s*\{[\s\S]*?bottom:\s*0\s*!important/);
+  assert.match(soundtestHtml, /\.bottom-shell\s*\{[\s\S]*?border-radius:\s*0\s*!important/);
+  assert.match(soundtestCss, /\.bottom-shell\{[\s\S]*?bottom:0;/);
+
+  // 4. Mobile nav buttons must have compact height
+  assert.match(soundtestHtml, /\.nav-btn\s*\{[\s\S]*?min-height:\s*44px/);
+  assert.match(soundtestHtml, /\.nav-btn svg\s*\{[\s\S]*?width:\s*18px/);
+});
+
