@@ -2329,6 +2329,17 @@
         .replace(/'/g, '&#39;');
     }
 
+    // Safe URL sanitizer for href and redirect attributes
+    function sanitizeUrl(url) {
+      if (!url || typeof url !== 'string') return '#';
+      const trimmed = url.trim();
+      if (/[\u0000-\u001F\u007F]/.test(trimmed)) return '#';
+      if (/^(javascript|data|vbscript|blob):/i.test(trimmed)) return '#';
+      if (trimmed.startsWith('/') && !trimmed.startsWith('//')) return escHtml(trimmed);
+      if (/^https?:\/\//i.test(trimmed)) return escHtml(trimmed);
+      return '#';
+    }
+
     // Precise DateTime & Relative Time Formatters
     function formatDateTime(isoStr) {
       if (!isoStr) return '--';
@@ -4515,7 +4526,7 @@
       } else {
         regPagesBody.innerHTML = pages.map(p => `
           <tr>
-            <td style="font-family: monospace; font-size: 12.5px; color: #fff;">${p.page}</td>
+            <td style="font-family: monospace; font-size: 12.5px; color: #fff;">${escHtml(p.page)}</td>
             <td style="font-weight: 700; color: #60a5fa;">${p.count} 人</td>
             <td>
               <div style="display:flex; align-items:center; gap:8px;">
@@ -4534,8 +4545,8 @@
       const dropoffs = data.dropoffPages || [];
       dropBody.innerHTML = dropoffs.map(d => `
         <tr>
-          <td style="font-family: monospace; font-size: 12px; color: #fbbf24;">${d.page}</td>
-          <td style="font-size: 12.5px; color: #cbd5e1;">${d.note}</td>
+          <td style="font-family: monospace; font-size: 12px; color: #fbbf24;">${escHtml(d.page)}</td>
+          <td style="font-size: 12.5px; color: #cbd5e1;">${escHtml(d.note)}</td>
           <td><span style="font-size:11px; background:rgba(245,158,11,0.12); color:#fbbf24; border:1px solid rgba(245,158,11,0.3); padding:2px 8px; border-radius:4px;">${d.dropoffScore}</span></td>
         </tr>
       `).join('');
@@ -4596,7 +4607,7 @@
           topPagesBody.innerHTML = topPages.map(p => `
             <tr>
               <td style="font-family: monospace; font-size: 12px; color: #fff;">
-                <a href="${p.page}" target="_blank" style="color:var(--adm-accent); text-decoration:none;">${p.page} ↗</a>
+                <a href="${sanitizeUrl(p.page)}" target="_blank" style="color:var(--adm-accent); text-decoration:none;">${escHtml(p.page)} ↗</a>
               </td>
               <td style="font-weight: 700; color: #60a5fa;">${p.views} PV</td>
               <td>
@@ -4717,9 +4728,9 @@
         : `<span style="font-size:10.5px; color:#60a5fa; background:rgba(59,130,246,0.12); padding:2px 6px; border-radius:8px; border:1px solid rgba(59,130,246,0.35); font-weight:700;" title="海外IP强锁国际美金价 ($1.99~$79.99)">🌍 海外美金 ($)</span>`;
 
       const pageLink = v.page
-        ? `<a href="${v.page}" target="_blank" style="color:#fff; text-decoration:none; display:flex; flex-direction:column;" title="在新标签中打开: ${v.page}">
+        ? `<a href="${sanitizeUrl(v.page)}" target="_blank" style="color:#fff; text-decoration:none; display:flex; flex-direction:column;" title="在新标签中打开: ${escHtml(v.page)}">
              <span style="font-weight:600; font-size:11.5px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(v.title || v.page)}</span>
-             <span style="font-size:10px; color:var(--adm-accent); font-family:monospace; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${v.page} ↗</span>
+             <span style="font-size:10px; color:var(--adm-accent); font-family:monospace; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(v.page)} ↗</span>
            </a>`
         : '<span style="color:#64748b;">--</span>';
 

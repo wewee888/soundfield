@@ -32,9 +32,6 @@ async function verifyAuth(request, env) {
 
   if (token && (token === adminSecret || KNOWN_SECRETS.some(k => k.toLowerCase() === token.toLowerCase()))) return true;
 
-  const adminEmail = (request.headers.get('x-admin-email') || new URL(request.url).searchParams.get('admin_email') || '').toLowerCase().trim();
-  if (adminEmail && ADMIN_EMAILS.includes(adminEmail)) return true;
-
   if (env && env.ab_test && token.startsWith('sess_')) {
     try {
       const sessRaw = await env.ab_test.get(`sess:${token}`);

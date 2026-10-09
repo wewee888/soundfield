@@ -176,6 +176,26 @@ export async function onRequestPost(context) {
       return json({ ok: false, error: 'invalid_email', message: 'Valid email address is required' }, 400);
     }
 
+    // 0. Cooldown Rate-Limit: prevent email spamming (60s minimum interval)
+    if (env.ab_test) {
+      try {
+        const existingRaw = await env.ab_test.get(`magic_code:${email}`);
+        if (existingRaw) {
+          const existing = JSON.parse(existingRaw);
+          const elapsed = Date.now() - (existing.created_at || 0);
+          if (elapsed < 60000) {
+            const retryAfterSec = Math.ceil((60000 - elapsed) / 1000);
+            return json({
+              ok: false,
+              error: 'rate_limited',
+              retry_after: retryAfterSec,
+              message: `验证码发送过于频繁，请在 ${retryAfterSec} 秒后再试 / Please wait ${retryAfterSec}s before retrying.`,
+            }, 429);
+          }
+        }
+      } catch (_) {}
+    }
+
     // 1. Generate 6-digit numeric verification code
     const code = String(Math.floor(100000 + Math.random() * 900000));
 

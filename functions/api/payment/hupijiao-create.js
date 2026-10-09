@@ -60,9 +60,17 @@ export async function onRequestPost(context) {
       }, 403);
     }
 
-    const appid = String(env.HUPIJIAO_APPID || '201906177810');
-    const appsecret = String(env.HUPIJIAO_APPSECRET || 'f94f1168d88f40156b719b84b8823681');
+    const appid = String(env.HUPIJIAO_APPID || '').trim();
+    const appsecret = String(env.HUPIJIAO_APPSECRET || '').trim();
     const gateway = String(env.HUPIJIAO_GATEWAY || 'https://api.xunhupay.com/payment/do.html');
+
+    if (!appid || !appsecret) {
+      return json({
+        ok: false,
+        error: 'payment_gateway_unconfigured',
+        message: '微信支付网关尚未配置完整，请稍候重试或通过邮件联系客服开通',
+      }, 503);
+    }
 
     const trade_order_id = `sf_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const time = String(Math.floor(Date.now() / 1000));

@@ -1,11 +1,13 @@
 # Cloudflare Pages Headers Configuration
-# Enforces anti-transcoding, anti-hijack, and secure permissions delegation
+# Enforces anti-transcoding, anti-hijack, secure permissions delegation, HSTS, and administrative isolation
 
 /*
   Cache-Control: no-transform
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
   Permissions-Policy: microphone=(self), camera=(self), geolocation=(self)
 
 /soundtest.html
@@ -13,7 +15,18 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
   Permissions-Policy: microphone=(self), camera=(self), geolocation=(self)
+
+/admin.html
+  Cache-Control: private, no-store, no-cache, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
 
 /assets/auth.css
   Cache-Control: public, max-age=0, must-revalidate, no-transform

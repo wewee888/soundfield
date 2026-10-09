@@ -38,7 +38,11 @@ test('Super Admin membership endpoint /api/admin/membership authorization and op
   const targetEmail = 'vip_client@example.com';
   const grantReq = new Request('https://soundtest.pro/api/admin/membership', {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-admin-email': 'wewee1@gmail.com' },
+    headers: {
+      'content-type': 'application/json',
+      'x-admin-email': 'wewee1@gmail.com',
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
     body: JSON.stringify({
       admin_email: 'wewee1@gmail.com',
       target_email: targetEmail,
@@ -57,7 +61,10 @@ test('Super Admin membership endpoint /api/admin/membership authorization and op
   // 3. Super admin queries membership
   const queryReq = new Request(`https://soundtest.pro/api/admin/membership?email=${encodeURIComponent(targetEmail)}`, {
     method: 'GET',
-    headers: { 'x-admin-email': 'wewee1@gmail.com' },
+    headers: {
+      'x-admin-email': 'wewee1@gmail.com',
+      'Authorization': 'Bearer soundtest_admin_2026',
+    },
   });
   const queryRes = await adminMemModule.onRequestGet({ request: queryReq, env: mockEnv });
   assert.equal(queryRes.status, 200);

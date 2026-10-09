@@ -56,8 +56,11 @@ export async function onRequestGet(context) {
     }
 
     // 2. Query XunhuPay official query API as real-time source of truth
-    const appid = String(env.HUPIJIAO_APPID || '201906177810');
-    const appsecret = String(env.HUPIJIAO_APPSECRET || 'f94f1168d88f40156b719b84b8823681');
+    const appid = String(env.HUPIJIAO_APPID || '').trim();
+    const appsecret = String(env.HUPIJIAO_APPSECRET || '').trim();
+    if (!appid || !appsecret) {
+      return json({ paid: false, error: 'gateway_unconfigured' });
+    }
     const queryUrl = 'https://api.xunhupay.com/payment/query.html';
 
     const params = {

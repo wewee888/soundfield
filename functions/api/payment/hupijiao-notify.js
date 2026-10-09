@@ -35,7 +35,11 @@ export async function onRequestPost(context) {
       }
     }
 
-    const appsecret = String(env.HUPIJIAO_APPSECRET || 'f94f1168d88f40156b719b84b8823681');
+    const appsecret = String(env.HUPIJIAO_APPSECRET || '').trim();
+    if (!appsecret) {
+      console.error('[Hupijiao Notify] Critical: HUPIJIAO_APPSECRET environment variable is not configured');
+      return new Response('fail: gateway secret unconfigured', { status: 500 });
+    }
     const receivedHash = String(data.hash || '').toLowerCase();
     const trade_order_id = String(data.trade_order_id || '');
     const status = String(data.status || '');

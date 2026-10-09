@@ -93,10 +93,24 @@ export async function onRequestPost(context) {
         try {
           storedPayload = JSON.parse(raw);
           if (String(storedPayload.code).trim() !== code) {
+            storedPayload.attempts = (storedPayload.attempts || 0) + 1;
+            if (storedPayload.attempts >= 5) {
+              await env.ab_test.delete(`magic_code:${email}`);
+              if (storedPayload.token) {
+                await env.ab_test.delete(`magic:${storedPayload.token}`);
+              }
+              return json({
+                ok: false,
+                error: 'too_many_attempts',
+                message: '验证码错误次数已达上限，该凭证已自动作废，请重新获取验证码。',
+              }, 429);
+            }
+            await env.ab_test.put(`magic_code:${email}`, JSON.stringify(storedPayload), { expirationTtl: 900 });
             return json({
               ok: false,
               error: 'code_mismatch',
-              message: '验证码不正确，请重新输入。',
+              attempts_left: 5 - storedPayload.attempts,
+              message: `验证码不正确，还剩 ${5 - storedPayload.attempts} 次尝试机会。`,
             }, 401);
           }
           verifiedEmail = storedPayload.email;

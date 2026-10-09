@@ -77,8 +77,12 @@ export async function onRequestPost(context) {
 
     const visitorId = String(body.visitorId || `vid_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`).slice(0, 50);
     const token = String(body.sessionToken || '').trim();
-    const page = String(body.page || '/').slice(0, 200);
-    const title = String(body.title || '').slice(0, 120);
+    let rawPage = String(body.page || '/').trim();
+    if (rawPage.startsWith('javascript:') || rawPage.startsWith('data:') || rawPage.startsWith('vbscript:') || rawPage.startsWith('blob:') || /[\u0000-\u001F\u007F]/.test(rawPage)) {
+      rawPage = '/';
+    }
+    const page = rawPage.slice(0, 200);
+    const title = String(body.title || '').replace(/[<>"']/g, '').slice(0, 120);
     const referrer = String(body.referrer || request.headers.get('referer') || '').slice(0, 250);
     const channel = parseChannel(referrer);
     const device = parseDevice(userAgent);

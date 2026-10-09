@@ -14,7 +14,7 @@ function json(data, status = 200) {
 
 const ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com', 'admin@soundtest.pro'];
 
-async function verifyAdminCaller(request, env) {
+async function verifyAdminCaller(request, env, body = {}) {
   const url = new URL(request.url);
   const adminSecret = String(env.ADMIN_SECRET || 'soundtest_admin_2026');
   const KNOWN_SECRETS = [
@@ -29,19 +29,18 @@ async function verifyAdminCaller(request, env) {
   const token = authHeader.replace(/^Bearer\s+/i, '').trim() ||
                 request.headers.get('x-admin-token') ||
                 request.headers.get('x-session-token') ||
+                body.admin_token ||
                 url.searchParams.get('token') ||
                 url.searchParams.get('admin_token') || '';
-  const adminEmail = (request.headers.get('x-admin-email') || url.searchParams.get('admin_email') || '').toLowerCase().trim();
+  const adminEmail = (request.headers.get('x-admin-email') || body.admin_email || url.searchParams.get('admin_email') || '').toLowerCase().trim();
 
+  // 1. Direct match with master admin secret
   if (token && (token === adminSecret || KNOWN_SECRETS.some(k => k.toLowerCase() === token.toLowerCase()))) {
     return { ok: true, email: adminEmail || 'wewee1@gmail.com' };
   }
 
-  if (adminEmail && ADMIN_EMAILS.includes(adminEmail)) {
-    return { ok: true, email: adminEmail };
-  }
-
-  if (env.ab_test && token) {
+  // 2. Verified active session in KV
+  if (env && env.ab_test && token) {
     try {
       const sessRaw = await env.ab_test.get(`sess:${token}`);
       if (sessRaw) {
@@ -103,35 +102,8 @@ export async function onRequestPost(context) {
   const { request, env } = context;
   try {
     const body = await request.json().catch(() => ({}));
-    const adminEmail = String(body.admin_email || request.headers.get('x-admin-email') || '').trim().toLowerCase();
-    const adminToken = String(body.admin_token || request.headers.get('x-session-token') || '').trim();
-
-    const adminSecret = String(env.ADMIN_SECRET || 'soundtest_admin_2026');
-    const KNOWN_SECRETS = [
-      adminSecret,
-      'soundtest_admin_2026',
-      'SOUNDTEST.PRO@2026',
-      'soundtest.pro@2026',
-      'soundtest2026',
-      'soundtest_admin',
-    ];
-
-    let isAuthorized = ADMIN_EMAILS.includes(adminEmail) ||
-      (adminToken && (adminToken === adminSecret || KNOWN_SECRETS.some(k => k.toLowerCase() === adminToken.toLowerCase())));
-
-    if (!isAuthorized && env.ab_test && adminToken) {
-      try {
-        const sessRaw = await env.ab_test.get(`sess:${adminToken}`);
-        if (sessRaw) {
-          const sess = JSON.parse(sessRaw);
-          if (ADMIN_EMAILS.includes((sess.email || '').toLowerCase()) || sess.role === 'admin') {
-            isAuthorized = true;
-          }
-        }
-      } catch (_) {}
-    }
-
-    if (!isAuthorized) {
+    const caller = await verifyAdminCaller(request, env, body);
+    if (!caller.ok) {
       return json({ ok: false, error: 'unauthorized', message: '仅超级管理员有权操作此接口' }, 403);
     }
 
@@ -159,7 +131,7 @@ export async function onRequestPost(context) {
       status: plan === 'free' ? 'inactive' : 'paid',
       granted_at: new Date().toISOString(),
       expires_at: plan === 'free' ? null : expiresAt,
-      granted_by: `super_admin:${adminEmail || 'root'}`,
+      granted_by: `super_admin:${caller.email || 'root'}`,
     };
 
     if (env.ab_test) {
