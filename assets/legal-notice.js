@@ -34,15 +34,15 @@
     "tones": {
       "gentle": {
         "title": "邻里安宁生活作息友善提醒便条",
-        "body": "尊重的邻居您好：\n\n冒昧打扰，特此给您留便条。俗话说远亲不如近邻，大家生活在同一栋楼非常难得。\n\n近期在夜间休息时段，由于建筑楼板共振与隔音有限，楼下频繁听到【{NOISE_TYPES}】的声音。经我们在家中实测，峰值声级达到了 {PEAK} dB(A)，给家人的正常睡眠和休息带来了一定打扰。\n\n我们理解大家生活作息各异，猜测您可能并不知情并非有意为之。特此温馨提醒，可否麻烦您在夜间休息时段（尤其是22:00之后）稍加注意，例如轻关门窗、穿软底拖鞋或为桌椅脚加装静音垫。非常感谢您的理解与包容，祝生活愉快！"
+        "body": "尊敬的{RECIPIENT}：您好！\n\n冒昧打扰，特此给您留张便条。俗话说“远亲不如近邻”，大家同住一栋楼也是一份难得的缘分。\n\n近期在夜间休息时段，由于楼房建筑共振与楼板隔音有限，我们家中频繁听到【{NOISE_TYPES}】的声响。经我们在室内实测，噪声峰值达到了 {PEAK} dB(A)，确实给家人的正常睡眠和夜间休息造成了一定困扰。\n\n平时大家生活作息各异，楼房隔音也有限，我们充分理解您可能此前未曾留意到声音会传至楼下，并非有意为之。特此留便条温馨提醒一下，可否麻烦您在夜间休息时段（尤其是 22:00 之后）稍加留意，比如夜间走动时动作稍放轻一些、换穿软底静音拖鞋，或为桌椅脚贴上静音防刮脚垫。\n\n邻里相处互谅互让，非常感谢您的理解与配合，祝您和家人生活愉快！"
       },
       "firm": {
         "title": "关于夜间生活噪声超标干扰之正式交涉函",
-        "body": "邻居您好：\n\n鉴于此前已曾就室内生活噪声问题予以沟通，但近期夜间时段仍反复出现【{NOISE_TYPES}】的严重干扰。\n\n根据我们在室内进行的现场客观声学监测事实，夜间监测时段等效连续声级 LAeq 达到 {LEQ} dB(A)，瞬时峰值声级 Lmax 高达 {PEAK} dB(A)，已显著超出国家《声环境质量标准》1类居住区夜间限值，严重破坏了我方的基本居住安宁与睡眠健康。\n\n良好的居住环境需要双方共同维护。我们正式要求您于夜间时段（22:00至次日07:00）切实采取消音减震措施，杜绝产生穿透性噪声。希望本着邻里理性精神在私下层面妥善解决，避免进一步向物业服务中心或社区居委会反映报备。"
+        "body": "尊敬的{RECIPIENT}：您好！\n\n鉴于此前已就室内噪声干扰问题与贵方进行过沟通，但近期夜间休息时段仍反复出现【{NOISE_TYPES}】的情况，且未见实质改善。\n\n根据我们在家中进行的现场声学客观实测，夜间监测时段等效连续声级（LAeq）达到 {LEQ} dB(A)，瞬时峰值声级（Lmax）高达 {PEAK} dB(A)。该数值已显著超出国家《声环境质量标准》(GB 3096-2008) 规定的1类声环境功能区夜间 45 dB(A) 的法定限值，严重破坏了我方的基本居住安宁与睡眠健康。\n\n良好的居住环境需要邻里双方共同维护。我们正式向贵方提出交涉，请务必在夜间休息时段（22:00 至次日 07:00）切实采取消音减震措施，杜绝产生穿透性噪声。希望本着互谅互让与理性精神在邻里层面妥善解决，避免矛盾升级并进一步向物业服务中心报备或向社区居委会申请调解。"
       },
       "strict": {
         "title": "民事侵害生活安宁停止妨害催告函与法律告知书",
-        "body": "致【{RECIPIENT}】：\n\n根据《中华人民共和国民法典》及《中华人民共和国噪声污染防治法》，自然人依法享有私人生活安宁权，禁止任何单位和个人排放超标社会生活噪声妨碍他人正常生活。\n\n现郑重告知：贵方所在房屋在夜间时段持续产生【{NOISE_TYPES}】，现场实测声级峰值高达 {PEAK} dB(A)，等效均值达 {LEQ} dB(A)。相关事实已通过 SOUNDTEST.PRO 存证引擎完成时间戳锁定与 SHA-256 数字防伪存证（存证编号：{EVIDENCE_ID}）。\n\n贵方行为已严重逾越法定义务与容忍限度，涉嫌构成对受函方合法生活安宁权的民事侵权妨害。特此限贵方于收到本函后 48 小时内彻底停止超标排噪行为。\n\n若逾期未改善，我方将依法向物业报备、向公安执法机关（110/12345）提请行政取证查处，并保留提起排除妨害诉讼及主张精神损害赔偿之一切法定权利。"
+        "body": "致【{RECIPIENT}】：\n\n根据《中华人民共和国民法典》第一千零三十二条、第二百八十八条以及《中华人民共和国噪声污染防治法》第六十三条之规定，自然人依法享有私人生活安宁权，不动产相邻权利人应当按照有利生产、方便生活、团结互助、公平合理原则处理相邻关系，严禁任何单位和个人超标排放社会生活噪声妨碍他人正常生活。\n\n现郑重告知：贵方所在房屋在夜间休息时段持续产生【{NOISE_TYPES}】。现场实测声级峰值 Lmax 高达 {PEAK} dB(A)，等效连续声级 LAeq 达 {LEQ} dB(A)。相关声学事实已通过 SOUNDTEST.PRO 存证系统完成客观记录，并已生成不可篡改的 SHA-256 数字防伪存证指纹（存证编号：{EVIDENCE_ID}）。\n\n贵方的持续排噪行为已严重逾越合理容忍限度，依法涉嫌构成对受函方私人生活安宁权的民事侵权妨害。特此正式向贵方发出催告：限贵方于收到本函后 48 小时内彻底采取有效降噪减震措施，停止一切超标排噪行为。\n\n若逾期仍未改善，我方将依法向物业服务中心正式报备、向辖区公安机关（110）及市民服务热线（12345）提请行政执法查处，并保留向人民法院依法提起排除妨害民事诉讼及主张相应损害赔偿之一切法定权利。"
       }
     },
     "ui": {
@@ -77,15 +77,19 @@
       "copied": "✓ 已成功复制函件全文至剪贴板",
       "date": "日期：",
       "evidence": "存证编号：",
-      "recipientDefault": "楼上邻居您好",
+      "recipientDefault": "楼上邻居",
       "senderDefault": "楼下邻居",
+      "recipientPlaceholder": "例如：楼上邻居 / 402室邻友",
+      "senderPlaceholder": "例如：楼下邻居 / 302室住户",
+      "metaRecipient": "受函方：",
+      "metaSender": "发函方：",
       "thMetric": "声学监测指标",
       "thValue": "实测读数",
       "telemetryHeader": "【现场声学测量数据证据表】",
       "legalHeader": "【法定法规条文与法律依据】",
       "lblSign": "通知方签署: ",
       "lblSignDate": "签署日期: ",
-      "disclaimer": "注：本函及所附声学数据为民事自查事实记录，用于敦促沟通与民事纠纷举证，非国家法定计量检定证书。司法或法定仲裁裁决建议结合具有法定资质的第三方检测机构出具之报告。"
+      "disclaimer": "注：本函及所附声学数据为民事自查事实记录，用于敦促沟通与民事纠纷事实举证，非国家法定计量检定证书。司法或法定仲裁裁决建议结合具有法定资质的第三方检测机构出具之报告。"
     }
   },
   "en": {
@@ -1269,7 +1273,7 @@
     if (tsT) tsT.textContent = ui.toneStrict || (currentLang === 'zh' ? '严正法务催告' : 'Strict Statutory Demand');
     if (tsD) tsD.textContent = ui.toneStrictDesc || '';
 
-    // Form labels
+    // Form labels and inputs
     const lRec = el.querySelector('#lnmLblRecipient');
     const lSnd = el.querySelector('#lnmLblSender');
     const lJur = el.querySelector('#lnmLblJurisdiction');
@@ -1278,6 +1282,11 @@
     if (lSnd) lSnd.textContent = ui.lblSender || (currentLang === 'zh' ? '发函方' : 'Sender / Your Name/Unit');
     if (lJur) lJur.textContent = ui.lblJurisdiction || (currentLang === 'zh' ? '法律法域与语言' : 'Legal Jurisdiction & Language');
     if (lScn) lScn.textContent = ui.scenarioLabel || (currentLang === 'zh' ? '常见噪音类型' : 'Noise Categories (Select Applicable)');
+
+    const inRec = el.querySelector('#lnmInputRecipient');
+    const inSnd = el.querySelector('#lnmInputSender');
+    if (inRec && ui.recipientPlaceholder) inRec.placeholder = ui.recipientPlaceholder;
+    if (inSnd && ui.senderPlaceholder) inSnd.placeholder = ui.senderPlaceholder;
 
     // Preview Labels
     const pLbl = el.querySelector('#lnmPreviewLabel');
@@ -1398,6 +1407,12 @@
     const recipient = (recipientInput?.value || defaultRecipient).trim();
     const sender = (senderInput?.value || defaultSender).trim();
 
+    // Clean recipient string for natural greeting (strip redundant trailing "您好" / "你好" if Chinese)
+    let cleanRecipient = recipient;
+    if (currentLang === 'zh') {
+      cleanRecipient = recipient.replace(/[，,：:\s]*(您好|你好)[！!。]?\s*$/, '').trim() || recipient;
+    }
+
     // Noise types string
     const scMap = conf.scenarios || {};
     const noiseList = Array.from(selectedScenarios).map(k => scMap[k] || k);
@@ -1412,14 +1427,14 @@
       .replace(/\{LEQ\}/g, avgDb)
       .replace(/\{TIME_RANGE\}/g, timeRange)
       .replace(/\{EVIDENCE_ID\}/g, evidenceId)
-      .replace(/\{RECIPIENT\}/g, recipient)
+      .replace(/\{RECIPIENT\}/g, cleanRecipient)
       .replace(/\{SENDER\}/g, sender)
       .replace(/\{LOCATION\}/g, location)
       .replace(/\{DATE\}/g, dateStr);
 
     return {
       title: toneObj.title || 'CIVILIAN DISPUTE NOTICE',
-      recipient: recipient,
+      recipient: cleanRecipient,
       sender: sender,
       date: dateStr,
       location: location,
@@ -1429,8 +1444,8 @@
       evidenceId: evidenceId,
       body: bodyText,
       articles: conf.laws || [],
-      lblRecipient: ui.lblRecipient || (currentLang === 'zh' ? '受函方：' : 'Recipient: '),
-      lblSender: ui.lblSender || (currentLang === 'zh' ? '发函方：' : 'Sender: '),
+      lblRecipient: ui.metaRecipient || (currentLang === 'zh' ? '受函方：' : (ui.lblRecipient ? ui.lblRecipient + ': ' : 'Recipient: ')),
+      lblSender: ui.metaSender || (currentLang === 'zh' ? '发函方：' : (ui.lblSender ? ui.lblSender + ': ' : 'Sender: ')),
       lblDate: ui.date || (currentLang === 'zh' ? '日期：' : 'Date: '),
       lblPeak: ui.lblPeak || (currentLang === 'zh' ? '实测峰值 Lmax' : 'Recorded Peak Lmax'),
       lblAvg: ui.lblAvg || (currentLang === 'zh' ? '等效均值 LAeq' : 'Equivalent LAeq'),
@@ -1444,6 +1459,13 @@
       lblSignDate: ui.lblSignDate || (currentLang === 'zh' ? '签署日期: ' : 'Signed Date: '),
       disclaimer: ui.disclaimer || (currentLang === 'zh' ? '注：本函及所附声学数据为民事自查事实记录，用于敦促沟通与民事纠纷事实举证。' : 'Notice: This notice and acoustic data serve as civil documentation for communication and dispute resolution.')
     };
+  }
+
+  function formatMetaItem(lbl, val) {
+    const l = lbl || '';
+    if (!l) return val || '';
+    if (l.endsWith(' ') || l.endsWith('：')) return l + (val || '');
+    return l + ' ' + (val || '');
   }
 
   function formatCurrentTimeRange() {
@@ -1474,9 +1496,9 @@
 
     if (tEl) tEl.textContent = doc.title;
     if (bEl) bEl.textContent = doc.body;
-    if (rEl) rEl.textContent = (doc.lblRecipient || (currentLang === 'zh' ? '受函方：' : 'To: ')) + ' ' + doc.recipient;
-    if (sEl) sEl.textContent = (doc.lblSender || (currentLang === 'zh' ? '发函方：' : 'From: ')) + ' ' + doc.sender;
-    if (dEl) dEl.textContent = (doc.lblDate || (currentLang === 'zh' ? '日期：' : 'Date: ')) + ' ' + doc.date;
+    if (rEl) rEl.textContent = formatMetaItem(doc.lblRecipient || (currentLang === 'zh' ? '受函方：' : 'To: '), doc.recipient);
+    if (sEl) sEl.textContent = formatMetaItem(doc.lblSender || (currentLang === 'zh' ? '发函方：' : 'From: '), doc.sender);
+    if (dEl) dEl.textContent = formatMetaItem(doc.lblDate || (currentLang === 'zh' ? '日期：' : 'Date: '), doc.date);
 
     if (vpEl) vpEl.textContent = doc.peakDb + ' dB(A)';
     if (vaEl) vaEl.textContent = doc.avgDb + ' dB(A)';
@@ -1498,9 +1520,9 @@
     const sep = '──────────────────────────────────────────────────────────';
     let text = 'SOUNDTEST.PRO · CIVILIAN ACOUSTIC EVIDENCE CHAIN\n\n' +
       doc.title + '\n\n' +
-      (doc.lblRecipient || 'Recipient: ') + doc.recipient + '\n' +
-      (doc.lblSender || 'Sender: ') + doc.sender + '\n' +
-      (doc.lblDate || 'Date: ') + doc.date + '\n' +
+      formatMetaItem(doc.lblRecipient || 'Recipient: ', doc.recipient) + '\n' +
+      formatMetaItem(doc.lblSender || 'Sender: ', doc.sender) + '\n' +
+      formatMetaItem(doc.lblDate || 'Date: ', doc.date) + '\n' +
       sep + '\n\n' +
       doc.body + '\n\n' +
       doc.telemetryHeader + '\n' +
