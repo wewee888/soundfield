@@ -1802,8 +1802,8 @@ function renderCertificateData(r) {
   const avg = document.getElementById('rpmAvg');
   const peak = document.getElementById('rpmPeak');
   const idEl = document.getElementById('rpmId');
-  if (avg) avg.textContent = `${activeDb} dB`;
-  if (peak) peak.textContent = `${r.peakDb || Math.round(activeDb * 1.2)} dB`;
+  if (avg) avg.textContent = `${activeDbRound} dB`;
+  if (peak) peak.textContent = `${r.peakDb || Math.round(rawActive * 1.2)} dB`;
   if (idEl) idEl.textContent = (r.evidenceId || 'STP-VERIFIED').slice(0, 10);
 }
 

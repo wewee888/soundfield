@@ -2463,7 +2463,7 @@
 <script src="assets/pro-meter.js?v=20260823b" data-cfasync="false"></script>
 <script src="assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
-<script src="assets/report-cert-engine.js?v=20261008b" data-cfasync="false"></script>
+<script src="assets/report-cert-engine.js?v=20261009a" data-cfasync="false"></script>
 <script src="assets/sentry-engine.js?v=20261008" data-cfasync="false"></script>
 <script src="assets/membership-pricing.js?v=20261008b" data-cfasync="false"></script>
 <script src="assets/geo-location.js?v=20261008" data-cfasync="false"></script>
@@ -3849,13 +3849,95 @@ function translateDesktopSettings() {
     }
   }
 
-  // 11. Ad slot at bottom of Settings panel
-  const adSlots = document.querySelectorAll('#p-s div[style*="border:1px dashed"]');
+  // 11. Data Management Card
+  const dataCard = document.querySelector('.card.layout-settings-data');
+  if (dataCard) {
+    const clabel = dataCard.querySelector('.clabel');
+    if (clabel) clabel.textContent = isZh ? '数据' : 'Data & Export Management';
+    setText('settingsExportCsvBtn', isZh ? '导出 CSV' : 'Export CSV');
+    setText('settingsExportPdfBtn', isZh ? '导出 PDF' : 'Export PDF');
+    setText('settingsClearAllBtn', isZh ? '清空记录' : 'Clear All Records');
+  }
+
+  // 12. Release Checklist Card
+  const relCheck = document.getElementById('releaseChecklistCard');
+  if (relCheck) {
+    const clabel = relCheck.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '发布验证清单' : 'Release Verification Checklist';
+    const items = relCheck.querySelectorAll('.release-item div:last-child');
+    if (items[0]) items[0].innerHTML = isZh ? '<strong>权限降级：</strong>麦克风被拒时有原生引导；定位/摄像头被拒仍可独立测分贝。' : '<strong>Permission Fallback:</strong> Native guidance when mic is blocked; dB meter still works if camera or GPS is denied.';
+    if (items[1]) items[1].innerHTML = isZh ? '<strong>证据闭环：</strong>录音/录像能在详情中播放、能下载到系统相册/文件夹、能生成 PDF。' : '<strong>Evidence Loop:</strong> Recordings playback in details, export to storage, and compile into PDF reports.';
+    if (items[2]) items[2].innerHTML = isZh ? '<strong>设备覆盖：</strong>覆盖主流 iOS Safari、Android Chrome、PC 桌面与微信内置浏览器。' : '<strong>Device Coverage:</strong> Validated on iOS Safari, Android Chrome, Desktop, and embedded browsers.';
+    if (items[3]) items[3].innerHTML = isZh ? '<strong>合规边界：</strong>所有报告和页面均使用“环境记录与证据辅助”，不暗示法定计量认证。' : '<strong>Compliance Boundary:</strong> All reports strictly state "environmental documentation and dispute aid", avoiding metrology claims.';
+    if (items[4]) items[4].innerHTML = isZh ? '<strong>测试记录：</strong>每台设备都填写 Stage 1 Smoke Test Matrix，保存失败原因和已知浏览器限制。' : '<strong>Test Matrix:</strong> Stage 1 smoke test matrix recorded for devices with known platform limitations.';
+    const btn = relCheck.querySelector('button'); if (btn) btn.textContent = isZh ? '导出测试清单' : 'Export Test Checklist';
+  }
+
+  // 13. Pre-Release Preflight Audit Card
+  const relAudit = document.getElementById('releaseAuditCard');
+  if (relAudit) {
+    const clabel = relAudit.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '发布前自检' : 'Pre-Release Preflight Audit';
+    const sdesc = relAudit.querySelector('.sdesc'); if (sdesc) sdesc.textContent = isZh ? '本地检查浏览器能力、合规文案、PWA、导出入口和数据控制；摄像头、麦克风、定位仍需在真机上人工验证。' : 'Local audit of browser capabilities, compliance copy, PWA, export pathways, and data control.';
+    const okCard = relAudit.querySelector('.readiness-card.ok');
+    if (okCard) okCard.innerHTML = `<strong>${isZh ? '阶段 1 Web/PWA' : 'Phase 1 Web/PWA'}</strong><div class="readiness-score">72 / 100</div>${isZh ? '适合 HTTPS 小范围公开测试：核心监测、证据照片、录音录像保存、PDF/CSV 导出和合规边界已具备原型闭环。' : 'Ready for HTTPS pilot testing: core metering, photo/audio/video capture, PDF/CSV export, and compliance boundaries verified.'}`;
+    const blCard = relAudit.querySelector('.readiness-card.blocked');
+    if (blCard) blCard.innerHTML = `<strong>${isZh ? '正式商店上架仍阻塞' : 'App Store Native Packaging Blocked'}</strong>${isZh ? '管理员、会员、支付、隐私协议、真机矩阵、相册/文件保存和平台支付合规还需要正式实现与审核材料。' : 'Admin, membership, payments, privacy policies, physical device matrix, and in-app purchase compliance require native submission.'}`;
+    const btn = relAudit.querySelector('button'); if (btn) btn.textContent = isZh ? '运行自检' : 'Run Preflight Audit';
+    const row = document.querySelector('#auditResults .audit-row div:last-child');
+    if (row && row.textContent.includes('点击')) {
+      row.innerHTML = isZh ? '<strong>尚未运行</strong>点击“运行自检”生成发布前核对结果。' : '<strong>Not run yet</strong> Click "Run Preflight Audit" to generate inspection results.';
+    }
+  }
+
+  // 14. Commercial Metrics Card
+  const commCard = document.getElementById('commercialMetricsCard');
+  if (commCard) {
+    const clabel = commCard.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '阶段 1 商业化指标' : 'Phase 1 Commercial Metrics';
+    const sdesc = commCard.querySelector('.sdesc'); if (sdesc) sdesc.textContent = isZh ? '只保存在本机 localStorage，不上传网络；用于验证免费版、升级入口和导出行为是否成立。' : 'Saved only in local storage, never uploaded; tracks funnel conversions and export utility.';
+    const lbl = commCard.querySelector('.metric-lbl'); if (lbl && (lbl.textContent.includes('尚未') || lbl.textContent.includes('No metrics'))) lbl.textContent = isZh ? '尚未记录指标' : 'No metrics logged yet';
+    const btns = commCard.querySelectorAll('button');
+    if (btns[0]) btns[0].textContent = isZh ? '导出指标摘要' : 'Export Metrics Summary';
+    if (btns[1]) btns[1].textContent = isZh ? '清空指标' : 'Clear Metrics';
+  }
+
+  // 15. Policy Center Card
+  const polCard = document.getElementById('policyCenterCard');
+  if (polCard) {
+    const clabel = polCard.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '政策中心' : 'Policy & Legal Center';
+    const pills = polCard.querySelectorAll('.policy-pill');
+    if (pills[0]) pills[0].innerHTML = isZh ? '<strong>隐私政策摘要</strong>麦克风在本机计算声级；拍照/录像由用户主动触发；定位仅用于地点标注和地图识别；历史记录默认保存在本机浏览器。' : '<strong>Privacy Summary:</strong> Microphone audio is computed on-device; photo/video is user-triggered; GPS tags records; history is saved in browser.';
+    if (pills[1]) pills[1].innerHTML = isZh ? '<strong>录音录像同意提醒</strong>录音录像可能包含人声、人物、私人空间和精确位置。不同地区对录制同意要求不同，用户应遵守当地法律并在需要时取得同意。' : '<strong>Consent Notice:</strong> Recordings may capture voices, individuals, private spaces, and precise GPS. Comply with local recording consent laws.';
+    if (pills[2]) pills[2].innerHTML = isZh ? '<strong>数据删除说明</strong>用户可在本页删除全部本地记录、清除地图 Key；正式账号版需提供账户删除和云端数据删除入口。' : '<strong>Data Deletion:</strong> You can purge all local records and map keys at any time from this settings tab.';
+    if (pills[3]) pills[3].innerHTML = isZh ? '<strong>测试版边界</strong>阶段 1 Web/PWA 只验证本地记录闭环；Pro、Team 和 Lifetime Offline 仍是权益原型或咨询入口，不收真实费用。' : '<strong>Beta Scope:</strong> Phase 1 Web/PWA validates local recording workflows. Tier upgrades connect to secure billing gateway.';
+    if (pills[4]) pills[4].innerHTML = isZh ? '<strong>儿童与敏感场景</strong>不面向儿童主动收集数据；学校、医院、住宅投诉等场景应避免公开分享精确位置和人物画面。' : '<strong>Minors & Sensitive Areas:</strong> Not directed at children. Avoid publicly sharing identifiable individuals or private home details.';
+    if (pills[5]) pills[5].innerHTML = isZh ? '<strong>服务条款边界</strong>本工具用于环境记录、趋势分析和证据整理，正式检测应以经检定声级计复核为准。' : '<strong>Terms Disclaimer:</strong> Tool is for environmental documentation and dispute support; formal testing requires certified meters.';
+    if (pills[6]) pills[6].innerHTML = isZh ? '<strong>退款政策</strong>Pro / Team / Lifetime Offline 各档权益的退款条件、申请流程与处理时效请见 <a href="refund.html" target="_blank" rel="noopener">refund.html</a>，账单咨询 <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>。' : '<strong>Refund Policy:</strong> For refund terms, submission process, and support across all tiers, see <a href="refund.html" target="_blank" rel="noopener">refund.html</a> or email <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>.';
+    const btns = polCard.querySelectorAll('button, a.btn');
+    if (btns[0]) btns[0].textContent = isZh ? '下载政策草案' : 'Download Policy Draft';
+    if (btns[1]) btns[1].textContent = isZh ? '退款政策' : 'Refund Policy';
+  }
+
+  // 16. Store Listing Card
+  const storeCard = document.getElementById('storeListingCard');
+  if (storeCard) {
+    const clabel = storeCard.querySelector('.clabel'); if (clabel) clabel.textContent = isZh ? '应用商店素材' : 'App Store Copy & Listing';
+    const storeCopy = document.getElementById('storeListingText');
+    if (storeCopy) {
+      storeCopy.textContent = isZh
+        ? 'SOUNDTEST.PRO 是一款面向居民投诉、物业协同、施工巡检、企业环境管理和个人专业测评的噪声记录工具。适合邻里噪音取证、装修施工噪音记录、物业投诉处理、办公室与工厂噪声巡检、学校/医院/酒店等安静环境管理，以及看房、家电、车内噪音和设备评测。应用支持实时分贝、dBA/dBZ、Fast/Slow、LAeq、地点标注、声学证据照片、录音录像、PDF/CSV 报告导出和用户校准。环境记录与证据辅助，正式检测请以经检定声级计复核为准。'
+        : 'SOUNDTEST.PRO is an environmental noise documentation tool for neighbor disputes, property coordination, construction inspections, and acoustic evaluations. It provides real-time decibel metering (dBA/dBZ, Fast/Slow, LAeq), GPS geotagging, forensic photo capture, audio/video recording, and PDF/CSV report generation. Designed for dispute documentation and civilian reference; formal legal proceedings reference statutory standards.';
+    }
+    const btns = storeCard.querySelectorAll('button');
+    if (btns[0]) btns[0].textContent = isZh ? '复制上架简介' : 'Copy App Listing';
+    if (btns[1]) btns[1].textContent = isZh ? '导出合规资料' : 'Export Compliance Pack';
+  }
+
+  // 17. Ad slots in settings
+  const adSlots = document.querySelectorAll('#p-s .ad-slot, #p-s div[style*="border:1px dashed"], [data-ad-slot="settings"]');
   adSlots.forEach(el => {
     el.textContent = isZh ? '广告位预留 · 设置页底部低干扰展示' : 'Reserved ad slot · Low-interruption display in settings';
   });
 
-  // 12. Report Template Select & Guidance
+  // 18. Report Template Select & Guidance
   updateReportTemplateOptions();
 }
 window.translateDesktopSettings = translateDesktopSettings;
@@ -4148,34 +4230,41 @@ function setAppLanguage(lang,{persist=true,notify=true}={}){
   applyTranslations();
 
   // 3. Right panel, pro cards, and scene chips
-  syncEvidenceModeUi();
-  if(typeof translateProShowcaseCard==='function')translateProShowcaseCard();
-  if(typeof translateReportPreviewModal==='function')translateReportPreviewModal();
-  if(typeof updateProUpgradeModalPricing==='function')updateProUpgradeModalPricing();
-  renderSceneChips();
-  updateGeoDock();
-  setStartButtonText();
+  try { syncEvidenceModeUi(); } catch(e){ console.warn('[syncEvidenceModeUi error]', e); }
+  try { if(typeof translateProShowcaseCard==='function')translateProShowcaseCard(); } catch(e){}
+  try { if(typeof translateReportPreviewModal==='function')translateReportPreviewModal(); } catch(e){}
+  try { if(typeof updateProUpgradeModalPricing==='function')updateProUpgradeModalPricing(); } catch(e){}
+  try { renderSceneChips(); } catch(e){}
+  try { updateGeoDock(); } catch(e){}
+  try { setStartButtonText(); } catch(e){}
 
   // 4. Secondary hub & settings
-  const activeSettings=document.querySelector('[data-settings-nav].active')?.dataset.settingsNav||'measure';
-  setSettingsSection(activeSettings);
-  applyAdminMode();
-  renderRecs();drawMap();
+  try {
+    const activeSettings=document.querySelector('[data-settings-nav].active')?.dataset.settingsNav||'measure';
+    setSettingsSection(activeSettings);
+    applyAdminMode();
+    renderRecs();
+    drawMap();
+  } catch(e){ console.warn('[settings translation error]', e); }
   if(notify)toast(t('messages.languageSaved'),'info');
 }
 function initAppLanguage(){
-  appLanguage=detectInitialLanguage();
-  applySeoLanguage();
-  syncLanguageSelectOptions();
-  renderAppLangPickers();
-  applyTranslations();
-  setStartButtonText();
-  syncEvidenceModeUi();
-  if(typeof translateProShowcaseCard==='function')translateProShowcaseCard();
-  if(typeof translateReportPreviewModal==='function')translateReportPreviewModal();
-  if(typeof updateProUpgradeModalPricing==='function')updateProUpgradeModalPricing();
-  renderSceneChips();
-  updateGeoDock();
+  try {
+    appLanguage=detectInitialLanguage();
+    applySeoLanguage();
+    syncLanguageSelectOptions();
+    renderAppLangPickers();
+    applyTranslations();
+    setStartButtonText();
+    try { syncEvidenceModeUi(); } catch(e){}
+    try { if(typeof translateProShowcaseCard==='function')translateProShowcaseCard(); } catch(e){}
+    try { if(typeof translateReportPreviewModal==='function')translateReportPreviewModal(); } catch(e){}
+    try { if(typeof updateProUpgradeModalPricing==='function')updateProUpgradeModalPricing(); } catch(e){}
+    try { renderSceneChips(); } catch(e){}
+    try { updateGeoDock(); } catch(e){}
+  } catch(err) {
+    console.error('[initAppLanguage fallback error]', err);
+  }
 }
 const PHONE_LAN_HTTPS_REQUIRED='手机通过局域网 IP 访问普通 HTTP 页面时，浏览器会禁用麦克风；请部署到 HTTPS 域名，或使用 Cloudflare Tunnel / ngrok / Vercel 预览链接测试。';
 
@@ -4577,8 +4666,99 @@ function translateProShowcaseCard(){
   }
 }
 
+function translateReportCertificateDoc(isZh) {
+  const doc = document.getElementById('rpmCertBody');
+  if (!doc) return;
+
+  const sub = doc.querySelector('.pro-cert-sub');
+  if (sub) sub.textContent = isZh ? '声学现场测定与环境噪音取证报告' : 'Acoustic Field Determination & Environmental Noise Audit';
+
+  const gaugeMin = doc.querySelector('.pro-cert-gauge-labels span:first-child');
+  if (gaugeMin) gaugeMin.textContent = isZh ? '0 dB (听阈)' : '0 dB (Hearing Threshold)';
+
+  const gaugeMax = doc.querySelector('.pro-cert-gauge-labels span:last-child');
+  if (gaugeMax) gaugeMax.textContent = isZh ? '120 dB (痛阈)' : '120 dB (Pain Threshold)';
+
+  const bands = doc.querySelectorAll('.pro-cert-bands div');
+  if (bands[0]) bands[0].textContent = isZh ? '极度寂静 <30' : 'Extremely Quiet <30';
+  if (bands[1]) bands[1].textContent = isZh ? '住宅/办公 40-50' : 'Residential/Office 40-50';
+  if (bands[2]) bands[2].textContent = isZh ? '城市干道 65-75' : 'Urban Thoroughfare 65-75';
+  if (bands[3]) bands[3].textContent = isZh ? '工业重噪 >85' : 'Heavy Industrial >85';
+
+  const cells = doc.querySelectorAll('.pro-cert-cell');
+  if (cells[0]) {
+    const topSpan = cells[0].querySelector('.pro-cert-cell-top span:first-child');
+    if (topSpan) { const svg = topSpan.querySelector('svg'); topSpan.innerHTML = (svg ? svg.outerHTML : '') + (isZh ? ' 最高 · Lmax' : ' Max · Lmax'); }
+    const footSpan = cells[0].querySelector('.pro-cert-cell-foot span:first-child');
+    if (footSpan) footSpan.textContent = isZh ? '峰值脉冲扰动' : 'Peak Impulse Disturbance';
+  }
+  if (cells[1]) {
+    const topSpan = cells[1].querySelector('.pro-cert-cell-top span:first-child');
+    if (topSpan) { const svg = topSpan.querySelector('svg'); topSpan.innerHTML = (svg ? svg.outerHTML : '') + (isZh ? ' 最低 · Lmin' : ' Min · Lmin'); }
+    const footSpan = cells[1].querySelector('.pro-cert-cell-foot span:first-child');
+    if (footSpan) footSpan.textContent = isZh ? '环境自然底噪' : 'Ambient Noise Floor';
+  }
+  if (cells[2]) {
+    const topSpan = cells[2].querySelector('.pro-cert-cell-top span:first-child');
+    if (topSpan) { const svg = topSpan.querySelector('svg'); topSpan.innerHTML = (svg ? svg.outerHTML : '') + (isZh ? ' 等效声级 · LAeq' : ' Equivalent Level · LAeq'); }
+    const footSpan = cells[2].querySelector('.pro-cert-cell-foot span:first-child');
+    if (footSpan) footSpan.textContent = isZh ? '时间能量积分' : 'Energy Integrated RMS';
+  }
+  if (cells[3]) {
+    const topSpan = cells[3].querySelector('.pro-cert-cell-top span:first-child');
+    if (topSpan) { const svg = topSpan.querySelector('svg'); topSpan.innerHTML = (svg ? svg.outerHTML : '') + (isZh ? ' 中值统计 · L50' : ' Median Percentile · L50'); }
+    const footSpan = cells[3].querySelector('.pro-cert-cell-foot span:first-child');
+    if (footSpan) footSpan.textContent = isZh ? '累积暴露中值' : 'Cumulative Median Exposure';
+  }
+
+  const trendTitle = doc.querySelector('.pro-cert-trend-title span');
+  if (trendTitle) trendTitle.textContent = isZh ? '声级时序动态趋势 (LEQ TREND)' : 'Temporal Sound Level Dynamics (LEQ TREND)';
+
+  const gridLines = doc.querySelectorAll('.pro-cert-grid-line span:first-child');
+  if (gridLines[0]) gridLines[0].textContent = isZh ? '90 dB (上限警戒)' : '90 dB (Alert Ceiling)';
+  if (gridLines[1]) gridLines[1].textContent = isZh ? '65 dB (日间商办)' : '65 dB (Commercial Daytime)';
+  if (gridLines[2]) gridLines[2].textContent = isZh ? '45 dB (夜间室内)' : '45 dB (Residential Night)';
+  if (gridLines[3]) gridLines[3].textContent = isZh ? '30 dB' : '30 dB';
+
+  const auditHead = doc.querySelector('.pro-cert-audit-head span:first-of-type');
+  if (auditHead) auditHead.textContent = isZh ? '证据元数据与校准审计' : 'Forensic Metadata & Calibration Audit';
+
+  const boxes = doc.querySelectorAll('.pro-cert-box');
+  if (boxes[0]) {
+    const geoSpan = boxes[0].querySelector('.pro-cert-box-head span:first-child');
+    if (geoSpan) { const svg = geoSpan.querySelector('svg'); geoSpan.innerHTML = (svg ? svg.outerHTML : '') + (isZh ? ' 地理坐标存证 (GEOFENCE REFERENCE)' : ' Geographic Geofence Reference'); }
+  }
+
+  const pctTitle = doc.querySelector('.pro-cert-audit div[style*="text-transform:uppercase"]');
+  if (pctTitle) pctTitle.textContent = isZh ? '统计累计百分数声级 (PERCENTILE LEVELS)' : 'Statistical Percentile Sound Levels (PERCENTILE LEVELS)';
+
+  if (boxes[1]) {
+    const calSpan = boxes[1].querySelector('.pro-cert-box-head span:first-child');
+    if (calSpan) { const svg = calSpan.querySelector('svg'); calSpan.innerHTML = (svg ? svg.outerHTML : '') + (isZh ? ' 声学传感器硬件标定与误差审计' : ' Acoustic Sensor Hardware Calibration & Audit'); }
+    const calRows = boxes[1].querySelectorAll('.pro-cert-cal-row');
+    if (calRows[0]) { const s = calRows[0].querySelector('span:first-child'); if (s) s.textContent = isZh ? '实体专业声级计实机联调标定:' : 'Class-1 SLM Hardware Calibration:'; }
+    if (calRows[1]) { const s = calRows[1].querySelector('span:first-child'); if (s) s.textContent = isZh ? '系统校准偏置 (Calibration Offset):' : 'System Calibration Offset:'; }
+    if (calRows[2]) { const s = calRows[2].querySelector('span:first-child'); if (s) s.textContent = isZh ? '麦克风前置增益 (Preamp Gain):' : 'Microphone Preamp Gain:'; }
+    if (calRows[3]) { const s = calRows[3].querySelector('span:first-child'); if (s) s.textContent = isZh ? '基准估计综合误差:' : 'Combined Estimated Tolerance:'; }
+    const footNote = boxes[1].querySelector('.pro-cert-cal-list > div:last-child');
+    if (footNote) footNote.textContent = isZh ? '实体专业声级计联调校验，综合允差 ≤ ±1.8 dB' : 'Class-1 SLM cross-calibrated, combined tolerance ≤ ±1.8 dB';
+    const refLine = boxes[1].querySelector('div[style*="border-top:1px solid #1b1e25"] span:first-child');
+    if (refLine) refLine.textContent = isZh ? '标准声学校准仪实机校验 (Acoustic Calibrator)' : 'Acoustic Calibrator Physical Verification';
+  }
+
+  const qrTitle = doc.querySelector('.pro-cert-qr-row div[style*="font-weight:700"]');
+  if (qrTitle) qrTitle.textContent = isZh ? '防伪验真存证标识' : 'Digital Audit & Verification Stamp';
+
+  const shaLabel = doc.querySelector('.pro-cert-hash-row span:first-child');
+  if (shaLabel) { const svg = shaLabel.querySelector('svg'); shaLabel.innerHTML = (svg ? svg.outerHTML : '') + (isZh ? ' 数字防伪签名 SHA-256:' : ' Cryptographic Signature SHA-256:'); }
+
+  const disc = doc.querySelector('.pro-cert-disclaimer');
+  if (disc) disc.textContent = isZh ? '本报告由 SOUNDTEST.PRO 声学计算引擎基于高精度硬件校准自动生成，完整环境音频频谱、时序波动及取证地理栅格数据已固化至去中心化加密证据链，具备民事参考及现场环境比对效力（非国家法定计量检定机构计量证书，仅供民事实测存证参考）。' : 'Generated by SOUNDTEST.PRO acoustic computation engine with hardware calibration offset. Acoustic spectra, temporal fluctuations, and geospatial geofence logs are cryptographically sealed. For civilian reference and dispute documentation (not a statutory metrology certificate).';
+}
+
 function translateReportPreviewModal(){
   const isZh = appLanguage === 'zh-CN';
+  const isPro = typeof isProActive === 'function' ? isProActive() : false;
   setText('rpmTitle', isZh ? '📄 现场声学取证报告已生成' : '📄 Acoustic Evidence Report Generated');
   setText('rpmBadge', isZh ? '预览模式 (含防伪水印)' : 'Preview Mode (Watermarked)');
   setText('rpmTabFreeText', isZh ? '免费预览版 (含水印)' : 'Free Preview (Watermarked)');
@@ -4617,7 +4797,12 @@ function translateReportPreviewModal(){
   setText('rpmUnlockSingleBtnText', isZh
     ? '⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去除全页水印 + 加盖防伪存证ID'
     : '⚡ Unlock Single Report ($1.99) · Remove Watermark + Digital Verification ID');
-  setText('rpmDownloadFreeBtn', isZh ? '先下载带水印预览版 (仅供个人自查)' : 'Download Watermarked Preview (Personal Reference Only)');
+  setText('rpmDownloadFreeBtn', isZh ? (isPro ? '导出正式无水印存证 PDF' : '先下载带水印预览版 (仅供个人自查)') : (isPro ? 'Export Official Pro Report (Clean)' : 'Download Watermarked Preview (Personal Reference Only)'));
+  setText('rpmDownloadImageBtn', isZh ? (isPro ? '导出正式存证底稿 (PNG)' : '下载底稿图片 (PNG·含水印)') : (isPro ? 'Export Official Certificate PNG' : 'Download Certificate PNG (Watermarked)'));
+  setText('rpmDownloadCsvBtn', isZh ? '下载数据 (CSV)' : 'Download CSV');
+  setText('rpmNoticeBtnText', isZh ? '⚖️ 邻里善意告知书 · 9国法定催告函 (Word/PDF)' : '⚖️ Neighbor Notice & Statutory Demand (Word/PDF)');
+
+  translateReportCertificateDoc(isZh);
 }
 
 async function primaryEvidenceAction(){
@@ -5168,7 +5353,21 @@ function selectProUpgradePlan(planId) {
   updateProUpgradeCtaText();
 }
 
-const PUM_I18N = (typeof window !== "undefined" && window.PUM_I18N) ? window.PUM_I18N : {};
+function getPumPool() {
+  if (typeof window !== "undefined" && window.PUM_I18N && Object.keys(window.PUM_I18N).length > 0) {
+    return window.PUM_I18N;
+  }
+  if (typeof SoundTestPayment !== "undefined" && SoundTestPayment && SoundTestPayment.PUM_I18N && Object.keys(SoundTestPayment.PUM_I18N).length > 0) {
+    return SoundTestPayment.PUM_I18N;
+  }
+  return null;
+}
+
+function getPumDict(langKey) {
+  const pool = getPumPool();
+  if (!pool) return null;
+  return pool[langKey] || pool.en || pool.zh || null;
+}
 
 function getActiveModalLangKey() {
   const lang = String(appLanguage || '').toLowerCase();
@@ -5184,66 +5383,78 @@ function getActiveModalLangKey() {
 }
 
 function updateProUpgradeModalPricing() {
-  const langKey = getActiveModalLangKey();
-  const dict = PUM_I18N[langKey] || PUM_I18N.en;
+  try {
+    const langKey = getActiveModalLangKey();
+    const dict = getPumDict(langKey);
+    if (!dict || !dict.plans) return;
 
-  // Header & Badges
-  setText('pumBadge', dict.badge);
-  setText('pumTitle', dict.title);
-  setText('pumDesc', dict.desc);
-  setText('pumVerifyLink', dict.verifyLink);
-  setText('pumSecurityNote', dict.securityNote);
+    // Header & Badges
+    setText('pumBadge', dict.badge || '');
+    setText('pumTitle', dict.title || '');
+    setText('pumDesc', dict.desc || '');
+    setText('pumVerifyLink', dict.verifyLink || '');
+    setText('pumSecurityNote', dict.securityNote || '');
 
-  // Yearly
-  const y = dict.plans.yearly;
-  setText('pumPlanNameYearly', y.name);
-  setText('pumPlanTagYearly', y.tag);
-  setText('pumPlanDescYearly', y.desc);
-  setText('pumPriceYearly', y.price);
-  setText('pumPriceOrigYearly', y.orig);
+    // Yearly
+    const y = dict.plans.yearly || {};
+    setText('pumPlanNameYearly', y.name || '');
+    setText('pumPlanTagYearly', y.tag || '');
+    setText('pumPlanDescYearly', y.desc || '');
+    setText('pumPriceYearly', y.price || '');
+    setText('pumPriceOrigYearly', y.orig || '');
 
-  // Lifetime
-  const l = dict.plans.lifetime;
-  setText('pumPlanNameLifetime', l.name);
-  setText('pumPlanTagLifetime', l.tag);
-  setText('pumPlanDescLifetime', l.desc);
-  setText('pumPriceLifetime', l.price);
-  setText('pumPriceOrigLifetime', l.orig);
+    // Lifetime
+    const l = dict.plans.lifetime || {};
+    setText('pumPlanNameLifetime', l.name || '');
+    setText('pumPlanTagLifetime', l.tag || '');
+    setText('pumPlanDescLifetime', l.desc || '');
+    setText('pumPriceLifetime', l.price || '');
+    setText('pumPriceOrigLifetime', l.orig || '');
 
-  // Monthly
-  const m = dict.plans.pro;
-  setText('pumPlanNameMonthly', m.name);
-  setText('pumPlanTagMonthly', m.tag);
-  setText('pumPlanDescMonthly', m.desc);
-  setText('pumPriceMonthly', m.price);
-  setText('pumPriceOrigMonthly', m.orig);
+    // Monthly
+    const m = dict.plans.pro || {};
+    setText('pumPlanNameMonthly', m.name || '');
+    setText('pumPlanTagMonthly', m.tag || '');
+    setText('pumPlanDescMonthly', m.desc || '');
+    setText('pumPriceMonthly', m.price || '');
+    setText('pumPriceOrigMonthly', m.orig || '');
 
-  // Single
-  const s = dict.plans.single;
-  setText('pumPlanNameSingle', s.name);
-  setText('pumPlanTagSingle', s.tag);
-  setText('pumPlanDescSingle', s.desc);
-  setText('pumPriceSingle', s.price);
-  setText('pumPriceOrigSingle', s.orig);
+    // Single
+    const s = dict.plans.single || {};
+    setText('pumPlanNameSingle', s.name || '');
+    setText('pumPlanTagSingle', s.tag || '');
+    setText('pumPlanDescSingle', s.desc || '');
+    setText('pumPriceSingle', s.price || '');
+    setText('pumPriceOrigSingle', s.orig || '');
 
-  updateProUpgradeCtaText();
+    updateProUpgradeCtaText();
+  } catch (err) {
+    console.warn('[updateProUpgradeModalPricing]', err);
+  }
 }
 
 function updateProUpgradeCtaText() {
-  const langKey = getActiveModalLangKey();
-  const dict = PUM_I18N[langKey] || PUM_I18N.en;
-  const isChina = isChinaPricingUser();
-  const btnText = document.getElementById('pumCheckoutBtnText');
-  const btnIcon = document.getElementById('pumCheckoutBtnIcon');
-  if (!btnText) return;
+  try {
+    const langKey = getActiveModalLangKey();
+    const dict = getPumDict(langKey);
+    const isChina = isChinaPricingUser();
+    const btnText = document.getElementById('pumCheckoutBtnText');
+    const btnIcon = document.getElementById('pumCheckoutBtnIcon');
+    if (!btnText) return;
 
-  const planKey = selectedProUpgradePlan || 'yearly';
-  const planData = dict.plans[planKey] || dict.plans.yearly;
+    if (btnIcon) {
+      btnIcon.textContent = isChina ? '🟢' : '💳';
+    }
+    if (!dict || !dict.plans) return;
 
-  if (btnIcon) {
-    btnIcon.textContent = isChina ? '🟢' : '💳';
+    const planKey = selectedProUpgradePlan || 'yearly';
+    const planData = dict.plans[planKey] || dict.plans.yearly || {};
+    if (planData.cta) {
+      btnText.textContent = planData.cta;
+    }
+  } catch (err) {
+    console.warn('[updateProUpgradeCtaText]', err);
   }
-  btnText.textContent = planData.cta;
 }
 
 function openProUpgradeModal(defaultPlan = 'yearly') {
@@ -7733,8 +7944,9 @@ function getLoc(opts={forceRefresh:true}){
           resolved=true;
         }else{
           resolved=true;
-          const m={1:'定位权限被拒绝',2:'位置不可用',3:'定位超时'};
-          const msg=m[err?.code]||'定位失败';
+          const isZh=appLanguage==='zh-CN';
+          const m={1:isZh?'定位权限被拒绝':'Location access denied',2:isZh?'位置不可用':'Location unavailable',3:isZh?'定位超时':'Location timeout'};
+          const msg=m[err?.code]||(isZh?'定位失败':'Location failed');
           document.getElementById('locVal').textContent=msg;
           curLoc=null;
           setPlaceText(null,'none');
@@ -7771,12 +7983,13 @@ function getLoc(opts={forceRefresh:true}){
         fallbackIpLocation().then(ok=>{
           if(!ok){
             resolved=true;
-            document.getElementById('locVal').textContent='定位权限被拒绝';
+            const isZh=appLanguage==='zh-CN';
+            document.getElementById('locVal').textContent=isZh?'定位权限被拒绝':'Location access denied';
             curLoc=null;
             setPlaceText(null,'none');
             updateCameraOverlay();
             syncWatermarkCameraUi();
-            toast('定位权限被拒绝，可在浏览器设置中开启','warn');
+            toast(isZh?'定位权限被拒绝，可在浏览器设置中开启':'Location permission denied. Enable in browser settings.','warn');
           }
         });
       }else{
@@ -8465,9 +8678,10 @@ function openLatestReportPreview() {
 function openReportPreviewModal(recs, isBatch = false) {
   const modal = document.getElementById('reportPreviewModal');
   if (!modal) return;
+  translateReportPreviewModal();
   const isChina = isChinaPricingUser();
   const isZh = (appLanguage === 'zh-CN');
-  const r0 = recs[0] || {};
+  const r0 = (recs && recs[0]) || {};
 
   renderCertificateData(r0);
 
@@ -8531,7 +8745,12 @@ function openReportPreviewModal(recs, isBatch = false) {
       wxOptEl = document.createElement('div');
       wxOptEl.id = 'rpmWxMoreOptions';
       wxOptEl.style.cssText = 'display:flex;justify-content:center;gap:12px;font-size:12.5px;color:var(--soft);margin-top:6px;';
-      upBtn.parentNode.insertBefore(wxOptEl, dlBtn);
+      const insertTarget = (dlBtn && dlBtn.parentNode === upBtn.parentNode) ? dlBtn : (dlBtn && dlBtn.parentNode ? dlBtn.parentNode : null);
+      if (insertTarget && insertTarget.parentNode === upBtn.parentNode) {
+        upBtn.parentNode.insertBefore(wxOptEl, insertTarget);
+      } else {
+        upBtn.parentNode.appendChild(wxOptEl);
+      }
     }
     if (wxOptEl) {
       wxOptEl.style.display = isPro ? 'none' : 'flex';
@@ -8598,7 +8817,12 @@ function openReportPreviewModal(recs, isBatch = false) {
       wxOptEl = document.createElement('div');
       wxOptEl.id = 'rpmWxMoreOptions';
       wxOptEl.style.cssText = 'display:flex;justify-content:center;gap:12px;font-size:12.5px;color:var(--soft);margin-top:6px;';
-      upBtn.parentNode.insertBefore(wxOptEl, dlBtn);
+      const insertTarget = (dlBtn && dlBtn.parentNode === upBtn.parentNode) ? dlBtn : (dlBtn && dlBtn.parentNode ? dlBtn.parentNode : null);
+      if (insertTarget && insertTarget.parentNode === upBtn.parentNode) {
+        upBtn.parentNode.insertBefore(wxOptEl, insertTarget);
+      } else {
+        upBtn.parentNode.appendChild(wxOptEl);
+      }
     }
     if (wxOptEl) {
       wxOptEl.style.display = isPro ? 'none' : 'flex';
