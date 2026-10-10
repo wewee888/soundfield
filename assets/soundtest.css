@@ -1035,7 +1035,24 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .pro-cert-brand-foot{display:flex;justify-content:space-between;font-size:8px;font-family:var(--mono,monospace);color:#8c95a4;border-top:1px solid #181b21;padding-top:6px}
 
 /* ==================== Stitch Dark-Mode Pro Live Meter ==================== */
-.stitch-meter-card{position:relative;background:radial-gradient(130% 115% at 50% 0%,#151923 0%,#0d1017 65%,#080b11 100%);border:1px solid #1f2536;border-radius:clamp(14px, 2vh, 20px);padding:clamp(8px, 1.3vh, 14px) clamp(10px, 2vw, 16px) clamp(6px, 1vh, 10px);box-shadow:0 16px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);overflow:hidden;text-align:center;margin-bottom:clamp(6px, 1vh, 10px)}
+.stitch-meter-card{
+  position:relative;
+  /* Deeper, richer dark background with subtle radial center */
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,242,254,0.055) 0%, transparent 60%),
+    radial-gradient(130% 115% at 50% 0%,#131720 0%,#0b0e17 60%,#070911 100%);
+  border:1px solid rgba(42,255,212,0.12);
+  border-radius:clamp(14px, 2vh, 20px);
+  padding:clamp(8px, 1.3vh, 14px) clamp(10px, 2vw, 16px) clamp(6px, 1vh, 10px);
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.7),
+    0 0 0 1px rgba(0,242,254,0.06),
+    inset 0 1px 0 rgba(255,255,255,.06),
+    inset 0 -1px 0 rgba(0,0,0,.4);
+  overflow:hidden;
+  text-align:center;
+  margin-bottom:clamp(6px, 1vh, 10px)
+}
 .stitch-ambient-glow{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:220px;height:220px;background:radial-gradient(circle,rgba(0,242,254,.14) 0%,rgba(0,242,254,0) 70%);pointer-events:none;filter:blur(28px)}
 .stitch-meter-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:clamp(4px, 0.8vh, 8px);position:relative;z-index:2;gap:8px}
 .stitch-meter-header .stitch-cal-pill,
@@ -1086,6 +1103,53 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .stitch-scale-bar .sub{font-size:8px;color:#8c95a4}
 .stitch-scale-bar .mid{color:#d6e8fa;font-weight:600}
 .stitch-scale-bar .dang{color:#ef4444;font-weight:700}
+
+/* ── Enhanced arc glow ── */
+.stitch-trace-arc{
+  transition:stroke-dashoffset .04s linear;
+  filter:
+    drop-shadow(0 0 6px rgba(0,242,254,.65))
+    drop-shadow(0 0 14px rgba(0,242,254,.25));
+}
+
+/* ── Tick ring ── */
+.stitch-tick-ring line{
+  stroke-linecap:round;
+  transition:opacity .18s;
+}
+.stitch-tick-major{stroke:#3a4155;stroke-width:1.8}
+.stitch-tick-minor{stroke:#252b38;stroke-width:1.1}
+.stitch-tick-danger{stroke:rgba(239,68,68,0.55);stroke-width:1.8}
+
+/* ── Peak hold needle ── */
+.stitch-peak-needle{
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),opacity .3s;
+}
+
+/* ── Inner bowl center accent ── */
+.stitch-center-dot{
+  animation:stitchCenterPulse 3s ease-in-out infinite;
+}
+@keyframes stitchCenterPulse{
+  0%,100%{r:2.5;opacity:.25}
+  50%{r:4;opacity:.55}
+}
+
+/* ── Peak label micro-readout ── */
+.stitch-peak-label{
+  font-family:var(--mono,monospace);
+  font-size:8px;
+  letter-spacing:.10em;
+  color:#f59e0b;
+  text-transform:uppercase;
+  opacity:0;
+  margin-top:2px;
+  transition:opacity .3s;
+  height:10px;
+  line-height:1;
+}
+.stitch-peak-label.visible{opacity:1}
+
 
 /* Crimson Stop Action Bar */
 .stitch-crimson-wrap{margin-bottom:10px;display:flex;flex-direction:column;gap:8px}

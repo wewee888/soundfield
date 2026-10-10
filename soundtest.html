@@ -1620,17 +1620,59 @@
     <div class="stitch-gauge-container">
       <svg class="stitch-gauge-svg" viewBox="0 0 200 200">
         <defs>
+          <!-- Main arc gradient: green → cyan → amber → red -->
           <linearGradient id="stitchGaugeGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#10b981"/>
-            <stop offset="50%" stop-color="#00f2fe"/>
-            <stop offset="80%" stop-color="#f59e0b"/>
+            <stop offset="0%"   stop-color="#10b981"/>
+            <stop offset="42%"  stop-color="#00f2fe"/>
+            <stop offset="75%"  stop-color="#f59e0b"/>
             <stop offset="100%" stop-color="#ef4444"/>
           </linearGradient>
+          <!-- Inner bowl gradient -->
+          <radialGradient id="stitchBowlGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="#0d1525" stop-opacity="0.94"/>
+            <stop offset="100%" stop-color="#070b11" stop-opacity="0.98"/>
+          </radialGradient>
+          <!-- Peak needle glow -->
+          <filter id="needleGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
         </defs>
-        <!-- Background Track -->
-        <circle cx="100" cy="100" r="82" fill="none" stroke="#181d29" stroke-width="10" stroke-linecap="round" stroke-dasharray="386.4 515.22" stroke-dashoffset="0" transform="rotate(135 100 100)" class="stitch-track-bg"/>
-        <!-- Calibrated Gradient Trace Arc -->
-        <circle id="radialGaugeTrace" cx="100" cy="100" r="82" fill="none" stroke="url(#stitchGaugeGrad)" stroke-width="11" stroke-linecap="round" stroke-dasharray="386.4 515.22" stroke-dashoffset="386.4" transform="rotate(135 100 100)" class="stitch-trace-arc"/>
+
+        <!-- ── Tick ring (JS-rendered via initGaugeTicks) ── -->
+        <g id="stitchTickRing" class="stitch-tick-ring" transform="rotate(135 100 100)"></g>
+
+        <!-- ── Outer soft halo ── -->
+        <circle cx="100" cy="100" r="82" fill="none"
+          stroke="rgba(0,242,254,0.055)" stroke-width="22"
+          stroke-dasharray="386.4 515.22" stroke-dashoffset="0"
+          transform="rotate(135 100 100)"/>
+
+        <!-- ── Background track ── -->
+        <circle cx="100" cy="100" r="82" fill="none"
+          stroke="#141820" stroke-width="12"
+          stroke-dasharray="386.4 515.22" stroke-dashoffset="0"
+          transform="rotate(135 100 100)" class="stitch-track-bg"/>
+
+        <!-- ── Main gradient arc ── -->
+        <circle id="radialGaugeTrace" cx="100" cy="100" r="82" fill="none"
+          stroke="url(#stitchGaugeGrad)" stroke-width="11" stroke-linecap="round"
+          stroke-dasharray="386.4 515.22" stroke-dashoffset="386.4"
+          transform="rotate(135 100 100)" class="stitch-trace-arc"/>
+
+        <!-- ── Peak hold needle ── -->
+        <line id="peakNeedle" class="stitch-peak-needle"
+          x1="100" y1="22" x2="100" y2="14"
+          stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"
+          transform="rotate(135 100 100)"
+          filter="url(#needleGlow)" opacity="0"/>
+
+        <!-- ── Inner dark bowl ── -->
+        <circle cx="100" cy="100" r="70" fill="url(#stitchBowlGrad)"/>
+        <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+        <!-- ── Center accent dot ── -->
+        <circle cx="100" cy="100" r="3" fill="rgba(0,242,254,0.3)" class="stitch-center-dot"/>
       </svg>
 
       <!-- Center Value Display -->
@@ -1643,6 +1685,8 @@
         <!-- Noise Severity Badge -->
         <div class="stitch-severity-badge db-level-main lv-q" id="dbLevelMain">Quiet</div>
         <p class="stitch-kicker notranslate" translate="no">RMS SPL REAL-TIME</p>
+        <!-- Peak hold micro-label -->
+        <div class="stitch-peak-label notranslate" id="gaugepeakLabel" translate="no" aria-hidden="true"></div>
       </div>
     </div>
 
@@ -4469,6 +4513,7 @@ function animateDbNumber(target){
     smhLevel.textContent=info.l;
     smhLevel.className=`smh-level lv-${info.c}`;
   }
+  if(typeof updatePeakNeedle==='function') updatePeakNeedle(target);
 }
 function setAppLanguage(lang,{persist=true,notify=true}={}){
   appLanguage=normalizeAppLanguage(lang)||'en-US';
@@ -9615,6 +9660,65 @@ if(!localStorage.getItem(LS_KEY))setCalibrationPreset(detectCalibrationPresetKey
 updateCapabilityUi();
 applyPermissionGuideState();
 if(isWeChatBrowser())document.getElementById('wechatBrowserWarning')?.classList.add('show');
+/* ── Gauge Tick Ring + Peak Needle ── */
+(function initGaugeTicks(){
+  const ring = document.getElementById('stitchTickRing');
+  if(!ring) return;
+  const cx=100, cy=100, r=95; // outer rim radius
+  const TOTAL_ANGLE = 270; // arc span in degrees
+  const N = 72; // total ticks
+  const startAngle = 0; // ring group already rotated 135° via transform
+  for(let i=0;i<=N;i++){
+    const angle = (i/N)*TOTAL_ANGLE;
+    const rad = (angle * Math.PI)/180;
+    const isMajor = (i % 9 === 0);
+    const isDanger = (i/N) >= 0.72; // top ~28% = danger zone
+    const tickLen = isMajor ? 7 : 4;
+    const x1 = cx + r * Math.cos(rad);
+    const y1 = cy + r * Math.sin(rad);
+    const x2 = cx + (r - tickLen) * Math.cos(rad);
+    const y2 = cy + (r - tickLen) * Math.sin(rad);
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', x1.toFixed(2));
+    line.setAttribute('y1', y1.toFixed(2));
+    line.setAttribute('x2', x2.toFixed(2));
+    line.setAttribute('y2', y2.toFixed(2));
+    line.setAttribute('class', isDanger ? 'stitch-tick-danger' : (isMajor ? 'stitch-tick-major' : 'stitch-tick-minor'));
+    ring.appendChild(line);
+  }
+})();
+
+let _peakDb = 0, _peakDecayTimer = null;
+function updatePeakNeedle(db){
+  if(!db || !isFinite(db)) return;
+  if(db > _peakDb){
+    _peakDb = db;
+    clearTimeout(_peakDecayTimer);
+    _peakDecayTimer = setTimeout(()=>{ _peakDb = 0; _updateNeedlePos(0); }, 3200);
+  }
+  _updateNeedlePos(_peakDb);
+}
+function _updateNeedlePos(peakDb){
+  const needle = document.getElementById('peakNeedle');
+  const label  = document.getElementById('gaugepeakLabel');
+  if(!needle) return;
+  const MIN_DB=20, MAX_DB=120, SPAN=270;
+  const ratio = Math.max(0, Math.min(1, (peakDb - MIN_DB)/(MAX_DB - MIN_DB)));
+  const angleDeg = ratio * SPAN; // 0 = left end of arc
+  // The ring g already has rotate(135) applied; needle starts at top (270° absolute = 0 local before rotate)
+  // We need to rotate the needle around (100,100) by angleDeg
+  needle.setAttribute('transform', `rotate(${135 + angleDeg} 100 100)`);
+  needle.setAttribute('opacity', peakDb > 25 ? '1' : '0');
+  if(label){
+    if(peakDb > 25){
+      label.textContent = `PK ${Math.round(peakDb)} dB`;
+      label.classList.add('visible');
+    } else {
+      label.classList.remove('visible');
+    }
+  }
+}
+
 loadState();syncPowerSaverToggle();applyTranslations();renderSceneChips();updateGeoDock();setSettingsSection('measure');renderRecs();hydrateRecordMedia();refreshStorageHealth({silent:true});updateWeightUi();renderPlanStatus();renderCalibrationHistory();syncEvidenceModeUi();updateCameraOverlay();drawWave();initStickyMiniHud();
 // Auto-refresh GPS on initial load as requested
 setTimeout(()=>{
