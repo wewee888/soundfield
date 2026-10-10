@@ -241,6 +241,30 @@
 .pum-footer-links a { color: rgba(214,232,250,0.85); text-decoration: underline; cursor: pointer; }
 .pum-security-note { margin-top: 10px; text-align: center; font-size: 10.5px; color: rgba(214,232,250,0.5); }
 
+/* Prevent gauge kicker text wrapping on narrow mobile screens */
+.stitch-kicker.recording {
+  color: #ff4d5e !important;
+  font-weight: 800 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  white-space: nowrap !important;
+  font-size: clamp(8px, 1.8vw, 9.5px) !important;
+  max-width: 92% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stitch-kicker-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff3f50;
+  box-shadow: 0 0 8px #ff3f50;
+  animation: stitchRecBlink 1s infinite ease-in-out;
+}
+
 /* Critical fallback for Sticky Mini HUD on Scroll (prevents unstyled flash / cache-miss rendering) */
 .sticky-mini-hud {
   position: fixed !important;
@@ -1519,10 +1543,10 @@
   <!-- Top Upgrade Banner (Ad container, hides when paid/upgraded) -->
   <div class="subscription-banner" id="subscriptionBanner" data-upsell="subscription-upgrade" onclick="showSubscriptionPlans()" role="button" tabindex="0">
     <div class="subscription-copy">
-      <div class="subscription-title" id="subscriptionBannerTitle">⚖️ IEC 61672 Class 2 Standard · Reference SLM</div>
-      <div class="subscription-desc" id="subscriptionBannerDesc">Calibrated field acoustic monitoring with tamper-evident SHA-256 digital seal.</div>
+      <div class="subscription-title" id="subscriptionBannerTitle">升级 Pro：一键生成物业/合规标准取证底稿</div>
+      <div class="subscription-desc" id="subscriptionBannerDesc">去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。</div>
     </div>
-    <button class="subscription-cta" id="subscriptionBannerCta" type="button" onclick="event.stopPropagation();showSubscriptionPlans()">Dossier Pro ↗</button>
+    <button class="subscription-cta" id="subscriptionBannerCta" type="button" onclick="event.stopPropagation();showSubscriptionPlans()">升级 Pro</button>
   </div>
 
   <!-- Header row -->
@@ -3169,7 +3193,7 @@ function setStartButtonText(){
   if(kicker){
     if(isRec){
       kicker.className = 'stitch-kicker notranslate recording';
-      kicker.innerHTML = '<span class="stitch-kicker-dot"></span> ' + (isZh ? '存证录制中 · SHA-256 加密防篡改' : 'REC ACTIVE · SHA-256 SEALED');
+      kicker.innerHTML = '<span class="stitch-kicker-dot"></span> ' + (isZh ? '存证录制中 · SHA-256' : 'REC ACTIVE · SHA-256');
     } else {
       kicker.className = 'stitch-kicker notranslate';
       kicker.textContent = 'RMS SPL REAL-TIME';
@@ -6079,9 +6103,9 @@ function renderSubscriptionBanner(){
   banner.style.display='flex';
   banner.classList.remove('paid');
   const isZh = appLanguage === 'zh-CN';
-  title.textContent = isZh ? '⚖️ IEC 61672 2级声级计参考 · 现场存证底稿' : '⚖️ IEC 61672 Class 2 Standard · Reference SLM';
-  desc.textContent = isZh ? '校准声学现场监测 · 加盖不可篡改 SHA-256 数字指纹 · 导出正式法律报告' : 'Calibrated field acoustic monitoring with tamper-evident SHA-256 digital seal.';
-  cta.textContent = isZh ? '正式报告 ↗' : 'Dossier Pro ↗';
+  title.textContent = isZh ? '升级 Pro：一键生成物业/合规标准取证底稿' : 'Upgrade Pro: 1-Tap Forensic Dispute Dossiers';
+  desc.textContent = isZh ? '去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。' : 'Remove watermarks, unlimited 24/7 overnight sentry, legal templates & tamper-evident export.';
+  cta.textContent = isZh ? '升级 Pro' : 'Upgrade Pro';
 }
 
 function showSubscriptionPlans(){
@@ -8619,10 +8643,15 @@ async function rerunPlaceLookup(){
 function isInChina(lat, lng) { return (window.SoundTestGeo||{}).isInChina?.(lat, lng); }
 function wgs84ToGcj02(lat, lng) { return (window.SoundTestGeo||{}).wgs84ToGcj02?.(lat, lng); }
 function lookupPlaceName(loc) { return (window.SoundTestGeo||{}).lookupPlaceName?.(loc); }
-/* ── Stop all ── */
 function stopAll(){
-  if(isRec)toggleRec();
-  exportSessionSummaryImage();
+  const hadRec = isRec;
+  if(isRec) toggleRec();
+  // Do NOT auto-download report image; open report preview modal so user decides
+  if(!hadRec && typeof dbH !== 'undefined' && dbH.length > 5){
+    setTimeout(() => {
+      openLatestReportPreview();
+    }, 200);
+  }
   clearInterval(monTmr);cancelAnimationFrame(animId);
   releaseWakeLock();
   micStream&&micStream.getTracks().forEach(t=>t.stop());

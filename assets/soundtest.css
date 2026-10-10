@@ -2795,6 +2795,11 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
   align-items: center;
   justify-content: center;
   gap: 5px;
+  white-space: nowrap !important;
+  font-size: clamp(8px, 1.8vw, 9.5px) !important;
+  max-width: 92% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .stitch-kicker-dot {
   display: inline-block;

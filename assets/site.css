@@ -2502,11 +2502,13 @@ a.card:hover h3 { color: var(--text-strong); }
   gap: 14px;
 }
 
-.feature-grid-22 { align-items: stretch; }
+.feature-grid-22 { align-items: stretch; gap: 18px; }
 .feature-grid-22 .card {
-  padding: 20px 22px;
+  padding: 24px 26px;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100%;
 }
 .feature-grid-22 .feature-icon {
@@ -2543,6 +2545,171 @@ a.card:hover h3 { color: var(--text-strong); }
 }
 
 .feature-grid-22 .card:hover::before { opacity: 1; }
+
+/* ── Feature Cards Mini Visuals ── */
+.feat-mini-visual {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(3, 7, 16, 0.6);
+  border: 1px solid rgba(168, 196, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 20px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.feat-meter-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+.feat-meter-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2cf0c1, #00d4ff);
+  box-shadow: 0 0 10px rgba(44, 240, 193, 0.5);
+}
+.feat-meter-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono, monospace);
+  font-size: 11px;
+}
+.feat-stat-val {
+  font-weight: 850;
+  font-size: 14px;
+  color: #2cf0c1;
+}
+.feat-stat-val small { font-size: 9.5px; color: #8c95a4; }
+.feat-stat-pill {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(44, 240, 193, 0.12);
+  border: 1px solid rgba(44, 240, 193, 0.3);
+  color: #2cf0c1;
+  font-size: 9px;
+  font-weight: 700;
+}
+.feat-stat-tag { font-size: 9px; color: #94a3b8; font-weight: 600; }
+
+.feat-visual-wave {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.feat-wave-bars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+}
+.feat-wave-bars span {
+  width: 3.5px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #38bdf8, #818cf8);
+  display: inline-block;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.3);
+}
+.feat-wave-tag {
+  font-size: 10px;
+  font-family: var(--mono, monospace);
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.feat-visual-stamp {
+  font-family: var(--mono, monospace);
+  font-size: 10.5px;
+}
+.feat-stamp-line {
+  color: #f1f5f9;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dot-green { color: #10b981; font-size: 9px; }
+.feat-stamp-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 9px;
+  color: #94a3b8;
+}
+.feat-seal-badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #10b981;
+  font-weight: 800;
+  font-size: 8.5px;
+}
+
+.feat-visual-export {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 10px 12px;
+}
+.feat-export-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #d1d5db;
+}
+.badge-pdf {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #ef4444;
+  font-size: 8.5px;
+  font-weight: 900;
+}
+.badge-csv {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #10b981;
+  font-size: 8.5px;
+  font-weight: 900;
+}
+.badge-png {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+  font-size: 8.5px;
+  font-weight: 900;
+}
+
+/* ── Hero Primary CTA Elevation ── */
+.hero-actions .button.primary,
+.hero-primary-cta {
+  padding: 13px 26px !important;
+  font-size: 15px !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.01em;
+  box-shadow: 0 0 35px rgba(44, 240, 193, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.hero-actions .button.primary:hover,
+.hero-primary-cta:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 50px rgba(44, 240, 193, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
 
 /* ─── Pricing row (Free vs Single vs Pro Monthly vs Pro Yearly vs Lifetime) ─── */
 .pricing-row {
