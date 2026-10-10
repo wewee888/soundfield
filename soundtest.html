@@ -1337,7 +1337,30 @@
       </div>
     </div>
   </div>
-</div>
+<!-- Sticky Mini HUD (Reveals when scrolling past the main meter) -->
+<aside class="sticky-mini-hud" id="stickyMiniHud" aria-hidden="true" onclick="scrollBackToMeter(event)">
+  <div class="smh-inner">
+    <div class="smh-left">
+      <div class="smh-readout notranslate" translate="no">
+        <span class="smh-val" id="smhDb">--</span>
+        <span class="smh-unit">dB</span>
+      </div>
+      <span class="smh-level lv-q" id="smhLevel">Quiet</span>
+    </div>
+    <div class="smh-center">
+      <span class="smh-status-badge" id="smhStatusBadge">
+        <span class="smh-dot" id="smhDot"></span>
+        <span class="smh-status-txt" id="smhStatusTxt">STANDBY</span>
+      </span>
+    </div>
+    <div class="smh-right">
+      <button class="smh-action-btn" id="smhActionBtn" type="button" onclick="event.stopPropagation();handleMiniHudAction()" aria-label="Toggle Meter">
+        <span id="smhActionText">Start</span>
+      </button>
+    </div>
+  </div>
+</aside>
+
 <div class="shell">
 <div class="glow"></div>
 
@@ -1346,10 +1369,10 @@
   <!-- Top Upgrade Banner (Ad container, hides when paid/upgraded) -->
   <div class="subscription-banner" id="subscriptionBanner" data-upsell="subscription-upgrade" onclick="showSubscriptionPlans()" role="button" tabindex="0">
     <div class="subscription-copy">
-      <div class="subscription-title" id="subscriptionBannerTitle">Upgrade to Pro: 1-Click Forensic Evidence Dossier</div>
-      <div class="subscription-desc" id="subscriptionBannerDesc">Remove all watermarks, unlock overnight sentry monitoring, 15 legal templates and digital SHA-256 seal.</div>
+      <div class="subscription-title" id="subscriptionBannerTitle">⚖️ IEC 61672 Class 2 Standard · Reference SLM</div>
+      <div class="subscription-desc" id="subscriptionBannerDesc">Calibrated field acoustic monitoring with tamper-evident SHA-256 digital seal.</div>
     </div>
-    <button class="subscription-cta" id="subscriptionBannerCta" type="button" onclick="event.stopPropagation();showSubscriptionPlans()">Upgrade Pro</button>
+    <button class="subscription-cta" id="subscriptionBannerCta" type="button" onclick="event.stopPropagation();showSubscriptionPlans()">Dossier Pro ↗</button>
   </div>
 
   <!-- Header row -->
@@ -1382,7 +1405,7 @@
           <option value="th">🇹🇭 TH</option>
         </select>
       </div>
-      <button class="app-pro-btn" id="appProBtn" type="button" onclick="handleTopProBtnClick()">★ Upgrade Pro</button>
+      <button class="app-pro-btn" id="appProBtn" type="button" onclick="handleTopProBtnClick()">🔒 PRO</button>
     </div>
   </div>
 
@@ -2947,6 +2970,8 @@ function setStartButtonText(){
     }
   }
 
+  const isZh = appLanguage === 'zh-CN';
+
   // Left button: Live Monitor (50%)
   if(startBtn){
     if(isMon){
@@ -2960,7 +2985,7 @@ function setStartButtonText(){
     }
   }
 
-  // Right button: Evidence Recording (50%)
+  // Right button: Evidence Recording (50%) - Dynamic Linkage with active Evidence Mode
   if(recActionBtn){
     if(isRec){
       recActionBtn.className='rec-action-btn recording';
@@ -2968,8 +2993,60 @@ function setStartButtonText(){
       recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + t('ui.stopRecord','Stop & Save') + '</span><span class="btn-sub">' + t('ui.recordingSub','Recording...') + '</span></span>';
     } else {
       recActionBtn.className='rec-action-btn idle';
-      recActionBtn.setAttribute('aria-label', t('ui.recordEvidence','Record Audio'));
-      recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + t('ui.recordEvidence','Record Audio') + '</span><span class="btn-sub">' + t('ui.recordSub','dB + Audio File') + '</span></span>';
+      let title = t('ui.recordEvidence','Record Audio');
+      let sub = t('ui.recordSub','dB + Audio File');
+      if(evidenceMode === 'video'){
+        title = isZh ? '录制视频' : 'Record Video';
+        sub = isZh ? '分贝水印 ↗' : 'dB + Video ↗';
+      } else if(evidenceMode === 'photo'){
+        title = isZh ? '存证拍照' : 'Photo Evidence';
+        sub = isZh ? '分贝印章 ↗' : 'dB + GPS ↗';
+      } else if(evidenceMode === 'sentry'){
+        title = isZh ? '启动哨兵' : 'Start Sentry';
+        sub = isZh ? '🌙 突发抓取' : '🌙 Spike Guard';
+      }
+      recActionBtn.setAttribute('aria-label', title);
+      recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + title + '</span><span class="btn-sub">' + sub + '</span></span>';
+    }
+  }
+
+  // Hero Dial & Kicker: Visual Reassurance during active recording
+  const gaugeContainer = document.querySelector('.stitch-gauge-container');
+  if(gaugeContainer){
+    gaugeContainer.classList.toggle('recording-active', Boolean(isRec));
+  }
+  const kicker = document.querySelector('.stitch-kicker');
+  if(kicker){
+    if(isRec){
+      kicker.className = 'stitch-kicker notranslate recording';
+      kicker.innerHTML = '<span class="stitch-kicker-dot"></span> ' + (isZh ? '存证录制中 · SHA-256 加密防篡改' : 'REC ACTIVE · SHA-256 SEALED');
+    } else {
+      kicker.className = 'stitch-kicker notranslate';
+      kicker.textContent = 'RMS SPL REAL-TIME';
+    }
+  }
+
+  // Sticky Mini HUD status & action button synchronization
+  const smhBadge = document.getElementById('smhStatusBadge');
+  const smhTxt = document.getElementById('smhStatusTxt');
+  const smhBtn = document.getElementById('smhActionBtn');
+  const smhBtnTxt = document.getElementById('smhActionText');
+  if(smhBadge && smhTxt && smhBtn && smhBtnTxt){
+    if(isRec){
+      smhBadge.className = 'smh-status-badge rec';
+      smhTxt.textContent = isZh ? '正在存证' : 'RECORDING';
+      smhBtn.className = 'smh-action-btn recording';
+      smhBtnTxt.textContent = isZh ? '停止' : 'Stop';
+    } else if(isMon){
+      smhBadge.className = 'smh-status-badge live';
+      smhTxt.textContent = isZh ? '实时监听' : 'LIVE METER';
+      smhBtn.className = 'smh-action-btn';
+      smhBtnTxt.textContent = isZh ? '停止' : 'Stop';
+    } else {
+      smhBadge.className = 'smh-status-badge';
+      smhTxt.textContent = isZh ? '待命' : 'STANDBY';
+      smhBtn.className = 'smh-action-btn';
+      smhBtnTxt.textContent = isZh ? '启动' : 'Start';
     }
   }
 }
@@ -2978,11 +3055,37 @@ async function toggleRecAction(){
   if(isRec){
     await toggleRec();
     if(isMon) await toggleMon();
-  } else if(isMon){
-    await toggleMon();
   } else {
     await primaryEvidenceAction();
   }
+}
+
+function handleMiniHudAction(){
+  if(isRec){
+    toggleRecAction();
+  } else if(isMon){
+    toggleMon();
+  } else {
+    toggleMon();
+  }
+}
+
+function scrollBackToMeter(event){
+  if(event && event.target && event.target.closest('#smhActionBtn')) return;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function initStickyMiniHud(){
+  const hud = document.getElementById('stickyMiniHud');
+  if(!hud) return;
+  const onScroll = () => {
+    const heroDial = document.getElementById('dbStage');
+    const threshold = heroDial ? heroDial.getBoundingClientRect().bottom < 30 : window.scrollY > 200;
+    hud.classList.toggle('show', threshold);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  const panels = document.querySelector('.panels');
+  if(panels) panels.addEventListener('scroll', onScroll, { passive: true });
 }
 
 function updateLiveMonitorNotice(){
@@ -4161,6 +4264,8 @@ function openOrRefreshLocation(){
 function animateDbNumber(target){
   const dbEl=document.getElementById('dbNum');
   const dbDec=document.getElementById('dbDec');
+  const smhDb=document.getElementById('smhDb');
+  const smhLevel=document.getElementById('smhLevel');
   if(!dbEl)return;
   if(dbAnimRaf){cancelAnimationFrame(dbAnimRaf);dbAnimRaf=null;}
   if(!target||target<=0||!isFinite(target)){
@@ -4170,6 +4275,11 @@ function animateDbNumber(target){
     dbEl.classList.remove('live');
     dbEl.style.color='rgba(214,232,250,0.16)';
     if(dbDec)dbDec.style.color='rgba(214,232,250,0.10)';
+    if(smhDb) smhDb.textContent='--';
+    if(smhLevel){
+      smhLevel.textContent='Quiet';
+      smhLevel.className='smh-level lv-q';
+    }
     return;
   }
   displayDb=target;
@@ -4181,6 +4291,13 @@ function animateDbNumber(target){
   const col=dbCol(target);
   dbEl.style.color=col;
   if(dbDec)dbDec.style.color=col;
+
+  if(smhDb) smhDb.textContent=`${intPart}.${decPart}`;
+  if(smhLevel){
+    const info=lvInfo(target);
+    smhLevel.textContent=info.l;
+    smhLevel.className=`smh-level lv-${info.c}`;
+  }
 }
 function setAppLanguage(lang,{persist=true,notify=true}={}){
   appLanguage=normalizeAppLanguage(lang)||'en-US';
@@ -4462,10 +4579,9 @@ function setEvidenceMode(mode,{save=true}={}){
     return;
   }
   if(mode==='video'||mode==='photo'){
-    window.location.href=getDedicatedCameraUrl();
-    return;
-  }
-  if(mode==='sentry'){
+    evidenceMode=mode;
+    if(autoRecOnThreshold) autoRecOnThreshold=false;
+  }else if(mode==='sentry'){
     if(!isProActive()){
       openSentryGatingModal();
       return;
@@ -4483,6 +4599,7 @@ function setEvidenceMode(mode,{save=true}={}){
     if(isCam&&!isRec)stopCameraPreview({silent:true});
   }
   syncEvidenceModeUi();
+  setStartButtonText();
   if(save)saveState();
 }
 
@@ -4567,9 +4684,15 @@ function syncEvidenceModeUi(){
         primary.textContent=copy.stop||(isZh?'⏹ 退出哨兵守护模式':'⏹ Stop Sentry Mode');
         primary.classList.remove('recording');
       }
+    }else if(evidenceMode==='video'){
+      primary.textContent=isZh?'🎥 启动录像相机（分贝水印 ↗）':'🎥 Launch Video Camera (Live dB Watermark ↗)';
+      primary.classList.remove('recording');
+    }else if(evidenceMode==='photo'){
+      primary.textContent=isZh?'📷 启动拍照相机（分贝印章 ↗）':'📷 Launch Photo Camera (dB & GPS Stamp ↗)';
+      primary.classList.remove('recording');
     }else{
-      primary.textContent=isRec&&evidenceMode!=='photo'?copy.stop:copy.primary;
-      primary.classList.toggle('recording',isRec&&evidenceMode!=='photo');
+      primary.textContent=isRec?copy.stop:copy.primary;
+      primary.classList.toggle('recording',isRec);
     }
   }
   if(evidenceMode==='sentry'){
@@ -4774,19 +4897,9 @@ async function primaryEvidenceAction(){
     syncEvidenceModeUi();
     return;
   }
-  if((evidenceMode==='video'||evidenceMode==='photo')&&!watermarkCameraOpen)await openWatermarkCamera(evidenceMode);
-  if(evidenceMode==='video')return toggleVideoRec();
-  if(evidenceMode==='photo'){
-    if(!isCam){
-      showCapTemporarily('info',appLanguage!=='zh-CN'?'Opening camera':'正在打开摄像头',appLanguage!=='zh-CN'?'Photo mode needs camera access before it can capture evidence.':'照片模式需要先打开摄像头预览，再生成声学证据照片。','PHOTO',5200);
-      await toggleCam();
-      if(!isCam)return;
-    }
-    if(!isMon){
-      await toggleMon({fromAuthModal:true});
-      if(!isMon)return;
-    }
-    return capturePhoto();
+  if(evidenceMode==='video'||evidenceMode==='photo'){
+    window.location.href = getDedicatedCameraUrl();
+    return;
   }
   return toggleRec();
 }
@@ -5070,10 +5183,10 @@ function updateTopProBtn() {
     proBtn.setAttribute('title', isZh ? '已激活会员特权 · 点击查看会员权益' : 'Active VIP Membership · Click to view benefits');
     proBtn.onclick = handleTopProBtnClick;
   } else {
-    proBtn.textContent = '★ ' + t('ui.upgradePro', isZh ? '升级 Pro' : 'Upgrade Pro');
+    proBtn.textContent = '🔒 ' + (isZh ? 'PRO 专业版' : 'PRO');
     proBtn.classList.remove('member-active-badge');
     proBtn.removeAttribute('data-member-active');
-    proBtn.setAttribute('title', isZh ? '升级至 Pro 会员，解锁全部专业功能' : 'Upgrade to Pro for full forensic features');
+    proBtn.setAttribute('title', isZh ? '查看专业版法律维权功能与报告示例' : 'View Pro forensic features and sample report');
     proBtn.onclick = showSubscriptionPlans;
   }
 }
@@ -5808,16 +5921,17 @@ function renderSubscriptionBanner(){
   const desc=document.getElementById('subscriptionBannerDesc');
   const cta=document.getElementById('subscriptionBannerCta');
   if(!banner||!title||!desc||!cta)return;
-  const isPaid=(typeof isProActive==='function'&&isProActive())||currentPlan!=='free';
+  const isPaid=(typeof isUserPaidMember==='function'&&isUserPaidMember())||currentPlan!=='free';
   if(isPaid){
     banner.style.display='none';
     return;
   }
   banner.style.display='flex';
   banner.classList.remove('paid');
-  title.textContent=t('ui.upgradeTitle','升级 Pro：一键生成物业/合规标准取证底稿');
-  desc.textContent=t('ui.upgradeDesc','去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。');
-  cta.textContent=t('ui.upgradePro','升级 Pro');
+  const isZh = appLanguage === 'zh-CN';
+  title.textContent = isZh ? '⚖️ IEC 61672 2级声级计参考 · 现场存证底稿' : '⚖️ IEC 61672 Class 2 Standard · Reference SLM';
+  desc.textContent = isZh ? '校准声学现场监测 · 加盖不可篡改 SHA-256 数字指纹 · 导出正式法律报告' : 'Calibrated field acoustic monitoring with tamper-evident SHA-256 digital seal.';
+  cta.textContent = isZh ? '正式报告 ↗' : 'Dossier Pro ↗';
 }
 
 function showSubscriptionPlans(){
@@ -9318,7 +9432,7 @@ if(!localStorage.getItem(LS_KEY))setCalibrationPreset(detectCalibrationPresetKey
 updateCapabilityUi();
 applyPermissionGuideState();
 if(isWeChatBrowser())document.getElementById('wechatBrowserWarning')?.classList.add('show');
-loadState();syncPowerSaverToggle();applyTranslations();renderSceneChips();updateGeoDock();setSettingsSection('measure');renderRecs();hydrateRecordMedia();refreshStorageHealth({silent:true});updateWeightUi();renderPlanStatus();renderCalibrationHistory();syncEvidenceModeUi();updateCameraOverlay();drawWave();
+loadState();syncPowerSaverToggle();applyTranslations();renderSceneChips();updateGeoDock();setSettingsSection('measure');renderRecs();hydrateRecordMedia();refreshStorageHealth({silent:true});updateWeightUi();renderPlanStatus();renderCalibrationHistory();syncEvidenceModeUi();updateCameraOverlay();drawWave();initStickyMiniHud();
 // Auto-refresh GPS on initial load as requested
 setTimeout(()=>{
   if(typeof getLoc==='function')getLoc();
