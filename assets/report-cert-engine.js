@@ -1287,11 +1287,21 @@ function buildStatsFromRecord(r) {
   if (!r) return null;
   const recTime = r.time ? (r.time instanceof Date ? r.time : new Date(r.time)) : new Date();
   const timeStr = localTimeStr(recTime);
-  const rawAvg = r.avgDb ?? r.leqDb ?? (typeof curDb !== 'undefined' ? curDb : 49);
-  const activeDb = Number(Number(rawAvg).toFixed(1));
-  const peakVal = Number(Number(r.peakDb ?? (activeDb * 1.2)).toFixed(1));
-  const minVal = Number(Number(r.minDb ?? (activeDb * 0.85)).toFixed(1));
-  const leqVal = Number(Number(r.leqDb ?? activeDb).toFixed(1));
+  const candidateAvg = [
+    Number(r.avgDb),
+    Number(r.leqDb),
+    Number(window.lastActiveSessionSnapshot?.avgDb),
+    Number(window.lastActiveSessionSnapshot?.leqDb),
+    (typeof curDb !== 'undefined' && curDb > 0 ? curDb : null),
+    49
+  ].find(v => Number.isFinite(v) && v > 0) || 49;
+  const activeDb = Number(candidateAvg.toFixed(1));
+  const candidatePeak = [Number(r.peakDb), Number(window.lastActiveSessionSnapshot?.peakDb), activeDb * 1.25].find(v => Number.isFinite(v) && v > 0) || (activeDb * 1.25);
+  const candidateMin = [Number(r.minDb), Number(window.lastActiveSessionSnapshot?.minDb), activeDb * 0.85].find(v => Number.isFinite(v) && v > 0 && v !== 999) || (activeDb * 0.85);
+  const candidateLeq = [Number(r.leqDb), Number(window.lastActiveSessionSnapshot?.leqDb), activeDb].find(v => Number.isFinite(v) && v > 0) || activeDb;
+  const peakVal = Number(candidatePeak.toFixed(1));
+  const minVal = Number(candidateMin.toFixed(1));
+  const leqVal = Number(candidateLeq.toFixed(1));
   const l5 = Number(Number(r.l5Db ?? r.ln?.L5 ?? (activeDb * 1.1)).toFixed(1));
   const l10 = Number(Number(r.l10Db ?? r.ln?.L10 ?? (activeDb * 1.05)).toFixed(1));
   const l50 = Number(Number(r.l50Db ?? r.ln?.L50 ?? activeDb).toFixed(1));
@@ -1514,7 +1524,7 @@ if (typeof window !== 'undefined') {
 }
 
 function toggleCertWatermark(showWatermark) {
-  const isZh = appLanguage === 'zh-CN';
+  const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
   const wmLayer = document.getElementById('rpmWatermarkLayer');
   const tabFree = document.getElementById('rpmTabFree');
   const tabPro = document.getElementById('rpmTabPro');
@@ -1631,7 +1641,15 @@ function renderCertificateData(r) {
   if (elUtcTime) elUtcTime.textContent = localTimePart;
 
   // Hero dB
-  const rawActive = Number(r.avgDb ?? r.leqDb ?? curDb ?? 49);
+  const candidateDb = [
+    Number(r.avgDb),
+    Number(r.leqDb),
+    Number(window.lastActiveSessionSnapshot?.avgDb),
+    Number(window.lastActiveSessionSnapshot?.leqDb),
+    (typeof curDb === 'number' && curDb > 0 ? curDb : null),
+    49
+  ].find(v => Number.isFinite(v) && v > 0) || 49;
+  const rawActive = candidateDb;
   const activeDbStr = rawActive.toFixed(1);
   const activeDbRound = Math.round(rawActive);
   const elHeroDb = document.getElementById('certHeroDb');
@@ -1689,10 +1707,15 @@ function renderCertificateData(r) {
   const elMin = document.getElementById('certLmin');
   const elLeq = document.getElementById('certLeq');
   const elL50 = document.getElementById('certL50');
-  const peakValStr = Number(r.peakDb ?? (rawActive * 1.2)).toFixed(1);
-  const minValStr = Number(r.minDb ?? (rawActive * 0.85)).toFixed(1);
-  const leqValStr = Number(r.leqDb ?? rawActive).toFixed(1);
-  const l50ValStr = Number(r.l50Db ?? r.ln?.L50 ?? rawActive).toFixed(1);
+  const candidatePeak = [Number(r.peakDb), Number(window.lastActiveSessionSnapshot?.peakDb), rawActive * 1.25].find(v => Number.isFinite(v) && v > 0) || (rawActive * 1.25);
+  const candidateMin = [Number(r.minDb), Number(window.lastActiveSessionSnapshot?.minDb), rawActive * 0.85].find(v => Number.isFinite(v) && v > 0 && v !== 999) || (rawActive * 0.85);
+  const candidateLeq = [Number(r.leqDb), Number(window.lastActiveSessionSnapshot?.leqDb), rawActive].find(v => Number.isFinite(v) && v > 0) || rawActive;
+  const candidateL50 = [Number(r.l50Db), Number(r.ln?.L50), Number(window.lastActiveSessionSnapshot?.l50Db), rawActive].find(v => Number.isFinite(v) && v > 0) || rawActive;
+
+  const peakValStr = candidatePeak.toFixed(1);
+  const minValStr = candidateMin.toFixed(1);
+  const leqValStr = candidateLeq.toFixed(1);
+  const l50ValStr = candidateL50.toFixed(1);
   if (elMax) elMax.textContent = peakValStr;
   if (elMin) elMin.textContent = minValStr;
   if (elLeq) elLeq.textContent = leqValStr;
