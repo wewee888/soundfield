@@ -2247,6 +2247,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 
 @media(max-width:640px){
   .hero{padding:8px 12px 10px;gap:10px}
+  .stitch-custody-card{margin-top:6px;margin-bottom:4px;}
   .glow{top:-120px;width:360px;height:220px;opacity:.35}
   .logo-row{margin-bottom:0}
   .db-stage{height:180px;border-radius:20px}

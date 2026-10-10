@@ -172,11 +172,8 @@
   border-radius: 50% !important;
   background: var(--red) !important;
 }
-.shell,
-.panels,
-.panel,
-.hero {
-  padding-bottom: calc(56px + var(--safe-b, env(safe-area-inset-bottom, 0px))) !important;
+.panel {
+  padding-bottom: calc(68px + var(--safe-b, env(safe-area-inset-bottom, 0px))) !important;
 }
 
 
@@ -7331,6 +7328,16 @@ function sw(t){
   });
   const panelsEl = document.querySelector('.panels');
   if(panelsEl) panelsEl.scrollTop = 0;
+  if(window.innerWidth < 768){
+    if(t === 'm'){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const targetPanel = document.getElementById('p-' + t);
+      if(targetPanel){
+        targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
   if(t==='r')renderRecs();
   if(t==='map')setTimeout(drawMap,40);
   if(t==='s'&&typeof translateDesktopSettings==='function')translateDesktopSettings();
