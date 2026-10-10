@@ -656,3 +656,19 @@ test('settings hub card is aligned full-width and bottom nav is flush with compa
   assert.match(soundtestHtml, /\.nav-btn svg\s*\{[\s\S]*?width:\s*18px/);
 });
 
+test('soundtest.html DOM structure integrity: balanced divs and overlay isolation', () => {
+  const soundtestHtml = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+  const openDivs = (soundtestHtml.match(/<div[\s>]/gi) || []).length;
+  const closeDivs = (soundtestHtml.match(/<\/div>/gi) || []).length;
+  assert.equal(openDivs, closeDivs, `soundtest.html div tags must be balanced: open ${openDivs} vs close ${closeDivs}`);
+
+  // Ensure watermarkCameraOverlay is closed before .shell begins
+  const overlayIdx = soundtestHtml.indexOf('id="watermarkCameraOverlay"');
+  const shellIdx = soundtestHtml.indexOf('class="shell"');
+  assert.ok(overlayIdx > 0 && shellIdx > overlayIdx, 'watermarkCameraOverlay must precede .shell');
+  const between = soundtestHtml.slice(overlayIdx, shellIdx);
+  const betweenOpens = (between.match(/<div[\s>]/gi) || []).length;
+  const betweenCloses = (between.match(/<\/div>/gi) || []).length;
+  assert.equal(betweenOpens, betweenCloses, 'watermarkCameraOverlay must be fully closed before .shell to prevent black screen');
+});
+
