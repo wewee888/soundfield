@@ -10,6 +10,7 @@
 <meta name="MobileOptimized" content="width">
 <meta name="HandheldFriendly" content="true">
 <meta name="format-detection" content="telephone=no">
+<meta name="google" content="notranslate">
 <meta name="theme-color" content="#070B14">
 <meta name="description" content="SOUNDTEST.PRO is a professional acoustic evidence and environmental noise documentation tool for resident complaints, property management, and workplace inspections. Supports real-time dB, GPS tagging, forensic camera, and legal PDF/CSV reports.">
 <meta name="application-name" content="SOUNDTEST.PRO">
@@ -1439,15 +1440,15 @@
       </svg>
 
       <!-- Center Value Display -->
-      <div class="stitch-readout">
-        <div class="stitch-hero-val">
-          <span class="stitch-db-num" id="dbNum">--</span>
-          <span class="stitch-db-dec" id="dbDec"></span>
-          <span class="stitch-db-unit">dB</span>
+      <div class="stitch-readout notranslate" translate="no">
+        <div class="stitch-hero-val notranslate" translate="no">
+          <span class="stitch-db-num notranslate" id="dbNum" translate="no">--</span>
+          <span class="stitch-db-dec notranslate" id="dbDec" translate="no"></span>
+          <span class="stitch-db-unit notranslate" translate="no">dB</span>
         </div>
         <!-- Noise Severity Badge -->
         <div class="stitch-severity-badge db-level-main lv-q" id="dbLevelMain">Quiet</div>
-        <p class="stitch-kicker">RMS SPL REAL-TIME</p>
+        <p class="stitch-kicker notranslate" translate="no">RMS SPL REAL-TIME</p>
       </div>
     </div>
 
@@ -1548,7 +1549,7 @@
           <span class="stitch-metric-dot bg-cyan"></span>
         </div>
         <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val" id="sLeq">--<span class="u"> dB</span></span>
+          <span class="stitch-matrix-val notranslate" translate="no" id="sLeq">--<span class="u notranslate" translate="no"> dB</span></span>
         </div>
         <span class="stitch-matrix-sub" id="telemetrySubLeq">Equivalent Continuous Level</span>
       </div>
@@ -1560,7 +1561,7 @@
           <span class="stitch-metric-dot bg-rose"></span>
         </div>
         <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val color-rose" id="sPeak">--<span class="u"> dB</span></span>
+          <span class="stitch-matrix-val color-rose notranslate" translate="no" id="sPeak">--<span class="u notranslate" translate="no"> dB</span></span>
         </div>
         <span class="stitch-matrix-sub" id="telemetrySubPeak">Max Impulse / Peak</span>
       </div>
@@ -1572,7 +1573,7 @@
           <span class="stitch-metric-dot bg-emerald"></span>
         </div>
         <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val color-emerald" id="sMin">--<span class="u"> dB</span></span>
+          <span class="stitch-matrix-val color-emerald notranslate" translate="no" id="sMin">--<span class="u notranslate" translate="no"> dB</span></span>
         </div>
         <span class="stitch-matrix-sub" id="telemetrySubMin">Noise Floor Baseline</span>
       </div>
@@ -1584,7 +1585,7 @@
           <span class="stitch-matrix-tag" id="telemetryTagL10">Top10%</span>
         </div>
         <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val" id="sL10">--<span class="u"> dB</span></span>
+          <span class="stitch-matrix-val notranslate" translate="no" id="sL10">--<span class="u notranslate" translate="no"> dB</span></span>
         </div>
         <span class="stitch-matrix-sub" id="telemetrySubL10">Infrequent Loud Events</span>
       </div>
@@ -1596,7 +1597,7 @@
           <span class="stitch-matrix-tag" id="telemetryTagL50">Median</span>
         </div>
         <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val" id="sL50">--<span class="u"> dB</span></span>
+          <span class="stitch-matrix-val notranslate" translate="no" id="sL50">--<span class="u notranslate" translate="no"> dB</span></span>
         </div>
         <span class="stitch-matrix-sub" id="telemetrySubL50">Typical Median Level</span>
       </div>
@@ -1608,7 +1609,7 @@
           <span class="stitch-matrix-tag" id="telemetryTagL90">Residual</span>
         </div>
         <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val" id="sL90">--<span class="u"> dB</span></span>
+          <span class="stitch-matrix-val notranslate" translate="no" id="sL90">--<span class="u notranslate" translate="no"> dB</span></span>
         </div>
         <span class="stitch-matrix-sub" id="telemetrySubL90">Ambient Background Floor</span>
       </div>
@@ -4161,7 +4162,7 @@ function animateDbNumber(target){
   const dbEl=document.getElementById('dbNum');
   const dbDec=document.getElementById('dbDec');
   if(!dbEl)return;
-  if(dbAnimRaf)cancelAnimationFrame(dbAnimRaf);
+  if(dbAnimRaf){cancelAnimationFrame(dbAnimRaf);dbAnimRaf=null;}
   if(!target||target<=0||!isFinite(target)){
     displayDb=null;
     dbEl.textContent='--';
@@ -4171,25 +4172,15 @@ function animateDbNumber(target){
     if(dbDec)dbDec.style.color='rgba(214,232,250,0.10)';
     return;
   }
-  const from=displayDb??target;
-  const t0=performance.now();
-  const dur=260;
+  displayDb=target;
   dbEl.classList.add('live');
-  const step=now=>{
-    const p=Math.min(1,(now-t0)/dur);
-    const eased=1-Math.pow(1-p,3);
-    displayDb=from+(target-from)*eased;
-    const intPart=Math.floor(displayDb);
-    const decPart=Math.round((displayDb-intPart)*10); // 0–9
-    dbEl.textContent=`${intPart}`;
-    if(dbDec)dbDec.textContent=`.${decPart}`;
-    const col=dbCol(displayDb);
-    dbEl.style.color=col;
-    if(dbDec)dbDec.style.color=col;
-    if(p<1)dbAnimRaf=requestAnimationFrame(step);
-    else{displayDb=target;dbAnimRaf=null;}
-  };
-  dbAnimRaf=requestAnimationFrame(step);
+  const intPart=Math.floor(target);
+  const decPart=Math.floor((target*10)%10);
+  dbEl.textContent=`${intPart}`;
+  if(dbDec)dbDec.textContent=`.${decPart}`;
+  const col=dbCol(target);
+  dbEl.style.color=col;
+  if(dbDec)dbDec.style.color=col;
 }
 function setAppLanguage(lang,{persist=true,notify=true}={}){
   appLanguage=normalizeAppLanguage(lang)||'en-US';
@@ -6812,10 +6803,11 @@ function instantDb(){
 }
 
 function applyMeterBallistics(inst,prev,dt){
-  const tau=timeWeight==='S'?1:.125;
-  let alpha=1-Math.exp(-Math.max(dt,1/240)/tau);
-  if(inst>prev)alpha=Math.min(1,alpha*3.2);
-  else alpha*=0.45;
+  const tau=timeWeight==='S'?1.0:0.125;
+  const safeDt=Math.max(0.001,Math.min(0.05,dt||1/60));
+  let alpha=1-Math.exp(-safeDt/tau);
+  if(inst>prev)alpha=Math.min(0.35,alpha*1.3);
+  else alpha=Math.max(0.02,alpha*0.8);
   return prev*(1-alpha)+inst*alpha;
 }
 
@@ -6846,7 +6838,7 @@ function calculateLnStats(arr){
 function updateLnStats(stats){
   [['sL5',stats.L5],['sL10',stats.L10],['sL50',stats.L50],['sL90',stats.L90],['sL95',stats.L95]].forEach(([id,value])=>{
     const el=document.getElementById(id);
-    if(el)el.innerHTML=`${fmtDb(value)}<span class="u"> dB</span>`;
+    if(el)el.innerHTML=`${fmtDb(value)}<span class="u notranslate" translate="no"> dB</span>`;
   });
 }
 
@@ -6855,12 +6847,16 @@ function updateGauge(db){
   const stage=document.getElementById('dbStage');
   if(radial){
     // 270 deg circular arc: length 386.4 on circumference 515.22.
-    // At db <= 30: 0% filled (offset = 386.4)
-    // At db >= 120: 100% filled (offset = 0)
-    const clamped=Math.max(30,Math.min(120,db));
-    const pct=(clamped-30)/90;
-    const offset=386.4*(1-pct);
-    radial.style.strokeDashoffset=offset.toFixed(1);
+    // Calibrated range: 20 dB (0% baseline) to 120 dB (100% max limit)
+    // Eliminates the dead zone below 30 dB so real indoor ambient sound gives smooth feedback.
+    if(!db||db<=0){
+      radial.style.strokeDashoffset='386.4';
+    }else{
+      const clamped=Math.max(20,Math.min(120,db));
+      const pct=(clamped-20)/100;
+      const offset=386.4*(1-pct);
+      radial.style.strokeDashoffset=offset.toFixed(1);
+    }
   }
   const arc=document.getElementById('gaugeArc');if(!arc)return;
   const needle=document.getElementById('gaugeNeedle');
@@ -7254,12 +7250,9 @@ function openLatestLocationMap() { return (window.SoundTestGeo||{}).openLatestLo
 function exportMapImage() { return (window.SoundTestGeo||{}).exportMapImage?.(); }
 function drawMap() { return (window.SoundTestGeo||{}).drawMap?.(); }
 async function requestMicrophoneStream(){
-  const isIOS=/(iPad|iPhone|iPod)/i.test(navigator.userAgent||'')||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-  if(isIOS){
-    return navigator.mediaDevices.getUserMedia({audio:true});
-  }
   // DO NOT force channelCount: 1 on Windows / multi-mic arrays; WASAPI raw exclusive mono often outputs 0s without error.
   // Web Audio's MediaStreamSource and AnalyserNode natively downmix multi-channel audio to mono with full fidelity.
+  // Explicitly request ideal:false for echoCancellation, noiseSuppression, autoGainControl across all OS (including iOS 15+)
   const professionalConstraints={
     audio:{
       echoCancellation:{ideal:false},
@@ -7536,7 +7529,7 @@ function tick(){
   const lnStats=calculateLnStats(dbH);
   const lv=lvInfo(Math.round(curDb));
   const dispDb=Math.round(curDb);
-  animateDbNumber(curDb>.5?dispDb:0);
+  animateDbNumber(curDb>.5?curDb:0);
   const lvMain=document.getElementById('dbLevelMain');
   lvMain.textContent=lv.l;lvMain.className='db-level-main '+lv.c;
   document.getElementById('dbStage').style.setProperty('--level-color',dbCol(dispDb));
@@ -7544,10 +7537,10 @@ function tick(){
   const pct=Math.min(100,(curDb/120)*100);
   document.getElementById('meterFill').style.width=pct+'%';
   document.getElementById('meterFill').style.background=dbCol(curDb);
-  document.getElementById('sLeq').innerHTML=`${fmtDb(leq)}<span class="u"> dB</span>`;
-  document.getElementById('sPeak').innerHTML=`${fmtDb(peak)}<span class="u"> dB</span>`;
-  document.getElementById('sMin').innerHTML=`${fmtDb(mn===999?0:mn)}<span class="u"> dB</span>`;
-  document.getElementById('sAvg').innerHTML=`${fmtDb(avg)}<span class="u"> dB</span>`;
+  document.getElementById('sLeq').innerHTML=`${fmtDb(leq)}<span class="u notranslate" translate="no"> dB</span>`;
+  document.getElementById('sPeak').innerHTML=`${fmtDb(peak)}<span class="u notranslate" translate="no"> dB</span>`;
+  document.getElementById('sMin').innerHTML=`${fmtDb(mn===999?0:mn)}<span class="u notranslate" translate="no"> dB</span>`;
+  document.getElementById('sAvg').innerHTML=`${fmtDb(avg)}<span class="u notranslate" translate="no"> dB</span>`;
   if(now-lastOverlayAt>=throttle.overlayInterval){
     updateCameraOverlay({avg,min:mn===999?0:mn});
     lastOverlayAt=now;
@@ -8407,7 +8400,7 @@ function stopAll(){
   document.getElementById('dbStage').style.setProperty('--level-color','var(--accent)');
   document.getElementById('meterFill').style.width='0%';
   updateGauge(0);
-  ['sLeq','sAvg','sPeak','sMin','sL5','sL10','sL50','sL90','sL95'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='--<span class="u"> dB</span>';});
+  ['sLeq','sAvg','sPeak','sMin','sL5','sL10','sL50','sL90','sL95'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='--<span class="u notranslate" translate="no"> dB</span>';});
   document.getElementById('sTime').textContent='--:--';
   document.getElementById('recLabel').textContent=t('ui.notRecording');document.getElementById('recDot').style.cssText='width:10px;height:10px;border-radius:50%;background:var(--tx3);flex-shrink:0';
   document.getElementById('videoRecBtn').className='video-rec-btn';document.getElementById('videoRecBtn').textContent=t('ui.startVideo');
@@ -8535,8 +8528,8 @@ function renderRecs(){
   const allAvg=Math.round(DB.records.reduce((a,r)=>a+r.avgDb,0)/DB.records.length);
   const allPeak=Math.max(...DB.records.map(r=>r.peakDb));
   document.getElementById('sumN').textContent=DB.records.length;
-  document.getElementById('sumA').innerHTML=`${allAvg}<span class="u">dB</span>`;
-  document.getElementById('sumP').innerHTML=`${allPeak}<span class="u">dB</span>`;
+  document.getElementById('sumA').innerHTML=`${allAvg}<span class="u notranslate" translate="no">dB</span>`;
+  document.getElementById('sumP').innerHTML=`${allPeak}<span class="u notranslate" translate="no">dB</span>`;
   if(!filt.length){el.innerHTML=appLanguage!=='zh-CN'?`<div class="empty"><strong>No matching records</strong><p>No note or coordinate contains “${esc(q)}”.</p></div>`:`<div class="empty"><strong>未找到匹配记录</strong><p>没有包含“${esc(q)}”的备注或坐标。</p></div>`;return;}
   el.innerHTML='<div style="display:flex;flex-direction:column;gap:8px">'+filt.map(r=>{
     const bc=lvBadge(r.avgDb),lv=lvInfo(r.avgDb);
