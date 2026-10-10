@@ -1777,10 +1777,10 @@
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <label style="font-size: 12px; color: var(--adm-muted);">默认声学基准校准偏移 (Calibration Offset)</label>
-                <span id="cfgCalOffsetVal" style="font-family: monospace; font-size: 13px; color: var(--adm-accent); font-weight: 700;">-8.0 dB</span>
+                <span id="cfgCalOffsetVal" style="font-family: monospace; font-size: 13px; color: var(--adm-accent); font-weight: 700;">+0.0 dB</span>
               </div>
-              <input type="range" id="cfgCalOffset" min="-20" max="20" step="0.1" value="-8.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
-              <div style="font-size: 11px; color: var(--adm-muted); margin-top: 4px;">由国家一级声级计在消音室比对定标；标准移动端推荐基准为 -8.0 dB。</div>
+              <input type="range" id="cfgCalOffset" min="-20" max="20" step="0.1" value="0.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+              <div style="font-size: 11px; color: var(--adm-muted); margin-top: 4px;">由国家一级声级计在消音室比对定标；标准基准为 0.0 dB（iOS 设备基准预置为 +2.0 dB）。</div>
             </div>
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -2766,7 +2766,7 @@
     const FACTORY_METER_DEFAULTS = {
       weighting: 'A',
       timeWeight: 'F',
-      calOffset: -8.0,
+      calOffset: 0.0,
       micGainDb: 2,
       smoothing: 1,
       alertTh: 60,
@@ -2808,7 +2808,7 @@
       setVal('cfgWeighting', cfg.weighting || 'A');
       setVal('cfgTimeWeight', cfg.timeWeight || 'F');
 
-      const cal = typeof cfg.calOffset === 'number' ? cfg.calOffset : -8.0;
+      const cal = typeof cfg.calOffset === 'number' ? cfg.calOffset : 0.0;
       setVal('cfgCalOffset', cal);
       const calValEl = document.getElementById('cfgCalOffsetVal');
       if (calValEl) calValEl.textContent = (cal >= 0 ? '+' : '') + cal + ' dB';
@@ -2874,7 +2874,7 @@
       const newConfig = {
         weighting: getVal('cfgWeighting', 'A'),
         timeWeight: getVal('cfgTimeWeight', 'F'),
-        calOffset: getNum('cfgCalOffset', -8.0),
+        calOffset: getNum('cfgCalOffset', 0.0),
         micGainDb: getNum('cfgMicGain', 2),
         smoothing: getNum('cfgSmoothing', 1),
         alertTh: getNum('cfgAlertTh', 60),

@@ -39,7 +39,7 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-<link rel="stylesheet" href="/assets/soundtest.css?v=20261011">
+<link rel="stylesheet" href="/assets/soundtest.css?v=20261011a">
 <link rel="stylesheet" href="/assets/legal-notice.css?v=20261011">
 <script src="/assets/legal-notice.js?v=20261011" defer></script>
 <style>
@@ -807,7 +807,7 @@
               </div>
               <div class="pro-cert-cal-row">
                 <span style="color:#8c95a4;">System Calibration Offset:</span>
-                <span style="color:#fff;font-weight:600;" id="certCalOffset">-12.0 dB</span>
+                <span style="color:#fff;font-weight:600;" id="certCalOffset">+0.0 dB</span>
               </div>
               <div class="pro-cert-cal-row">
                 <span style="color:#8c95a4;">Microphone Preamp Gain:</span>
@@ -1218,8 +1218,8 @@
           <div class="settings-drawer-desc" id="sdDescCal">Fine-tune baseline against certified reference meter</div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
-          <input type="range" id="calR" min="-20" max="20" value="-8" step="0.1" oninput="setCal()" style="width:70px">
-          <span class="settings-drawer-value" id="calV">-8dB</span>
+          <input type="range" id="calR" min="-20" max="20" value="0" step="0.1" oninput="setCal()" style="width:70px">
+          <span class="settings-drawer-value" id="calV">0.0 dB</span>
           <button class="btn b-cyan" id="sdBtnCalRec" style="height:26px;font-size:9px;padding:0 7px" onclick="applyProMeterCalibration()">Recommended</button>
         </div>
       </div>
@@ -1670,9 +1670,6 @@
         <!-- ── Inner dark bowl ── -->
         <circle cx="100" cy="100" r="70" fill="url(#stitchBowlGrad)"/>
         <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-
-        <!-- ── Center accent dot ── -->
-        <circle cx="100" cy="100" r="3" fill="rgba(0,242,254,0.3)" class="stitch-center-dot"/>
       </svg>
 
       <!-- Center Value Display -->
@@ -2384,10 +2381,10 @@
             </div>
             <div class="sctrl">
               <select class="setting-select" id="calibrationPresetSelect" onchange="setCalibrationPreset(this.value)">
-                <option value="desktop-browser">Desktop Browser (-12 dB)</option>
-                <option value="tablet-browser">Tablet Browser (-8 dB)</option>
-                <option value="android-browser">Android Browser (-8 dB)</option>
-                <option value="ios-browser">iPhone / iPad (-6 dB)</option>
+                <option value="desktop-browser">Desktop Browser (-5 dB)</option>
+                <option value="tablet-browser">Tablet Browser (-1 dB)</option>
+                <option value="android-browser">Android Browser (-1 dB)</option>
+                <option value="ios-browser">iPhone / iPad (+2 dB)</option>
               </select>
               <button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="setCalibrationPreset(detectCalibrationPresetKey())">Apply Device Baseline</button>
             </div>
@@ -2398,7 +2395,7 @@
           </div>
           <div class="srow">
             <div><div class="slabel">Calibration Offset</div><div class="sdesc">Advanced. Adjusts calibration offset against reference meters; saved to reports and evidence photos.</div></div>
-            <div class="sctrl"><input type="range" id="calR" min="-20" max="20" value="-8" step="0.1" oninput="setCal()"><span class="sval" id="calV">-8 dB</span><button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="applyProMeterCalibration()">Restore Baseline</button></div>
+            <div class="sctrl"><input type="range" id="calR" min="-20" max="20" value="0" step="0.1" oninput="setCal()"><span class="sval" id="calV">0.0 dB</span><button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="applyProMeterCalibration()">Restore Baseline</button></div>
           </div>
           <div class="srow">
             <div>
@@ -2733,32 +2730,32 @@ const MEDIA_STORE='clips';
 const PERMISSION_GUIDE_KEY='sf_permission_guide_v1';
 const CALIBRATION_PRESETS={
   'desktop-browser':{
-    offset:-12,
+    offset:-5,
     label:'PC / Desktop Browser',
     zh:'PC 桌面浏览器',
-    reason:'Preset baseline calibrated against reference meters (-12 dB offset, typical error approx ±2~5 dB).',
-    zhReason:'已预置专业噪声计校对基准（-12 dB 偏移），桌面声卡实测典型误差约 ±2~5 dB。',
+    reason:'Preset baseline calibrated against reference meters (-5 dB offset, typical error approx ±2~4 dB).',
+    zhReason:'已预置专业噪声计校对基准（-5 dB 偏移），桌面声卡实测典型误差约 ±2~4 dB。',
   },
   'tablet-browser':{
-    offset:-8,
+    offset:-1,
     label:'Tablet Browser',
     zh:'平板浏览器',
-    reason:'Preset baseline calibrated against reference meters (-8 dB offset, typical error approx ±2~4 dB).',
-    zhReason:'已预置专业噪声计校对基准（-8 dB 偏移），平板麦克风实测典型误差约 ±2~4 dB。',
+    reason:'Preset baseline calibrated against reference meters (-1 dB offset, typical error approx ±1~3 dB).',
+    zhReason:'已预置专业噪声计校对基准（-1 dB 偏移），平板麦克风实测典型误差约 ±1~3 dB。',
   },
   'android-browser':{
-    offset:-8,
+    offset:-1,
     label:'Android Browser',
     zh:'Android 浏览器',
-    reason:'Preset baseline calibrated against reference meters (-8 dB offset, typical error approx ±2~4 dB).',
-    zhReason:'已预置专业噪声计校对基准（-8 dB 偏移），主流安卓机型实测典型误差约 ±2~4 dB。',
+    reason:'Preset baseline calibrated against reference meters (-1 dB offset, typical error approx ±1~3 dB).',
+    zhReason:'已预置专业噪声计校对基准（-1 dB 偏移），主流安卓机型实测典型误差约 ±1~3 dB。',
   },
   'ios-browser':{
-    offset:-6,
+    offset:2,
     label:'iPhone / iPad Safari',
     zh:'iPhone / iPad',
-    reason:'Preset baseline calibrated against reference meters (-6 dB offset, high consistency error approx ±1~3 dB).',
-    zhReason:'已预置专业噪声计校对基准（-6 dB 偏移），iOS 麦克风高一致性实测典型误差约 ±1~3 dB。',
+    reason:'Preset baseline calibrated against reference meters (+2 dB offset, high consistency error approx ±1~2 dB).',
+    zhReason:'已预置专业噪声计校对基准（+2 dB 偏移），iOS 麦克风高一致性实测典型误差约 ±1~2 dB。',
   },
 };
 function getPresetLabel(preset){
@@ -2774,7 +2771,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v1';
+const CALIBRATION_BASELINE='device-preset-v2';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -6762,7 +6759,7 @@ function loadState(){
     const admDef = getAdminMeterDefaults() || {};
     if(admDef.weighting && ['A','C','Z'].includes(admDef.weighting)) weighting = admDef.weighting;
     if(admDef.timeWeight) timeWeight = admDef.timeWeight === 'S' ? 'S' : 'F';
-    if(typeof admDef.calOffset === 'number') calOffset = admDef.calOffset;
+    if(typeof admDef.calOffset === 'number' && admDef.calOffset !== -8.0) calOffset = admDef.calOffset;
     if(typeof admDef.micGainDb === 'number') micGainDb = admDef.micGainDb;
     if(typeof admDef.alertTh === 'number') alertTh = admDef.alertTh;
     if(typeof admDef.alertsOn === 'boolean') alertsOn = admDef.alertsOn;
@@ -6784,9 +6781,14 @@ function loadState(){
     const raw=localStorage.getItem(LS_KEY);
     if(raw){
       const s=JSON.parse(raw);
-      calibrationPresetKey=CALIBRATION_PRESETS[s.calibrationPresetKey]?s.calibrationPresetKey:detectCalibrationPresetKey();
-      if(typeof s.calOffset === 'number') calOffset=s.calOffset;
-      else if(s.calibrationBaseline!==CALIBRATION_BASELINE) calOffset=getCalibrationPreset(calibrationPresetKey).offset;
+      if(!s.calibrationBaseline || s.calibrationBaseline!==CALIBRATION_BASELINE){
+        calibrationPresetKey=detectCalibrationPresetKey();
+        calOffset=getCalibrationPreset(calibrationPresetKey).offset;
+      } else {
+        calibrationPresetKey=CALIBRATION_PRESETS[s.calibrationPresetKey]?s.calibrationPresetKey:detectCalibrationPresetKey();
+        if(typeof s.calOffset === 'number') calOffset=s.calOffset;
+        else calOffset=getCalibrationPreset(calibrationPresetKey).offset;
+      }
       if(s.micGainDb!==undefined) micGainDb=(s.micGainDb===18||s.micGainDb==null)?2:s.micGainDb;
       if(s.alertTh!==undefined) alertTh=s.alertTh??DEFAULT_ALERT_THRESHOLD_DB;
       if(s.alertsOn!==undefined) alertsOn=s.alertsOn!==false;

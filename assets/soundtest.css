@@ -1127,14 +1127,6 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 }
 
 /* ── Inner bowl center accent ── */
-.stitch-center-dot{
-  animation:stitchCenterPulse 3s ease-in-out infinite;
-}
-@keyframes stitchCenterPulse{
-  0%,100%{r:2.5;opacity:.25}
-  50%{r:4;opacity:.55}
-}
-
 /* ── Peak label micro-readout ── */
 .stitch-peak-label{
   font-family:var(--mono,monospace);
