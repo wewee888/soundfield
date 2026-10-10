@@ -40,6 +40,9 @@
 /assets/site-experience.js
   Cache-Control: public, max-age=0, must-revalidate, no-transform
 
+/assets/soundtest.css
+  Cache-Control: public, max-age=0, must-revalidate, no-transform
+
 /assets/*
   Cache-Control: public, max-age=604800, no-transform
 

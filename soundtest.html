@@ -39,9 +39,9 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-<link rel="stylesheet" href="/assets/soundtest.css?v=20261008">
-<link rel="stylesheet" href="/assets/legal-notice.css?v=20261008">
-<script src="/assets/legal-notice.js?v=20261008" defer></script>
+<link rel="stylesheet" href="/assets/soundtest.css?v=20261011">
+<link rel="stylesheet" href="/assets/legal-notice.css?v=20261011">
+<script src="/assets/legal-notice.js?v=20261011" defer></script>
 <style>
 /* Defensive ad suppression & critical layout overrides */
 .live-monitor-notice{display:none!important}
@@ -240,6 +240,154 @@
 .pum-footer-links { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 12px; font-size: 11.5px; color: rgba(214,232,250,0.65); }
 .pum-footer-links a { color: rgba(214,232,250,0.85); text-decoration: underline; cursor: pointer; }
 .pum-security-note { margin-top: 10px; text-align: center; font-size: 10.5px; color: rgba(214,232,250,0.5); }
+
+/* Critical fallback for Sticky Mini HUD on Scroll (prevents unstyled flash / cache-miss rendering) */
+.sticky-mini-hud {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 170 !important;
+  height: 48px;
+  background: rgba(7, 11, 20, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(42, 255, 212, 0.25);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+  padding: 0 max(12px, env(safe-area-inset-left, 12px)) 0 max(12px, env(safe-area-inset-right, 12px));
+  padding-top: env(safe-area-inset-top, 0px);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+.sticky-mini-hud.show {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+.smh-inner {
+  width: min(100%, 540px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.smh-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.smh-readout {
+  display: flex;
+  align-items: baseline;
+  font-family: var(--mono, monospace);
+  line-height: 1;
+}
+.smh-val {
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.smh-unit {
+  font-size: 10px;
+  font-weight: 700;
+  color: #8c95a4;
+  margin-left: 2px;
+}
+.smh-level {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.smh-level.lv-q { background: rgba(16,185,129,.15); border-color: rgba(16,185,129,.4); color: #10b981; }
+.smh-level.lv-m { background: rgba(0,242,254,.15); border-color: rgba(0,242,254,.4); color: #00f2fe; }
+.smh-level.lv-n { background: rgba(245,158,11,.15); border-color: rgba(245,158,11,.4); color: #f59e0b; }
+.smh-level.lv-l { background: rgba(239,68,68,.18); border-color: rgba(239,68,68,.4); color: #ef4444; }
+.smh-level.lv-d { background: rgba(192,132,252,.2); border-color: rgba(192,132,252,.5); color: #c084fc; }
+.smh-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.smh-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono, monospace);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.smh-status-badge.live {
+  color: #2affd4;
+  background: rgba(42, 255, 212, 0.1);
+  border-color: rgba(42, 255, 212, 0.35);
+}
+.smh-status-badge.rec {
+  color: #ff4d5e;
+  background: rgba(255, 63, 80, 0.15);
+  border-color: rgba(255, 63, 80, 0.4);
+}
+.smh-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #64748b;
+  flex-shrink: 0;
+}
+.smh-status-badge.live .smh-dot {
+  background: #2affd4;
+  box-shadow: 0 0 6px #2affd4;
+}
+.smh-status-badge.rec .smh-dot {
+  background: #ff4d5e;
+  box-shadow: 0 0 8px #ff4d5e;
+  animation: stitchRecBlink 1s infinite;
+}
+.smh-right {
+  display: flex;
+  align-items: center;
+}
+.smh-action-btn {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(42, 255, 212, 0.4);
+  background: linear-gradient(135deg, rgba(42, 255, 212, 0.2), rgba(0, 212, 255, 0.2));
+  color: #2affd4;
+  font-size: 10.5px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.smh-action-btn:active {
+  transform: scale(0.95);
+}
+.smh-action-btn.recording {
+  background: rgba(255, 63, 80, 0.2);
+  border-color: rgba(255, 63, 80, 0.5);
+  color: #ff4d5e;
+}
 </style>
   <link rel="canonical" href="https://soundtest.pro/soundtest/"/>
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js" onload="try{window.LA&&LA.init({id:'281wblDNvub2tk9f',ck:'281wblDNvub2tk9f'})}catch(_){}"></script>
@@ -1340,7 +1488,7 @@
 </div>
 
 <!-- Sticky Mini HUD (Reveals when scrolling past the main meter) -->
-<aside class="sticky-mini-hud" id="stickyMiniHud" aria-hidden="true" onclick="scrollBackToMeter(event)">
+<aside class="sticky-mini-hud" id="stickyMiniHud" aria-hidden="true" onclick="scrollBackToMeter(event)" style="position:fixed;top:0;left:0;right:0;transform:translateY(-100%);opacity:0;pointer-events:none;z-index:170;">
   <div class="smh-inner">
     <div class="smh-left">
       <div class="smh-readout notranslate" translate="no">
@@ -7919,9 +8067,6 @@ async function toggleRec(){
     if(!await ensureMonitoringForRecording())return;
     try{
       const storageStatus=await requestPersistentRecordingStorage();
-      if(storageStatus.supported&&!storageStatus.persisted){
-        toast(t('toasts.persistStorageWarn', 'Persistent storage not granted. Please save files from Records before closing.'),'warn',6200);
-      }
       chunks=[];
       recHasVideo=!!(camStream&&camStream.getVideoTracks().length);
       const recordingStream=recHasVideo?createWatermarkedVideoStream():createAudioRecordingStream();

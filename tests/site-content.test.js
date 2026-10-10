@@ -672,3 +672,23 @@ test('soundtest.html DOM structure integrity: balanced divs and overlay isolatio
   assert.equal(betweenOpens, betweenCloses, 'watermarkCameraOverlay must be fully closed before .shell to prevent black screen');
 });
 
+test('sticky mini HUD has critical in-head CSS and defensive inline style, and recording avoids premature storage toast', () => {
+  const soundtestHtml = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+  const headers = fs.readFileSync(path.join(__dirname, '..', '_headers'), 'utf8');
+
+  // 1. stickyMiniHud must have defensive inline style to prevent raw DOM FOUC
+  assert.match(soundtestHtml, /id="stickyMiniHud"[^>]*style="[^"]*position:\s*fixed[^"]*transform:\s*translateY\(-100%\)[^"]*opacity:\s*0/i);
+
+  // 2. Critical in-head styles must define .sticky-mini-hud and .sticky-mini-hud.show
+  const headStyleMatch = soundtestHtml.match(/<style>([\s\S]*?)<\/style>/i);
+  assert.ok(headStyleMatch, 'soundtest.html must have an in-head <style> block');
+  assert.match(headStyleMatch[1], /\.sticky-mini-hud\s*\{[\s\S]*?position:\s*fixed/i);
+  assert.match(headStyleMatch[1], /\.sticky-mini-hud\.show\s*\{[\s\S]*?transform:\s*translateY\(0\)/i);
+
+  // 3. toggleRec must not trigger premature persistStorageWarn toast
+  assert.doesNotMatch(soundtestHtml, /toast\(t\(['"]toasts\.persistStorageWarn['"]/i);
+
+  // 4. _headers must require revalidation for /assets/soundtest.css
+  assert.match(headers, /\/assets\/soundtest\.css[\s\n\r]+Cache-Control:[^\n\r]*must-revalidate/i);
+});
+
