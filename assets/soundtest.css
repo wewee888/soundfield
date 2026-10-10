@@ -1037,18 +1037,29 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 /* ==================== Stitch Dark-Mode Pro Live Meter ==================== */
 .stitch-meter-card{
   position:relative;
-  /* Deeper, richer dark background with subtle radial center */
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,242,254,0.055) 0%, transparent 60%),
-    radial-gradient(130% 115% at 50% 0%,#131720 0%,#0b0e17 60%,#070911 100%);
-  border:1px solid rgba(42,255,212,0.12);
-  border-radius:clamp(14px, 2vh, 20px);
-  padding:clamp(8px, 1.3vh, 14px) clamp(10px, 2vw, 16px) clamp(6px, 1vh, 10px);
+  /* Authentic high-precision acoustic instrument panel background texture */
+  background-color: #0b0e17;
+  background-image:
+    /* Top ambient glow */
+    radial-gradient(ellipse 90% 50% at 50% 0%, rgba(0, 242, 254, 0.09) 0%, transparent 65%),
+    /* Dial center depth highlight */
+    radial-gradient(circle at 50% 48%, rgba(16, 185, 129, 0.04) 0%, transparent 65%),
+    /* Precision acoustic concentric sonar/radar rings texture */
+    radial-gradient(circle at 50% 48%, transparent 0, transparent 48px, rgba(42, 255, 212, 0.025) 49px, transparent 50px, transparent 88px, rgba(42, 255, 212, 0.02) 89px, transparent 90px, transparent 128px, rgba(42, 255, 212, 0.018) 129px, transparent 130px),
+    /* Precision acoustic micro-perforated grille dots matrix */
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    /* Deep anodized instrument chassis base */
+    linear-gradient(180deg, #131824 0%, #0c0f18 45%, #070911 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 14px 14px, 100% 100%;
+  background-position: center top, center center, center center, 0 0, center center;
+  border:1px solid rgba(42,255,212,0.16);
+  border-radius:clamp(16px, 2.2vh, 22px);
+  padding:clamp(10px, 1.5vh, 16px) clamp(10px, 2vw, 16px) clamp(8px, 1.2vh, 12px);
   box-shadow:
-    0 20px 50px rgba(0,0,0,.7),
-    0 0 0 1px rgba(0,242,254,0.06),
-    inset 0 1px 0 rgba(255,255,255,.06),
-    inset 0 -1px 0 rgba(0,0,0,.4);
+    0 24px 60px rgba(0,0,0,.75),
+    0 0 0 1px rgba(0,242,254,0.08),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 -1px 0 rgba(0,0,0,.5);
   overflow:hidden;
   text-align:center;
   margin-bottom:clamp(6px, 1vh, 10px)
@@ -1082,15 +1093,15 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .stitch-meter-header .status-pill .stxt{white-space:nowrap;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
 .stitch-meter-header .status-pill.sentry-mode{border-color:rgba(192,132,252,.45);background:rgba(192,132,252,.12);color:#c084fc}
 .stitch-meter-header .status-pill.sentry-mode .sdot{background:#c084fc;box-shadow:0 0 7px #c084fc}
-.stitch-gauge-container{position:relative;width:clamp(156px, 22vh, 212px);height:clamp(156px, 22vh, 212px);margin:0 auto;display:flex;align-items:center;justify-content:center}
-.stitch-gauge-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
-.stitch-track-bg{stroke:#181d29}
-.stitch-trace-arc{transition:stroke-dashoffset .04s linear;filter:drop-shadow(0 0 8px rgba(0,242,254,.45))}
+.stitch-gauge-container{position:relative;width:clamp(200px, 28vh, 268px);height:clamp(200px, 28vh, 268px);margin:0 auto;display:flex;align-items:center;justify-content:center}
+.stitch-gauge-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 6px 18px rgba(0,0,0,.6))}
+.stitch-track-bg{stroke:#141820}
+.stitch-trace-arc{transition:stroke-dashoffset .04s linear;filter:drop-shadow(0 0 10px rgba(0,242,254,.55))}
 .stitch-readout{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-.stitch-hero-val{display:flex;align-items:baseline;justify-content:center;font-family:var(--mono,monospace);line-height:1;margin-top:-4px}
-.stitch-db-num{font-size:clamp(38px, 5.8vh, 52px);font-weight:900;color:#ffffff;letter-spacing:-0.04em;text-shadow:0 0 16px rgba(0,242,254,.25);font-variant-numeric:tabular-nums;transition:color .2s}
-.stitch-db-dec{font-size:clamp(17px, 2.6vh, 23px);font-weight:800;color:#00f2fe;font-variant-numeric:tabular-nums;transition:color .2s;min-width:clamp(12px, 1.8vh, 16px);text-align:left}
-.stitch-db-unit{font-size:clamp(10px, 1.4vh, 12px);font-weight:700;color:#8c95a4;margin-left:3px;text-transform:uppercase}
+.stitch-hero-val{display:flex;align-items:baseline;justify-content:center;font-family:var(--mono,monospace);line-height:1;margin-top:-6px}
+.stitch-db-num{font-size:clamp(46px, 6.8vh, 62px);font-weight:900;color:#ffffff;letter-spacing:-0.04em;text-shadow:0 0 18px rgba(0,242,254,.3);font-variant-numeric:tabular-nums;transition:color .2s}
+.stitch-db-dec{font-size:clamp(20px, 3vh, 27px);font-weight:800;color:#00f2fe;font-variant-numeric:tabular-nums;transition:color .2s;min-width:clamp(14px, 2vh, 19px);text-align:left}
+.stitch-db-unit{font-size:clamp(11px, 1.6vh, 14px);font-weight:700;color:#8c95a4;margin-left:3px;text-transform:uppercase}
 .stitch-meter-card .db-level-main{position:static!important;transform:none!important;top:auto!important;left:auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;padding:clamp(2px, 0.4vh, 3px) clamp(8px, 1.2vw, 12px)!important;border-radius:999px!important;font-size:clamp(9.5px, 1.3vh, 11px)!important;font-weight:700!important;letter-spacing:.04em!important;margin:clamp(3px, 0.5vh, 6px) auto 0!important;transition:all .2s!important;box-shadow:none!important;backdrop-filter:none!important}
 .stitch-meter-card .db-level-main.lv-q{background:rgba(16,185,129,.15)!important;border-color:rgba(16,185,129,.4)!important;color:#10b981!important}
 .stitch-meter-card .db-level-main.lv-m{background:rgba(0,242,254,.15)!important;border-color:rgba(0,242,254,.4)!important;color:#00f2fe!important}
@@ -2366,7 +2377,7 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
   .hero .subscription-banner{padding:2px 8px;margin:2px 0 4px}
   .hero .subscription-title{font-size:10px}
   .hero .subscription-desc{display:none}
-  .stitch-gauge-container{width:clamp(142px, 19vh, 172px);height:clamp(142px, 19vh, 172px)}
+  .stitch-gauge-container{width:clamp(168px, 22vh, 206px);height:clamp(168px, 22vh, 206px)}
   .stitch-matrix-card{min-height:clamp(44px, 5.8vh, 52px);padding:4px 5px}
   .stitch-matrix-val{font-size:13.5px}
   .start-btn, .rec-action-btn{height:clamp(38px, 5vh, 42px);min-height:clamp(38px, 5vh, 42px)}
@@ -2377,9 +2388,9 @@ canvas#mapCvs{width:100%;border-radius:var(--rs);display:block;background:var(--
 @media(max-height:640px){
   .hero .subscription-banner{display:none!important}
   .stitch-scale-bar{display:none!important}
-  .stitch-gauge-container{width:136px;height:136px}
-  .stitch-db-num{font-size:36px}
-  .stitch-db-dec{font-size:16px}
+  .stitch-gauge-container{width:154px;height:154px}
+  .stitch-db-num{font-size:40px}
+  .stitch-db-dec{font-size:18px}
   .stitch-matrix-card{min-height:40px;padding:2px 4px}
   .stitch-matrix-sub{display:none}
   .start-btn, .rec-action-btn{height:36px;min-height:36px}

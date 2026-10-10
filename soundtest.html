@@ -39,7 +39,7 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-<link rel="stylesheet" href="/assets/soundtest.css?v=20261011a">
+<link rel="stylesheet" href="/assets/soundtest.css?v=20261011b">
 <link rel="stylesheet" href="/assets/legal-notice.css?v=20261011">
 <script src="/assets/legal-notice.js?v=20261011" defer></script>
 <style>
@@ -2381,10 +2381,10 @@
             </div>
             <div class="sctrl">
               <select class="setting-select" id="calibrationPresetSelect" onchange="setCalibrationPreset(this.value)">
-                <option value="desktop-browser">Desktop Browser (-5 dB)</option>
-                <option value="tablet-browser">Tablet Browser (-1 dB)</option>
-                <option value="android-browser">Android Browser (-1 dB)</option>
-                <option value="ios-browser">iPhone / iPad (+2 dB)</option>
+                <option value="desktop-browser">Desktop Browser (-1 dB)</option>
+                <option value="tablet-browser">Tablet Browser (+2 dB)</option>
+                <option value="android-browser">Android Browser (+2 dB)</option>
+                <option value="ios-browser">iPhone / iPad (+6 dB)</option>
               </select>
               <button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="setCalibrationPreset(detectCalibrationPresetKey())">Apply Device Baseline</button>
             </div>
@@ -2730,32 +2730,32 @@ const MEDIA_STORE='clips';
 const PERMISSION_GUIDE_KEY='sf_permission_guide_v1';
 const CALIBRATION_PRESETS={
   'desktop-browser':{
-    offset:-5,
+    offset:-1,
     label:'PC / Desktop Browser',
     zh:'PC 桌面浏览器',
-    reason:'Preset baseline calibrated against reference meters (-5 dB offset, typical error approx ±2~4 dB).',
-    zhReason:'已预置专业噪声计校对基准（-5 dB 偏移），桌面声卡实测典型误差约 ±2~4 dB。',
+    reason:'Preset baseline calibrated against reference meters (-1 dB offset, typical error approx ±1~3 dB).',
+    zhReason:'已预置专业噪声计校对基准（-1 dB 偏移），桌面声卡实测典型误差约 ±1~3 dB。',
   },
   'tablet-browser':{
-    offset:-1,
+    offset:2,
     label:'Tablet Browser',
     zh:'平板浏览器',
-    reason:'Preset baseline calibrated against reference meters (-1 dB offset, typical error approx ±1~3 dB).',
-    zhReason:'已预置专业噪声计校对基准（-1 dB 偏移），平板麦克风实测典型误差约 ±1~3 dB。',
+    reason:'Preset baseline calibrated against reference meters (+2 dB offset, typical error approx ±1~2 dB).',
+    zhReason:'已预置专业噪声计校对基准（+2 dB 偏移），平板麦克风实测典型误差约 ±1~2 dB。',
   },
   'android-browser':{
-    offset:-1,
+    offset:2,
     label:'Android Browser',
     zh:'Android 浏览器',
-    reason:'Preset baseline calibrated against reference meters (-1 dB offset, typical error approx ±1~3 dB).',
-    zhReason:'已预置专业噪声计校对基准（-1 dB 偏移），主流安卓机型实测典型误差约 ±1~3 dB。',
+    reason:'Preset baseline calibrated against reference meters (+2 dB offset, typical error approx ±1~2 dB).',
+    zhReason:'已预置专业噪声计校对基准（+2 dB 偏移），主流安卓机型实测典型误差约 ±1~2 dB。',
   },
   'ios-browser':{
-    offset:2,
+    offset:6,
     label:'iPhone / iPad Safari',
     zh:'iPhone / iPad',
-    reason:'Preset baseline calibrated against reference meters (+2 dB offset, high consistency error approx ±1~2 dB).',
-    zhReason:'已预置专业噪声计校对基准（+2 dB 偏移），iOS 麦克风高一致性实测典型误差约 ±1~2 dB。',
+    reason:'Preset baseline calibrated against reference meters (+6 dB offset, high consistency error approx ±1~2 dB).',
+    zhReason:'已预置专业噪声计校对基准（+6 dB 偏移），iOS 麦克风高一致性实测典型误差约 ±1~2 dB。',
   },
 };
 function getPresetLabel(preset){
@@ -2771,7 +2771,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v2';
+const CALIBRATION_BASELINE='device-preset-v3';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
