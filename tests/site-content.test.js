@@ -138,7 +138,7 @@ test('monetization model covers global web-first revenue without cloud overclaim
 test('homepage renders launch copy, scenarios, reference limits, and plan cards', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   assert.match(html, /Free Online Decibel Meter & Noise Evidence Recorder \| No App Required/);
-  assert.match(html, /<a class="button primary" href="soundtest\.html">Start Monitoring<\/a>/);
+  assert.match(html, /<a class="button primary" href="(?:\/)?soundtest\.html">Start Monitoring<\/a>/);
   assert.match(html, /Perfect For:/);
   assert.match(html, /Neighbor &amp; Apartment Noise/);
   assert.match(html, /Daytime Reference/);
@@ -146,24 +146,24 @@ test('homepage renders launch copy, scenarios, reference limits, and plan cards'
   assert.match(html, /Pro Premium Version/);
   assert.match(html, /assets\/site-i18n\.js/);
   assert.match(html, /assets\/site-auth\.js/);
-  assert.match(html, /href="auth\.html">Account<\/a>/);
-  assert.match(html, /href="zh\/index\.html">中文/);
+  assert.match(html, /href="(?:\/)?auth\.html">Account<\/a>/);
+  assert.match(html, /href="(?:\/)?zh\/(?:index\.html)?">中文/);
   assert.match(html, /Latest Updates/);
   assert.doesNotMatch(html, /Chinese positioning|Beta Metrics|Launch Metrics|Cloud data backup|Official evidence template|Excessive noise can be used for official complaint/i);
 });
 
 test('homepage use-case cards link to matching user intent pages', () => {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-  assert.match(html, /href="use-cases\/bar-street-disturbance\.html"[\s\S]*?<h3>Bar, Shop &amp; Street Disturbance<\/h3>/);
-  assert.match(html, /href="use-cases\/rental-dispute-evidence\.html"[\s\S]*?<h3>Rental Dispute &amp; Legal Evidence Aid<\/h3>/);
-  assert.doesNotMatch(html, /href="use-cases\/property-noise-complaint-report\.html"[\s\S]*?<h3>Bar, Shop &amp; Street Disturbance<\/h3>/);
-  assert.doesNotMatch(html, /href="use-cases\/workplace-noise-inspection\.html"[\s\S]*?<h3>Rental Dispute &amp; Legal Evidence Aid<\/h3>/);
+  assert.match(html, /href="(?:\/)?use-cases\/bar-street-disturbance\.html"[\s\S]*?<h3>Bar, Shop &amp; Street Disturbance<\/h3>/);
+  assert.match(html, /href="(?:\/)?use-cases\/rental-dispute-evidence\.html"[\s\S]*?<h3>Rental Dispute &amp; Legal Evidence Aid<\/h3>/);
+  assert.doesNotMatch(html, /href="(?:\/)?use-cases\/property-noise-complaint-report\.html"[\s\S]*?<h3>Bar, Shop &amp; Street Disturbance<\/h3>/);
+  assert.doesNotMatch(html, /href="(?:\/)?use-cases\/workplace-noise-inspection\.html"[\s\S]*?<h3>Rental Dispute &amp; Legal Evidence Aid<\/h3>/);
 });
 
 test('new use-case pages include a primary app CTA', () => {
   ['bar-street-disturbance.html', 'rental-dispute-evidence.html'].forEach((file) => {
     const html = fs.readFileSync(path.join(__dirname, '..', 'use-cases', file), 'utf8');
-    assert.match(html, /<a class="button primary" href="\.\.\/soundtest\.html">Start documenting noise<\/a>/);
+    assert.match(html, /<a class="button primary" href="(?:\.\.\/|\/)soundtest\.html">Start documenting noise<\/a>/);
   });
 });
 
@@ -172,7 +172,7 @@ test('Chinese landing page mirrors the full homepage structure', () => {
   ['核心功能', '适用场景', '噪声参考', '免费版', '高级版', '隐私保护'].forEach((text) => {
     assert.match(html, new RegExp(text));
   });
-  assert.match(html, /href="\.\.\/soundtest\.html">开始监测<\/a>/);
+  assert.match(html, /href="(?:\.\.\/|\/)soundtest\.html(?:\?lang=zh)?">开始监测<\/a>/);
   assert.doesNotMatch(html, /Beta Metrics|Launch Metrics|monetization/i);
 });
 
@@ -380,7 +380,22 @@ test('static website local links resolve to files', () => {
       if (target.startsWith('#')) continue;
       if (target.startsWith('${')) continue;
       const targetPath = target.split('?')[0];
-      assert.ok(fs.existsSync(path.resolve(baseDir, targetPath)), `${file} links to existing ${target}`);
+      const projectRoot = path.join(__dirname, '..');
+      let resolved;
+      if (targetPath.startsWith('/')) {
+        let clean = targetPath.slice(1);
+        if (!clean || clean.endsWith('/')) {
+          clean += 'index.html';
+        }
+        resolved = path.join(projectRoot, clean);
+      } else {
+        let relTarget = targetPath;
+        if (!relTarget || relTarget.endsWith('/')) {
+          relTarget += 'index.html';
+        }
+        resolved = path.resolve(baseDir, relTarget);
+      }
+      assert.ok(fs.existsSync(resolved), `${file} links to existing ${target} (resolved: ${resolved})`);
     }
   }
 });
@@ -519,19 +534,19 @@ test('noise-levels pages exist across all 9 locales plus root with complete SEO 
 test('all 9 locales and root pages feature unified 7-item navigation with authentic localized labels and active state', () => {
   const rootIndex = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   assert.match(rootIndex, /<div class="nav-links">/);
-  assert.match(rootIndex, /<a href="index\.html" class="active">Home<\/a>/);
-  assert.match(rootIndex, /<a href="soundtest\.html">Open App<\/a>/);
-  assert.match(rootIndex, /<a href="samples\.html">Samples<\/a>/);
-  assert.match(rootIndex, /<a href="accuracy\.html">Accuracy<\/a>/);
-  assert.match(rootIndex, /<a href="standards\.html">Standards<\/a>/);
-  assert.match(rootIndex, /<a href="noise-levels\.html">Noise Levels<\/a>/);
-  assert.match(rootIndex, /<a href="auth\.html">Account<\/a>/);
+  assert.match(rootIndex, /<a href="(?:\/|index\.html)" class="active">Home<\/a>/);
+  assert.match(rootIndex, /<a href="(?:\/)?soundtest\.html">Open App<\/a>/);
+  assert.match(rootIndex, /<a href="(?:\/)?samples\.html">Samples<\/a>/);
+  assert.match(rootIndex, /<a href="(?:\/)?accuracy\.html">Accuracy<\/a>/);
+  assert.match(rootIndex, /<a href="(?:\/)?standards\.html">Standards<\/a>/);
+  assert.match(rootIndex, /<a href="(?:\/)?noise-levels\.html">Noise Levels<\/a>/);
+  assert.match(rootIndex, /<a href="(?:\/)?auth\.html">Account<\/a>/);
 
   const zhStandards = fs.readFileSync(path.join(__dirname, '..', 'zh', 'standards.html'), 'utf8');
   assert.match(zhStandards, /<div class="nav-links">/);
-  assert.match(zhStandards, /<a href="standards\.html" class="active">噪声标准<\/a>/);
-  assert.match(zhStandards, /<a href="samples\.html">报告样例<\/a>/);
-  assert.match(zhStandards, /<a href="noise-levels\.html">分贝等级<\/a>/);
+  assert.match(zhStandards, /<a href="(?:\/zh\/standards\.html|standards\.html)" class="active">噪声标准<\/a>/);
+  assert.match(zhStandards, /<a href="(?:\/zh\/samples\.html|samples\.html)">报告样例<\/a>/);
+  assert.match(zhStandards, /<a href="(?:\/zh\/noise-levels\.html|noise-levels\.html)">分贝等级<\/a>/);
 
   const locales = {
     zh: ['首页', '打开工具', '报告样例', '计量精度', '噪声标准', '分贝等级', '账户中心'],
@@ -614,7 +629,7 @@ test('dedicated camera exists in all 9 locales, header logo is protected, and bo
 
   // 3. Verify bottom nav has 5 items including nt-cam
   assert.match(soundtestHtml, /id="nt-cam"/);
-  assert.match(soundtestHtml, /href="camera\.html"/);
+  assert.match(soundtestHtml, /href="(?:\/)?camera\.html"/);
   assert.match(soundtestHtml, /setButtonTextWithSvg\('nt-cam'/);
 });
 

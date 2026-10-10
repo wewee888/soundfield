@@ -51,6 +51,11 @@
         const normalized = normalizeLocale(segment);
         if (normalized) return normalized;
       }
+      if (typeof window !== 'undefined' && window.location.search) {
+        const sp = new URLSearchParams(window.location.search);
+        const searchLocale = normalizeLocale(sp.get('lang') || sp.get('locale'));
+        if (searchLocale) return searchLocale;
+      }
     } catch (_) {
       // ignore
     }
@@ -202,6 +207,73 @@
     return normalized;
   }
 
+  // Proactively persist locale immediately upon script load if on a localized path
+  try {
+    if (typeof window !== 'undefined') {
+      const imm = detectPageLocale();
+      if (imm && imm !== 'en') {
+        saveLocale(imm);
+      }
+    }
+  } catch (_) {}
+
+  function enhanceSoundtestLinks(locale) {
+    if (typeof document === 'undefined') return;
+    const targetLocale = locale || detectPageLocale();
+    if (!targetLocale || targetLocale === 'en') return;
+
+    document.querySelectorAll('a[href*="soundtest"]').forEach((link) => {
+      try {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const hashIdx = href.indexOf('#');
+        const baseHref = hashIdx !== -1 ? href.slice(0, hashIdx) : href;
+        const hash = hashIdx !== -1 ? href.slice(hashIdx) : '';
+        const [cleanPath, queryStr] = baseHref.split('?');
+        const params = new URLSearchParams(queryStr || '');
+        params.set('lang', targetLocale);
+        params.delete('locale');
+        link.setAttribute('href', `${cleanPath}?${params.toString()}${hash}`);
+      } catch (_) {}
+    });
+  }
+
+  function enhanceLocaleLinks(locale) {
+    if (typeof document === 'undefined') return;
+    const targetLocale = locale || detectPageLocale();
+    if (!targetLocale || targetLocale === 'en') return;
+
+    document.querySelectorAll('a.brand, a.app-brand, .site-nav a.brand').forEach((link) => {
+      try {
+        const href = link.getAttribute('href') || '';
+        if (href === '/' || href === '/index.html' || href === 'index.html' || href.endsWith('/index.html')) {
+          link.setAttribute('href', `/${targetLocale}/`);
+        }
+      } catch (_) {}
+    });
+
+    const subpages = [
+      'samples.html', 'accuracy.html', 'standards.html', 'noise-levels.html',
+      'auth.html', 'about.html', 'terms.html', 'privacy.html',
+      'disclaimer.html', 'refund.html', 'download.html', 'changelog.html',
+      'camera.html'
+    ];
+    document.querySelectorAll('a[href]').forEach((link) => {
+      try {
+        const rawHref = link.getAttribute('href') || '';
+        if (rawHref.startsWith('/') && !rawHref.startsWith('//')) {
+          const [cleanPart, queryPart] = rawHref.split('?');
+          const [clean, hashPart] = cleanPart.split('#');
+          const stripped = clean.replace(/^\//, '');
+          if (subpages.includes(stripped)) {
+            const extra = (queryPart ? `?${queryPart}` : '') + (hashPart ? `#${hashPart}` : '');
+            link.setAttribute('href', `/${targetLocale}/${stripped}${extra}`);
+          }
+        }
+      } catch (_) {}
+    });
+  }
+
   function siteLocaleOptions() {
     return supportedLocales.map((locale) => ({
       value: locale,
@@ -337,6 +409,8 @@
     buildNavLanguageSwitcher(pageLocale);
     enhanceFooterFlags();
     enhanceFooterLangLinks();
+    enhanceSoundtestLinks(pageLocale);
+    enhanceLocaleLinks(pageLocale);
   }
 
   const exported = {
@@ -352,6 +426,8 @@
     initLanguageSwitcher,
     enhanceFooterFlags,
     enhanceFooterLangLinks,
+    enhanceSoundtestLinks,
+    enhanceLocaleLinks,
     saveLocale,
   };
 

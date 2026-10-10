@@ -400,7 +400,9 @@
 
   function getLocaleToolHref() {
     const isInSub = /\/(zh|en|es|fr|de|ja|ko|vi|th|a|b|c|use-cases)\//.test(window.location.pathname);
-    return isInSub ? '../soundtest.html' : 'soundtest.html';
+    const lang = getNavAuthLang();
+    const base = isInSub ? '../soundtest.html' : 'soundtest.html';
+    return (lang && lang !== 'en') ? `${base}?lang=${lang}` : base;
   }
 
   const SUPER_ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com', 'admin@soundtest.pro'];

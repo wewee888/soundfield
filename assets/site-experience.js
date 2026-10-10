@@ -1183,7 +1183,7 @@
 
     if (!isFile) {
       // Standard HTTP/HTTPS deployment (Cloudflare Pages)
-      const meterUrl = '/soundtest.html';
+      const meterUrl = (lang && lang !== 'en') ? `/soundtest.html?lang=${lang}` : '/soundtest.html';
       let homeUrl = `/${lang}/index.html`;
       let pricingUrl = `/${lang}/index.html#pricing`;
       let scenariosUrl = `/${lang}/index.html#scenarios`;
@@ -1219,20 +1219,20 @@
 
     // Local file:// protocol fallback
     let base = '';
-    let meterUrl = 'soundtest.html';
+    let meterUrl = (lang && lang !== 'en') ? `soundtest.html?lang=${lang}` : 'soundtest.html';
 
     if (isUseCase) {
       base = `../../${lang}/`;
-      meterUrl = '../../soundtest.html';
+      meterUrl = (lang && lang !== 'en') ? `../../soundtest.html?lang=${lang}` : '../../soundtest.html';
     } else if (isVariantSubdir) {
       base = `../${lang}/`;
-      meterUrl = '../soundtest.html';
+      meterUrl = (lang && lang !== 'en') ? `../soundtest.html?lang=${lang}` : '../soundtest.html';
     } else if (isLocaleSubdir) {
       base = '';
-      meterUrl = '../soundtest.html';
+      meterUrl = (lang && lang !== 'en') ? `../soundtest.html?lang=${lang}` : '../soundtest.html';
     } else {
       base = `${lang}/`;
-      meterUrl = 'soundtest.html';
+      meterUrl = (lang && lang !== 'en') ? `soundtest.html?lang=${lang}` : 'soundtest.html';
     }
 
     const homeUrl = isVariantSubdir ? 'index.html' : (base ? `${base}index.html` : 'index.html');

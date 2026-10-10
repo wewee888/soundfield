@@ -520,14 +520,14 @@ SIDEBAR_I18N = {
     }
 }
 
-def build_sidebar_html(locale, rel_depth='../../'):
+def build_sidebar_html(locale, rel_depth='/'):
     s = SIDEBAR_I18N.get(locale, SIDEBAR_I18N['en'])
-    app_url = f"{rel_depth}soundtest.html"
+    app_url = f"/soundtest.html?lang={locale}" if locale != 'en' else "/soundtest.html"
     
     if locale == 'en':
-        samples_url = f"{rel_depth}samples.html"
+        samples_url = "/samples.html"
     else:
-        samples_url = f"{rel_depth}{locale}/samples.html"
+        samples_url = f"/{locale}/samples.html"
         
     return f'''      <aside class="uc-article-sidebar">
         <!-- Live Sound Meter Card -->

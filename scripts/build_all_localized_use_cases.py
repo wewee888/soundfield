@@ -56,19 +56,19 @@ def build_nav_html(locale, scenario_slug):
     
     return f'''    <nav class="site-nav" aria-label="Primary">
       <div class="site-nav-main">
-        <a class="brand brand-glow" href="../../{locale}/index.html"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">SOUNDTEST<small>.PRO</small></span></a>
+        <a class="brand brand-glow" href="/{locale}/"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">SOUNDTEST<small>.PRO</small></span></a>
         <div class="nav-links">
-          <a href="../../{locale}/index.html">{nav['home']}</a>
-          <a href="../../soundtest.html">{nav['open_app']}</a>
-          <a href="../../{locale}/samples.html">{nav['samples']}</a>
-          <a href="../../{locale}/accuracy.html">{nav['accuracy']}</a>
-          <a href="../../{locale}/standards.html">{nav['standards']}</a>
-          <a href="../../{locale}/noise-levels.html">{nav['noise_levels']}</a>
-          <a href="../../{locale}/auth.html">{nav['account']}</a>
+          <a href="/{locale}/">{nav['home']}</a>
+          <a href="/soundtest.html?lang={locale}">{nav['open_app']}</a>
+          <a href="/{locale}/samples.html">{nav['samples']}</a>
+          <a href="/{locale}/accuracy.html">{nav['accuracy']}</a>
+          <a href="/{locale}/standards.html">{nav['standards']}</a>
+          <a href="/{locale}/noise-levels.html">{nav['noise_levels']}</a>
+          <a href="/{locale}/auth.html">{nav['account']}</a>
         </div>
       </div>
       <div class="nav-utility">
-        <a class="nav-upgrade" href="../../{locale}/index.html#pricing">
+        <a class="nav-upgrade" href="/{locale}/#pricing">
           <span class="star" aria-hidden="true">★</span>
           <span>{nav['upgrade']}</span>
         </a>
@@ -97,8 +97,8 @@ def build_hero_html(locale, scenario_slug, sc_data):
           <h1 class="hero-headline">{hero['headline']}</h1>
           <p class="hero-lead">{hero['lead']}</p>
           <div class="hero-actions" style="justify-content: flex-start;">
-            <a class="button primary" href="../../soundtest.html">{common['cta_measure']}</a>
-            <a class="button" href="../../{locale}/samples.html">{common['cta_samples']}</a>
+            <a class="button primary" href="/soundtest.html?lang={locale}">{common['cta_measure']}</a>
+            <a class="button" href="/{locale}/samples.html">{common['cta_samples']}</a>
           </div>
           <div class="uc-stats">
 {stats_html}
@@ -106,7 +106,7 @@ def build_hero_html(locale, scenario_slug, sc_data):
         </div>
         <div class="hero-split-visual reveal" style="display: flex; justify-content: center; align-items: center;">
           <div class="hero-device-frame">
-            <img src="../../assets/images/{img}?v=20261006a" alt="{img_alt}" loading="lazy">
+            <img src="/assets/images/{img}?v=20261006a" alt="{img_alt}" loading="lazy">
           </div>
         </div>
       </div>
@@ -283,7 +283,7 @@ def build_cta_band_html(locale, scenario_slug, sc_data):
         <h2>{cta[0]}</h2>
         <p>{cta[1]}</p>
         <div class="uc-cta-actions">
-          <a class="button primary" href="../../soundtest.html">{common['cta_free_band']}</a>
+          <a class="button primary" href="/soundtest.html?lang={locale}">{common['cta_free_band']}</a>
           <a class="button" href="https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c" target="_blank" rel="noopener">{common['cta_pro_band']}</a>
         </div>
         <div class="uc-cta-note">{common['cta_single_note']}</div>
@@ -298,7 +298,7 @@ def build_pill_switcher_html(locale, scenario_slug):
         icon, (title, sub) = PILL_DATA[key]['icon'], PILL_DATA[key][locale]
         is_cur = (key == scenario_slug)
         cur_cls = ' current' if is_cur else ''
-        pills.append(f'''        <a class="uc-scene-pill{cur_cls}" href="{key}.html">
+        pills.append(f'''        <a class="uc-scene-pill{cur_cls}" href="/use-cases/{locale}/{key}.html">
           <span class="uc-scene-emoji">{icon}</span>
           <div class="uc-scene-label">
             <strong>{title}</strong>
@@ -324,71 +324,71 @@ def build_footer_html(locale):
     return f'''    <footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
-          <a class="brand brand-glow" href="../../{locale}/index.html" aria-label="SOUNDTEST.PRO home">
+          <a class="brand brand-glow" href="/{locale}/" aria-label="SOUNDTEST.PRO home">
             <span class="brand-mark" aria-hidden="true"></span>
             <span class="brand-text">SOUNDTEST<small>.PRO</small></span>
           </a>
           <p>{common['footer_desc']}</p>
           <div class="footer-flags" aria-label="Language matrix">
-            <a class="footer-flag" href="../../en/index.html" title="English">🇺🇸</a>
-            <a class="footer-flag" href="../../zh/index.html" title="中文">🇨🇳</a>
-            <a class="footer-flag" href="../../es/index.html" title="Español">🇪🇸</a>
-            <a class="footer-flag" href="../../fr/index.html" title="Français">🇫🇷</a>
-            <a class="footer-flag" href="../../de/index.html" title="Deutsch">🇩🇪</a>
-            <a class="footer-flag" href="../../ja/index.html" title="日本語">🇯🇵</a>
-            <a class="footer-flag" href="../../ko/index.html" title="한국어">🇰🇷</a>
-            <a class="footer-flag" href="../../vi/index.html" title="Tiếng Việt">🇻🇳</a>
-            <a class="footer-flag" href="../../th/index.html" title="ไทย">🇹🇭</a>
+            <a class="footer-flag" href="/use-cases/" title="English">🇺🇸</a>
+            <a class="footer-flag" href="/use-cases/zh/" title="中文">🇨🇳</a>
+            <a class="footer-flag" href="/use-cases/es/" title="Español">🇪🇸</a>
+            <a class="footer-flag" href="/use-cases/fr/" title="Français">🇫🇷</a>
+            <a class="footer-flag" href="/use-cases/de/" title="Deutsch">🇩🇪</a>
+            <a class="footer-flag" href="/use-cases/ja/" title="日本語">🇯🇵</a>
+            <a class="footer-flag" href="/use-cases/ko/" title="한국어">🇰🇷</a>
+            <a class="footer-flag" href="/use-cases/vi/" title="Tiếng Việt">🇻🇳</a>
+            <a class="footer-flag" href="/use-cases/th/" title="ไทย">🇹🇭</a>
           </div>
         </div>
 
         <div class="footer-col">
           <h4>{common['prod_title']}</h4>
           <ul>
-            <li><a href="../../soundtest.html">SOUNDTEST.PRO</a></li>
-            <li><a href="../../soundtest.html">Decibel Meter</a></li>
-            <li><a href="../../{locale}/samples.html">Report Samples</a></li>
-            <li><a href="../../{locale}/accuracy.html">Accuracy &amp; Mic</a></li>
-            <li><a href="../../{locale}/download.html">PWA Install</a></li>
+            <li><a href="/soundtest.html?lang={locale}">SOUNDTEST.PRO</a></li>
+            <li><a href="/soundtest.html?lang={locale}">Decibel Meter</a></li>
+            <li><a href="/{locale}/samples.html">Report Samples</a></li>
+            <li><a href="/{locale}/accuracy.html">Accuracy &amp; Mic</a></li>
+            <li><a href="/{locale}/download.html">PWA Install</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>{common['res_title']}</h4>
           <ul>
-            <li><a href="../../{locale}/standards.html">Standards &amp; Limits</a></li>
-            <li><a href="../../{locale}/noise-levels.html">Noise Level Chart</a></li>
-            <li><a href="../../{locale}/changelog.html">Changelog</a></li>
-            <li><a href="neighbor-noise-evidence.html">Neighbor Noise Guide</a></li>
-            <li><a href="construction-noise-monitoring.html">Construction Guide</a></li>
-            <li><a href="rental-dispute-evidence.html">Rental Guide</a></li>
+            <li><a href="/{locale}/standards.html">Standards &amp; Limits</a></li>
+            <li><a href="/{locale}/noise-levels.html">Noise Level Chart</a></li>
+            <li><a href="/{locale}/changelog.html">Changelog</a></li>
+            <li><a href="/use-cases/{locale}/neighbor-noise-evidence.html">Neighbor Noise Guide</a></li>
+            <li><a href="/use-cases/{locale}/construction-noise-monitoring.html">Construction Guide</a></li>
+            <li><a href="/use-cases/{locale}/rental-dispute-evidence.html">Rental Guide</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>{common['legal_title']}</h4>
           <ul>
-            <li><a href="../../{locale}/privacy.html">Privacy Policy</a></li>
-            <li><a href="../../{locale}/about.html">About &amp; Contact</a></li>
-            <li><a href="../../terms.html">Terms of Service</a></li>
-            <li><a href="../../{locale}/disclaimer.html">Disclaimer</a></li>
-            <li><a href="../../{locale}/compliance.html">Compliance</a></li>
-            <li><a href="../../{locale}/auth.html">Account &amp; Access</a></li>
+            <li><a href="/{locale}/privacy.html">Privacy Policy</a></li>
+            <li><a href="/{locale}/about.html">About &amp; Contact</a></li>
+            <li><a href="/{locale}/terms.html">Terms of Service</a></li>
+            <li><a href="/{locale}/disclaimer.html">Disclaimer</a></li>
+            <li><a href="/{locale}/compliance.html">Compliance</a></li>
+            <li><a href="/{locale}/auth.html">Account &amp; Access</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>{common['lang_title']}</h4>
           <ul>
-            <li><a href="../../en/index.html">English</a></li>
-            <li><a href="../../zh/index.html">中文</a></li>
-            <li><a href="../../es/index.html">Español</a></li>
-            <li><a href="../../fr/index.html">Français</a></li>
-            <li><a href="../../de/index.html">Deutsch</a></li>
-            <li><a href="../../ja/index.html">日本語</a></li>
-            <li><a href="../../ko/index.html">한국어</a></li>
-            <li><a href="../../vi/index.html">Tiếng Việt</a></li>
-            <li><a href="../../th/index.html">ไทย</a></li>
+            <li><a href="/use-cases/">English</a></li>
+            <li><a href="/use-cases/zh/">中文</a></li>
+            <li><a href="/use-cases/es/">Español</a></li>
+            <li><a href="/use-cases/fr/">Français</a></li>
+            <li><a href="/use-cases/de/">Deutsch</a></li>
+            <li><a href="/use-cases/ja/">日本語</a></li>
+            <li><a href="/use-cases/ko/">한국어</a></li>
+            <li><a href="/use-cases/vi/">Tiếng Việt</a></li>
+            <li><a href="/use-cases/th/">ไทย</a></li>
           </ul>
         </div>
       </div>
@@ -503,11 +503,12 @@ def generate_use_case_page(locale, scenario_slug):
 
   <script type="application/ld+json">{json_ld}</script>  
 {hreflangs}
-  <link rel="stylesheet" href="../../assets/site.css?v=20261005k">
-  <script src="../../assets/lang-flags.js" defer></script>
-  <script src="../../assets/site-i18n.js?v=20261005j" defer></script>
-  <script src="../../assets/site-auth.js?v=20261005j" defer></script>
-  <script src="../../assets/site-experience.js?v=20261005j" defer></script>
+  <link rel="stylesheet" href="/assets/site.css?v=20261005k">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <script src="/assets/lang-flags.js" defer></script>
+  <script src="/assets/site-i18n.js?v=20261005j" defer></script>
+  <script src="/assets/site-auth.js?v=20261005j" defer></script>
+  <script src="/assets/site-experience.js?v=20261005j" defer></script>
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
   <script>LA.init({{id:"281wblDNvub2tk9f",ck:"281wblDNvub2tk9f"}})</script>
 </head>

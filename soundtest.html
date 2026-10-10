@@ -18,17 +18,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="PWA_READY" content="true">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
-<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
-<link rel="apple-touch-icon" sizes="192x192" href="assets/icon-192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="assets/icon-512.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="/assets/icon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/icon-512.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/assets/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/assets/icon-512.png">
 <title>SOUNDTEST.PRO · Acoustic Evidence & Noise Meter</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/layout-flow.css">
+<link rel="stylesheet" href="/assets/layout-flow.css">
 <!--
   TODO (tech-debt backlog):
   - Inline style tags modularized into assets/soundtest.css
@@ -38,9 +38,9 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-<link rel="stylesheet" href="assets/soundtest.css?v=20261008">
-<link rel="stylesheet" href="assets/legal-notice.css?v=20261008">
-<script src="assets/legal-notice.js?v=20261008" defer></script>
+<link rel="stylesheet" href="/assets/soundtest.css?v=20261008">
+<link rel="stylesheet" href="/assets/legal-notice.css?v=20261008">
+<script src="/assets/legal-notice.js?v=20261008" defer></script>
 <style>
 /* Defensive ad suppression & critical layout overrides */
 .live-monitor-notice{display:none!important}
@@ -835,7 +835,7 @@
   <div class="sentry-card">
     <button class="sentry-close" type="button" onclick="closeSentryModal()" aria-label="Close">×</button>
     <div class="sentry-hero-img" style="margin:-2px 0 14px;border-radius:10px;overflow:hidden;max-height:130px;">
-      <img src="assets/images/sentry_night_monitor.webp" alt="Smartphone bedside night sentry auto audio capture preview" loading="lazy" style="width:100%;height:130px;object-fit:cover;object-position:center 40%;display:block;">
+      <img src="/assets/images/sentry_night_monitor.webp" alt="Smartphone bedside night sentry auto audio capture preview" loading="lazy" style="width:100%;height:130px;object-fit:cover;object-position:center 40%;display:block;">
     </div>
 
     <div class="sentry-header">
@@ -1353,7 +1353,7 @@
 
   <!-- Header row -->
   <div class="app-header-row">
-    <a class="app-brand" href="index.html" aria-label="SOUNDTEST.PRO home">
+    <a class="app-brand" href="/" aria-label="SOUNDTEST.PRO home">
       <span class="app-brand-mark" aria-hidden="true">
         <svg viewBox="0 0 512 512" width="100%" height="100%" fill="none" style="display:block">
           <circle cx="256" cy="256" r="178" stroke="#2AFFD4" stroke-width="26" opacity=".4"/>
@@ -1873,7 +1873,7 @@
       <div class="pro-showcase-desc" id="pscDesc">Eliminate counter-arguments of volume tampering or staged noise. Export unwatermarked forensic PDF reports with cryptographic proof for HOA coordination, council mediation, and legal disputes.</div>
       
       <div class="pro-showcase-img-box" onclick="showReportPreviewModal()">
-        <img src="assets/images/forensic_report_preview.webp" alt="Preview mode vs Formal unwatermarked PDF comparison" loading="lazy">
+        <img src="/assets/images/forensic_report_preview.webp" alt="Preview mode vs Formal unwatermarked PDF comparison" loading="lazy">
         <div class="pro-showcase-img-hint" id="pscImgHint">Click to view sample report comparison ↗</div>
       </div>
 
@@ -1900,7 +1900,7 @@
         <button type="button" class="btn-pro-main" onclick="showReportPreviewModal()" id="pscMainBtn">
           <span>★ View Sample Report / Unlock Pro</span>
         </button>
-        <a href="camera.html" class="btn-pro-camera-link" id="pscCamLink">
+        <a href="/camera.html" class="btn-pro-camera-link" id="pscCamLink">
           <span>📷 Open Forensic Camera ↗</span>
         </a>
       </div>
@@ -2330,7 +2330,7 @@
         </div>
 
         <div class="dossier-actions">
-          <a class="btn b-cyan" id="dossierManageBtn" href="auth.html" target="_blank">Manage Account &amp; Keys</a>
+          <a class="btn b-cyan" id="dossierManageBtn" href="/auth.html" target="_blank">Manage Account &amp; Keys</a>
           <button class="btn" id="dossierRefreshBtn" onclick="lookupMembership()" type="button">Refresh License</button>
           <button class="btn b-red-outline" id="dossierLogoutBtn" onclick="logoutMembership()" type="button">Sign Out</button>
         </div>
@@ -2447,7 +2447,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>
     Evidence
   </button>
-  <a class="nav-btn nav-btn-cam" id="nt-cam" href="camera.html" role="tab" title="Evidence Camera">
+  <a class="nav-btn nav-btn-cam" id="nt-cam" href="/camera.html" role="tab" title="Evidence Camera">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
     Camera
   </a>
@@ -2464,17 +2464,17 @@
 
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
-<script src="assets/jspdf.umd.min.js?v=20260823b" data-cfasync="false" async></script>
-<script src="assets/utils.js?v=20260823b" data-cfasync="false"></script>
-<script src="assets/i18n-data.js?v=20261003e" data-cfasync="false"></script>
-<script src="assets/lang-flags.js?v=20261003e" data-cfasync="false"></script>
-<script src="assets/pro-meter.js?v=20260823b" data-cfasync="false"></script>
-<script src="assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
-<script src="assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
-<script src="assets/report-cert-engine.js?v=20261009a" data-cfasync="false"></script>
-<script src="assets/sentry-engine.js?v=20261008" data-cfasync="false"></script>
-<script src="assets/membership-pricing.js?v=20261008b" data-cfasync="false"></script>
-<script src="assets/geo-location.js?v=20261008" data-cfasync="false"></script>
+<script src="/assets/jspdf.umd.min.js?v=20260823b" data-cfasync="false" async></script>
+<script src="/assets/utils.js?v=20260823b" data-cfasync="false"></script>
+<script src="/assets/i18n-data.js?v=20261003e" data-cfasync="false"></script>
+<script src="/assets/lang-flags.js?v=20261003e" data-cfasync="false"></script>
+<script src="/assets/pro-meter.js?v=20260823b" data-cfasync="false"></script>
+<script src="/assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
+<script src="/assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
+<script src="/assets/report-cert-engine.js?v=20261009a" data-cfasync="false"></script>
+<script src="/assets/sentry-engine.js?v=20261008" data-cfasync="false"></script>
+<script src="/assets/membership-pricing.js?v=20261008b" data-cfasync="false"></script>
+<script src="/assets/geo-location.js?v=20261008" data-cfasync="false"></script>
 <script>
 /* ══ GLOBALS: define esc() before any other code to prevent ReferenceError ══ */
 function esc(s){const d=document.createElement('div');d.textContent=String(s??'');return d.innerHTML;}
@@ -2907,9 +2907,21 @@ function detectInitialLanguage(){
   const savedLanguage = normalizeAppLanguage(saved);
   if (savedLanguage) return savedLanguage;
 
-  // 6. Default strictly to English
+  // 6. User's Browser / System language (navigator.languages or navigator.language)
+  try {
+    const navLangs = Array.isArray(navigator.languages) && navigator.languages.length
+      ? navigator.languages
+      : (navigator.language ? [navigator.language] : []);
+    for (const nav of navLangs) {
+      const navLang = normalizeAppLanguage(nav);
+      if (navLang) return navLang;
+    }
+  } catch (_) {}
+
+  // 7. Default strictly to English
   return 'en-US';
 }
+try { appLanguage = detectInitialLanguage(); } catch (_) {}
 function setText(id,text){const el=document.getElementById(id);if(!el)return;const lbl=el.querySelector?.('.dock-btn-label');if(lbl){lbl.textContent=text;return;}el.textContent=text;}
 function setPlaceholder(id,text){const el=document.getElementById(id);if(el)el.placeholder=text;}
 function applySeoLanguage(){
@@ -3247,7 +3259,16 @@ function applyTranslations(){
   if(ntcam){
     ntcam.title=isZh?'存证相机':t('ui.evidenceCamera','Evidence Camera');
     const primary=appLanguage.split('-')[0];
-    ntcam.href=primary==='zh'?'zh/camera.html':(primary==='en'?'camera.html':`${primary}/camera.html`);
+    ntcam.href=primary==='en'?'/camera.html':`/${primary}/camera.html`;
+  }
+  const primary=appLanguage.split('-')[0];
+  const appBrand=document.querySelector('.app-brand');
+  if(appBrand){
+    appBrand.href=primary==='en'?'/':`/${primary}/`;
+  }
+  const pscCamLink=document.getElementById('pscCamLink');
+  if(pscCamLink){
+    pscCamLink.href=primary==='en'?'/camera.html':`/${primary}/camera.html`;
   }
   const ntmap=document.getElementById('nt-map');if(ntmap)ntmap.title=t('ui.map');
   const nts=document.getElementById('nt-s');if(nts)nts.title=t('ui.settings','Settings');
@@ -3878,7 +3899,7 @@ function translateDesktopSettings() {
     if (pills[3]) pills[3].innerHTML = isZh ? '<strong>测试版边界</strong>阶段 1 Web/PWA 只验证本地记录闭环；Pro、Team 和 Lifetime Offline 仍是权益原型或咨询入口，不收真实费用。' : '<strong>Beta Scope:</strong> Phase 1 Web/PWA validates local recording workflows. Tier upgrades connect to secure billing gateway.';
     if (pills[4]) pills[4].innerHTML = isZh ? '<strong>儿童与敏感场景</strong>不面向儿童主动收集数据；学校、医院、住宅投诉等场景应避免公开分享精确位置和人物画面。' : '<strong>Minors & Sensitive Areas:</strong> Not directed at children. Avoid publicly sharing identifiable individuals or private home details.';
     if (pills[5]) pills[5].innerHTML = isZh ? '<strong>服务条款边界</strong>本工具用于环境记录、趋势分析和证据整理，正式检测应以经检定声级计复核为准。' : '<strong>Terms Disclaimer:</strong> Tool is for environmental documentation and dispute support; formal testing requires certified meters.';
-    if (pills[6]) pills[6].innerHTML = isZh ? '<strong>退款政策</strong>Pro / Team / Lifetime Offline 各档权益的退款条件、申请流程与处理时效请见 <a href="refund.html" target="_blank" rel="noopener">refund.html</a>，账单咨询 <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>。' : '<strong>Refund Policy:</strong> For refund terms, submission process, and support across all tiers, see <a href="refund.html" target="_blank" rel="noopener">refund.html</a> or email <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>.';
+    if (pills[6]) pills[6].innerHTML = isZh ? '<strong>退款政策</strong>Pro / Team / Lifetime Offline 各档权益的退款条件、申请流程与处理时效请见 <a href="/refund.html" target="_blank" rel="noopener">refund.html</a>，账单咨询 <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>。' : '<strong>Refund Policy:</strong> For refund terms, submission process, and support across all tiers, see <a href="/refund.html" target="_blank" rel="noopener">refund.html</a> or email <a href="mailto:billing@soundtest.pro">billing@soundtest.pro</a>.';
     const btns = polCard.querySelectorAll('button, a.btn');
     if (btns[0]) btns[0].textContent = isZh ? '下载政策草案' : 'Download Policy Draft';
     if (btns[1]) btns[1].textContent = isZh ? '退款政策' : 'Refund Policy';
@@ -4181,11 +4202,9 @@ function setAppLanguage(lang,{persist=true,notify=true}={}){
     }catch(_){}
     try{
       const url=new URL(window.location.href);
-      if(url.searchParams.has('lang')||url.searchParams.has('locale')){
-        url.searchParams.set('lang',primary);
-        url.searchParams.delete('locale');
-        window.history.replaceState(null,'',url.toString());
-      }
+      url.searchParams.set('lang',primary);
+      url.searchParams.delete('locale');
+      window.history.replaceState(null,'',url.toString());
     }catch(_){}
   }
   // 1. Immediately sync pickers so header responds without delay
@@ -4218,6 +4237,17 @@ function setAppLanguage(lang,{persist=true,notify=true}={}){
 function initAppLanguage(){
   try {
     appLanguage=detectInitialLanguage();
+    const primary=appLanguage.split('-')[0];
+    try {
+      localStorage.setItem(LANG_KEY,appLanguage);
+      localStorage.setItem(SITE_LANG_KEY,primary);
+      document.cookie='sf_locale='+encodeURIComponent(primary)+';path=/;max-age=31536000;SameSite=Lax';
+      const url=new URL(window.location.href);
+      if(!url.searchParams.has('lang')&&!url.searchParams.has('locale')){
+        url.searchParams.set('lang',primary);
+        window.history.replaceState(null,'',url.toString());
+      }
+    }catch(_){}
     applySeoLanguage();
     syncLanguageSelectOptions();
     renderAppLangPickers();
@@ -4233,6 +4263,7 @@ function initAppLanguage(){
     console.error('[initAppLanguage fallback error]', err);
   }
 }
+try { initAppLanguage(); } catch (_) {}
 const PHONE_LAN_HTTPS_REQUIRED='手机通过局域网 IP 访问普通 HTTP 页面时，浏览器会禁用麦克风；请部署到 HTTPS 域名，或使用 Cloudflare Tunnel / ngrok / Vercel 预览链接测试。';
 
 function isPrivateNetworkHost(host=location.hostname){
@@ -4430,9 +4461,8 @@ function modeCopy(mode=evidenceMode){
 function getDedicatedCameraUrl(){
   const primary=(appLanguage||'en').split('-')[0];
   const supported=['en','zh','es','fr','de','ja','ko','vi','th'];
-  if(primary==='zh')return 'zh/camera.html';
-  if(primary==='en')return 'camera.html';
-  return supported.includes(primary)?`${primary}/camera.html`:'camera.html';
+  if(primary==='en')return '/camera.html';
+  return supported.includes(primary)?`/${primary}/camera.html`:'/camera.html';
 }
 
 function setEvidenceMode(mode,{save=true}={}){
@@ -4595,7 +4625,7 @@ function translateProShowcaseCard(){
     const span = camLink.querySelector('span') || camLink;
     span.textContent = isZh ? '📷 打开声学存证相机 ↗' : '📷 Open Evidence Camera ↗';
     const primary = appLanguage.split('-')[0];
-    camLink.href = primary === 'zh' ? 'zh/camera.html' : (primary === 'en' ? 'camera.html' : `${primary}/camera.html`);
+    camLink.href = primary === 'en' ? '/camera.html' : `/${primary}/camera.html`;
   }
 }
 
@@ -5108,9 +5138,9 @@ function getLocalizedAuthUrl(){
   const primary = lang.split('-')[0];
   const supported = ['zh', 'de', 'es', 'fr', 'ja', 'ko', 'th', 'vi'];
   if(supported.includes(primary)){
-    return `${primary}/auth.html`;
+    return `/${primary}/auth.html`;
   }
-  return 'auth.html';
+  return '/auth.html';
 }
 
 function loadMembershipState(){
@@ -5343,8 +5373,8 @@ function renderMembershipPanel(){
   hints.forEach(hint => {
     if(!membershipState.active){
       hint.innerHTML=appLanguage!=='zh-CN'
-        ?`<strong>Membership:</strong> Not logged in · <a href="${authUrl}?redirect_to=soundtest.html" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ Sign In / Cross-Device Sync</a>${checkedAt}`
-        :`<strong>会员状态：</strong>未登录 · <a href="${authUrl}?redirect_to=soundtest.html" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ 登录账户 / 手机与电脑多端互通</a>${checkedAt}`;
+        ?`<strong>Membership:</strong> Not logged in · <a href="/soundtest.html?redirect_to=soundtest.html" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ Sign In / Cross-Device Sync</a>${checkedAt}`
+        :`<strong>会员状态：</strong>未登录 · <a href="/soundtest.html?redirect_to=soundtest.html" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ 登录账户 / 手机与电脑多端互通</a>${checkedAt}`;
     }else{
       const planName = membershipState.plan.toUpperCase();
       const isSuper = membershipState.email && membershipState.email.toLowerCase() === 'wewee1@gmail.com';

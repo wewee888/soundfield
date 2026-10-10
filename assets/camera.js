@@ -67,8 +67,35 @@
   } else if (htmlLang.startsWith('th') || location.pathname.includes('/th/')) {
     lang = 'th-TH';
   } else {
-    lang = 'en-US';
+    // Check url query param ?lang= or ?locale=
+    try {
+      const params = new URLSearchParams(location.search);
+      const pLang = (params.get('lang') || params.get('locale') || '').toLowerCase();
+      if (pLang.startsWith('zh')) lang = 'zh-CN';
+      else if (pLang.startsWith('es')) lang = 'es-ES';
+      else if (pLang.startsWith('fr')) lang = 'fr-FR';
+      else if (pLang.startsWith('de')) lang = 'de-DE';
+      else if (pLang.startsWith('ja')) lang = 'ja-JP';
+      else if (pLang.startsWith('ko')) lang = 'ko-KR';
+      else if (pLang.startsWith('vi')) lang = 'vi-VN';
+      else if (pLang.startsWith('th')) lang = 'th-TH';
+      else lang = 'en-US';
+    } catch (_) {
+      lang = 'en-US';
+    }
   }
+
+  // Proactively persist detected language to cookie & storage for ecosystem consistency
+  try {
+    const primary = lang.split('-')[0];
+    localStorage.setItem('soundtest_locale', primary);
+    localStorage.setItem('sf_language', lang);
+    document.cookie = 'sf_locale=' + encodeURIComponent(primary) + ';path=/;max-age=31536000;SameSite=Lax';
+    const backLink = document.querySelector('.cam-back-link');
+    if (backLink) {
+      backLink.href = primary === 'en' ? '../soundtest.html' : `../soundtest.html?lang=${primary}`;
+    }
+  } catch (_) {}
 
   function t(zh, en) {
     return lang === 'zh-CN' ? zh : en;
