@@ -27,10 +27,13 @@ test('Report modal telemetry synchronization and UX polish', async () => {
   assert.ok(html.includes('r = DB.records[0];'), 'openLegalNoticeFromUi must read newest DB.records[0] instead of oldest record');
   assert.ok(html.includes('const target = rec || window.currentReportRecord || window.lastActiveSessionSnapshot;'), 'openLegalNoticeModal must forward active session target');
 
-  // 4. Prominent Certificate Image Export Button
-  assert.ok(html.includes('class="rpm-btn-primary-img" id="rpmDownloadImageBtn"'), 'rpmDownloadImageBtn must have prominent primary button class');
-  assert.ok(css.includes('.rpm-btn-primary-img{'), 'soundtest.css must define .rpm-btn-primary-img with luminous styling');
+  // 4. 3-Button Parallel Download Toolbar (PDF, PNG, CSV)
+  assert.ok(html.includes('id="rpmDownloadFreeBtn"'), 'rpmDownloadFreeBtn must exist');
+  assert.ok(html.includes('id="rpmDownloadImageBtn"'), 'rpmDownloadImageBtn must exist');
+  assert.ok(html.includes('id="rpmDownloadCsvBtn"'), 'rpmDownloadCsvBtn must exist');
+  assert.ok(html.includes('class="rpm-dl-row"'), 'soundtest.html must feature 3-button parallel download row');
   assert.ok(html.includes('id="rpmDownloadImageBtnText"'), 'soundtest.html must include inner span for localized button text');
+  assert.ok(css.includes('.rpm-dl-row{'), 'soundtest.css must define .rpm-dl-row');
 
   // 5. Responsive Head Layout
   assert.ok(html.includes('class="rpm-head-top"'), 'rpm-head must feature responsive rpm-head-top');

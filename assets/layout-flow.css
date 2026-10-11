@@ -43,7 +43,7 @@ body {
 .shell,
 .panels,
 .panel {
-  padding-bottom: calc(52px + var(--safe-b, env(safe-area-inset-bottom, 0px)));
+  padding-bottom: calc(108px + var(--safe-b, env(safe-area-inset-bottom, 0px)));
 }
 
 @media (min-width: 768px) {

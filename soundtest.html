@@ -173,7 +173,7 @@
   background: var(--red) !important;
 }
 .panel {
-  padding-bottom: calc(68px + var(--safe-b, env(safe-area-inset-bottom, 0px))) !important;
+  padding-bottom: calc(108px + var(--safe-b, env(safe-area-inset-bottom, 0px))) !important;
 }
 
 
@@ -893,17 +893,13 @@
       <button class="rpm-btn-single" id="rpmUnlockSingleBtn" type="button" style="display:none">
         <span id="rpmUnlockSingleBtnText">⚡ Unlock Single Report · Remove Watermark + Add Audit Fingerprint</span>
       </button>
-      <!-- Prominent Primary CTA: Save Certificate Image -->
-      <button class="rpm-btn-primary-img" id="rpmDownloadImageBtn" type="button">
-        <svg style="width:18px;height:18px;flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-        <span id="rpmDownloadImageBtnText">📸 保存存证底稿图片 (PNG)</span>
-      </button>
       <button class="rpm-btn-escalate" id="rpmNoticeBtn" type="button" onclick="openLegalNoticeModal()">
         <span id="rpmNoticeBtnText">⚖️ Neighbor Notice & Statutory Demand (Word/PDF)</span>
       </button>
-      <div style="display:flex;gap:8px;width:100%;flex-wrap:wrap;">
-        <button class="rpm-btn-preview" id="rpmDownloadFreeBtn" type="button" style="flex:1;min-width:105px;">Download Report (PDF)</button>
-        <button class="rpm-btn-preview" id="rpmDownloadCsvBtn" type="button" style="flex:1;min-width:105px;background:rgba(42,255,212,0.08);border-color:rgba(42,255,212,0.3);color:#2AFFD4;">Download CSV</button>
+      <div class="rpm-dl-row" style="display:flex;gap:8px;width:100%;">
+        <button class="rpm-btn-preview" id="rpmDownloadFreeBtn" type="button" style="flex:1;min-width:0;padding:0 4px;font-size:12px;white-space:nowrap;">Download PDF</button>
+        <button class="rpm-btn-preview" id="rpmDownloadImageBtn" type="button" style="flex:1;min-width:0;padding:0 4px;font-size:12px;white-space:nowrap;"><span id="rpmDownloadImageBtnText">Download PNG</span></button>
+        <button class="rpm-btn-preview" id="rpmDownloadCsvBtn" type="button" style="flex:1;min-width:0;padding:0 4px;font-size:12px;white-space:nowrap;">Download CSV</button>
       </div>
     </div>
   </div>
@@ -1037,20 +1033,20 @@
       <div class="sentry-preview-title" id="sentryPreviewTitle">Sentry Standby Parameters (PRO)</div>
       <div class="sentry-preview-grid">
         <div class="sentry-preview-stat">
-          <span>Threshold</span>
-          <strong>45 dB (Night Target)</strong>
+          <span id="sentryStatThLbl">Threshold</span>
+          <strong id="sentryStatThVal">45 dB (Night Target)</strong>
         </div>
         <div class="sentry-preview-stat">
-          <span>Trigger Delay</span>
-          <strong>≥ 3s Sustained</strong>
+          <span id="sentryStatDelayLbl">Trigger Delay</span>
+          <strong id="sentryStatDelayVal">≥ 3s Sustained</strong>
         </div>
         <div class="sentry-preview-stat">
-          <span>Post Buffer</span>
-          <strong>10s Tail Record</strong>
+          <span id="sentryStatBufferLbl">Post Buffer</span>
+          <strong id="sentryStatBufferVal">10s Tail Record</strong>
         </div>
         <div class="sentry-preview-stat">
-          <span>Anti-Tamper</span>
-          <strong>SHA-256 + GPS</strong>
+          <span id="sentryStatTamperLbl">Anti-Tamper</span>
+          <strong id="sentryStatTamperVal">SHA-256 + GPS</strong>
         </div>
       </div>
     </div>
@@ -1971,14 +1967,14 @@
             <div class="sentry-pipe-arrow">➔</div>
             <div class="sentry-pipe-step" id="pipeStep3">
               <div class="step-num">③</div>
-              <strong id="pipeStep3T">Silence Decay</strong>
-              <span id="pipeStep3D">Seal after 10s</span>
+              <strong id="pipeStep3T">Post-Drop Delay</strong>
+              <span id="pipeStep3D">Hold 10s after drop</span>
             </div>
             <div class="sentry-pipe-arrow">➔</div>
             <div class="sentry-pipe-step" id="pipeStep4">
               <div class="step-num">④</div>
-              <strong id="pipeStep4T">Digital Custody</strong>
-              <span id="pipeStep4D">SHA-256 Fingerprint</span>
+              <strong id="pipeStep4T">Cryptographic Seal</strong>
+              <span id="pipeStep4D">SHA-256 sealed</span>
             </div>
           </div>
         </div>
@@ -2023,7 +2019,7 @@
           <div class="sentry-preset-row">
             <button type="button" class="sentry-preset-btn" id="sentryPre45" onclick="setSentryPresetThreshold(45)">
               <strong>🌙 45 dB</strong>
-              <span id="sentryPre45Span">Night Bedroom (Quiet Limit)</span>
+              <span id="sentryPre45Span">Night Bedroom (Quiet)</span>
             </button>
             <button type="button" class="sentry-preset-btn active" id="sentryPre50" onclick="setSentryPresetThreshold(50)">
               <strong>🏡 50 dB</strong>
@@ -2031,7 +2027,7 @@
             </button>
             <button type="button" class="sentry-preset-btn" id="sentryPre55" onclick="setSentryPresetThreshold(55)">
               <strong>🚗 55 dB</strong>
-              <span id="sentryPre55Span">Street / Daytime</span>
+              <span id="sentryPre55Span">Daytime / Street</span>
             </button>
           </div>
           <div class="sentry-custom-th-row">
@@ -4768,20 +4764,142 @@ function setRecordingButtonsAvailability(){
   if(modeBtn)modeBtn.title=title;
 }
 
+const SENTRY_MODE_COPY = {
+  zh: {
+    label: '🌙 哨兵模式',
+    short: '哨兵',
+    tagline: '夜间静默待命 · 超标自动抓现行',
+    activeLabel: '哨兵守护中',
+    activeTagline: '超标自动录制中',
+    title: '🌙 哨兵声学守护工作台',
+    desc: '全自动超标抓现行：夜间静默待命，分贝持续超标时毫秒级自动触发录音；声音回落后自动封存并加盖不可篡改 SHA-256 数字指纹。无需彻夜守候。',
+    primary: '▶ 启动夜间哨兵守护（开始监听）',
+    stop: '⏹ 退出哨兵守护模式',
+    recordingPrimary: '🔴 正在自动抓取超标证据（点击立即封存）'
+  },
+  en: {
+    label: '🌙 Sentry Mode',
+    short: 'Sentry',
+    tagline: 'Overnight auto-capture on exceedance',
+    activeLabel: 'Sentry Active',
+    activeTagline: 'Auto-record armed',
+    title: '🌙 Sentry Acoustic Surveillance Console',
+    desc: 'Fully autonomous threshold capture: stands by silently overnight, auto-records in milliseconds upon sustained noise exceedance, and digitally seals evidence with SHA-256 timestamps upon drop. No sleepless manual monitoring.',
+    primary: '▶ Start Sentry Surveillance',
+    stop: '⏹ Stop Sentry Mode',
+    recordingPrimary: '🔴 Auto-Capturing Incident (Click to Stop & Seal)'
+  },
+  es: {
+    label: '🌙 Modo Centinela',
+    short: 'Centinela',
+    tagline: 'Guardia nocturna · Captura al superar umbral',
+    activeLabel: 'Centinela Activo',
+    activeTagline: 'Grabación auto activada',
+    title: '🌙 Consola de Vigilancia Acústica Centinela',
+    desc: 'Captura autónoma por umbral: vigilancia silenciosa toda la noche, grabación automática en milisegundos ante ruidos continuos y sellado con SHA-256 al cesar.',
+    primary: '▶ Iniciar Vigilancia Centinela',
+    stop: '⏹ Detener Modo Centinela',
+    recordingPrimary: '🔴 Grabando Infracción Automática (Clic para Sellar)'
+  },
+  fr: {
+    label: '🌙 Mode Sentinelle',
+    short: 'Sentinelle',
+    tagline: 'Veille nocturne · Capture auto en dépassement',
+    activeLabel: 'Sentinelle Active',
+    activeTagline: 'Enregistrement auto armé',
+    title: '🌙 Console de Surveillance Acoustique Sentinelle',
+    desc: 'Capture autonome au seuil : veille silencieuse toute la nuit, enregistrement auto en millisecondes en cas de dépassement et scellage SHA-256.',
+    primary: '▶ Démarrer Surveillance Sentinelle',
+    stop: '⏹ Arrêter Mode Sentinelle',
+    recordingPrimary: '🔴 Enregistrement Auto en Cours (Cliquer pour Sceller)'
+  },
+  de: {
+    label: '🌙 Wächter-Modus',
+    short: 'Wächter',
+    tagline: 'Nachtwache · Auto-Aufnahme bei Überschreitung',
+    activeLabel: 'Wächter Aktiv',
+    activeTagline: 'Auto-Aufnahme scharf',
+    title: '🌙 Wächter Akustik-Überwachungskonsole',
+    desc: 'Autonome Schwellenwerterfassung: Lautlose Nachtwache, Millisekunden-Aufnahme bei Dauerlärm und SHA-256-Versiegelung nach Abklingen.',
+    primary: '▶ Wächter-Überwachung starten',
+    stop: '⏹ Wächter-Modus beenden',
+    recordingPrimary: '🔴 Auto-Aufnahme läuft (Klicken zum Versiegeln)'
+  },
+  ja: {
+    label: '🌙 監視モード',
+    short: '監視',
+    tagline: '夜間静音待機 · 基準超過時に自動記録',
+    activeLabel: '監視中',
+    activeTagline: '自動録音待機中',
+    title: '🌙 監視音響モニタリングワークステーション',
+    desc: '完全自律型しきい値記録：夜間静音で待機し、騒音基準超過時に即座に自動録音。低下時にSHA-256タイムスタンプで自動封印します。',
+    primary: '▶ 夜間監視を開始（マイク監視）',
+    stop: '⏹ 監視モードを終了',
+    recordingPrimary: '🔴 基準超過を自動記録中（クリックで保存封印）'
+  },
+  ko: {
+    label: '🌙 보초 모드',
+    short: '보초',
+    tagline: '야간 대기 · 기준 초과 시 자동 녹음',
+    activeLabel: '보초 작동 중',
+    activeTagline: '자동 녹음 대기 중',
+    title: '🌙 보초 음향 감시 콘솔',
+    desc: '완전 자율 임계값 포착: 야간 무음 대기, 소음 기준 초과 시 밀리초 단위로 자동 녹음 시작 후 SHA-256 타임스탬프로 위변조 방지 봉인.',
+    primary: '▶ 야간 보초 감시 시작 (마이크 감시)',
+    stop: '⏹ 보초 감시 모드 종료',
+    recordingPrimary: '🔴 기준 초과 자동 기록 중 (클릭하여 봉인)'
+  },
+  vi: {
+    label: '🌙 Chế độ lính gác',
+    short: 'Lính gác',
+    tagline: 'Trực đêm · Tự động ghi khi vượt ngưỡng',
+    activeLabel: 'Đang cảnh giới',
+    activeTagline: 'Sẵn sàng tự động ghi',
+    title: '🌙 Bàn giám sát âm học lính gác',
+    desc: 'Tự động ghi âm khi vượt ngưỡng: trực thầm lặng suốt đêm, ghi âm tức thì khi ồn vượt ngưỡng và đóng dấu niêm phong số SHA-256 khi tiếng ồn dứt.',
+    primary: '▶ Bắt đầu giám sát lính gác',
+    stop: '⏹ Thoát chế độ lính gác',
+    recordingPrimary: '🔴 Đang tự động ghi bằng chứng (Bấm để niêm phong)'
+  },
+  th: {
+    label: '🌙 โหมดเฝ้าระวัง',
+    short: 'เฝ้าระวัง',
+    tagline: 'เฝ้าระวังกลางคืน · บันทึกอัตโนมัติเมื่อเกินเกณฑ์',
+    activeLabel: 'กำลังเฝ้าระวัง',
+    activeTagline: 'พร้อมบันทึกอัตโนมัติ',
+    title: '🌙 คอนโซลตรวจตราเสียงยามค่ำคืน',
+    desc: 'ระบบเฝ้าระวังอัตโนมัติ: สแตนด์บายเงียบตลอดคืน บันทึกเสียงทันทีเมื่อเสียงดังเกินเกณฑ์ และปิดผนึกหลักฐานด้วยดิจิทัลแสตมป์ SHA-256',
+    primary: '▶ เริ่มการเฝ้าระวังยามค่ำคืน',
+    stop: '⏹ หยุดโหมดเฝ้าระวัง',
+    recordingPrimary: '🔴 กำลังบันทึกหลักฐานอัตโนมัติ (คลิกเพื่อบันทึกและปิดผนึก)'
+  }
+};
+
 function modeCopy(mode=evidenceMode){
+  const rawLang = String(appLanguage || '').toLowerCase();
+  const langKey = rawLang.startsWith('zh') ? 'zh' : (rawLang.split('-')[0] || 'en');
+  if (mode === 'sentry') {
+    const base = SENTRY_MODE_COPY[langKey] || SENTRY_MODE_COPY.en;
+    const tVal = t('modes.sentry', {});
+    return Object.assign({}, base, (typeof tVal === 'object' && tVal) ? tVal : {}, {
+      title: base.title,
+      desc: base.desc,
+      primary: base.primary,
+      stop: base.stop,
+      recordingPrimary: base.recordingPrimary
+    });
+  }
   const enFallback={
     audio:{label:'Audio',short:'Audio',tagline:'Low-power audio log',title:'Audio mode',desc:'Best for long sessions. Uses the mic only and keeps power use low.',primary:'● Start Audio Evidence',stop:'⏹ Stop & Save Evidence'},
     video:{label:'Video',short:'Video',tagline:'Video + microphone',title:'Evidence video',desc:'Capture the scene, microphone audio, and burned-in evidence watermark in the full-screen camera.',primary:'📹 Start Evidence Video',stop:'⏹ Stop & Save Evidence'},
     photo:{label:'Photo',short:'Photo',tagline:'dB-stamped photo',title:'Photo mode',desc:'Capture a photo with dB, GPS, address, and calibration details.',primary:'📷 Capture Evidence Photo',stop:'📷 Capture Evidence Photo'},
-    sentry:{label:'Sentry Mode',short:'Sentry',tagline:'Overnight auto-capture on exceedance',title:'🌙 Sentry Acoustic Surveillance Console',desc:'Fully autonomous threshold capture: stands by silently overnight, auto-records in milliseconds upon sustained noise exceedance, and digitally seals evidence with SHA-256 timestamps upon drop. No sleepless manual monitoring.',primary:'▶ Start Sentry Surveillance',stop:'⏹ Stop Sentry Mode',recordingPrimary:'🔴 Auto-Capturing Incident (Click to Stop & Seal)'},
   };
   const zhFallback={
     audio:{label:'录音存证',short:'录音',tagline:'低耗电 · 自动加密入库',title:'取证录音模式',desc:'录制完整音频与分贝时间序列，自动保全入库并支持导出正式 PDF 维权报告。',primary:'● 开始取证录音（入库保全）',stop:'⏹ 停止录音并保存证据'},
     video:{label:'录像存证',short:'录像',tagline:'画面+声学水印 · 同步保全',title:'取证录像模式',desc:'现场画面与麦克风声音同步保存，自动叠加分贝、时间与 GPS 防伪水印，停止后写入证据库。',primary:'📹 开始取证录像（入库保全）',stop:'⏹ 停止录像并保存证据'},
     photo:{label:'照片取证',short:'照片',tagline:'生成带分贝水印与地点照片',title:'照片取证模式',desc:'快速抓拍现场并叠加实时分贝、经纬度、地点与时间戳，保存为不可篡改的证据照片。',primary:'📷 拍照取证（生成水印）',stop:'📷 拍照取证（生成水印）'},
-    sentry:{label:'🌙 哨兵模式',short:'哨兵',tagline:'夜间静默待命 · 超标自动抓现行',title:'🌙 哨兵声学守护工作台',desc:'全自动超标抓现行：夜间静默待命，分贝持续超标时毫秒级自动触发录音；声音回落后自动封存并加盖不可篡改 SHA-256 数字指纹。无需彻夜守候。',primary:'▶ 启动夜间哨兵守护（开始监听）',stop:'⏹ 退出哨兵守护模式',recordingPrimary:'🔴 正在自动抓取超标证据（点击立即封存）'},
   };
-  const fallback=appLanguage==='zh-CN'?(zhFallback[mode]||zhFallback.audio):(enFallback[mode]||enFallback.audio);
+  const fallback=langKey==='zh'?(zhFallback[mode]||zhFallback.audio):(enFallback[mode]||enFallback.audio);
   return t(`modes.${mode}`,fallback);
 }
 
@@ -4894,7 +5012,7 @@ function syncEvidenceModeUi(){
   if(primary){
     if(evidenceMode==='sentry'){
       if(isRec){
-        primary.textContent=copy.recordingPrimary||(isZh?'🔴 正在自动抓取超标证据（点击立即封存）':'🔴 Recording Exceedance (Click to Stop)');
+        primary.textContent=copy.recordingPrimary||(isZh?'🔴 正在自动抓取超标证据（点击立即封存）':'🔴 Auto-Capturing Incident (Click to Stop & Seal)');
         primary.classList.add('recording');
       }else if(!isMon){
         primary.textContent=copy.primary||(isZh?'▶ 启动夜间哨兵守护（开始监听）':'▶ Start Sentry Surveillance');
@@ -4904,10 +5022,28 @@ function syncEvidenceModeUi(){
         primary.classList.remove('recording');
       }
     }else if(evidenceMode==='video'){
-      primary.textContent=isZh?'🎥 启动录像相机（分贝水印 ↗）':'🎥 Launch Video Camera (Live dB Watermark ↗)';
+      const rawLang = String(appLanguage || '').toLowerCase();
+      const langKey = rawLang.startsWith('zh') ? 'zh' : (rawLang.split('-')[0] || 'en');
+      const videoBtns = {
+        zh:'🎥 启动录像相机（分贝水印 ↗）', en:'🎥 Launch Video Camera (Live dB Watermark ↗)',
+        es:'🎥 Iniciar Cámara de Video (Marca de agua dB ↗)', fr:'🎥 Lancer Caméra Vidéo (Filigrane dB ↗)',
+        de:'🎥 Videokamera starten (dB-Wasserzeichen ↗)', ja:'🎥 録画カメラを起動（dB透かし ↗）',
+        ko:'🎥 동영상 카메라 시작 (dB 워터마크 ↗)', vi:'🎥 Bật máy quay video (Watermark dB ↗)',
+        th:'🎥 เปิดกล้องบันทึกวิดีโอ (ลายน้ำ dB ↗)'
+      };
+      primary.textContent=videoBtns[langKey]||videoBtns.en;
       primary.classList.remove('recording');
     }else if(evidenceMode==='photo'){
-      primary.textContent=isZh?'📷 启动拍照相机（分贝印章 ↗）':'📷 Launch Photo Camera (dB & GPS Stamp ↗)';
+      const rawLang = String(appLanguage || '').toLowerCase();
+      const langKey = rawLang.startsWith('zh') ? 'zh' : (rawLang.split('-')[0] || 'en');
+      const photoBtns = {
+        zh:'📷 启动拍照相机（分贝印章 ↗）', en:'📷 Launch Photo Camera (dB & GPS Stamp ↗)',
+        es:'📷 Iniciar Cámara de Fotos (Sello dB y GPS ↗)', fr:'📷 Lancer Appareil Photo (Tampon dB & GPS ↗)',
+        de:'📷 Fotokamera starten (dB- & GPS-Stempel ↗)', ja:'📷 写真カメラを起動（dB・GPS刻印 ↗）',
+        ko:'📷 사진 카메라 시작 (dB & GPS 스탬프 ↗)', vi:'📷 Bật máy ảnh chụp hình (Dấu dB & GPS ↗)',
+        th:'📷 เปิดกล้องถ่ายภาพ (ตราประทับ dB & GPS ↗)'
+      };
+      primary.textContent=photoBtns[langKey]||photoBtns.en;
       primary.classList.remove('recording');
     }else{
       primary.textContent=isRec?copy.stop:copy.primary;
@@ -5052,6 +5188,19 @@ function translateReportCertificateDoc(isZh) {
   if (disc) disc.textContent = isZh ? '本报告由 SOUNDTEST.PRO 声学计算引擎基于 IEC 61672-1 标准声学算法及硬件校准自动生成，综合参考测量误差约 ±1.5 dB(A)。音频频谱、时序波动及取证地理数据已固化至 SHA-256 加密存证链，具备民事事实举证与现场环境比对证明力。' : 'Generated by SOUNDTEST.PRO acoustic computation engine pursuant to IEC 61672-1 Class 2 sound level standards (reference tolerance ±1.5 dB(A)). Acoustic spectra, time-series telemetry, and geofence logs are cryptographically sealed with SHA-256 for civil factual evidence documentation.';
 }
 
+function getDownloadBtnLabels(lang){
+  const s = String(lang || '').toLowerCase();
+  if (s.startsWith('zh')) return { pdf: '下载 PDF', png: '下载 PNG', csv: '下载 CSV' };
+  if (s === 'es') return { pdf: 'Descargar PDF', png: 'Descargar PNG', csv: 'Descargar CSV' };
+  if (s === 'fr') return { pdf: 'Télécharger PDF', png: 'Télécharger PNG', csv: 'Télécharger CSV' };
+  if (s === 'de') return { pdf: 'PDF herunterladen', png: 'PNG herunterladen', csv: 'CSV herunterladen' };
+  if (s === 'ja') return { pdf: 'PDF 保存', png: 'PNG 保存', csv: 'CSV 出力' };
+  if (s === 'ko') return { pdf: 'PDF 다운로드', png: 'PNG 저장', csv: 'CSV 내보내기' };
+  if (s === 'vi') return { pdf: 'Tải PDF', png: 'Tải PNG', csv: 'Tải CSV' };
+  if (s === 'th') return { pdf: 'ดาวน์โหลด PDF', png: 'ดาวน์โหลด PNG', csv: 'ดาวน์โหลด CSV' };
+  return { pdf: 'Download PDF', png: 'Download PNG', csv: 'Download CSV' };
+}
+
 function translateReportPreviewModal(){
   const isZh = (typeof appLanguage === 'string' && appLanguage.startsWith('zh'));
   const isPro = typeof isProActive === 'function' ? isProActive() : false;
@@ -5093,16 +5242,12 @@ function translateReportPreviewModal(){
   setText('rpmUnlockSingleBtnText', isZh
     ? '⚡ 仅解锁单次报告 ¥3.9 (原价 ¥9.9 · 立省 60%) · 去除全页水印 + 加盖防伪存证ID'
     : '⚡ Unlock Single Report ($1.99) · Remove Watermark + Digital Verification ID');
-  setText('rpmDownloadFreeBtn', isZh ? (isPro ? '导出正式无水印存证 PDF' : '先下载带水印预览版 (仅供个人自查)') : (isPro ? 'Export Official Pro Report (Clean)' : 'Download Watermarked Preview (Personal Reference Only)'));
-  
-  const imgLabel = isZh 
-    ? (isPro ? '📸 导出正式存证高清长图 (PNG·无水印)' : '📸 保存取证底稿长图 (PNG·含水印)') 
-    : (isPro ? '📸 Export Official Certificate PNG (Clean)' : '📸 Save Certificate Image (PNG·Watermarked)');
+  const dlLabels = getDownloadBtnLabels(appLanguage);
+  setText('rpmDownloadFreeBtn', dlLabels.pdf);
   const imgTextEl = document.getElementById('rpmDownloadImageBtnText');
-  if (imgTextEl) imgTextEl.textContent = imgLabel;
-  else setText('rpmDownloadImageBtn', imgLabel);
-
-  setText('rpmDownloadCsvBtn', isZh ? '下载数据 (CSV)' : 'Download CSV');
+  if (imgTextEl) imgTextEl.textContent = dlLabels.png;
+  else setText('rpmDownloadImageBtn', dlLabels.png);
+  setText('rpmDownloadCsvBtn', dlLabels.csv);
   setText('rpmNoticeBtnText', isZh ? '⚖️ 邻里善意告知书 · 9国法定催告函 (Word/PDF)' : '⚖️ Neighbor Notice & Statutory Demand (Word/PDF)');
 
   translateReportCertificateDoc(isZh);
@@ -9419,10 +9564,9 @@ function openReportPreviewModal(recs, isBatch = false) {
       ? '<strong>官方正式取证版 (去水印)：</strong>去除全部水印，生成标准化法律级声学底稿，加盖 <strong>SHA-256 唯一数字指纹</strong>与 <strong>GPS 经纬度绝对坐标锚点</strong>，彻底杜绝对方以造假为由推诿。'
       : '<strong>Forensic Evidence Report (Watermark Removed):</strong> Sealed with <strong>SHA-256 cryptographic hash</strong> and <strong>GPS geolocation anchor</strong>—objective supporting civilian records.';
   }
+  const dlLabels = getDownloadBtnLabels(appLanguage);
   if (dlBtn) {
-    dlBtn.textContent = isZh
-      ? (isPro ? '导出正式无水印存证 PDF' : '先下载带水印预览版 (仅供个人自查)')
-      : (isPro ? 'Export Official Pro Report (Clean)' : 'Download Watermarked Preview (Reference Only)');
+    dlBtn.textContent = dlLabels.pdf;
   }
 
   // Pricing & Payment Gateway (Strictly IP-determined)
@@ -9548,9 +9692,7 @@ function openReportPreviewModal(recs, isBatch = false) {
 
   const freeDlBtn = dlBtn || document.getElementById('rpmDownloadFreeBtn');
   if (freeDlBtn) {
-    freeDlBtn.textContent = isPro 
-      ? t('reports.exportOfficial', isZh ? '导出正式无水印存证 PDF' : 'Export Official Pro Report (Clean)') 
-      : t('reports.downloadWatermark', isZh ? '下载预览报告 (PDF·含水印)' : 'Download Preview PDF (Watermarked)');
+    freeDlBtn.textContent = dlLabels.pdf;
     freeDlBtn.onclick = () => {
       closeReportPreviewModal();
       try {
@@ -9569,13 +9711,10 @@ function openReportPreviewModal(recs, isBatch = false) {
 
   const imgDlBtn = document.getElementById('rpmDownloadImageBtn');
   const imgDlBtnText = document.getElementById('rpmDownloadImageBtnText');
-  const imgLabel = isZh 
-    ? (isPro ? '📸 导出正式存证高清长图 (PNG·无水印)' : '📸 保存取证底稿长图 (PNG·含水印)') 
-    : (isPro ? '📸 Export Official Certificate PNG (Clean)' : '📸 Save Certificate Image (PNG·Watermarked)');
   if (imgDlBtnText) {
-    imgDlBtnText.textContent = imgLabel;
+    imgDlBtnText.textContent = dlLabels.png;
   } else if (imgDlBtn) {
-    imgDlBtn.textContent = imgLabel;
+    imgDlBtn.textContent = dlLabels.png;
   }
   if (imgDlBtn) {
     imgDlBtn.onclick = () => {
@@ -9596,7 +9735,7 @@ function openReportPreviewModal(recs, isBatch = false) {
   }
   const csvDlBtn = document.getElementById('rpmDownloadCsvBtn');
   if (csvDlBtn) {
-    csvDlBtn.textContent = isZh ? '下载数据 (CSV)' : 'Download CSV';
+    csvDlBtn.textContent = dlLabels.csv;
     csvDlBtn.onclick = () => {
       exportSessionOrRecordCSV(recs, isBatch);
     };
@@ -9638,23 +9777,205 @@ function triggerSentryModeHook() {
     openSentryGatingModal();
     return;
   }
+  const rawLang = String(appLanguage || '').toLowerCase();
+  const langKey = rawLang.startsWith('zh') ? 'zh' : (rawLang.split('-')[0] || 'en');
+  const stoppedMsgs = {
+    zh: '🌙 哨兵模式已停止', en: '🌙 Sentry Mode stopped',
+    es: '🌙 Modo Centinela detenido', fr: '🌙 Mode Sentinelle arrêté',
+    de: '🌙 Wächter-Modus beendet', ja: '🌙 監視モードを停止しました',
+    ko: '🌙 보초 모드가 중지되었습니다', vi: '🌙 Đã dừng Chế độ lính gác',
+    th: '🌙 หยุดโหมดเฝ้าระวังแล้ว'
+  };
+  const activeMsgs = {
+    zh: '🌙 哨兵工作台已激活：超标自动录制并入库保全', en: '🌙 Sentry Console active: Auto-records on threshold exceed',
+    es: '🌙 Consola Centinela activa: Auto-graba al superar el umbral', fr: '🌙 Console Sentinelle active : Enregistre automatiquement au dépassement',
+    de: '🌙 Wächter-Konsole aktiv: Auto-Aufnahme bei Grenzwertüberschreitung', ja: '🌙 監視ワークステーション起動：基準超過時に自動録音・証拠保全',
+    ko: '🌙 보초 콘솔 활성화: 기준 초과 시 자동 녹음 및 증거 봉인', vi: '🌙 Bàn lính gác đã kích hoạt: Tự động ghi âm khi vượt ngưỡng',
+    th: '🌙 คอนโซลเฝ้าระวังทำงาน: บันทึกเสียงอัตโนมัติเมื่อเสียงเกินเกณฑ์'
+  };
+  const tipMsgs = {
+    zh: '提示：点击下方【启动夜间哨兵守护】开启麦克风监听', en: 'Tip: Click [Start Sentry Surveillance] below to begin listening',
+    es: 'Consejo: Toca [Iniciar Vigilancia Centinela] abajo para comenzar a escuchar', fr: 'Conseil : Cliquez sur [Démarrer Surveillance Sentinelle] ci-dessous pour écouter',
+    de: 'Tipp: Klicken Sie unten auf [Wächter-Überwachung starten], um das Mikrofon zu aktivieren', ja: 'ヒント：下の【夜間監視を開始】をクリックしてマイク監視を開始してください',
+    ko: '안내: 아래 [야간 보초 감시 시작]을 클릭하여 마이크 감시를 시작하세요', vi: 'Mẹo: Bấm [Bắt đầu giám sát lính gác] bên dưới để mở micro',
+    th: 'คำแนะนำ: คลิก [เริ่มการเฝ้าระวังยามค่ำคืน] ด้านล่างเพื่อเริ่มฟังเสียง'
+  };
   if (evidenceMode === 'sentry') {
     setEvidenceMode('audio');
-    toast(appLanguage === 'zh-CN' ? '🌙 哨兵模式已停止' : '🌙 Sentry Mode stopped', 'info', 3000);
+    toast(stoppedMsgs[langKey] || stoppedMsgs.en, 'info', 3000);
   } else {
     setEvidenceMode('sentry');
-    toast(appLanguage === 'zh-CN' ? '🌙 哨兵工作台已激活：Auto-record on Exceedance入库' : '🌙 Sentry Console active: Auto-records on threshold exceed', 'info', 4000);
+    toast(activeMsgs[langKey] || activeMsgs.en, 'info', 4000);
     if (!isMon) {
-      toast(appLanguage === 'zh-CN' ? '提示：点击【启动夜间哨兵守护】开启麦克风监听' : 'Tip: Click [Start Sentry Surveillance] to begin night surveillance', 'warn', 5000);
+      toast(tipMsgs[langKey] || tipMsgs.en, 'warn', 5000);
     }
   }
 }
+
+const SENTRY_MODAL_I18N = {
+  zh: {
+    title: '🌙 夜间噪音哨兵模式 (Sentry Mode)',
+    subtitle: '“睡你的觉，让系统替你守夜” · 超标自动唤醒抓现行',
+    badTag: '人工盯守之痛',
+    badP: '突发邻里噪音、恶犬吠叫、半夜重低音往往只有几秒。等你惊醒摸出手机、解开锁屏、打开录音，声音早已停止，抓不到任何违规证据。',
+    goodTag: 'PRO 哨兵方案',
+    goodP: '旧手机插上充电器，静置床头待命。<strong>设定分贝阈值，突发超标瞬间全自动抓取音频并加盖时间戳</strong>，静音后自动封存；醒来直接查看《整夜违规超标流水单》。',
+    prevTitle: '哨兵待命参数 (PRO 专属已预设)',
+    statThLbl: '触发阈值', statThVal: '45 dB (夜间标准)',
+    statDelayLbl: '超标判定', statDelayVal: '≥ 3秒持续超标',
+    statBufferLbl: '回落缓冲', statBufferVal: '10秒静音尾录',
+    statTamperLbl: '司法防伪', statTamperVal: 'SHA-256 + GPS',
+    yearlyText: '★ 微信特惠开通 PRO 年卡 ¥19.9 / 年 (原价 ¥59.9 · 立省 67%)',
+    yearlySub: '折合 ¥1.6/mo · 解锁整夜哨兵 + 长期纠纷档案 + 无限次无水印报告 (最划算)',
+    monthlyText: '开通 PRO 月卡 ¥9.9 / 月 (原价 ¥19.9 · 5折) · 30天集中守夜取证',
+    moreOptions: '<span>其他方案：</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 终身买断版 ¥39.9 (原价 ¥199 · 立省 ¥159.1)</a>'
+  },
+  en: {
+    title: '🌙 Overnight Noise Sentry Mode',
+    subtitle: '“Sleep tight while the system watches” · Auto-triggered forensic capture',
+    badTag: 'Manual Monitoring Pain',
+    badP: 'Sudden midnight noise (barks, thumps, bass vibrations) lasts only seconds. By the time you wake up and unlock your phone, the noise is gone—leaving no proof.',
+    goodTag: 'PRO Sentry Solution',
+    goodP: 'Plug in an old phone by your bedside. <strong>The moment sound spikes past threshold, it automatically records audio with SHA-256 & GPS stamps</strong>. Wake up to a complete violation log.',
+    prevTitle: 'Sentry Standby Parameters (PRO)',
+    statThLbl: 'Threshold', statThVal: '45 dB (Night Target)',
+    statDelayLbl: 'Trigger Delay', statDelayVal: '≥ 3s Sustained',
+    statBufferLbl: 'Post Buffer', statBufferVal: '10s Tail Record',
+    statTamperLbl: 'Anti-Tamper', statTamperVal: 'SHA-256 + GPS',
+    yearlyText: '★ Upgrade PRO Yearly · $24.99 / yr (Reg. $59.99 · Save 60%)',
+    yearlySub: 'All-access: Overnight Sentry + Multi-Day Dossier + Unlimited Reports',
+    monthlyText: 'PRO Monthly Pass · $4.99 / mo (Reg. $9.99) · 30-Day Intensive Surveillance',
+    moreOptions: '<span>Other options:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Lifetime All-Access · $79.99 (Reg. $199)</a>'
+  },
+  es: {
+    title: '🌙 Modo Centinela de Ruido Nocturno',
+    subtitle: '“Duerme tranquilo mientras el sistema vigila” · Captura forense automática',
+    badTag: 'El dolor del monitoreo manual',
+    badP: 'Los ruidos nocturnos repentinos (ladridos, golpes, bajos) duran solo unos segundos. Para cuando despiertas y desbloqueas el teléfono, el ruido cesó sin dejar pruebas.',
+    goodTag: 'Solución PRO Centinela',
+    goodP: 'Deja un teléfono cargando en la mesita de noche. <strong>Al superar el umbral fijado, graba automáticamente con sello SHA-256 y GPS</strong>. Al despertar tendrás el registro completo.',
+    prevTitle: 'Parámetros de Espera Centinela (PRO)',
+    statThLbl: 'Umbral', statThVal: '45 dB (Objetivo Nocturno)',
+    statDelayLbl: 'Retardo de Activación', statDelayVal: '≥ 3s Continuos',
+    statBufferLbl: 'Búfer Posterior', statBufferVal: '10s Cola de Silencio',
+    statTamperLbl: 'Seguridad Forense', statTamperVal: 'SHA-256 + GPS',
+    yearlyText: '★ Suscripción PRO Anual · $24.99 / año (Ahorra 60%)',
+    yearlySub: 'Centinela nocturno + Expediente multisesión + Informes ilimitados',
+    monthlyText: 'Pase Mensual PRO · $4.99 / mes · Vigilancia intensiva 30 días',
+    moreOptions: '<span>Otras opciones:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Acceso Vitalicio · $79.99</a>'
+  },
+  fr: {
+    title: '🌙 Mode Sentinelle de Bruit Nocturne',
+    subtitle: '« Dormez sur vos deux oreilles » · Enregistrement médico-légal automatique',
+    badTag: 'La corvée de la veille manuelle',
+    badP: 'Les bruits nocturnes soudains (aboiements, coups, basses) ne durent que quelques secondes. Le temps de déverrouiller votre téléphone, le silence est revenu sans preuve.',
+    goodTag: 'Solution PRO Sentinelle',
+    goodP: 'Branchez un téléphone sur votre table de chevet. <strong>Dès que le seuil est dépassé, il enregistre automatiquement avec horodatage SHA-256 et GPS</strong>. Retrouvez un journal complet au réveil.',
+    prevTitle: 'Paramètres Sentinelle en Veille (PRO)',
+    statThLbl: 'Seuil', statThVal: '45 dB (Cible Nocturne)',
+    statDelayLbl: 'Délai Déclenchement', statDelayVal: '≥ 3s Soutenu',
+    statBufferLbl: 'Marge Post-Bruit', statBufferVal: '10s Enreg. Queue',
+    statTamperLbl: 'Inviolabilité', statTamperVal: 'SHA-256 + GPS',
+    yearlyText: '★ Forfait Annuel PRO · 24,99 $ / an (Économisez 60 %)',
+    yearlySub: 'Accès total : Sentinelle de nuit + Dossier multi-jours + Rapports illimités',
+    monthlyText: 'Passe Mensuel PRO · 4,99 $ / mois · Surveillance intensive 30 jours',
+    moreOptions: '<span>Autres formules :</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Accès à Vie · 79,99 $</a>'
+  },
+  de: {
+    title: '🌙 Nachtlärm-Wächter-Modus (Sentry)',
+    subtitle: '„Schlafen Sie beruhigt, das System wacht“ · Automatische Beweiserfassung',
+    badTag: 'Das Problem manueller Überwachung',
+    badP: 'Plötzlicher Nachtlärm (Bellen, Poltern, Bass) dauert oft nur Sekunden. Bis Sie aufwachen und das Telefon entsperren, ist der Lärm vorbei – ganz ohne Beweis.',
+    goodTag: 'PRO Wächter-Lösung',
+    goodP: 'Altes Smartphone am Nachttisch anschließen. <strong>Sobald der Grenzwert überschritten wird, startet die Aufnahme automatisch samt SHA-256- und GPS-Siegel</strong>. Am Morgen liegt das Protokoll bereit.',
+    prevTitle: 'Wächter-Bereitschaftsparameter (PRO)',
+    statThLbl: 'Grenzwert', statThVal: '45 dB (Nachtziel)',
+    statDelayLbl: 'Auslöseverzögerung', statDelayVal: '≥ 3s Anhaltend',
+    statBufferLbl: 'Nachlaufpuffer', statBufferVal: '10s Nachaufnahme',
+    statTamperLbl: 'Rechtssicher', statTamperVal: 'SHA-256 + GPS',
+    yearlyText: '★ PRO Jahreslizenz · $24.99 / Jahr (60% sparen)',
+    yearlySub: 'Vollzugriff: Nachtwächter + Mehrtägiges Dossier + Unbegrenzte Berichte',
+    monthlyText: 'PRO Monatspass · $4.99 / Monat · 30 Tage Intensivüberwachung',
+    moreOptions: '<span>Weitere Optionen:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Lebenslange Lizenz · $79.99</a>'
+  },
+  ja: {
+    title: '🌙 夜間騒音監視モード (Sentry Mode)',
+    subtitle: '「眠っている間もシステムが見張り」 · 基準超過時の自動証拠保全',
+    badTag: '手動監視の限界',
+    badP: '深夜の突発的な騒音（吠え声、足音、重低音）は数秒で収まります。目覚めてスマホのロックを解除する頃には音が止まり、証拠を残せません。`',
+    goodTag: 'PRO 監視ソリューション',
+    goodP: '枕元に充電中の端末を置くだけ。<strong>騒音がしきい値を超えた瞬間にSHA-256＆GPS刻印付きで自動録音</strong>。起床時に違反ログを確認できます。',
+    prevTitle: '監視待機パラメータ (PRO専用)',
+    statThLbl: 'しきい値', statThVal: '45 dB (夜間基準)',
+    statDelayLbl: '検知継続時間', statDelayVal: '≥ 3秒 継続',
+    statBufferLbl: '減衰バッファ', statBufferVal: '10秒 余韻録音',
+    statTamperLbl: '改ざん防止', statTamperVal: 'SHA-256 + GPS',
+    yearlyText: '★ PRO年間パス · $24.99 / 年 (60%オフ)',
+    yearlySub: '全機能利用可能：夜間監視＋複数日証拠ファイル＋無制限レポート',
+    monthlyText: 'PRO月間パス · $4.99 / 月 · 30日間集中監視',
+    moreOptions: '<span>その他のプラン：</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 永久ライセンス · $79.99</a>'
+  },
+  ko: {
+    title: '🌙 야간 소음 보초 모드 (Sentry Mode)',
+    subtitle: '“잠든 사이에도 시스템이 감시” · 기준 초과 시 자동 증거 채증',
+    badTag: '수동 감시의 한계',
+    badP: '갑작스러운 야간 소음(개 짖는 소리, 쿵쿵거림, 베이스 진동)은 수초 만에 끝납니다. 잠에서 깨어 잠금을 풀고 녹음할 때는 이미 소리가 멈춰 증거를 잡을 수 없습니다.',
+    goodTag: 'PRO 보초 감시 솔루션',
+    goodP: '침대 옆에 충전기를 꽂아두기만 하세요. <strong>설정한 데시벨 초과 즉시 SHA-256 및 GPS가 각인된 녹음이 자동 시작</strong>되어 아침에 위반 기록부를 확인하실 수 있습니다.',
+    prevTitle: '보초 대기 매개변수 (PRO 전용)',
+    statThLbl: '임계값', statThVal: '45 dB (야간 기준)',
+    statDelayLbl: '감지 지연', statDelayVal: '≥ 3초 지속',
+    statBufferLbl: '여운 버퍼', statBufferVal: '10초 후속 녹음',
+    statTamperLbl: '위변조 방지', statTamperVal: 'SHA-256 + GPS',
+    yearlyText: '★ PRO 연간 라이선스 · $24.99 / 년 (60% 할인)',
+    yearlySub: '전 기능 무제한: 밤샘 보초 + 다일 분쟁 기록 보관소 + 워터마크 없는 보고서',
+    monthlyText: 'PRO 월간 패스 · $4.99 / 월 · 30일 집중 감시',
+    moreOptions: '<span>기타 플랜:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 평생 이용권 · $79.99</a>'
+  },
+  vi: {
+    title: '🌙 Chế độ lính gác tiếng ồn ban đêm (Sentry)',
+    subtitle: '“Bạn cứ yên giấc, hệ thống sẽ canh gác” · Tự động ghi âm khi vượt ngưỡng',
+    badTag: 'Bất tiện khi canh gác thủ công',
+    badP: 'Tiếng ồn đột ngột giữa đêm (chó sủa, tiếng đập, âm trầm) chỉ kéo dài vài giây. Khi bạn thức giấc và mở khóa điện thoại thì tiếng ồn đã dứt, không lưu được bằng chứng.',
+    goodTag: 'Giải pháp PRO Lính gác',
+    goodP: 'Đặt điện thoại sạc cạnh đầu giường. <strong>Ngay khi âm thanh vượt ngưỡng, máy tự động ghi âm kèm dấu SHA-256 & GPS</strong>. Thức dậy nhận ngay bảng nhật ký vi phạm đầy đủ.',
+    prevTitle: 'Thông số lính gác sẵn sàng (PRO)',
+    statThLbl: 'Ngưỡng kích hoạt', statThVal: '45 dB (Mục tiêu đêm)',
+    statDelayLbl: 'Độ trễ kích hoạt', statDelayVal: '≥ 3 giây liên tục',
+    statBufferLbl: 'Bộ đệm kết thúc', statBufferVal: '10 giây đuôi êm',
+    statTamperLbl: 'Chống giả mạo', statTamperVal: 'SHA-256 + GPS',
+    yearlyText: '★ Nâng cấp PRO năm · $24.99 / năm (Tiết kiệm 60%)',
+    yearlySub: 'Truy cập trọn gói: Lính gác đêm + Hồ sơ nhiều ngày + Báo cáo không giới hạn',
+    monthlyText: 'Vé tháng PRO · $4.99 / tháng · 30 ngày giám sát tập trung',
+    moreOptions: '<span>Lựa chọn khác:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Trọn đời · $79.99</a>'
+  },
+  th: {
+    title: '🌙 โหมดเฝ้าระวังเสียงรบกวนยามค่ำคืน (Sentry Mode)',
+    subtitle: '“หลับให้สบาย ให้ระบบทำหน้าที่เฝ้ายามแทนคุณ” · บันทึกอัตโนมัติเมื่อเกินเกณฑ์',
+    badTag: 'ปัญหาของการเฝ้ารออัดเสียงเอง',
+    badP: 'เสียงดังยามดึกกะทันหัน (เสียงหมาเห่า เสียงกระแทก เสียงเบส) มักดังเพียงไม่กี่วินาที กว่าคุณจะตื่นและปลดล็อกมือถือ เสียงก็หยุดไปแล้ว ทำให้ไม่มีหลักฐาน.',
+    goodTag: 'โซลูชัน PRO เฝ้าระวังยามค่ำคืน',
+    goodP: 'เสียบสายชาร์จวางไว้ข้างเตียง <strong>ทันทีที่เสียงดังเกินเกณฑ์ที่ตั้งไว้ ระบบจะบันทึกเสียงอัตโนมัติพร้อมประทับเวลา SHA-256 และ GPS</strong> เช้ามาตรวจดูบันทึกได้ทันที.',
+    prevTitle: 'พารามิเตอร์การเฝ้าระวัง (PRO ตั้งค่าล่วงหน้า)',
+    statThLbl: 'เกณฑ์เดซิเบล', statThVal: '45 dB (เป้าหมายกลางคืน)',
+    statDelayLbl: 'ระยะเวลาหน่วง', statDelayVal: '≥ 3 วินาทีต่อเนื่อง',
+    statBufferLbl: 'บัฟเฟอร์หลังหยุด', statBufferVal: '10 วินาทีท้าย',
+    statTamperLbl: 'ป้องกันการแก้ไข', statTamperVal: 'SHA-256 + GPS',
+    yearlyText: '★ อัปเกรด PRO รายปี · $24.99 / ปี (ประหยัด 60%)',
+    yearlySub: 'เข้าถึงเต็มรูปแบบ: เฝ้าระวังทั้งคืน + แฟ้มคดีหลายวัน + รายงานไร้ลายน้ำไม่จำกัด',
+    monthlyText: 'บัตรผ่าน PRO รายเดือน · $4.99 / เดือน · เฝ้าระวังเข้มข้น 30 วัน',
+    moreOptions: '<span>ตัวเลือกอื่น:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 ตลอดชีพ · $79.99</a>'
+  }
+};
 
 function openSentryGatingModal() {
   const modal = document.getElementById('sentryModal');
   if (!modal) return;
   const isChina = isChinaPricingUser();
-  const isZh = (appLanguage === 'zh-CN');
+  const rawLang = String(appLanguage || '').toLowerCase();
+  const langKey = rawLang.startsWith('zh') ? 'zh' : (rawLang.split('-')[0] || 'en');
+  const d = SENTRY_MODAL_I18N[langKey] || SENTRY_MODAL_I18N.en;
+
   const titleEl = document.getElementById('sentryModalTitle');
   const subEl = document.getElementById('sentryModalSubtitle');
   const badTag = document.getElementById('sentryBadTag');
@@ -9667,29 +9988,35 @@ function openSentryGatingModal() {
   const btnMonthlyText = document.getElementById('sentryBtnMonthlyText');
   const moreOpts = document.getElementById('sentryMoreOptions');
 
-  if (titleEl) titleEl.textContent = isZh ? '🌙 夜间噪音哨兵模式 (Sentry Mode)' : '🌙 Overnight Noise Sentry Mode';
-  if (subEl) subEl.textContent = isZh ? '“睡你的觉，让系统替你守夜” · 超标自动唤醒抓现行' : '“Sleep tight while the system watches” · Auto-triggered forensic capture';
-  if (badTag) badTag.textContent = isZh ? '人工盯守之痛' : 'Manual Monitoring Pain';
-  if (badP) badP.textContent = isZh
-    ? '突发邻里噪音、恶犬吠叫、半夜重低音往往只有几秒。等你惊醒摸出手机、解开锁屏、打开录音，声音早已停止，抓不到任何违规证据。'
-    : 'Sudden midnight noise (barks, thumps, bass vibrations) lasts only seconds. By the time you wake up and unlock your phone, the noise is gone—leaving no proof.';
-  if (goodTag) goodTag.textContent = isZh ? 'PRO 哨兵方案' : 'PRO Sentry Solution';
-  if (goodP) goodP.innerHTML = isZh
-    ? '旧手机插上充电器，静置床头待命。<strong>设定分贝阈值，突发超标瞬间全自动抓取音频并加盖时间戳</strong>，静音后自动封存；醒来直接查看《整夜违规超标流水单》。'
-    : 'Plug in an old phone by your bedside. <strong>The moment sound spikes past threshold, it automatically records audio with SHA-256 & GPS stamps</strong>. Wake up to a complete violation log.';
-  if (prevTitle) prevTitle.textContent = isZh ? '哨兵待命参数 (PRO 专属已预设)' : 'Sentry Standby Parameters (PRO)';
+  if (titleEl) titleEl.textContent = d.title;
+  if (subEl) subEl.textContent = d.subtitle;
+  if (badTag) badTag.textContent = d.badTag;
+  if (badP) badP.textContent = d.badP;
+  if (goodTag) goodTag.textContent = d.goodTag;
+  if (goodP) goodP.innerHTML = d.goodP;
+  if (prevTitle) prevTitle.textContent = d.prevTitle;
 
-  // Pricing based strictly on Edge IP
+  setText('sentryStatThLbl', d.statThLbl);
+  setText('sentryStatThVal', d.statThVal);
+  setText('sentryStatDelayLbl', d.statDelayLbl);
+  setText('sentryStatDelayVal', d.statDelayVal);
+  setText('sentryStatBufferLbl', d.statBufferLbl);
+  setText('sentryStatBufferVal', d.statBufferVal);
+  setText('sentryStatTamperLbl', d.statTamperLbl);
+  setText('sentryStatTamperVal', d.statTamperVal);
+
+  // Pricing based strictly on Edge IP / language
   if (isChina) {
-    if (btnYearlyText) btnYearlyText.textContent = isZh ? '★ 微信特惠开通 PRO 年卡 ¥19.9 / 年 (原价 ¥59.9 · 立省 67%)' : '★ WeChat Special PRO Yearly ¥19.90/yr (Reg. ¥59.90 · Save 67%)';
-    if (btnYearlySub) btnYearlySub.textContent = isZh ? '折合 ¥1.6/mo · 解锁整夜哨兵 + 长期纠纷档案 + 无限次无水印报告 (最划算)' : 'Only ¥1.6/mo · Overnight Sentry + Legal Dossier + Unlimited Reports';
-    if (btnMonthlyText) btnMonthlyText.textContent = isZh ? '开通 PRO 月卡 ¥9.9 / 月 (原价 ¥19.9 · 5折) · 30天集中守夜取证' : 'PRO Monthly Pass ¥9.90/mo (Reg. ¥19.90) · 30-Day Intensive Surveillance';
-    if (moreOpts) moreOpts.innerHTML = isZh ? '<span>其他方案：</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 终身买断版 ¥39.9 (原价 ¥199 · 立省 ¥159.1)</a>' : '<span>Other options:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Lifetime Pass ¥39.90 (Reg. ¥199)</a>';
+    const zhD = SENTRY_MODAL_I18N.zh;
+    if (btnYearlyText) btnYearlyText.textContent = zhD.yearlyText;
+    if (btnYearlySub) btnYearlySub.textContent = zhD.yearlySub;
+    if (btnMonthlyText) btnMonthlyText.textContent = zhD.monthlyText;
+    if (moreOpts) moreOpts.innerHTML = zhD.moreOptions;
   } else {
-    if (btnYearlyText) btnYearlyText.textContent = isZh ? '★ 升级 PRO 年度版 $24.99/yr (原价 $59.99 · 省 60%)' : '★ Upgrade PRO Yearly $24.99/yr (Reg. $59.99 · Save 60%)';
-    if (btnYearlySub) btnYearlySub.textContent = isZh ? '全功能畅享：整夜哨兵 + 多日纠纷档案 + 无限次无水印报告' : 'All-access: Overnight Sentry + Multi-Day Dossier + Unlimited Reports';
-    if (btnMonthlyText) btnMonthlyText.textContent = isZh ? '月度体验卡 $4.99/mo (原价 $9.99) · 30天集中监测' : 'Monthly Pass $4.99/mo (Reg. $9.99) · 30-Day Intensive Surveillance';
-    if (moreOpts) moreOpts.innerHTML = isZh ? '<span>其他方案：</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 终身买断版 $79.99 (原价 $199)</a>' : '<span>Other options:</span><a href="javascript:void(0)" onclick="checkoutSentry(\'lifetime\')">💎 Lifetime All-Access $79.99 (Reg. $199)</a>';
+    if (btnYearlyText) btnYearlyText.textContent = d.yearlyText;
+    if (btnYearlySub) btnYearlySub.textContent = d.yearlySub;
+    if (btnMonthlyText) btnMonthlyText.textContent = d.monthlyText;
+    if (moreOpts) moreOpts.innerHTML = d.moreOptions;
   }
   modal.classList.add('show');
   trackEvent('sentry_modal_opened', { plan: currentPlan });

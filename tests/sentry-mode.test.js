@@ -45,8 +45,28 @@ test('Sentry mode CSS classes exist in assets/soundtest.css', () => {
   const css = fs.readFileSync(path.join(__dirname, '..', 'assets', 'soundtest.css'), 'utf8');
   assert.ok(css.includes('.sentry-workstation-panel'), '.sentry-workstation-panel class styled');
   assert.ok(css.includes('.sentry-pipeline-banner'), '.sentry-pipeline-banner class styled');
+  assert.ok(css.includes('.sentry-pipeline-steps'), '.sentry-pipeline-steps class styled');
+  assert.ok(css.includes('grid-template-columns'), '.sentry-pipeline-steps uses responsive grid columns');
   assert.ok(css.includes('.sentry-hud-card'), '.sentry-hud-card class styled');
   assert.ok(css.includes('.sentry-led-dot'), '.sentry-led-dot class styled');
   assert.ok(css.includes('.sentry-preset-btn'), '.sentry-preset-btn class styled');
   assert.ok(css.includes('.sentry-incidents-list'), '.sentry-incidents-list class styled');
+});
+
+test('Sentry surveillance workstation covers all 9 languages in engine and modal', () => {
+  const sentryEngineCode = fs.readFileSync(path.join(__dirname, '..', 'assets', 'sentry-engine.js'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '..', 'soundtest.html'), 'utf8');
+  const locales = ['zh', 'en', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th'];
+
+  // Check engine i18n
+  for (const loc of locales) {
+    assert.ok(sentryEngineCode.includes(`${loc}: {`), `sentry-engine.js includes i18n block for ${loc}`);
+  }
+
+  // Check soundtest.html SENTRY_MODE_COPY & SENTRY_MODAL_I18N
+  assert.ok(html.includes('const SENTRY_MODE_COPY = {'), 'soundtest.html defines SENTRY_MODE_COPY');
+  assert.ok(html.includes('const SENTRY_MODAL_I18N = {'), 'soundtest.html defines SENTRY_MODAL_I18N');
+  for (const loc of locales) {
+    assert.ok(html.includes(`${loc}: {`), `soundtest.html SENTRY dictionaries cover ${loc}`);
+  }
 });
