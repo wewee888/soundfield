@@ -2183,7 +2183,7 @@
           </button>
         </div>
         <div style="font-size: 11px; color: #94a3b8; line-height: 1.5;">
-          💡 <strong>优惠码生效规则：</strong>选择优惠后，邮件中将自动插入高转化专属礼遇横幅，直达链接自动附带 <code style="color:#2cf0c1;">?discount=CODE</code>。在 Creem 后台（<code style="color:#fbbf24;">Discounts</code> 菜单）录入对应折扣码，海外用户点击进入收银台即可直接立减抵扣！
+          💡 <strong>Creem 优惠码联动机制：</strong>Creem 官方后台原生支持 <code style="color:#fbbf24;">Discounts</code> 功能。选择优惠后，邮件中将自动插入高转化专属礼遇横幅，直达链接自动附带 Creem 官方立减参数 <code style="color:#2cf0c1;">?discount_code=CODE</code>。只需在 Creem 商家后台（Discounts 菜单）创建对应的折扣码（如 SAVE20、VIP15），海外用户点击邮件直达链接进入收银台即可直接立减抵扣！
         </div>
       </div>
 
@@ -4304,12 +4304,12 @@
         document.getElementById('dunDiscountTag').textContent = `折后价: ${s.discountedFee} (已立省 ${pct}%)`;
         document.getElementById('dunDiscountTag').style.color = '#2cf0c1';
 
-        // Update checkout URL with discount param
+        // Update checkout URL with Creem official discount_code param
         let url = s.baseCheckoutUrl;
         if (code) {
-          url = url.replace(/([?&])discount=[^&]*/, '');
+          url = url.replace(/([?&])(discount_code|discount)=[^&]*/g, '');
           const cleanSep = url.includes('?') ? '&' : '?';
-          url = `${url}${cleanSep}discount=${encodeURIComponent(code)}`;
+          url = `${url}${cleanSep}discount_code=${encodeURIComponent(code)}`;
         }
         s.checkoutUrl = url;
         document.getElementById('dunCheckoutUrl').value = url;
