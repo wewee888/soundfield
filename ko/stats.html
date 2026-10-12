@@ -105,10 +105,10 @@
       <p>Three Hero versions are live at <strong>/a/</strong>, <strong>/b/</strong>, <strong>/c/</strong>. Share each link with a different audience (Twitter, Reddit, email, etc.) and let the click count decide.</p>
       <p style="margin-top:8px">The version with the most <strong>start_monitoring</strong> clicks wins. When one is clearly ahead (2× the others, or &gt;1000 clicks per variant), promote it to the homepage at <strong>/index.html</strong>.</p>
       <div class="links">
-        <a class="live" href="..//a/" target="_blank" rel="noopener">→ A · Lock the noise. Hold the proof.</a>
-        <a class="live" href="..//b/" target="_blank" rel="noopener">→ B · They won't stop the noise. You can stop the silence.</a>
-        <a class="live" href="..//c/" target="_blank" rel="noopener">→ C · Quiet, on record.</a>
-        <a href="..//api/stats" target="_blank" rel="noopener">→ Raw JSON</a>
+        <a class="live" href="/a/" target="_blank" rel="noopener">→ A · Lock the noise. Hold the proof.</a>
+        <a class="live" href="/b/" target="_blank" rel="noopener">→ B · They won't stop the noise. You can stop the silence.</a>
+        <a class="live" href="/c/" target="_blank" rel="noopener">→ C · Quiet, on record.</a>
+        <a href="/api/stats" target="_blank" rel="noopener">→ Raw JSON</a>
       </div>
     </div>
 
@@ -234,7 +234,7 @@
 
       const variantsHost = document.getElementById('variants-host');
       if (data.lifetime_total === 0) {
-        variantsHost.innerHTML = '<div class="empty">No clicks yet. Share the three links (<a href="..//a/" style="color:var(--accent)">/a/</a> · <a href="..//b/" style="color:var(--accent)">/b/</a> · <a href="..//c/" style="color:var(--accent)">/c/</a>) and the click counts will appear here.</div>';
+        variantsHost.innerHTML = '<div class="empty">No clicks yet. Share the three links (<a href="/a/" style="color:var(--accent)">/a/</a> · <a href="/b/" style="color:var(--accent)">/b/</a> · <a href="/c/" style="color:var(--accent)">/c/</a>) and the click counts will appear here.</div>';
       } else {
         variantsHost.innerHTML = totals.map((t) => {
           const isWinner = t.k === winner.k && t.total > 0;

@@ -81,7 +81,7 @@
     `;
     host.querySelectorAll('.recent-pill').forEach((pill) => {
       pill.addEventListener('click', () => {
-        const path = pill.getAttribute('data-recent-path') || '../use-cases/';
+        const path = pill.getAttribute('data-recent-path') || '/use-cases/';
         window.location.href = path;
       });
     });
@@ -690,10 +690,6 @@
     const langKey = pathMatch ? pathMatch[1] : (SCENARIO_DATA.neighbor[langCode] ? langCode : 'en');
     const isZh = langKey === 'zh';
 
-    const appLink = document.querySelector('.site-nav a[href*="soundtest.html"]');
-    const isSubdir = appLink && appLink.getAttribute('href').startsWith('../');
-    const basePrefix = isSubdir ? '../' : '';
-
     const buttons = wb.querySelectorAll('.scenario-pill-btn');
     const titleEl = document.getElementById('wb-preview-title');
     const descEl = document.getElementById('wb-preview-desc');
@@ -729,12 +725,12 @@
       if (s4El) s4El.textContent = copy.s4;
 
       if (ctaBtn) {
-        ctaBtn.href = `${basePrefix}soundtest.html?scenario=${key}&lang=${langKey}`;
+        ctaBtn.href = `/soundtest.html?scenario=${key}${langKey && langKey !== 'en' ? '&lang=' + langKey : ''}`;
         const ctaSpan = ctaBtn.querySelector('span');
         if (ctaSpan) ctaSpan.textContent = copy.cta;
       }
       if (guideBtn) {
-        guideBtn.href = `${basePrefix}use-cases/${data.path}`;
+        guideBtn.href = `/use-cases/${langKey && langKey !== 'en' ? langKey + '/' : ''}${data.path}`;
         guideBtn.textContent = copy.guide;
       }
 
@@ -761,7 +757,7 @@
         if (titleEl) titleEl.textContent = (isZh ? '自定义场景：' : 'Custom Scenario: ') + val;
         if (descEl) descEl.textContent = isZh ? '正在根据您的输入匹配声学滤波与防伪可信存证参数。' : 'Configuring acoustic filters and tamper-evident documentation rules for your input.';
         if (ctaBtn) {
-          ctaBtn.href = `${basePrefix}soundtest.html?scenario=custom&note=${encodeURIComponent(val)}&lang=${langKey}`;
+          ctaBtn.href = `/soundtest.html?scenario=custom&note=${encodeURIComponent(val)}${langKey && langKey !== 'en' ? '&lang=' + langKey : ''}`;
           const ctaSpan = ctaBtn.querySelector('span');
           if (ctaSpan) ctaSpan.textContent = isZh ? `启动「${val.slice(0, 8)}」取证` : `Launch for "${val.slice(0, 10)}"`;
         }
@@ -778,12 +774,9 @@
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const q = (input?.value || '').trim();
-      const appLink = document.querySelector('.site-nav a[href*="soundtest.html"]');
-      const isSubdir = appLink && appLink.getAttribute('href').startsWith('../');
-      const basePrefix = isSubdir ? '../' : '';
       const target = q
-        ? `${basePrefix}use-cases/?q=${encodeURIComponent(q)}`
-        : `${basePrefix}use-cases/`;
+        ? `/use-cases/?q=${encodeURIComponent(q)}`
+        : `/use-cases/`;
       window.location.href = target;
     });
   }
@@ -2267,17 +2260,13 @@
     const pathname = window.location.pathname || '';
     if (pathname.endsWith('soundtest.html') || pathname.endsWith('camera.html')) return;
 
-    // Detect if we are in a locale subdirectory (e.g. /zh/, /en/, /de/) or /use-cases/
-    const isSubdir = !/^\/(?:index\.html)?$/.test(pathname) && (/^\/([a-z]{2})\//.test(pathname) || /^\/use-cases\//.test(pathname));
-    const prefix = isSubdir ? '../' : '';
-
     const criticalUrls = [
-      prefix + 'soundtest.html',
-      prefix + 'assets/soundtest.css',
-      prefix + 'assets/layout-flow.css',
-      prefix + 'camera.html',
-      prefix + 'assets/camera.css',
-      prefix + 'assets/camera.js'
+      '/soundtest.html',
+      '/assets/soundtest.css',
+      '/assets/layout-flow.css',
+      '/camera.html',
+      '/assets/camera.css',
+      '/assets/camera.js'
     ];
 
     const prefetchUrl = (url, asType = '') => {
@@ -2334,7 +2323,7 @@
         if (!document.querySelector('link[rel="prerender"][href*="soundtest.html"]')) {
           const prerender = document.createElement('link');
           prerender.rel = 'prerender';
-          prerender.href = prefix + 'soundtest.html';
+          prerender.href = '/soundtest.html';
           document.head.appendChild(prerender);
         }
       } catch (_) {}

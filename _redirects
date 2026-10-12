@@ -26,12 +26,10 @@
 /th/assets/* /assets/:splat 301
 /vi/assets/* /assets/:splat 301
 
-# --- Doc pages: .html → clean URL (no more 308 chain) ---
-# Cloudflare Pages auto-strips .html via 308, which feels broken to users.
-# Explicit 302 lets us serve the canonical URL directly.
-/samples.html /samples/ 302
-/accuracy.html /accuracy/ 302
-/auth.html /auth/ 302
+# --- Doc pages: .html → clean URL (prevent double redirect chain & directory illusion) ---
+/samples.html /samples 301
+/accuracy.html /accuracy 301
+/auth.html /auth 301
 /compliance.html /terms.html 301
 /compliance /terms.html 301
 /compliance/ /terms.html 301
@@ -39,14 +37,15 @@
 /zh/compliance/ /zh/terms.html 301
 /en/compliance.html /terms.html 301
 /en/compliance/ /terms.html 301
-/download.html /download/ 302
-/launch-metrics.html /launch-metrics/ 302
-/monetization.html /monetization/ 302
-/standards.html /standards/ 302
-/changelog.html /changelog/ 302
-/disclaimer.html /disclaimer/ 302
-/privacy.html /privacy/ 302
-/refund.html /refund/ 302
-/terms.html /terms/ 302
-/about.html /about/ 302
-/noise-levels.html /noise-levels/ 302
+/download.html /download 301
+/launch-metrics.html /launch-metrics 301
+/monetization.html /monetization 301
+/standards.html /standards 301
+/changelog.html /changelog 301
+/disclaimer.html /disclaimer 301
+/privacy.html /privacy 301
+/refund.html /refund 301
+/terms.html /terms 301
+/about.html /about 301
+/noise-levels.html /noise-levels 301
+
