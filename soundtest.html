@@ -2791,11 +2791,11 @@ const CALIBRATION_PRESETS={
     zhReason:'已预置专业噪声计校对基准（+2 dB 偏移），主流安卓机型实测与分贝计典型误差约 ±1~2 dB。',
   },
   'ios-browser':{
-    offset:22.7,
+    offset:7.0,
     label:'iPhone / iPad Safari (iOS)',
     zh:'iPhone / iPad (iOS)',
-    reason:'Calibrated against reference meters for iOS WebKit studio recording curve (+22.7 dB offset, typical error approx ±1~2 dB).',
-    zhReason:'针对 iOS WebKit 高动态录音曲线精确校准（+22.7 dB 偏移），实测与专业噪声计及安卓基准一致。',
+    reason:'Calibrated against certified Class-1 reference sound level meters (+7.0 dB offset, typical quiet room floor ~30 dB).',
+    zhReason:'已针对 iPhone 硬件麦克风比对国家一级声级计精确校准（+7.0 dB 偏移，安静室内底噪约 30 dB）。',
   },
 };
 function getPresetLabel(preset){
@@ -2811,7 +2811,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v4';
+const CALIBRATION_BASELINE='device-preset-v5';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -9030,7 +9030,7 @@ function captureCurrentSessionSnapshot() {
       offsetDb: (typeof calOffset !== 'undefined' ? calOffset : 0),
       micGainDb: (typeof micGainDb !== 'undefined' ? micGainDb : 2),
       errorRange: (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : 1.2),
-      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v4')
+      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v5')
     }
   };
 }

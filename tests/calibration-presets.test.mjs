@@ -10,15 +10,15 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   const adminHtml = await fs.readFile(path.join(projectRoot, 'admin.html'), 'utf-8');
   const reportCertJs = await fs.readFile(path.join(projectRoot, 'assets', 'report-cert-engine.js'), 'utf-8');
 
-  // 1. Verify CALIBRATION_PRESETS contains iOS calibrated offset 22.7 dB and laptop compensation 38 dB
+  // 1. Verify CALIBRATION_PRESETS contains iOS calibrated offset 7.0 dB and laptop compensation 38 dB
   assert.ok(soundtestHtml.includes("'ios-browser'"), 'ios-browser preset must exist');
-  assert.ok(soundtestHtml.includes('offset:22.7'), 'ios-browser offset must be calibrated to 22.7 dB');
+  assert.ok(soundtestHtml.includes('offset:7.0') || soundtestHtml.includes('offset:7'), 'ios-browser offset must be calibrated to 7.0 dB');
   assert.ok(soundtestHtml.includes("'laptop-internal-mic'"), 'laptop-internal-mic preset must exist');
   assert.ok(soundtestHtml.includes('offset:38'), 'laptop-internal-mic offset must provide +38 dB compensation');
 
-  // 2. Verify CALIBRATION_BASELINE is bumped to v4 to ensure auto-refresh on existing devices
-  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v4'"), 'CALIBRATION_BASELINE must be device-preset-v4');
-  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v4')"), 'Snapshot preset fallback must be device-preset-v4');
+  // 2. Verify CALIBRATION_BASELINE is bumped to v5 to ensure auto-refresh on existing devices
+  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v5'"), 'CALIBRATION_BASELINE must be device-preset-v5');
+  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v5')"), 'Snapshot preset fallback must be device-preset-v5');
 
   // 3. Verify Slider ranges are expanded to accommodate offsets up to +45 dB
   const calRMatches = soundtestHtml.match(/id="calR"[^>]*max="45"/g) || soundtestHtml.match(/max="45"[^>]*id="calR"/g);
