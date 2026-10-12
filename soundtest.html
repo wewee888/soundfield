@@ -1326,6 +1326,24 @@
           <span class="settings-drawer-value" id="smV">1</span>
         </div>
       </div>
+      <!-- Metering Drawer Bottom Action Bar -->
+      <div class="settings-drawer-actions" style="margin-top:16px;padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#2cf0c1;font-weight:600">
+            <span style="font-size:13px">⚡</span>
+            <span id="sdAutoSaveNotice">滑动即自动保存至本机</span>
+          </div>
+          <span id="sdSaveStatusDot" style="font-size:11px;color:var(--tx2);font-family:monospace">已持久化同步</span>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap">
+          <button type="button" class="btn" id="sdBtnResetAllDefaults" onclick="resetAllSettingsToDefault()" style="height:32px;font-size:11px;padding:0 12px;border-color:rgba(251,191,36,0.4);color:#fbbf24">
+            <span>🔄</span> <span id="sdBtnResetAllText">恢复推荐默认设置</span>
+          </button>
+          <button type="button" class="btn b-cyan" id="sdBtnManualSave" onclick="saveSettingsExplicitly()" style="height:32px;font-size:11px;padding:0 14px">
+            <span>💾</span> <span id="sdBtnManualSaveText">立即保存</span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Reports Tab -->
@@ -3765,6 +3783,10 @@ function translateSettingsDrawer() {
   setText('sdLblPower', isZh ? '长时值守省电模式' : 'Long-Run Power Saver');
   setText('sdDescPower', isZh ? '连续监测超 8 分钟自动降低渲染帧率并防烫降耗' : 'Auto-dims display and optimizes polling after 8 min of continuous monitoring');
   setText('sdLblSm', isZh ? '波形平滑度' : 'Waveform Smoothing');
+  setText('sdAutoSaveNotice', isZh ? '滑动即自动保存至本机' : 'Auto-saves instantly to device');
+  setText('sdSaveStatusDot', isZh ? '已持久化同步' : 'Synced');
+  setText('sdBtnResetAllText', isZh ? '恢复推荐默认设置' : 'Restore Defaults');
+  setText('sdBtnManualSaveText', isZh ? '立即保存' : 'Save Now');
 
   // Reports Section
   setText('sdSecTitleReport', isZh ? '报告模板与存证底稿' : 'Report Templates & Dossier Settings');
@@ -6930,6 +6952,18 @@ const _saveStateImpl=function(){
       calibrationBaseline:CALIBRATION_BASELINE,
       records:DB.records.map(r=>({...r,url:undefined,time:r.time instanceof Date?r.time.toISOString():r.time}))
     }));
+    const dot = document.getElementById('sdSaveStatusDot');
+    if (dot) {
+      const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
+      dot.textContent = isZh ? '✅ 已保存' : '✅ Saved';
+      dot.style.color = '#2cf0c1';
+      setTimeout(() => {
+        if (dot) {
+          dot.textContent = isZh ? '已持久化同步' : 'Synced';
+          dot.style.color = 'var(--tx2)';
+        }
+      }, 1800);
+    }
   }catch(e){toast(typeof appLanguage==='string'&&appLanguage.startsWith('zh')?'本地存储空间不足，记录可能无法保存。':'Storage full. Records may not be saved.','warn');}
 };
 const _debouncedSave=(window.__sfUtils&&window.__sfUtils.debounce)
@@ -7006,49 +7040,55 @@ function loadState(){
       organizationName=s.organizationName||'';
       DB.records=(s.records||[]).map(r=>({...r,time:new Date(r.time)}));
     }
-    const el=id=>document.getElementById(id);
-    if(el('calR'))el('calR').value=calOffset;if(el('calV'))el('calV').textContent=(calOffset>=0?'+':'')+calOffset+' dB';
-    const micR=el('micR');
-    if(micR){micR.value=micGainDb;if(el('micV'))el('micV').textContent=micGainDb+' dB';}
-    if(el('thR'))el('thR').value=alertTh;if(el('thV'))el('thV').textContent=alertTh+' dB';
-    if(el('smR'))el('smR').value=smoothing;if(el('smV'))el('smV').textContent=smoothing;
-    el('alertTog')?.classList.toggle('on',alertsOn);
-    el('alertTog')?.setAttribute('aria-checked',alertsOn);
-    el('sustainedAlertTog')?.classList.toggle('on',sustainedAlertOn);
-    el('sustainedAlertTog')?.setAttribute('aria-checked',sustainedAlertOn);
-    const susOpts=el('sustainedAlertOpts');if(susOpts)susOpts.style.display=sustainedAlertOn?'flex':'none';
-    if(el('susAlertsR'))el('susAlertsR').value=sustainedAlertMinSeconds;if(el('susAlertsV'))el('susAlertsV').textContent=sustainedAlertMinSeconds+'s';
-    const susOpts2=el('sustainedAlertOpts2');if(susOpts2)susOpts2.style.display=sustainedAlertOn?'flex':'none';
-    if(el('susAlertsR2'))el('susAlertsR2').value=sustainedAlertMinSeconds;if(el('susAlertsV2'))el('susAlertsV2').textContent=sustainedAlertMinSeconds+'s';
-    el('autoRecTog')?.classList.toggle('on',autoRecOnThreshold);
-    el('autoRecTog')?.setAttribute('aria-checked',autoRecOnThreshold);
-    const autoOpts=el('autoRecOpts');if(autoOpts)autoOpts.style.display=autoRecOnThreshold?'flex':'none';
-    if(el('autoRecMinSR'))el('autoRecMinSR').value=autoRecMinSeconds;if(el('autoRecMinSV'))el('autoRecMinSV').textContent=autoRecMinSeconds+'s';
-    if(el('autoRecAfterStopSR'))el('autoRecAfterStopSR').value=autoRecAfterStopSeconds;if(el('autoRecAfterStopSV'))el('autoRecAfterStopSV').textContent=autoRecAfterStopSeconds+'s';
-    const t2=el('autoRecTog2');if(t2){t2.classList.toggle('on',autoRecOnThreshold);t2.setAttribute('aria-checked',autoRecOnThreshold);}
-    const autoOpts2=el('autoRecOpts2');if(autoOpts2)autoOpts2.style.display=autoRecOnThreshold?'flex':'none';
-    if(el('autoRecMinSR2'))el('autoRecMinSR2').value=autoRecMinSeconds;if(el('autoRecMinSV2'))el('autoRecMinSV2').textContent=autoRecMinSeconds+'s';
-    if(el('autoRecAfterStopSR2'))el('autoRecAfterStopSR2').value=autoRecAfterStopSeconds;if(el('autoRecAfterStopSV2'))el('autoRecAfterStopSV2').textContent=autoRecAfterStopSeconds+'s';
-    el('placeTog')?.classList.toggle('on',placeLookupOn);
-    el('placeTog')?.setAttribute('aria-checked',placeLookupOn);
-    syncPowerSaverToggle();
-    if(el('googleMapsKeyInput'))el('googleMapsKeyInput').value=googleMapsKey;
-    if(el('amapKeyInput'))el('amapKeyInput').value=amapKey;
-    if(el('baiduKeyInput'))el('baiduKeyInput').value=baiduKey;
-    if(el('reportTemplate'))el('reportTemplate').value=reportTemplate;
-    if(el('organizationNameInput'))el('organizationNameInput').value=organizationName;
-    const autoStop=el('autoStopMinutes');if(autoStop)autoStop.value=longMonitorPlan.autoStopMinutes||'';
-    const eventThreshold=el('eventThresholdDb');if(eventThreshold)eventThreshold.value=longMonitorPlan.eventThresholdDb||'';
-    const presetSelect=el('calibrationPresetSelect');
-    if(presetSelect)presetSelect.value=calibrationPresetKey;
-    syncSeg('weightSeg','data-weight',weighting);syncSeg('timeSeg','data-time',timeWeight);
-    setViz(curViz);syncEvidenceModeUi();updateWeightUi();renderPlanStatus();renderCalibrationPresetInfo();renderCalibrationHistory();
-    el('dayNightTog')?.classList.toggle('on',autoDayNightMode);el('dayNightTog')?.setAttribute('aria-checked',autoDayNightMode);
-    const dnOpts=el('dayNightOpts');if(dnOpts)dnOpts.style.display=autoDayNightMode?'flex':'none';
-    el('dayNightTog2')?.classList.toggle('on',autoDayNightMode);el('dayNightTog2')?.setAttribute('aria-checked',autoDayNightMode);
-    const dnOpts2=el('dayNightOpts2');if(dnOpts2)dnOpts2.style.display=autoDayNightMode?'flex':'none';
-    if(autoDayNightMode)syncDayNightBadge();
+    syncAllSettingsDrawerUi();
   }catch(e){console.error('[loadState]',e);toast(t('toasts.loadStateFailed', 'Failed to load history data. Started with empty records.'),'warn');}
+}
+
+function syncAllSettingsDrawerUi(){
+  const el=id=>document.getElementById(id);
+  if(el('calR'))el('calR').value=calOffset;if(el('calV'))el('calV').textContent=(calOffset>=0?'+':'')+calOffset+' dB';
+  const micR=el('micR');
+  if(micR){micR.value=micGainDb;if(el('micV'))el('micV').textContent=micGainDb+' dB';}
+  if(el('thR'))el('thR').value=alertTh;if(el('thV'))el('thV').textContent=alertTh+' dB';
+  if(el('smR'))el('smR').value=smoothing;if(el('smV'))el('smV').textContent=smoothing;
+  el('alertTog')?.classList.toggle('on',alertsOn);
+  el('alertTog')?.setAttribute('aria-checked',alertsOn);
+  el('sustainedAlertTog')?.classList.toggle('on',sustainedAlertOn);
+  el('sustainedAlertTog')?.setAttribute('aria-checked',sustainedAlertOn);
+  const susOpts=el('sustainedAlertOpts');if(susOpts)susOpts.style.display=sustainedAlertOn?'flex':'none';
+  if(el('susAlertsR'))el('susAlertsR').value=sustainedAlertMinSeconds;if(el('susAlertsV'))el('susAlertsV').textContent=sustainedAlertMinSeconds+'s';
+  const susOpts2=el('sustainedAlertOpts2');if(susOpts2)susOpts2.style.display=sustainedAlertOn?'flex':'none';
+  if(el('susAlertsR2'))el('susAlertsR2').value=sustainedAlertMinSeconds;if(el('susAlertsV2'))el('susAlertsV2').textContent=sustainedAlertMinSeconds+'s';
+  el('autoRecTog')?.classList.toggle('on',autoRecOnThreshold);
+  el('autoRecTog')?.setAttribute('aria-checked',autoRecOnThreshold);
+  const autoOpts=el('autoRecOpts');if(autoOpts)autoOpts.style.display=autoRecOnThreshold?'flex':'none';
+  if(el('autoRecMinSR'))el('autoRecMinSR').value=autoRecMinSeconds;if(el('autoRecMinSV'))el('autoRecMinSV').textContent=autoRecMinSeconds+'s';
+  if(el('autoRecAfterStopSR'))el('autoRecAfterStopSR').value=autoRecAfterStopSeconds;if(el('autoRecAfterStopSV'))el('autoRecAfterStopSV').textContent=autoRecAfterStopSeconds+'s';
+  const t2=el('autoRecTog2');if(t2){t2.classList.toggle('on',autoRecOnThreshold);t2.setAttribute('aria-checked',autoRecOnThreshold);}
+  const autoOpts2=el('autoRecOpts2');if(autoOpts2)autoOpts2.style.display=autoRecOnThreshold?'flex':'none';
+  if(el('autoRecMinSR2'))el('autoRecMinSR2').value=autoRecMinSeconds;if(el('autoRecMinSV2'))el('autoRecMinSV2').textContent=autoRecMinSeconds+'s';
+  if(el('autoRecAfterStopSR2'))el('autoRecAfterStopSR2').value=autoRecAfterStopSeconds;if(el('autoRecAfterStopSV2'))el('autoRecAfterStopSV2').textContent=autoRecAfterStopSeconds+'s';
+  el('placeTog')?.classList.toggle('on',placeLookupOn);
+  el('placeTog')?.setAttribute('aria-checked',placeLookupOn);
+  syncPowerSaverToggle();
+  if(el('googleMapsKeyInput'))el('googleMapsKeyInput').value=googleMapsKey;
+  if(el('amapKeyInput'))el('amapKeyInput').value=amapKey;
+  if(el('baiduKeyInput'))el('baiduKeyInput').value=baiduKey;
+  if(el('reportTemplate'))el('reportTemplate').value=reportTemplate;
+  if(el('organizationNameInput'))el('organizationNameInput').value=organizationName;
+  const autoStop=el('autoStopMinutes');if(autoStop)autoStop.value=longMonitorPlan.autoStopMinutes||'';
+  const eventThreshold=el('eventThresholdDb');if(eventThreshold)eventThreshold.value=longMonitorPlan.eventThresholdDb||'';
+  const presetSelect=el('calibrationPresetSelect');
+  if(presetSelect)presetSelect.value=calibrationPresetKey;
+  syncSeg('weightSeg','data-weight',weighting);syncSeg('timeSeg','data-time',timeWeight);
+  const wtBtn = el('wt' + weighting); if (wtBtn) { document.querySelectorAll('.seg-btn[id^="wt"]').forEach(b => b.classList.toggle('active', b === wtBtn)); }
+  const twBtn = el('tw' + timeWeight); if (twBtn) { document.querySelectorAll('.seg-btn[id^="tw"]').forEach(b => b.classList.toggle('active', b === twBtn)); }
+  setViz(curViz);syncEvidenceModeUi();updateWeightUi();renderPlanStatus();renderCalibrationPresetInfo();renderCalibrationHistory();
+  el('dayNightTog')?.classList.toggle('on',autoDayNightMode);el('dayNightTog')?.setAttribute('aria-checked',autoDayNightMode);
+  const dnOpts=el('dayNightOpts');if(dnOpts)dnOpts.style.display=autoDayNightMode?'flex':'none';
+  el('dayNightTog2')?.classList.toggle('on',autoDayNightMode);el('dayNightTog2')?.setAttribute('aria-checked',autoDayNightMode);
+  const dnOpts2=el('dayNightOpts2');if(dnOpts2)dnOpts2.style.display=autoDayNightMode?'flex':'none';
+  if(autoDayNightMode)syncDayNightBadge();
 }
 
 function openMediaDb(){
@@ -9404,8 +9444,49 @@ function setCal(){
   saveState();
 }
 function applyProMeterCalibration(){
-  setCalibrationPreset(calibrationPresetKey,{save:true,notify:false});
-  toast(appLanguage === 'zh-CN' ? '已恢复当前设备推荐校准基线；正式证据仍建议用经检定声级计复核。' : 'Device calibration baseline applied. Formal testing requires certified meter verification.', 'info');
+  const recKey = detectCalibrationPresetKey();
+  setCalibrationPreset(recKey,{save:true,notify:false});
+  const preset = getCalibrationPreset(recKey);
+  const sign = preset.offset >= 0 ? '+' : '';
+  const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
+  toast(isZh ? `已恢复【${preset.zh || preset.label}】推荐校准基线（${sign}${preset.offset} dB）并保存。` : `Applied recommended ${preset.label} baseline (${sign}${preset.offset} dB).`, 'info');
+}
+
+function resetAllSettingsToDefault(){
+  const recKey = detectCalibrationPresetKey();
+  calibrationPresetKey = recKey;
+  const preset = getCalibrationPreset(recKey);
+  calOffset = preset.offset;
+  micGainDb = 2;
+  alertTh = DEFAULT_ALERT_THRESHOLD_DB;
+  alertsOn = true;
+  smoothing = 1;
+  timeWeight = 'F';
+  weighting = 'A';
+  autoDayNightMode = false;
+  dayThresholdDb = 55;
+  nightThresholdDb = 45;
+  sustainedAlertOn = false;
+  sustainedAlertMinSeconds = 30;
+  autoRecOnThreshold = false;
+  autoRecMinSeconds = 3;
+  autoRecAfterStopSeconds = 10;
+  placeLookupOn = true;
+  longRunPowerSaver = true;
+
+  syncAllSettingsDrawerUi();
+  updateMicGain();
+  _saveStateImpl();
+
+  const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
+  const sign = calOffset >= 0 ? '+' : '';
+  toast(isZh ? `✅ 已一键恢复出厂推荐设置（${preset.zh || preset.label} 推荐基线: ${sign}${calOffset} dB，已自动保存）` : `✅ Settings restored to defaults (${preset.label}: ${sign}${calOffset} dB).`, 'info', 5000);
+}
+
+function saveSettingsExplicitly(){
+  _saveStateImpl();
+  const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
+  toast(isZh ? '💾 所有声学设置已保存到本机浏览器' : '💾 All settings saved to device storage', 'info', 2800);
 }
 function setMicGain(){
   const val=+document.getElementById('micR').value;
