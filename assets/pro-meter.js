@@ -105,6 +105,31 @@
     return events;
   }
 
+  function applyAcousticResponseProfile(rawCalDb, isIos = false) {
+    if (!isIos || !Number.isFinite(rawCalDb)) return rawCalDb;
+    // iOS WebKit VoiceProcessingIO Dynamic Range Expansion & Low-Noise Floor Anchor.
+    // Recovers from WebKit hardware/browser AGC compression where a 42 dB real acoustic swing (30 -> 72 dB)
+    // is compressed to ~26 dB in raw Web Audio. Anchors quiet rooms to natural ~30 dB floor while
+    // smoothly expanding conversational speech (55~65 dB) and loud noise (70~85 dB) to match Class-1 meters.
+    const T = 30.0;
+    const K = 1.615;
+    const W = 3.0;
+    if (rawCalDb <= T - W) {
+      return rawCalDb;
+    }
+    if (rawCalDb >= T + W) {
+      const expanded = T + K * (rawCalDb - T);
+      if (expanded > 90.0) {
+        const over = expanded - 90.0;
+        return 90.0 + over / (1 + over * 0.015);
+      }
+      return expanded;
+    }
+    const a = (K - 1) / (4 * W);
+    const dx = rawCalDb - (T - W);
+    return (T - W) + dx + a * dx * dx;
+  }
+
   window.SoundfieldPro = {
     FAST_TIME_CONSTANT_SECONDS,
     SLOW_TIME_CONSTANT_SECONDS,
@@ -117,6 +142,7 @@
     calculateLnLevels,
     thirdOctaveBands,
     detectImpulseEvents,
+    applyAcousticResponseProfile,
     THIRD_OCTAVE_CENTERS,
   };
 })();

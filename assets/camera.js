@@ -286,6 +286,14 @@
     let instDb = 0;
     if (rms > 0.0000001) {
       instDb = 20 * Math.log10(rms) + splRef + cal + camCompensation;
+      const isIos = (typeof isIosCalibrationActive === 'function')
+        ? isIosCalibrationActive()
+        : (typeof SoundTestProfile !== 'undefined' && SoundTestProfile.isIOS) || /(iPhone|iPad|iPod)/i.test(navigator.userAgent || '');
+      if (typeof applyAcousticResponseProfile === 'function') {
+        instDb = applyAcousticResponseProfile(instDb, isIos);
+      } else if (window.SoundfieldPro?.applyAcousticResponseProfile) {
+        instDb = window.SoundfieldPro.applyAcousticResponseProfile(instDb, isIos);
+      }
     }
     instDb = Math.max(24, Math.min(125, instDb));
 

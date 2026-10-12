@@ -41,4 +41,38 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
 
   // 7. Verify report-cert-engine.js no longer falls back to legacy -12.0
   assert.ok(!reportCertJs.includes(': -12.0'), 'report-cert-engine.js must not contain legacy -12.0 fallback');
+
+  // 8. Verify iOS dynamic range compensation & smooth noise floor anchor algorithm
+  assert.ok(soundtestHtml.includes('function applyAcousticResponseProfile'), 'soundtest.html must define applyAcousticResponseProfile');
+  assert.ok(soundtestHtml.includes('function isIosCalibrationActive'), 'soundtest.html must define isIosCalibrationActive');
+  assert.ok(soundtestHtml.includes('db=applyAcousticResponseProfile(db, isIosCalibrationActive());'), 'instantDb must apply acoustic response profile');
+  assert.ok(soundtestHtml.includes('<option value="ios-browser">iPhone / iPad (+7.0 dB)</option>'), 'Dropdown option must show +7.0 dB');
+
+  // 9. Verify mathematical accuracy of dynamic acoustic profile
+  const proMeterJs = await fs.readFile(path.join(projectRoot, 'assets', 'pro-meter.js'), 'utf-8');
+  assert.ok(proMeterJs.includes('applyAcousticResponseProfile'), 'pro-meter.js must export applyAcousticResponseProfile');
+
+  // Evaluate the mathematical formula directly to assert exact acoustic curve behavior
+  const match = soundtestHtml.match(/function applyAcousticResponseProfile\([^)]*\)\s*\{([\s\S]*?)\n\}/);
+  assert.ok(match, 'applyAcousticResponseProfile implementation must be extracted');
+  const evalFunc = new Function('rawCalDb', 'isIos', match[1]);
+
+  // Non-iOS: must remain completely unaltered linear pass-through
+  assert.strictEqual(evalFunc(48.6, false), 48.6, 'Non-iOS must remain strictly unaltered');
+  assert.strictEqual(evalFunc(20.0, false), 20.0, 'Non-iOS quiet must remain unaltered');
+
+  // iOS: quiet room (~29.9 dB) anchors smoothly to ~30.3 dB
+  const quietVal = evalFunc(29.9, true);
+  assert.ok(quietVal >= 29.8 && quietVal <= 30.6, `Quiet room must be anchored ~30 dB, got ${quietVal}`);
+
+  // iOS: sub-quiet (< 27 dB) passes through smoothly without artificial cutoff
+  assert.strictEqual(evalFunc(20.0, true), 20.0, 'Sub-quiet level must pass through naturally');
+
+  // iOS: speech range (48.6 dB raw) expands to match ~60 dB sound level meter
+  const speechVal = evalFunc(48.6, true);
+  assert.ok(speechVal >= 59.5 && speechVal <= 60.5, `Speech level must expand to ~60 dB, got ${speechVal}`);
+
+  // iOS: loud peak (56.0 dB raw) expands to match 72 dB peak
+  const loudVal = evalFunc(56.0, true);
+  assert.ok(loudVal >= 71.5 && loudVal <= 72.5, `Loud peak must expand to ~72 dB, got ${loudVal}`);
 });
