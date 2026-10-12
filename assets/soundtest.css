@@ -1344,6 +1344,87 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
 .lcm-actions { display: flex; gap: 10px; margin-top: 18px; }
 .lcm-actions button { flex: 1; height: 42px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; }
 
+/* Overload / Clipping Warning Badge */
+.stitch-overload-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #f87171;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-top: 5px;
+  animation: pulse-overload 1.2s infinite alternate;
+  cursor: pointer;
+  user-select: none;
+}
+.stitch-overload-badge .overload-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+}
+@keyframes pulse-overload {
+  0% { opacity: 0.8; transform: scale(0.98); }
+  100% { opacity: 1; transform: scale(1.02); }
+}
+
+/* Two-Step Precision Calibration Wizard Modal */
+.cal-wizard-modal {
+  position: fixed; inset: 0; z-index: 235;
+  display: none; align-items: center; justify-content: center;
+  padding: 16px; background: rgba(3, 7, 14, 0.88); backdrop-filter: blur(24px);
+}
+.cal-wizard-modal.show { display: flex; }
+.cal-wizard-card {
+  width: min(100%, 480px); box-sizing: border-box; border-radius: 20px;
+  border: 1px solid rgba(42, 255, 212, 0.35);
+  background: linear-gradient(180deg, #101520, #080c13);
+  box-shadow: 0 25px 80px rgba(0,0,0,0.85), 0 0 35px rgba(42, 255, 212, 0.18);
+  padding: 22px; position: relative;
+}
+.cw-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; border-bottom: 1px solid #1a2336; padding-bottom: 12px;
+}
+.cw-title { font-size: 15px; font-weight: 800; color: #fff; margin: 0; display: flex; align-items: center; gap: 7px; }
+.cw-sub { font-size: 11px; color: #8c95a4; margin-top: 3px; }
+.cw-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: none;
+  color: #8c95a4; cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cw-steps { display: flex; flex-direction: column; gap: 14px; }
+.cw-step-card {
+  background: rgba(255,255,255,0.03); border: 1px solid #1e283b;
+  border-radius: 14px; padding: 14px; position: relative;
+}
+.cw-step-card.active { border-color: rgba(42, 255, 212, 0.5); background: rgba(42, 255, 212, 0.04); }
+.cw-step-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.cw-step-num {
+  width: 22px; height: 22px; border-radius: 50%; background: #2affd4;
+  color: #040812; font-size: 11px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+}
+.cw-step-title { font-size: 13px; font-weight: 800; color: #f1f5f9; }
+.cw-step-desc { font-size: 11px; color: #94a3b8; line-height: 1.5; margin-bottom: 10px; }
+.cw-reading-box {
+  background: #090e18; border: 1px solid #1e293b; border-radius: 10px;
+  padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.cw-reading-label { font-size: 11px; color: #64748b; }
+.cw-reading-val { font-family: var(--mono); font-size: 16px; font-weight: 800; color: #2affd4; }
+.cw-btn-group { display: flex; gap: 8px; }
+.cw-btn-group button { height: 34px; font-size: 11.5px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+
 /* Hide redundant elements */
 .geo-dock { display: none !important; }
 #locCard { display: none !important; }

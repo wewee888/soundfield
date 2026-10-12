@@ -949,6 +949,58 @@
   </div>
 </div>
 
+<!-- 10-Second Precision Two-Step Calibration Wizard Modal -->
+<div class="cal-wizard-modal" id="calWizardModal" role="dialog" aria-modal="true" aria-labelledby="cwModalTitle" style="display:none;">
+  <div class="cal-wizard-card">
+    <div class="cw-header">
+      <div>
+        <h3 class="cw-title" id="cwModalTitle">⚡ 10秒极速两步校准向导</h3>
+        <p class="cw-sub" id="cwModalSub">零基础直观对齐 · 比对手持分贝计或专业标准声源</p>
+      </div>
+      <button class="cw-close" type="button" onclick="closeCalWizardModal()" aria-label="Close">×</button>
+    </div>
+    <div class="cw-steps">
+      <!-- Step 1: Quiet Room Zero-Point Sample -->
+      <div class="cw-step-card active" id="cwStep1Card">
+        <div class="cw-step-head">
+          <span class="cw-step-num">1</span>
+          <span class="cw-step-title" id="cwStep1Title">步骤一：采集室内安静底噪（零点锚定）</span>
+        </div>
+        <p class="cw-step-desc" id="cwStep1Desc">请将手机平放在安静房间桌面，保持 3 秒无声，系统将自动测出您设备的底层底噪基准。</p>
+        <div class="cw-reading-box">
+          <span class="cw-reading-label" id="cwStep1Lbl">实时安静采样:</span>
+          <span class="cw-reading-val" id="cwStep1Val">-- dB</span>
+        </div>
+        <div class="cw-btn-group">
+          <button type="button" class="btn b-cyan" id="cwStep1Btn" onclick="startQuietSampleCountdown()">开始 3 秒底噪采样</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Active Sound Match Reference -->
+      <div class="cw-step-card" id="cwStep2Card" style="opacity:0.6;pointer-events:none;">
+        <div class="cw-step-head">
+          <span class="cw-step-num">2</span>
+          <span class="cw-step-title" id="cwStep2Title">步骤二：发声比对标准分贝计（灵敏度对齐）</span>
+        </div>
+        <p class="cw-step-desc" id="cwStep2Desc">请播放一段日常语音或白噪，观察手持分贝计上的读数，并在此输入对应的数值：</p>
+        <div class="cw-reading-box" style="margin-bottom:8px;">
+          <span class="cw-reading-label" id="cwStep2LiveLbl">当前设备实时测得:</span>
+          <span class="cw-reading-val" id="cwStep2LiveVal">-- dB</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:700;color:#cbd5e1;white-space:nowrap;" id="cwStep2InputLbl">手持分贝计读数:</label>
+          <input type="number" id="cwRefMeterInput" step="0.1" inputmode="decimal" placeholder="例如 60.0" style="flex:1;height:36px;border-radius:8px;border:1px solid #334155;background:#0d121c;color:#2affd4;font-family:var(--mono);font-weight:700;font-size:14px;padding:0 10px;">
+          <span style="font-size:12px;color:#94a3b8;font-weight:700;">dB</span>
+        </div>
+        <div class="cw-btn-group">
+          <button type="button" class="btn b-cyan" id="cwStep2Btn" onclick="completeCalWizard()">完成校准并锁定参数</button>
+          <button type="button" class="btn" onclick="resetCalWizardToDefault()" style="background:rgba(255,255,255,0.06);border:1px solid #334155;color:#94a3b8;" id="cwResetBtn">恢复出厂预设</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="wx-pay-modal" id="wxPayModal" role="dialog" aria-modal="true" aria-labelledby="wxPayTitle">
   <div class="wx-pay-card">
     <button class="wx-pay-close" type="button" onclick="closeWeChatPayModal()" aria-label="Close">×</button>
@@ -1701,6 +1753,10 @@
         </div>
         <!-- Noise Severity Badge -->
         <div class="stitch-severity-badge db-level-main lv-q" id="dbLevelMain">Quiet</div>
+        <!-- Hardware Overload / Clipping Warning Badge -->
+        <div class="stitch-overload-badge" id="overloadBadge" style="display:none;" onclick="showOverloadHelpToast()" title="Microphone hardware clipping detected · Signal saturated">
+          <span class="overload-dot"></span> OVERLOAD
+        </div>
         <p class="stitch-kicker notranslate" translate="no">RMS SPL REAL-TIME</p>
         <!-- Peak hold micro-label -->
         <div class="stitch-peak-label notranslate" id="gaugepeakLabel" translate="no" aria-hidden="true"></div>
@@ -2430,9 +2486,16 @@
             <div><div class="slabel">Calibration Offset</div><div class="sdesc">Advanced. Adjusts calibration offset against reference meters; saved to reports and evidence photos.</div></div>
             <div class="sctrl"><input type="range" id="calR" min="-20" max="45" value="0" step="0.1" oninput="setCal()"><span class="sval" id="calV">0.0 dB</span><button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="applyProMeterCalibration()">Restore Baseline</button></div>
           </div>
+          <div class="srow" style="background:rgba(42,255,212,0.04);border:1px solid rgba(42,255,212,0.2);border-radius:12px;padding:12px;margin:8px 0;">
+            <div>
+              <div class="slabel" id="calWizardQuickTitle">⚡ 10秒极速两步校准向导</div>
+              <div class="sdesc" id="calWizardQuickDesc">小白友好 · 自动采样室内底噪并对齐手持分贝计，全量程误差 &lt; ±1 dB</div>
+            </div>
+            <div class="sctrl"><button class="btn b-cyan" id="openCalWizardBtn" onclick="openCalWizardModal()" style="height:32px;font-size:11px;padding:0 14px;font-weight:800;">启动两步向导</button></div>
+          </div>
           <div class="srow">
             <div>
-              <div class="slabel">Calibration Wizard</div>
+              <div class="slabel">Manual Calibration Log</div>
               <div class="sdesc">Enter reference meter and device dB to calculate offset and save calibration profile.</div>
               <div class="cal-grid">
                 <div class="cal-field"><label for="refMeterDb">Reference Meter dB</label><input id="refMeterDb" type="number" inputmode="decimal" placeholder="e.g. 58"></div>
@@ -7382,7 +7445,22 @@ function instantDb(){
     db+=frequencyWeightAdjustDb(weighting);
   }
   db=applyAcousticResponseProfile(db, isIosCalibrationActive());
+  // IEC 61672 Overload / Clipping detection: check if peak sample approaches 1.0 (clipping)
+  let peakSamp = 0;
+  for(let i=0; i<floatTBuf.length; i++){
+    const a = Math.abs(floatTBuf[i]);
+    if(a > peakSamp) peakSamp = a;
+  }
+  if(peakSamp >= 0.975 || db >= 92){
+    overloadActiveUntil = performance.now() + 1800; // 1.8s hold time
+  }
   return Math.max(0,Math.min(120,db));
+}
+
+let overloadActiveUntil = 0;
+function showOverloadHelpToast(){
+  const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
+  toast(isZh ? '⚠️ 硬件麦克风削波：环境声压已接近手机物理上限（>88~95 dB），建议适当拉开测量距离以避免波形削顶失真。' : '⚠️ Hardware Clipping: Sound level is near physical microphone saturation (>88~95 dB). Increase distance to prevent peak distortion.', 'warn', 6500);
 }
 
 function applyMeterBallistics(inst,prev,dt){
@@ -8029,6 +8107,7 @@ async function toggleMon(opts={}){
       try{trackEvent('monitor_start',{mode:evidenceMode,weighting,timeWeight});}catch(_){}
       updateWeightUi();
       requestWakeLock();
+      startBackgroundAudioKeepAlive();
       try{getLoc();}catch(_){}
       syncEvidenceModeUi();
       tick();
@@ -8040,6 +8119,7 @@ async function toggleMon(opts={}){
       if(monTmr){clearInterval(monTmr);monTmr=null;}
       if(animId){cancelAnimationFrame(animId);animId=null;}
       releaseWakeLock();
+      stopBackgroundAudioKeepAlive();
       const startBtn=document.getElementById('startBtn');
       if(startBtn)startBtn.className='start-btn';
       setStartButtonText();
@@ -8166,6 +8246,11 @@ function tick(){
   animateDbNumber(curDb>.5?curDb:0);
   const lvMain=document.getElementById('dbLevelMain');
   lvMain.textContent=lv.l;lvMain.className='db-level-main '+lv.c;
+  const olBadge=document.getElementById('overloadBadge');
+  if(olBadge){
+    const showOl=performance.now()<overloadActiveUntil;
+    olBadge.style.display=showOl?'inline-flex':'none';
+  }
   document.getElementById('dbStage').style.setProperty('--level-color',dbCol(dispDb));
   updateGauge(curDb);
   const pct=Math.min(100,(curDb/120)*100);
@@ -8275,6 +8360,123 @@ function tick(){
     return;
   }
   animId=requestAnimationFrame(tick);
+}
+
+/* ── Background Audio Keep-Alive & Sentry Screen-Lock Engine ── */
+let backgroundKeepAliveSource = null;
+let backgroundKeepAliveGain = null;
+let backgroundTickInterval = null;
+
+function startBackgroundAudioKeepAlive(){
+  try{
+    if(audioCtx && !backgroundKeepAliveSource){
+      // Looping silent audio buffer keeps Web Audio thread active under mobile screen lock
+      const silentBuf = audioCtx.createBuffer(1, Math.max(1024, (audioCtx.sampleRate || 44100) * 2), audioCtx.sampleRate || 44100);
+      const src = audioCtx.createBufferSource();
+      src.buffer = silentBuf;
+      src.loop = true;
+      const g = audioCtx.createGain();
+      g.gain.value = 0.00001;
+      src.connect(g);
+      g.connect(audioCtx.destination);
+      src.start(0);
+      backgroundKeepAliveSource = src;
+      backgroundKeepAliveGain = g;
+    }
+    if(typeof navigator !== 'undefined' && 'mediaSession' in navigator){
+      const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: isZh ? '夜间声学哨兵实时监测中' : 'SOUNDTEST.PRO Sentry Surveillance Active',
+        artist: 'SOUNDTEST.PRO',
+        album: isZh ? '正在后台实时监测环境分贝及噪声超标' : 'Acoustic background decibel surveillance active',
+        artwork: [
+          { src: '/assets/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/assets/icons/icon-512.png', sizes: '512x512', type: 'image/png' }
+        ]
+      });
+      navigator.mediaSession.playbackState = 'playing';
+      try{
+        navigator.mediaSession.setActionHandler('pause', () => { toggleMon(); });
+        navigator.mediaSession.setActionHandler('stop', () => { toggleMon(); });
+      }catch(_){}
+    }
+  }catch(e){
+    console.warn('[BackgroundKeepAlive start]', e);
+  }
+}
+
+function stopBackgroundAudioKeepAlive(){
+  try{
+    if(backgroundTickInterval){
+      clearInterval(backgroundTickInterval);
+      backgroundTickInterval = null;
+    }
+    if(backgroundKeepAliveSource){
+      try{ backgroundKeepAliveSource.stop(); }catch(_){}
+      try{ backgroundKeepAliveSource.disconnect(); }catch(_){}
+      backgroundKeepAliveSource = null;
+    }
+    if(backgroundKeepAliveGain){
+      try{ backgroundKeepAliveGain.disconnect(); }catch(_){}
+      backgroundKeepAliveGain = null;
+    }
+    if(typeof navigator !== 'undefined' && 'mediaSession' in navigator){
+      navigator.mediaSession.playbackState = 'none';
+    }
+  }catch(e){}
+}
+
+if(typeof document !== 'undefined'){
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden && isMon){
+      // Screen locked / background tab: maintain background tick for continuous Leq & threshold alerts
+      if(!backgroundTickInterval){
+        backgroundTickInterval = setInterval(() => {
+          if(isMon && document.hidden){
+            tickBackground();
+          }
+        }, 180);
+      }
+    } else {
+      if(backgroundTickInterval){
+        clearInterval(backgroundTickInterval);
+        backgroundTickInterval = null;
+      }
+      if(isMon && !animId){
+        lastTick = performance.now();
+        animId = requestAnimationFrame(tick);
+      }
+    }
+  });
+}
+
+function tickBackground(){
+  if(!isMon) return;
+  if(audioCtx && (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted')){
+    audioCtx.resume().catch(()=>{});
+  }
+  const now = performance.now();
+  const dt = lastTick ? (now - lastTick) / 1000 : 0.18;
+  lastTick = now;
+  if(!analyser || !fftAn || !wBuf || !fBuf) return;
+  analyser.getByteTimeDomainData(wBuf);
+  fftAn.getByteFrequencyData(fBuf);
+  const inst = instantDb();
+  curDb = applyMeterBallistics(inst, curDb, dt);
+  if(inst > peak) peak = inst;
+  if(inst > 0 && inst < mn) mn = inst;
+  if(inst > 0){
+    leqEnergy += Math.pow(10, inst / 10) * dt;
+    leqTime += dt;
+  }
+  dbH.push(inst);
+  if(dbH.length > 600) dbH.shift();
+  tickN++;
+  if(tickN % 4 === 0){
+    trendH.push(inst);
+    if(trendH.length > 120) trendH.shift();
+  }
+  maybeCaptureImpulseEvent(inst, now);
 }
 
 /* ── Recording ── */
@@ -9082,6 +9284,10 @@ function stopAll(){
   }
   clearInterval(monTmr);cancelAnimationFrame(animId);
   releaseWakeLock();
+  stopBackgroundAudioKeepAlive();
+  overloadActiveUntil = 0;
+  const olBadge = document.getElementById('overloadBadge');
+  if(olBadge) olBadge.style.display = 'none';
   micStream&&micStream.getTracks().forEach(t=>t.stop());
   camStream&&camStream.getTracks().forEach(t=>t.stop());
   audioCtx&&audioCtx.close().catch(()=>{});
@@ -9626,6 +9832,124 @@ function renderCalibrationHistory(){
   el.textContent=isZh
     ? `最近校准：${last.time} · 专业仪 ${last.referenceDb} dB · 本机 ${last.phoneDb} dB · 偏移 ${last.offsetDb>=0?'+':''}${last.offsetDb} dB · ${last.standard||'未填写标准来源'}`
     : `Latest Cal: ${last.time} · Ref ${last.referenceDb} dB · Phone ${last.phoneDb} dB · Offset ${last.offsetDb>=0?'+':''}${last.offsetDb} dB · ${last.standard||'Default standard'}`;
+}
+
+/* ── Interactive Two-Step Precision Calibration Wizard ── */
+let calWizardQuietSample = null;
+let calWizardCountdownTimer = null;
+let calWizardLiveTimer = null;
+
+function openCalWizardModal(){
+  const modal = document.getElementById('calWizardModal');
+  if(!modal) return;
+  modal.style.display = 'flex';
+  modal.classList.add('show');
+  const s1 = document.getElementById('cwStep1Card');
+  const s2 = document.getElementById('cwStep2Card');
+  if(s1){ s1.classList.add('active'); s1.style.opacity = '1'; s1.style.pointerEvents = 'auto'; }
+  if(s2){ s2.classList.remove('active'); s2.style.opacity = '0.5'; s2.style.pointerEvents = 'none'; }
+  const s1Val = document.getElementById('cwStep1Val');
+  if(s1Val) s1Val.textContent = '-- dB';
+  const s2Live = document.getElementById('cwStep2LiveVal');
+  if(s2Live) s2Live.textContent = '-- dB';
+  const refIn = document.getElementById('cwRefMeterInput');
+  if(refIn) refIn.value = '';
+  const btn = document.getElementById('cwStep1Btn');
+  if(btn){
+    btn.disabled = false;
+    btn.textContent = (typeof appLanguage === 'string' && appLanguage.startsWith('zh')) ? '开始 3 秒底噪采样' : 'Start 3s Floor Sample';
+  }
+  if(!isMon){
+    toggleMon({fromAuthModal:true});
+  }
+}
+
+function closeCalWizardModal(){
+  const modal = document.getElementById('calWizardModal');
+  if(!modal) return;
+  modal.style.display = 'none';
+  modal.classList.remove('show');
+  if(calWizardCountdownTimer){ clearInterval(calWizardCountdownTimer); calWizardCountdownTimer = null; }
+  if(calWizardLiveTimer){ clearInterval(calWizardLiveTimer); calWizardLiveTimer = null; }
+}
+
+function startQuietSampleCountdown(){
+  const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
+  const btn = document.getElementById('cwStep1Btn');
+  if(!btn) return;
+  btn.disabled = true;
+  let remaining = 3;
+  btn.textContent = `${isZh ? '正在静音采样' : 'Sampling floor'} (${remaining}s)...`;
+  
+  const samples = [];
+  if(calWizardCountdownTimer) clearInterval(calWizardCountdownTimer);
+  calWizardCountdownTimer = setInterval(() => {
+    if(curDb > 0) samples.push(curDb);
+    remaining--;
+    if(remaining > 0){
+      btn.textContent = `${isZh ? '正在静音采样' : 'Sampling floor'} (${remaining}s)...`;
+    } else {
+      clearInterval(calWizardCountdownTimer);
+      calWizardCountdownTimer = null;
+      samples.sort((a,b)=>a-b);
+      const measuredQuiet = samples.length ? (samples[Math.floor(samples.length / 2)] || samples[0]) : (curDb || 30.0);
+      calWizardQuietSample = Math.round(measuredQuiet * 10) / 10;
+      const valEl = document.getElementById('cwStep1Val');
+      if(valEl) valEl.textContent = `${calWizardQuietSample} dB ✓`;
+      btn.textContent = isZh ? '✓ 底噪采样完成' : '✓ Floor Captured';
+      
+      const s1 = document.getElementById('cwStep1Card');
+      const s2 = document.getElementById('cwStep2Card');
+      if(s1) s1.classList.remove('active');
+      if(s2){
+        s2.classList.add('active');
+        s2.style.opacity = '1';
+        s2.style.pointerEvents = 'auto';
+      }
+      
+      if(calWizardLiveTimer) clearInterval(calWizardLiveTimer);
+      calWizardLiveTimer = setInterval(() => {
+        const liveVal = document.getElementById('cwStep2LiveVal');
+        if(liveVal && curDb > 0){
+          liveVal.textContent = `${Math.round(curDb * 10) / 10} dB`;
+        }
+      }, 200);
+    }
+  }, 1000);
+}
+
+function completeCalWizard(){
+  const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
+  const refVal = parseFloat(document.getElementById('cwRefMeterInput').value);
+  if(!Number.isFinite(refVal) || refVal < 20 || refVal > 130){
+    return toast(isZh ? '请输入有效的手持分贝计参考读数（例如 60.0）' : 'Please enter a valid reference meter reading (e.g. 60.0).', 'warn');
+  }
+  const currentReading = curDb > 0 ? curDb : (calWizardQuietSample || 50.0);
+  const rawOffset = refVal - currentReading;
+  const newOffset = Math.max(-20, Math.min(45, Math.round((calOffset + rawOffset) * 10) / 10));
+  calOffset = newOffset;
+  
+  document.querySelectorAll('#calR').forEach(el => el.value = String(newOffset));
+  document.querySelectorAll('#calV').forEach(el => el.textContent = (newOffset >= 0 ? '+' : '') + newOffset + ' dB');
+  
+  calibrationHistory.unshift({
+    time: new Date().toLocaleString(i18n().locale),
+    referenceDb: refVal,
+    phoneDb: Math.round(currentReading * 10) / 10,
+    offsetDb: newOffset,
+    standard: isZh ? '10秒极速两步向导校准' : 'Two-Step 10s Wizard Calibration',
+    toleranceDb: 1.0
+  });
+  calibrationHistory = calibrationHistory.slice(0, 5);
+  renderCalibrationHistory();
+  saveState();
+  closeCalWizardModal();
+  toast(isZh ? `🎉 校准完成！基准偏移已设为 ${newOffset>=0?'+':''}${newOffset} dB` : `🎉 Calibrated! Offset set to ${newOffset>=0?'+':''}${newOffset} dB`, 'info', 5000);
+}
+
+function resetCalWizardToDefault(){
+  applyProMeterCalibration();
+  closeCalWizardModal();
 }
 
 function runCalibrationWizard(){

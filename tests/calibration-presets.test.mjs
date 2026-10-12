@@ -75,4 +75,22 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   // iOS: loud peak (56.0 dB raw) expands to match 72 dB peak
   const loudVal = evalFunc(56.0, true);
   assert.ok(loudVal >= 71.5 && loudVal <= 72.5, `Loud peak must expand to ~72 dB, got ${loudVal}`);
+
+  // 10. Verify Hardware Overload / Clipping detection & indicator
+  assert.ok(soundtestHtml.includes('id="overloadBadge"'), 'soundtest.html must include overloadBadge indicator');
+  assert.ok(soundtestHtml.includes('function showOverloadHelpToast'), 'soundtest.html must define showOverloadHelpToast');
+  assert.ok(soundtestHtml.includes('overloadActiveUntil = performance.now() + 1800;'), 'instantDb must trigger overload hold upon clipping');
+
+  // 11. Verify Background Audio Keep-Alive and Screen-Lock Sentry continuous engine
+  assert.ok(soundtestHtml.includes('function startBackgroundAudioKeepAlive'), 'soundtest.html must define startBackgroundAudioKeepAlive');
+  assert.ok(soundtestHtml.includes('function stopBackgroundAudioKeepAlive'), 'soundtest.html must define stopBackgroundAudioKeepAlive');
+  assert.ok(soundtestHtml.includes('function tickBackground'), 'soundtest.html must define tickBackground');
+  assert.ok(soundtestHtml.includes("document.addEventListener('visibilitychange'"), 'soundtest.html must listen for visibilitychange for background execution');
+  assert.ok(soundtestHtml.includes('startBackgroundAudioKeepAlive();'), 'toggleMon must start background audio keep-alive');
+
+  // 12. Verify 10-Second Two-Step Precision Calibration Wizard
+  assert.ok(soundtestHtml.includes('id="calWizardModal"'), 'soundtest.html must include calWizardModal');
+  assert.ok(soundtestHtml.includes('function openCalWizardModal'), 'soundtest.html must define openCalWizardModal');
+  assert.ok(soundtestHtml.includes('function startQuietSampleCountdown'), 'soundtest.html must define startQuietSampleCountdown');
+  assert.ok(soundtestHtml.includes('function completeCalWizard'), 'soundtest.html must define completeCalWizard');
 });
