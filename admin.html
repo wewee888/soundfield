@@ -1715,6 +1715,7 @@
             </a>
           </div>
         </div>
+      </div> <!-- /Geographic & Cloudflare Stack -->
     </div> <!-- /viewAnalytics -->
 
     <!-- TAB 6: 噪音计初始预设与全局功能配置 -->
@@ -1779,8 +1780,8 @@
                 <label style="font-size: 12px; color: var(--adm-muted);">默认声学基准校准偏移 (Calibration Offset)</label>
                 <span id="cfgCalOffsetVal" style="font-family: monospace; font-size: 13px; color: var(--adm-accent); font-weight: 700;">+0.0 dB</span>
               </div>
-              <input type="range" id="cfgCalOffset" min="-20" max="20" step="0.1" value="0.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
-              <div style="font-size: 11px; color: var(--adm-muted); margin-top: 4px;">由国家一级声级计在消音室比对定标；标准基准为 0.0 dB（iOS 设备基准预置为 +2.0 dB）。</div>
+              <input type="range" id="cfgCalOffset" min="-20" max="45" step="0.1" value="0.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+              <div style="font-size: 11px; color: var(--adm-muted); margin-top: 4px;">由国家一级声级计比对定标；支持 -20 到 +45 dB 宽幅微调（iOS 设备预置基线为 +22.7 dB，笔记本自带麦克风补偿预置为 +38 dB）。</div>
             </div>
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -2754,7 +2755,11 @@
       if (tabId === 'analytics') {
         fetchAnalyticsData();
       } else if (tabId === 'meter-config') {
-        loadAdminMeterDefaultsForm();
+        try {
+          loadAdminMeterDefaultsForm();
+        } catch (err) {
+          console.error('[Admin] loadAdminMeterDefaultsForm error:', err);
+        }
       }
     }
 

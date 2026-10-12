@@ -1307,7 +1307,7 @@ function buildStatsFromRecord(r) {
   const l50 = Number(Number(r.l50Db ?? r.ln?.L50 ?? activeDb).toFixed(1));
   const l90 = Number(Number(r.l90Db ?? r.ln?.L90 ?? Math.max(30, activeDb * 0.92)).toFixed(1));
   const l95 = Number(Number(r.l95Db ?? r.ln?.L95 ?? Math.max(28, activeDb * 0.88)).toFixed(1));
-  const calOff = r.calibration?.offsetDb ?? (typeof calOffset !== 'undefined' ? calOffset : -12.0);
+  const calOff = r.calibration?.offsetDb ?? (typeof calOffset !== 'undefined' ? calOffset : 0.0);
   const micGain = r.calibration?.micGainDb ?? (typeof micGainDb !== 'undefined' ? micGainDb : 2.0);
   const rawErr = r.calibration?.errorRange ?? (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : '1.2');
   const errMatch = String(rawErr).match(/\d+(?:\.\d+)?(?:\s*~\s*\d+(?:\.\d+)?)?/);
@@ -1404,7 +1404,7 @@ function exportSessionSummaryImage(){
     sceneNote: activeSceneNote,
     weighting: weightLabel(),
     timeWeight: timeLabel(),
-    calOffset: typeof calOffset !== 'undefined' ? calOffset : -12.0,
+    calOffset: typeof calOffset !== 'undefined' ? calOffset : 0.0,
     micGainDb: typeof micGainDb !== 'undefined' ? micGainDb : 2.0,
     errorRange: cleanErr,
     docId: `DOC: ST-${Math.floor(1000 + Math.random() * 9000)}-LA`,
@@ -1473,7 +1473,7 @@ function buildPDF(recs, isWatermarked = null){
       loc: curLoc ? { ...curLoc } : null,
       weighting: 'dBA',
       timeWeight: 'FAST',
-      calOffset: typeof calOffset !== 'undefined' ? calOffset : -12.0,
+      calOffset: typeof calOffset !== 'undefined' ? calOffset : 0.0,
       micGainDb: typeof micGainDb !== 'undefined' ? micGainDb : 2.0,
       errorRange: '1.2',
       docId: 'DOC: ST-8902-LA',
@@ -1809,7 +1809,7 @@ function renderCertificateData(r) {
   if (elL95) elL95.textContent = Number(r.l95Db ?? r.ln?.L95 ?? Math.max(28, rawActive * 0.88)).toFixed(1);
 
   // Calibration (Clean error range format)
-  const calOff = r.calibration?.offsetDb ?? (typeof calOffset !== 'undefined' ? calOffset : -12.0);
+  const calOff = r.calibration?.offsetDb ?? (typeof calOffset !== 'undefined' ? calOffset : 0.0);
   const micGain = r.calibration?.micGainDb ?? (typeof micGainDb !== 'undefined' ? micGainDb : 2.0);
   const rawErr = r.calibration?.errorRange ?? (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : '1.2');
   const errRange = cleanErrorRange(rawErr);

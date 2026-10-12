@@ -64,4 +64,16 @@ test('Backend Admin (admin.html): Houses Super Admin Meter Defaults Console and 
   assert.ok(adminHtml.includes('saveAdminMeterDefaults'), 'admin.html must provide saveAdminMeterDefaults');
   assert.ok(adminHtml.includes('resetAdminMeterDefaults'), 'admin.html must provide resetAdminMeterDefaults');
   assert.ok(adminHtml.includes('exportAdminMeterDefaultsJson'), 'admin.html must provide exportAdminMeterDefaultsJson');
+
+  // 4. Tab Container DOM Tree Integrity: No nested tab views
+  const viewAnalyticsIdx = adminHtml.indexOf('id="viewAnalytics"');
+  const viewMeterConfigIdx = adminHtml.indexOf('id="viewmeter-config"');
+  assert.ok(viewAnalyticsIdx !== -1 && viewMeterConfigIdx !== -1, 'Both tab views must exist');
+  
+  // Cut between viewAnalytics and viewmeter-config and ensure all div tags are closed
+  const betweenTabs = adminHtml.slice(viewAnalyticsIdx, viewMeterConfigIdx);
+  const openDivs = (betweenTabs.match(/<div(\s|>)/gi) || []).length;
+  const closeDivs = (betweenTabs.match(/<\/div>/gi) || []).length;
+  assert.strictEqual(openDivs, closeDivs, 'viewAnalytics must be completely closed before viewmeter-config starts (no nesting)');
 });
+

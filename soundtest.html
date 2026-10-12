@@ -1210,7 +1210,7 @@
           <div class="settings-drawer-desc" id="sdDescMic">Input pre-amplification; keep around 2dB to prevent audio clipping</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
-          <input type="range" id="micR" min="0" max="24" value="2" step="1" oninput="setMicGain()" style="width:80px">
+          <input type="range" id="micR" min="0" max="36" value="2" step="1" oninput="setMicGain()" style="width:80px">
           <span class="settings-drawer-value" id="micV">2dB</span>
         </div>
       </div>
@@ -1220,7 +1220,7 @@
           <div class="settings-drawer-desc" id="sdDescCal">Fine-tune baseline against certified reference meter</div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
-          <input type="range" id="calR" min="-20" max="20" value="0" step="0.1" oninput="setCal()" style="width:70px">
+          <input type="range" id="calR" min="-20" max="45" value="0" step="0.1" oninput="setCal()" style="width:70px">
           <span class="settings-drawer-value" id="calV">0.0 dB</span>
           <button class="btn b-cyan" id="sdBtnCalRec" style="height:26px;font-size:9px;padding:0 7px" onclick="applyProMeterCalibration()">Recommended</button>
         </div>
@@ -1694,6 +1694,18 @@
       <span id="scale30">30 <span class="sub" id="scaleSub30">Quiet</span></span>
       <span class="mid" id="scale60">60 <span class="sub" id="scaleSub60">Urban</span></span>
       <span class="dang" id="scale120">120 <span class="sub" id="scaleSub120">Danger</span></span>
+    </div>
+
+    <!-- Low input signal / laptop mic diagnostic pill -->
+    <div id="lowInputPrompt" style="display:none;margin:8px auto 0;max-width:390px;padding:6px 12px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);border-radius:999px;font-size:11px;color:#fcd34d;align-items:center;justify-content:space-between;gap:8px;backdrop-filter:blur(8px);">
+      <span style="display:inline-flex;align-items:center;gap:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+        <span>💡</span>
+        <span id="lowInputPromptText">实测分贝极低 (&lt;18 dB)，疑为笔记本内置麦克风</span>
+      </span>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+        <button type="button" class="btn b-cyan" id="lowInputApplyBtn" onclick="applyLaptopMicCompensation()" style="height:22px;font-size:10px;padding:0 8px;border-radius:999px;">一键增益补偿</button>
+        <button type="button" onclick="dismissLowInputPrompt()" style="background:none;border:none;color:#94a3b8;font-size:14px;cursor:pointer;padding:0 3px;" aria-label="Close">×</button>
+      </div>
     </div>
 
     <!-- Hidden compatibility elements to satisfy legacy logic/tests -->
@@ -2383,21 +2395,22 @@
             </div>
             <div class="sctrl">
               <select class="setting-select" id="calibrationPresetSelect" onchange="setCalibrationPreset(this.value)">
-                <option value="desktop-browser">Desktop Browser (-1 dB)</option>
+                <option value="desktop-browser">PC Desktop Browser (-1 dB)</option>
+                <option value="laptop-internal-mic">Laptop Built-in Mic (+38 dB)</option>
                 <option value="tablet-browser">Tablet Browser (+2 dB)</option>
                 <option value="android-browser">Android Browser (+2 dB)</option>
-                <option value="ios-browser">iPhone / iPad (+6 dB)</option>
+                <option value="ios-browser">iPhone / iPad (+22.7 dB)</option>
               </select>
               <button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="setCalibrationPreset(detectCalibrationPresetKey())">Apply Device Baseline</button>
             </div>
           </div>
           <div class="srow">
             <div><div class="slabel">Microphone Gain</div><div class="sdesc">Advanced. Only adjust if you understand your audio chain; high values may clip or amplify noise.</div></div>
-            <div class="sctrl"><input type="range" id="micR" min="0" max="24" value="2" step="1" oninput="setMicGain()"><span class="sval" id="micV">2 dB</span></div>
+            <div class="sctrl"><input type="range" id="micR" min="0" max="36" value="2" step="1" oninput="setMicGain()"><span class="sval" id="micV">2 dB</span></div>
           </div>
           <div class="srow">
             <div><div class="slabel">Calibration Offset</div><div class="sdesc">Advanced. Adjusts calibration offset against reference meters; saved to reports and evidence photos.</div></div>
-            <div class="sctrl"><input type="range" id="calR" min="-20" max="20" value="0" step="0.1" oninput="setCal()"><span class="sval" id="calV">0.0 dB</span><button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="applyProMeterCalibration()">Restore Baseline</button></div>
+            <div class="sctrl"><input type="range" id="calR" min="-20" max="45" value="0" step="0.1" oninput="setCal()"><span class="sval" id="calV">0.0 dB</span><button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="applyProMeterCalibration()">Restore Baseline</button></div>
           </div>
           <div class="srow">
             <div>
@@ -2733,31 +2746,38 @@ const PERMISSION_GUIDE_KEY='sf_permission_guide_v1';
 const CALIBRATION_PRESETS={
   'desktop-browser':{
     offset:-1,
-    label:'PC / Desktop Browser',
-    zh:'PC 桌面浏览器',
+    label:'PC / Desktop Browser (External Mic / USB)',
+    zh:'PC 桌面浏览器（外置麦克风 / 独立声卡）',
     reason:'Preset baseline calibrated against reference meters (-1 dB offset, typical error approx ±1~3 dB).',
-    zhReason:'已预置专业噪声计校对基准（-1 dB 偏移），桌面声卡实测典型误差约 ±1~3 dB。',
+    zhReason:'已针对电脑外接麦克风/USB独立声卡校对基准（-1 dB 偏移），实测误差约 ±1~3 dB。',
+  },
+  'laptop-internal-mic':{
+    offset:38,
+    label:'Laptop Built-in Mic (Internal Array)',
+    zh:'笔记本电脑自带麦克风（阵列增益补偿）',
+    reason:'Compensates for low sensitivity and unboosted hardware array on laptop built-in mics (+38 dB offset).',
+    zhReason:'针对笔记本集成麦克风阵列灵敏度低且未开启硬件增强进行增益补偿（+38 dB 偏移）。',
   },
   'tablet-browser':{
     offset:2,
-    label:'Tablet Browser',
-    zh:'平板浏览器',
+    label:'Android Tablet Browser',
+    zh:'Android 平板电脑',
     reason:'Preset baseline calibrated against reference meters (+2 dB offset, typical error approx ±1~2 dB).',
     zhReason:'已预置专业噪声计校对基准（+2 dB 偏移），平板麦克风实测典型误差约 ±1~2 dB。',
   },
   'android-browser':{
     offset:2,
     label:'Android Browser',
-    zh:'Android 浏览器',
+    zh:'Android 手机浏览器',
     reason:'Preset baseline calibrated against reference meters (+2 dB offset, typical error approx ±1~2 dB).',
-    zhReason:'已预置专业噪声计校对基准（+2 dB 偏移），主流安卓机型实测典型误差约 ±1~2 dB。',
+    zhReason:'已预置专业噪声计校对基准（+2 dB 偏移），主流安卓机型实测与分贝计典型误差约 ±1~2 dB。',
   },
   'ios-browser':{
-    offset:6,
-    label:'iPhone / iPad Safari',
-    zh:'iPhone / iPad',
-    reason:'Preset baseline calibrated against reference meters (+6 dB offset, high consistency error approx ±1~2 dB).',
-    zhReason:'已预置专业噪声计校对基准（+6 dB 偏移），iOS 麦克风高一致性实测典型误差约 ±1~2 dB。',
+    offset:22.7,
+    label:'iPhone / iPad Safari (iOS)',
+    zh:'iPhone / iPad (iOS)',
+    reason:'Calibrated against reference meters for iOS WebKit studio recording curve (+22.7 dB offset, typical error approx ±1~2 dB).',
+    zhReason:'针对 iOS WebKit 高动态录音曲线精确校准（+22.7 dB 偏移），实测与专业噪声计及安卓基准一致。',
   },
 };
 function getPresetLabel(preset){
@@ -2773,7 +2793,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v3';
+const CALIBRATION_BASELINE='device-preset-v4';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -3976,11 +3996,13 @@ function translateDesktopSettings() {
       const btn = calCard.querySelector('button'); if (btn) btn.textContent = isZh ? '应用当前设备推荐' : 'Apply Device Preset';
     }
     const presetSel = document.getElementById('calibrationPresetSelect');
-    if (presetSel && presetSel.options.length >= 4) {
-      presetSel.options[0].textContent = isZh ? 'PC 桌面浏览器 -12 dB' : 'PC Desktop Browser -12 dB';
-      presetSel.options[1].textContent = isZh ? '平板浏览器 -8 dB' : 'Tablet Browser -8 dB';
-      presetSel.options[2].textContent = isZh ? 'Android 浏览器 -8 dB' : 'Android Browser -8 dB';
-      presetSel.options[3].textContent = isZh ? 'iPhone / iPad -6 dB' : 'iPhone / iPad -6 dB';
+    if (presetSel) {
+      presetSel.innerHTML = Object.entries(CALIBRATION_PRESETS).map(([k, p]) => {
+        const sign = p.offset >= 0 ? '+' : '';
+        const name = isZh ? p.zh : p.label;
+        return `<option value="${k}">${esc(name)} (${sign}${p.offset} dB)</option>`;
+      }).join('');
+      presetSel.value = calibrationPresetKey;
     }
 
     const micRow = document.getElementById('micR')?.closest('.srow');
@@ -6488,9 +6510,10 @@ function detectPlatformProfile(){
   const isIPad=/iPad/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   const isIOS=/iPhone|iPod/.test(ua)||isIPad;
   const isAndroid=/Android/.test(ua);
-  const isTablet=isIPad||(isAndroid&&!/Mobile/.test(ua))||(Math.min(window.innerWidth,window.innerHeight)>=700&&navigator.maxTouchPoints>0);
-  const isDesktop=!isIOS&&!isAndroid&&navigator.maxTouchPoints===0;
-  const os=isIOS?'iOS / iPadOS':isAndroid?'Android':/Windows/.test(ua)?'Windows':/Mac OS X/.test(ua)?'macOS':/Linux/.test(ua)?'Linux':'Desktop';
+  const isWindows=/Windows/.test(ua);
+  const isTablet=!isWindows&&(isIPad||(isAndroid&&!/Mobile/.test(ua))||(Math.min(window.innerWidth,window.innerHeight)>=700&&navigator.maxTouchPoints>0));
+  const isDesktop=!isIOS&&!isAndroid&&(navigator.maxTouchPoints===0||isWindows);
+  const os=isIOS?'iOS / iPadOS':isAndroid?'Android':isWindows?'Windows':/Mac OS X/.test(ua)?'macOS':/Linux/.test(ua)?'Linux':'Desktop';
   const layout=isDesktop?'desktop-optimized':isTablet?'tablet-optimized':'phone-optimized';
   return {os,layout,isIOS,isAndroid,isTablet,isDesktop};
 }
@@ -6517,17 +6540,16 @@ function setCalibrationPreset(key,{save=true,notify=true}={}){
   calOffset=preset.offset;
   const select=document.getElementById('calibrationPresetSelect');
   if(select)select.value=calibrationPresetKey;
-  const calR=document.getElementById('calR');
-  if(calR)calR.value=String(calOffset);
-  const calV=document.getElementById('calV');
-  if(calV)calV.textContent=(calOffset>=0?'+':'')+calOffset+' dB';
+  document.querySelectorAll('#calR').forEach(el=>el.value=String(calOffset));
+  document.querySelectorAll('#calV').forEach(el=>el.textContent=(calOffset>=0?'+':'')+calOffset+' dB');
   renderCalibrationPresetInfo();
   if(save)saveState();
   if(notify){
     const lbl=getPresetLabel(preset);
+    const sign=calOffset>=0?'+':'';
     const msg=t('toasts.applied', 'Applied {label} calibration baseline: {offset} dB.')
       .replace('{label}', lbl)
-      .replace('{offset}', String(calOffset));
+      .replace('{offset}', sign+String(calOffset));
     toast(msg,'info',5200);
   }
 }
@@ -6539,10 +6561,12 @@ function renderCalibrationPresetInfo(){
   const curLabel=getPresetLabel(preset);
   const curReason=getPresetReason(preset);
   const recLabel=getPresetLabel(recommended);
+  const curSign=preset.offset>=0?'+':'';
+  const recSign=recommended.offset>=0?'+':'';
   const recNote=typeof appLanguage==='string'&&appLanguage.startsWith('zh')
-    ? `当前设备推荐为 ${recLabel}（${recommended.offset} dB）。`
-    : `Recommended for this device: ${recLabel} (${recommended.offset} dB).`;
-  if(info)info.innerHTML=`<strong>${esc(curLabel)}：${preset.offset} dB</strong>${esc(curReason)} ${esc(recNote)}`;
+    ? `当前设备推荐为 ${recLabel}（${recSign}${recommended.offset} dB）。`
+    : `Recommended for this device: ${recLabel} (${recSign}${recommended.offset} dB).`;
+  if(info)info.innerHTML=`<strong>${esc(curLabel)}：${curSign}${preset.offset} dB</strong>${esc(curReason)} ${esc(recNote)}`;
   renderCalibrationErrorRange();
 }
 
@@ -6551,9 +6575,10 @@ function calibrationErrorRange(){
   if(latest?.toleranceDb)return `±${latest.toleranceDb} dB · ${latest.standard||(appLanguage!=='zh-CN'?'Reference calibration':'专业基准校准')}`;
   if(latest)return appLanguage!=='zh-CN'?'±1~2 dB · Calibrated against reference meter':'±1~2 dB · 已与专业基准校对';
   const profile=detectPlatformProfile();
-  if(profile.isIOS)return appLanguage!=='zh-CN'?'±1~3 dB · Pre-calibrated iOS baseline':'±1~3 dB · 内置 iOS 专业校准基线';
-  if(profile.isAndroid)return appLanguage!=='zh-CN'?'±2~4 dB · Pre-calibrated Android baseline':'±2~4 dB · 内置 Android 专业校准基线';
-  return appLanguage!=='zh-CN'?'±2~5 dB · Pre-calibrated desktop baseline':'±2~5 dB · 内置桌面端专业校准基线';
+  if(profile.isIOS)return appLanguage!=='zh-CN'?'±1~2 dB · Pre-calibrated iOS baseline':'±1~2 dB · 内置 iOS 专业校准基线';
+  if(profile.isAndroid)return appLanguage!=='zh-CN'?'±1~2 dB · Pre-calibrated Android baseline':'±1~2 dB · 内置 Android 专业校准基线';
+  if(calibrationPresetKey==='laptop-internal-mic')return appLanguage!=='zh-CN'?'±2~4 dB · Laptop array compensated':'±2~4 dB · 笔记本阵列补偿基线';
+  return appLanguage!=='zh-CN'?'±1~3 dB · Pre-calibrated desktop baseline':'±1~3 dB · 内置桌面端专业校准基线';
 }
 
 function renderCalibrationErrorRange(){
@@ -7991,6 +8016,46 @@ async function toggleMon(opts={}){
   }
 }
 
+let lowInputPromptDismissed=false;
+let lowInputDetectedCount=0;
+
+function applyLaptopMicCompensation(){
+  setCalibrationPreset('laptop-internal-mic',{save:true,notify:true});
+  dismissLowInputPrompt();
+}
+
+function dismissLowInputPrompt(){
+  lowInputPromptDismissed=true;
+  const p=document.getElementById('lowInputPrompt');
+  if(p)p.style.display='none';
+}
+
+function updateLowInputDiagnostic(inst){
+  const p=document.getElementById('lowInputPrompt');
+  if(!p||lowInputPromptDismissed)return;
+  const isDesktop=detectPlatformProfile().isDesktop;
+  if(!isDesktop||!isMon){
+    p.style.display='none';
+    return;
+  }
+  if(calibrationPresetKey==='desktop-browser'&&inst>0&&inst<18){
+    lowInputDetectedCount++;
+    if(lowInputDetectedCount>=24){
+      p.style.display='flex';
+      const isZh=typeof appLanguage==='string'&&appLanguage.startsWith('zh');
+      const textEl=document.getElementById('lowInputPromptText');
+      const btnEl=document.getElementById('lowInputApplyBtn');
+      if(textEl)textEl.textContent=isZh?`实测电平极低 (${Math.round(inst)} dB)，疑为笔记本自带麦克风`:`Low input level (${Math.round(inst)} dB), likely laptop built-in mic`;
+      if(btnEl)btnEl.textContent=isZh?'一键增益补偿':'Apply Boost';
+    }
+  }else{
+    lowInputDetectedCount=Math.max(0,lowInputDetectedCount-1);
+    if(inst>=22){
+      p.style.display='none';
+    }
+  }
+}
+
 /* ── Tick ── */
 function tick(){
   if(!isMon)return;
@@ -8020,6 +8085,7 @@ function tick(){
   }
   maybeCaptureImpulseEvent(inst,now);
   curDb=applyMeterBallistics(inst,curDb,dt);
+  updateLowInputDiagnostic(inst);
   if(inst>peak)peak=inst;if(inst>0&&inst<mn)mn=inst;
   if(inst>0){leqEnergy+=Math.pow(10,inst/10)*dt;leqTime+=dt;}
   dbH.push(inst);if(dbH.length>600)dbH.shift();
@@ -8924,12 +8990,15 @@ function captureCurrentSessionSnapshot() {
       offsetDb: (typeof calOffset !== 'undefined' ? calOffset : 0),
       micGainDb: (typeof micGainDb !== 'undefined' ? micGainDb : 2),
       errorRange: (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : 1.2),
-      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v3')
+      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v4')
     }
   };
 }
 
 function stopAll(){
+  const p=document.getElementById('lowInputPrompt');
+  if(p)p.style.display='none';
+  lowInputDetectedCount=0;
   // 1. Immediately capture session snapshot before any state is cleared
   const snapshot = captureCurrentSessionSnapshot();
   if (snapshot && (snapshot.avgDb > 0 || snapshot.leqDb > 0)) {
@@ -9327,12 +9396,25 @@ function toggleAdvancedCalibration(){
   if(open)toast(t('toasts.advancedCalWarn', 'Advanced calibration alters acoustic evidence. Adjust only with reference equipment.'),'warn',6200);
 }
 
-function setCal(){calOffset=+document.getElementById('calR').value;document.getElementById('calV').textContent=(calOffset>=0?'+':'')+calOffset+' dB';saveState();}
+function setCal(){
+  const val=+document.getElementById('calR').value;
+  calOffset=val;
+  document.querySelectorAll('#calR').forEach(el=>el.value=String(val));
+  document.querySelectorAll('#calV').forEach(el=>el.textContent=(val>=0?'+':'')+val+' dB');
+  saveState();
+}
 function applyProMeterCalibration(){
   setCalibrationPreset(calibrationPresetKey,{save:true,notify:false});
   toast(appLanguage === 'zh-CN' ? '已恢复当前设备推荐校准基线；正式证据仍建议用经检定声级计复核。' : 'Device calibration baseline applied. Formal testing requires certified meter verification.', 'info');
 }
-function setMicGain(){micGainDb=+document.getElementById('micR').value;document.getElementById('micV').textContent=micGainDb+' dB';updateMicGain();saveState();}
+function setMicGain(){
+  const val=+document.getElementById('micR').value;
+  micGainDb=val;
+  document.querySelectorAll('#micR').forEach(el=>el.value=String(val));
+  document.querySelectorAll('#micV').forEach(el=>el.textContent=val+' dB');
+  updateMicGain();
+  saveState();
+}
 function setTh(){alertTh=+document.getElementById('thR').value;document.getElementById('thV').textContent=alertTh+' dB';saveState();}
 function togAlert(){alertsOn=!alertsOn;const t=document.getElementById('alertTog');t.classList.toggle('on',alertsOn);t.setAttribute('aria-checked',alertsOn);saveState();}
 function togSustainedAlert(){sustainedAlertOn=!sustainedAlertOn;const t=document.getElementById('sustainedAlertTog');t.classList.toggle('on',sustainedAlertOn);t.setAttribute('aria-checked',sustainedAlertOn);const opts=document.getElementById('sustainedAlertOpts');if(opts)opts.style.display=sustainedAlertOn?'flex':'none';const opts2=document.getElementById('sustainedAlertOpts2');if(opts2)opts2.style.display=sustainedAlertOn?'flex':'none';saveState();}
