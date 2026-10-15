@@ -46,3 +46,19 @@ test('detects impulse noise events from sudden dB jumps', () => {
   assert.equal(events[0].peakDb, 74);
   assert.equal(events[1].index, 6);
 });
+
+test('applyMeterBallistics recovers gracefully from NaN or zero prev values', () => {
+  // When prev is NaN, ballistics must immediately self-heal to inst
+  assert.equal(meter.applyMeterBallistics(65, NaN, 1 / 60, 'F'), 65);
+  assert.equal(meter.applyMeterBallistics(42, 0, 1 / 60, 'F'), 42);
+  assert.equal(meter.applyMeterBallistics(50, undefined, 1 / 60, 'F'), 50);
+
+  // When inst is NaN, ballistics must decay prev smoothly, never returning NaN
+  const decayed = meter.applyMeterBallistics(NaN, 50, 1 / 60, 'F');
+  assert.ok(Number.isFinite(decayed), 'Decayed value must be finite');
+  assert.ok(decayed > 45 && decayed <= 50, `Expected smooth decay around 49.x, got ${decayed}`);
+
+  // Normal ballistic smoothing
+  const rise = meter.applyMeterBallistics(80, 50, 1 / 60, 'F');
+  assert.ok(rise > 50 && rise < 80, `Rising response must be smoothed, got ${rise}`);
+});

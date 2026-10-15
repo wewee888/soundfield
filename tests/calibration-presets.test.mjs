@@ -93,4 +93,14 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   assert.ok(soundtestHtml.includes('function openCalWizardModal'), 'soundtest.html must define openCalWizardModal');
   assert.ok(soundtestHtml.includes('function startQuietSampleCountdown'), 'soundtest.html must define startQuietSampleCountdown');
   assert.ok(soundtestHtml.includes('function completeCalWizard'), 'soundtest.html must define completeCalWizard');
+
+  // 13. Verify Audio Pipeline NaN & Non-Finite Immunity and Self-Healing
+  assert.ok(soundtestHtml.includes('const lvInfo=db=>(!Number.isFinite(db)||db<50)'), 'lvInfo must guard against NaN and non-finite values');
+  assert.ok(soundtestHtml.includes('const dbCol=db=>(!Number.isFinite(db)||db<50)'), 'dbCol must guard against NaN and non-finite values');
+  assert.ok(soundtestHtml.includes('const lvBadge=db=>(!Number.isFinite(db)||db<50)'), 'lvBadge must guard against NaN and non-finite values');
+  assert.ok(soundtestHtml.includes('const fmtDb=v=>(!Number.isFinite(v)||v<=0)'), 'fmtDb must guard against NaN and non-finite values');
+  assert.ok(soundtestHtml.includes('validInst=(Number.isFinite(inst)&&inst>0)?inst:0;'), 'applyMeterBallistics must validate inst');
+  assert.ok(soundtestHtml.includes('if(!Number.isFinite(prev)||prev<=0)'), 'applyMeterBallistics must self-heal when prev is NaN or non-positive');
+  assert.ok(soundtestHtml.includes('validDb=(Number.isFinite(db)&&db>0)?db:0;'), 'updateGauge must sanitize db against NaN');
+  assert.ok(soundtestHtml.includes('document.hidden) || (typeof sentryModeActive !== \'undefined\' && sentryModeActive)'), 'startBackgroundAudioKeepAlive must avoid audio routing glitch in foreground');
 });

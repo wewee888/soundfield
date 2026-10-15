@@ -3019,10 +3019,10 @@ const supports={
   pdf:()=>!!(window.jspdf&&window.jspdf.jsPDF)
 };
 
-const dbCol=db=>db<50?'#4ADE80':db<70?'#FFB520':db<85?'#FF3F50':'#C084FC';
-const lvInfo=db=>db<50?{l:t('levels.quiet','安静'),c:'lv-q'}:db<70?{l:t('levels.moderate','适中'),c:'lv-m'}:db<85?{l:t('levels.loud','嘈杂'),c:'lv-l'}:{l:t('levels.danger','危险'),c:'lv-d'};
-const lvBadge=db=>db<50?'bq':db<70?'bm':db<85?'bl':'bd';
-const fmtDb=v=>(isNaN(v)||v<=0)?'--':Math.round(v)+'';
+const dbCol=db=>(!Number.isFinite(db)||db<50)?'#4ADE80':db<70?'#FFB520':db<85?'#FF3F50':'#C084FC';
+const lvInfo=db=>(!Number.isFinite(db)||db<50)?{l:t('levels.quiet','安静'),c:'lv-q'}:db<70?{l:t('levels.moderate','适中'),c:'lv-m'}:db<85?{l:t('levels.loud','嘈杂'),c:'lv-l'}:{l:t('levels.danger','危险'),c:'lv-d'};
+const lvBadge=db=>(!Number.isFinite(db)||db<50)?'bq':db<70?'bm':db<85?'bl':'bd';
+const fmtDb=v=>(!Number.isFinite(v)||v<=0)?'--':Math.round(v)+'';
 const fmtTime=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
 const weightLabel=()=>`dB${weighting}`;
 const timeLabel=()=>timeWeight==='S'?t('time.slow','慢响应'):t('time.fast','快响应');
@@ -7381,18 +7381,25 @@ function updateMicGain(){if(inputGainNode)inputGainNode.gain.value=Math.pow(10,m
 function analyserSmooth(v){return Math.max(.02,Math.min(.45,v/20));}
 
 function frequencyWeightAdjustDb(kind=weighting){
-  const sr=audioCtx.sampleRate,n=fftAn.fftSize;
+  if(!audioCtx||!fftAn||!floatFBuf)return 0;
+  const sr=audioCtx.sampleRate||44100,n=fftAn.fftSize||2048;
   let flat=0,weightedSum=0;
   for(let i=1;i<floatFBuf.length;i++){
     const f=i*sr/n;
     if(f<20||f>18000)continue;
-    const p=Math.pow(10,floatFBuf[i]/10);
+    const val=floatFBuf[i];
+    if(!Number.isFinite(val))continue;
+    const p=Math.pow(10,val/10);
+    if(!Number.isFinite(p)||p<=0)continue;
     const weight=kind==='A'?aWeightLin(f):kind==='C'?cWeightLin(f):1;
     flat+=p;
     weightedSum+=p*weight*weight;
   }
-  if(flat<=0||weightedSum<=0)return kind==='Z'?0:-3;
-  return 10*Math.log10(weightedSum/flat);
+  if(!Number.isFinite(flat)||!Number.isFinite(weightedSum)||flat<=0||weightedSum<=0)return kind==='Z'?0:-3;
+  const ratio=weightedSum/flat;
+  if(!Number.isFinite(ratio)||ratio<=0)return kind==='Z'?0:-3;
+  const adj=10*Math.log10(ratio);
+  return Number.isFinite(adj)?adj:(kind==='Z'?0:-3);
 }
 
 function isIosCalibrationActive(){
@@ -7406,7 +7413,8 @@ function isIosCalibrationActive(){
 
 function applyAcousticResponseProfile(rawCalDb, isIos=false){
   if(typeof window!=='undefined'&&window.SoundfieldPro?.applyAcousticResponseProfile) return window.SoundfieldPro.applyAcousticResponseProfile(rawCalDb, isIos);
-  if(!isIos||!Number.isFinite(rawCalDb))return rawCalDb;
+  if(!Number.isFinite(rawCalDb))return 0;
+  if(!isIos)return rawCalDb;
   // iOS WebKit VoiceProcessingIO Dynamic Range Expansion & Low-Noise Floor Anchor.
   // Recovers from WebKit hardware/browser AGC compression where a 42 dB real acoustic swing (30 -> 72 dB)
   // is compressed to ~26 dB in raw Web Audio. Anchors quiet rooms to natural ~30 dB floor while
@@ -7425,10 +7433,16 @@ function applyAcousticResponseProfile(rawCalDb, isIos=false){
 function instantDb(){
   if(!analyser||!fftAn||!audioCtx||!floatTBuf||!floatFBuf)return 0;
   analyser.getFloatTimeDomainData(floatTBuf);
-  let s=0;
-  for(let i=0;i<floatTBuf.length;i++)s+=floatTBuf[i]*floatTBuf[i];
-  let rms=Math.sqrt(s/floatTBuf.length);
-  if(rms<1e-9&&wBuf){
+  let s=0,validCount=0;
+  for(let i=0;i<floatTBuf.length;i++){
+    const val=floatTBuf[i];
+    if(Number.isFinite(val)){
+      s+=val*val;
+      validCount++;
+    }
+  }
+  let rms=(validCount>0&&Number.isFinite(s))?Math.sqrt(s/validCount):0;
+  if((!Number.isFinite(rms)||rms<1e-9)&&wBuf){
     analyser.getByteTimeDomainData(wBuf);
     let sByte=0;
     for(let i=0;i<wBuf.length;i++){
@@ -7436,20 +7450,23 @@ function instantDb(){
       sByte+=v*v;
     }
     const byteRms=Math.sqrt(sByte/wBuf.length);
-    if(byteRms>1e-9)rms=byteRms;
+    if(Number.isFinite(byteRms)&&byteRms>1e-9)rms=byteRms;
   }
-  if(rms<1e-9)return 0;
+  if(!Number.isFinite(rms)||rms<1e-9)return 0;
   let db=20*Math.log10(rms)+splRef()+calOffset;
+  if(!Number.isFinite(db))db=0;
   if(weighting!=='Z'){
     fftAn.getFloatFrequencyData(floatFBuf);
-    db+=frequencyWeightAdjustDb(weighting);
+    const wAdj=frequencyWeightAdjustDb(weighting);
+    if(Number.isFinite(wAdj))db+=wAdj;
   }
   db=applyAcousticResponseProfile(db, isIosCalibrationActive());
+  if(!Number.isFinite(db))db=0;
   // IEC 61672 Overload / Clipping detection: check if peak sample approaches 1.0 (clipping)
   let peakSamp = 0;
   for(let i=0; i<floatTBuf.length; i++){
     const a = Math.abs(floatTBuf[i]);
-    if(a > peakSamp) peakSamp = a;
+    if(Number.isFinite(a) && a > peakSamp) peakSamp = a;
   }
   if(peakSamp >= 0.975 || db >= 92){
     overloadActiveUntil = performance.now() + 1800; // 1.8s hold time
@@ -7464,12 +7481,28 @@ function showOverloadHelpToast(){
 }
 
 function applyMeterBallistics(inst,prev,dt){
+  if(typeof window!=='undefined'&&window.SoundfieldPro?.applyMeterBallistics){
+    return window.SoundfieldPro.applyMeterBallistics(inst,prev,dt,timeWeight);
+  }
+  const validInst=(Number.isFinite(inst)&&inst>0)?inst:0;
+  if(!Number.isFinite(prev)||prev<=0){
+    return validInst;
+  }
+  if(!Number.isFinite(inst)||inst<=0){
+    const safeDt=Math.max(0.001,Math.min(0.05,dt||1/60));
+    const tau=timeWeight==='S'?1.0:0.125;
+    const decayAlpha=1-Math.exp(-safeDt/tau);
+    const decayed=prev*(1-Math.max(0.02,decayAlpha*0.8));
+    return Math.max(0,decayed);
+  }
   const tau=timeWeight==='S'?1.0:0.125;
   const safeDt=Math.max(0.001,Math.min(0.05,dt||1/60));
   let alpha=1-Math.exp(-safeDt/tau);
+  if(!Number.isFinite(alpha))alpha=0.1;
   if(inst>prev)alpha=Math.min(0.35,alpha*1.3);
   else alpha=Math.max(0.02,alpha*0.8);
-  return prev*(1-alpha)+inst*alpha;
+  const out=prev*(1-alpha)+inst*alpha;
+  return Number.isFinite(out)?Math.max(0,out):validInst;
 }
 
 function twAlpha(dt){
@@ -7506,14 +7539,15 @@ function updateLnStats(stats){
 function updateGauge(db){
   const radial=document.getElementById('radialGaugeTrace');
   const stage=document.getElementById('dbStage');
+  const validDb=(Number.isFinite(db)&&db>0)?db:0;
   if(radial){
     // 270 deg circular arc: length 386.4 on circumference 515.22.
     // Calibrated range: 20 dB (0% baseline) to 120 dB (100% max limit)
     // Eliminates the dead zone below 30 dB so real indoor ambient sound gives smooth feedback.
-    if(!db||db<=0){
+    if(validDb<=0){
       radial.style.strokeDashoffset='386.4';
     }else{
-      const clamped=Math.max(20,Math.min(120,db));
+      const clamped=Math.max(20,Math.min(120,validDb));
       const pct=(clamped-20)/100;
       const offset=386.4*(1-pct);
       radial.style.strokeDashoffset=offset.toFixed(1);
@@ -7522,7 +7556,7 @@ function updateGauge(db){
   const arc=document.getElementById('gaugeArc');if(!arc)return;
   const needle=document.getElementById('gaugeNeedle');
   // Arc: d="M18 112 A94 94 0 0 1 202 112" — half-circle, length ≈ π*94 ≈ 295.3
-  const len=295,pct=Math.max(0,Math.min(1,db/120));
+  const len=295,pct=Math.max(0,Math.min(1,validDb/120));
   const visible=pct>.01;
   arc.setAttribute('stroke-linecap',visible?'round':'butt');
   arc.setAttribute('stroke-dasharray',visible?`${(pct*len).toFixed(1)} ${len}`:`0 ${len}`);
@@ -7542,7 +7576,7 @@ function updateGauge(db){
     }
   }
   if(stage){
-    const lv=db<50?'low':db<70?'mid':db<85?'high':'danger';
+    const lv=(!Number.isFinite(db)||db<50)?'low':db<70?'mid':db<85?'high':'danger';
     if(stage.getAttribute('data-level')!==lv)stage.setAttribute('data-level',lv);
   }
 }
@@ -7984,19 +8018,13 @@ async function fallbackToStandardMicStream(){
   try{
     if(!isMon||!audioCtx)return;
     console.warn('[Audio] Digital silence detected (RMS < 1e-9). Self-healing with standard audio pipeline...');
-    if(micSourceNode){
-      try{micSourceNode.disconnect();}catch(_){}
-      micSourceNode=null;
-    }
-    if(micStream){
-      micStream.getTracks().forEach(t=>t.stop());
-      micStream=null;
-    }
     const fallbackStream=await navigator.mediaDevices.getUserMedia({audio:true});
     if(!isMon){
       fallbackStream.getTracks().forEach(t=>t.stop());
       return;
     }
+    const oldSource=micSourceNode;
+    const oldStream=micStream;
     micStream=fallbackStream;
     micSourceNode=audioCtx.createMediaStreamSource(micStream);
     micSourceNode.connect(inputGainNode);
@@ -8004,6 +8032,8 @@ async function fallbackToStandardMicStream(){
     if(audioCtx.state!=='running'){
       try{await audioCtx.resume();}catch(_){}
     }
+    if(oldSource){try{oldSource.disconnect();}catch(_){}}
+    if(oldStream){try{oldStream.getTracks().forEach(t=>t.stop());}catch(_){}}
     console.log('[Audio] Successfully switched to standard audio pipeline!');
     toast(appLanguage!=='zh-CN'?'Switched to compatible audio pipeline.':'已自动切换至兼容音频通道。','info',3500);
   }catch(err){
@@ -8223,9 +8253,9 @@ function tick(){
   const inst=instantDb();
   if(inst<=0){
     silentTickCount++;
-    if(silentTickCount===18&&!hasAttemptedAudioFallback){
+    if(silentTickCount>=180&&!hasAttemptedAudioFallback){
       hasAttemptedAudioFallback=true;
-      console.warn('[Audio] Digital silence detected (18 frames with rms < 1e-9). Self-healing with standard audio pipeline...');
+      console.warn('[Audio] Digital silence detected (180 frames with rms < 1e-9). Self-healing with standard audio pipeline...');
       fallbackToStandardMicStream();
     }
   }else{
@@ -8235,9 +8265,9 @@ function tick(){
   curDb=applyMeterBallistics(inst,curDb,dt);
   updateLowInputDiagnostic(inst);
   if(inst>peak)peak=inst;if(inst>0&&inst<mn)mn=inst;
-  if(inst>0){leqEnergy+=Math.pow(10,inst/10)*dt;leqTime+=dt;}
-  dbH.push(inst);if(dbH.length>600)dbH.shift();
-  tickN++;if(tickN%4===0){trendH.push(inst);if(trendH.length>120)trendH.shift();}
+  if(inst>0&&Number.isFinite(inst)){leqEnergy+=Math.pow(10,inst/10)*dt;leqTime+=dt;}
+  if(Number.isFinite(inst)){dbH.push(inst);if(dbH.length>600)dbH.shift();}
+  tickN++;if(tickN%4===0&&Number.isFinite(inst)){trendH.push(inst);if(trendH.length>120)trendH.shift();}
   const avg=dbH.length?dbH.reduce((a,b)=>a+b,0)/dbH.length:0;
   const leq=leqTime>0?10*Math.log10(leqEnergy/leqTime):0;
   const lnStats=calculateLnStats(dbH);
@@ -8369,20 +8399,6 @@ let backgroundTickInterval = null;
 
 function startBackgroundAudioKeepAlive(){
   try{
-    if(audioCtx && !backgroundKeepAliveSource){
-      // Looping silent audio buffer keeps Web Audio thread active under mobile screen lock
-      const silentBuf = audioCtx.createBuffer(1, Math.max(1024, (audioCtx.sampleRate || 44100) * 2), audioCtx.sampleRate || 44100);
-      const src = audioCtx.createBufferSource();
-      src.buffer = silentBuf;
-      src.loop = true;
-      const g = audioCtx.createGain();
-      g.gain.value = 0.00001;
-      src.connect(g);
-      g.connect(audioCtx.destination);
-      src.start(0);
-      backgroundKeepAliveSource = src;
-      backgroundKeepAliveGain = g;
-    }
     if(typeof navigator !== 'undefined' && 'mediaSession' in navigator){
       const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
       navigator.mediaSession.metadata = new MediaMetadata({
@@ -8399,6 +8415,22 @@ function startBackgroundAudioKeepAlive(){
         navigator.mediaSession.setActionHandler('pause', () => { toggleMon(); });
         navigator.mediaSession.setActionHandler('stop', () => { toggleMon(); });
       }catch(_){}
+    }
+    // Only route silent keep-alive buffer to destination if background tab / screen lock or sentry mode requires it,
+    // avoiding audio routing glitches & AEC microphone suppression on iOS Safari during foreground monitoring.
+    const needsBuffer = (typeof document !== 'undefined' && document.hidden) || (typeof sentryModeActive !== 'undefined' && sentryModeActive);
+    if(audioCtx && !backgroundKeepAliveSource && needsBuffer){
+      const silentBuf = audioCtx.createBuffer(1, Math.max(1024, (audioCtx.sampleRate || 44100) * 2), audioCtx.sampleRate || 44100);
+      const src = audioCtx.createBufferSource();
+      src.buffer = silentBuf;
+      src.loop = true;
+      const g = audioCtx.createGain();
+      g.gain.value = 0.00001;
+      src.connect(g);
+      g.connect(audioCtx.destination);
+      src.start(0);
+      backgroundKeepAliveSource = src;
+      backgroundKeepAliveGain = g;
     }
   }catch(e){
     console.warn('[BackgroundKeepAlive start]', e);
@@ -8429,6 +8461,7 @@ function stopBackgroundAudioKeepAlive(){
 if(typeof document !== 'undefined'){
   document.addEventListener('visibilitychange', () => {
     if(document.hidden && isMon){
+      startBackgroundAudioKeepAlive();
       // Screen locked / background tab: maintain background tick for continuous Leq & threshold alerts
       if(!backgroundTickInterval){
         backgroundTickInterval = setInterval(() => {
@@ -8441,6 +8474,9 @@ if(typeof document !== 'undefined'){
       if(backgroundTickInterval){
         clearInterval(backgroundTickInterval);
         backgroundTickInterval = null;
+      }
+      if(typeof sentryModeActive === 'undefined' || !sentryModeActive){
+        stopBackgroundAudioKeepAlive();
       }
       if(isMon && !animId){
         lastTick = performance.now();
@@ -8465,14 +8501,16 @@ function tickBackground(){
   curDb = applyMeterBallistics(inst, curDb, dt);
   if(inst > peak) peak = inst;
   if(inst > 0 && inst < mn) mn = inst;
-  if(inst > 0){
+  if(inst > 0 && Number.isFinite(inst)){
     leqEnergy += Math.pow(10, inst / 10) * dt;
     leqTime += dt;
   }
-  dbH.push(inst);
-  if(dbH.length > 600) dbH.shift();
+  if(Number.isFinite(inst)){
+    dbH.push(inst);
+    if(dbH.length > 600) dbH.shift();
+  }
   tickN++;
-  if(tickN % 4 === 0){
+  if(tickN % 4 === 0 && Number.isFinite(inst)){
     trendH.push(inst);
     if(trendH.length > 120) trendH.shift();
   }

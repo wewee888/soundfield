@@ -130,6 +130,28 @@
     return (T - W) + dx + a * dx * dx;
   }
 
+  function applyMeterBallistics(inst, prev, dt, timeWeight = 'F') {
+    const validInst = (Number.isFinite(inst) && inst > 0) ? inst : 0;
+    if (!Number.isFinite(prev) || prev <= 0) {
+      return validInst;
+    }
+    if (!Number.isFinite(inst) || inst <= 0) {
+      const safeDt = Math.max(0.001, Math.min(0.05, dt || 1 / 60));
+      const tau = timeWeight === 'S' ? SLOW_TIME_CONSTANT_SECONDS : FAST_TIME_CONSTANT_SECONDS;
+      const decayAlpha = 1 - Math.exp(-safeDt / tau);
+      const decayed = prev * (1 - Math.max(0.02, decayAlpha * 0.8));
+      return Math.max(0, decayed);
+    }
+    const tau = timeWeight === 'S' ? SLOW_TIME_CONSTANT_SECONDS : FAST_TIME_CONSTANT_SECONDS;
+    const safeDt = Math.max(0.001, Math.min(0.05, dt || 1 / 60));
+    let alpha = 1 - Math.exp(-safeDt / tau);
+    if (!Number.isFinite(alpha)) alpha = 0.1;
+    if (inst > prev) alpha = Math.min(0.35, alpha * 1.3);
+    else alpha = Math.max(0.02, alpha * 0.8);
+    const out = prev * (1 - alpha) + inst * alpha;
+    return Number.isFinite(out) ? Math.max(0, out) : validInst;
+  }
+
   window.SoundfieldPro = {
     FAST_TIME_CONSTANT_SECONDS,
     SLOW_TIME_CONSTANT_SECONDS,
@@ -143,6 +165,7 @@
     thirdOctaveBands,
     detectImpulseEvents,
     applyAcousticResponseProfile,
+    applyMeterBallistics,
     THIRD_OCTAVE_CENTERS,
   };
 })();
