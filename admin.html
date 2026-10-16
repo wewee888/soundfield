@@ -1777,11 +1777,68 @@
             </div>
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <label style="font-size: 12px; color: var(--adm-muted);">默认声学基准校准偏移 (Calibration Offset)</label>
+                <label style="font-size: 12px; color: var(--adm-muted);">全局通用校准偏移 (Global Fallback Offset)</label>
                 <span id="cfgCalOffsetVal" style="font-family: monospace; font-size: 13px; color: var(--adm-accent); font-weight: 700;">+0.0 dB</span>
               </div>
               <input type="range" id="cfgCalOffset" min="-20" max="45" step="0.1" value="0.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
-              <div style="font-size: 11px; color: var(--adm-muted); margin-top: 4px;">由国家一级声级计比对定标；支持 -20 到 +45 dB 宽幅微调（iOS 设备预置基线为 +7.0 dB，笔记本自带麦克风补偿预置为 +38 dB）。</div>
+              <div style="font-size: 11px; color: var(--adm-muted); margin-top: 4px;">由国家一级声级计比对定标；支持 -20 到 +45 dB 宽幅微调。</div>
+            </div>
+
+            <!-- 分设备终端出厂校准偏移矩阵 -->
+            <div style="background: rgba(42,255,212,0.03); border: 1px solid rgba(42,255,212,0.18); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="font-size: 12.5px; font-weight: 800; color: var(--adm-accent); display: flex; align-items: center; justify-content: space-between;">
+                <span>📱 终端设备基准偏移矩阵 (Device Calibration Matrix)</span>
+                <span style="font-size: 11px; color: var(--adm-muted); font-weight: normal;">支持后台直接单独调节各端基准</span>
+              </div>
+
+              <!-- iOS 设备 -->
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <label style="font-size: 11.5px; color: #fff;">🍎 苹果设备 (iPhone / iPad iOS)</label>
+                  <span id="cfgIosCalOffsetVal" style="font-family: monospace; font-size: 12px; color: var(--adm-accent); font-weight: 700;">+15.0 dB</span>
+                </div>
+                <input type="range" id="cfgIosCalOffset" min="-20" max="45" step="0.5" value="15.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgIosCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+                <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">已调增 +8 dB（由 +7.0 dB 升至 +15.0 dB），精准对齐安卓与PC端。</div>
+              </div>
+
+              <!-- Android 手机 -->
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <label style="font-size: 11.5px; color: #fff;">🤖 安卓手机浏览器 (Android Phone)</label>
+                  <span id="cfgAndroidCalOffsetVal" style="font-family: monospace; font-size: 12px; color: var(--adm-gold); font-weight: 700;">-6.0 dB</span>
+                </div>
+                <input type="range" id="cfgAndroidCalOffset" min="-20" max="45" step="0.5" value="-6.0" style="width: 100%; accent-color: var(--adm-gold);" oninput="document.getElementById('cfgAndroidCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+                <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">已调减 -8 dB（由 +2.0 dB 调至 -6.0 dB），消除底噪虚高。</div>
+              </div>
+
+              <!-- Android 平板 -->
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <label style="font-size: 11.5px; color: #fff;">📱 安卓平板浏览器 (Android Tablet)</label>
+                  <span id="cfgTabletCalOffsetVal" style="font-family: monospace; font-size: 12px; color: var(--adm-gold); font-weight: 700;">-6.0 dB</span>
+                </div>
+                <input type="range" id="cfgTabletCalOffset" min="-20" max="45" step="0.5" value="-6.0" style="width: 100%; accent-color: var(--adm-gold);" oninput="document.getElementById('cfgTabletCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+              </div>
+
+              <!-- PC 桌面浏览器 -->
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <label style="font-size: 11.5px; color: #fff;">💻 PC 桌面浏览器 (外接麦克风 / 独立声卡)</label>
+                  <span id="cfgDesktopCalOffsetVal" style="font-family: monospace; font-size: 12px; color: #70b8ff; font-weight: 700;">-9.0 dB</span>
+                </div>
+                <input type="range" id="cfgDesktopCalOffset" min="-20" max="45" step="0.5" value="-9.0" style="width: 100%; accent-color: #70b8ff;" oninput="document.getElementById('cfgDesktopCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+                <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">已调减 -8 dB（由 -1.0 dB 调至 -9.0 dB），匹配桌面声卡输入。</div>
+              </div>
+
+              <!-- 笔记本自带麦克风 -->
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <label style="font-size: 11.5px; color: #fff;">💻 笔记本电脑自带集成麦克风 (阵列增益补偿)</label>
+                  <span id="cfgLaptopCalOffsetVal" style="font-family: monospace; font-size: 12px; color: #ff8fab; font-weight: 700;">+38.0 dB</span>
+                </div>
+                <input type="range" id="cfgLaptopCalOffset" min="0" max="50" step="1" value="38.0" style="width: 100%; accent-color: #ff8fab;" oninput="document.getElementById('cfgLaptopCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+                <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">补偿笔记本集成麦克风硬件阵列灵敏度不足。</div>
+              </div>
             </div>
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -2772,6 +2829,13 @@
       weighting: 'A',
       timeWeight: 'F',
       calOffset: 0.0,
+      devicePresets: {
+        'ios-browser': 15.0,
+        'android-browser': -6.0,
+        'tablet-browser': -6.0,
+        'desktop-browser': -9.0,
+        'laptop-internal-mic': 38.0
+      },
       micGainDb: 2,
       smoothing: 1,
       alertTh: 60,
@@ -2817,6 +2881,19 @@
       setVal('cfgCalOffset', cal);
       const calValEl = document.getElementById('cfgCalOffsetVal');
       if (calValEl) calValEl.textContent = (cal >= 0 ? '+' : '') + cal + ' dB';
+
+      const presets = cfg.devicePresets || {};
+      const setDevCal = (id, val, fallback) => {
+        const v = typeof val === 'number' ? val : fallback;
+        setVal(id, v);
+        const valEl = document.getElementById(id + 'Val');
+        if (valEl) valEl.textContent = (v >= 0 ? '+' : '') + v + ' dB';
+      };
+      setDevCal('cfgIosCalOffset', presets['ios-browser'], 15.0);
+      setDevCal('cfgAndroidCalOffset', presets['android-browser'], -6.0);
+      setDevCal('cfgTabletCalOffset', presets['tablet-browser'], -6.0);
+      setDevCal('cfgDesktopCalOffset', presets['desktop-browser'], -9.0);
+      setDevCal('cfgLaptopCalOffset', presets['laptop-internal-mic'], 38.0);
 
       const mic = typeof cfg.micGainDb === 'number' ? cfg.micGainDb : 2;
       setVal('cfgMicGain', mic);
@@ -2880,6 +2957,13 @@
         weighting: getVal('cfgWeighting', 'A'),
         timeWeight: getVal('cfgTimeWeight', 'F'),
         calOffset: getNum('cfgCalOffset', 0.0),
+        devicePresets: {
+          'ios-browser': getNum('cfgIosCalOffset', 15.0),
+          'android-browser': getNum('cfgAndroidCalOffset', -6.0),
+          'tablet-browser': getNum('cfgTabletCalOffset', -6.0),
+          'desktop-browser': getNum('cfgDesktopCalOffset', -9.0),
+          'laptop-internal-mic': getNum('cfgLaptopCalOffset', 38.0)
+        },
         micGainDb: getNum('cfgMicGain', 2),
         smoothing: getNum('cfgSmoothing', 1),
         alertTh: getNum('cfgAlertTh', 60),
