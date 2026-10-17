@@ -1780,8 +1780,8 @@
                 <label style="font-size: 12px; color: var(--adm-muted);">全局通用校准偏移 (Global Fallback Offset)</label>
                 <span id="cfgCalOffsetVal" style="font-family: monospace; font-size: 13px; color: var(--adm-accent); font-weight: 700;">+0.0 dB</span>
               </div>
-              <input type="range" id="cfgCalOffset" min="-20" max="45" step="0.1" value="0.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
-              <div style="font-size: 11px; color: var(--adm-muted); margin-top: 4px;">由国家一级声级计比对定标；支持 -20 到 +45 dB 宽幅微调。</div>
+              <input type="range" id="cfgCalOffset" min="-35" max="45" step="0.1" value="0.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+              <div style="font-size: 11px; color: var(--adm-muted); margin-top: 4px;">由国家一级声级计比对定标；支持 -35 到 +45 dB 宽幅微调。</div>
             </div>
 
             <!-- 分设备终端出厂校准偏移矩阵 -->
@@ -1797,7 +1797,7 @@
                   <label style="font-size: 11.5px; color: #fff;">🍎 苹果设备 (iPhone / iPad iOS)</label>
                   <span id="cfgIosCalOffsetVal" style="font-family: monospace; font-size: 12px; color: var(--adm-accent); font-weight: 700;">+7.0 dB</span>
                 </div>
-                <input type="range" id="cfgIosCalOffset" min="-20" max="45" step="0.5" value="7.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgIosCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+                <input type="range" id="cfgIosCalOffset" min="-35" max="45" step="0.5" value="7.0" style="width: 100%; accent-color: var(--adm-accent);" oninput="document.getElementById('cfgIosCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
                 <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">标准参考值 +7.0 dB（1:1 线性声学保真，底噪自然锚定 ~30 dB，消除轻声暴冲）。</div>
               </div>
 
@@ -1807,7 +1807,7 @@
                   <label style="font-size: 11.5px; color: #fff;">🤖 安卓手机浏览器 (Android Phone)</label>
                   <span id="cfgAndroidCalOffsetVal" style="font-family: monospace; font-size: 12px; color: var(--adm-gold); font-weight: 700;">-6.0 dB</span>
                 </div>
-                <input type="range" id="cfgAndroidCalOffset" min="-20" max="45" step="0.5" value="-6.0" style="width: 100%; accent-color: var(--adm-gold);" oninput="document.getElementById('cfgAndroidCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+                <input type="range" id="cfgAndroidCalOffset" min="-35" max="45" step="0.5" value="-6.0" style="width: 100%; accent-color: var(--adm-gold);" oninput="document.getElementById('cfgAndroidCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
                 <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">已调减 -8 dB（由 +2.0 dB 调至 -6.0 dB），消除底噪虚高。</div>
               </div>
 
@@ -1817,17 +1817,17 @@
                   <label style="font-size: 11.5px; color: #fff;">📱 安卓平板浏览器 (Android Tablet)</label>
                   <span id="cfgTabletCalOffsetVal" style="font-family: monospace; font-size: 12px; color: var(--adm-gold); font-weight: 700;">-6.0 dB</span>
                 </div>
-                <input type="range" id="cfgTabletCalOffset" min="-20" max="45" step="0.5" value="-6.0" style="width: 100%; accent-color: var(--adm-gold);" oninput="document.getElementById('cfgTabletCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+                <input type="range" id="cfgTabletCalOffset" min="-35" max="45" step="0.5" value="-6.0" style="width: 100%; accent-color: var(--adm-gold);" oninput="document.getElementById('cfgTabletCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
               </div>
 
               <!-- PC 桌面浏览器 -->
               <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                   <label style="font-size: 11.5px; color: #fff;">💻 PC 桌面浏览器 (外接麦克风 / 独立声卡)</label>
-                  <span id="cfgDesktopCalOffsetVal" style="font-family: monospace; font-size: 12px; color: #70b8ff; font-weight: 700;">-9.0 dB</span>
+                  <span id="cfgDesktopCalOffsetVal" style="font-family: monospace; font-size: 12px; color: #70b8ff; font-weight: 700;">-22.5 dB</span>
                 </div>
-                <input type="range" id="cfgDesktopCalOffset" min="-20" max="45" step="0.5" value="-9.0" style="width: 100%; accent-color: #70b8ff;" oninput="document.getElementById('cfgDesktopCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
-                <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">已调减 -8 dB（由 -1.0 dB 调至 -9.0 dB），匹配桌面声卡输入。</div>
+                <input type="range" id="cfgDesktopCalOffset" min="-35" max="45" step="0.5" value="-22.5" style="width: 100%; accent-color: #70b8ff;" oninput="document.getElementById('cfgDesktopCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+                <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">标准参考值 -22.5 dB（已下调 13.5 dB，底噪自然锚定 ~30~32 dB）。</div>
               </div>
 
               <!-- 笔记本自带麦克风 -->
@@ -2833,7 +2833,7 @@
         'ios-browser': 7.0,
         'android-browser': -6.0,
         'tablet-browser': -6.0,
-        'desktop-browser': -9.0,
+        'desktop-browser': -22.5,
         'laptop-internal-mic': 38.0
       },
       micGainDb: 2,
@@ -2892,7 +2892,7 @@
       setDevCal('cfgIosCalOffset', presets['ios-browser'], 7.0);
       setDevCal('cfgAndroidCalOffset', presets['android-browser'], -6.0);
       setDevCal('cfgTabletCalOffset', presets['tablet-browser'], -6.0);
-      setDevCal('cfgDesktopCalOffset', presets['desktop-browser'], -9.0);
+      setDevCal('cfgDesktopCalOffset', presets['desktop-browser'], -22.5);
       setDevCal('cfgLaptopCalOffset', presets['laptop-internal-mic'], 38.0);
 
       const mic = typeof cfg.micGainDb === 'number' ? cfg.micGainDb : 2;
@@ -2961,7 +2961,7 @@
           'ios-browser': getNum('cfgIosCalOffset', 7.0),
           'android-browser': getNum('cfgAndroidCalOffset', -6.0),
           'tablet-browser': getNum('cfgTabletCalOffset', -6.0),
-          'desktop-browser': getNum('cfgDesktopCalOffset', -9.0),
+          'desktop-browser': getNum('cfgDesktopCalOffset', -22.5),
           'laptop-internal-mic': getNum('cfgLaptopCalOffset', 38.0)
         },
         micGainDb: getNum('cfgMicGain', 2),

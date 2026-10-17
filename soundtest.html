@@ -1272,7 +1272,7 @@
           <div class="settings-drawer-desc" id="sdDescCal">Fine-tune baseline against certified reference meter</div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
-          <input type="range" id="calR" min="-20" max="45" value="0" step="0.1" oninput="setCal()" style="width:70px">
+          <input type="range" id="calR" min="-35" max="45" value="0" step="0.1" oninput="setCal()" style="width:70px">
           <span class="settings-drawer-value" id="calV">0.0 dB</span>
           <button class="btn b-cyan" id="sdBtnCalRec" style="height:26px;font-size:9px;padding:0 7px" onclick="applyProMeterCalibration()">Recommended</button>
         </div>
@@ -2469,7 +2469,7 @@
             </div>
             <div class="sctrl">
               <select class="setting-select" id="calibrationPresetSelect" onchange="setCalibrationPreset(this.value)">
-                <option value="desktop-browser">PC Desktop Browser (-9 dB)</option>
+                <option value="desktop-browser">PC Desktop Browser (-22.5 dB)</option>
                 <option value="laptop-internal-mic">Laptop Built-in Mic (+38 dB)</option>
                 <option value="tablet-browser">Tablet Browser (-6 dB)</option>
                 <option value="android-browser">Android Browser (-6 dB)</option>
@@ -2484,7 +2484,7 @@
           </div>
           <div class="srow">
             <div><div class="slabel">Calibration Offset</div><div class="sdesc">Advanced. Adjusts calibration offset against reference meters; saved to reports and evidence photos.</div></div>
-            <div class="sctrl"><input type="range" id="calR" min="-20" max="45" value="0" step="0.1" oninput="setCal()"><span class="sval" id="calV">0.0 dB</span><button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="applyProMeterCalibration()">Restore Baseline</button></div>
+            <div class="sctrl"><input type="range" id="calR" min="-35" max="45" value="0" step="0.1" oninput="setCal()"><span class="sval" id="calV">0.0 dB</span><button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="applyProMeterCalibration()">Restore Baseline</button></div>
           </div>
           <div class="srow" style="background:rgba(42,255,212,0.04);border:1px solid rgba(42,255,212,0.2);border-radius:12px;padding:12px;margin:8px 0;">
             <div>
@@ -2826,11 +2826,11 @@ const MEDIA_STORE='clips';
 const PERMISSION_GUIDE_KEY='sf_permission_guide_v1';
 const CALIBRATION_PRESETS={
   'desktop-browser':{
-    offset:-9.0,
+    offset:-22.5,
     label:'PC / Desktop Browser (External Mic / USB)',
     zh:'PC 桌面浏览器（外置麦克风 / 独立声卡）',
-    reason:'Preset baseline calibrated against reference meters (-9.0 dB offset, typical error approx ±1~3 dB).',
-    zhReason:'已针对电脑外接麦克风/USB独立声卡校对基准（-9.0 dB 偏移），实测误差约 ±1~3 dB。',
+    reason:'Preset baseline calibrated against reference meters (-22.5 dB offset, quiet room floor ~30~32 dB).',
+    zhReason:'已针对电脑外接麦克风/USB独立声卡校对基准（-22.5 dB 偏移，底噪自然锚定 ~30~32 dB）。',
   },
   'laptop-internal-mic':{
     offset:38,
@@ -2874,7 +2874,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v7';
+const CALIBRATION_BASELINE='device-preset-v8';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -9304,7 +9304,7 @@ function captureCurrentSessionSnapshot() {
       offsetDb: (typeof calOffset !== 'undefined' ? calOffset : 0),
       micGainDb: (typeof micGainDb !== 'undefined' ? micGainDb : 2),
       errorRange: (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : 1.2),
-      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v7')
+      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v8')
     }
   };
 }
