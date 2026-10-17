@@ -10,17 +10,17 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   const adminHtml = await fs.readFile(path.join(projectRoot, 'admin.html'), 'utf-8');
   const reportCertJs = await fs.readFile(path.join(projectRoot, 'assets', 'report-cert-engine.js'), 'utf-8');
 
-  // 1. Verify CALIBRATION_PRESETS contains iOS calibrated offset 15.0 dB, Android -6.0 dB, PC -9.0 dB, laptop compensation 38 dB
+  // 1. Verify CALIBRATION_PRESETS contains iOS calibrated offset 7.0 dB, Android -6.0 dB, PC -9.0 dB, laptop compensation 38 dB
   assert.ok(soundtestHtml.includes("'ios-browser'"), 'ios-browser preset must exist');
-  assert.ok(soundtestHtml.includes('offset:15.0') || soundtestHtml.includes('offset:15'), 'ios-browser offset must be calibrated to 15.0 dB');
+  assert.ok(soundtestHtml.includes('offset:7.0') || soundtestHtml.includes('offset:7'), 'ios-browser offset must be calibrated to 7.0 dB');
   assert.ok(soundtestHtml.includes('offset:-6.0') || soundtestHtml.includes('offset:-6'), 'android-browser offset must be calibrated to -6.0 dB');
   assert.ok(soundtestHtml.includes('offset:-9.0') || soundtestHtml.includes('offset:-9'), 'desktop-browser offset must be calibrated to -9.0 dB');
   assert.ok(soundtestHtml.includes("'laptop-internal-mic'"), 'laptop-internal-mic preset must exist');
   assert.ok(soundtestHtml.includes('offset:38'), 'laptop-internal-mic offset must provide +38 dB compensation');
 
-  // 2. Verify CALIBRATION_BASELINE is bumped to v6 to ensure auto-refresh on existing devices
-  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v6'"), 'CALIBRATION_BASELINE must be device-preset-v6');
-  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v6')"), 'Snapshot preset fallback must be device-preset-v6');
+  // 2. Verify CALIBRATION_BASELINE is bumped to v7 to ensure auto-refresh on existing devices
+  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v7'"), 'CALIBRATION_BASELINE must be device-preset-v7');
+  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v7')"), 'Snapshot preset fallback must be device-preset-v7');
 
   // 3. Verify Slider ranges are expanded to accommodate offsets up to +45 dB and Admin device matrix exists
   const calRMatches = soundtestHtml.match(/id="calR"[^>]*max="45"/g) || soundtestHtml.match(/max="45"[^>]*id="calR"/g);
@@ -51,7 +51,7 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   assert.ok(soundtestHtml.includes('function applyAcousticResponseProfile'), 'soundtest.html must define applyAcousticResponseProfile');
   assert.ok(soundtestHtml.includes('function isIosCalibrationActive'), 'soundtest.html must define isIosCalibrationActive');
   assert.ok(soundtestHtml.includes('db=applyAcousticResponseProfile(db, isIosCalibrationActive());'), 'instantDb must apply acoustic response profile');
-  assert.ok(soundtestHtml.includes('<option value="ios-browser">iPhone / iPad (+15.0 dB)</option>'), 'Dropdown option must show +15.0 dB');
+  assert.ok(soundtestHtml.includes('<option value="ios-browser">iPhone / iPad (+7.0 dB)</option>'), 'Dropdown option must show +7.0 dB');
 
   // 9. Verify mathematical accuracy of dynamic acoustic profile
   const proMeterJs = await fs.readFile(path.join(projectRoot, 'assets', 'pro-meter.js'), 'utf-8');
@@ -66,20 +66,23 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   assert.strictEqual(evalFunc(48.6, false), 48.6, 'Non-iOS must remain strictly unaltered');
   assert.strictEqual(evalFunc(20.0, false), 20.0, 'Non-iOS quiet must remain unaltered');
 
-  // iOS: quiet room (~29.9 dB) anchors smoothly to ~30.3 dB
-  const quietVal = evalFunc(29.9, true);
-  assert.ok(quietVal >= 29.8 && quietVal <= 30.6, `Quiet room must be anchored ~30 dB, got ${quietVal}`);
+  // iOS: quiet room (30.0 dB) anchors cleanly at 30.0 dB
+  const quietVal = evalFunc(30.0, true);
+  assert.strictEqual(quietVal, 30.0, 'Quiet room must be anchored ~30 dB');
 
   // iOS: sub-quiet (< 27 dB) passes through smoothly without artificial cutoff
   assert.strictEqual(evalFunc(20.0, true), 20.0, 'Sub-quiet level must pass through naturally');
 
-  // iOS: speech range (48.6 dB raw) expands to match ~60 dB sound level meter
-  const speechVal = evalFunc(48.6, true);
-  assert.ok(speechVal >= 59.5 && speechVal <= 60.5, `Speech level must expand to ~60 dB, got ${speechVal}`);
+  // iOS: whisper (40.0 dB) and speech range (58.0 dB raw) maintain 1:1 linear physical acoustic fidelity
+  assert.strictEqual(evalFunc(40.0, true), 40.0, 'Whisper level must remain 1:1 linear');
+  assert.strictEqual(evalFunc(58.0, true), 58.0, 'Casual speech level must remain 1:1 linear ~58 dB (no runaway expansion to 80 dB)');
 
-  // iOS: loud peak (56.0 dB raw) expands to match 72 dB peak
-  const loudVal = evalFunc(56.0, true);
-  assert.ok(loudVal >= 71.5 && loudVal <= 72.5, `Loud peak must expand to ~72 dB, got ${loudVal}`);
+  // iOS: loud peak (72.0 dB raw) tracks 1:1 linear
+  assert.strictEqual(evalFunc(72.0, true), 72.0, 'Loud peak must remain 1:1 linear ~72 dB');
+
+  // iOS: high-SPL (>88 dB) triggers soft-knee saturation
+  const loudVal = evalFunc(95.0, true);
+  assert.ok(loudVal > 88.0 && loudVal < 95.0, `High-SPL must engage soft-knee saturation, got ${loudVal}`);
 
   // 10. Verify Hardware Overload / Clipping detection & indicator
   assert.ok(soundtestHtml.includes('id="overloadBadge"'), 'soundtest.html must include overloadBadge indicator');

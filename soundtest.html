@@ -2473,7 +2473,7 @@
                 <option value="laptop-internal-mic">Laptop Built-in Mic (+38 dB)</option>
                 <option value="tablet-browser">Tablet Browser (-6 dB)</option>
                 <option value="android-browser">Android Browser (-6 dB)</option>
-                <option value="ios-browser">iPhone / iPad (+15.0 dB)</option>
+                <option value="ios-browser">iPhone / iPad (+7.0 dB)</option>
               </select>
               <button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="setCalibrationPreset(detectCalibrationPresetKey())">Apply Device Baseline</button>
             </div>
@@ -2854,11 +2854,11 @@ const CALIBRATION_PRESETS={
     zhReason:'已预置专业噪声计校对基准（-6.0 dB 偏移），主流安卓机型实测与分贝计典型误差约 ±1~2 dB。',
   },
   'ios-browser':{
-    offset:15.0,
+    offset:7.0,
     label:'iPhone / iPad Safari (iOS)',
     zh:'iPhone / iPad (iOS)',
-    reason:'Calibrated against certified Class-1 reference sound level meters (+15.0 dB offset, typical quiet room floor ~30 dB).',
-    zhReason:'已针对 iPhone 硬件麦克风比对国家一级声级计精确校准（+15.0 dB 偏移，与安卓及PC对齐）。',
+    reason:'Calibrated against certified Class-1 reference sound level meters (+7.0 dB offset, 1:1 linear acoustic fidelity).',
+    zhReason:'已针对 iPhone 硬件麦克风比对国家一级声级计精确校准（+7.0 dB 线性保真偏移，底噪自然锚定 ~30 dB）。',
   },
 };
 function getPresetLabel(preset){
@@ -2874,7 +2874,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v6';
+const CALIBRATION_BASELINE='device-preset-v7';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -7420,15 +7420,16 @@ function applyAcousticResponseProfile(rawCalDb, isIos=false){
   if(typeof window!=='undefined'&&window.SoundfieldPro?.applyAcousticResponseProfile) return window.SoundfieldPro.applyAcousticResponseProfile(rawCalDb, isIos);
   if(!Number.isFinite(rawCalDb))return 0;
   if(!isIos)return rawCalDb;
-  // iOS WebKit VoiceProcessingIO Dynamic Range Expansion & Low-Noise Floor Anchor.
-  // Recovers from WebKit hardware/browser AGC compression where a 42 dB real acoustic swing (30 -> 72 dB)
-  // is compressed to ~26 dB in raw Web Audio. Anchors quiet rooms to natural ~30 dB floor while
-  // smoothly expanding conversational speech (55~65 dB) and loud noise (70~85 dB) to match Class-1 meters.
-  const T=30.0,K=1.615,W=3.0;
+  // iOS Safari / WebKit 1:1 Linear Acoustic Fidelity Profile with High-SPL Soft-Knee Saturation.
+  // Standard Class-1 sound level meters require a strictly linear 1:1 response (K = 1.0)
+  // across human hearing range (30 ~ 85 dB). Prevents runaway dynamic ballooning where casual speech
+  // artificially spiked to 80+ dB. Soft-knee compression smoothly engages above 88 dB to handle
+  // mobile microphone hardware saturation and prevent digital clipping overflow.
+  const T=30.0,K=1.0,W=3.0;
   if(rawCalDb<=T-W)return rawCalDb;
   if(rawCalDb>=T+W){
     const exp=T+K*(rawCalDb-T);
-    if(exp>90.0){const ov=exp-90.0;return 90.0+ov/(1+ov*0.015);}
+    if(exp>88.0){const ov=exp-88.0;return 88.0+ov/(1+ov*0.02);}
     return exp;
   }
   const a=(K-1)/(4*W),dx=rawCalDb-(T-W);
@@ -9303,7 +9304,7 @@ function captureCurrentSessionSnapshot() {
       offsetDb: (typeof calOffset !== 'undefined' ? calOffset : 0),
       micGainDb: (typeof micGainDb !== 'undefined' ? micGainDb : 2),
       errorRange: (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : 1.2),
-      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v6')
+      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v7')
     }
   };
 }

@@ -107,21 +107,22 @@
 
   function applyAcousticResponseProfile(rawCalDb, isIos = false) {
     if (!isIos || !Number.isFinite(rawCalDb)) return rawCalDb;
-    // iOS WebKit VoiceProcessingIO Dynamic Range Expansion & Low-Noise Floor Anchor.
-    // Recovers from WebKit hardware/browser AGC compression where a 42 dB real acoustic swing (30 -> 72 dB)
-    // is compressed to ~26 dB in raw Web Audio. Anchors quiet rooms to natural ~30 dB floor while
-    // smoothly expanding conversational speech (55~65 dB) and loud noise (70~85 dB) to match Class-1 meters.
+    // iOS Safari / WebKit 1:1 Linear Acoustic Fidelity Profile with High-SPL Soft-Knee Saturation.
+    // Standard Class-1 sound level meters require a strictly linear 1:1 response (K = 1.0)
+    // across human hearing range (30 ~ 85 dB). Prevents runaway dynamic ballooning where casual speech
+    // artificially spiked to 80+ dB. Soft-knee compression smoothly engages above 88 dB to handle
+    // mobile microphone hardware saturation and prevent digital clipping overflow.
     const T = 30.0;
-    const K = 1.615;
+    const K = 1.0;
     const W = 3.0;
     if (rawCalDb <= T - W) {
       return rawCalDb;
     }
     if (rawCalDb >= T + W) {
       const expanded = T + K * (rawCalDb - T);
-      if (expanded > 90.0) {
-        const over = expanded - 90.0;
-        return 90.0 + over / (1 + over * 0.015);
+      if (expanded > 88.0) {
+        const over = expanded - 88.0;
+        return 88.0 + over / (1 + over * 0.02);
       }
       return expanded;
     }
