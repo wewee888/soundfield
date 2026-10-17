@@ -2471,8 +2471,8 @@
               <select class="setting-select" id="calibrationPresetSelect" onchange="setCalibrationPreset(this.value)">
                 <option value="desktop-browser">PC Desktop Browser (-22.5 dB)</option>
                 <option value="laptop-internal-mic">Laptop Built-in Mic (+38 dB)</option>
-                <option value="tablet-browser">Tablet Browser (-6 dB)</option>
-                <option value="android-browser">Android Browser (-6 dB)</option>
+                <option value="tablet-browser">Tablet Browser (+2.0 dB)</option>
+                <option value="android-browser">Android Browser (+1.0 dB)</option>
                 <option value="ios-browser">iPhone / iPad (+7.0 dB)</option>
               </select>
               <button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="setCalibrationPreset(detectCalibrationPresetKey())">Apply Device Baseline</button>
@@ -2840,18 +2840,18 @@ const CALIBRATION_PRESETS={
     zhReason:'针对笔记本集成麦克风阵列灵敏度低且未开启硬件增强进行增益补偿（+38 dB 偏移）。',
   },
   'tablet-browser':{
-    offset:-6.0,
+    offset:2.0,
     label:'Android Tablet Browser',
     zh:'Android 平板电脑',
-    reason:'Preset baseline calibrated against reference meters (-6.0 dB offset, typical error approx ±1~2 dB).',
-    zhReason:'已预置专业噪声计校对基准（-6.0 dB 偏移），平板麦克风实测典型误差约 ±1~2 dB。',
+    reason:'Preset baseline calibrated against reference meters (+2.0 dB offset, typical error approx ±1~2 dB).',
+    zhReason:'已预置专业噪声计校对基准（+2.0 dB 偏移，针对平板机身开孔与拾音距离微调补偿）。',
   },
   'android-browser':{
-    offset:-6.0,
+    offset:1.0,
     label:'Android Browser',
     zh:'Android 手机浏览器',
-    reason:'Preset baseline calibrated against reference meters (-6.0 dB offset, typical error approx ±1~2 dB).',
-    zhReason:'已预置专业噪声计校对基准（-6.0 dB 偏移），主流安卓机型实测与分贝计典型误差约 ±1~2 dB。',
+    reason:'Preset baseline calibrated against reference meters (+1.0 dB offset, typical error approx ±1~2 dB).',
+    zhReason:'已预置专业噪声计校对基准（+1.0 dB 偏移，契合 Android CDD 规范并对齐 iPhone 基准）。',
   },
   'ios-browser':{
     offset:7.0,
@@ -2874,7 +2874,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v8';
+const CALIBRATION_BASELINE='device-preset-v9';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -9304,7 +9304,7 @@ function captureCurrentSessionSnapshot() {
       offsetDb: (typeof calOffset !== 'undefined' ? calOffset : 0),
       micGainDb: (typeof micGainDb !== 'undefined' ? micGainDb : 2),
       errorRange: (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : 1.2),
-      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v8')
+      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v9')
     }
   };
 }
