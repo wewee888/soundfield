@@ -64,6 +64,9 @@
     10000, 12500, 16000, 20000,
   ];
 
+  // Display-only grouping of FFT bins. This is not an IEC 61260 fractional-octave
+  // filter bank: a real 1/3-octave bank is a separate high-order filter per band
+  // and would not improve the level reading. The spectrum view stays an FFT.
   function thirdOctaveBands(frequencyDataDb, sampleRate, fftSize) {
     if (!frequencyDataDb || !Number.isFinite(sampleRate) || !Number.isFinite(fftSize)) return [];
     const ratio = Math.pow(2, 1 / 6);
@@ -196,6 +199,59 @@
     return freq > 0 && freq < sampleRate * 0.47;
   }
 
+  // High shelf that undoes most of the bilinear lowpass warp near Nyquist.
+  // Knots were fit so A and C stay within ~0.35 dB of the analog curve through 16 kHz.
+  function iecHighShelf(f0, gainDb, slope, sampleRate) {
+    const A = Math.pow(10, gainDb / 40);
+    const w0 = (2 * Math.PI * Math.min(f0, sampleRate * 0.45)) / sampleRate;
+    const cw = Math.cos(w0);
+    const sw = Math.sin(w0);
+    const alpha = (sw / 2) * Math.sqrt((A + 1 / A) * (1 / Math.max(slope, 1.001) - 1) + 2);
+    const two = 2 * Math.sqrt(A) * alpha;
+    const a0 = (A + 1) - (A - 1) * cw + two;
+    return iecEmptyBiquad(
+      (A * ((A + 1) + (A - 1) * cw + two)) / a0,
+      (-2 * A * ((A - 1) + (A + 1) * cw)) / a0,
+      (A * ((A + 1) - (A - 1) * cw - two)) / a0,
+      (2 * ((A - 1) - (A + 1) * cw)) / a0,
+      ((A + 1) - (A - 1) * cw - two) / a0
+    );
+  }
+
+  function iecHfShelf(sampleRate) {
+    if (!(sampleRate >= 30000)) return null;
+    const knots = [
+      [32000, 13200, 8.5, 2],
+      [44100, 12800, 3.5, 4],
+      [48000, 13200, 2.5, 4],
+      [96000, 16000, 0.5, 4],
+    ];
+    let f0;
+    let gdb;
+    let slope;
+    if (sampleRate <= knots[0][0]) {
+      f0 = knots[0][1];
+      gdb = knots[0][2];
+      slope = knots[0][3];
+    } else if (sampleRate >= knots[knots.length - 1][0]) {
+      f0 = knots[knots.length - 1][1];
+      gdb = knots[knots.length - 1][2];
+      slope = knots[knots.length - 1][3];
+    } else {
+      let i = 0;
+      while (i < knots.length - 1 && sampleRate > knots[i + 1][0]) i++;
+      const a = knots[i];
+      const b = knots[i + 1];
+      const t = (sampleRate - a[0]) / (b[0] - a[0]);
+      f0 = a[1] + (b[1] - a[1]) * t;
+      gdb = a[2] + (b[2] - a[2]) * t;
+      slope = a[3] + (b[3] - a[3]) * t;
+    }
+    if (!(gdb > 0.05)) return null;
+    if (f0 >= sampleRate * 0.45) f0 = sampleRate * 0.42;
+    return iecHighShelf(f0, gdb, slope, sampleRate);
+  }
+
   function iecBiquadMagnitude(q, omega) {
     const c1 = Math.cos(omega);
     const s1 = Math.sin(omega);
@@ -225,6 +281,8 @@
         if (iecPlaceable(f3, fs)) sections.push(iecHighpass1(f3, fs));
       }
       if (iecPlaceable(f4, fs)) sections.push(iecBiquadLowpass(f4, 0.5, fs));
+      const shelf = iecHfShelf(fs);
+      if (shelf) sections.push(shelf);
     }
     let gain = 1;
     if (sections.length) {
@@ -260,11 +318,14 @@
   function iecCreateEngine(sampleRate, kind) {
     const design = iecDesignWeighting(kind, sampleRate);
     const fs = design.sampleRate;
+    const cDesign = design.kind === 'C' ? null : iecDesignWeighting('C', fs);
     return {
       sampleRate: fs,
       weighting: design.kind,
       sections: design.sections,
       gain: design.gain,
+      cSections: cDesign ? cDesign.sections : null,
+      cGain: cDesign ? cDesign.gain : 1,
       fastA: Math.exp(-1 / (fs * 0.125)),
       slowA: Math.exp(-1 / (fs * 1)),
       fast: 0,
@@ -278,9 +339,13 @@
     const fastA = engine.fastA;
     const slowA = engine.slowA;
     const n = input.length;
+    const cSections = engine.cSections;
+    const cGain = engine.cGain;
     let blockSum = 0;
     let blockRaw = 0;
     let blockPeak = 0;
+    let blockCPeak = 0;
+    let blockZPeak = 0;
     let clips = 0;
     let fast = engine.fast;
     let slow = engine.slow;
@@ -289,6 +354,12 @@
       let y = x;
       for (let s = 0; s < sections.length; s++) y = iecBiquadStep(sections[s], y);
       y *= gain;
+      let c = y;
+      if (cSections) {
+        c = x;
+        for (let s = 0; s < cSections.length; s++) c = iecBiquadStep(cSections[s], c);
+        c *= cGain;
+      }
       const p2 = y * y;
       fast = fastA * fast + (1 - fastA) * p2;
       slow = slowA * slow + (1 - slowA) * p2;
@@ -297,6 +368,9 @@
       blockRaw += x * x;
       if (ax > blockPeak) blockPeak = ax;
       if (ax >= 0.99) clips++;
+      const ac = c < 0 ? -c : c;
+      if (ac > blockCPeak) blockCPeak = ac;
+      if (ax > blockZPeak) blockZPeak = ax;
     }
     engine.fast = fast;
     engine.slow = slow;
@@ -307,6 +381,8 @@
       blockRawSumSquares: blockRaw,
       blockSamples: n,
       blockPeak,
+      blockCPeak,
+      blockZPeak,
       clipCount: clips,
     };
   }
@@ -320,6 +396,8 @@
         blockRawSumSquares: stats.blockRawSumSquares,
         blockSamples: stats.blockSamples,
         blockPeak: stats.blockPeak,
+        blockCPeak: stats.blockCPeak || 0,
+        blockZPeak: stats.blockZPeak || 0,
         clipCount: stats.clipCount,
       };
     }
@@ -330,7 +408,50 @@
     acc.blockSamples += stats.blockSamples;
     acc.clipCount += stats.clipCount;
     if (stats.blockPeak > acc.blockPeak) acc.blockPeak = stats.blockPeak;
+    if ((stats.blockCPeak || 0) > (acc.blockCPeak || 0)) acc.blockCPeak = stats.blockCPeak;
+    if ((stats.blockZPeak || 0) > (acc.blockZPeak || 0)) acc.blockZPeak = stats.blockZPeak;
     return acc;
+  }
+
+  function dbFromPeakAmplitude(amplitude, splRefDb, calOffsetDb) {
+    if (!Number.isFinite(amplitude) || amplitude <= 1e-12) return 0;
+    const db = 20 * Math.log10(amplitude) + (Number(splRefDb) || 0) + (Number(calOffsetDb) || 0);
+    return Number.isFinite(db) ? db : 0;
+  }
+
+  // Positive mic gain is a reading offset. Boosting the samples clips a full-scale tone.
+  function digitalMicGainLinear(micGainDb) {
+    return 1;
+  }
+
+  function applyMicGainDb(levelDb, micGainDb) {
+    const gain = Number(micGainDb) || 0;
+    return (Number(levelDb) || 0) + gain;
+  }
+
+  // Handset browser readings under 50 dBA are often the device or the
+  // browser path, not a resolved room level. 50/56 is a wide guide, not a
+  // fit to one quiet-room pair. Exit is higher so the label does not flicker.
+  const PHONE_ABSOLUTE_FLOOR_ENTER_DB = 50;
+  const PHONE_ABSOLUTE_FLOOR_EXIT_DB = 56;
+
+  function createPhoneFloorLatch() {
+    let limited = false;
+    return {
+      update(levelDb, isPhone) {
+        if (!isPhone) {
+          limited = false;
+          return false;
+        }
+        if (!Number.isFinite(levelDb) || levelDb <= 0) return limited;
+        if (!limited && levelDb < PHONE_ABSOLUTE_FLOOR_ENTER_DB) limited = true;
+        else if (limited && levelDb >= PHONE_ABSOLUTE_FLOOR_EXIT_DB) limited = false;
+        return limited;
+      },
+      reset() {
+        limited = false;
+      },
+    };
   }
 
   function dbFromMeanSquare(meanSquare, splRefDb, calOffsetDb) {
@@ -422,6 +543,8 @@ ${iecBiquadHighpass.toString()}
 ${iecBiquadLowpass.toString()}
 ${iecHighpass1.toString()}
 ${iecPlaceable.toString()}
+${iecHighShelf.toString()}
+${iecHfShelf.toString()}
 ${iecBiquadMagnitude.toString()}
 ${iecDesignWeighting.toString()}
 ${iecBiquadStep.toString()}
@@ -499,6 +622,12 @@ registerProcessor('iec-meter-v1', IecMeterProcessor);
     iecProcessBlock,
     iecAccumulateStats,
     dbFromMeanSquare,
+    dbFromPeakAmplitude,
+    digitalMicGainLinear,
+    applyMicGainDb,
+    PHONE_ABSOLUTE_FLOOR_ENTER_DB,
+    PHONE_ABSOLUTE_FLOOR_EXIT_DB,
+    createPhoneFloorLatch,
     createLevelHistogram,
     microphoneConstraintAttempts,
     describeMicProcessing,

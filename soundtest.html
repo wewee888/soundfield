@@ -40,7 +40,7 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-<link rel="stylesheet" href="/assets/soundtest.css?v=20261028a">
+<link rel="stylesheet" href="/assets/soundtest.css?v=20261028c">
 <link rel="stylesheet" href="/assets/legal-notice.css?v=20261011">
 <script src="/assets/legal-notice.js?v=20261011" defer></script>
 <style>
@@ -1260,7 +1260,7 @@
       <div class="settings-drawer-row">
         <div>
           <div class="settings-drawer-label" id="sdLblMic">Microphone Gain</div>
-          <div class="settings-drawer-desc" id="sdDescMic">Input pre-amplification; keep around 2dB to prevent audio clipping</div>
+          <div class="settings-drawer-desc" id="sdDescMic">Added to the decibel reading. It does not boost the samples, so a full-scale tone is not clipped by this control.</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <input type="range" id="micR" min="0" max="36" value="2" step="1" oninput="setMicGain()" style="width:80px">
@@ -1869,6 +1869,7 @@
       <h3 class="stitch-telemetry-title" id="telemetryTitle">Acoustic Metrics (LEQ &amp; LN MATRIX)</h3>
       <span class="stitch-telemetry-badge" id="telemetryBadge">IEC-style · not certified</span>
     </div>
+    <p class="meter-truepeak notranslate" id="meterTruePeak" translate="no" hidden>LCpeak -- · LZpeak --</p>
     <div class="stitch-matrix-grid">
       <!-- Card 1: LAeq -->
       <div class="stitch-matrix-card highlight">
@@ -2484,7 +2485,7 @@
             </div>
           </div>
           <div class="srow">
-            <div><div class="slabel">Microphone Gain</div><div class="sdesc">Advanced. Only adjust if you understand your audio chain; high values may clip or amplify noise.</div></div>
+            <div><div class="slabel">Microphone Gain</div><div class="sdesc">Added to the decibel reading, not the samples. A saved gain value still shifts the level by the same number of decibels.</div></div>
             <div class="sctrl"><input type="range" id="micR" min="0" max="36" value="2" step="1" oninput="setMicGain()"><span class="sval" id="micV">2 dB</span></div>
           </div>
           <div class="srow">
@@ -2805,7 +2806,7 @@
 <script src="/assets/utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/i18n-data.js?v=20261003e" data-cfasync="false"></script>
 <script src="/assets/lang-flags.js?v=20261003e" data-cfasync="false"></script>
-<script src="/assets/pro-meter.js?v=20261028b" data-cfasync="false"></script>
+<script src="/assets/pro-meter.js?v=20261028c" data-cfasync="false"></script>
 <script src="/assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/report-cert-engine.js?v=20261009a" data-cfasync="false"></script>
@@ -2834,8 +2835,8 @@ const CALIBRATION_PRESETS={
     offset:-22.5,
     label:'PC / Desktop Browser (External Mic / USB)',
     zh:'PC 桌面浏览器（外置麦克风 / 独立声卡）',
-    reason:'Preset baseline calibrated against reference meters (-22.5 dB offset, quiet room floor ~30~32 dB).',
-    zhReason:'已针对电脑外接麦克风/USB独立声卡校对基准（-22.5 dB 偏移，底噪自然锚定 ~30~32 dB）。',
+    reason:'Mid-level baseline against reference meters (-22.5 dB). A quiet room can still sit on the device floor.',
+    zhReason:'中等声级校对基准（-22.5 dB）。安静房间的读数仍可能停在设备本底上。',
   },
   'laptop-internal-mic':{
     offset:38,
@@ -2855,15 +2856,15 @@ const CALIBRATION_PRESETS={
     offset:1.0,
     label:'Android Browser',
     zh:'Android 手机浏览器',
-    reason:'Preset baseline calibrated against reference meters (+1.0 dB offset, typical error approx ±1~2 dB).',
-    zhReason:'已预置专业噪声计校对基准（+1.0 dB 偏移，契合 Android CDD 规范并对齐 iPhone 基准）。',
+    reason:'Mid-level baseline against reference meters (+1.0 dB). Quiet-room readings are often the handset floor, not the room.',
+    zhReason:'中等声级校对基准（+1.0 dB）。安静房间的读数经常是手机本底，而不是房间本身。',
   },
   'ios-browser':{
     offset:7.0,
     label:'iPhone / iPad Safari (iOS)',
     zh:'iPhone / iPad (iOS)',
-    reason:'Calibrated against certified Class-1 reference sound level meters (+7.0 dB offset, 1:1 linear acoustic fidelity).',
-    zhReason:'已针对 iPhone 硬件麦克风比对国家一级声级计精确校准（+7.0 dB 线性保真偏移，底噪自然锚定 ~30 dB）。',
+    reason:'Mid-level baseline against reference meters (+7.0 dB). It does not anchor a quiet-room floor.',
+    zhReason:'中等声级校对基准（+7.0 dB）。它不表示安静房间的本底已经对准。',
   },
 };
 function getPresetLabel(preset){
@@ -2904,6 +2905,8 @@ let iecNode=null,iecScript=null,iecSink=null,iecScriptEngine=null;
 let iecEpoch=0,iecLatest=null,iecLeqSumSquares=0,iecLeqSamples=0,meterWarmSamples=0;
 let levelHist=null,lastLnSampleAt=0,lastTrustKey='';
 let fastMax=-Infinity,slowMax=-Infinity,fastMin=Infinity,slowMin=Infinity;
+let lcPeakLin=0,lzPeakLin=0;
+let phoneFloorLatch=null;
 let micProcessing={autoGainControl:false,noiseSuppression:false,echoCancellation:false,voiceIsolation:false};
 let curLoc=null,chunks=[],recHasVideo=false;
 let noiseEvents=[],longMonitorNoiseEvents=noiseEvents,lastImpulseEventAt=0,longMonitorPlan={autoStopMinutes:0,eventThresholdDb:75};
@@ -3441,7 +3444,7 @@ function translateStaticText(){
     ['系统已针对各类设备内置专业声级计校准基线（实测误差约 1~5 dB）。如需针对特定外接麦克风进一步对齐，可在此精细微调。','Built-in baselines calibrated against reference sound level meters (typical error approx 1~5 dB). Fine-tune here for external microphones if needed.'],
     ['设备推荐校准基线','Device Recommended Baseline'],
     ['已内置经专业声级计校对的设备基线（实测误差约 ±1~5 dB），建议保留预设或按需微调。','Built-in calibrated baselines for common devices (approx ±1~5 dB error). Keep default or fine-tune as needed.'],
-    ['麦克风增益','Microphone Gain'],['高级功能。仅在了解设备输入链路时调整；过高会削波或放大噪声。','Advanced. Only adjust if you understand your audio chain; high values may clip or amplify noise.'],
+    ['麦克风增益','Microphone Gain'],['计入分贝读数，不放大采样。已保存的增益值仍然按同样的分贝数生效。','Added to the decibel reading, not the samples. A saved gain value still shifts the level by the same number of decibels.'],
     ['校准偏移','Calibration Offset'],['高级功能。根据专业设备对比修正；调整值会写入证据照片和报告。','Advanced. Adjusts calibration offset against reference meters; saved to reports and evidence photos.'],
     ['恢复推荐基线','Restore Baseline'],['校准向导','Calibration Wizard'],['输入专业声级计读数和本机读数，自动计算校准偏移并保存校准档案。','Enter reference meter and device dB to calculate offset and save calibration profile.'],
     ['专业仪读数 dB','Reference dB'],['本机读数 dB','Device dB'],['标准/设备来源','Standard / source'],['参考误差 ±dB','Tolerance ±dB'],['应用校准','Apply Calibration'],
@@ -3828,7 +3831,7 @@ function translateSettingsDrawer() {
   const twF = document.getElementById('twF'); if (twF) twF.textContent = isZh ? '快' : 'Fast';
   const twS = document.getElementById('twS'); if (twS) twS.textContent = isZh ? '慢' : 'Slow';
   setText('sdLblMic', isZh ? '麦克风增益' : 'Microphone Gain');
-  setText('sdDescMic', isZh ? '输入前置放大；建议保持 2dB 左右以防止削波失真' : 'Input pre-amplification; keep around 2dB to prevent audio clipping');
+  setText('sdDescMic', isZh ? '计入分贝读数，不放大采样，因此满幅信号不会被这个增益削波。' : 'Added to the decibel reading. It does not boost the samples, so a full-scale tone is not clipped by this control.');
   setText('sdLblCal', isZh ? '校准偏移' : 'Calibration Offset');
   setText('sdDescCal', isZh ? '根据专业比对修正；调整值会写入存证照片与报告' : 'Fine-tune baseline against certified reference meter');
   setText('sdBtnCalRec', isZh ? '推荐预设' : 'Recommended');
@@ -4105,7 +4108,7 @@ function translateDesktopSettings() {
     const micRow = document.getElementById('micR')?.closest('.srow');
     if (micRow) {
       const lbl = micRow.querySelector('.slabel'); if (lbl) lbl.textContent = isZh ? '麦克风增益' : 'Microphone Gain';
-      const desc = micRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '高级功能。仅在了解设备输入链路时调整；过高会削波或放大噪声。' : 'Advanced. Pre-amp gain; values too high may clip audio or amplify noise.';
+      const desc = micRow.querySelector('.sdesc'); if (desc) desc.textContent = isZh ? '计入分贝读数，不放大采样。已保存的增益值仍然按同样的分贝数生效。' : 'Added to the decibel reading, not the samples. A saved gain value still shifts the level by the same number of decibels.';
     }
     const calRow = document.getElementById('calR')?.closest('.srow');
     if (calRow) {
@@ -4705,7 +4708,6 @@ function initAppLanguage(){
     console.error('[initAppLanguage fallback error]', err);
   }
 }
-try { initAppLanguage(); } catch (_) {}
 const PHONE_LAN_HTTPS_REQUIRED='手机通过局域网 IP 访问普通 HTTP 页面时，浏览器会禁用麦克风；请部署到 HTTPS 域名，或使用 Cloudflare Tunnel / ngrok / Vercel 预览链接测试。';
 
 function isPrivateNetworkHost(host=location.hostname){
@@ -5021,6 +5023,7 @@ function modeCopy(mode=evidenceMode){
   const fallback=langKey==='zh'?(zhFallback[mode]||zhFallback.audio):(enFallback[mode]||enFallback.audio);
   return t(`modes.${mode}`,fallback);
 }
+try { initAppLanguage(); } catch (_) {}
 
 function getDedicatedCameraUrl(){
   const primary=(appLanguage||'en').split('-')[0];
@@ -7406,7 +7409,11 @@ function cWeightLin(f){
 }
 
 function splRef(){return 105;}
-function updateMicGain(){if(inputGainNode)inputGainNode.gain.value=Math.pow(10,micGainDb/20);}
+function updateMicGain(){
+  // Saved micGainDb still shifts the reading by the same number of decibels.
+  // The samples themselves are not boosted, so a full-scale tone is not clipped by this control.
+  if(inputGainNode)inputGainNode.gain.value=1;
+}
 function analyserSmooth(v){return Math.max(.02,Math.min(.45,v/20));}
 
 function frequencyWeightAdjustDb(kind=weighting){
@@ -7483,7 +7490,7 @@ function instantDb(){
     if(Number.isFinite(byteRms)&&byteRms>1e-9)rms=byteRms;
   }
   if(!Number.isFinite(rms)||rms<1e-9)return 0;
-  let db=20*Math.log10(rms)+splRef()+calOffset;
+  let db=20*Math.log10(rms)+splRef()+calOffset+micGainDb;
   if(!Number.isFinite(db))db=0;
   if(weighting!=='Z'){
     fftAn.getFloatFrequencyData(floatFBuf);
@@ -8311,15 +8318,15 @@ function updateLowInputDiagnostic(inst){
 
 /* ── IEC 61672 time-domain meter (worklet, then ScriptProcessor, then FFT) ── */
 var METER_TRUST_TEXT={
-  'en-US':{standby:'Not a certified meter',ok:'In range',clip:'Clipping — reading is saturated',floor:'Input near digital noise floor',agc:'Mic processing on — level may be compressed',legacy:'Compatibility weighting'},
-  'zh-CN':{standby:'非认证声级计',ok:'量程内',clip:'削波 — 读数已饱和',floor:'输入接近数字本底噪声',agc:'浏览器音频处理开启 — 读数可能被压缩',legacy:'兼容计权'},
-  es:{standby:'No es un sonómetro certificado',ok:'Dentro de rango',clip:'Saturación — lectura recortada',floor:'Entrada cerca del ruido digital',agc:'Procesado del micrófono activo',legacy:'Ponderación de compatibilidad'},
-  fr:{standby:'Pas un sonomètre certifié',ok:'Dans la plage',clip:'Écrêtage — lecture saturée',floor:'Entrée proche du bruit numérique',agc:'Traitement micro actif',legacy:'Pondération de compatibilité'},
-  de:{standby:'Kein geeichtes Messgerät',ok:'Im Messbereich',clip:'Übersteuerung — Anzeige gesättigt',floor:'Eingang nahe am digitalen Rauschen',agc:'Mikrofonbearbeitung aktiv',legacy:'Kompatibilitätsbewertung'},
-  ja:{standby:'認証済み騒音計ではありません',ok:'測定範囲内',clip:'クリッピング — 飽和',floor:'入力がデジタル雑音付近',agc:'マイク処理が有効',legacy:'互換ウェイティング'},
-  ko:{standby:'인증된 소음계가 아님',ok:'측정 범위 안',clip:'클리핑 — 포화',floor:'입력이 디지털 잡음 근처',agc:'마이크 처리 켜짐',legacy:'호환 가중'},
-  vi:{standby:'Không phải máy đo đã chứng nhận',ok:'Trong dải đo',clip:'Cắt đỉnh — số đo bão hòa',floor:'Tín hiệu gần nhiễu số',agc:'Mic đang xử lý tín hiệu',legacy:'Trọng số tương thích'},
-  th:{standby:'ไม่ใช่เครื่องวัดที่ได้รับการรับรอง',ok:'อยู่ในช่วงวัด',clip:'สัญญาณตัดยอด',floor:'สัญญาณเข้าใกล้สัญญาณรบกวนดิจิทัล',agc:'ไมโครโฟนกำลังประมวลผล',legacy:'การถ่วงน้ำหนักสำรอง'},
+  'en-US':{standby:'Not a certified meter',ok:'In range',clip:'Clipping — reading is saturated',floor:'Input near digital noise floor',acousticFloor:'May be at or below the device noise floor — not a confirmed room level',agc:'Mic processing on — level may be compressed',agcQuiet:'Mic processing is on — this quiet reading may not be the room',legacy:'Compatibility weighting'},
+  'zh-CN':{standby:'非认证声级计',ok:'量程内',clip:'削波 — 读数已饱和',floor:'输入接近数字本底噪声',acousticFloor:'可能处于或低于设备本底 — 不能确认是房间声级',agc:'浏览器音频处理开启 — 读数可能被压缩',agcQuiet:'浏览器正在处理麦克风 — 这个安静读数可能不是房间',legacy:'兼容计权'},
+  es:{standby:'No es un sonómetro certificado',ok:'Dentro de rango',clip:'Saturación — lectura recortada',floor:'Entrada cerca del ruido digital',acousticFloor:'Puede estar en el ruido del dispositivo — no es el nivel de la sala',agc:'Procesado del micrófono activo',agcQuiet:'El micrófono está procesado — esta lectura baja puede no ser la sala',legacy:'Ponderación de compatibilidad'},
+  fr:{standby:'Pas un sonomètre certifié',ok:'Dans la plage',clip:'Écrêtage — lecture saturée',floor:'Entrée proche du bruit numérique',acousticFloor:'Peut être le bruit de l’appareil — pas le niveau de la pièce',agc:'Traitement micro actif',agcQuiet:'Traitement micro actif — cette lecture basse peut ne pas être la pièce',legacy:'Pondération de compatibilité'},
+  de:{standby:'Kein geeichtes Messgerät',ok:'Im Messbereich',clip:'Übersteuerung — Anzeige gesättigt',floor:'Eingang nahe am digitalen Rauschen',acousticFloor:'Kann das Geräte-Grundrauschen sein — kein bestätigter Raumpegel',agc:'Mikrofonbearbeitung aktiv',agcQuiet:'Mikrofonbearbeitung an — dieser leise Wert ist evtl. nicht der Raum',legacy:'Kompatibilitätsbewertung'},
+  ja:{standby:'認証済み騒音計ではありません',ok:'測定範囲内',clip:'クリッピング — 飽和',floor:'入力がデジタル雑音付近',acousticFloor:'機器の暗騒音以下の可能性 — 室内レベルとは断定できません',agc:'マイク処理が有効',agcQuiet:'マイク処理中 — この小さな値は部屋の音ではないかもしれません',legacy:'互換ウェイティング'},
+  ko:{standby:'인증된 소음계가 아님',ok:'측정 범위 안',clip:'클리핑 — 포화',floor:'입력이 디지털 잡음 근처',acousticFloor:'기기 잡음 이하일 수 있음 — 확인된 실내 레벨이 아님',agc:'마이크 처리 켜짐',agcQuiet:'마이크 처리 중 — 이 낮은 값은 방의 소리가 아닐 수 있음',legacy:'호환 가중'},
+  vi:{standby:'Không phải máy đo đã chứng nhận',ok:'Trong dải đo',clip:'Cắt đỉnh — số đo bão hòa',floor:'Tín hiệu gần nhiễu số',acousticFloor:'Có thể là nhiễu của máy — chưa phải mức phòng',agc:'Mic đang xử lý tín hiệu',agcQuiet:'Mic đang xử lý — số nhỏ này có thể không phải tiếng phòng',legacy:'Trọng số tương thích'},
+  th:{standby:'ไม่ใช่เครื่องวัดที่ได้รับการรับรอง',ok:'อยู่ในช่วงวัด',clip:'สัญญาณตัดยอด',floor:'สัญญาณเข้าใกล้สัญญาณรบกวนดิจิทัล',acousticFloor:'อาจอยู่ที่หรือต่ำกว่าพื้นเสียงของเครื่อง — ยังไม่ใช่ระดับห้อง',agc:'ไมโครโฟนกำลังประมวลผล',agcQuiet:'ไมโครโฟนกำลังประมวลผล — ค่าที่เบานี้อาจไม่ใช่เสียงห้อง',legacy:'การถ่วงน้ำหนักสำรอง'},
 };
 function levelQuantityLabel(){
   const w=weighting==='C'?'C':weighting==='Z'?'Z':'A';
@@ -8330,7 +8337,7 @@ function uncalDb(meanSquare){
   const db=10*Math.log10(meanSquare)+splRef();
   return Number.isFinite(db)?db:null;
 }
-function calDb(db){return db==null?0:db+calOffset;}
+function calDb(db){return db==null?0:db+calOffset+micGainDb;}
 function resetMeasurementIntegrators(){
   peak=0;mn=999;dbH=[];trendH=[];
   leqEnergy=0;leqTime=0;
@@ -8340,6 +8347,9 @@ function resetMeasurementIntegrators(){
   if(levelHist&&levelHist.reset)levelHist.reset();
   else if(window.SoundfieldPro?.createLevelHistogram)levelHist=window.SoundfieldPro.createLevelHistogram();
   lastLnSampleAt=0;
+  lcPeakLin=0;lzPeakLin=0;
+  if(!phoneFloorLatch&&window.SoundfieldPro?.createPhoneFloorLatch)phoneFloorLatch=window.SoundfieldPro.createPhoneFloorLatch();
+  if(phoneFloorLatch)phoneFloorLatch.reset();
 }
 function syncDisplayedExtremes(){
   if(meterPath==='fft')return;
@@ -8369,6 +8379,8 @@ function ingestIecStats(stats){
   const slowRaw=uncalDb(stats.slowMs);
   if(fastRaw!=null){if(fastRaw>fastMax)fastMax=fastRaw;if(fastRaw<fastMin)fastMin=fastRaw;}
   if(slowRaw!=null){if(slowRaw>slowMax)slowMax=slowRaw;if(slowRaw<slowMin)slowMin=slowRaw;}
+  if(stats.blockCPeak>lcPeakLin)lcPeakLin=stats.blockCPeak;
+  if(stats.blockZPeak>lzPeakLin)lzPeakLin=stats.blockZPeak;
   syncDisplayedExtremes();
 }
 function detachIecMeter(){
@@ -8468,17 +8480,41 @@ function sessionMetrics(){
   const ln=(levelHist&&levelHist.count&&levelHist.count()>=8)?levelHist.ln([5,10,50,90,95]):calculateLnStats(dbH.length?dbH:(avg?[avg]:[]));
   return {leq,avg,peak:Number.isFinite(peak)?peak:0,min:(typeof mn==='number'&&mn!==999&&mn>0)?mn:0,ln};
 }
+function phonePresetActive(){
+  return calibrationPresetKey==='android-browser'||calibrationPresetKey==='ios-browser'||calibrationPresetKey==='tablet-browser';
+}
+function floorLimitedNow(){
+  if(!phoneFloorLatch&&window.SoundfieldPro?.createPhoneFloorLatch)phoneFloorLatch=window.SoundfieldPro.createPhoneFloorLatch();
+  if(!phoneFloorLatch)return false;
+  return phoneFloorLatch.update(curDb, phonePresetActive());
+}
 function meterTrustKey(){
   if(!isMon)return 'standby';
   if(performance.now()<overloadActiveUntil)return 'clip';
-  if(meterPath==='fft')return (curDb>0&&curDb<20)?'floor':'legacy';
-  if(micProcessing.autoGainControl||micProcessing.noiseSuppression||micProcessing.echoCancellation||micProcessing.voiceIsolation)return 'agc';
+  const processing=!!(micProcessing.autoGainControl||micProcessing.noiseSuppression||micProcessing.echoCancellation||micProcessing.voiceIsolation);
+  const limited=floorLimitedNow();
+  if(processing)return limited?'agcQuiet':'agc';
+  if(limited)return 'acousticFloor';
+  if(meterPath==='fft')return 'legacy';
   if(iecLatest&&iecLatest.blockSamples){
     const detectMs=timeWeight==='S'?iecLatest.slowMs:iecLatest.fastMs;
     const dbfs=10*Math.log10(Math.max(detectMs||0,1e-12));
-    if(dbfs<-50)return 'floor';
+    if(dbfs<-80)return 'floor';
   }
   return 'ok';
+}
+function renderTruePeak(){
+  const el=document.getElementById('meterTruePeak');
+  if(!el)return;
+  if(!isMon||meterPath==='fft'||!(lcPeakLin>0)||!window.SoundfieldPro?.dbFromPeakAmplitude){
+    el.hidden=true;
+    return;
+  }
+  const lc=window.SoundfieldPro.dbFromPeakAmplitude(lcPeakLin,splRef(),calOffset+micGainDb);
+  const lz=lzPeakLin>0?window.SoundfieldPro.dbFromPeakAmplitude(lzPeakLin,splRef(),calOffset+micGainDb):0;
+  const gainNote=micGainDb?` · gain ${micGainDb>0?'+':''}${micGainDb} dB in level`:'';
+  el.hidden=false;
+  el.textContent=`LCpeak ${lc.toFixed(1)} · LZpeak ${lz.toFixed(1)}${gainNote}`;
 }
 function renderMeterTrust(){
   if(!METER_TRUST_TEXT)return;
@@ -8499,10 +8535,13 @@ function renderMeterTrust(){
   }
   const stage=document.getElementById('dbStage');
   if(stage){
+    const unresolved=key==='acousticFloor'||key==='agcQuiet';
+    stage.setAttribute('data-floor',unresolved?'1':'0');
     const shown=Number.isFinite(curDb)?Math.max(0,Math.min(120,Math.round(curDb))):0;
     stage.setAttribute('aria-valuenow',isMon?String(shown):'0');
     stage.setAttribute('aria-valuetext',isMon&&curDb>0?`${curDb.toFixed(1)} decibels ${qty}. ${text}`:text);
   }
+  renderTruePeak();
 }
 function noteLevelSample(inst,now){
   if(!Number.isFinite(inst))return;

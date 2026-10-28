@@ -63,10 +63,17 @@ test('time-domain A/C weighting matches the IEC magnitude curve', () => {
     }
   }
   assert.equal(meter.iecWeightingMagnitudeDb('Z', 48000, 100), 0);
-  // Bilinear warping grows toward Nyquist; 16 kHz stays inside a wide class-1 tolerance.
-  const high = meter.iecWeightingMagnitudeDb('A', 48000, 16000);
-  const highRef = meter.linearToDb(meter.aWeightLinear(16000));
-  assert.ok(Math.abs(high - highRef) < 3.5, `16 kHz error ${high - highRef}`);
+  for (const fs of [48000, 44100]) {
+    for (const kind of ['A', 'C']) {
+      const high = meter.iecWeightingMagnitudeDb(kind, fs, 16000);
+      const ref = kind === 'A'
+        ? meter.linearToDb(meter.aWeightLinear(16000))
+        : meter.linearToDb(meter.cWeightLinear(16000));
+      assert.ok(Math.abs(high - ref) < 0.45, `${kind} 16 kHz @ ${fs}: ${high - ref}`);
+      const mid = meter.iecWeightingMagnitudeDb(kind, fs, 1000);
+      assert.ok(Math.abs(mid) < 0.05, `${kind} 1 kHz @ ${fs}: ${mid}`);
+    }
+  }
 });
 
 test('1 kHz sine keeps calibration reference and A-weighting near 0 dB', () => {
@@ -170,6 +177,48 @@ test('clipping is counted from full-scale samples and quiet blocks are not clips
   assert.ok(hotStats.blockPeak >= 0.99);
   const quiet = meter.iecProcessBlock(engine, new Float32Array(128).fill(0.001));
   assert.equal(quiet.clipCount, 0);
+});
+
+test('LCpeak and LZpeak track the inter-sample crest of a 1 kHz sine', () => {
+  const fs = 48000;
+  const amp = 0.5;
+  const engine = meter.iecCreateEngine(fs, 'A');
+  const block = 480;
+  let cPeak = 0;
+  let zPeak = 0;
+  for (let t = 0; t < fs; t += block) {
+    const input = new Float32Array(block);
+    for (let i = 0; i < block; i++) input[i] = amp * Math.sin((2 * Math.PI * 1000 * (t + i)) / fs);
+    const stats = meter.iecProcessBlock(engine, input);
+    if (t < fs * 0.2) continue;
+    if (stats.blockCPeak > cPeak) cPeak = stats.blockCPeak;
+    if (stats.blockZPeak > zPeak) zPeak = stats.blockZPeak;
+  }
+  const lc = meter.dbFromPeakAmplitude(cPeak, 0, 0);
+  const lz = meter.dbFromPeakAmplitude(zPeak, 0, 0);
+  const expected = 20 * Math.log10(amp);
+  assert.ok(Math.abs(lc - expected) < 0.25, `LCpeak ${lc} expected ${expected}`);
+  assert.ok(Math.abs(lz - expected) < 0.25, `LZpeak ${lz} expected ${expected}`);
+  assert.ok(lc > meter.dbFromMeanSquare(amp * amp / 2, 0, 0), 'peak is above RMS');
+});
+
+test('phone readings under 50 dBA latch as unresolved device floor', () => {
+  const latch = meter.createPhoneFloorLatch();
+  assert.equal(latch.update(42, true), true);
+  assert.equal(latch.update(23, true), true);
+  assert.equal(latch.update(53, true), true, 'stays limited until the exit threshold');
+  assert.equal(latch.update(60, true), false);
+  assert.equal(latch.update(30, false), false, 'desktop presets are not phone floors');
+  assert.equal(meter.PHONE_ABSOLUTE_FLOOR_ENTER_DB, 50);
+  assert.ok(meter.PHONE_ABSOLUTE_FLOOR_EXIT_DB > meter.PHONE_ABSOLUTE_FLOOR_ENTER_DB);
+});
+
+test('mic gain shifts the reading and does not amplify samples', () => {
+  assert.equal(meter.digitalMicGainLinear(2), 1);
+  assert.equal(meter.digitalMicGainLinear(-6), 1);
+  assert.equal(meter.applyMicGainDb(60, 2), 62);
+  assert.equal(meter.applyMicGainDb(60, -3), 57);
+  assert.equal(meter.applyMicGainDb(60, 0), 60);
 });
 
 test('worklet reports accumulate every render quantum into one Leq block', () => {
