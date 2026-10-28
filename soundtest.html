@@ -40,7 +40,7 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-<link rel="stylesheet" href="/assets/soundtest.css?v=20261029a">
+  <link rel="stylesheet" href="/assets/soundtest.css?v=20261029b">
 <link rel="stylesheet" href="/assets/legal-notice.css?v=20261011">
 <script src="/assets/legal-notice.js?v=20261011" defer></script>
 <style>
@@ -1864,86 +1864,77 @@
     </div>
   </div>
 
-  <!-- Session levels. LAeq / Lmax / Lmin stay visible. The rest opens on demand. -->
-  <section class="stitch-telemetry-sec" id="stitchTelemetry">
-    <div class="stitch-matrix-grid meter-primary">
-      <div class="stitch-matrix-card highlight">
-        <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl" id="telemetryLblLeq">LAeq</span>
-          <span class="stitch-metric-dot bg-cyan"></span>
-        </div>
-        <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val notranslate" translate="no" id="sLeq">--<span class="u notranslate" translate="no"> dB</span></span>
-        </div>
-        <span class="stitch-matrix-sub" id="telemetrySubLeq">Equivalent Continuous Level</span>
+  <!-- Session levels. LAeq / Lmax / Lmin stay visible. Weighting, peaks, and Ln open on demand. -->
+  <section class="stitch-telemetry-sec meter-readout" id="stitchTelemetry">
+    <div class="mstat-row" role="group">
+      <div class="mstat">
+        <span class="mstat-lbl" id="telemetryLblLeq">LAeq</span>
+        <span class="mstat-val notranslate" translate="no" id="sLeq">--<span class="u notranslate" translate="no"> dB</span></span>
+        <span class="mstat-sub" id="telemetrySubLeq" hidden></span>
       </div>
-      <div class="stitch-matrix-card">
-        <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl" id="telemetryLblPeak">Lmax</span>
-          <span class="stitch-metric-dot bg-rose"></span>
-        </div>
-        <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val color-rose notranslate" translate="no" id="sPeak">--<span class="u notranslate" translate="no"> dB</span></span>
-        </div>
-        <span class="stitch-matrix-sub" id="telemetrySubPeak">Time-weighted maximum</span>
+      <div class="mstat">
+        <span class="mstat-lbl" id="telemetryLblPeak">Lmax</span>
+        <span class="mstat-val notranslate" translate="no" id="sPeak">--<span class="u notranslate" translate="no"> dB</span></span>
+        <span class="mstat-sub" id="telemetrySubPeak" hidden></span>
       </div>
-      <div class="stitch-matrix-card">
-        <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl" id="telemetryLblMin">Lmin</span>
-          <span class="stitch-metric-dot bg-emerald"></span>
-        </div>
-        <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val color-emerald notranslate" translate="no" id="sMin">--<span class="u notranslate" translate="no"> dB</span></span>
-        </div>
-        <span class="stitch-matrix-sub" id="telemetrySubMin">Time-weighted minimum</span>
+      <div class="mstat">
+        <span class="mstat-lbl" id="telemetryLblMin">Lmin</span>
+        <span class="mstat-val notranslate" translate="no" id="sMin">--<span class="u notranslate" translate="no"> dB</span></span>
+        <span class="mstat-sub" id="telemetrySubMin" hidden></span>
       </div>
     </div>
     <details class="meter-details" id="meterDetails">
       <summary class="meter-details-summary" id="meterDetailsSummary">Details</summary>
       <div class="meter-details-body">
-        <div class="meter-weight-row" id="meterWeightRow">
-          <button type="button" class="meter-chip" data-weight-chip="A" onclick="setWeight('A')">A</button>
-          <button type="button" class="meter-chip" data-weight-chip="C" onclick="setWeight('C')">C</button>
-          <button type="button" class="meter-chip" data-weight-chip="Z" onclick="setWeight('Z')">Z</button>
-          <button type="button" class="meter-chip" data-time-chip="F" id="meterChipFast" onclick="setTimeWeight('F')">Fast</button>
-          <button type="button" class="meter-chip" data-time-chip="S" id="meterChipSlow" onclick="setTimeWeight('S')">Slow</button>
-        </div>
-        <p class="meter-truepeak notranslate" id="meterTruePeak" translate="no" hidden>LCpeak -- · LZpeak --</p>
-        <div class="stitch-matrix-grid meter-ln">
-          <div class="stitch-matrix-card">
-            <div class="stitch-matrix-card-top">
-              <span class="stitch-matrix-lbl" id="telemetryLblL10">L10 Peak</span>
-              <span class="stitch-matrix-tag" id="telemetryTagL10">Top10%</span>
-            </div>
-            <div class="stitch-matrix-val-wrap">
-              <span class="stitch-matrix-val notranslate" translate="no" id="sL10">--<span class="u notranslate" translate="no"> dB</span></span>
-            </div>
-            <span class="stitch-matrix-sub" id="telemetrySubL10">Infrequent Loud Events</span>
+        <div class="meter-seg-row">
+          <div class="meter-seg" id="meterWeightRow" role="group">
+            <button type="button" class="meter-chip active" data-weight-chip="A" onclick="setWeight('A')" aria-pressed="true">A</button>
+            <button type="button" class="meter-chip" data-weight-chip="C" onclick="setWeight('C')" aria-pressed="false">C</button>
+            <button type="button" class="meter-chip" data-weight-chip="Z" onclick="setWeight('Z')" aria-pressed="false">Z</button>
           </div>
-          <div class="stitch-matrix-card">
-            <div class="stitch-matrix-card-top">
-              <span class="stitch-matrix-lbl" id="telemetryLblL50">L50 Median</span>
-              <span class="stitch-matrix-tag" id="telemetryTagL50">Median</span>
-            </div>
-            <div class="stitch-matrix-val-wrap">
-              <span class="stitch-matrix-val notranslate" translate="no" id="sL50">--<span class="u notranslate" translate="no"> dB</span></span>
-            </div>
-            <span class="stitch-matrix-sub" id="telemetrySubL50">Typical Median Level</span>
-          </div>
-          <div class="stitch-matrix-card">
-            <div class="stitch-matrix-card-top">
-              <span class="stitch-matrix-lbl" id="telemetryLblL90">L90 Residual</span>
-              <span class="stitch-matrix-tag" id="telemetryTagL90">Residual</span>
-            </div>
-            <div class="stitch-matrix-val-wrap">
-              <span class="stitch-matrix-val notranslate" translate="no" id="sL90">--<span class="u notranslate" translate="no"> dB</span></span>
-            </div>
-            <span class="stitch-matrix-sub" id="telemetrySubL90">Ambient Background Floor</span>
+          <div class="meter-seg" id="meterTimeRow" role="group">
+            <button type="button" class="meter-chip active" data-time-chip="F" id="meterChipFast" onclick="setTimeWeight('F')" aria-pressed="true">Fast</button>
+            <button type="button" class="meter-chip" data-time-chip="S" id="meterChipSlow" onclick="setTimeWeight('S')" aria-pressed="false">Slow</button>
           </div>
         </div>
-        <div class="stitch-telemetry-head meter-details-foot">
-          <h3 class="stitch-telemetry-title" id="telemetryTitle">Acoustic Metrics (LEQ &amp; LN MATRIX)</h3>
-          <span class="stitch-telemetry-badge" id="telemetryBadge">Based on IEC algorithms</span>
+        <div class="mstat-row mstat-row-detail">
+          <div class="mstat">
+            <span class="mstat-lbl" id="telemetryLblLc">LCpeak</span>
+            <span class="mstat-val notranslate" translate="no" id="sLcPeak">--<span class="u notranslate" translate="no"> dB</span></span>
+          </div>
+          <div class="mstat">
+            <span class="mstat-lbl" id="telemetryLblLz">LZpeak</span>
+            <span class="mstat-val notranslate" translate="no" id="sLzPeak">--<span class="u notranslate" translate="no"> dB</span></span>
+          </div>
+          <div class="mstat mstat-quiet">
+            <span class="mstat-lbl" id="telemetryLblGain">Gain</span>
+            <span class="mstat-val notranslate" translate="no" id="sGain">+2<span class="u notranslate" translate="no"> dB</span></span>
+          </div>
+        </div>
+        <p class="meter-truepeak notranslate" id="meterTruePeak" translate="no" hidden></p>
+        <div class="mstat-row mstat-row-detail">
+          <div class="mstat">
+            <span class="mstat-lbl" id="telemetryLblL10">L10</span>
+            <span class="mstat-val notranslate" translate="no" id="sL10">--<span class="u notranslate" translate="no"> dB</span></span>
+            <span class="mstat-cap" id="telemetryTagL10">Loud</span>
+            <span class="mstat-sub" id="telemetrySubL10" hidden></span>
+          </div>
+          <div class="mstat">
+            <span class="mstat-lbl" id="telemetryLblL50">L50</span>
+            <span class="mstat-val notranslate" translate="no" id="sL50">--<span class="u notranslate" translate="no"> dB</span></span>
+            <span class="mstat-cap" id="telemetryTagL50">Typical</span>
+            <span class="mstat-sub" id="telemetrySubL50" hidden></span>
+          </div>
+          <div class="mstat">
+            <span class="mstat-lbl" id="telemetryLblL90">L90</span>
+            <span class="mstat-val notranslate" translate="no" id="sL90">--<span class="u notranslate" translate="no"> dB</span></span>
+            <span class="mstat-cap" id="telemetryTagL90">Quiet</span>
+            <span class="mstat-sub" id="telemetrySubL90" hidden></span>
+          </div>
+        </div>
+        <div class="meter-details-foot">
+          <h3 class="stitch-telemetry-title" id="telemetryTitle" hidden>Acoustic Metrics</h3>
+          <span class="meter-iec" id="telemetryBadge">Based on IEC algorithms</span>
         </div>
       </div>
     </details>
@@ -2808,7 +2799,7 @@
 
 <script src="/assets/jspdf.umd.min.js?v=20260823b" data-cfasync="false" async></script>
 <script src="/assets/utils.js?v=20260823b" data-cfasync="false"></script>
-<script src="/assets/i18n-data.js?v=20261003e" data-cfasync="false"></script>
+<script src="/assets/i18n-data.js?v=20261029b" data-cfasync="false"></script>
 <script src="/assets/lang-flags.js?v=20261003e" data-cfasync="false"></script>
 <script src="/assets/pro-meter.js?v=20261029a" data-cfasync="false"></script>
 <script src="/assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
@@ -3607,27 +3598,7 @@ function applyTranslations(){
   if (scaleSub60) scaleSub60.textContent = t('scale.urban', isZh ? '市井' : 'Urban');
   if (scaleSub120) scaleSub120.textContent = t('scale.danger', isZh ? '危险' : 'Danger');
 
-  // Stats Matrix (IEC 61672 SLM Telemetry)
-  setText('telemetryTitle', t('telemetry.title', isZh ? '声学统计参量 (LEQ & LN MATRIX)' : 'Acoustic Metrics (LEQ & LN MATRIX)'));
-  setText('telemetryBadge', t('telemetry.badge', isZh ? '基于 IEC 算法' : 'Based on IEC algorithms'));
-
-  setText('telemetryLblLeq', `L${weighting}eq`);
-  setText('telemetrySubLeq', t('telemetry.subLeq', isZh ? '等效连续声级' : 'Equivalent Continuous Level'));
-
-  setText('telemetryLblPeak', t('telemetry.lblPeak', isZh ? 'Lmax 最大' : 'Lmax'));
-  setText('telemetrySubPeak', t('telemetry.subPeak', isZh ? '时间计权最大值' : 'Time-weighted maximum'));
-
-  setText('telemetryLblMin', t('telemetry.lblMin', isZh ? 'Lmin 最小' : 'Lmin'));
-  setText('telemetrySubMin', t('telemetry.subMin', isZh ? '时间计权最小值' : 'Time-weighted minimum'));
-
-  setText('telemetryLblL10', t('telemetry.lblL10', isZh ? 'L10 峰值态' : 'L10 Peak'));
-  setText('telemetrySubL10', t('telemetry.subL10', isZh ? '偶发高噪声级' : 'Infrequent Loud Events'));
-
-  setText('telemetryLblL50', t('telemetry.lblL50', isZh ? 'L50 中位数' : 'L50 Median'));
-  setText('telemetrySubL50', t('telemetry.subL50', isZh ? '常态中值声压' : 'Typical Median Level'));
-
-  setText('telemetryLblL90', t('telemetry.lblL90', isZh ? 'L90 本底' : 'L90 Residual'));
-  setText('telemetrySubL90', t('telemetry.subL90', isZh ? '持续背景噪声' : 'Ambient Background Floor'));
+  // Session stats use the inline locale pack so a cached i18n file cannot restore mixed labels or the old badge.
 
   const sceneLabel=document.getElementById('sceneChipLabel');if(sceneLabel)sceneLabel.textContent=t('ui.quickScene');
   const sceneHint=document.getElementById('sceneChipHint');if(sceneHint)sceneHint.textContent=t('ui.quickSceneHint');
@@ -7480,6 +7451,7 @@ function updateMicGain(){
   // Saved micGainDb still shifts the reading by the same number of decibels.
   // The samples themselves are not boosted, so a full-scale tone is not clipped by this control.
   if(inputGainNode)inputGainNode.gain.value=1;
+  if(typeof renderGainReadout==='function')renderGainReadout();
 }
 function analyserSmooth(v){return Math.max(.02,Math.min(.45,v/20));}
 
@@ -8429,16 +8401,49 @@ var METER_TRUST_TEXT={
 const METER_MOMENT_COPY={
   'en-US':{details:'Details',fast:'Fast',slow:'Slow',dismiss:'Dismiss',sessionTitle:'This session can be filed',sessionDesc:'Pro reports leave out the watermark and keep the reading you just measured.',exportTitle:'That file is a preview',exportDesc:'Pro exports a clean report you can send as-is.',evidenceTitle:'Evidence is on this device',evidenceDesc:'Pro turns it into a clean report with this reading sealed in.',longTitle:'This run is worth keeping',longDesc:'Pro files the whole session and can keep watch overnight.',cta:'See Pro'},
   'zh-CN':{details:'详情',fast:'快',slow:'慢',dismiss:'关闭',sessionTitle:'这次测量可以存档了',sessionDesc:'Pro 报告去掉水印，并保留你刚刚测到的读数。',exportTitle:'刚保存的是预览件',exportDesc:'Pro 导出的报告没有水印，可以直接发出。',evidenceTitle:'证据已在这台设备上',evidenceDesc:'Pro 把它做成无水印报告，并封上这次读数。',longTitle:'这次监测值得留下来',longDesc:'Pro 能把整段监测写成报告，也可以整夜值守。',cta:'了解 Pro'},
-  es:{details:'Detalles',fast:'Fast',slow:'Slow',dismiss:'Cerrar',sessionTitle:'Esta sesión ya se puede archivar',sessionDesc:'Los informes Pro van sin marca de agua y conservan la lectura que acabas de medir.',exportTitle:'Ese archivo es una vista previa',exportDesc:'Pro exporta un informe limpio, listo para enviar.',evidenceTitle:'La evidencia está en este dispositivo',evidenceDesc:'Pro la convierte en un informe limpio con esta lectura sellada.',longTitle:'Esta medición merece guardarse',longDesc:'Pro archiva toda la sesión y puede vigilar durante la noche.',cta:'Ver Pro'},
-  fr:{details:'Détails',fast:'Fast',slow:'Slow',dismiss:'Fermer',sessionTitle:'Cette session peut être archivée',sessionDesc:'Les rapports Pro n’ont pas de filigrane et gardent la mesure que vous venez de faire.',exportTitle:'Ce fichier est un aperçu',exportDesc:'Pro exporte un rapport net, prêt à envoyer.',evidenceTitle:'La preuve est sur cet appareil',evidenceDesc:'Pro en fait un rapport net, avec cette mesure scellée.',longTitle:'Cette mesure vaut la peine d’être gardée',longDesc:'Pro archive toute la session et peut surveiller toute la nuit.',cta:'Voir Pro'},
-  de:{details:'Details',fast:'Fast',slow:'Slow',dismiss:'Schließen',sessionTitle:'Diese Messung kann abgelegt werden',sessionDesc:'Pro-Berichte sind ohne Wasserzeichen und behalten den Wert, den Sie gerade gemessen haben.',exportTitle:'Diese Datei ist eine Vorschau',exportDesc:'Pro exportiert einen sauberen Bericht, den Sie direkt senden können.',evidenceTitle:'Der Nachweis liegt auf diesem Gerät',evidenceDesc:'Pro macht daraus einen sauberen Bericht mit diesem Messwert.',longTitle:'Diese Messung sollte bleiben',longDesc:'Pro legt die ganze Sitzung ab und kann über Nacht weiter messen.',cta:'Pro ansehen'},
-  ja:{details:'詳細',fast:'Fast',slow:'Slow',dismiss:'閉じる',sessionTitle:'この測定は記録に残せます',sessionDesc:'Proの報告書は透かしなしで、いま測った値をそのまま残せます。',exportTitle:'保存したファイルはプレビューです',exportDesc:'Proなら透かしのない報告書を、そのまま送れます。',evidenceTitle:'証拠はこの端末にあります',evidenceDesc:'Proは今回の測定値を封じた、透かしのない報告書にします。',longTitle:'この計測は残す価値があります',longDesc:'Proは測定全体を報告書にし、夜間の見守りも続けられます。',cta:'Proを見る'},
-  ko:{details:'자세히',fast:'Fast',slow:'Slow',dismiss:'닫기',sessionTitle:'이번 측정은 기록으로 남길 수 있습니다',sessionDesc:'Pro 보고서는 워터마크가 없고, 방금 측정한 값을 그대로 담습니다.',exportTitle:'방금 저장한 파일은 미리보기입니다',exportDesc:'Pro는 워터마크 없는 보고서를 바로 보낼 수 있게 내보냅니다.',evidenceTitle:'증거는 이 기기에 있습니다',evidenceDesc:'Pro가 이번 측정값을 담은 깨끗한 보고서로 만듭니다.',longTitle:'이번 측정은 남겨 둘 만합니다',longDesc:'Pro는 측정 전체를 보고서로 남기고, 밤새 감시도 이어갑니다.',cta:'Pro 보기'},
-  vi:{details:'Chi tiết',fast:'Fast',slow:'Slow',dismiss:'Đóng',sessionTitle:'Phiên đo này có thể lưu hồ sơ',sessionDesc:'Báo cáo Pro không có hình mờ và giữ đúng số vừa đo.',exportTitle:'Tệp vừa lưu là bản xem trước',exportDesc:'Pro xuất báo cáo sạch, gửi đi được ngay.',evidenceTitle:'Bằng chứng đang ở trên máy này',evidenceDesc:'Pro biến nó thành báo cáo sạch, kèm số vừa đo.',longTitle:'Lần đo này đáng được giữ lại',longDesc:'Pro lưu cả phiên đo và có thể theo dõi qua đêm.',cta:'Xem Pro'},
-  th:{details:'รายละเอียด',fast:'Fast',slow:'Slow',dismiss:'ปิด',sessionTitle:'รอบวัดนี้บันทึกเป็นแฟ้มได้แล้ว',sessionDesc:'รายงาน Pro ไม่มีลายน้ำ และเก็บค่าที่เพิ่งวัดไว้',exportTitle:'ไฟล์ที่เพิ่งบันทึกเป็นตัวอย่าง',exportDesc:'Pro ส่งออกรายงานที่ไม่มีลายน้ำ ส่งต่อได้เลย',evidenceTitle:'หลักฐานอยู่ในเครื่องนี้',evidenceDesc:'Pro ทำเป็นรายงานไม่มีลายน้ำ พร้อมค่าที่วัดครั้งนี้',longTitle:'การวัดครั้งนี้ควรถูกเก็บไว้',longDesc:'Pro เก็บบันทึกทั้งช่วง และเฝ้าดูต่อได้ตลอดคืน',cta:'ดู Pro'},
+  es:{details:'Detalles',fast:'Rápido',slow:'Lento',dismiss:'Cerrar',sessionTitle:'Esta sesión ya se puede archivar',sessionDesc:'Los informes Pro van sin marca de agua y conservan la lectura que acabas de medir.',exportTitle:'Ese archivo es una vista previa',exportDesc:'Pro exporta un informe limpio, listo para enviar.',evidenceTitle:'La evidencia está en este dispositivo',evidenceDesc:'Pro la convierte en un informe limpio con esta lectura sellada.',longTitle:'Esta medición merece guardarse',longDesc:'Pro archiva toda la sesión y puede vigilar durante la noche.',cta:'Ver Pro'},
+  fr:{details:'Détails',fast:'Rapide',slow:'Lent',dismiss:'Fermer',sessionTitle:'Cette session peut être archivée',sessionDesc:'Les rapports Pro n’ont pas de filigrane et gardent la mesure que vous venez de faire.',exportTitle:'Ce fichier est un aperçu',exportDesc:'Pro exporte un rapport net, prêt à envoyer.',evidenceTitle:'La preuve est sur cet appareil',evidenceDesc:'Pro en fait un rapport net, avec cette mesure scellée.',longTitle:'Cette mesure vaut la peine d’être gardée',longDesc:'Pro archive toute la session et peut surveiller toute la nuit.',cta:'Voir Pro'},
+  de:{details:'Details',fast:'Schnell',slow:'Langsam',dismiss:'Schließen',sessionTitle:'Diese Messung kann abgelegt werden',sessionDesc:'Pro-Berichte sind ohne Wasserzeichen und behalten den Wert, den Sie gerade gemessen haben.',exportTitle:'Diese Datei ist eine Vorschau',exportDesc:'Pro exportiert einen sauberen Bericht, den Sie direkt senden können.',evidenceTitle:'Der Nachweis liegt auf diesem Gerät',evidenceDesc:'Pro macht daraus einen sauberen Bericht mit diesem Messwert.',longTitle:'Diese Messung sollte bleiben',longDesc:'Pro legt die ganze Sitzung ab und kann über Nacht weiter messen.',cta:'Pro ansehen'},
+  ja:{details:'詳細',fast:'速い',slow:'遅い',dismiss:'閉じる',sessionTitle:'この測定は記録に残せます',sessionDesc:'Proの報告書は透かしなしで、いま測った値をそのまま残せます。',exportTitle:'保存したファイルはプレビューです',exportDesc:'Proなら透かしのない報告書を、そのまま送れます。',evidenceTitle:'証拠はこの端末にあります',evidenceDesc:'Proは今回の測定値を封じた、透かしのない報告書にします。',longTitle:'この計測は残す価値があります',longDesc:'Proは測定全体を報告書にし、夜間の見守りも続けられます。',cta:'Proを見る'},
+  ko:{details:'자세히',fast:'빠름',slow:'느림',dismiss:'닫기',sessionTitle:'이번 측정은 기록으로 남길 수 있습니다',sessionDesc:'Pro 보고서는 워터마크가 없고, 방금 측정한 값을 그대로 담습니다.',exportTitle:'방금 저장한 파일은 미리보기입니다',exportDesc:'Pro는 워터마크 없는 보고서를 바로 보낼 수 있게 내보냅니다.',evidenceTitle:'증거는 이 기기에 있습니다',evidenceDesc:'Pro가 이번 측정값을 담은 깨끗한 보고서로 만듭니다.',longTitle:'이번 측정은 남겨 둘 만합니다',longDesc:'Pro는 측정 전체를 보고서로 남기고, 밤새 감시도 이어갑니다.',cta:'Pro 보기'},
+  vi:{details:'Chi tiết',fast:'Nhanh',slow:'Chậm',dismiss:'Đóng',sessionTitle:'Phiên đo này có thể lưu hồ sơ',sessionDesc:'Báo cáo Pro không có hình mờ và giữ đúng số vừa đo.',exportTitle:'Tệp vừa lưu là bản xem trước',exportDesc:'Pro xuất báo cáo sạch, gửi đi được ngay.',evidenceTitle:'Bằng chứng đang ở trên máy này',evidenceDesc:'Pro biến nó thành báo cáo sạch, kèm số vừa đo.',longTitle:'Lần đo này đáng được giữ lại',longDesc:'Pro lưu cả phiên đo và có thể theo dõi qua đêm.',cta:'Xem Pro'},
+  th:{details:'รายละเอียด',fast:'เร็ว',slow:'ช้า',dismiss:'ปิด',sessionTitle:'รอบวัดนี้บันทึกเป็นแฟ้มได้แล้ว',sessionDesc:'รายงาน Pro ไม่มีลายน้ำ และเก็บค่าที่เพิ่งวัดไว้',exportTitle:'ไฟล์ที่เพิ่งบันทึกเป็นตัวอย่าง',exportDesc:'Pro ส่งออกรายงานที่ไม่มีลายน้ำ ส่งต่อได้เลย',evidenceTitle:'หลักฐานอยู่ในเครื่องนี้',evidenceDesc:'Pro ทำเป็นรายงานไม่มีลายน้ำ พร้อมค่าที่วัดครั้งนี้',longTitle:'การวัดครั้งนี้ควรถูกเก็บไว้',longDesc:'Pro เก็บบันทึกทั้งช่วง และเฝ้าดูต่อได้ตลอดคืน',cta:'ดู Pro'},
+};
+const METER_STAT_COPY={
+  'en-US':{max:'Lmax',min:'Lmin',l10:'L10',l50:'L50',l90:'L90',cap10:'Loud',cap50:'Typical',cap90:'Quiet',lc:'LCpeak',lz:'LZpeak',gain:'Gain',badge:'Based on IEC algorithms'},
+  'zh-CN':{max:'Lmax',min:'Lmin',l10:'L10',l50:'L50',l90:'L90',cap10:'偏高',cap50:'中值',cap90:'本底',lc:'LCpeak',lz:'LZpeak',gain:'增益',badge:'基于 IEC 算法'},
+  es:{max:'Lmax',min:'Lmin',l10:'L10',l50:'L50',l90:'L90',cap10:'Altos',cap50:'Típico',cap90:'Fondo',lc:'LCpeak',lz:'LZpeak',gain:'Ganancia',badge:'Basado en algoritmos IEC'},
+  fr:{max:'Lmax',min:'Lmin',l10:'L10',l50:'L50',l90:'L90',cap10:'Forts',cap50:'Typique',cap90:'Fond',lc:'LCpeak',lz:'LZpeak',gain:'Gain',badge:'Basé sur les algorithmes IEC'},
+  de:{max:'Lmax',min:'Lmin',l10:'L10',l50:'L50',l90:'L90',cap10:'Laut',cap50:'Typisch',cap90:'Grund',lc:'LCpeak',lz:'LZpeak',gain:'Verstärkung',badge:'Basierend auf IEC-Algorithmen'},
+  ja:{max:'Lmax',min:'Lmin',l10:'L10',l50:'L50',l90:'L90',cap10:'高め',cap50:'中央',cap90:'暗騒音',lc:'LCpeak',lz:'LZpeak',gain:'ゲイン',badge:'IEC アルゴリズムに基づく'},
+  ko:{max:'Lmax',min:'Lmin',l10:'L10',l50:'L50',l90:'L90',cap10:'높음',cap50:'중앙',cap90:'배경',lc:'LCpeak',lz:'LZpeak',gain:'게인',badge:'IEC 알고리즘 기반'},
+  vi:{max:'Lmax',min:'Lmin',l10:'L10',l50:'L50',l90:'L90',cap10:'Cao',cap50:'Giữa',cap90:'Nền',lc:'LCpeak',lz:'LZpeak',gain:'Độ lợi',badge:'Dựa trên thuật toán IEC'},
+  th:{max:'Lmax',min:'Lmin',l10:'L10',l50:'L50',l90:'L90',cap10:'ดัง',cap50:'กลาง',cap90:'พื้น',lc:'LCpeak',lz:'LZpeak',gain:'เกน',badge:'อิงอัลกอริทึม IEC'},
 };
 function meterMomentPack(){
   return METER_MOMENT_COPY[appLanguage]||METER_MOMENT_COPY['en-US'];
+}
+function meterStatPack(){
+  const lang=appLanguage==='zh'?'zh-CN':appLanguage==='en'?'en-US':appLanguage;
+  return METER_STAT_COPY[lang]||METER_STAT_COPY['en-US'];
+}
+function renderMeterStatsCopy(){
+  const pack=meterStatPack();
+  const set=(id,text)=>{const el=document.getElementById(id);if(el)el.textContent=text;};
+  set('telemetryLblPeak',pack.max);
+  set('telemetryLblMin',pack.min);
+  set('telemetryLblL10',pack.l10);
+  set('telemetryLblL50',pack.l50);
+  set('telemetryLblL90',pack.l90);
+  set('telemetryTagL10',pack.cap10);
+  set('telemetryTagL50',pack.cap50);
+  set('telemetryTagL90',pack.cap90);
+  set('telemetryLblLc',pack.lc);
+  set('telemetryLblLz',pack.lz);
+  set('telemetryLblGain',pack.gain);
+  set('telemetryBadge',pack.badge);
+  ['telemetrySubLeq','telemetrySubPeak','telemetrySubMin','telemetrySubL10','telemetrySubL50','telemetrySubL90'].forEach(id=>set(id,''));
+  if(typeof renderGainReadout==='function')renderGainReadout();
 }
 function renderMeterDetailsCopy(){
   const pack=meterMomentPack();
@@ -8450,8 +8455,17 @@ function renderMeterDetailsCopy(){
   if(slow)slow.textContent=pack.slow;
   const dismiss=document.getElementById('subscriptionBannerDismiss');
   if(dismiss)dismiss.setAttribute('aria-label',pack.dismiss);
-  document.querySelectorAll('[data-weight-chip]').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-weight-chip')===weighting));
-  document.querySelectorAll('[data-time-chip]').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-time-chip')===timeWeight));
+  document.querySelectorAll('[data-weight-chip]').forEach(btn=>{
+    const on=btn.getAttribute('data-weight-chip')===weighting;
+    btn.classList.toggle('active',on);
+    btn.setAttribute('aria-pressed',on?'true':'false');
+  });
+  document.querySelectorAll('[data-time-chip]').forEach(btn=>{
+    const on=btn.getAttribute('data-time-chip')===timeWeight;
+    btn.classList.toggle('active',on);
+    btn.setAttribute('aria-pressed',on?'true':'false');
+  });
+  renderMeterStatsCopy();
 }
 function levelQuantityLabel(){
   const w=weighting==='C'?'C':weighting==='Z'?'Z':'A';
@@ -8652,18 +8666,35 @@ function meterTrustKey(){
   }
   return 'ok';
 }
-function renderTruePeak(){
-  const el=document.getElementById('meterTruePeak');
+function writeDbCell(id,text){
+  const el=document.getElementById(id);
   if(!el)return;
-  if(!isMon||meterPath==='fft'||!(lcPeakLin>0)||!window.SoundfieldPro?.dbFromPeakAmplitude){
-    el.hidden=true;
-    return;
+  el.innerHTML=`${text}<span class="u notranslate" translate="no"> dB</span>`;
+}
+function formatSignedDb(n){
+  const v=Number(n);
+  if(!Number.isFinite(v))return '--';
+  const rounded=Math.round(v*10)/10;
+  const body=Number.isInteger(rounded)?String(rounded):rounded.toFixed(1);
+  return rounded>0?`+${body}`:body;
+}
+function renderGainReadout(){
+  writeDbCell('sGain',formatSignedDb(micGainDb));
+}
+function renderTruePeak(){
+  const legacy=document.getElementById('meterTruePeak');
+  if(legacy){legacy.hidden=true;legacy.textContent='';}
+  const live=!!(isMon&&meterPath!=='fft'&&lcPeakLin>0&&window.SoundfieldPro?.dbFromPeakAmplitude);
+  if(!live){
+    writeDbCell('sLcPeak','--');
+    writeDbCell('sLzPeak','--');
+  }else{
+    const lc=window.SoundfieldPro.dbFromPeakAmplitude(lcPeakLin,splRef(),calOffset+micGainDb);
+    const lz=lzPeakLin>0?window.SoundfieldPro.dbFromPeakAmplitude(lzPeakLin,splRef(),calOffset+micGainDb):0;
+    writeDbCell('sLcPeak',Number.isFinite(lc)?lc.toFixed(1):'--');
+    writeDbCell('sLzPeak',lzPeakLin>0&&Number.isFinite(lz)?lz.toFixed(1):'--');
   }
-  const lc=window.SoundfieldPro.dbFromPeakAmplitude(lcPeakLin,splRef(),calOffset+micGainDb);
-  const lz=lzPeakLin>0?window.SoundfieldPro.dbFromPeakAmplitude(lzPeakLin,splRef(),calOffset+micGainDb):0;
-  const gainNote=micGainDb?` · gain ${micGainDb>0?'+':''}${micGainDb} dB in level`:'';
-  el.hidden=false;
-  el.textContent=`LCpeak ${lc.toFixed(1)} · LZpeak ${lz.toFixed(1)}${gainNote}`;
+  renderGainReadout();
 }
 function renderMeterTrust(){
   if(!METER_TRUST_TEXT)return;
