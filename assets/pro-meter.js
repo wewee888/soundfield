@@ -64,6 +64,9 @@
     10000, 12500, 16000, 20000,
   ];
 
+  // Display-only grouping of FFT bins. This is not an IEC 61260 fractional-octave
+  // filter bank: a real 1/3-octave bank is a separate high-order filter per band
+  // and would not improve the level reading. The spectrum view stays an FFT.
   function thirdOctaveBands(frequencyDataDb, sampleRate, fftSize) {
     if (!frequencyDataDb || !Number.isFinite(sampleRate) || !Number.isFinite(fftSize)) return [];
     const ratio = Math.pow(2, 1 / 6);
@@ -153,6 +156,554 @@
     return Number.isFinite(out) ? Math.max(0, out) : validInst;
   }
 
+  // IEC 61672-1 frequency weighting as cascaded bilinear sections, gain-normalized at 1 kHz.
+  function iecEmptyBiquad(b0, b1, b2, a1, a2) {
+    return { b0, b1, b2, a1, a2, x1: 0, x2: 0, y1: 0, y2: 0 };
+  }
+
+  function iecBiquadHighpass(f0, Q, sampleRate) {
+    const w0 = (2 * Math.PI * f0) / sampleRate;
+    const cosw = Math.cos(w0);
+    const alpha = Math.sin(w0) / (2 * Q);
+    const a0 = 1 + alpha;
+    return iecEmptyBiquad(
+      ((1 + cosw) / 2) / a0,
+      -(1 + cosw) / a0,
+      ((1 + cosw) / 2) / a0,
+      (-2 * cosw) / a0,
+      (1 - alpha) / a0
+    );
+  }
+
+  function iecBiquadLowpass(f0, Q, sampleRate) {
+    const w0 = (2 * Math.PI * f0) / sampleRate;
+    const cosw = Math.cos(w0);
+    const alpha = Math.sin(w0) / (2 * Q);
+    const a0 = 1 + alpha;
+    return iecEmptyBiquad(
+      ((1 - cosw) / 2) / a0,
+      (1 - cosw) / a0,
+      ((1 - cosw) / 2) / a0,
+      (-2 * cosw) / a0,
+      (1 - alpha) / a0
+    );
+  }
+
+  function iecHighpass1(f0, sampleRate) {
+    const g = Math.tan((Math.PI * f0) / sampleRate);
+    const b0 = 1 / (1 + g);
+    return iecEmptyBiquad(b0, -b0, 0, (g - 1) / (1 + g), 0);
+  }
+
+  function iecPlaceable(freq, sampleRate) {
+    return freq > 0 && freq < sampleRate * 0.47;
+  }
+
+  // High shelf that undoes most of the bilinear lowpass warp near Nyquist.
+  // Knots were fit so A and C stay within ~0.35 dB of the analog curve through 16 kHz.
+  function iecHighShelf(f0, gainDb, slope, sampleRate) {
+    const A = Math.pow(10, gainDb / 40);
+    const w0 = (2 * Math.PI * Math.min(f0, sampleRate * 0.45)) / sampleRate;
+    const cw = Math.cos(w0);
+    const sw = Math.sin(w0);
+    const alpha = (sw / 2) * Math.sqrt((A + 1 / A) * (1 / Math.max(slope, 1.001) - 1) + 2);
+    const two = 2 * Math.sqrt(A) * alpha;
+    const a0 = (A + 1) - (A - 1) * cw + two;
+    return iecEmptyBiquad(
+      (A * ((A + 1) + (A - 1) * cw + two)) / a0,
+      (-2 * A * ((A - 1) + (A + 1) * cw)) / a0,
+      (A * ((A + 1) - (A - 1) * cw - two)) / a0,
+      (2 * ((A - 1) - (A + 1) * cw)) / a0,
+      ((A + 1) - (A - 1) * cw - two) / a0
+    );
+  }
+
+  function iecHfShelf(sampleRate) {
+    if (!(sampleRate >= 30000)) return null;
+    const knots = [
+      [32000, 13200, 8.5, 2],
+      [44100, 12800, 3.5, 4],
+      [48000, 13200, 2.5, 4],
+      [96000, 16000, 0.5, 4],
+    ];
+    let f0;
+    let gdb;
+    let slope;
+    if (sampleRate <= knots[0][0]) {
+      f0 = knots[0][1];
+      gdb = knots[0][2];
+      slope = knots[0][3];
+    } else if (sampleRate >= knots[knots.length - 1][0]) {
+      f0 = knots[knots.length - 1][1];
+      gdb = knots[knots.length - 1][2];
+      slope = knots[knots.length - 1][3];
+    } else {
+      let i = 0;
+      while (i < knots.length - 1 && sampleRate > knots[i + 1][0]) i++;
+      const a = knots[i];
+      const b = knots[i + 1];
+      const t = (sampleRate - a[0]) / (b[0] - a[0]);
+      f0 = a[1] + (b[1] - a[1]) * t;
+      gdb = a[2] + (b[2] - a[2]) * t;
+      slope = a[3] + (b[3] - a[3]) * t;
+    }
+    if (!(gdb > 0.05)) return null;
+    if (f0 >= sampleRate * 0.45) f0 = sampleRate * 0.42;
+    return iecHighShelf(f0, gdb, slope, sampleRate);
+  }
+
+  function iecBiquadMagnitude(q, omega) {
+    const c1 = Math.cos(omega);
+    const s1 = Math.sin(omega);
+    const c2 = Math.cos(2 * omega);
+    const s2 = Math.sin(2 * omega);
+    const br = q.b0 + q.b1 * c1 + q.b2 * c2;
+    const bi = -(q.b1 * s1 + q.b2 * s2);
+    const ar = 1 + q.a1 * c1 + q.a2 * c2;
+    const ai = -(q.a1 * s1 + q.a2 * s2);
+    const den = Math.hypot(ar, ai);
+    if (!(den > 0)) return 0;
+    return Math.hypot(br, bi) / den;
+  }
+
+  function iecDesignWeighting(kind, sampleRate) {
+    const fs = Number.isFinite(sampleRate) && sampleRate >= 8000 ? sampleRate : 48000;
+    const mode = kind === 'C' ? 'C' : kind === 'Z' ? 'Z' : 'A';
+    const f1 = 20.598997;
+    const f2 = 107.65265;
+    const f3 = 737.86223;
+    const f4 = 12194.217;
+    const sections = [];
+    if (mode !== 'Z') {
+      if (iecPlaceable(f1, fs)) sections.push(iecBiquadHighpass(f1, 0.5, fs));
+      if (mode === 'A') {
+        if (iecPlaceable(f2, fs)) sections.push(iecHighpass1(f2, fs));
+        if (iecPlaceable(f3, fs)) sections.push(iecHighpass1(f3, fs));
+      }
+      if (iecPlaceable(f4, fs)) sections.push(iecBiquadLowpass(f4, 0.5, fs));
+      const shelf = iecHfShelf(fs);
+      if (shelf) sections.push(shelf);
+    }
+    let gain = 1;
+    if (sections.length) {
+      const refHz = Math.min(1000, fs * 0.2);
+      const omega = (2 * Math.PI * refHz) / fs;
+      let mag = 1;
+      for (let i = 0; i < sections.length; i++) mag *= iecBiquadMagnitude(sections[i], omega);
+      if (mag > 1e-12 && Number.isFinite(mag)) gain = 1 / mag;
+    }
+    return { kind: mode, sampleRate: fs, sections, gain };
+  }
+
+  function iecWeightingMagnitudeDb(kind, sampleRate, frequencyHz) {
+    if (!(frequencyHz > 0) || !(sampleRate > 0)) return -Infinity;
+    const design = iecDesignWeighting(kind, sampleRate);
+    if (!design.sections.length) return 0;
+    const omega = (2 * Math.PI * frequencyHz) / sampleRate;
+    let mag = Math.abs(design.gain);
+    for (let i = 0; i < design.sections.length; i++) mag *= iecBiquadMagnitude(design.sections[i], omega);
+    if (!(mag > 0) || !Number.isFinite(mag)) return -Infinity;
+    return 20 * Math.log10(mag);
+  }
+
+  function iecBiquadStep(q, x) {
+    const y = q.b0 * x + q.b1 * q.x1 + q.b2 * q.x2 - q.a1 * q.y1 - q.a2 * q.y2;
+    q.x2 = q.x1;
+    q.x1 = x;
+    q.y2 = q.y1;
+    q.y1 = Math.abs(y) < 1e-20 ? 0 : y;
+    return q.y1;
+  }
+
+  function iecCreateEngine(sampleRate, kind) {
+    const design = iecDesignWeighting(kind, sampleRate);
+    const fs = design.sampleRate;
+    const cDesign = design.kind === 'C' ? null : iecDesignWeighting('C', fs);
+    return {
+      sampleRate: fs,
+      weighting: design.kind,
+      sections: design.sections,
+      gain: design.gain,
+      cSections: cDesign ? cDesign.sections : null,
+      cGain: cDesign ? cDesign.gain : 1,
+      fastA: Math.exp(-1 / (fs * 0.125)),
+      slowA: Math.exp(-1 / (fs * 1)),
+      fast: 0,
+      slow: 0,
+    };
+  }
+
+  function iecProcessBlock(engine, input) {
+    const sections = engine.sections;
+    const gain = engine.gain;
+    const fastA = engine.fastA;
+    const slowA = engine.slowA;
+    const n = input.length;
+    const cSections = engine.cSections;
+    const cGain = engine.cGain;
+    let blockSum = 0;
+    let blockRaw = 0;
+    let blockPeak = 0;
+    let blockCPeak = 0;
+    let blockZPeak = 0;
+    let clips = 0;
+    let fast = engine.fast;
+    let slow = engine.slow;
+    for (let i = 0; i < n; i++) {
+      const x = input[i];
+      let y = x;
+      for (let s = 0; s < sections.length; s++) y = iecBiquadStep(sections[s], y);
+      y *= gain;
+      let c = y;
+      if (cSections) {
+        c = x;
+        for (let s = 0; s < cSections.length; s++) c = iecBiquadStep(cSections[s], c);
+        c *= cGain;
+      }
+      const p2 = y * y;
+      fast = fastA * fast + (1 - fastA) * p2;
+      slow = slowA * slow + (1 - slowA) * p2;
+      blockSum += p2;
+      const ax = x < 0 ? -x : x;
+      blockRaw += x * x;
+      if (ax > blockPeak) blockPeak = ax;
+      if (ax >= 0.99) clips++;
+      const ac = c < 0 ? -c : c;
+      if (ac > blockCPeak) blockCPeak = ac;
+      if (ax > blockZPeak) blockZPeak = ax;
+    }
+    engine.fast = fast;
+    engine.slow = slow;
+    return {
+      fastMs: fast,
+      slowMs: slow,
+      blockSumSquares: blockSum,
+      blockRawSumSquares: blockRaw,
+      blockSamples: n,
+      blockPeak,
+      blockCPeak,
+      blockZPeak,
+      clipCount: clips,
+    };
+  }
+
+  function iecAccumulateStats(acc, stats) {
+    if (!acc) {
+      return {
+        fastMs: stats.fastMs,
+        slowMs: stats.slowMs,
+        blockSumSquares: stats.blockSumSquares,
+        blockRawSumSquares: stats.blockRawSumSquares,
+        blockSamples: stats.blockSamples,
+        blockPeak: stats.blockPeak,
+        blockCPeak: stats.blockCPeak || 0,
+        blockZPeak: stats.blockZPeak || 0,
+        clipCount: stats.clipCount,
+      };
+    }
+    acc.fastMs = stats.fastMs;
+    acc.slowMs = stats.slowMs;
+    acc.blockSumSquares += stats.blockSumSquares;
+    acc.blockRawSumSquares += stats.blockRawSumSquares;
+    acc.blockSamples += stats.blockSamples;
+    acc.clipCount += stats.clipCount;
+    if (stats.blockPeak > acc.blockPeak) acc.blockPeak = stats.blockPeak;
+    if ((stats.blockCPeak || 0) > (acc.blockCPeak || 0)) acc.blockCPeak = stats.blockCPeak;
+    if ((stats.blockZPeak || 0) > (acc.blockZPeak || 0)) acc.blockZPeak = stats.blockZPeak;
+    return acc;
+  }
+
+  function dbFromPeakAmplitude(amplitude, splRefDb, calOffsetDb) {
+    if (!Number.isFinite(amplitude) || amplitude <= 1e-12) return 0;
+    const db = 20 * Math.log10(amplitude) + (Number(splRefDb) || 0) + (Number(calOffsetDb) || 0);
+    return Number.isFinite(db) ? db : 0;
+  }
+
+  // Positive mic gain is a reading offset. Boosting the samples clips a full-scale tone.
+  function digitalMicGainLinear(micGainDb) {
+    return 1;
+  }
+
+  function applyMicGainDb(levelDb, micGainDb) {
+    const gain = Number(micGainDb) || 0;
+    return (Number(levelDb) || 0) + gain;
+  }
+
+  // A checked quiet room near 28 dBA is a real reading. Only latch below 22,
+  // where a handset is no longer distinguishable from its own quiet limit.
+  // Exit at 26 so a correct ~28 dBA room never sticks, and the label does not flicker.
+  const PHONE_ABSOLUTE_FLOOR_ENTER_DB = 22;
+  const PHONE_ABSOLUTE_FLOOR_EXIT_DB = 26;
+
+  function createPhoneFloorLatch() {
+    let limited = false;
+    return {
+      update(levelDb, isPhone) {
+        if (!isPhone) {
+          limited = false;
+          return false;
+        }
+        if (!Number.isFinite(levelDb) || levelDb <= 0) return limited;
+        if (!limited && levelDb < PHONE_ABSOLUTE_FLOOR_ENTER_DB) limited = true;
+        else if (limited && levelDb >= PHONE_ABSOLUTE_FLOOR_EXIT_DB) limited = false;
+        return limited;
+      },
+      reset() {
+        limited = false;
+      },
+    };
+  }
+
+  function dbFromMeanSquare(meanSquare, splRefDb, calOffsetDb) {
+    if (!Number.isFinite(meanSquare) || meanSquare <= 1e-20) return 0;
+    const db = 10 * Math.log10(meanSquare) + (Number(splRefDb) || 0) + (Number(calOffsetDb) || 0);
+    return Number.isFinite(db) ? db : 0;
+  }
+
+  function createLevelHistogram(minDb = 0, maxDb = 140, step = 0.1) {
+    const bins = Math.max(1, Math.round((maxDb - minDb) / step));
+    const counts = new Float64Array(bins);
+    let total = 0;
+    let sum = 0;
+    return {
+      add(db) {
+        if (!Number.isFinite(db)) return;
+        const idx = Math.max(0, Math.min(bins - 1, Math.round((db - minDb) / step)));
+        counts[idx] += 1;
+        total += 1;
+        sum += db;
+      },
+      count() {
+        return total;
+      },
+      mean() {
+        return total ? sum / total : 0;
+      },
+      exceedance(percent) {
+        if (!total) return 0;
+        const ascending = 100 - percent;
+        const index = Math.min(total - 1, Math.max(0, Math.ceil((ascending / 100) * total) - 1));
+        let acc = 0;
+        for (let i = 0; i < bins; i++) {
+          acc += counts[i];
+          if (acc > index) return minDb + i * step;
+        }
+        return minDb;
+      },
+      ln(percents) {
+        return percents.reduce((levels, percent) => {
+          levels[`L${percent}`] = this.exceedance(percent);
+          return levels;
+        }, {});
+      },
+      reset() {
+        counts.fill(0);
+        total = 0;
+        sum = 0;
+      },
+    };
+  }
+
+  const SESSION_WARMUP_SECONDS = 1;
+  // Field quiet rooms still showed LCpeak ~74 and Lmax ~50 after the 1 s Leq
+  // exclusion: the start pop lands as the Leq gate opens, and Fast/peak hold
+  // it. Peaks wait one extra second. Leq and Lmin stay on the 1 s gate.
+  const SESSION_PEAK_WARMUP_SECONDS = 2;
+
+  function sessionWarmupSamples(sampleRate) {
+    const fs = Number.isFinite(sampleRate) && sampleRate > 0 ? sampleRate : 48000;
+    return Math.round(fs * SESSION_WARMUP_SECONDS);
+  }
+
+  function sessionPeakWarmupSamples(sampleRate) {
+    const fs = Number.isFinite(sampleRate) && sampleRate > 0 ? sampleRate : 48000;
+    return Math.round(fs * SESSION_PEAK_WARMUP_SECONDS);
+  }
+
+  // Stock offsets shipped with each preset generation. A saved value that
+  // matches one of these is a default and may move. Anything else was typed
+  // by the user and must be kept.
+  const CALIBRATION_STOCK_HISTORY = {
+    'desktop-browser': [-22.5, -16.5, -21],
+    'android-browser': [1, -11],
+    'ios-browser': [7, 12],
+    'tablet-browser': [2],
+    'laptop-internal-mic': [38],
+  };
+
+  function calibrationOffsetsMatch(a, b) {
+    return Number.isFinite(a) && Number.isFinite(b) && Math.abs(a - b) < 0.051;
+  }
+
+  function migrateSavedCalibration(saved, currentPresets, currentBaseline) {
+    const savedObj = saved || {};
+    const presets = currentPresets || {};
+    const requested = savedObj.calibrationPresetKey;
+    const key = presets[requested] ? requested : null;
+    const savedOffset = typeof savedObj.calOffset === 'number' && Number.isFinite(savedObj.calOffset) ? savedObj.calOffset : null;
+    const baseline = savedObj.calibrationBaseline || '';
+    const currentOf = (presetKey) => {
+      const row = presets[presetKey];
+      return row && typeof row.offset === 'number' && Number.isFinite(row.offset) ? row.offset : null;
+    };
+    if (!key) {
+      return {
+        presetKey: null,
+        calOffset: savedOffset,
+        migrated: baseline !== currentBaseline,
+        keepManual: savedOffset != null,
+      };
+    }
+    const next = currentOf(key);
+    if (baseline === currentBaseline) {
+      return {
+        presetKey: key,
+        calOffset: savedOffset == null ? next : savedOffset,
+        migrated: false,
+        keepManual: false,
+      };
+    }
+    const history = (CALIBRATION_STOCK_HISTORY[key] || []).concat(next == null ? [] : [next]);
+    const wasStock = savedOffset == null || history.some((value) => calibrationOffsetsMatch(value, savedOffset));
+    if (wasStock) {
+      return { presetKey: key, calOffset: next, migrated: true, keepManual: false };
+    }
+    return { presetKey: key, calOffset: savedOffset, migrated: true, keepManual: true };
+  }
+
+  function shouldCountInSession(samplesSeen, warmupSamples) {
+    return Number.isFinite(samplesSeen) && Number.isFinite(warmupSamples) && warmupSamples > 0 && samplesSeen >= warmupSamples;
+  }
+
+  function booleanProcessingOff() {
+    return {
+      echoCancellation: false,
+      noiseSuppression: false,
+      autoGainControl: false,
+      voiceIsolation: false,
+      googEchoCancellation: false,
+      googAutoGainControl: false,
+      googNoiseSuppression: false,
+      googHighpassFilter: false,
+      googTypingNoiseDetection: false,
+    };
+  }
+
+  function microphoneConstraintAttempts() {
+    const exactOff = {
+      echoCancellation: { exact: false },
+      noiseSuppression: { exact: false },
+      autoGainControl: { exact: false },
+    };
+    return [
+      { audio: booleanProcessingOff() },
+      { audio: { ...exactOff, voiceIsolation: { exact: false } } },
+      { audio: exactOff },
+      {
+        audio: {
+          echoCancellation: { ideal: false },
+          noiseSuppression: { ideal: false },
+          autoGainControl: { ideal: false },
+        },
+      },
+      { audio: true },
+    ];
+  }
+
+  function rawMicApplyConstraints() {
+    return [
+      booleanProcessingOff(),
+      {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false,
+      },
+    ];
+  }
+
+  function describeMicProcessing(settings) {
+    const s = settings || {};
+    return {
+      autoGainControl: s.autoGainControl === true,
+      noiseSuppression: s.noiseSuppression === true,
+      echoCancellation: s.echoCancellation === true,
+      voiceIsolation: s.voiceIsolation === true,
+      sampleRate: Number.isFinite(s.sampleRate) ? s.sampleRate : null,
+      channelCount: Number.isFinite(s.channelCount) ? s.channelCount : null,
+    };
+  }
+
+  function countEnabledMicProcessing(settings) {
+    const described = describeMicProcessing(settings);
+    return ['autoGainControl', 'noiseSuppression', 'echoCancellation', 'voiceIsolation']
+      .reduce((count, key) => count + (described[key] ? 1 : 0), 0);
+  }
+
+  function buildIecWorkletSource() {
+    return `'use strict';
+${iecEmptyBiquad.toString()}
+${iecBiquadHighpass.toString()}
+${iecBiquadLowpass.toString()}
+${iecHighpass1.toString()}
+${iecPlaceable.toString()}
+${iecHighShelf.toString()}
+${iecHfShelf.toString()}
+${iecBiquadMagnitude.toString()}
+${iecDesignWeighting.toString()}
+${iecBiquadStep.toString()}
+${iecCreateEngine.toString()}
+${iecProcessBlock.toString()}
+${iecAccumulateStats.toString()}
+class IecMeterProcessor extends AudioWorkletProcessor {
+  constructor() {
+    super();
+    this.epoch = 0;
+    this.weighting = 'A';
+    this.engine = iecCreateEngine(sampleRate, 'A');
+    this.pending = 0;
+    this.reportEvery = Math.max(128, Math.round(sampleRate / 20));
+    this.mix = new Float32Array(128);
+    this.acc = null;
+    this.port.onmessage = (event) => {
+      const data = event.data || {};
+      if (data.type === 'configure') {
+        this.epoch = Number(data.epoch) || 0;
+        this.weighting = data.weighting === 'C' || data.weighting === 'Z' ? data.weighting : 'A';
+        this.engine = iecCreateEngine(sampleRate, this.weighting);
+        this.acc = null;
+        this.pending = 0;
+      }
+    };
+  }
+  process(inputs, outputs) {
+    const outCh = outputs[0] && outputs[0][0];
+    if (outCh) outCh.fill(0);
+    const channels = inputs[0];
+    if (!channels || !channels.length || !channels[0] || !channels[0].length) return true;
+    const n = channels[0].length;
+    if (this.mix.length !== n) this.mix = new Float32Array(n);
+    this.mix.set(channels[0]);
+    if (channels.length > 1 && channels[1] && channels[1].length === n) {
+      const other = channels[1];
+      for (let i = 0; i < n; i++) this.mix[i] = (this.mix[i] + other[i]) * 0.5;
+    }
+    const stats = iecProcessBlock(this.engine, this.mix);
+    this.acc = iecAccumulateStats(this.acc, stats);
+    this.pending += n;
+    if (this.pending >= this.reportEvery) {
+      this.pending = 0;
+      const out = this.acc;
+      this.acc = null;
+      out.epoch = this.epoch;
+      this.port.postMessage(out);
+    }
+    return true;
+  }
+}
+registerProcessor('iec-meter-v1', IecMeterProcessor);
+`;
+  }
+
   window.SoundfieldPro = {
     FAST_TIME_CONSTANT_SECONDS,
     SLOW_TIME_CONSTANT_SECONDS,
@@ -168,5 +719,30 @@
     applyAcousticResponseProfile,
     applyMeterBallistics,
     THIRD_OCTAVE_CENTERS,
+    iecDesignWeighting,
+    iecWeightingMagnitudeDb,
+    iecCreateEngine,
+    iecProcessBlock,
+    iecAccumulateStats,
+    dbFromMeanSquare,
+    dbFromPeakAmplitude,
+    digitalMicGainLinear,
+    applyMicGainDb,
+    PHONE_ABSOLUTE_FLOOR_ENTER_DB,
+    PHONE_ABSOLUTE_FLOOR_EXIT_DB,
+    createPhoneFloorLatch,
+    createLevelHistogram,
+    microphoneConstraintAttempts,
+    describeMicProcessing,
+    countEnabledMicProcessing,
+    rawMicApplyConstraints,
+    SESSION_WARMUP_SECONDS,
+    SESSION_PEAK_WARMUP_SECONDS,
+    sessionWarmupSamples,
+    sessionPeakWarmupSamples,
+    shouldCountInSession,
+    CALIBRATION_STOCK_HISTORY,
+    migrateSavedCalibration,
+    buildIecWorkletSource,
   };
 })();
