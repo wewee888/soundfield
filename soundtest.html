@@ -1667,7 +1667,7 @@
   </div>
 
   <!-- Big dB number with integrated Ready pill & Sentry button -->
-  <div class="stitch-meter-card" id="dbStage" data-level="low" role="meter" aria-live="off" aria-valuemin="0" aria-valuemax="120" aria-valuenow="0" aria-valuetext="Not a certified meter" aria-label="Sound level">
+  <div class="stitch-meter-card" id="dbStage" data-level="low" role="meter" aria-live="off" aria-valuemin="0" aria-valuemax="120" aria-valuenow="0" aria-valuetext="Field reference meter" aria-label="Sound level">
     <!-- Background Ambient Glow -->
     <div class="stitch-ambient-glow"></div>
 
@@ -1758,7 +1758,7 @@
         <button type="button" class="stitch-overload-badge" id="overloadBadge" style="display:none;" onclick="showOverloadHelpToast()" title="Microphone clipping detected · signal saturated" aria-label="Overload: microphone signal is clipping">
           <span class="overload-dot" aria-hidden="true"></span> OVERLOAD
         </button>
-        <p class="stitch-kicker notranslate" translate="no">LAF · not certified</p>
+        <p class="stitch-kicker notranslate" translate="no">LAF</p>
         <!-- Peak hold micro-label -->
         <div class="stitch-peak-label notranslate" id="gaugepeakLabel" translate="no" aria-hidden="true"></div>
       </div>
@@ -1772,7 +1772,7 @@
     </div>
     <div class="meter-trust" id="meterTrust" data-trust="standby" role="status" aria-live="polite">
       <span class="meter-trust-dot" aria-hidden="true"></span>
-      <span id="meterTrustText">Not a certified meter</span>
+      <span id="meterTrustText">Field reference meter</span>
     </div>
 
     <!-- Low input signal / laptop mic diagnostic pill -->
@@ -1867,7 +1867,7 @@
   <section class="stitch-telemetry-sec">
     <div class="stitch-telemetry-head">
       <h3 class="stitch-telemetry-title" id="telemetryTitle">Acoustic Metrics (LEQ &amp; LN MATRIX)</h3>
-      <span class="stitch-telemetry-badge" id="telemetryBadge">IEC-style · not certified</span>
+      <span class="stitch-telemetry-badge" id="telemetryBadge">IEC method · field reference</span>
     </div>
     <p class="meter-truepeak notranslate" id="meterTruePeak" translate="no" hidden>LCpeak -- · LZpeak --</p>
     <div class="stitch-matrix-grid">
@@ -3351,7 +3351,7 @@ function setStartButtonText(){
       kicker.innerHTML = '<span class="stitch-kicker-dot"></span> ' + (isZh ? '存证录制中 · SHA-256' : 'REC ACTIVE · SHA-256');
     } else {
       kicker.className = 'stitch-kicker notranslate';
-      kicker.textContent = (typeof levelQuantityLabel==='function'?levelQuantityLabel():'LAF')+' · '+(appLanguage==='zh-CN'?'非认证':'not certified');
+      kicker.textContent = (typeof levelQuantityLabel==='function'?levelQuantityLabel():'LAF');
     }
   }
 
@@ -3603,7 +3603,7 @@ function applyTranslations(){
 
   // Stats Matrix (IEC 61672 SLM Telemetry)
   setText('telemetryTitle', t('telemetry.title', isZh ? '声学统计参量 (LEQ & LN MATRIX)' : 'Acoustic Metrics (LEQ & LN MATRIX)'));
-  setText('telemetryBadge', t('telemetry.badge', isZh ? 'IEC 风格 · 非认证' : 'IEC-style · not certified'));
+  setText('telemetryBadge', t('telemetry.badge', isZh ? 'IEC 算法 · 民用参考' : 'IEC method · field reference'));
 
   setText('telemetryLblLeq', `L${weighting}eq`);
   setText('telemetrySubLeq', t('telemetry.subLeq', isZh ? '等效连续声级' : 'Equivalent Continuous Level'));
@@ -8346,15 +8346,15 @@ function updateLowInputDiagnostic(inst){
 
 /* ── IEC 61672 time-domain meter (worklet, then ScriptProcessor, then FFT) ── */
 var METER_TRUST_TEXT={
-  'en-US':{standby:'Not a certified meter',settle:'Settling — the first second is left out of LAeq and Lmax',ok:'In range',clip:'Clipping — reading is saturated',floor:'Input near digital noise floor',acousticFloor:'May be at or below the device noise floor — not a confirmed room level',agc:'Mic processing on — level may be compressed',agcQuiet:'Mic processing is on — this quiet reading may not be the room',legacy:'Compatibility weighting'},
-  'zh-CN':{standby:'非认证声级计',settle:'稳定中 — 第一秒不计入 LAeq 和 Lmax',ok:'量程内',clip:'削波 — 读数已饱和',floor:'输入接近数字本底噪声',acousticFloor:'可能处于或低于设备本底 — 不能确认是房间声级',agc:'浏览器音频处理开启 — 读数可能被压缩',agcQuiet:'浏览器正在处理麦克风 — 这个安静读数可能不是房间',legacy:'兼容计权'},
-  es:{standby:'No es un sonómetro certificado',ok:'Dentro de rango',clip:'Saturación — lectura recortada',floor:'Entrada cerca del ruido digital',acousticFloor:'Puede estar en el ruido del dispositivo — no es el nivel de la sala',agc:'Procesado del micrófono activo',agcQuiet:'El micrófono está procesado — esta lectura baja puede no ser la sala',legacy:'Ponderación de compatibilidad'},
-  fr:{standby:'Pas un sonomètre certifié',ok:'Dans la plage',clip:'Écrêtage — lecture saturée',floor:'Entrée proche du bruit numérique',acousticFloor:'Peut être le bruit de l’appareil — pas le niveau de la pièce',agc:'Traitement micro actif',agcQuiet:'Traitement micro actif — cette lecture basse peut ne pas être la pièce',legacy:'Pondération de compatibilité'},
-  de:{standby:'Kein geeichtes Messgerät',ok:'Im Messbereich',clip:'Übersteuerung — Anzeige gesättigt',floor:'Eingang nahe am digitalen Rauschen',acousticFloor:'Kann das Geräte-Grundrauschen sein — kein bestätigter Raumpegel',agc:'Mikrofonbearbeitung aktiv',agcQuiet:'Mikrofonbearbeitung an — dieser leise Wert ist evtl. nicht der Raum',legacy:'Kompatibilitätsbewertung'},
-  ja:{standby:'認証済み騒音計ではありません',ok:'測定範囲内',clip:'クリッピング — 飽和',floor:'入力がデジタル雑音付近',acousticFloor:'機器の暗騒音以下の可能性 — 室内レベルとは断定できません',agc:'マイク処理が有効',agcQuiet:'マイク処理中 — この小さな値は部屋の音ではないかもしれません',legacy:'互換ウェイティング'},
-  ko:{standby:'인증된 소음계가 아님',ok:'측정 범위 안',clip:'클리핑 — 포화',floor:'입력이 디지털 잡음 근처',acousticFloor:'기기 잡음 이하일 수 있음 — 확인된 실내 레벨이 아님',agc:'마이크 처리 켜짐',agcQuiet:'마이크 처리 중 — 이 낮은 값은 방의 소리가 아닐 수 있음',legacy:'호환 가중'},
-  vi:{standby:'Không phải máy đo đã chứng nhận',ok:'Trong dải đo',clip:'Cắt đỉnh — số đo bão hòa',floor:'Tín hiệu gần nhiễu số',acousticFloor:'Có thể là nhiễu của máy — chưa phải mức phòng',agc:'Mic đang xử lý tín hiệu',agcQuiet:'Mic đang xử lý — số nhỏ này có thể không phải tiếng phòng',legacy:'Trọng số tương thích'},
-  th:{standby:'ไม่ใช่เครื่องวัดที่ได้รับการรับรอง',ok:'อยู่ในช่วงวัด',clip:'สัญญาณตัดยอด',floor:'สัญญาณเข้าใกล้สัญญาณรบกวนดิจิทัล',acousticFloor:'อาจอยู่ที่หรือต่ำกว่าพื้นเสียงของเครื่อง — ยังไม่ใช่ระดับห้อง',agc:'ไมโครโฟนกำลังประมวลผล',agcQuiet:'ไมโครโฟนกำลังประมวลผล — ค่าที่เบานี้อาจไม่ใช่เสียงห้อง',legacy:'การถ่วงน้ำหนักสำรอง'},
+  'en-US':{standby:'Field reference meter',settle:'Settling — the first second is left out of LAeq and Lmax',ok:'In range',clip:'Clipping — reading is saturated',floor:'Input near digital noise floor',acousticFloor:'May be at or below the device noise floor — not a confirmed room level',agc:'Mic processing on — level may be compressed',agcQuiet:'Mic processing is on — this quiet reading may not be the room',legacy:'Compatibility weighting'},
+  'zh-CN':{standby:'民用声级参考',settle:'稳定中 — 第一秒不计入 LAeq 和 Lmax',ok:'量程内',clip:'削波 — 读数已饱和',floor:'输入接近数字本底噪声',acousticFloor:'可能处于或低于设备本底 — 不能确认是房间声级',agc:'浏览器音频处理开启 — 读数可能被压缩',agcQuiet:'浏览器正在处理麦克风 — 这个安静读数可能不是房间',legacy:'兼容计权'},
+  es:{standby:'Referencia civil',ok:'Dentro de rango',clip:'Saturación — lectura recortada',floor:'Entrada cerca del ruido digital',acousticFloor:'Puede estar en el ruido del dispositivo — no es el nivel de la sala',agc:'Procesado del micrófono activo',agcQuiet:'El micrófono está procesado — esta lectura baja puede no ser la sala',legacy:'Ponderación de compatibilidad'},
+  fr:{standby:'Référence civile',ok:'Dans la plage',clip:'Écrêtage — lecture saturée',floor:'Entrée proche du bruit numérique',acousticFloor:'Peut être le bruit de l’appareil — pas le niveau de la pièce',agc:'Traitement micro actif',agcQuiet:'Traitement micro actif — cette lecture basse peut ne pas être la pièce',legacy:'Pondération de compatibilité'},
+  de:{standby:'Feldreferenz',ok:'Im Messbereich',clip:'Übersteuerung — Anzeige gesättigt',floor:'Eingang nahe am digitalen Rauschen',acousticFloor:'Kann das Geräte-Grundrauschen sein — kein bestätigter Raumpegel',agc:'Mikrofonbearbeitung aktiv',agcQuiet:'Mikrofonbearbeitung an — dieser leise Wert ist evtl. nicht der Raum',legacy:'Kompatibilitätsbewertung'},
+  ja:{standby:'現場用の参考値',ok:'測定範囲内',clip:'クリッピング — 飽和',floor:'入力がデジタル雑音付近',acousticFloor:'機器の暗騒音以下の可能性 — 室内レベルとは断定できません',agc:'マイク処理が有効',agcQuiet:'マイク処理中 — この小さな値は部屋の音ではないかもしれません',legacy:'互換ウェイティング'},
+  ko:{standby:'현장 참고 측정',ok:'측정 범위 안',clip:'클리핑 — 포화',floor:'입력이 디지털 잡음 근처',acousticFloor:'기기 잡음 이하일 수 있음 — 확인된 실내 레벨이 아님',agc:'마이크 처리 켜짐',agcQuiet:'마이크 처리 중 — 이 낮은 값은 방의 소리가 아닐 수 있음',legacy:'호환 가중'},
+  vi:{standby:'Tham chiếu dân sự',ok:'Trong dải đo',clip:'Cắt đỉnh — số đo bão hòa',floor:'Tín hiệu gần nhiễu số',acousticFloor:'Có thể là nhiễu của máy — chưa phải mức phòng',agc:'Mic đang xử lý tín hiệu',agcQuiet:'Mic đang xử lý — số nhỏ này có thể không phải tiếng phòng',legacy:'Trọng số tương thích'},
+  th:{standby:'ค่าอ้างอิงภาคสนาม',ok:'อยู่ในช่วงวัด',clip:'สัญญาณตัดยอด',floor:'สัญญาณเข้าใกล้สัญญาณรบกวนดิจิทัล',acousticFloor:'อาจอยู่ที่หรือต่ำกว่าพื้นเสียงของเครื่อง — ยังไม่ใช่ระดับห้อง',agc:'ไมโครโฟนกำลังประมวลผล',agcQuiet:'ไมโครโฟนกำลังประมวลผล — ค่าที่เบานี้อาจไม่ใช่เสียงห้อง',legacy:'การถ่วงน้ำหนักสำรอง'},
 };
 function levelQuantityLabel(){
   const w=weighting==='C'?'C':weighting==='Z'?'Z':'A';
