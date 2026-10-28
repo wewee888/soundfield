@@ -504,6 +504,31 @@
     };
   }
 
+  const SESSION_WARMUP_SECONDS = 1;
+
+  function sessionWarmupSamples(sampleRate) {
+    const fs = Number.isFinite(sampleRate) && sampleRate > 0 ? sampleRate : 48000;
+    return Math.round(fs * SESSION_WARMUP_SECONDS);
+  }
+
+  function shouldCountInSession(samplesSeen, warmupSamples) {
+    return Number.isFinite(samplesSeen) && Number.isFinite(warmupSamples) && warmupSamples > 0 && samplesSeen >= warmupSamples;
+  }
+
+  function booleanProcessingOff() {
+    return {
+      echoCancellation: false,
+      noiseSuppression: false,
+      autoGainControl: false,
+      voiceIsolation: false,
+      googEchoCancellation: false,
+      googAutoGainControl: false,
+      googNoiseSuppression: false,
+      googHighpassFilter: false,
+      googTypingNoiseDetection: false,
+    };
+  }
+
   function microphoneConstraintAttempts() {
     const exactOff = {
       echoCancellation: { exact: false },
@@ -511,6 +536,7 @@
       autoGainControl: { exact: false },
     };
     return [
+      { audio: booleanProcessingOff() },
       { audio: { ...exactOff, voiceIsolation: { exact: false } } },
       { audio: exactOff },
       {
@@ -524,6 +550,17 @@
     ];
   }
 
+  function rawMicApplyConstraints() {
+    return [
+      booleanProcessingOff(),
+      {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false,
+      },
+    ];
+  }
+
   function describeMicProcessing(settings) {
     const s = settings || {};
     return {
@@ -534,6 +571,12 @@
       sampleRate: Number.isFinite(s.sampleRate) ? s.sampleRate : null,
       channelCount: Number.isFinite(s.channelCount) ? s.channelCount : null,
     };
+  }
+
+  function countEnabledMicProcessing(settings) {
+    const described = describeMicProcessing(settings);
+    return ['autoGainControl', 'noiseSuppression', 'echoCancellation', 'voiceIsolation']
+      .reduce((count, key) => count + (described[key] ? 1 : 0), 0);
   }
 
   function buildIecWorkletSource() {
@@ -631,6 +674,11 @@ registerProcessor('iec-meter-v1', IecMeterProcessor);
     createLevelHistogram,
     microphoneConstraintAttempts,
     describeMicProcessing,
+    countEnabledMicProcessing,
+    rawMicApplyConstraints,
+    SESSION_WARMUP_SECONDS,
+    sessionWarmupSamples,
+    shouldCountInSession,
     buildIecWorkletSource,
   };
 })();

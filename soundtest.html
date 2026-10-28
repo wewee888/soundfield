@@ -2475,11 +2475,11 @@
             </div>
             <div class="sctrl">
               <select class="setting-select" id="calibrationPresetSelect" onchange="setCalibrationPreset(this.value)">
-                <option value="desktop-browser">PC Desktop Browser (-22.5 dB)</option>
+                <option value="desktop-browser">PC Desktop Browser (-16.5 dB)</option>
                 <option value="laptop-internal-mic">Laptop Built-in Mic (+38 dB)</option>
                 <option value="tablet-browser">Tablet Browser (+2.0 dB)</option>
-                <option value="android-browser">Android Browser (+1.0 dB)</option>
-                <option value="ios-browser">iPhone / iPad (+7.0 dB)</option>
+                <option value="android-browser">Android Browser (-11.0 dB)</option>
+                <option value="ios-browser">iPhone / iPad (+12.0 dB)</option>
               </select>
               <button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="setCalibrationPreset(detectCalibrationPresetKey())">Apply Device Baseline</button>
             </div>
@@ -2806,7 +2806,7 @@
 <script src="/assets/utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/i18n-data.js?v=20261003e" data-cfasync="false"></script>
 <script src="/assets/lang-flags.js?v=20261003e" data-cfasync="false"></script>
-<script src="/assets/pro-meter.js?v=20261028c" data-cfasync="false"></script>
+<script src="/assets/pro-meter.js?v=20261028d" data-cfasync="false"></script>
 <script src="/assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/report-cert-engine.js?v=20261009a" data-cfasync="false"></script>
@@ -2832,11 +2832,11 @@ const MEDIA_STORE='clips';
 const PERMISSION_GUIDE_KEY='sf_permission_guide_v1';
 const CALIBRATION_PRESETS={
   'desktop-browser':{
-    offset:-22.5,
+    offset:-16.5,
     label:'PC / Desktop Browser (External Mic / USB)',
     zh:'PC 桌面浏览器（外置麦克风 / 独立声卡）',
-    reason:'Mid-level baseline against reference meters (-22.5 dB). A quiet room can still sit on the device floor.',
-    zhReason:'中等声级校对基准（-22.5 dB）。安静房间的读数仍可能停在设备本底上。',
+    reason:'Quiet-room field baseline (-16.5 dB). Same room read 23.6 dBA on the new engine; target about 28-31 dBA.',
+    zhReason:'安静房间现场基准（-16.5 dB）。新引擎在同一房间读到 23.6 dBA，目标约 28-31 dBA。',
   },
   'laptop-internal-mic':{
     offset:38,
@@ -2853,18 +2853,18 @@ const CALIBRATION_PRESETS={
     zhReason:'已预置专业噪声计校对基准（+2.0 dB 偏移，针对平板机身开孔与拾音距离微调补偿）。',
   },
   'android-browser':{
-    offset:1.0,
+    offset:-11.0,
     label:'Android Browser',
     zh:'Android 手机浏览器',
-    reason:'Mid-level baseline against reference meters (+1.0 dB). Quiet-room readings are often the handset floor, not the room.',
-    zhReason:'中等声级校对基准（+1.0 dB）。安静房间的读数经常是手机本底，而不是房间本身。',
+    reason:'Quiet-room field baseline (-11.0 dB). Steady LAF was 43 dBA where the room is about 28-31 dBA. Loud levels still need a reference check.',
+    zhReason:'安静房间现场基准（-11.0 dB）。稳态 LAF 为 43 dBA，房间约 28-31 dBA。较大声级仍需对照参考表。',
   },
   'ios-browser':{
-    offset:7.0,
+    offset:12.0,
     label:'iPhone / iPad Safari (iOS)',
     zh:'iPhone / iPad (iOS)',
-    reason:'Mid-level baseline against reference meters (+7.0 dB). It does not anchor a quiet-room floor.',
-    zhReason:'中等声级校对基准（+7.0 dB）。它不表示安静房间的本底已经对准。',
+    reason:'Quiet-room field baseline (+12.0 dB). Live steady level was 24.6 dBA where the room is about 28-31 dBA.',
+    zhReason:'安静房间现场基准（+12.0 dB）。线上稳态读数为 24.6 dBA，房间约 28-31 dBA。',
   },
 };
 function getPresetLabel(preset){
@@ -2880,7 +2880,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v9';
+const CALIBRATION_BASELINE='device-preset-v10';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -2902,7 +2902,7 @@ let sessStart,recStart,recTmr,monTmr,curDb=0,tickN=0,lastTick=0,lastAnalysisAt=0
 let leqEnergy=0,leqTime=0;
 let meterPath='fft';
 let iecNode=null,iecScript=null,iecSink=null,iecScriptEngine=null;
-let iecEpoch=0,iecLatest=null,iecLeqSumSquares=0,iecLeqSamples=0,meterWarmSamples=0;
+let iecEpoch=0,iecLatest=null,iecLeqSumSquares=0,iecLeqSamples=0,iecSeenSamples=0,meterWarmSamples=0;
 let levelHist=null,lastLnSampleAt=0,lastTrustKey='';
 let fastMax=-Infinity,slowMax=-Infinity,fastMin=Infinity,slowMin=Infinity;
 let lcPeakLin=0,lzPeakLin=0;
@@ -8021,8 +8021,29 @@ function withTimeout(factory, ms){
 async function requestMicrophoneStream(){
   // DO NOT force channelCount: 1 on Windows / multi-mic arrays; WASAPI raw exclusive mono often outputs 0s without error.
   // Web Audio's MediaStreamSource and AnalyserNode natively downmix multi-channel audio to mono with full fidelity.
-  // Try exact:false first (Chrome/Android will actually disable AGC). iOS often rejects exact and falls through.
+  // Windows Chrome often ignores {exact:false} but still opens the stream with processing left on.
+  // Try boolean false plus legacy goog* flags, keep the stream whose getSettings reports the least processing.
   // Explicitly request ideal:false for echoCancellation, noiseSuppression, autoGainControl across all OS (including iOS 15+)
+  let bestStream=null;
+  let bestScore=99;
+  const stopStream=(stream)=>{try{stream?.getTracks?.().forEach(t=>t.stop());}catch(_){}};
+  const adoptStream=async (stream)=>{
+    const track=stream.getAudioTracks?.()[0];
+    const applyList=window.SoundfieldPro?.rawMicApplyConstraints?.()||[];
+    for(const constraints of applyList){
+      try{await track?.applyConstraints(constraints);}catch(_){break;}
+    }
+    const settings=track?.getSettings?.()||{};
+    const score=window.SoundfieldPro?.countEnabledMicProcessing?window.SoundfieldPro.countEnabledMicProcessing(settings):99;
+    if(score<bestScore){
+      stopStream(bestStream);
+      bestStream=stream;
+      bestScore=score;
+    }else{
+      stopStream(stream);
+    }
+    return score;
+  };
   const attempts=(window.SoundfieldPro&&window.SoundfieldPro.microphoneConstraintAttempts)?window.SoundfieldPro.microphoneConstraintAttempts():[];
   for(const constraints of attempts){
     const audio=constraints&&constraints.audio;
@@ -8030,7 +8051,9 @@ async function requestMicrophoneStream(){
     const isBare=audio===true;
     if(isIdeal||isBare)continue;
     try{
-      return await withTimeout(()=>navigator.mediaDevices.getUserMedia(constraints), 2500);
+      const stream=await withTimeout(()=>navigator.mediaDevices.getUserMedia(constraints), 2500);
+      const score=await adoptStream(stream);
+      if(score===0)return bestStream;
     }catch(err){
       if(['NotAllowedError','NotFoundError','SecurityError'].includes(err?.name))throw err;
     }
@@ -8043,8 +8066,11 @@ async function requestMicrophoneStream(){
     }
   };
   try{
-    return await withTimeout(()=>navigator.mediaDevices.getUserMedia(professionalConstraints), 2500);
+    const stream=await withTimeout(()=>navigator.mediaDevices.getUserMedia(professionalConstraints), 2500);
+    const score=await adoptStream(stream);
+    if(score===0||bestStream)return bestStream;
   }catch(err){
+    if(bestStream&&!['NotAllowedError','NotFoundError','SecurityError'].includes(err?.name))return bestStream;
     if(['NotAllowedError','NotFoundError','NotReadableError','SecurityError','AbortError'].includes(err?.name)){
       if(err?.name==='NotReadableError'||err?.name==='AbortError'||err?.name==='TimeoutError'){
         try{
@@ -8057,6 +8083,8 @@ async function requestMicrophoneStream(){
     showCapTemporarily('warn',appLanguage!=='zh-CN'?'Retrying microphone':'正在改用兼容模式',explainMediaError(err),'RETRY',5000);
     return withTimeout(()=>navigator.mediaDevices.getUserMedia({audio:true}), 4000);
   }
+  if(bestStream)return bestStream;
+  return withTimeout(()=>navigator.mediaDevices.getUserMedia({audio:true}), 4000);
 }
 
 function primeAudioContext(ctx){
@@ -8318,8 +8346,8 @@ function updateLowInputDiagnostic(inst){
 
 /* ── IEC 61672 time-domain meter (worklet, then ScriptProcessor, then FFT) ── */
 var METER_TRUST_TEXT={
-  'en-US':{standby:'Not a certified meter',ok:'In range',clip:'Clipping — reading is saturated',floor:'Input near digital noise floor',acousticFloor:'May be at or below the device noise floor — not a confirmed room level',agc:'Mic processing on — level may be compressed',agcQuiet:'Mic processing is on — this quiet reading may not be the room',legacy:'Compatibility weighting'},
-  'zh-CN':{standby:'非认证声级计',ok:'量程内',clip:'削波 — 读数已饱和',floor:'输入接近数字本底噪声',acousticFloor:'可能处于或低于设备本底 — 不能确认是房间声级',agc:'浏览器音频处理开启 — 读数可能被压缩',agcQuiet:'浏览器正在处理麦克风 — 这个安静读数可能不是房间',legacy:'兼容计权'},
+  'en-US':{standby:'Not a certified meter',settle:'Settling — the first second is left out of LAeq and Lmax',ok:'In range',clip:'Clipping — reading is saturated',floor:'Input near digital noise floor',acousticFloor:'May be at or below the device noise floor — not a confirmed room level',agc:'Mic processing on — level may be compressed',agcQuiet:'Mic processing is on — this quiet reading may not be the room',legacy:'Compatibility weighting'},
+  'zh-CN':{standby:'非认证声级计',settle:'稳定中 — 第一秒不计入 LAeq 和 Lmax',ok:'量程内',clip:'削波 — 读数已饱和',floor:'输入接近数字本底噪声',acousticFloor:'可能处于或低于设备本底 — 不能确认是房间声级',agc:'浏览器音频处理开启 — 读数可能被压缩',agcQuiet:'浏览器正在处理麦克风 — 这个安静读数可能不是房间',legacy:'兼容计权'},
   es:{standby:'No es un sonómetro certificado',ok:'Dentro de rango',clip:'Saturación — lectura recortada',floor:'Entrada cerca del ruido digital',acousticFloor:'Puede estar en el ruido del dispositivo — no es el nivel de la sala',agc:'Procesado del micrófono activo',agcQuiet:'El micrófono está procesado — esta lectura baja puede no ser la sala',legacy:'Ponderación de compatibilidad'},
   fr:{standby:'Pas un sonomètre certifié',ok:'Dans la plage',clip:'Écrêtage — lecture saturée',floor:'Entrée proche du bruit numérique',acousticFloor:'Peut être le bruit de l’appareil — pas le niveau de la pièce',agc:'Traitement micro actif',agcQuiet:'Traitement micro actif — cette lecture basse peut ne pas être la pièce',legacy:'Pondération de compatibilité'},
   de:{standby:'Kein geeichtes Messgerät',ok:'Im Messbereich',clip:'Übersteuerung — Anzeige gesättigt',floor:'Eingang nahe am digitalen Rauschen',acousticFloor:'Kann das Geräte-Grundrauschen sein — kein bestätigter Raumpegel',agc:'Mikrofonbearbeitung aktiv',agcQuiet:'Mikrofonbearbeitung an — dieser leise Wert ist evtl. nicht der Raum',legacy:'Kompatibilitätsbewertung'},
@@ -8342,8 +8370,8 @@ function resetMeasurementIntegrators(){
   peak=0;mn=999;dbH=[];trendH=[];
   leqEnergy=0;leqTime=0;
   fastMax=-Infinity;slowMax=-Infinity;fastMin=Infinity;slowMin=Infinity;
-  iecLeqSumSquares=0;iecLeqSamples=0;
-  meterWarmSamples=Math.round(((audioCtx&&audioCtx.sampleRate)||48000)*0.2);
+  iecLeqSumSquares=0;iecLeqSamples=0;iecSeenSamples=0;
+  meterWarmSamples=window.SoundfieldPro?.sessionWarmupSamples?window.SoundfieldPro.sessionWarmupSamples(audioCtx&&audioCtx.sampleRate):Math.round(((audioCtx&&audioCtx.sampleRate)||48000)*1);
   if(levelHist&&levelHist.reset)levelHist.reset();
   else if(window.SoundfieldPro?.createLevelHistogram)levelHist=window.SoundfieldPro.createLevelHistogram();
   lastLnSampleAt=0;
@@ -8355,8 +8383,8 @@ function syncDisplayedExtremes(){
   if(meterPath==='fft')return;
   const maxRaw=timeWeight==='S'?slowMax:fastMax;
   const minRaw=timeWeight==='S'?slowMin:fastMin;
-  peak=Number.isFinite(maxRaw)?maxRaw+calOffset:0;
-  mn=Number.isFinite(minRaw)?minRaw+calOffset:999;
+  peak=Number.isFinite(maxRaw)?maxRaw+calOffset+micGainDb:0;
+  mn=Number.isFinite(minRaw)?minRaw+calOffset+micGainDb:999;
 }
 function reconfigureIecWeighting(){
   iecEpoch++;
@@ -8366,15 +8394,21 @@ function reconfigureIecWeighting(){
     iecScriptEngine=window.SoundfieldPro.iecCreateEngine(audioCtx.sampleRate,weighting);
   }
 }
+function meterSettled(){
+  if(!isMon)return false;
+  if(meterPath!=='fft')return window.SoundfieldPro?.shouldCountInSession?window.SoundfieldPro.shouldCountInSession(iecSeenSamples,meterWarmSamples):(meterWarmSamples>0&&iecSeenSamples>=meterWarmSamples);
+  return !!(sessStart&&Date.now()-sessStart.getTime()>=1000);
+}
 function ingestIecStats(stats){
   if(!stats||stats.epoch!==iecEpoch||!stats.blockSamples)return;
   iecLatest=stats;
+  iecSeenSamples+=stats.blockSamples;
+  if(!meterSettled())return;
   iecLeqSumSquares+=stats.blockSumSquares;
   iecLeqSamples+=stats.blockSamples;
   if(stats.clipCount>0){
     overloadActiveUntil = performance.now() + 1800;
   }
-  if(iecLeqSamples<meterWarmSamples)return;
   const fastRaw=uncalDb(stats.fastMs);
   const slowRaw=uncalDb(stats.slowMs);
   if(fastRaw!=null){if(fastRaw>fastMax)fastMax=fastRaw;if(fastRaw<fastMin)fastMin=fastRaw;}
@@ -8494,6 +8528,7 @@ function meterTrustKey(){
   const processing=!!(micProcessing.autoGainControl||micProcessing.noiseSuppression||micProcessing.echoCancellation||micProcessing.voiceIsolation);
   const limited=floorLimitedNow();
   if(processing)return limited?'agcQuiet':'agc';
+  if(isMon&&!meterSettled())return 'settle';
   if(limited)return 'acousticFloor';
   if(meterPath==='fft')return 'legacy';
   if(iecLatest&&iecLatest.blockSamples){
@@ -8594,7 +8629,7 @@ function tick(){
     const blockRaw=uncalDb(iecLatest.blockSumSquares/iecLatest.blockSamples);
     maybeCaptureImpulseEvent(calDb(blockRaw),now);
     updateLowInputDiagnostic(inst);
-    noteLevelSample(inst,now);
+    if(meterSettled())noteLevelSample(inst,now);
   }else{
     inst=instantDb();
     if(inst<=0){
@@ -8610,9 +8645,11 @@ function tick(){
     maybeCaptureImpulseEvent(inst,now);
     curDb=applyMeterBallistics(inst,curDb,dt);
     updateLowInputDiagnostic(inst);
-    if(inst>peak)peak=inst;if(inst>0&&inst<mn)mn=inst;
-    if(inst>0&&Number.isFinite(inst)){leqEnergy+=Math.pow(10,inst/10)*dt;leqTime+=dt;}
-    noteLevelSample(inst,now);
+    if(meterSettled()){
+      if(inst>peak)peak=inst;if(inst>0&&inst<mn)mn=inst;
+      if(inst>0&&Number.isFinite(inst)){leqEnergy+=Math.pow(10,inst/10)*dt;leqTime+=dt;}
+      noteLevelSample(inst,now);
+    }
   }
   const metrics=sessionMetrics();
   const avg=metrics.avg;
@@ -8634,9 +8671,9 @@ function tick(){
   const pct=Math.min(100,(curDb/120)*100);
   document.getElementById('meterFill').style.width=pct+'%';
   document.getElementById('meterFill').style.background=dbCol(curDb);
-  document.getElementById('sLeq').innerHTML=`${fmtDb(leq)}<span class="u notranslate" translate="no"> dB</span>`;
-  document.getElementById('sPeak').innerHTML=`${fmtDb(peak)}<span class="u notranslate" translate="no"> dB</span>`;
-  document.getElementById('sMin').innerHTML=`${fmtDb(mn===999?0:mn)}<span class="u notranslate" translate="no"> dB</span>`;
+  document.getElementById('sLeq').innerHTML=`${fmtDb(meterSettled()?leq:0)}<span class="u notranslate" translate="no"> dB</span>`;
+  document.getElementById('sPeak').innerHTML=`${fmtDb(meterSettled()?peak:0)}<span class="u notranslate" translate="no"> dB</span>`;
+  document.getElementById('sMin').innerHTML=`${fmtDb(meterSettled()?(mn===999?0:mn):0)}<span class="u notranslate" translate="no"> dB</span>`;
   document.getElementById('sAvg').innerHTML=`${fmtDb(avg)}<span class="u notranslate" translate="no"> dB</span>`;
   if(now-lastOverlayAt>=throttle.overlayInterval){
     updateCameraOverlay({avg,min:mn===999?0:mn});
@@ -9648,7 +9685,7 @@ function captureCurrentSessionSnapshot() {
       offsetDb: (typeof calOffset !== 'undefined' ? calOffset : 0),
       micGainDb: (typeof micGainDb !== 'undefined' ? micGainDb : 2),
       errorRange: (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : 1.2),
-      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v9')
+      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v10')
     }
   };
 }

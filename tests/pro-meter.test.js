@@ -231,17 +231,27 @@ test('worklet reports accumulate every render quantum into one Leq block', () =>
   assert.equal(acc.clipCount, a.clipCount + b.clipCount);
 });
 
-test('microphone constraint attempts prefer exact processing-off then relax', () => {
+test('microphone opens with processing off, including legacy Chrome flags', () => {
   const attempts = meter.microphoneConstraintAttempts();
-  assert.equal(attempts[0].audio.autoGainControl.exact, false);
-  assert.equal(attempts[0].audio.voiceIsolation.exact, false);
-  assert.equal(attempts[2].audio.echoCancellation.ideal, false);
-  assert.equal(attempts[3].audio, true);
-  const described = meter.describeMicProcessing({ autoGainControl: true, noiseSuppression: false, sampleRate: 48000 });
-  assert.equal(described.autoGainControl, true);
-  assert.equal(described.noiseSuppression, false);
-  assert.equal(described.echoCancellation, false);
-  assert.equal(described.sampleRate, 48000);
+  assert.equal(attempts[0].audio.autoGainControl, false);
+  assert.equal(attempts[0].audio.googAutoGainControl, false);
+  assert.equal(attempts[0].audio.echoCancellation, false);
+  const exact = attempts.find((attempt) => attempt.audio && attempt.audio.voiceIsolation && attempt.audio.voiceIsolation.exact === false);
+  assert.ok(exact);
+  const ideal = attempts.find((attempt) => attempt.audio && attempt.audio.echoCancellation && attempt.audio.echoCancellation.ideal === false);
+  assert.ok(ideal);
+  assert.equal(attempts[attempts.length - 1].audio, true);
+  assert.equal(meter.countEnabledMicProcessing({ autoGainControl: true, echoCancellation: true, noiseSuppression: false }), 2);
+  assert.equal(meter.countEnabledMicProcessing({ autoGainControl: false, echoCancellation: false }), 0);
+  assert.equal(meter.rawMicApplyConstraints()[0].googNoiseSuppression, false);
+});
+
+test('the first second of a session is excluded from Leq and Lmax', () => {
+  const warm = meter.sessionWarmupSamples(48000);
+  assert.equal(warm, 48000);
+  assert.equal(meter.shouldCountInSession(warm - 1, warm), false);
+  assert.equal(meter.shouldCountInSession(warm, warm), true);
+  assert.equal(meter.SESSION_WARMUP_SECONDS, 1);
 });
 
 test('IEC worklet source parses and names the processor', () => {
