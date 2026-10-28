@@ -1361,6 +1361,51 @@ canvas.vcvs{height:132px!important;min-height:132px!important;max-height:132px!i
   animation: pulse-overload 1.2s infinite alternate;
   cursor: pointer;
   user-select: none;
+  pointer-events: auto;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.meter-trust{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin-top:6px;
+  min-height:18px;
+  font-family:var(--mono,monospace);
+  font-size:11px;
+  line-height:1.3;
+  color:#cbd5e1;
+  letter-spacing:.01em;
+}
+.meter-trust-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#64748b;
+  flex-shrink:0;
+}
+.meter-trust[data-trust="ok"] .meter-trust-dot{background:#34d399;box-shadow:0 0 6px #34d399}
+.meter-trust[data-trust="clip"]{color:#fecaca}
+.meter-trust[data-trust="clip"] .meter-trust-dot{background:#ef4444;box-shadow:0 0 6px #ef4444}
+.meter-trust[data-trust="floor"],
+.meter-trust[data-trust="agc"],
+.meter-trust[data-trust="legacy"]{color:#fcd34d}
+.meter-trust[data-trust="floor"] .meter-trust-dot,
+.meter-trust[data-trust="agc"] .meter-trust-dot,
+.meter-trust[data-trust="legacy"] .meter-trust-dot{background:#f59e0b;box-shadow:0 0 6px #f59e0b}
+@media (max-width: 480px){
+  .stitch-db-num{font-size:clamp(52px, 15vw, 64px)}
+  .stitch-db-dec{font-size:clamp(22px, 6vw, 28px)}
+  .stitch-matrix-lbl{font-size:11px}
+  .stitch-matrix-sub{font-size:10px}
+}
+@media (prefers-reduced-motion: reduce){
+  .stitch-ping-dot,
+  .stitch-overload-badge,
+  .stitch-rec-blink{animation:none !important}
+  .stitch-trace-arc{transition:none}
 }
 .stitch-overload-badge .overload-dot {
   width: 6px;

@@ -40,7 +40,7 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-<link rel="stylesheet" href="/assets/soundtest.css?v=20261011b">
+<link rel="stylesheet" href="/assets/soundtest.css?v=20261028a">
 <link rel="stylesheet" href="/assets/legal-notice.css?v=20261011">
 <script src="/assets/legal-notice.js?v=20261011" defer></script>
 <style>
@@ -1667,7 +1667,7 @@
   </div>
 
   <!-- Big dB number with integrated Ready pill & Sentry button -->
-  <div class="stitch-meter-card" id="dbStage" data-level="low">
+  <div class="stitch-meter-card" id="dbStage" data-level="low" role="meter" aria-live="off" aria-valuemin="0" aria-valuemax="120" aria-valuenow="0" aria-valuetext="Not a certified meter" aria-label="Sound level">
     <!-- Background Ambient Glow -->
     <div class="stitch-ambient-glow"></div>
 
@@ -1755,10 +1755,10 @@
         <!-- Noise Severity Badge -->
         <div class="stitch-severity-badge db-level-main lv-q" id="dbLevelMain">Quiet</div>
         <!-- Hardware Overload / Clipping Warning Badge -->
-        <div class="stitch-overload-badge" id="overloadBadge" style="display:none;" onclick="showOverloadHelpToast()" title="Microphone hardware clipping detected · Signal saturated">
-          <span class="overload-dot"></span> OVERLOAD
-        </div>
-        <p class="stitch-kicker notranslate" translate="no">RMS SPL REAL-TIME</p>
+        <button type="button" class="stitch-overload-badge" id="overloadBadge" style="display:none;" onclick="showOverloadHelpToast()" title="Microphone clipping detected · signal saturated" aria-label="Overload: microphone signal is clipping">
+          <span class="overload-dot" aria-hidden="true"></span> OVERLOAD
+        </button>
+        <p class="stitch-kicker notranslate" translate="no">LAF · not certified</p>
         <!-- Peak hold micro-label -->
         <div class="stitch-peak-label notranslate" id="gaugepeakLabel" translate="no" aria-hidden="true"></div>
       </div>
@@ -1769,6 +1769,10 @@
       <span id="scale30">30 <span class="sub" id="scaleSub30">Quiet</span></span>
       <span class="mid" id="scale60">60 <span class="sub" id="scaleSub60">Urban</span></span>
       <span class="dang" id="scale120">120 <span class="sub" id="scaleSub120">Danger</span></span>
+    </div>
+    <div class="meter-trust" id="meterTrust" data-trust="standby" role="status" aria-live="polite">
+      <span class="meter-trust-dot" aria-hidden="true"></span>
+      <span id="meterTrustText">Not a certified meter</span>
     </div>
 
     <!-- Low input signal / laptop mic diagnostic pill -->
@@ -1863,7 +1867,7 @@
   <section class="stitch-telemetry-sec">
     <div class="stitch-telemetry-head">
       <h3 class="stitch-telemetry-title" id="telemetryTitle">Acoustic Metrics (LEQ &amp; LN MATRIX)</h3>
-      <span class="stitch-telemetry-badge" id="telemetryBadge">IEC 61672-1 Calibrated</span>
+      <span class="stitch-telemetry-badge" id="telemetryBadge">IEC-style · not certified</span>
     </div>
     <div class="stitch-matrix-grid">
       <!-- Card 1: LAeq -->
@@ -1881,25 +1885,25 @@
       <!-- Card 2: Peak -->
       <div class="stitch-matrix-card">
         <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl" id="telemetryLblPeak">Peak SPL</span>
+          <span class="stitch-matrix-lbl" id="telemetryLblPeak">Lmax</span>
           <span class="stitch-metric-dot bg-rose"></span>
         </div>
         <div class="stitch-matrix-val-wrap">
           <span class="stitch-matrix-val color-rose notranslate" translate="no" id="sPeak">--<span class="u notranslate" translate="no"> dB</span></span>
         </div>
-        <span class="stitch-matrix-sub" id="telemetrySubPeak">Max Impulse / Peak</span>
+        <span class="stitch-matrix-sub" id="telemetrySubPeak">Time-weighted maximum</span>
       </div>
 
       <!-- Card 3: Min -->
       <div class="stitch-matrix-card">
         <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl" id="telemetryLblMin">Min SPL</span>
+          <span class="stitch-matrix-lbl" id="telemetryLblMin">Lmin</span>
           <span class="stitch-metric-dot bg-emerald"></span>
         </div>
         <div class="stitch-matrix-val-wrap">
           <span class="stitch-matrix-val color-emerald notranslate" translate="no" id="sMin">--<span class="u notranslate" translate="no"> dB</span></span>
         </div>
-        <span class="stitch-matrix-sub" id="telemetrySubMin">Noise Floor Baseline</span>
+        <span class="stitch-matrix-sub" id="telemetrySubMin">Time-weighted minimum</span>
       </div>
 
       <!-- Card 4: L10 -->
@@ -2801,7 +2805,7 @@
 <script src="/assets/utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/i18n-data.js?v=20261003e" data-cfasync="false"></script>
 <script src="/assets/lang-flags.js?v=20261003e" data-cfasync="false"></script>
-<script src="/assets/pro-meter.js?v=20260823b" data-cfasync="false"></script>
+<script src="/assets/pro-meter.js?v=20261028b" data-cfasync="false"></script>
 <script src="/assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/report-cert-engine.js?v=20261009a" data-cfasync="false"></script>
@@ -2895,6 +2899,12 @@ try{if(sessionStorage.getItem('sf_mic_granted')==='1'){micPermissionGranted=true
 let animId,peak=0,mn=999,dbH=[],trendH=[],wBuf,fBuf;
 let sessStart,recStart,recTmr,monTmr,curDb=0,tickN=0,lastTick=0,lastAnalysisAt=0,lastVisualAt=0,lastOverlayAt=0;
 let leqEnergy=0,leqTime=0;
+let meterPath='fft';
+let iecNode=null,iecScript=null,iecSink=null,iecScriptEngine=null;
+let iecEpoch=0,iecLatest=null,iecLeqSumSquares=0,iecLeqSamples=0,meterWarmSamples=0;
+let levelHist=null,lastLnSampleAt=0,lastTrustKey='';
+let fastMax=-Infinity,slowMax=-Infinity,fastMin=Infinity,slowMin=Infinity;
+let micProcessing={autoGainControl:false,noiseSuppression:false,echoCancellation:false,voiceIsolation:false};
 let curLoc=null,chunks=[],recHasVideo=false;
 let noiseEvents=[],longMonitorNoiseEvents=noiseEvents,lastImpulseEventAt=0,longMonitorPlan={autoStopMinutes:0,eventThresholdDb:75};
 let capHideTmr=null;
@@ -3338,7 +3348,7 @@ function setStartButtonText(){
       kicker.innerHTML = '<span class="stitch-kicker-dot"></span> ' + (isZh ? '存证录制中 · SHA-256' : 'REC ACTIVE · SHA-256');
     } else {
       kicker.className = 'stitch-kicker notranslate';
-      kicker.textContent = 'RMS SPL REAL-TIME';
+      kicker.textContent = (typeof levelQuantityLabel==='function'?levelQuantityLabel():'LAF')+' · '+(appLanguage==='zh-CN'?'非认证':'not certified');
     }
   }
 
@@ -3347,6 +3357,7 @@ function setStartButtonText(){
   const smhTxt = document.getElementById('smhStatusTxt');
   const smhBtn = document.getElementById('smhActionBtn');
   const smhBtnTxt = document.getElementById('smhActionText');
+  if(typeof renderMeterTrust==='function')renderMeterTrust();
   if(smhBadge && smhTxt && smhBtn && smhBtnTxt){
     if(isRec){
       smhBadge.className = 'smh-status-badge rec';
@@ -3589,16 +3600,16 @@ function applyTranslations(){
 
   // Stats Matrix (IEC 61672 SLM Telemetry)
   setText('telemetryTitle', t('telemetry.title', isZh ? '声学统计参量 (LEQ & LN MATRIX)' : 'Acoustic Metrics (LEQ & LN MATRIX)'));
-  setText('telemetryBadge', t('telemetry.badge', isZh ? 'IEC 61672-1 标定' : 'IEC 61672-1 Calibrated'));
+  setText('telemetryBadge', t('telemetry.badge', isZh ? 'IEC 风格 · 非认证' : 'IEC-style · not certified'));
 
-  setText('telemetryLblLeq', 'LAeq');
+  setText('telemetryLblLeq', `L${weighting}eq`);
   setText('telemetrySubLeq', t('telemetry.subLeq', isZh ? '等效连续声级' : 'Equivalent Continuous Level'));
 
-  setText('telemetryLblPeak', t('telemetry.lblPeak', isZh ? '峰值 Peak' : 'Peak SPL'));
-  setText('telemetrySubPeak', t('telemetry.subPeak', isZh ? '最大脉冲冲击' : 'Max Impulse / Peak'));
+  setText('telemetryLblPeak', t('telemetry.lblPeak', isZh ? 'Lmax 最大' : 'Lmax'));
+  setText('telemetrySubPeak', t('telemetry.subPeak', isZh ? '时间计权最大值' : 'Time-weighted maximum'));
 
-  setText('telemetryLblMin', t('telemetry.lblMin', isZh ? '最小 Min' : 'Min SPL'));
-  setText('telemetrySubMin', t('telemetry.subMin', isZh ? '本底底噪基线' : 'Noise Floor Baseline'));
+  setText('telemetryLblMin', t('telemetry.lblMin', isZh ? 'Lmin 最小' : 'Lmin'));
+  setText('telemetrySubMin', t('telemetry.subMin', isZh ? '时间计权最小值' : 'Time-weighted minimum'));
 
   setText('telemetryLblL10', t('telemetry.lblL10', isZh ? 'L10 峰值态' : 'L10 Peak'));
   setText('telemetrySubL10', t('telemetry.subL10', isZh ? '偶发高噪声级' : 'Infrequent Loud Events'));
@@ -7340,16 +7351,27 @@ function updateWeightUi(){
   }
   const timeEl=document.querySelector('.stitch-cal-time');
   if(timeEl) timeEl.textContent=timeWeight==='S'?'1s':'125ms';
+  const leqLbl=document.getElementById('telemetryLblLeq');
+  if(leqLbl)leqLbl.textContent=`L${weighting}eq`;
+  if(typeof renderMeterTrust==='function')renderMeterTrust();
 }
 
 function setWeight(w){
-  weighting=['A','C','Z'].includes(w)?w:'A';
+  const next=['A','C','Z'].includes(w)?w:'A';
+  const changed=next!==weighting;
+  weighting=next;
   syncSeg('weightSeg','data-weight',weighting);
   ['wtA','wtC','wtZ'].forEach(id=>{
     const b=document.getElementById(id);
     if(b)b.classList.toggle('active',id==='wt'+weighting);
   });
   updateWeightUi();saveState();
+  if(changed&&isMon&&typeof resetMeasurementIntegrators==='function'){
+    resetMeasurementIntegrators();
+    reconfigureIecWeighting();
+    const isZh=typeof appLanguage==='string'&&appLanguage.startsWith('zh');
+    toast(isZh?'计权已更改，等效声级已重新开始。':'Weighting changed. Leq and statistics restarted.','info',2800);
+  }
 }
 function setWeighting(w){ return setWeight(w); }
 window.setWeighting = setWeight;
@@ -7360,6 +7382,7 @@ function setTimeWeight(w){
   const twF=document.getElementById('twF'), twS=document.getElementById('twS');
   if(twF)twF.classList.toggle('active',timeWeight==='F');
   if(twS)twS.classList.toggle('active',timeWeight==='S');
+  if(typeof syncDisplayedExtremes==='function')syncDisplayedExtremes();
   updateWeightUi();saveState();
 }
 
@@ -7961,10 +7984,50 @@ function openRecordInMap(id, provider) { return (window.SoundTestGeo||{}).openRe
 function openLatestLocationMap() { return (window.SoundTestGeo||{}).openLatestLocationMap?.(); }
 function exportMapImage() { return (window.SoundTestGeo||{}).exportMapImage?.(); }
 function drawMap() { return (window.SoundTestGeo||{}).drawMap?.(); }
+function withTimeout(factory, ms){
+  let settled=false;
+  const promise=Promise.resolve().then(factory);
+  return new Promise((resolve, reject)=>{
+    const timer=setTimeout(()=>{
+      if(settled)return;
+      settled=true;
+      const err=new Error('timed out');
+      err.name='TimeoutError';
+      reject(err);
+    }, ms);
+    promise.then(value=>{
+      if(settled){
+        if(value&&typeof value.getTracks==='function')value.getTracks().forEach(t=>t.stop());
+        return;
+      }
+      settled=true;
+      clearTimeout(timer);
+      resolve(value);
+    }, err=>{
+      if(settled)return;
+      settled=true;
+      clearTimeout(timer);
+      reject(err);
+    });
+  });
+}
 async function requestMicrophoneStream(){
   // DO NOT force channelCount: 1 on Windows / multi-mic arrays; WASAPI raw exclusive mono often outputs 0s without error.
   // Web Audio's MediaStreamSource and AnalyserNode natively downmix multi-channel audio to mono with full fidelity.
+  // Try exact:false first (Chrome/Android will actually disable AGC). iOS often rejects exact and falls through.
   // Explicitly request ideal:false for echoCancellation, noiseSuppression, autoGainControl across all OS (including iOS 15+)
+  const attempts=(window.SoundfieldPro&&window.SoundfieldPro.microphoneConstraintAttempts)?window.SoundfieldPro.microphoneConstraintAttempts():[];
+  for(const constraints of attempts){
+    const audio=constraints&&constraints.audio;
+    const isIdeal=!!(audio&&audio.echoCancellation&&audio.echoCancellation.ideal===false);
+    const isBare=audio===true;
+    if(isIdeal||isBare)continue;
+    try{
+      return await withTimeout(()=>navigator.mediaDevices.getUserMedia(constraints), 2500);
+    }catch(err){
+      if(['NotAllowedError','NotFoundError','SecurityError'].includes(err?.name))throw err;
+    }
+  }
   const professionalConstraints={
     audio:{
       echoCancellation:{ideal:false},
@@ -7973,19 +8036,19 @@ async function requestMicrophoneStream(){
     }
   };
   try{
-    return await navigator.mediaDevices.getUserMedia(professionalConstraints);
+    return await withTimeout(()=>navigator.mediaDevices.getUserMedia(professionalConstraints), 2500);
   }catch(err){
     if(['NotAllowedError','NotFoundError','NotReadableError','SecurityError','AbortError'].includes(err?.name)){
-      if(err?.name==='NotReadableError'||err?.name==='AbortError'){
+      if(err?.name==='NotReadableError'||err?.name==='AbortError'||err?.name==='TimeoutError'){
         try{
           console.warn('[Microphone] Professional constraints rejected ('+err.name+'), retrying standard compatibility mode...');
-          return await navigator.mediaDevices.getUserMedia({audio:true});
+          return await withTimeout(()=>navigator.mediaDevices.getUserMedia({audio:true}), 4000);
         }catch(_){}
       }
       throw err;
     }
     showCapTemporarily('warn',appLanguage!=='zh-CN'?'Retrying microphone':'正在改用兼容模式',explainMediaError(err),'RETRY',5000);
-    return navigator.mediaDevices.getUserMedia({audio:true});
+    return withTimeout(()=>navigator.mediaDevices.getUserMedia({audio:true}), 4000);
   }
 }
 
@@ -8016,7 +8079,7 @@ async function ensureAudioContextReady(){
   }
   primeAudioContext(audioCtx);
   if(audioCtx.state==='suspended'||audioCtx.state==='interrupted'){
-    try{await audioCtx.resume();}catch(_){}
+    try{await withTimeout(()=>audioCtx.resume(), 1500);}catch(_){}
   }
   return audioCtx;
 }
@@ -8107,12 +8170,16 @@ async function toggleMon(opts={}){
       }
 
       analyser=audioCtx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=analyserSmooth(smoothing);
+      analyser.minDecibels=-120;analyser.maxDecibels=0;
       fftAn=audioCtx.createAnalyser();fftAn.fftSize=2048;fftAn.smoothingTimeConstant=.18;
+      fftAn.minDecibels=-120;fftAn.maxDecibels=0;
       inputGainNode=audioCtx.createGain();updateMicGain();
       micSourceNode=audioCtx.createMediaStreamSource(micStream);
       micSourceNode.connect(inputGainNode);
       inputGainNode.connect(analyser);
       inputGainNode.connect(fftAn);
+      try{await hardenMicTrack(audioTrack);}catch(_){}
+      try{await attachIecMeter();}catch(err){console.warn('[IEC] attach failed',err);meterPath='fft';}
       dummyMuteNode=null;
       primeAudioContext(audioCtx);
       if(audioCtx.state!=='running'){
@@ -8175,6 +8242,7 @@ async function toggleMon(opts={}){
       const msg=detail?`${explainMediaError(e)} (${detail})`:explainMediaError(e);
       showCapTemporarily('err',appLanguage!=='zh-CN'?'Startup failed':'启动失败',msg,'ERROR');
       toast(msg,'err',8200);
+      if(typeof detachIecMeter==='function')detachIecMeter();
       if(dummyMuteNode){try{dummyMuteNode.disconnect();}catch(_){}dummyMuteNode=null;}
       if(micSourceNode){try{micSourceNode.disconnect();}catch(_){}micSourceNode=null;}
       if(inputGainNode){try{inputGainNode.disconnect();}catch(_){}inputGainNode=null;}
@@ -8241,6 +8309,213 @@ function updateLowInputDiagnostic(inst){
   }
 }
 
+/* ── IEC 61672 time-domain meter (worklet, then ScriptProcessor, then FFT) ── */
+var METER_TRUST_TEXT={
+  'en-US':{standby:'Not a certified meter',ok:'In range',clip:'Clipping — reading is saturated',floor:'Input near digital noise floor',agc:'Mic processing on — level may be compressed',legacy:'Compatibility weighting'},
+  'zh-CN':{standby:'非认证声级计',ok:'量程内',clip:'削波 — 读数已饱和',floor:'输入接近数字本底噪声',agc:'浏览器音频处理开启 — 读数可能被压缩',legacy:'兼容计权'},
+  es:{standby:'No es un sonómetro certificado',ok:'Dentro de rango',clip:'Saturación — lectura recortada',floor:'Entrada cerca del ruido digital',agc:'Procesado del micrófono activo',legacy:'Ponderación de compatibilidad'},
+  fr:{standby:'Pas un sonomètre certifié',ok:'Dans la plage',clip:'Écrêtage — lecture saturée',floor:'Entrée proche du bruit numérique',agc:'Traitement micro actif',legacy:'Pondération de compatibilité'},
+  de:{standby:'Kein geeichtes Messgerät',ok:'Im Messbereich',clip:'Übersteuerung — Anzeige gesättigt',floor:'Eingang nahe am digitalen Rauschen',agc:'Mikrofonbearbeitung aktiv',legacy:'Kompatibilitätsbewertung'},
+  ja:{standby:'認証済み騒音計ではありません',ok:'測定範囲内',clip:'クリッピング — 飽和',floor:'入力がデジタル雑音付近',agc:'マイク処理が有効',legacy:'互換ウェイティング'},
+  ko:{standby:'인증된 소음계가 아님',ok:'측정 범위 안',clip:'클리핑 — 포화',floor:'입력이 디지털 잡음 근처',agc:'마이크 처리 켜짐',legacy:'호환 가중'},
+  vi:{standby:'Không phải máy đo đã chứng nhận',ok:'Trong dải đo',clip:'Cắt đỉnh — số đo bão hòa',floor:'Tín hiệu gần nhiễu số',agc:'Mic đang xử lý tín hiệu',legacy:'Trọng số tương thích'},
+  th:{standby:'ไม่ใช่เครื่องวัดที่ได้รับการรับรอง',ok:'อยู่ในช่วงวัด',clip:'สัญญาณตัดยอด',floor:'สัญญาณเข้าใกล้สัญญาณรบกวนดิจิทัล',agc:'ไมโครโฟนกำลังประมวลผล',legacy:'การถ่วงน้ำหนักสำรอง'},
+};
+function levelQuantityLabel(){
+  const w=weighting==='C'?'C':weighting==='Z'?'Z':'A';
+  return `L${w}${timeWeight==='S'?'S':'F'}`;
+}
+function uncalDb(meanSquare){
+  if(!Number.isFinite(meanSquare)||meanSquare<=1e-20)return null;
+  const db=10*Math.log10(meanSquare)+splRef();
+  return Number.isFinite(db)?db:null;
+}
+function calDb(db){return db==null?0:db+calOffset;}
+function resetMeasurementIntegrators(){
+  peak=0;mn=999;dbH=[];trendH=[];
+  leqEnergy=0;leqTime=0;
+  fastMax=-Infinity;slowMax=-Infinity;fastMin=Infinity;slowMin=Infinity;
+  iecLeqSumSquares=0;iecLeqSamples=0;
+  meterWarmSamples=Math.round(((audioCtx&&audioCtx.sampleRate)||48000)*0.2);
+  if(levelHist&&levelHist.reset)levelHist.reset();
+  else if(window.SoundfieldPro?.createLevelHistogram)levelHist=window.SoundfieldPro.createLevelHistogram();
+  lastLnSampleAt=0;
+}
+function syncDisplayedExtremes(){
+  if(meterPath==='fft')return;
+  const maxRaw=timeWeight==='S'?slowMax:fastMax;
+  const minRaw=timeWeight==='S'?slowMin:fastMin;
+  peak=Number.isFinite(maxRaw)?maxRaw+calOffset:0;
+  mn=Number.isFinite(minRaw)?minRaw+calOffset:999;
+}
+function reconfigureIecWeighting(){
+  iecEpoch++;
+  iecLatest=null;
+  if(iecNode){try{iecNode.port.postMessage({type:'configure',weighting,epoch:iecEpoch});}catch(_){}}
+  if(meterPath==='script'&&audioCtx&&window.SoundfieldPro?.iecCreateEngine){
+    iecScriptEngine=window.SoundfieldPro.iecCreateEngine(audioCtx.sampleRate,weighting);
+  }
+}
+function ingestIecStats(stats){
+  if(!stats||stats.epoch!==iecEpoch||!stats.blockSamples)return;
+  iecLatest=stats;
+  iecLeqSumSquares+=stats.blockSumSquares;
+  iecLeqSamples+=stats.blockSamples;
+  if(stats.clipCount>0){
+    overloadActiveUntil = performance.now() + 1800;
+  }
+  if(iecLeqSamples<meterWarmSamples)return;
+  const fastRaw=uncalDb(stats.fastMs);
+  const slowRaw=uncalDb(stats.slowMs);
+  if(fastRaw!=null){if(fastRaw>fastMax)fastMax=fastRaw;if(fastRaw<fastMin)fastMin=fastRaw;}
+  if(slowRaw!=null){if(slowRaw>slowMax)slowMax=slowRaw;if(slowRaw<slowMin)slowMin=slowRaw;}
+  syncDisplayedExtremes();
+}
+function detachIecMeter(){
+  if(iecNode){try{iecNode.port.onmessage=null;iecNode.disconnect();}catch(_){} iecNode=null;}
+  if(iecScript){try{iecScript.onaudioprocess=null;iecScript.disconnect();}catch(_){} iecScript=null;}
+  if(iecSink){try{iecSink.disconnect();}catch(_){} iecSink=null;}
+  iecScriptEngine=null;
+  meterPath='fft';
+}
+async function hardenMicTrack(track){
+  if(!track)return;
+  const attempts=[
+    {echoCancellation:false,noiseSuppression:false,autoGainControl:false,voiceIsolation:false},
+    {echoCancellation:false,noiseSuppression:false,autoGainControl:false},
+  ];
+  for(const constraints of attempts){
+    try{await track.applyConstraints(constraints);break;}catch(_){}
+  }
+  const settings=track.getSettings?track.getSettings():{};
+  micProcessing=window.SoundfieldPro?.describeMicProcessing
+    ?window.SoundfieldPro.describeMicProcessing(settings)
+    :{autoGainControl:settings.autoGainControl===true,noiseSuppression:settings.noiseSuppression===true,echoCancellation:settings.echoCancellation===true,voiceIsolation:settings.voiceIsolation===true};
+}
+async function attachIecMeter(){
+  detachIecMeter();
+  if(!audioCtx||!inputGainNode||!window.SoundfieldPro?.iecCreateEngine)return;
+  resetMeasurementIntegrators();
+  iecEpoch++;
+  const connectSink=(node)=>{
+    iecSink=audioCtx.createMediaStreamDestination();
+    node.connect(iecSink);
+  };
+  if(audioCtx.audioWorklet&&window.SoundfieldPro.buildIecWorkletSource){
+    try{
+      const blob=new Blob([window.SoundfieldPro.buildIecWorkletSource()],{type:'application/javascript'});
+      const url=URL.createObjectURL(blob);
+      try{
+        if(!audioCtx._iecModuleLoaded){
+          await withTimeout(()=>audioCtx.audioWorklet.addModule(url), 3000);
+          audioCtx._iecModuleLoaded=true;
+        }
+      }finally{URL.revokeObjectURL(url);}
+      iecNode=new AudioWorkletNode(audioCtx,'iec-meter-v1',{numberOfInputs:1,numberOfOutputs:1,outputChannelCount:[1]});
+      iecNode.port.onmessage=(event)=>ingestIecStats(event.data);
+      iecNode.port.postMessage({type:'configure',weighting,epoch:iecEpoch});
+      inputGainNode.connect(iecNode);
+      connectSink(iecNode);
+      meterPath='worklet';
+      return;
+    }catch(err){
+      console.warn('[IEC] AudioWorklet unavailable, trying ScriptProcessor',err);
+      try{iecNode&&iecNode.disconnect();}catch(_){}
+      iecNode=null;
+    }
+  }
+  if(typeof audioCtx.createScriptProcessor==='function'){
+    try{
+      iecScriptEngine=window.SoundfieldPro.iecCreateEngine(audioCtx.sampleRate,weighting);
+      iecScript=audioCtx.createScriptProcessor(2048,1,1);
+      iecScript.onaudioprocess=(event)=>{
+        if(!iecScriptEngine||!isMon)return;
+        const input=event.inputBuffer.getChannelData(0);
+        const stats=window.SoundfieldPro.iecProcessBlock(iecScriptEngine,input);
+        event.outputBuffer.getChannelData(0).fill(0);
+        stats.epoch=iecEpoch;
+        ingestIecStats(stats);
+      };
+      inputGainNode.connect(iecScript);
+      connectSink(iecScript);
+      meterPath='script';
+    }catch(err){
+      console.warn('[IEC] ScriptProcessor unavailable, using FFT weighting',err);
+      try{iecScript&&iecScript.disconnect();}catch(_){}
+      iecScript=null;
+      iecScriptEngine=null;
+      meterPath='fft';
+    }
+  }
+}
+function sessionLeqDb(){
+  if(meterPath!=='fft'&&iecLeqSamples>0){
+    return calDb(uncalDb(iecLeqSumSquares/iecLeqSamples));
+  }
+  if(leqTime>0&&leqEnergy>0){
+    const v=10*Math.log10(leqEnergy/leqTime);
+    return Number.isFinite(v)?v:0;
+  }
+  return 0;
+}
+function sessionMetrics(){
+  syncDisplayedExtremes();
+  const leq=sessionLeqDb();
+  let avg=0;
+  if(levelHist&&levelHist.count&&levelHist.count()>0)avg=levelHist.mean();
+  else if(dbH.length)avg=dbH.reduce((a,b)=>a+b,0)/dbH.length;
+  else if(Number.isFinite(curDb)&&curDb>0)avg=curDb;
+  const ln=(levelHist&&levelHist.count&&levelHist.count()>=8)?levelHist.ln([5,10,50,90,95]):calculateLnStats(dbH.length?dbH:(avg?[avg]:[]));
+  return {leq,avg,peak:Number.isFinite(peak)?peak:0,min:(typeof mn==='number'&&mn!==999&&mn>0)?mn:0,ln};
+}
+function meterTrustKey(){
+  if(!isMon)return 'standby';
+  if(performance.now()<overloadActiveUntil)return 'clip';
+  if(meterPath==='fft')return (curDb>0&&curDb<20)?'floor':'legacy';
+  if(micProcessing.autoGainControl||micProcessing.noiseSuppression||micProcessing.echoCancellation||micProcessing.voiceIsolation)return 'agc';
+  if(iecLatest&&iecLatest.blockSamples){
+    const detectMs=timeWeight==='S'?iecLatest.slowMs:iecLatest.fastMs;
+    const dbfs=10*Math.log10(Math.max(detectMs||0,1e-12));
+    if(dbfs<-50)return 'floor';
+  }
+  return 'ok';
+}
+function renderMeterTrust(){
+  if(!METER_TRUST_TEXT)return;
+  const key=meterTrustKey();
+  const pack=METER_TRUST_TEXT[appLanguage]||METER_TRUST_TEXT['en-US'];
+  const text=(pack&&pack[key])||METER_TRUST_TEXT['en-US'][key];
+  const qty=levelQuantityLabel();
+  const full=key==='standby'?text:`${qty} · ${text}`;
+  const el=document.getElementById('meterTrustText');
+  const row=document.getElementById('meterTrust');
+  if(el&&(key!==lastTrustKey||el.textContent!==full))el.textContent=full;
+  lastTrustKey=key;
+  if(row){
+    row.setAttribute('data-trust',key);
+    const sr=audioCtx&&audioCtx.sampleRate?`${Math.round(audioCtx.sampleRate)} Hz`:'';
+    const engine=meterPath==='worklet'?'time-domain IIR':meterPath==='script'?'script processor':'FFT fallback';
+    row.title=isMon?[qty,engine,sr].filter(Boolean).join(' · '):text;
+  }
+  const stage=document.getElementById('dbStage');
+  if(stage){
+    const shown=Number.isFinite(curDb)?Math.max(0,Math.min(120,Math.round(curDb))):0;
+    stage.setAttribute('aria-valuenow',isMon?String(shown):'0');
+    stage.setAttribute('aria-valuetext',isMon&&curDb>0?`${curDb.toFixed(1)} decibels ${qty}. ${text}`:text);
+  }
+}
+function noteLevelSample(inst,now){
+  if(!Number.isFinite(inst))return;
+  dbH.push(inst);
+  if(dbH.length>600)dbH.shift();
+  if(levelHist&&now-lastLnSampleAt>=100&&inst>0){
+    levelHist.add(inst);
+    lastLnSampleAt=now;
+  }
+  tickN++;
+  if(tickN%4===0){trendH.push(inst);if(trendH.length>120)trendH.shift();}
+}
+
 /* ── Tick ── */
 function tick(){
   if(!isMon)return;
@@ -8256,28 +8531,55 @@ function tick(){
   if(autoDayNightMode&&tickN%20===0){applyDayNightThreshold();}
   const dt=lastTick?(now-lastTick)/1000:1/60;
   lastTick=now;
-  analyser.getByteTimeDomainData(wBuf);fftAn.getByteFrequencyData(fBuf);
-  const inst=instantDb();
-  if(inst<=0){
-    silentTickCount++;
-    if(silentTickCount>=180&&!hasAttemptedAudioFallback){
-      hasAttemptedAudioFallback=true;
-      console.warn('[Audio] Digital silence detected (180 frames with rms < 1e-9). Self-healing with standard audio pipeline...');
-      fallbackToStandardMicStream();
+  if(wBuf&&analyser)analyser.getByteTimeDomainData(wBuf);
+  if(analyser&&floatTBuf)analyser.getFloatTimeDomainData(floatTBuf);
+  if(fBuf&&fftAn&&curViz!=='w')fftAn.getByteFrequencyData(fBuf);
+  const useIec=meterPath!=='fft'&&iecLatest&&iecLatest.blockSamples;
+  let inst;
+  if(useIec){
+    const shownRaw=timeWeight==='S'?uncalDb(iecLatest.slowMs):uncalDb(iecLatest.fastMs);
+    inst=calDb(shownRaw);
+    curDb=inst;
+    syncDisplayedExtremes();
+    const rawMs=iecLatest.blockRawSumSquares/iecLatest.blockSamples;
+    if(!(rawMs>1e-12)){
+      silentTickCount++;
+      if(silentTickCount>=180&&!hasAttemptedAudioFallback){
+        hasAttemptedAudioFallback=true;
+        console.warn('[Audio] Digital silence detected (180 frames with rms < 1e-9). Self-healing with standard audio pipeline...');
+        fallbackToStandardMicStream();
+      }
+    }else{
+      silentTickCount=0;
     }
+    const blockRaw=uncalDb(iecLatest.blockSumSquares/iecLatest.blockSamples);
+    maybeCaptureImpulseEvent(calDb(blockRaw),now);
+    updateLowInputDiagnostic(inst);
+    noteLevelSample(inst,now);
   }else{
-    silentTickCount=0;
+    inst=instantDb();
+    if(inst<=0){
+      silentTickCount++;
+      if(silentTickCount>=180&&!hasAttemptedAudioFallback){
+        hasAttemptedAudioFallback=true;
+        console.warn('[Audio] Digital silence detected (180 frames with rms < 1e-9). Self-healing with standard audio pipeline...');
+        fallbackToStandardMicStream();
+      }
+    }else{
+      silentTickCount=0;
+    }
+    maybeCaptureImpulseEvent(inst,now);
+    curDb=applyMeterBallistics(inst,curDb,dt);
+    updateLowInputDiagnostic(inst);
+    if(inst>peak)peak=inst;if(inst>0&&inst<mn)mn=inst;
+    if(inst>0&&Number.isFinite(inst)){leqEnergy+=Math.pow(10,inst/10)*dt;leqTime+=dt;}
+    noteLevelSample(inst,now);
   }
-  maybeCaptureImpulseEvent(inst,now);
-  curDb=applyMeterBallistics(inst,curDb,dt);
-  updateLowInputDiagnostic(inst);
-  if(inst>peak)peak=inst;if(inst>0&&inst<mn)mn=inst;
-  if(inst>0&&Number.isFinite(inst)){leqEnergy+=Math.pow(10,inst/10)*dt;leqTime+=dt;}
-  if(Number.isFinite(inst)){dbH.push(inst);if(dbH.length>600)dbH.shift();}
-  tickN++;if(tickN%4===0&&Number.isFinite(inst)){trendH.push(inst);if(trendH.length>120)trendH.shift();}
-  const avg=dbH.length?dbH.reduce((a,b)=>a+b,0)/dbH.length:0;
-  const leq=leqTime>0?10*Math.log10(leqEnergy/leqTime):0;
-  const lnStats=calculateLnStats(dbH);
+  const metrics=sessionMetrics();
+  const avg=metrics.avg;
+  const leq=metrics.leq;
+  const lnStats=metrics.ln;
+  renderMeterTrust();
   const lv=lvInfo(Math.round(curDb));
   const dispDb=Math.round(curDb);
   animateDbNumber(curDb>.5?curDb:0);
@@ -8497,6 +8799,13 @@ function tickBackground(){
   if(!isMon) return;
   if(audioCtx && (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted')){
     audioCtx.resume().catch(()=>{});
+  }
+  if(meterPath!=='fft'&&iecLatest){
+    const raw=timeWeight==='S'?uncalDb(iecLatest.slowMs):uncalDb(iecLatest.fastMs);
+    const inst=calDb(raw);
+    if(Number.isFinite(inst))curDb=inst;
+    syncDisplayedExtremes();
+    return;
   }
   const now = performance.now();
   const dt = lastTick ? (now - lastTick) / 1000 : 0.18;
@@ -8780,15 +9089,16 @@ async function saveRec(){
   const persisted=await saveMediaBlob(blobId,blob);
   const url=URL.createObjectURL(blob);
   const sessionSnap = typeof captureCurrentSessionSnapshot === 'function' ? captureCurrentSessionSnapshot() : null;
+  const metrics = (typeof sessionMetrics === 'function') ? sessionMetrics() : null;
   const validDbH = (Array.isArray(dbH) && dbH.length) ? dbH.filter(v => Number.isFinite(v) && v > 0) : [];
-  const avg = validDbH.length ? validDbH.reduce((a,b)=>a+b,0)/validDbH.length : (sessionSnap?.avgDb || (curDb > 0 ? curDb : 49));
-  const leq = (leqTime>0 && leqEnergy>0) ? 10*Math.log10(leqEnergy/leqTime) : (sessionSnap?.leqDb || avg);
-  const lnStats = (typeof calculateLnStats === 'function') ? calculateLnStats(validDbH.length ? validDbH : [avg]) : {L5:avg*1.2,L10:avg+2,L50:avg,L90:avg*0.85,L95:avg*0.85};
+  const avg = (metrics && metrics.avg > 0) ? metrics.avg : (validDbH.length ? validDbH.reduce((a,b)=>a+b,0)/validDbH.length : (sessionSnap?.avgDb || (curDb > 0 ? curDb : 0)));
+  const leq = (metrics && metrics.leq > 0) ? metrics.leq : ((leqTime>0 && leqEnergy>0) ? 10*Math.log10(leqEnergy/leqTime) : (sessionSnap?.leqDb || avg));
+  const lnStats = (metrics && metrics.ln) ? metrics.ln : ((typeof calculateLnStats === 'function') ? calculateLnStats(validDbH.length ? validDbH : [avg]) : {L5:avg,L10:avg,L50:avg,L90:avg,L95:avg});
   const dur = recStart ? Math.max(1, Math.round((Date.now()-recStart)/1000)) : (sessionSnap?.dur || 1);
   const recordTime = recStart || new Date();
   const evidenceId = createEvidenceId(recordTime);
-  const peakVal = (typeof peak === 'number' && peak > 0) ? peak : (sessionSnap?.peakDb || Math.round(avg * 1.25));
-  const minVal = (typeof mn === 'number' && mn > 0 && mn !== 999) ? mn : (sessionSnap?.minDb || Math.round(avg * 0.85));
+  const peakVal = (metrics && metrics.peak > 0) ? metrics.peak : ((typeof peak === 'number' && peak > 0) ? peak : (sessionSnap?.peakDb || avg));
+  const minVal = (metrics && metrics.min > 0) ? metrics.min : ((typeof mn === 'number' && mn > 0 && mn !== 999) ? mn : (sessionSnap?.minDb || avg));
   const mediaHash = await sha256HexFromBlob(blob);
   const recordMetadata = {
     evidenceId,time:recordTime.toISOString(),duration:dur,avgDb:Math.round(avg*10)/10,peakDb:Math.round(peakVal*10)/10,
@@ -9247,32 +9557,26 @@ function captureCurrentSessionSnapshot() {
   const arr = (Array.isArray(dbH) && dbH.length) ? dbH.filter(v => Number.isFinite(v) && v > 0) : [];
   const hasArr = arr.length > 0;
   const currentDbVal = (typeof curDb === 'number' && Number.isFinite(curDb) && curDb > 0) ? curDb : 0;
-  
-  let avg = 0;
-  if (hasArr) {
+  const metrics = (typeof sessionMetrics === 'function') ? sessionMetrics() : null;
+
+  let avg = metrics && metrics.avg > 0 ? metrics.avg : 0;
+  if (!(avg > 0) && hasArr) {
     avg = arr.reduce((a, b) => a + b, 0) / arr.length;
-  } else if (currentDbVal > 0) {
+  } else if (!(avg > 0) && currentDbVal > 0) {
     avg = currentDbVal;
-  } else if (typeof peak === 'number' && peak > 0) {
-    avg = peak * 0.8;
-  } else {
-    avg = 49.0;
   }
 
-  let leq = avg;
-  if (typeof leqTime === 'number' && leqTime > 0 && typeof leqEnergy === 'number' && leqEnergy > 0) {
+  let leq = metrics && metrics.leq > 0 ? metrics.leq : 0;
+  if (!(leq > 0) && typeof leqTime === 'number' && leqTime > 0 && typeof leqEnergy === 'number' && leqEnergy > 0) {
     const calc = 10 * Math.log10(leqEnergy / leqTime);
     if (Number.isFinite(calc) && calc > 0) leq = calc;
   }
+  if (!(leq > 0)) leq = avg;
 
-  let peakVal = (typeof peak === 'number' && peak > 0) ? peak : Math.round(avg * 1.25);
-  if (peakVal < avg) peakVal = avg + 3.5;
+  let peakVal = metrics && metrics.peak > 0 ? metrics.peak : ((typeof peak === 'number' && peak > 0) ? peak : 0);
+  let minVal = metrics && metrics.min > 0 ? metrics.min : ((typeof mn === 'number' && mn > 0 && mn !== 999) ? mn : 0);
 
-  let minVal = (typeof mn === 'number' && mn > 0 && mn !== 999) ? mn : Math.round(avg * 0.85);
-  if (minVal > avg) minVal = Math.max(20, avg - 3.5);
-
-  const statsSource = hasArr ? arr : [minVal, avg, peakVal];
-  const lnStats = (typeof calculateLnStats === 'function') ? calculateLnStats(statsSource) : { L5: peakVal, L10: avg + 2, L50: avg, L90: minVal, L95: minVal };
+  const lnStats = (metrics && metrics.ln) ? metrics.ln : ((typeof calculateLnStats === 'function') ? calculateLnStats(hasArr ? arr : [avg]) : { L5: peakVal, L10: avg, L50: avg, L90: minVal, L95: minVal });
 
   const recordTime = (sessStart instanceof Date) ? sessStart : (sessStart ? new Date(sessStart) : new Date());
   const dur = sessStart ? Math.max(1, Math.round((Date.now() - recordTime.getTime()) / 1000)) : (hasArr ? Math.max(1, Math.round(arr.length / 10)) : 10);
@@ -9333,6 +9637,7 @@ function stopAll(){
   overloadActiveUntil = 0;
   const olBadge = document.getElementById('overloadBadge');
   if(olBadge) olBadge.style.display = 'none';
+  if(typeof detachIecMeter==='function')detachIecMeter();
   micStream&&micStream.getTracks().forEach(t=>t.stop());
   camStream&&camStream.getTracks().forEach(t=>t.stop());
   audioCtx&&audioCtx.close().catch(()=>{});
@@ -9365,6 +9670,7 @@ function stopAll(){
   const capCardEl=document.getElementById('capCard');if(capCardEl)capCardEl.classList.add('collapsed');
   document.getElementById('alertBox').className='alert';
   animateDbNumber(0);
+  if(typeof renderMeterTrust==='function')renderMeterTrust();
   document.getElementById('dbLevelMain').textContent=t('levels.quiet','安静');document.getElementById('dbLevelMain').className='db-level-main lv-q';
   document.getElementById('dbStage').style.setProperty('--level-color','var(--accent)');
   document.getElementById('meterFill').style.width='0%';

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'soundtest-pro-v12';
+const CACHE_NAME = 'soundtest-pro-v13';
 const NETWORK_FIRST_PATHS = [
   '/assets/lang-flags.js',
   '/assets/i18n-data.js',
