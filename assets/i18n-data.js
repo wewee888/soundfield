@@ -7607,7 +7607,7 @@
       scale: { quiet: "Quiet", urban: "Urban", danger: "Danger" },
       telemetry: {
         title: "Acoustic Metrics (LEQ & LN MATRIX)",
-        badge: "IEC method · field reference",
+        badge: "Based on IEC algorithms",
         subLeq: "Equivalent Continuous Level",
         lblPeak: "Lmax",
         subPeak: "Time-weighted maximum",
@@ -7686,7 +7686,7 @@
       scale: { quiet: "安静", urban: "市井", danger: "危险" },
       telemetry: {
         title: "声学统计参量 (LEQ & LN MATRIX)",
-        badge: "IEC 算法 · 民用参考",
+        badge: "基于 IEC 算法",
         subLeq: "等效连续声级",
         lblPeak: "Lmax 最大",
         subPeak: "时间计权最大值",
@@ -7765,7 +7765,7 @@
       scale: { quiet: "Tranquilo", urban: "Urbano", danger: "Peligro" },
       telemetry: {
         title: "Parámetros acústicos (LEQ & LN MATRIX)",
-        badge: "Método IEC · referencia civil",
+        badge: "Basado en algoritmos IEC",
         subLeq: "Nivel continuo equivalente",
         lblPeak: "Lmax",
         subPeak: "Máximo con ponderación temporal",
@@ -7844,7 +7844,7 @@
       scale: { quiet: "Calme", urban: "Urbain", danger: "Danger" },
       telemetry: {
         title: "Métriques acoustiques (LEQ & LN MATRIX)",
-        badge: "Méthode IEC · référence civile",
+        badge: "Basé sur les algorithmes IEC",
         subLeq: "Niveau continu équivalent",
         lblPeak: "Lmax",
         subPeak: "Maximum pondéré dans le temps",
@@ -7923,7 +7923,7 @@
       scale: { quiet: "Ruhig", urban: "Städtisch", danger: "Gefahr" },
       telemetry: {
         title: "Akustik-Metriken (LEQ & LN MATRIX)",
-        badge: "IEC-Verfahren · Feldreferenz",
+        badge: "Basierend auf IEC-Algorithmen",
         subLeq: "Äquivalenter Dauerschallpegel",
         lblPeak: "Lmax",
         subPeak: "Zeitbewertetes Maximum",
@@ -8002,7 +8002,7 @@
       scale: { quiet: "静穏", urban: "市街地", danger: "危険" },
       telemetry: {
         title: "音響統計パラメータ (LEQ & LN MATRIX)",
-        badge: "IEC方式 · 現場参考",
+        badge: "IEC アルゴリズムに基づく",
         subLeq: "等価連続A特性音压レベル",
         lblPeak: "Lmax",
         subPeak: "時間重み付け最大値",
@@ -8081,7 +8081,7 @@
       scale: { quiet: "조용함", urban: "도심", danger: "위험" },
       telemetry: {
         title: "음향 통계 지표 (LEQ & LN MATRIX)",
-        badge: "IEC 방식 · 현장 참고",
+        badge: "IEC 알고리즘 기반",
         subLeq: "등가 소음도 (LAeq)",
         lblPeak: "Lmax",
         subPeak: "시간 가중 최댓값",
@@ -8160,7 +8160,7 @@
       scale: { quiet: "Yên tĩnh", urban: "Đô thị", danger: "Nguy hiểm" },
       telemetry: {
         title: "Thông số âm học (LEQ & LN MATRIX)",
-        badge: "Thuật toán IEC · tham chiếu dân sự",
+        badge: "Dựa trên thuật toán IEC",
         subLeq: "Mức âm tương đương",
         lblPeak: "Lmax",
         subPeak: "Mức tối đa có trọng số thời gian",
@@ -8239,7 +8239,7 @@
       scale: { quiet: "เงียบ", urban: "ในเมือง", danger: "อันตราย" },
       telemetry: {
         title: "ค่าสถิติอะคูสติก (LEQ & LN MATRIX)",
-        badge: "วิธี IEC · เอกสารอ้างอิง",
+        badge: "อิงอัลกอริทึม IEC",
         subLeq: "ระดับเสียงต่อเนื่องเทียบเท่า",
         lblPeak: "Lmax",
         subPeak: "ค่าสูงสุดแบบถ่วงเวลา",
