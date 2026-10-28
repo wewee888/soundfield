@@ -429,11 +429,11 @@
     return (Number(levelDb) || 0) + gain;
   }
 
-  // Handset browser readings under 50 dBA are often the device or the
-  // browser path, not a resolved room level. 50/56 is a wide guide, not a
-  // fit to one quiet-room pair. Exit is higher so the label does not flicker.
-  const PHONE_ABSOLUTE_FLOOR_ENTER_DB = 50;
-  const PHONE_ABSOLUTE_FLOOR_EXIT_DB = 56;
+  // A checked quiet room near 28 dBA is a real reading. Only latch below 22,
+  // where a handset is no longer distinguishable from its own quiet limit.
+  // Exit at 26 so a correct ~28 dBA room never sticks, and the label does not flicker.
+  const PHONE_ABSOLUTE_FLOOR_ENTER_DB = 22;
+  const PHONE_ABSOLUTE_FLOOR_EXIT_DB = 26;
 
   function createPhoneFloorLatch() {
     let limited = false;
@@ -505,10 +505,70 @@
   }
 
   const SESSION_WARMUP_SECONDS = 1;
+  // Field quiet rooms still showed LCpeak ~74 and Lmax ~50 after the 1 s Leq
+  // exclusion: the start pop lands as the Leq gate opens, and Fast/peak hold
+  // it. Peaks wait one extra second. Leq and Lmin stay on the 1 s gate.
+  const SESSION_PEAK_WARMUP_SECONDS = 2;
 
   function sessionWarmupSamples(sampleRate) {
     const fs = Number.isFinite(sampleRate) && sampleRate > 0 ? sampleRate : 48000;
     return Math.round(fs * SESSION_WARMUP_SECONDS);
+  }
+
+  function sessionPeakWarmupSamples(sampleRate) {
+    const fs = Number.isFinite(sampleRate) && sampleRate > 0 ? sampleRate : 48000;
+    return Math.round(fs * SESSION_PEAK_WARMUP_SECONDS);
+  }
+
+  // Stock offsets shipped with each preset generation. A saved value that
+  // matches one of these is a default and may move. Anything else was typed
+  // by the user and must be kept.
+  const CALIBRATION_STOCK_HISTORY = {
+    'desktop-browser': [-22.5, -16.5, -21],
+    'android-browser': [1, -11],
+    'ios-browser': [7, 12],
+    'tablet-browser': [2],
+    'laptop-internal-mic': [38],
+  };
+
+  function calibrationOffsetsMatch(a, b) {
+    return Number.isFinite(a) && Number.isFinite(b) && Math.abs(a - b) < 0.051;
+  }
+
+  function migrateSavedCalibration(saved, currentPresets, currentBaseline) {
+    const savedObj = saved || {};
+    const presets = currentPresets || {};
+    const requested = savedObj.calibrationPresetKey;
+    const key = presets[requested] ? requested : null;
+    const savedOffset = typeof savedObj.calOffset === 'number' && Number.isFinite(savedObj.calOffset) ? savedObj.calOffset : null;
+    const baseline = savedObj.calibrationBaseline || '';
+    const currentOf = (presetKey) => {
+      const row = presets[presetKey];
+      return row && typeof row.offset === 'number' && Number.isFinite(row.offset) ? row.offset : null;
+    };
+    if (!key) {
+      return {
+        presetKey: null,
+        calOffset: savedOffset,
+        migrated: baseline !== currentBaseline,
+        keepManual: savedOffset != null,
+      };
+    }
+    const next = currentOf(key);
+    if (baseline === currentBaseline) {
+      return {
+        presetKey: key,
+        calOffset: savedOffset == null ? next : savedOffset,
+        migrated: false,
+        keepManual: false,
+      };
+    }
+    const history = (CALIBRATION_STOCK_HISTORY[key] || []).concat(next == null ? [] : [next]);
+    const wasStock = savedOffset == null || history.some((value) => calibrationOffsetsMatch(value, savedOffset));
+    if (wasStock) {
+      return { presetKey: key, calOffset: next, migrated: true, keepManual: false };
+    }
+    return { presetKey: key, calOffset: savedOffset, migrated: true, keepManual: true };
   }
 
   function shouldCountInSession(samplesSeen, warmupSamples) {
@@ -677,8 +737,12 @@ registerProcessor('iec-meter-v1', IecMeterProcessor);
     countEnabledMicProcessing,
     rawMicApplyConstraints,
     SESSION_WARMUP_SECONDS,
+    SESSION_PEAK_WARMUP_SECONDS,
     sessionWarmupSamples,
+    sessionPeakWarmupSamples,
     shouldCountInSession,
+    CALIBRATION_STOCK_HISTORY,
+    migrateSavedCalibration,
     buildIecWorkletSource,
   };
 })();

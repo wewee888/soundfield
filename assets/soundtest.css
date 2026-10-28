@@ -3179,3 +3179,100 @@ div[id^="BAIDU_DUP_fp_wrapper"], #BAIDU_DSP_PRELOAD, [class*="ad-placeholder-inj
   border-color: rgba(255, 63, 80, 0.5);
   color: #ff4d5e;
 }
+
+/* Calm meter: one reading, quiet secondary row, details on demand, upsell only at a moment of value. */
+.subscription-banner.banner-parked{display:none!important}
+.hero .subscription-banner.value-moment{
+  order:7;
+  margin:8px 0 2px;
+  border:1px solid rgba(255,255,255,.1);
+  background:#121820;
+  box-shadow:none;
+}
+.subscription-dismiss{
+  border:none;
+  background:transparent;
+  color:#8b95a7;
+  font-size:18px;
+  line-height:1;
+  cursor:pointer;
+  padding:0 2px 0 6px;
+}
+.stitch-ping-dot{display:none}
+.stitch-meter-header .stitch-cal-time{display:none}
+.stitch-meter-header .stitch-cal-pill{
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  color:#94a3b8;
+  padding:2px 0;
+}
+.meter-trust[data-trust="standby"],
+.meter-trust[data-trust="ok"]{display:none}
+.meter-trust[data-trust="settle"]{color:#8b95a7}
+.meter-trust[data-trust="settle"] .meter-trust-dot{background:#64748b;box-shadow:none}
+.stitch-matrix-grid.meter-primary{
+  gap:0;
+  border-top:1px solid rgba(255,255,255,.06);
+  margin-top:2px;
+  padding-top:4px;
+}
+.stitch-matrix-grid.meter-primary .stitch-matrix-card,
+.stitch-matrix-grid.meter-primary .stitch-matrix-card.highlight{
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  min-height:0;
+  padding:2px 4px 4px;
+  align-items:center;
+  text-align:center;
+}
+.stitch-matrix-grid.meter-primary .stitch-matrix-sub,
+.stitch-matrix-grid.meter-primary .stitch-metric-dot{display:none}
+.stitch-matrix-grid.meter-primary .stitch-matrix-val{font-size:clamp(16px, 2.2vh, 20px)}
+.stitch-matrix-grid.meter-primary .stitch-matrix-lbl{font-size:11px;letter-spacing:.04em}
+.meter-details{margin:0 2px 6px}
+.meter-details>summary{
+  cursor:pointer;
+  list-style:none;
+  text-align:center;
+  color:#8b95a7;
+  font-size:12px;
+  font-weight:650;
+  letter-spacing:.06em;
+  padding:6px 0 2px;
+}
+.meter-details>summary::-webkit-details-marker{display:none}
+.meter-weight-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.meter-chip{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.12);
+  background:transparent;
+  color:#cbd5e1;
+  border-radius:999px;
+  padding:5px 12px;
+  font-size:12px;
+  font-weight:650;
+  cursor:pointer;
+}
+.meter-chip.active{border-color:rgba(42,255,212,.5);color:#e7fffa}
+.meter-details .meter-truepeak{text-align:center;margin:4px 0 8px}
+.meter-details .stitch-matrix-card,
+.meter-details .stitch-matrix-card.highlight{
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  min-height:0;
+}
+.meter-details-foot{justify-content:center;margin-top:6px}
+.meter-details-foot .stitch-telemetry-title{display:none}
+.stitch-custody-card{
+  border-color:rgba(255,255,255,.08);
+  box-shadow:none;
+  background:#0c1118;
+}
+.stitch-custody-card::before{display:none}
+.stitch-sha-pill,.stitch-custody-ico{box-shadow:none}
+@media(max-height:640px){
+  .hero .subscription-banner.value-moment{display:flex!important}
+}

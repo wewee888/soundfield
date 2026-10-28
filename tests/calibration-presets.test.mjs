@@ -15,13 +15,13 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   assert.ok(soundtestHtml.includes('offset:12.0'), 'ios-browser offset must be the quiet-room field baseline +12.0 dB');
   assert.ok(soundtestHtml.includes('offset:-11.0'), 'android-browser offset must be the quiet-room field baseline -11.0 dB');
   assert.ok(soundtestHtml.includes('offset:2.0') || soundtestHtml.includes('offset:2'), 'tablet-browser offset must be calibrated to 2.0 dB');
-  assert.ok(soundtestHtml.includes('offset:-16.5'), 'desktop-browser offset must be the quiet-room field baseline -16.5 dB');
+  assert.ok(soundtestHtml.includes('offset:-21.0'), 'desktop-browser offset must be the quiet-room field baseline -21.0 dB');
   assert.ok(soundtestHtml.includes("'laptop-internal-mic'"), 'laptop-internal-mic preset must exist');
   assert.ok(soundtestHtml.includes('offset:38'), 'laptop-internal-mic offset must provide +38 dB compensation');
 
   // 2. Verify CALIBRATION_BASELINE is bumped to v9 to ensure auto-refresh on existing devices
-  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v10'"), 'CALIBRATION_BASELINE must be device-preset-v10');
-  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v10')"), 'Snapshot preset fallback must be device-preset-v10');
+  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v11'"), 'CALIBRATION_BASELINE must be device-preset-v11');
+  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v11')"), 'Snapshot preset fallback must be device-preset-v11');
 
   // 3. Verify Slider ranges are expanded to accommodate offsets down to -35 dB and up to +45 dB, and Admin device matrix exists
   const calRMatches = soundtestHtml.match(/id="calR"[^>]*min="-35"/g) || soundtestHtml.match(/min="-35"[^>]*id="calR"/g);
@@ -30,7 +30,7 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   assert.ok(adminHtml.includes('id="cfgIosCalOffset"'), 'admin.html must include cfgIosCalOffset for iOS baseline adjustment');
   assert.ok(adminHtml.includes('id="cfgAndroidCalOffset"') && adminHtml.includes('value="-11.0"'), 'admin.html must include cfgAndroidCalOffset for Android baseline adjustment');
   assert.ok(adminHtml.includes('id="cfgTabletCalOffset"') && adminHtml.includes('value="2.0"'), 'admin.html must include cfgTabletCalOffset for Tablet baseline adjustment');
-  assert.ok(adminHtml.includes('id="cfgDesktopCalOffset"') && adminHtml.includes('value="-16.5"'), 'admin.html must include cfgDesktopCalOffset defaulting to -16.5 dB');
+  assert.ok(adminHtml.includes('id="cfgDesktopCalOffset"') && adminHtml.includes('value="-21.0"'), 'admin.html must include cfgDesktopCalOffset defaulting to -21.0 dB');
 
   // 4. Verify Mic Gain slider is expanded to max="36"
   const micRMatches = soundtestHtml.match(/id="micR"[^>]*max="36"/g) || soundtestHtml.match(/max="36"[^>]*id="micR"/g);
@@ -54,7 +54,7 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   assert.ok(soundtestHtml.includes('function isIosCalibrationActive'), 'soundtest.html must define isIosCalibrationActive');
   assert.ok(soundtestHtml.includes('db=applyAcousticResponseProfile(db, isIosCalibrationActive());'), 'instantDb must apply acoustic response profile');
   assert.ok(soundtestHtml.includes('<option value="ios-browser">iPhone / iPad (+12.0 dB)</option>'), 'Dropdown option must show +12.0 dB');
-  assert.ok(soundtestHtml.includes('<option value="desktop-browser">PC Desktop Browser (-16.5 dB)</option>'), 'Dropdown option must show -16.5 dB');
+  assert.ok(soundtestHtml.includes('<option value="desktop-browser">PC Desktop Browser (-21.0 dB)</option>'), 'Dropdown option must show -21.0 dB');
   assert.ok(soundtestHtml.includes('<option value="android-browser">Android Browser (-11.0 dB)</option>'), 'Dropdown option must show -11.0 dB');
   assert.ok(soundtestHtml.includes('<option value="tablet-browser">Tablet Browser (+2.0 dB)</option>'), 'Dropdown option must show +2.0 dB');
 

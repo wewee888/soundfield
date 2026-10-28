@@ -1825,10 +1825,10 @@
               <div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                   <label style="font-size: 11.5px; color: #fff;">💻 PC 桌面浏览器 (外接麦克风 / 独立声卡)</label>
-                  <span id="cfgDesktopCalOffsetVal" style="font-family: monospace; font-size: 12px; color: #70b8ff; font-weight: 700;">-16.5 dB</span>
+                  <span id="cfgDesktopCalOffsetVal" style="font-family: monospace; font-size: 12px; color: #70b8ff; font-weight: 700;">-21.0 dB</span>
                 </div>
-                <input type="range" id="cfgDesktopCalOffset" min="-35" max="45" step="0.5" value="-16.5" style="width: 100%; accent-color: #70b8ff;" oninput="document.getElementById('cfgDesktopCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
-                <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">现场基准 -16.5 dB（分支预览同一安静房间约 23.6 dBA，目标约 28-31 dBA）。</div>
+                <input type="range" id="cfgDesktopCalOffset" min="-35" max="45" step="0.5" value="-21.0" style="width: 100%; accent-color: #70b8ff;" oninput="document.getElementById('cfgDesktopCalOffsetVal').textContent=(this.value>=0?'+':'')+this.value+' dB'">
+                <div style="font-size: 10.5px; color: var(--adm-muted); margin-top: 2px;">现场基准 -21.0 dB（分支预览处理关闭时约 34.0 dBA，目标约 29-30 dBA）。</div>
               </div>
 
               <!-- 笔记本自带麦克风 -->
@@ -2834,7 +2834,7 @@
         'ios-browser': 12.0,
         'android-browser': -11.0,
         'tablet-browser': 2.0,
-        'desktop-browser': -16.5,
+        'desktop-browser': -21.0,
         'laptop-internal-mic': 38.0
       },
       micGainDb: 2,
@@ -2893,7 +2893,7 @@
       setDevCal('cfgIosCalOffset', presets['ios-browser'], 12.0);
       setDevCal('cfgAndroidCalOffset', presets['android-browser'], -11.0);
       setDevCal('cfgTabletCalOffset', presets['tablet-browser'], 2.0);
-      setDevCal('cfgDesktopCalOffset', presets['desktop-browser'], -16.5);
+      setDevCal('cfgDesktopCalOffset', presets['desktop-browser'], -21.0);
       setDevCal('cfgLaptopCalOffset', presets['laptop-internal-mic'], 38.0);
 
       const mic = typeof cfg.micGainDb === 'number' ? cfg.micGainDb : 2;
@@ -2962,7 +2962,7 @@
           'ios-browser': getNum('cfgIosCalOffset', 12.0),
           'android-browser': getNum('cfgAndroidCalOffset', -11.0),
           'tablet-browser': getNum('cfgTabletCalOffset', 2.0),
-          'desktop-browser': getNum('cfgDesktopCalOffset', -16.5),
+          'desktop-browser': getNum('cfgDesktopCalOffset', -21.0),
           'laptop-internal-mic': getNum('cfgLaptopCalOffset', 38.0)
         },
         micGainDb: getNum('cfgMicGain', 2),

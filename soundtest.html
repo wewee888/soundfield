@@ -40,7 +40,7 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-<link rel="stylesheet" href="/assets/soundtest.css?v=20261028c">
+<link rel="stylesheet" href="/assets/soundtest.css?v=20261029a">
 <link rel="stylesheet" href="/assets/legal-notice.css?v=20261011">
 <script src="/assets/legal-notice.js?v=20261011" defer></script>
 <style>
@@ -1611,12 +1611,13 @@
 <!-- ═══ HERO (fixed first screen) ═══ -->
 <div class="hero">
   <!-- Top Upgrade Banner (Ad container, hides when paid/upgraded) -->
-  <div class="subscription-banner" id="subscriptionBanner" data-upsell="subscription-upgrade" onclick="showSubscriptionPlans()" role="button" tabindex="0">
+  <div class="subscription-banner banner-parked" id="subscriptionBanner" data-upsell="subscription-upgrade" onclick="showSubscriptionPlans()" role="button" tabindex="0">
     <div class="subscription-copy">
       <div class="subscription-title" id="subscriptionBannerTitle">升级 Pro：一键生成物业/合规标准取证底稿</div>
       <div class="subscription-desc" id="subscriptionBannerDesc">去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。</div>
     </div>
     <button class="subscription-cta" id="subscriptionBannerCta" type="button" onclick="event.stopPropagation();showSubscriptionPlans()">升级 Pro</button>
+    <button class="subscription-dismiss" id="subscriptionBannerDismiss" type="button" onclick="event.stopPropagation();dismissValueMoment()" aria-label="Dismiss">×</button>
   </div>
 
   <!-- Header row -->
@@ -1863,15 +1864,9 @@
     </div>
   </div>
 
-  <!-- Stats matrix — IEC 61672 SLM standard notation -->
-  <section class="stitch-telemetry-sec">
-    <div class="stitch-telemetry-head">
-      <h3 class="stitch-telemetry-title" id="telemetryTitle">Acoustic Metrics (LEQ &amp; LN MATRIX)</h3>
-      <span class="stitch-telemetry-badge" id="telemetryBadge">Based on IEC algorithms</span>
-    </div>
-    <p class="meter-truepeak notranslate" id="meterTruePeak" translate="no" hidden>LCpeak -- · LZpeak --</p>
-    <div class="stitch-matrix-grid">
-      <!-- Card 1: LAeq -->
+  <!-- Session levels. LAeq / Lmax / Lmin stay visible. The rest opens on demand. -->
+  <section class="stitch-telemetry-sec" id="stitchTelemetry">
+    <div class="stitch-matrix-grid meter-primary">
       <div class="stitch-matrix-card highlight">
         <div class="stitch-matrix-card-top">
           <span class="stitch-matrix-lbl" id="telemetryLblLeq">LAeq</span>
@@ -1882,8 +1877,6 @@
         </div>
         <span class="stitch-matrix-sub" id="telemetrySubLeq">Equivalent Continuous Level</span>
       </div>
-
-      <!-- Card 2: Peak -->
       <div class="stitch-matrix-card">
         <div class="stitch-matrix-card-top">
           <span class="stitch-matrix-lbl" id="telemetryLblPeak">Lmax</span>
@@ -1894,8 +1887,6 @@
         </div>
         <span class="stitch-matrix-sub" id="telemetrySubPeak">Time-weighted maximum</span>
       </div>
-
-      <!-- Card 3: Min -->
       <div class="stitch-matrix-card">
         <div class="stitch-matrix-card-top">
           <span class="stitch-matrix-lbl" id="telemetryLblMin">Lmin</span>
@@ -1906,43 +1897,56 @@
         </div>
         <span class="stitch-matrix-sub" id="telemetrySubMin">Time-weighted minimum</span>
       </div>
-
-      <!-- Card 4: L10 -->
-      <div class="stitch-matrix-card">
-        <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl" id="telemetryLblL10">L10 Peak</span>
-          <span class="stitch-matrix-tag" id="telemetryTagL10">Top10%</span>
-        </div>
-        <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val notranslate" translate="no" id="sL10">--<span class="u notranslate" translate="no"> dB</span></span>
-        </div>
-        <span class="stitch-matrix-sub" id="telemetrySubL10">Infrequent Loud Events</span>
-      </div>
-
-      <!-- Card 5: L50 -->
-      <div class="stitch-matrix-card">
-        <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl" id="telemetryLblL50">L50 Median</span>
-          <span class="stitch-matrix-tag" id="telemetryTagL50">Median</span>
-        </div>
-        <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val notranslate" translate="no" id="sL50">--<span class="u notranslate" translate="no"> dB</span></span>
-        </div>
-        <span class="stitch-matrix-sub" id="telemetrySubL50">Typical Median Level</span>
-      </div>
-
-      <!-- Card 6: L90 -->
-      <div class="stitch-matrix-card">
-        <div class="stitch-matrix-card-top">
-          <span class="stitch-matrix-lbl" id="telemetryLblL90">L90 Residual</span>
-          <span class="stitch-matrix-tag" id="telemetryTagL90">Residual</span>
-        </div>
-        <div class="stitch-matrix-val-wrap">
-          <span class="stitch-matrix-val notranslate" translate="no" id="sL90">--<span class="u notranslate" translate="no"> dB</span></span>
-        </div>
-        <span class="stitch-matrix-sub" id="telemetrySubL90">Ambient Background Floor</span>
-      </div>
     </div>
+    <details class="meter-details" id="meterDetails">
+      <summary class="meter-details-summary" id="meterDetailsSummary">Details</summary>
+      <div class="meter-details-body">
+        <div class="meter-weight-row" id="meterWeightRow">
+          <button type="button" class="meter-chip" data-weight-chip="A" onclick="setWeight('A')">A</button>
+          <button type="button" class="meter-chip" data-weight-chip="C" onclick="setWeight('C')">C</button>
+          <button type="button" class="meter-chip" data-weight-chip="Z" onclick="setWeight('Z')">Z</button>
+          <button type="button" class="meter-chip" data-time-chip="F" id="meterChipFast" onclick="setTimeWeight('F')">Fast</button>
+          <button type="button" class="meter-chip" data-time-chip="S" id="meterChipSlow" onclick="setTimeWeight('S')">Slow</button>
+        </div>
+        <p class="meter-truepeak notranslate" id="meterTruePeak" translate="no" hidden>LCpeak -- · LZpeak --</p>
+        <div class="stitch-matrix-grid meter-ln">
+          <div class="stitch-matrix-card">
+            <div class="stitch-matrix-card-top">
+              <span class="stitch-matrix-lbl" id="telemetryLblL10">L10 Peak</span>
+              <span class="stitch-matrix-tag" id="telemetryTagL10">Top10%</span>
+            </div>
+            <div class="stitch-matrix-val-wrap">
+              <span class="stitch-matrix-val notranslate" translate="no" id="sL10">--<span class="u notranslate" translate="no"> dB</span></span>
+            </div>
+            <span class="stitch-matrix-sub" id="telemetrySubL10">Infrequent Loud Events</span>
+          </div>
+          <div class="stitch-matrix-card">
+            <div class="stitch-matrix-card-top">
+              <span class="stitch-matrix-lbl" id="telemetryLblL50">L50 Median</span>
+              <span class="stitch-matrix-tag" id="telemetryTagL50">Median</span>
+            </div>
+            <div class="stitch-matrix-val-wrap">
+              <span class="stitch-matrix-val notranslate" translate="no" id="sL50">--<span class="u notranslate" translate="no"> dB</span></span>
+            </div>
+            <span class="stitch-matrix-sub" id="telemetrySubL50">Typical Median Level</span>
+          </div>
+          <div class="stitch-matrix-card">
+            <div class="stitch-matrix-card-top">
+              <span class="stitch-matrix-lbl" id="telemetryLblL90">L90 Residual</span>
+              <span class="stitch-matrix-tag" id="telemetryTagL90">Residual</span>
+            </div>
+            <div class="stitch-matrix-val-wrap">
+              <span class="stitch-matrix-val notranslate" translate="no" id="sL90">--<span class="u notranslate" translate="no"> dB</span></span>
+            </div>
+            <span class="stitch-matrix-sub" id="telemetrySubL90">Ambient Background Floor</span>
+          </div>
+        </div>
+        <div class="stitch-telemetry-head meter-details-foot">
+          <h3 class="stitch-telemetry-title" id="telemetryTitle">Acoustic Metrics (LEQ &amp; LN MATRIX)</h3>
+          <span class="stitch-telemetry-badge" id="telemetryBadge">Based on IEC algorithms</span>
+        </div>
+      </div>
+    </details>
   </section>
 
   <!-- Legacy stats fallback elements preserving IDs -->
@@ -2475,7 +2479,7 @@
             </div>
             <div class="sctrl">
               <select class="setting-select" id="calibrationPresetSelect" onchange="setCalibrationPreset(this.value)">
-                <option value="desktop-browser">PC Desktop Browser (-16.5 dB)</option>
+                <option value="desktop-browser">PC Desktop Browser (-21.0 dB)</option>
                 <option value="laptop-internal-mic">Laptop Built-in Mic (+38 dB)</option>
                 <option value="tablet-browser">Tablet Browser (+2.0 dB)</option>
                 <option value="android-browser">Android Browser (-11.0 dB)</option>
@@ -2806,7 +2810,7 @@
 <script src="/assets/utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/i18n-data.js?v=20261003e" data-cfasync="false"></script>
 <script src="/assets/lang-flags.js?v=20261003e" data-cfasync="false"></script>
-<script src="/assets/pro-meter.js?v=20261028d" data-cfasync="false"></script>
+<script src="/assets/pro-meter.js?v=20261029a" data-cfasync="false"></script>
 <script src="/assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/report-cert-engine.js?v=20261009a" data-cfasync="false"></script>
@@ -2832,11 +2836,11 @@ const MEDIA_STORE='clips';
 const PERMISSION_GUIDE_KEY='sf_permission_guide_v1';
 const CALIBRATION_PRESETS={
   'desktop-browser':{
-    offset:-16.5,
+    offset:-21.0,
     label:'PC / Desktop Browser (External Mic / USB)',
     zh:'PC 桌面浏览器（外置麦克风 / 独立声卡）',
-    reason:'Quiet-room field baseline (-16.5 dB). Same room read 23.6 dBA on the new engine; target about 28-31 dBA.',
-    zhReason:'安静房间现场基准（-16.5 dB）。新引擎在同一房间读到 23.6 dBA，目标约 28-31 dBA。',
+    reason:'Quiet-room field baseline (-21.0 dB). Branch preview read 34.0 dBA with processing off; target about 29-30 dBA. Phone presets are unchanged.',
+    zhReason:'安静房间现场基准（-21.0 dB）。分支预览在处理关闭时读到 34.0 dBA，目标约 29-30 dBA。手机预设不变。',
   },
   'laptop-internal-mic':{
     offset:38,
@@ -2880,7 +2884,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v10';
+const CALIBRATION_BASELINE='device-preset-v11';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -2902,7 +2906,7 @@ let sessStart,recStart,recTmr,monTmr,curDb=0,tickN=0,lastTick=0,lastAnalysisAt=0
 let leqEnergy=0,leqTime=0;
 let meterPath='fft';
 let iecNode=null,iecScript=null,iecSink=null,iecScriptEngine=null;
-let iecEpoch=0,iecLatest=null,iecLeqSumSquares=0,iecLeqSamples=0,iecSeenSamples=0,meterWarmSamples=0;
+let iecEpoch=0,iecLatest=null,iecLeqSumSquares=0,iecLeqSamples=0,iecSeenSamples=0,meterWarmSamples=0,meterPeakWarmSamples=0;
 let levelHist=null,lastLnSampleAt=0,lastTrustKey='';
 let fastMax=-Infinity,slowMax=-Infinity,fastMin=Infinity,slowMin=Infinity;
 let lcPeakLin=0,lzPeakLin=0;
@@ -2911,6 +2915,8 @@ let micProcessing={autoGainControl:false,noiseSuppression:false,echoCancellation
 let curLoc=null,chunks=[],recHasVideo=false;
 let noiseEvents=[],longMonitorNoiseEvents=noiseEvents,lastImpulseEventAt=0,longMonitorPlan={autoStopMinutes:0,eventThresholdDb:75};
 let capHideTmr=null;
+let pendingValueMoment=null;
+let longMomentQueued=false;
 let cameraMode='preview';
 let evidenceMode='audio';
 let watermarkCameraOpen=false,watermarkCameraMode='video';
@@ -3807,6 +3813,7 @@ function applyTranslations(){
   if(typeof applyPermModalLanguage==='function') applyPermModalLanguage();
   if(typeof translateSettingsDrawer==='function') translateSettingsDrawer();
   if(typeof translateDesktopSettings==='function') translateDesktopSettings();
+  if(typeof renderMeterDetailsCopy==='function') renderMeterDetailsCopy();
 }
 
 function translateSettingsDrawer() {
@@ -4634,7 +4641,7 @@ function animateDbNumber(target){
     smhLevel.textContent=info.l;
     smhLevel.className=`smh-level lv-${info.c}`;
   }
-  if(typeof updatePeakNeedle==='function') updatePeakNeedle(target);
+  if(typeof updatePeakNeedle==='function'&&typeof meterPeakSettled==='function'&&meterPeakSettled()) updatePeakNeedle(target);
 }
 function setAppLanguage(lang,{persist=true,notify=true}={}){
   appLanguage=normalizeAppLanguage(lang)||'en-US';
@@ -4817,6 +4824,16 @@ function setCapState(kind,title,desc,badge){
 }
 
 function showCapTemporarily(kind,title,desc,badge,ms=8000){
+  if(kind==='info'){
+    const monitoringLabel=typeof t==='function'?t('ui.monitoring'):'';
+    const readyTitle=title==='Ready'||title==='准备就绪';
+    const duplicate=!!(title&&monitoringLabel&&title===monitoringLabel);
+    if(badge==='SAVED'||badge==='LIVE'||badge==='READY')return;
+    if(!duplicate&&!readyTitle&&title&&typeof toast==='function'){
+      toast(desc?`${title} — ${desc}`:title,'info',Math.min(ms||4000,4800));
+    }
+    return;
+  }
   clearTimeout(capHideTmr);
   setCapState(kind,title,desc,badge);
   const card=document.getElementById('capCard');
@@ -6410,21 +6427,69 @@ function renderPlanStatus(){
 
 function renderSubscriptionBanner(){
   const banner=document.getElementById('subscriptionBanner');
+  if(!banner)return;
+  const isPaid=(typeof isUserPaidMember==='function'&&isUserPaidMember())||currentPlan!=='free';
+  if(isPaid){
+    dismissValueMoment();
+    return;
+  }
+  if(banner.dataset.moment){
+    presentValueMoment(banner.dataset.moment);
+    return;
+  }
+  banner.classList.add('banner-parked');
+  banner.classList.remove('value-moment');
+  banner.style.display='none';
+}
+function queueValueMoment(kind){
+  if((typeof isUserPaidMember==='function'&&isUserPaidMember())||(currentPlan&&currentPlan!=='free'))return;
+  pendingValueMoment=kind;
+}
+function presentValueMoment(kind){
+  const banner=document.getElementById('subscriptionBanner');
+  if(!banner||!kind)return;
+  if((typeof isUserPaidMember==='function'&&isUserPaidMember())||(currentPlan&&currentPlan!=='free')){
+    dismissValueMoment();
+    return;
+  }
+  const pack=typeof meterMomentPack==='function'?meterMomentPack():null;
+  if(!pack)return;
+  const fields={
+    session:['sessionTitle','sessionDesc'],
+    export:['exportTitle','exportDesc'],
+    evidence:['evidenceTitle','evidenceDesc'],
+    long:['longTitle','longDesc'],
+  }[kind]||['sessionTitle','sessionDesc'];
   const title=document.getElementById('subscriptionBannerTitle');
   const desc=document.getElementById('subscriptionBannerDesc');
   const cta=document.getElementById('subscriptionBannerCta');
-  if(!banner||!title||!desc||!cta)return;
-  const isPaid=(typeof isUserPaidMember==='function'&&isUserPaidMember())||currentPlan!=='free';
-  if(isPaid){
-    banner.style.display='none';
-    return;
-  }
+  if(title)title.textContent=pack[fields[0]];
+  if(desc)desc.textContent=pack[fields[1]];
+  if(cta)cta.textContent=pack.cta;
+  banner.dataset.moment=kind;
+  banner.classList.remove('banner-parked');
+  banner.classList.add('value-moment');
   banner.style.display='flex';
-  banner.classList.remove('paid');
-  const isZh = appLanguage === 'zh-CN';
-  title.textContent = isZh ? '升级 Pro：一键生成物业/合规标准取证底稿' : 'Upgrade Pro: 1-Tap Forensic Dispute Dossiers';
-  desc.textContent = isZh ? '去除全部水印、无限制夜间长时连续监测、专属维权模板与防篡改数字存证。' : 'Remove watermarks, unlimited 24/7 overnight sentry, legal templates & tamper-evident export.';
-  cta.textContent = isZh ? '升级 Pro' : 'Upgrade Pro';
+}
+function dismissValueMoment(){
+  const banner=document.getElementById('subscriptionBanner');
+  if(!banner)return;
+  delete banner.dataset.moment;
+  banner.classList.add('banner-parked');
+  banner.classList.remove('value-moment');
+  banner.style.display='none';
+}
+function flushValueMoment(){
+  if(!pendingValueMoment)return;
+  const kind=pendingValueMoment;
+  pendingValueMoment=null;
+  presentValueMoment(kind);
+}
+function maybeOfferLongRunMoment(){
+  if(longMomentQueued||!isMon)return;
+  if(monitoringElapsedMs()<3*60*1000)return;
+  longMomentQueued=true;
+  presentValueMoment('long');
 }
 
 function showSubscriptionPlans(){
@@ -7081,14 +7146,15 @@ function loadState(){
     const raw=localStorage.getItem(LS_KEY);
     if(raw){
       const s=JSON.parse(raw);
-      if(!s.calibrationBaseline || s.calibrationBaseline!==CALIBRATION_BASELINE){
-        calibrationPresetKey=detectCalibrationPresetKey();
-        calOffset=getCalibrationPreset(calibrationPresetKey).offset;
-      } else {
-        calibrationPresetKey=CALIBRATION_PRESETS[s.calibrationPresetKey]?s.calibrationPresetKey:detectCalibrationPresetKey();
-        if(typeof s.calOffset === 'number') calOffset=s.calOffset;
-        else calOffset=getCalibrationPreset(calibrationPresetKey).offset;
-      }
+      const detectedPreset=detectCalibrationPresetKey();
+      const storedPreset=CALIBRATION_PRESETS[s.calibrationPresetKey]?s.calibrationPresetKey:detectedPreset;
+      const presetSnapshot=Object.fromEntries(Object.keys(CALIBRATION_PRESETS).map(k=>[k,{offset:getCalibrationPreset(k).offset}]));
+      const decision=window.SoundfieldPro?.migrateSavedCalibration
+        ?window.SoundfieldPro.migrateSavedCalibration({calibrationBaseline:s.calibrationBaseline,calibrationPresetKey:storedPreset,calOffset:s.calOffset},presetSnapshot,CALIBRATION_BASELINE)
+        :{presetKey:storedPreset,calOffset:typeof s.calOffset==='number'?s.calOffset:getCalibrationPreset(storedPreset).offset,keepManual:typeof s.calOffset==='number'};
+      calibrationPresetKey=decision.presetKey||storedPreset;
+      if(typeof decision.calOffset==='number')calOffset=decision.calOffset;
+      else calOffset=getCalibrationPreset(calibrationPresetKey).offset;
       if(s.micGainDb!==undefined) micGainDb=(s.micGainDb===18||s.micGainDb==null)?2:s.micGainDb;
       if(s.alertTh!==undefined) alertTh=s.alertTh??DEFAULT_ALERT_THRESHOLD_DB;
       if(s.alertsOn!==undefined) alertsOn=s.alertsOn!==false;
@@ -7356,6 +7422,7 @@ function updateWeightUi(){
   if(timeEl) timeEl.textContent=timeWeight==='S'?'1s':'125ms';
   const leqLbl=document.getElementById('telemetryLblLeq');
   if(leqLbl)leqLbl.textContent=`L${weighting}eq`;
+  if(typeof renderMeterDetailsCopy==='function')renderMeterDetailsCopy();
   if(typeof renderMeterTrust==='function')renderMeterTrust();
 }
 
@@ -7704,6 +7771,7 @@ function applyLongMonitorPlan(){
 }
 
 function maybeCaptureImpulseEvent(inst,now){
+  if(typeof meterPeakSettled==='function'&&!meterPeakSettled())return;
   if(!window.SoundfieldPro?.detectImpulseEvents||dbH.length<2)return;
   if(now-lastImpulseEventAt<3500)return;
   const recent=dbH.slice(-6).concat(inst);
@@ -8227,6 +8295,8 @@ async function toggleMon(opts={}){
       };
       wBuf=new Uint8Array(analyser.frequencyBinCount);fBuf=new Uint8Array(fftAn.frequencyBinCount);
       floatTBuf=new Float32Array(analyser.fftSize);floatFBuf=new Float32Array(fftAn.frequencyBinCount);
+      resetMeasurementIntegrators();
+      longMomentQueued=false;
       isMon=true;peak=0;mn=999;dbH=[];trendH=[];noiseEvents=[];lastImpulseEventAt=0;curDb=0;tickN=0;
       silentTickCount=0;hasAttemptedAudioFallback=false;
       lastTick=performance.now();lastAnalysisAt=0;lastVisualAt=0;lastOverlayAt=0;powerSaverNotified=false;leqEnergy=0;leqTime=0;sessStart=new Date();
@@ -8346,16 +8416,43 @@ function updateLowInputDiagnostic(inst){
 
 /* ── IEC 61672 time-domain meter (worklet, then ScriptProcessor, then FFT) ── */
 var METER_TRUST_TEXT={
-  'en-US':{standby:'Standby',settle:'Settling — the first second is left out of LAeq and Lmax',ok:'In range',clip:'Clipping — reading is saturated',floor:'Input near digital noise floor',acousticFloor:'May be at or below the device noise floor — not a confirmed room level',agc:'Mic processing on — level may be compressed',agcQuiet:'Mic processing is on — this quiet reading may not be the room',legacy:'Compatibility weighting'},
-  'zh-CN':{standby:'待机',settle:'稳定中 — 第一秒不计入 LAeq 和 Lmax',ok:'量程内',clip:'削波 — 读数已饱和',floor:'输入接近数字本底噪声',acousticFloor:'可能处于或低于设备本底 — 不能确认是房间声级',agc:'浏览器音频处理开启 — 读数可能被压缩',agcQuiet:'浏览器正在处理麦克风 — 这个安静读数可能不是房间',legacy:'兼容计权'},
-  es:{standby:'En espera',ok:'Dentro de rango',clip:'Saturación — lectura recortada',floor:'Entrada cerca del ruido digital',acousticFloor:'Puede estar en el ruido del dispositivo — no es el nivel de la sala',agc:'Procesado del micrófono activo',agcQuiet:'El micrófono está procesado — esta lectura baja puede no ser la sala',legacy:'Ponderación de compatibilidad'},
-  fr:{standby:'En attente',ok:'Dans la plage',clip:'Écrêtage — lecture saturée',floor:'Entrée proche du bruit numérique',acousticFloor:'Peut être le bruit de l’appareil — pas le niveau de la pièce',agc:'Traitement micro actif',agcQuiet:'Traitement micro actif — cette lecture basse peut ne pas être la pièce',legacy:'Pondération de compatibilité'},
-  de:{standby:'Bereit',ok:'Im Messbereich',clip:'Übersteuerung — Anzeige gesättigt',floor:'Eingang nahe am digitalen Rauschen',acousticFloor:'Kann das Geräte-Grundrauschen sein — kein bestätigter Raumpegel',agc:'Mikrofonbearbeitung aktiv',agcQuiet:'Mikrofonbearbeitung an — dieser leise Wert ist evtl. nicht der Raum',legacy:'Kompatibilitätsbewertung'},
-  ja:{standby:'待機',ok:'測定範囲内',clip:'クリッピング — 飽和',floor:'入力がデジタル雑音付近',acousticFloor:'機器の暗騒音以下の可能性 — 室内レベルとは断定できません',agc:'マイク処理が有効',agcQuiet:'マイク処理中 — この小さな値は部屋の音ではないかもしれません',legacy:'互換ウェイティング'},
-  ko:{standby:'대기',ok:'측정 범위 안',clip:'클리핑 — 포화',floor:'입력이 디지털 잡음 근처',acousticFloor:'기기 잡음 이하일 수 있음 — 확인된 실내 레벨이 아님',agc:'마이크 처리 켜짐',agcQuiet:'마이크 처리 중 — 이 낮은 값은 방의 소리가 아닐 수 있음',legacy:'호환 가중'},
-  vi:{standby:'Sẵn sàng',ok:'Trong dải đo',clip:'Cắt đỉnh — số đo bão hòa',floor:'Tín hiệu gần nhiễu số',acousticFloor:'Có thể là nhiễu của máy — chưa phải mức phòng',agc:'Mic đang xử lý tín hiệu',agcQuiet:'Mic đang xử lý — số nhỏ này có thể không phải tiếng phòng',legacy:'Trọng số tương thích'},
-  th:{standby:'พร้อม',ok:'อยู่ในช่วงวัด',clip:'สัญญาณตัดยอด',floor:'สัญญาณเข้าใกล้สัญญาณรบกวนดิจิทัล',acousticFloor:'อาจอยู่ที่หรือต่ำกว่าพื้นเสียงของเครื่อง — ยังไม่ใช่ระดับห้อง',agc:'ไมโครโฟนกำลังประมวลผล',agcQuiet:'ไมโครโฟนกำลังประมวลผล — ค่าที่เบานี้อาจไม่ใช่เสียงห้อง',legacy:'การถ่วงน้ำหนักสำรอง'},
+  'en-US':{standby:'Standby',settle:'Settling — the opening is left out of LAeq, Lmax, and peaks',ok:'In range',clip:'Clipping — reading is saturated',floor:'Input near digital noise floor',acousticFloor:'Very quiet — near this phone mic’s quiet limit',agc:'Mic processing on — level may be compressed',agcQuiet:'Mic processing is on — this quiet reading may not be the room',legacy:'Compatibility weighting'},
+  'zh-CN':{standby:'待机',settle:'稳定中 — 开头不计入 LAeq、Lmax 和峰值',ok:'量程内',clip:'削波 — 读数已饱和',floor:'输入接近数字本底噪声',acousticFloor:'读数很低，接近这部手机麦克风的安静极限',agc:'浏览器音频处理开启 — 读数可能被压缩',agcQuiet:'浏览器正在处理麦克风 — 这个安静读数可能不是房间',legacy:'兼容计权'},
+  es:{standby:'En espera',settle:'Estabilizando — el inicio no entra en LAeq, Lmax ni picos',ok:'Dentro de rango',clip:'Saturación — lectura recortada',floor:'Entrada cerca del ruido digital',acousticFloor:'Muy bajo — cerca del límite silencioso de este micrófono',agc:'Procesado del micrófono activo',agcQuiet:'El micrófono está procesado — esta lectura baja puede no ser la sala',legacy:'Ponderación de compatibilidad'},
+  fr:{standby:'En attente',settle:'Stabilisation — le début est exclu de LAeq, Lmax et des crêtes',ok:'Dans la plage',clip:'Écrêtage — lecture saturée',floor:'Entrée proche du bruit numérique',acousticFloor:'Très faible — proche de la limite silencieuse de ce micro',agc:'Traitement micro actif',agcQuiet:'Traitement micro actif — cette lecture basse peut ne pas être la pièce',legacy:'Pondération de compatibilité'},
+  de:{standby:'Bereit',settle:'Einschwingen — der Anfang zählt nicht für LAeq, Lmax und Spitzen',ok:'Im Messbereich',clip:'Übersteuerung — Anzeige gesättigt',floor:'Eingang nahe am digitalen Rauschen',acousticFloor:'Sehr leise — nahe an der Ruhegrenze dieses Mikrofons',agc:'Mikrofonbearbeitung aktiv',agcQuiet:'Mikrofonbearbeitung an — dieser leise Wert ist evtl. nicht der Raum',legacy:'Kompatibilitätsbewertung'},
+  ja:{standby:'待機',settle:'安定中 — 開始直後は LAeq・Lmax・ピークに入りません',ok:'測定範囲内',clip:'クリッピング — 飽和',floor:'入力がデジタル雑音付近',acousticFloor:'とても小さい値です。この端末マイクの静音限界に近いです',agc:'マイク処理が有効',agcQuiet:'マイク処理中 — この小さな値は部屋の音ではないかもしれません',legacy:'互換ウェイティング'},
+  ko:{standby:'대기',settle:'안정화 중 — 시작 구간은 LAeq, Lmax, 피크에서 뺍니다',ok:'측정 범위 안',clip:'클리핑 — 포화',floor:'입력이 디지털 잡음 근처',acousticFloor:'매우 낮음 — 이 휴대폰 마이크의 정숙 한계에 가깝습니다',agc:'마이크 처리 켜짐',agcQuiet:'마이크 처리 중 — 이 낮은 값은 방의 소리가 아닐 수 있음',legacy:'호환 가중'},
+  vi:{standby:'Sẵn sàng',settle:'Đang ổn định — đoạn đầu không tính vào LAeq, Lmax và đỉnh',ok:'Trong dải đo',clip:'Cắt đỉnh — số đo bão hòa',floor:'Tín hiệu gần nhiễu số',acousticFloor:'Rất nhỏ — gần giới hạn yên của mic này',agc:'Mic đang xử lý tín hiệu',agcQuiet:'Mic đang xử lý — số nhỏ này có thể không phải tiếng phòng',legacy:'Trọng số tương thích'},
+  th:{standby:'พร้อม',settle:'กำลังนิ่ง — ช่วงต้นไม่นับใน LAeq, Lmax และพีค',ok:'อยู่ในช่วงวัด',clip:'สัญญาณตัดยอด',floor:'สัญญาณเข้าใกล้สัญญาณรบกวนดิจิทัล',acousticFloor:'เบามาก — ใกล้ขีดจำกัดความเงียบของไมค์เครื่องนี้',agc:'ไมโครโฟนกำลังประมวลผล',agcQuiet:'ไมโครโฟนกำลังประมวลผล — ค่าที่เบานี้อาจไม่ใช่เสียงห้อง',legacy:'การถ่วงน้ำหนักสำรอง'},
 };
+const METER_MOMENT_COPY={
+  'en-US':{details:'Details',fast:'Fast',slow:'Slow',dismiss:'Dismiss',sessionTitle:'This session can be filed',sessionDesc:'Pro reports leave out the watermark and keep the reading you just measured.',exportTitle:'That file is a preview',exportDesc:'Pro exports a clean report you can send as-is.',evidenceTitle:'Evidence is on this device',evidenceDesc:'Pro turns it into a clean report with this reading sealed in.',longTitle:'This run is worth keeping',longDesc:'Pro files the whole session and can keep watch overnight.',cta:'See Pro'},
+  'zh-CN':{details:'详情',fast:'快',slow:'慢',dismiss:'关闭',sessionTitle:'这次测量可以存档了',sessionDesc:'Pro 报告去掉水印，并保留你刚刚测到的读数。',exportTitle:'刚保存的是预览件',exportDesc:'Pro 导出的报告没有水印，可以直接发出。',evidenceTitle:'证据已在这台设备上',evidenceDesc:'Pro 把它做成无水印报告，并封上这次读数。',longTitle:'这次监测值得留下来',longDesc:'Pro 能把整段监测写成报告，也可以整夜值守。',cta:'了解 Pro'},
+  es:{details:'Detalles',fast:'Fast',slow:'Slow',dismiss:'Cerrar',sessionTitle:'Esta sesión ya se puede archivar',sessionDesc:'Los informes Pro van sin marca de agua y conservan la lectura que acabas de medir.',exportTitle:'Ese archivo es una vista previa',exportDesc:'Pro exporta un informe limpio, listo para enviar.',evidenceTitle:'La evidencia está en este dispositivo',evidenceDesc:'Pro la convierte en un informe limpio con esta lectura sellada.',longTitle:'Esta medición merece guardarse',longDesc:'Pro archiva toda la sesión y puede vigilar durante la noche.',cta:'Ver Pro'},
+  fr:{details:'Détails',fast:'Fast',slow:'Slow',dismiss:'Fermer',sessionTitle:'Cette session peut être archivée',sessionDesc:'Les rapports Pro n’ont pas de filigrane et gardent la mesure que vous venez de faire.',exportTitle:'Ce fichier est un aperçu',exportDesc:'Pro exporte un rapport net, prêt à envoyer.',evidenceTitle:'La preuve est sur cet appareil',evidenceDesc:'Pro en fait un rapport net, avec cette mesure scellée.',longTitle:'Cette mesure vaut la peine d’être gardée',longDesc:'Pro archive toute la session et peut surveiller toute la nuit.',cta:'Voir Pro'},
+  de:{details:'Details',fast:'Fast',slow:'Slow',dismiss:'Schließen',sessionTitle:'Diese Messung kann abgelegt werden',sessionDesc:'Pro-Berichte sind ohne Wasserzeichen und behalten den Wert, den Sie gerade gemessen haben.',exportTitle:'Diese Datei ist eine Vorschau',exportDesc:'Pro exportiert einen sauberen Bericht, den Sie direkt senden können.',evidenceTitle:'Der Nachweis liegt auf diesem Gerät',evidenceDesc:'Pro macht daraus einen sauberen Bericht mit diesem Messwert.',longTitle:'Diese Messung sollte bleiben',longDesc:'Pro legt die ganze Sitzung ab und kann über Nacht weiter messen.',cta:'Pro ansehen'},
+  ja:{details:'詳細',fast:'Fast',slow:'Slow',dismiss:'閉じる',sessionTitle:'この測定は記録に残せます',sessionDesc:'Proの報告書は透かしなしで、いま測った値をそのまま残せます。',exportTitle:'保存したファイルはプレビューです',exportDesc:'Proなら透かしのない報告書を、そのまま送れます。',evidenceTitle:'証拠はこの端末にあります',evidenceDesc:'Proは今回の測定値を封じた、透かしのない報告書にします。',longTitle:'この計測は残す価値があります',longDesc:'Proは測定全体を報告書にし、夜間の見守りも続けられます。',cta:'Proを見る'},
+  ko:{details:'자세히',fast:'Fast',slow:'Slow',dismiss:'닫기',sessionTitle:'이번 측정은 기록으로 남길 수 있습니다',sessionDesc:'Pro 보고서는 워터마크가 없고, 방금 측정한 값을 그대로 담습니다.',exportTitle:'방금 저장한 파일은 미리보기입니다',exportDesc:'Pro는 워터마크 없는 보고서를 바로 보낼 수 있게 내보냅니다.',evidenceTitle:'증거는 이 기기에 있습니다',evidenceDesc:'Pro가 이번 측정값을 담은 깨끗한 보고서로 만듭니다.',longTitle:'이번 측정은 남겨 둘 만합니다',longDesc:'Pro는 측정 전체를 보고서로 남기고, 밤새 감시도 이어갑니다.',cta:'Pro 보기'},
+  vi:{details:'Chi tiết',fast:'Fast',slow:'Slow',dismiss:'Đóng',sessionTitle:'Phiên đo này có thể lưu hồ sơ',sessionDesc:'Báo cáo Pro không có hình mờ và giữ đúng số vừa đo.',exportTitle:'Tệp vừa lưu là bản xem trước',exportDesc:'Pro xuất báo cáo sạch, gửi đi được ngay.',evidenceTitle:'Bằng chứng đang ở trên máy này',evidenceDesc:'Pro biến nó thành báo cáo sạch, kèm số vừa đo.',longTitle:'Lần đo này đáng được giữ lại',longDesc:'Pro lưu cả phiên đo và có thể theo dõi qua đêm.',cta:'Xem Pro'},
+  th:{details:'รายละเอียด',fast:'Fast',slow:'Slow',dismiss:'ปิด',sessionTitle:'รอบวัดนี้บันทึกเป็นแฟ้มได้แล้ว',sessionDesc:'รายงาน Pro ไม่มีลายน้ำ และเก็บค่าที่เพิ่งวัดไว้',exportTitle:'ไฟล์ที่เพิ่งบันทึกเป็นตัวอย่าง',exportDesc:'Pro ส่งออกรายงานที่ไม่มีลายน้ำ ส่งต่อได้เลย',evidenceTitle:'หลักฐานอยู่ในเครื่องนี้',evidenceDesc:'Pro ทำเป็นรายงานไม่มีลายน้ำ พร้อมค่าที่วัดครั้งนี้',longTitle:'การวัดครั้งนี้ควรถูกเก็บไว้',longDesc:'Pro เก็บบันทึกทั้งช่วง และเฝ้าดูต่อได้ตลอดคืน',cta:'ดู Pro'},
+};
+function meterMomentPack(){
+  return METER_MOMENT_COPY[appLanguage]||METER_MOMENT_COPY['en-US'];
+}
+function renderMeterDetailsCopy(){
+  const pack=meterMomentPack();
+  const summary=document.getElementById('meterDetailsSummary');
+  if(summary)summary.textContent=pack.details;
+  const fast=document.getElementById('meterChipFast');
+  const slow=document.getElementById('meterChipSlow');
+  if(fast)fast.textContent=pack.fast;
+  if(slow)slow.textContent=pack.slow;
+  const dismiss=document.getElementById('subscriptionBannerDismiss');
+  if(dismiss)dismiss.setAttribute('aria-label',pack.dismiss);
+  document.querySelectorAll('[data-weight-chip]').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-weight-chip')===weighting));
+  document.querySelectorAll('[data-time-chip]').forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-time-chip')===timeWeight));
+}
 function levelQuantityLabel(){
   const w=weighting==='C'?'C':weighting==='Z'?'Z':'A';
   return `L${w}${timeWeight==='S'?'S':'F'}`;
@@ -8372,6 +8469,7 @@ function resetMeasurementIntegrators(){
   fastMax=-Infinity;slowMax=-Infinity;fastMin=Infinity;slowMin=Infinity;
   iecLeqSumSquares=0;iecLeqSamples=0;iecSeenSamples=0;
   meterWarmSamples=window.SoundfieldPro?.sessionWarmupSamples?window.SoundfieldPro.sessionWarmupSamples(audioCtx&&audioCtx.sampleRate):Math.round(((audioCtx&&audioCtx.sampleRate)||48000)*1);
+  meterPeakWarmSamples=window.SoundfieldPro?.sessionPeakWarmupSamples?window.SoundfieldPro.sessionPeakWarmupSamples(audioCtx&&audioCtx.sampleRate):Math.round(((audioCtx&&audioCtx.sampleRate)||48000)*2);
   if(levelHist&&levelHist.reset)levelHist.reset();
   else if(window.SoundfieldPro?.createLevelHistogram)levelHist=window.SoundfieldPro.createLevelHistogram();
   lastLnSampleAt=0;
@@ -8399,22 +8497,38 @@ function meterSettled(){
   if(meterPath!=='fft')return window.SoundfieldPro?.shouldCountInSession?window.SoundfieldPro.shouldCountInSession(iecSeenSamples,meterWarmSamples):(meterWarmSamples>0&&iecSeenSamples>=meterWarmSamples);
   return !!(sessStart&&Date.now()-sessStart.getTime()>=1000);
 }
+function meterPeakSettled(){
+  if(!isMon)return false;
+  const need=meterPeakWarmSamples||Math.round(((audioCtx&&audioCtx.sampleRate)||48000)*2);
+  if(meterPath!=='fft')return window.SoundfieldPro?.shouldCountInSession?window.SoundfieldPro.shouldCountInSession(iecSeenSamples,need):(need>0&&iecSeenSamples>=need);
+  return !!(sessStart&&Date.now()-sessStart.getTime()>=2000);
+}
 function ingestIecStats(stats){
   if(!stats||stats.epoch!==iecEpoch||!stats.blockSamples)return;
   iecLatest=stats;
+  if(stats.clipCount>0)overloadActiveUntil=performance.now()+1800;
+  if(!isMon)return;
+  const seenBefore=iecSeenSamples;
   iecSeenSamples+=stats.blockSamples;
-  if(!meterSettled())return;
-  iecLeqSumSquares+=stats.blockSumSquares;
-  iecLeqSamples+=stats.blockSamples;
-  if(stats.clipCount>0){
-    overloadActiveUntil = performance.now() + 1800;
+  const countBody=window.SoundfieldPro?.shouldCountInSession?window.SoundfieldPro.shouldCountInSession(seenBefore,meterWarmSamples):(meterWarmSamples>0&&seenBefore>=meterWarmSamples);
+  const countPeaks=window.SoundfieldPro?.shouldCountInSession?window.SoundfieldPro.shouldCountInSession(seenBefore,meterPeakWarmSamples||meterWarmSamples):(seenBefore>=(meterPeakWarmSamples||meterWarmSamples));
+  if(!countBody&&!countPeaks)return;
+  if(countBody){
+    iecLeqSumSquares+=stats.blockSumSquares;
+    iecLeqSamples+=stats.blockSamples;
   }
   const fastRaw=uncalDb(stats.fastMs);
   const slowRaw=uncalDb(stats.slowMs);
-  if(fastRaw!=null){if(fastRaw>fastMax)fastMax=fastRaw;if(fastRaw<fastMin)fastMin=fastRaw;}
-  if(slowRaw!=null){if(slowRaw>slowMax)slowMax=slowRaw;if(slowRaw<slowMin)slowMin=slowRaw;}
-  if(stats.blockCPeak>lcPeakLin)lcPeakLin=stats.blockCPeak;
-  if(stats.blockZPeak>lzPeakLin)lzPeakLin=stats.blockZPeak;
+  if(countPeaks){
+    if(fastRaw!=null&&fastRaw>fastMax)fastMax=fastRaw;
+    if(slowRaw!=null&&slowRaw>slowMax)slowMax=slowRaw;
+    if(stats.blockCPeak>lcPeakLin)lcPeakLin=stats.blockCPeak;
+    if(stats.blockZPeak>lzPeakLin)lzPeakLin=stats.blockZPeak;
+  }
+  if(countBody){
+    if(fastRaw!=null&&fastRaw<fastMin)fastMin=fastRaw;
+    if(slowRaw!=null&&slowRaw<slowMin)slowMin=slowRaw;
+  }
   syncDisplayedExtremes();
 }
 function detachIecMeter(){
@@ -8570,7 +8684,7 @@ function renderMeterTrust(){
   }
   const stage=document.getElementById('dbStage');
   if(stage){
-    const unresolved=key==='acousticFloor'||key==='agcQuiet';
+    const unresolved=key==='floor';
     stage.setAttribute('data-floor',unresolved?'1':'0');
     const shown=Number.isFinite(curDb)?Math.max(0,Math.min(120,Math.round(curDb))):0;
     stage.setAttribute('aria-valuenow',isMon?String(shown):'0');
@@ -8645,8 +8759,11 @@ function tick(){
     maybeCaptureImpulseEvent(inst,now);
     curDb=applyMeterBallistics(inst,curDb,dt);
     updateLowInputDiagnostic(inst);
+    if(meterPeakSettled()){
+      if(inst>peak)peak=inst;
+    }
     if(meterSettled()){
-      if(inst>peak)peak=inst;if(inst>0&&inst<mn)mn=inst;
+      if(inst>0&&inst<mn)mn=inst;
       if(inst>0&&Number.isFinite(inst)){leqEnergy+=Math.pow(10,inst/10)*dt;leqTime+=dt;}
       noteLevelSample(inst,now);
     }
@@ -8672,7 +8789,7 @@ function tick(){
   document.getElementById('meterFill').style.width=pct+'%';
   document.getElementById('meterFill').style.background=dbCol(curDb);
   document.getElementById('sLeq').innerHTML=`${fmtDb(meterSettled()?leq:0)}<span class="u notranslate" translate="no"> dB</span>`;
-  document.getElementById('sPeak').innerHTML=`${fmtDb(meterSettled()?peak:0)}<span class="u notranslate" translate="no"> dB</span>`;
+  document.getElementById('sPeak').innerHTML=`${fmtDb(meterPeakSettled()?peak:0)}<span class="u notranslate" translate="no"> dB</span>`;
   document.getElementById('sMin').innerHTML=`${fmtDb(meterSettled()?(mn===999?0:mn):0)}<span class="u notranslate" translate="no"> dB</span>`;
   document.getElementById('sAvg').innerHTML=`${fmtDb(avg)}<span class="u notranslate" translate="no"> dB</span>`;
   if(now-lastOverlayAt>=throttle.overlayInterval){
@@ -8738,6 +8855,7 @@ function tick(){
     instantAlertBelowSince = 0;
   }
 
+  if(typeof maybeOfferLongRunMoment==='function')maybeOfferLongRunMoment();
   // ── Update Sentry Surveillance HUD ──
   if(typeof updateSentrySurveillanceHud==='function') updateSentrySurveillanceHud(inst, isAbove, nowTs);
 
@@ -9204,6 +9322,7 @@ async function saveRec(){
   const savedKind=DB.records[0]?.hasVid?t('media.video'):t('media.audio');
   const recordingSaveStatus=persisted?'persistent':'temporary';
   trackEvent('recording_saved',{kind:DB.records[0]?.mediaKind||'audio',persisted,avgDb:DB.records[0]?.avgDb||0,duration:dur});
+  queueValueMoment('evidence');
   showCapTemporarily('info',appLanguage!=='zh-CN'?`${savedKind} saved`:`${savedKind}会话已保存`,persisted?(appLanguage!=='zh-CN'?'Saved to this browser with session details.':'媒体文件和会话元数据已保存到本机浏览器。'):(appLanguage!=='zh-CN'?'Temporary file. Save it from Records before closing or refreshing.':'本次会话已暂存，请在刷新或关闭页面前到记录页保存到手机。'),'SAVED');
   toast(recordingSaveStatus==='persistent'?(appLanguage!=='zh-CN'?`${savedKind} saved`:`${savedKind}已保存到记录列表`):(appLanguage!=='zh-CN'?`${savedKind} is temporary. Save it from Records.`:`${savedKind}已暂存，请立即在记录页保存`),'info',6200);
   const recLbl = document.getElementById('recLabel');
@@ -9216,6 +9335,8 @@ async function saveRec(){
       // Overnight Sentry mode does NOT pop up full modal to avoid waking sleeping user
       if (!autoRecOnThreshold && evidenceMode !== 'sentry') {
         openReportPreviewModal([DB.records[0]], false);
+      } else if(typeof flushValueMoment==='function'){
+        flushValueMoment();
       }
     }
   }, 450);
@@ -9685,7 +9806,7 @@ function captureCurrentSessionSnapshot() {
       offsetDb: (typeof calOffset !== 'undefined' ? calOffset : 0),
       micGainDb: (typeof micGainDb !== 'undefined' ? micGainDb : 2),
       errorRange: (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : 1.2),
-      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v10')
+      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v11')
     }
   };
 }
@@ -9703,6 +9824,7 @@ function stopAll(){
   if(isRec) toggleRec();
   // Do NOT auto-download report image; open report preview modal so user decides
   if(!hadRec && snapshot && snapshot.avgDb > 0 && snapshot.dur >= 1){
+    queueValueMoment('session');
     setTimeout(() => {
       openLatestReportPreview();
     }, 200);
@@ -9746,6 +9868,7 @@ function stopAll(){
   const capCardEl=document.getElementById('capCard');if(capCardEl)capCardEl.classList.add('collapsed');
   document.getElementById('alertBox').className='alert';
   animateDbNumber(0);
+  if(typeof _updateNeedlePos==='function'){_peakDb=0;_updateNeedlePos(0);}
   if(typeof renderMeterTrust==='function')renderMeterTrust();
   document.getElementById('dbLevelMain').textContent=t('levels.quiet','安静');document.getElementById('dbLevelMain').className='db-level-main lv-q';
   document.getElementById('dbStage').style.setProperty('--level-color','var(--accent)');
@@ -10636,6 +10759,7 @@ function openReportPreviewModal(recs, isBatch = false) {
   if (freeDlBtn) {
     freeDlBtn.textContent = dlLabels.pdf;
     freeDlBtn.onclick = () => {
+      queueValueMoment('export');
       closeReportPreviewModal();
       try {
         const doc = buildPDF(recs, !isPro);
@@ -10660,6 +10784,7 @@ function openReportPreviewModal(recs, isBatch = false) {
   }
   if (imgDlBtn) {
     imgDlBtn.onclick = () => {
+      queueValueMoment('export');
       closeReportPreviewModal();
       try {
         const stats = buildStatsFromRecord(r0);
@@ -10679,6 +10804,7 @@ function openReportPreviewModal(recs, isBatch = false) {
   if (csvDlBtn) {
     csvDlBtn.textContent = dlLabels.csv;
     csvDlBtn.onclick = () => {
+      queueValueMoment('export');
       exportSessionOrRecordCSV(recs, isBatch);
     };
   }
@@ -10705,6 +10831,7 @@ function openReportPreviewModal(recs, isBatch = false) {
 function closeReportPreviewModal() {
   const modal = document.getElementById('reportPreviewModal');
   if (modal) modal.classList.remove('show');
+  if(typeof flushValueMoment==='function')flushValueMoment();
 }
 
 function showReportPreviewModal() {

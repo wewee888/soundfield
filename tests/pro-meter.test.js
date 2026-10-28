@@ -202,15 +202,16 @@ test('LCpeak and LZpeak track the inter-sample crest of a 1 kHz sine', () => {
   assert.ok(lc > meter.dbFromMeanSquare(amp * amp / 2, 0, 0), 'peak is above RMS');
 });
 
-test('phone readings under 50 dBA latch as unresolved device floor', () => {
+test('a correct quiet-room phone reading is not labeled as the device floor', () => {
   const latch = meter.createPhoneFloorLatch();
-  assert.equal(latch.update(42, true), true);
-  assert.equal(latch.update(23, true), true);
-  assert.equal(latch.update(53, true), true, 'stays limited until the exit threshold');
-  assert.equal(latch.update(60, true), false);
-  assert.equal(latch.update(30, false), false, 'desktop presets are not phone floors');
-  assert.equal(meter.PHONE_ABSOLUTE_FLOOR_ENTER_DB, 50);
-  assert.ok(meter.PHONE_ABSOLUTE_FLOOR_EXIT_DB > meter.PHONE_ABSOLUTE_FLOOR_ENTER_DB);
+  assert.equal(latch.update(28.8, true), false, 'validated Android quiet room stays a room reading');
+  assert.equal(latch.update(28.3, true), false, 'validated iPhone quiet room stays a room reading');
+  assert.equal(latch.update(21, true), true);
+  assert.equal(latch.update(24, true), true, 'stays limited until the exit threshold');
+  assert.equal(latch.update(26, true), false);
+  assert.equal(latch.update(18, false), false, 'desktop presets are not phone floors');
+  assert.equal(meter.PHONE_ABSOLUTE_FLOOR_ENTER_DB, 22);
+  assert.equal(meter.PHONE_ABSOLUTE_FLOOR_EXIT_DB, 26);
 });
 
 test('mic gain shifts the reading and does not amplify samples', () => {
@@ -246,12 +247,73 @@ test('microphone opens with processing off, including legacy Chrome flags', () =
   assert.equal(meter.rawMicApplyConstraints()[0].googNoiseSuppression, false);
 });
 
-test('the first second of a session is excluded from Leq and Lmax', () => {
+test('the first second of a session is excluded from Leq', () => {
   const warm = meter.sessionWarmupSamples(48000);
   assert.equal(warm, 48000);
   assert.equal(meter.shouldCountInSession(warm - 1, warm), false);
   assert.equal(meter.shouldCountInSession(warm, warm), true);
   assert.equal(meter.SESSION_WARMUP_SECONDS, 1);
+});
+
+test('peaks wait longer than Leq so a start transient is not LCpeak or Lmax', () => {
+  const warm = meter.sessionWarmupSamples(48000);
+  const peakWarm = meter.sessionPeakWarmupSamples(48000);
+  assert.equal(meter.SESSION_PEAK_WARMUP_SECONDS, 2);
+  assert.equal(peakWarm, 96000);
+  assert.ok(peakWarm > warm);
+  assert.equal(meter.shouldCountInSession(warm, peakWarm), false);
+  assert.equal(meter.shouldCountInSession(peakWarm - 1, peakWarm), false);
+  assert.equal(meter.shouldCountInSession(peakWarm, peakWarm), true);
+});
+
+test('preset migration keeps a hand-entered calibration offset', () => {
+  const current = {
+    'desktop-browser': { offset: -21 },
+    'android-browser': { offset: -11 },
+    'ios-browser': { offset: 12 },
+    'tablet-browser': { offset: 2 },
+    'laptop-internal-mic': { offset: 38 },
+  };
+  const desktopStock = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v10', calibrationPresetKey: 'desktop-browser', calOffset: -16.5 },
+    current,
+    'device-preset-v11',
+  );
+  assert.equal(desktopStock.calOffset, -21);
+  assert.equal(desktopStock.keepManual, false);
+  const desktopManual = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v10', calibrationPresetKey: 'desktop-browser', calOffset: -10 },
+    current,
+    'device-preset-v11',
+  );
+  assert.equal(desktopManual.calOffset, -10);
+  assert.equal(desktopManual.keepManual, true);
+  const phoneUntouched = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v10', calibrationPresetKey: 'android-browser', calOffset: -11 },
+    current,
+    'device-preset-v11',
+  );
+  assert.equal(phoneUntouched.calOffset, -11);
+  const iosOldStock = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v9', calibrationPresetKey: 'ios-browser', calOffset: 7 },
+    current,
+    'device-preset-v11',
+  );
+  assert.equal(iosOldStock.calOffset, 12);
+  const iosManual = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v9', calibrationPresetKey: 'ios-browser', calOffset: 9.5 },
+    current,
+    'device-preset-v11',
+  );
+  assert.equal(iosManual.calOffset, 9.5);
+  assert.equal(iosManual.keepManual, true);
+  const alreadyCurrent = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v11', calibrationPresetKey: 'desktop-browser', calOffset: -8 },
+    current,
+    'device-preset-v11',
+  );
+  assert.equal(alreadyCurrent.calOffset, -8);
+  assert.equal(alreadyCurrent.migrated, false);
 });
 
 test('IEC worklet source parses and names the processor', () => {
