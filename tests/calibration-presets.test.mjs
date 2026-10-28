@@ -20,8 +20,8 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   assert.ok(soundtestHtml.includes('offset:38'), 'laptop-internal-mic offset must provide +38 dB compensation');
 
   // 2. Verify CALIBRATION_BASELINE is bumped to v9 to ensure auto-refresh on existing devices
-  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v11'"), 'CALIBRATION_BASELINE must be device-preset-v11');
-  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v11')"), 'Snapshot preset fallback must be device-preset-v11');
+  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v12'"), 'CALIBRATION_BASELINE must be device-preset-v12');
+  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v12')"), 'Snapshot preset fallback must be device-preset-v12');
 
   // 3. Verify Slider ranges are expanded to accommodate offsets down to -35 dB and up to +45 dB, and Admin device matrix exists
   const calRMatches = soundtestHtml.match(/id="calR"[^>]*min="-35"/g) || soundtestHtml.match(/min="-35"[^>]*id="calR"/g);
