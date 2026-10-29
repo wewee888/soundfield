@@ -1263,7 +1263,7 @@
           <div class="settings-drawer-desc" id="sdDescMic">Added to the decibel reading. It does not boost the samples, so a full-scale tone is not clipped by this control.</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px">
-          <input type="range" id="micR" min="0" max="36" value="2" step="1" oninput="setMicGain()" style="width:80px">
+          <input type="range" id="micR" min="0" max="36" value="2" step="1" oninput="setMicGain(event)" style="width:80px">
           <span class="settings-drawer-value" id="micV">2dB</span>
         </div>
       </div>
@@ -1273,7 +1273,7 @@
           <div class="settings-drawer-desc" id="sdDescCal">Fine-tune baseline against certified reference meter</div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
-          <input type="range" id="calR" min="-35" max="45" value="0" step="0.1" oninput="setCal()" style="width:70px">
+          <input type="range" id="calR" min="-35" max="45" value="0" step="0.1" oninput="setCal(event)" style="width:70px">
           <span class="settings-drawer-value" id="calV">0.0 dB</span>
           <button class="btn b-cyan" id="sdBtnCalRec" style="height:26px;font-size:9px;padding:0 7px" onclick="applyProMeterCalibration()">Recommended</button>
         </div>
@@ -2481,11 +2481,11 @@
           </div>
           <div class="srow">
             <div><div class="slabel">Microphone Gain</div><div class="sdesc">Added to the decibel reading, not the samples. A saved gain value still shifts the level by the same number of decibels.</div></div>
-            <div class="sctrl"><input type="range" id="micR" min="0" max="36" value="2" step="1" oninput="setMicGain()"><span class="sval" id="micV">2 dB</span></div>
+            <div class="sctrl"><input type="range" id="micR" min="0" max="36" value="2" step="1" oninput="setMicGain(event)"><span class="sval" id="micV">2 dB</span></div>
           </div>
           <div class="srow">
             <div><div class="slabel">Calibration Offset</div><div class="sdesc">Advanced. Adjusts calibration offset against reference meters; saved to reports and evidence photos.</div></div>
-            <div class="sctrl"><input type="range" id="calR" min="-35" max="45" value="0" step="0.1" oninput="setCal()"><span class="sval" id="calV">0.0 dB</span><button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="applyProMeterCalibration()">Restore Baseline</button></div>
+            <div class="sctrl"><input type="range" id="calR" min="-35" max="45" value="0" step="0.1" oninput="setCal(event)"><span class="sval" id="calV">0.0 dB</span><button class="btn b-cyan" style="height:28px;font-size:10px;padding:0 9px" onclick="applyProMeterCalibration()">Restore Baseline</button></div>
           </div>
           <div class="srow" style="background:rgba(42,255,212,0.04);border:1px solid rgba(42,255,212,0.2);border-radius:12px;padding:12px;margin:8px 0;">
             <div>
@@ -2801,7 +2801,7 @@
 <script src="/assets/utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/i18n-data.js?v=20261029b" data-cfasync="false"></script>
 <script src="/assets/lang-flags.js?v=20261003e" data-cfasync="false"></script>
-<script src="/assets/pro-meter.js?v=20261029a" data-cfasync="false"></script>
+<script src="/assets/pro-meter.js?v=20261029c" data-cfasync="false"></script>
 <script src="/assets/evidence-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/report-cert-engine.js?v=20261009a" data-cfasync="false"></script>
@@ -2875,7 +2875,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v11';
+const CALIBRATION_BASELINE='device-preset-v12';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -2897,7 +2897,7 @@ let sessStart,recStart,recTmr,monTmr,curDb=0,tickN=0,lastTick=0,lastAnalysisAt=0
 let leqEnergy=0,leqTime=0;
 let meterPath='fft';
 let iecNode=null,iecScript=null,iecSink=null,iecScriptEngine=null;
-let iecEpoch=0,iecLatest=null,iecLeqSumSquares=0,iecLeqSamples=0,iecSeenSamples=0,meterWarmSamples=0,meterPeakWarmSamples=0;
+let iecEpoch=0,iecLatest=null,iecLeqSumSquares=0,iecLeqSamples=0,iecSeenSamples=0,meterWarmSamples=0,meterPeakWarmSamples=0,openingGuard=null;
 let levelHist=null,lastLnSampleAt=0,lastTrustKey='';
 let fastMax=-Infinity,slowMax=-Infinity,fastMin=Infinity,slowMin=Infinity;
 let lcPeakLin=0,lzPeakLin=0;
@@ -2913,6 +2913,7 @@ let evidenceMode='audio';
 let watermarkCameraOpen=false,watermarkCameraMode='video';
 let locWatchId=null,locRefineTmr=null;
 let calibrationPresetKey=DEFAULT_CALIBRATION_PRESET;
+let calibrationNeedsPersist=false;
 let calOffset=DEFAULT_CAL_OFFSET_DB,micGainDb=2,alertTh=DEFAULT_ALERT_THRESHOLD_DB,alertsOn=true,smoothing=1,curViz='w';
 let silentTickCount=0,hasAttemptedAudioFallback=false;
 let autoRecOnThreshold=false,autoRecMinSeconds=3,autoRecAfterStopSeconds=10,autoRecAboveSince=0,autoRecTimeout=null,autoRecCooldownUntil=0;
@@ -7121,11 +7122,12 @@ function loadState(){
       const storedPreset=CALIBRATION_PRESETS[s.calibrationPresetKey]?s.calibrationPresetKey:detectedPreset;
       const presetSnapshot=Object.fromEntries(Object.keys(CALIBRATION_PRESETS).map(k=>[k,{offset:getCalibrationPreset(k).offset}]));
       const decision=window.SoundfieldPro?.migrateSavedCalibration
-        ?window.SoundfieldPro.migrateSavedCalibration({calibrationBaseline:s.calibrationBaseline,calibrationPresetKey:storedPreset,calOffset:s.calOffset},presetSnapshot,CALIBRATION_BASELINE)
+        ?window.SoundfieldPro.migrateSavedCalibration({calibrationBaseline:s.calibrationBaseline,calibrationPresetKey:storedPreset,calOffset:s.calOffset},presetSnapshot,CALIBRATION_BASELINE,detectedPreset)
         :{presetKey:storedPreset,calOffset:typeof s.calOffset==='number'?s.calOffset:getCalibrationPreset(storedPreset).offset,keepManual:typeof s.calOffset==='number'};
       calibrationPresetKey=decision.presetKey||storedPreset;
       if(typeof decision.calOffset==='number')calOffset=decision.calOffset;
       else calOffset=getCalibrationPreset(calibrationPresetKey).offset;
+      if(decision.migrated)calibrationNeedsPersist=true;
       if(s.micGainDb!==undefined) micGainDb=(s.micGainDb===18||s.micGainDb==null)?2:s.micGainDb;
       if(s.alertTh!==undefined) alertTh=s.alertTh??DEFAULT_ALERT_THRESHOLD_DB;
       if(s.alertsOn!==undefined) alertsOn=s.alertsOn!==false;
@@ -7161,14 +7163,20 @@ function loadState(){
       DB.records=(s.records||[]).map(r=>({...r,time:new Date(r.time)}));
     }
     syncAllSettingsDrawerUi();
+    if(calibrationNeedsPersist){
+      calibrationNeedsPersist=false;
+      _saveStateImpl();
+    }
   }catch(e){console.error('[loadState]',e);toast(t('toasts.loadStateFailed', 'Failed to load history data. Started with empty records.'),'warn');}
 }
 
 function syncAllSettingsDrawerUi(){
   const el=id=>document.getElementById(id);
-  if(el('calR'))el('calR').value=calOffset;if(el('calV'))el('calV').textContent=(calOffset>=0?'+':'')+calOffset+' dB';
-  const micR=el('micR');
-  if(micR){micR.value=micGainDb;if(el('micV'))el('micV').textContent=micGainDb+' dB';}
+  const calText=(calOffset>=0?'+':'')+calOffset+' dB';
+  document.querySelectorAll('#calR').forEach(node=>{node.value=String(calOffset);});
+  document.querySelectorAll('#calV').forEach(node=>{node.textContent=calText;});
+  document.querySelectorAll('#micR').forEach(node=>{node.value=String(micGainDb);});
+  document.querySelectorAll('#micV').forEach(node=>{node.textContent=micGainDb+' dB';});
   if(el('thR'))el('thR').value=alertTh;if(el('thV'))el('thV').textContent=alertTh+' dB';
   if(el('smR'))el('smR').value=smoothing;if(el('smV'))el('smV').textContent=smoothing;
   el('alertTog')?.classList.toggle('on',alertsOn);
@@ -8484,12 +8492,34 @@ function resetMeasurementIntegrators(){
   iecLeqSumSquares=0;iecLeqSamples=0;iecSeenSamples=0;
   meterWarmSamples=window.SoundfieldPro?.sessionWarmupSamples?window.SoundfieldPro.sessionWarmupSamples(audioCtx&&audioCtx.sampleRate):Math.round(((audioCtx&&audioCtx.sampleRate)||48000)*1);
   meterPeakWarmSamples=window.SoundfieldPro?.sessionPeakWarmupSamples?window.SoundfieldPro.sessionPeakWarmupSamples(audioCtx&&audioCtx.sampleRate):Math.round(((audioCtx&&audioCtx.sampleRate)||48000)*2);
+  openingGuard=window.SoundfieldPro?.createOpeningStatsGuard
+    ?window.SoundfieldPro.createOpeningStatsGuard((audioCtx&&audioCtx.sampleRate)||48000)
+    :null;
   if(levelHist&&levelHist.reset)levelHist.reset();
   else if(window.SoundfieldPro?.createLevelHistogram)levelHist=window.SoundfieldPro.createLevelHistogram();
   lastLnSampleAt=0;
   lcPeakLin=0;lzPeakLin=0;
   if(!phoneFloorLatch&&window.SoundfieldPro?.createPhoneFloorLatch)phoneFloorLatch=window.SoundfieldPro.createPhoneFloorLatch();
   if(phoneFloorLatch)phoneFloorLatch.reset();
+}
+function rebaseSessionStats(){
+  peak=0;mn=999;dbH=[];trendH=[];
+  leqEnergy=0;leqTime=0;
+  fastMax=-Infinity;slowMax=-Infinity;fastMin=Infinity;slowMin=Infinity;
+  iecLeqSumSquares=0;iecLeqSamples=0;
+  if(levelHist&&levelHist.reset)levelHist.reset();
+  lastLnSampleAt=0;
+  lcPeakLin=0;lzPeakLin=0;
+  if(typeof _peakDb!=='undefined')_peakDb=0;
+  if(typeof _updateNeedlePos==='function')_updateNeedlePos(0);
+}
+function observeOpening(blockSamples, levelDb){
+  if(!openingGuard&&window.SoundfieldPro?.createOpeningStatsGuard){
+    openingGuard=window.SoundfieldPro.createOpeningStatsGuard((audioCtx&&audioCtx.sampleRate)||48000);
+  }
+  if(openingGuard)return openingGuard.observe(blockSamples, levelDb);
+  if(!(sessStart&&Date.now()-sessStart.getTime()>=4000))return 'ignore';
+  return 'keep';
 }
 function syncDisplayedExtremes(){
   if(meterPath==='fft')return;
@@ -8508,41 +8538,33 @@ function reconfigureIecWeighting(){
 }
 function meterSettled(){
   if(!isMon)return false;
-  if(meterPath!=='fft')return window.SoundfieldPro?.shouldCountInSession?window.SoundfieldPro.shouldCountInSession(iecSeenSamples,meterWarmSamples):(meterWarmSamples>0&&iecSeenSamples>=meterWarmSamples);
-  return !!(sessStart&&Date.now()-sessStart.getTime()>=1000);
+  if(openingGuard)return openingGuard.isOpen();
+  return !!(sessStart&&Date.now()-sessStart.getTime()>=4000);
 }
 function meterPeakSettled(){
-  if(!isMon)return false;
-  const need=meterPeakWarmSamples||Math.round(((audioCtx&&audioCtx.sampleRate)||48000)*2);
-  if(meterPath!=='fft')return window.SoundfieldPro?.shouldCountInSession?window.SoundfieldPro.shouldCountInSession(iecSeenSamples,need):(need>0&&iecSeenSamples>=need);
-  return !!(sessStart&&Date.now()-sessStart.getTime()>=2000);
+  return meterSettled();
 }
 function ingestIecStats(stats){
   if(!stats||stats.epoch!==iecEpoch||!stats.blockSamples)return;
   iecLatest=stats;
   if(stats.clipCount>0)overloadActiveUntil=performance.now()+1800;
   if(!isMon)return;
-  const seenBefore=iecSeenSamples;
   iecSeenSamples+=stats.blockSamples;
-  const countBody=window.SoundfieldPro?.shouldCountInSession?window.SoundfieldPro.shouldCountInSession(seenBefore,meterWarmSamples):(meterWarmSamples>0&&seenBefore>=meterWarmSamples);
-  const countPeaks=window.SoundfieldPro?.shouldCountInSession?window.SoundfieldPro.shouldCountInSession(seenBefore,meterPeakWarmSamples||meterWarmSamples):(seenBefore>=(meterPeakWarmSamples||meterWarmSamples));
-  if(!countBody&&!countPeaks)return;
-  if(countBody){
-    iecLeqSumSquares+=stats.blockSumSquares;
-    iecLeqSamples+=stats.blockSamples;
-  }
   const fastRaw=uncalDb(stats.fastMs);
   const slowRaw=uncalDb(stats.slowMs);
-  if(countPeaks){
-    if(fastRaw!=null&&fastRaw>fastMax)fastMax=fastRaw;
-    if(slowRaw!=null&&slowRaw>slowMax)slowMax=slowRaw;
-    if(stats.blockCPeak>lcPeakLin)lcPeakLin=stats.blockCPeak;
-    if(stats.blockZPeak>lzPeakLin)lzPeakLin=stats.blockZPeak;
-  }
-  if(countBody){
-    if(fastRaw!=null&&fastRaw<fastMin)fastMin=fastRaw;
-    if(slowRaw!=null&&slowRaw<slowMin)slowMin=slowRaw;
-  }
+  const shownRaw=timeWeight==='S'?slowRaw:fastRaw;
+  const levelDb=shownRaw==null?null:shownRaw+calOffset+micGainDb;
+  const decision=observeOpening(stats.blockSamples, levelDb);
+  if(decision==='ignore')return;
+  if(decision==='rebase')rebaseSessionStats();
+  iecLeqSumSquares+=stats.blockSumSquares;
+  iecLeqSamples+=stats.blockSamples;
+  if(fastRaw!=null&&fastRaw>fastMax)fastMax=fastRaw;
+  if(slowRaw!=null&&slowRaw>slowMax)slowMax=slowRaw;
+  if(stats.blockCPeak>lcPeakLin)lcPeakLin=stats.blockCPeak;
+  if(stats.blockZPeak>lzPeakLin)lzPeakLin=stats.blockZPeak;
+  if(fastRaw!=null&&fastRaw<fastMin)fastMin=fastRaw;
+  if(slowRaw!=null&&slowRaw<slowMin)slowMin=slowRaw;
   syncDisplayedExtremes();
 }
 function detachIecMeter(){
@@ -8790,10 +8812,11 @@ function tick(){
     maybeCaptureImpulseEvent(inst,now);
     curDb=applyMeterBallistics(inst,curDb,dt);
     updateLowInputDiagnostic(inst);
-    if(meterPeakSettled()){
+    const fs=audioCtx&&audioCtx.sampleRate||48000;
+    const decision=meterPath==='fft'?observeOpening(Math.max(1,Math.round(fs*dt)), inst):'ignore';
+    if(decision==='rebase')rebaseSessionStats();
+    if(decision!=='ignore'){
       if(inst>peak)peak=inst;
-    }
-    if(meterSettled()){
       if(inst>0&&inst<mn)mn=inst;
       if(inst>0&&Number.isFinite(inst)){leqEnergy+=Math.pow(10,inst/10)*dt;leqTime+=dt;}
       noteLevelSample(inst,now);
@@ -9040,20 +9063,25 @@ function tickBackground(){
   fftAn.getByteFrequencyData(fBuf);
   const inst = instantDb();
   curDb = applyMeterBallistics(inst, curDb, dt);
-  if(inst > peak) peak = inst;
-  if(inst > 0 && inst < mn) mn = inst;
-  if(inst > 0 && Number.isFinite(inst)){
-    leqEnergy += Math.pow(10, inst / 10) * dt;
-    leqTime += dt;
-  }
-  if(Number.isFinite(inst)){
-    dbH.push(inst);
-    if(dbH.length > 600) dbH.shift();
-  }
-  tickN++;
-  if(tickN % 4 === 0 && Number.isFinite(inst)){
-    trendH.push(inst);
-    if(trendH.length > 120) trendH.shift();
+  const fs = audioCtx && audioCtx.sampleRate || 48000;
+  const decision = meterPath==='fft' ? observeOpening(Math.max(1, Math.round(fs * dt)), inst) : 'ignore';
+  if(decision === 'rebase') rebaseSessionStats();
+  if(decision !== 'ignore'){
+    if(inst > peak) peak = inst;
+    if(inst > 0 && inst < mn) mn = inst;
+    if(inst > 0 && Number.isFinite(inst)){
+      leqEnergy += Math.pow(10, inst / 10) * dt;
+      leqTime += dt;
+    }
+    if(Number.isFinite(inst)){
+      dbH.push(inst);
+      if(dbH.length > 600) dbH.shift();
+    }
+    tickN++;
+    if(tickN % 4 === 0 && Number.isFinite(inst)){
+      trendH.push(inst);
+      if(trendH.length > 120) trendH.shift();
+    }
   }
   maybeCaptureImpulseEvent(inst, now);
 }
@@ -9837,7 +9865,7 @@ function captureCurrentSessionSnapshot() {
       offsetDb: (typeof calOffset !== 'undefined' ? calOffset : 0),
       micGainDb: (typeof micGainDb !== 'undefined' ? micGainDb : 2),
       errorRange: (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : 1.2),
-      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v11')
+      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v12')
     }
   };
 }
@@ -10251,8 +10279,9 @@ function toggleAdvancedCalibration(){
   if(open)toast(t('toasts.advancedCalWarn', 'Advanced calibration alters acoustic evidence. Adjust only with reference equipment.'),'warn',6200);
 }
 
-function setCal(){
-  const val=+document.getElementById('calR').value;
+function setCal(event){
+  const source=event&&event.target?event.target:document.getElementById('calR');
+  const val=+source.value;
   calOffset=val;
   document.querySelectorAll('#calR').forEach(el=>el.value=String(val));
   document.querySelectorAll('#calV').forEach(el=>el.textContent=(val>=0?'+':'')+val+' dB');
@@ -10303,8 +10332,9 @@ function saveSettingsExplicitly(){
   const isZh = typeof appLanguage === 'string' && appLanguage.startsWith('zh');
   toast(isZh ? '💾 所有声学设置已保存到本机浏览器' : '💾 All settings saved to device storage', 'info', 2800);
 }
-function setMicGain(){
-  const val=+document.getElementById('micR').value;
+function setMicGain(event){
+  const source=event&&event.target?event.target:document.getElementById('micR');
+  const val=+source.value;
   micGainDb=val;
   document.querySelectorAll('#micR').forEach(el=>el.value=String(val));
   document.querySelectorAll('#micV').forEach(el=>el.textContent=val+' dB');

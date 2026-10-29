@@ -314,6 +314,81 @@ test('preset migration keeps a hand-entered calibration offset', () => {
   );
   assert.equal(alreadyCurrent.calOffset, -8);
   assert.equal(alreadyCurrent.migrated, false);
+  for (const oldIos of [-6, 2, 6, 7, 15, 22.7]) {
+    const moved = meter.migrateSavedCalibration(
+      { calibrationBaseline: 'device-preset-v9', calibrationPresetKey: 'ios-browser', calOffset: oldIos },
+      current,
+      'device-preset-v12',
+    );
+    assert.equal(moved.calOffset, 12, `iOS factory offset ${oldIos} must become +12`);
+    assert.equal(moved.keepManual, false);
+  }
+  const frozenOldStock = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v11', calibrationPresetKey: 'ios-browser', calOffset: 6 },
+    current,
+    'device-preset-v12',
+  );
+  assert.equal(frozenOldStock.calOffset, 12, 'a v11 profile that froze an old iOS factory offset must still move');
+  const chosenAfterUpgrade = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v12', calibrationPresetKey: 'ios-browser', calOffset: 6 },
+    current,
+    'device-preset-v12',
+  );
+  assert.equal(chosenAfterUpgrade.calOffset, 6, 'a value chosen after the v12 save stays put');
+  assert.equal(chosenAfterUpgrade.migrated, false);
+  const wrongDevice = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v9', calibrationPresetKey: 'tablet-browser', calOffset: 2 },
+    current,
+    'device-preset-v12',
+    'ios-browser',
+  );
+  assert.equal(wrongDevice.presetKey, 'ios-browser');
+  assert.equal(wrongDevice.calOffset, 12);
+  const manualOnWrongDevice = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v9', calibrationPresetKey: 'tablet-browser', calOffset: 9.5 },
+    current,
+    'device-preset-v12',
+    'ios-browser',
+  );
+  assert.equal(manualOnWrongDevice.presetKey, 'tablet-browser');
+  assert.equal(manualOnWrongDevice.calOffset, 9.5);
+  assert.equal(manualOnWrongDevice.keepManual, true);
+  const oldAndroid = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v5', calibrationPresetKey: 'android-browser', calOffset: 2 },
+    current,
+    'device-preset-v12',
+    'android-browser',
+  );
+  assert.equal(oldAndroid.presetKey, 'android-browser');
+  assert.equal(oldAndroid.calOffset, -11);
+});
+
+test('opening stats ignore the unmute and drop it if it was already counted', () => {
+  const guard = meter.createOpeningStatsGuard(1000);
+  const push = (samples, db) => {
+    const step = 100;
+    const decisions = [];
+    for (let left = samples; left > 0; left -= step) decisions.push(guard.observe(Math.min(step, left), db));
+    return decisions;
+  };
+  const quietStart = push(1900, 28);
+  assert.ok(quietStart.every((d) => d === 'ignore'));
+  assert.equal(guard.isOpen(), false);
+  const quietOpen = push(800, 28);
+  assert.ok(quietOpen.includes('keep'));
+  assert.equal(guard.isOpen(), true);
+  assert.ok(!quietOpen.includes('rebase'));
+
+  const pop = meter.createOpeningStatsGuard(1000);
+  const duringPop = [];
+  for (let t = 0; t < 3000; t += 100) duringPop.push(pop.observe(100, 51));
+  assert.ok(duringPop.includes('keep'), 'a steady unmute can enter stats once the minimum wait passes');
+  const afterDrop = [];
+  for (let t = 0; t < 1200; t += 100) afterDrop.push(pop.observe(100, 19.6));
+  assert.ok(afterDrop.includes('rebase'), 'the collapse back to the room restarts LAeq and Lmax');
+  const later = pop.observe(100, 60);
+  assert.equal(later, 'keep');
+  assert.ok(!afterDrop.slice(afterDrop.indexOf('rebase') + 1).includes('rebase'));
 });
 
 test('IEC worklet source parses and names the processor', () => {

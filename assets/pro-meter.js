@@ -505,10 +505,16 @@
   }
 
   const SESSION_WARMUP_SECONDS = 1;
-  // Field quiet rooms still showed LCpeak ~74 and Lmax ~50 after the 1 s Leq
-  // exclusion: the start pop lands as the Leq gate opens, and Fast/peak hold
-  // it. Peaks wait one extra second. Leq and Lmin stay on the 1 s gate.
+  // A fixed 2 s peak hold still left an iPhone quiet room with Lmax ~51 and
+  // LAeq ~36 after the unmute. Stats wait until the opening is steady, then
+  // one restart is allowed if that opening peak collapses before 8 s.
   const SESSION_PEAK_WARMUP_SECONDS = 2;
+  const OPENING_STATS_MIN_SECONDS = 2;
+  const OPENING_STATS_MAX_WAIT_SECONDS = 5;
+  const OPENING_STATS_WINDOW_SECONDS = 0.8;
+  const OPENING_STATS_REBASE_LIMIT_SECONDS = 8;
+  const OPENING_STATS_SETTLE_DB = 4;
+  const OPENING_STATS_REBASE_DROP_DB = 10;
 
   function sessionWarmupSamples(sampleRate) {
     const fs = Number.isFinite(sampleRate) && sampleRate > 0 ? sampleRate : 48000;
@@ -520,14 +526,16 @@
     return Math.round(fs * SESSION_PEAK_WARMUP_SECONDS);
   }
 
-  // Stock offsets shipped with each preset generation. A saved value that
-  // matches one of these is a default and may move. Anything else was typed
-  // by the user and must be kept.
+  // Every factory offset this site has shipped. A saved value that matches
+  // one of these for its preset was a default and may move. Anything else was
+  // typed by the user and must be kept. iOS +2 and +6 are in this list because
+  // they were real factory baselines; leaving them out made a production
+  // iPhone keep a pre-+12 default and read about 9 dB low in the same room.
   const CALIBRATION_STOCK_HISTORY = {
-    'desktop-browser': [-22.5, -16.5, -21],
-    'android-browser': [1, -11],
-    'ios-browser': [7, 12],
-    'tablet-browser': [2],
+    'desktop-browser': [-12, -22.5, -16.5, -21],
+    'android-browser': [-8, -6, -1, 1, 2, -11],
+    'ios-browser': [-6, 2, 6, 7, 12, 15, 22.7],
+    'tablet-browser': [-8, 2],
     'laptop-internal-mic': [38],
   };
 
@@ -535,7 +543,7 @@
     return Number.isFinite(a) && Number.isFinite(b) && Math.abs(a - b) < 0.051;
   }
 
-  function migrateSavedCalibration(saved, currentPresets, currentBaseline) {
+  function migrateSavedCalibration(saved, currentPresets, currentBaseline, detectedKey) {
     const savedObj = saved || {};
     const presets = currentPresets || {};
     const requested = savedObj.calibrationPresetKey;
@@ -546,7 +554,11 @@
       const row = presets[presetKey];
       return row && typeof row.offset === 'number' && Number.isFinite(row.offset) ? row.offset : null;
     };
+    const detected = presets[detectedKey] ? detectedKey : null;
     if (!key) {
+      if (detected && baseline !== currentBaseline) {
+        return { presetKey: detected, calOffset: currentOf(detected), migrated: true, keepManual: false };
+      }
       return {
         presetKey: null,
         calOffset: savedOffset,
@@ -555,6 +567,8 @@
       };
     }
     const next = currentOf(key);
+    // A profile already saved at the current baseline is intentional, including
+    // a hand entry that happens to equal an old factory number.
     if (baseline === currentBaseline) {
       return {
         presetKey: key,
@@ -565,10 +579,68 @@
     }
     const history = (CALIBRATION_STOCK_HISTORY[key] || []).concat(next == null ? [] : [next]);
     const wasStock = savedOffset == null || history.some((value) => calibrationOffsetsMatch(value, savedOffset));
+    if (wasStock && detected && detected !== key) {
+      return { presetKey: detected, calOffset: currentOf(detected), migrated: true, keepManual: false };
+    }
     if (wasStock) {
       return { presetKey: key, calOffset: next, migrated: true, keepManual: false };
     }
     return { presetKey: key, calOffset: savedOffset, migrated: true, keepManual: true };
+  }
+
+  function createOpeningStatsGuard(sampleRate, options = {}) {
+    const fs = Number.isFinite(sampleRate) && sampleRate > 0 ? sampleRate : 48000;
+    const opts = options || {};
+    const minSamples = Math.round(fs * (opts.minSeconds ?? OPENING_STATS_MIN_SECONDS));
+    const maxWaitSamples = Math.round(fs * (opts.maxWaitSeconds ?? OPENING_STATS_MAX_WAIT_SECONDS));
+    const windowSamples = Math.round(fs * (opts.windowSeconds ?? OPENING_STATS_WINDOW_SECONDS));
+    const rebaseLimitSamples = Math.round(fs * (opts.rebaseLimitSeconds ?? OPENING_STATS_REBASE_LIMIT_SECONDS));
+    const settleDb = opts.settleDb ?? OPENING_STATS_SETTLE_DB;
+    const rebaseDropDb = opts.rebaseDropDb ?? OPENING_STATS_REBASE_DROP_DB;
+    let seen = 0;
+    let opened = false;
+    let rebased = false;
+    let provisionalPeak = -Infinity;
+    const recent = [];
+
+    function windowStable() {
+      const cutoff = seen - windowSamples;
+      while (recent.length && recent[0].at < cutoff) recent.shift();
+      if (recent.length < 2) return false;
+      const covered = recent[recent.length - 1].at - recent[0].at;
+      if (covered < windowSamples * 0.8) return false;
+      let lo = Infinity;
+      let hi = -Infinity;
+      for (let i = 0; i < recent.length; i++) {
+        const db = recent[i].db;
+        if (db < lo) lo = db;
+        if (db > hi) hi = db;
+      }
+      return hi - lo <= settleDb;
+    }
+
+    return {
+      observe(blockSamples, levelDb) {
+        const n = Number.isFinite(blockSamples) && blockSamples > 0 ? blockSamples : 0;
+        seen += n;
+        if (Number.isFinite(levelDb)) recent.push({ at: seen, db: levelDb });
+        const stable = windowStable();
+        if (!opened) {
+          if ((seen >= minSamples && stable) || seen >= maxWaitSamples) opened = true;
+          else return 'ignore';
+        }
+        if (!rebased && seen <= rebaseLimitSamples && stable && Number.isFinite(levelDb) && provisionalPeak > levelDb + rebaseDropDb) {
+          rebased = true;
+          provisionalPeak = levelDb;
+          return 'rebase';
+        }
+        if (Number.isFinite(levelDb) && levelDb > provisionalPeak) provisionalPeak = levelDb;
+        return 'keep';
+      },
+      isOpen() {
+        return opened;
+      },
+    };
   }
 
   function shouldCountInSession(samplesSeen, warmupSamples) {
@@ -738,9 +810,14 @@ registerProcessor('iec-meter-v1', IecMeterProcessor);
     rawMicApplyConstraints,
     SESSION_WARMUP_SECONDS,
     SESSION_PEAK_WARMUP_SECONDS,
+    OPENING_STATS_MIN_SECONDS,
+    OPENING_STATS_MAX_WAIT_SECONDS,
+    OPENING_STATS_REBASE_LIMIT_SECONDS,
+    OPENING_STATS_REBASE_DROP_DB,
     sessionWarmupSamples,
     sessionPeakWarmupSamples,
     shouldCountInSession,
+    createOpeningStatsGuard,
     CALIBRATION_STOCK_HISTORY,
     migrateSavedCalibration,
     buildIecWorkletSource,
