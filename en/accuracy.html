@@ -6,17 +6,17 @@
   <meta name="description" content="SOUNDTEST.PRO acoustic evidence standards: tamper-evident field documentation, A/C/Z weighting, calibration methodology, and statutory metrology boundaries.">
 <meta name="keywords" content="phone decibel meter accuracy, can phone measure decibels accurately, Web Audio acoustic calibration, IEC 61672 sound meter standards, tamper-evident acoustic record legal weight">
   <title>Digital Acoustic Evidence Standards &amp; Accuracy Protocol · SOUNDTEST.PRO</title>
-  <link rel="canonical" href="https://soundtest.pro/en/accuracy/">
-  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy/"/>
-  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy/"/>
-  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy/"/>
-  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy/"/>
-  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy/"/>
-  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy/"/>
-  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy/"/>
-  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy/"/>
-  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy/"/>
-  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy/"/>
+  <link rel="canonical" href="https://soundtest.pro/en/accuracy">
+  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy"/>
+  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy"/>
+  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy"/>
+  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy"/>
+  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy"/>
+  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy"/>
+  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy"/>
+  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy"/>
+  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy"/>
+  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy"/>
 
   <link rel="stylesheet" href="/assets/site.css?v=20261011b">
   <script src="/assets/lang-flags.js" defer></script>
@@ -29,7 +29,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SOUNDTEST.PRO">
-  <meta property="og:url" content="https://soundtest.pro/en/accuracy/">
+  <meta property="og:url" content="https://soundtest.pro/en/accuracy">
   <meta property="og:title" content="Digital Acoustic Evidence Standards &amp; Accuracy Protocol · SOUNDTEST.PRO">
   <meta property="og:description" content="SOUNDTEST.PRO acoustic evidence standards: tamper-evident field documentation, A/C/Z weighting, calibration methodology, and statutory metrology boundaries.">
   <meta property="og:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
@@ -41,7 +41,7 @@
   <meta name="twitter:description" content="SOUNDTEST.PRO acoustic evidence standards: tamper-evident field documentation, A/C/Z weighting, calibration methodology, and statutory metrology boundaries.">
   <meta name="twitter:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
 
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://soundtest.pro/"}, {"@type": "ListItem", "position": 2, "name": "Accuracy Limits & Microphone Calibration", "item": "https://soundtest.pro/en/accuracy/"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://soundtest.pro/"}, {"@type": "ListItem", "position": 2, "name": "Accuracy Limits & Microphone Calibration", "item": "https://soundtest.pro/en/accuracy"}]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "url": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "name": "Accuracy Limits & Microphone Calibration", "description": "Digital Acoustic Evidence Standards &amp; Accuracy Protocol", "width": "1600", "height": "680", "author": {"@type": "Organization", "name": "SOUNDTEST.PRO"}, "copyrightHolder": {"@type": "Organization", "name": "SOUNDTEST.PRO"}}</script>
 </head>
 <body>
@@ -104,7 +104,44 @@
       <div class="notice reveal">Protocol Note: Exported SHA-256 cryptographic hashes guarantee digital file integrity and tamper resistance for mediation, landlord proceedings, and civil documentation. Formal administrative sanctions follow municipal acoustic testing standards.</div>
     </section>
 
-    <footer class="footer-deluxe" role="contentinfo">
+    <section class="section" id="measurement-method">
+  <div class="section-header" style="margin-bottom: 1.25rem;">
+    <span class="eyebrow">What the number means</span>
+    <h2>How a browser meter estimates decibels, and what it cannot certify</h2>
+    <p class="muted">SOUNDTEST.PRO reads the microphone through the Web Audio API, applies digital A, C, or Z weighting modeled on IEC 61672-1, and adds a stored device offset. The result is a field estimate for a timeline. It is not a calibrated sound level meter reading.</p>
+  </div>
+  <div class="grid">
+      <div class="card reveal">
+        <h3>Signal path</h3>
+        <p>The browser does not receive the raw capsule voltage. The operating system and the browser may still apply gain, automatic gain control, noise suppression, or echo cancellation unless those constraints are turned off. A case, a finger, wind, or a phone lying face-down changes the level before any filter runs. Two phones in the same room can disagree by more than the on-screen tolerance even when both copies of the tool are working as designed.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Where ±1 to 5 dB applies</h3>
+        <p>The device profiles shipped with the product were aligned against a reference sound level meter and a 94 dB acoustic calibrator on common phones. That stated band is for speech-range sound, a clear microphone opening, and a profile that matches the device. Bass through a wall, a siren above the speech band, a covered microphone, or an unknown laptop can fall outside it. A larger gap is a reason to store a calibration offset, not a reason to average two phones and call the result official.</p>
+      </div>
+      <div class="card reveal">
+        <h3>What the SHA-256 line proves</h3>
+        <p>The manifest hash is computed over the exported file bytes. If someone edits the CSV or the PDF, the hash no longer matches. The hash does not prove the microphone was accurate, the GPS fix was the right building, or the note describes the event. A poorly aimed but unedited recording still hashes. File integrity and acoustic truth are different claims, and the export only supports the first.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Phone record and a Class 1 or Class 2 meter</h3>
+        <p>A Class 1 or Class 2 meter under IEC 61672-1 is checked as a whole instrument. At the 1 kHz reference point the acceptance interval is about ±1.1 dB for Class 1 and ±1.4 dB for Class 2, and it widens across frequency, direction, and temperature. Copying the A-weighting curve in software does not put a phone into either class. Use the phone record to show when, where, and roughly how loud an event was, with audio and notes. Use a certified meter, run by the method the rule names, when a fine, a lease penalty, or an enforcement file depends on the number itself.</p>
+      </div>
+  </div>
+  <div class="card reveal" style="margin-top: 1.25rem;">
+    <h2>Keep one session comparable with the next</h2>
+    <ul class="check-list">
+          <li>Same phone, same case, same weighting, and the same Fast or Slow response.</li>
+          <li>Microphone about 1.2–1.5 m off the floor, not in a pocket and not against a wall.</li>
+          <li>Write down windows, other sources, and the distance if you know it. A peak with no duration is hard to compare with LAeq or with an 8-hour dose.</li>
+          <li>If the number will be shown next to a limit, set the offset from a calibrator or from a meter you trust, and keep that offset inside the export.</li>
+          <li>Save the audio, the CSV, the PDF, and the manifest together. The hash only covers the files you actually hash.</li>
+    </ul>
+    <p class="muted" style="margin-top: 12px;">Read the limit figures on the <a class="in-content-link" href="/standards.html">standards page</a> before comparing a take with WHO, OSHA, or a local rule, and keep the raw files with the <a class="in-content-link" href="/samples.html">sample dossier layout</a>. Open the <a class="in-content-link" href="/soundtest.html">recorder</a> when the notes are ready. The recorder does not decide compliance.</p>
+  </div>
+</section>
+
+<footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
           <a class="brand brand-glow" href="/" aria-label="SOUNDTEST.PRO home">

@@ -6,17 +6,17 @@
   <meta name="description" content="SOUNDTEST.PRO 现场声学存证精度规范：基于 Web Audio API 与高灵敏度音频采样，提供客观、防篡改的声学第一手事实记录，明确设备校准与法定计量的边界。">
 <meta name="keywords" content="手机测分贝准吗, 分贝仪精度说明, Web Audio声学校准, IEC 61672声级计标准, 数字声学存证法律效力">
   <title>现场声学事实数字化存证与精度规范 · SOUNDTEST.PRO</title>
-  <link rel="canonical" href="https://soundtest.pro/zh/accuracy/">
-  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy/"/>
-  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy/"/>
-  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy/"/>
-  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy/"/>
-  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy/"/>
-  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy/"/>
-  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy/"/>
-  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy/"/>
-  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy/"/>
-  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy/"/>
+  <link rel="canonical" href="https://soundtest.pro/zh/accuracy">
+  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy"/>
+  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy"/>
+  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy"/>
+  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy"/>
+  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy"/>
+  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy"/>
+  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy"/>
+  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy"/>
+  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy"/>
+  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy"/>
 
   <link rel="stylesheet" href="/assets/site.css?v=20261011b">
   <script src="/assets/lang-flags.js" defer></script>
@@ -29,7 +29,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SOUNDTEST.PRO">
-  <meta property="og:url" content="https://soundtest.pro/zh/accuracy/">
+  <meta property="og:url" content="https://soundtest.pro/zh/accuracy">
   <meta property="og:title" content="现场声学事实数字化存证与精度规范 · SOUNDTEST.PRO">
   <meta property="og:description" content="SOUNDTEST.PRO 现场声学存证精度规范：基于 Web Audio API 与高灵敏度音频采样，提供客观、防篡改的声学第一手事实记录，明确设备校准与法定计量的边界。">
   <meta property="og:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
@@ -41,7 +41,7 @@
   <meta name="twitter:description" content="SOUNDTEST.PRO 现场声学存证精度规范：基于 Web Audio API 与高灵敏度音频采样，提供客观、防篡改的声学第一手事实记录，明确设备校准与法定计量的边界。">
   <meta name="twitter:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
 
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首页", "item": "https://soundtest.pro/zh/"}, {"@type": "ListItem", "position": 2, "name": "测量精度边界与手机麦克风校准", "item": "https://soundtest.pro/zh/accuracy/"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首页", "item": "https://soundtest.pro/zh/"}, {"@type": "ListItem", "position": 2, "name": "测量精度边界与手机麦克风校准", "item": "https://soundtest.pro/zh/accuracy"}]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "url": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "name": "测量精度边界与手机麦克风校准", "description": "现场声学事实数字化存证与精度规范", "width": "1600", "height": "680", "author": {"@type": "Organization", "name": "SOUNDTEST.PRO"}, "copyrightHolder": {"@type": "Organization", "name": "SOUNDTEST.PRO"}}</script>
 </head>
 <body>
@@ -104,7 +104,44 @@
       <div class="notice reveal">声明：本平台生成的数据摘要与本地 SHA-256 哈希值保证原始导出文件的完整性与防篡改性，作为民间调解与维权事实举证的重要依据。法定强制计量执法请依属地计量法规执行。</div>
     </section>
 
-    <footer class="footer-deluxe" role="contentinfo">
+    <section class="section" id="measurement-method">
+  <div class="section-header" style="margin-bottom: 1.25rem;">
+    <span class="eyebrow">读数到底代表什么</span>
+    <h2>浏览器声级估计如何得出，以及它不能出具的结论</h2>
+    <p class="muted">SOUNDTEST.PRO 通过 Web Audio API 读取麦克风，套用按 IEC 61672-1 建模的 A/C/Z 数字计权，再加上已保存的设备偏移。结果是一条时间线上的现场估计，不是经检定声级计的读数。</p>
+  </div>
+  <div class="grid">
+      <div class="card reveal">
+        <h3>信号经过了什么</h3>
+        <p>浏览器拿不到传声器膜片上的原始电压。操作系统和浏览器仍可能加上增益、自动增益、降噪或回声消除，除非这些约束被关掉。手机壳、手指、风，或把手机扣在桌面上，都会在滤波之前改变电平。同一房间里的两部手机，即使工具都在正常工作，读数差也可以大于屏幕上标出的容差。</p>
+      </div>
+      <div class="card reveal">
+        <h3>±1 到 5 dB 用在什么条件下</h3>
+        <p>随产品提供的设备档案，是在常见手机上对照参考声级计和 94 dB 声学校准器对齐过的。这个区间针对的是语音频段、进声口未被挡住、并且档案与这台设备相符的情况。隔墙低频、语音频段以上的警报声、被盖住的麦克风，或一台没有档案的笔记本电脑，都可以落在区间外面。差距变大时，应当保存校准偏移，而不是把两部手机取平均后当成正式结果。</p>
+      </div>
+      <div class="card reveal">
+        <h3>SHA-256 那一行证明什么</h3>
+        <p>清单里的哈希是对导出文件字节计算的。有人改了 CSV 或 PDF，哈希就不再相符。它不能证明麦克风准、GPS 定位到了那栋楼，或备注写的就是当时的事件。对着错误方向、但文件没有被改过的录音，哈希仍然成立。文件完整和声学事实是两件不同的事，导出差只支持前一件。</p>
+      </div>
+      <div class="card reveal">
+        <h3>手机记录和 1 级 / 2 级声级计</h3>
+        <p>IEC 61672-1 下的 1 级或 2 级声级计，是把整台仪器放在一起检定的。在 1 kHz 参考点，接收区间大约是 1 级 ±1.1 dB、2 级 ±1.4 dB，换到其他频率、方向和温度还会放宽。在软件里复现 A 计权曲线，并不会让手机变成其中任何一级。手机记录用来说明事件发生的时间、地点和大致响度，并带上音频和备注。罚款、合同违约金或执法卷宗若取决于这个数字本身，应按该规则写明的方法使用经检定的声级计。</p>
+      </div>
+  </div>
+  <div class="card reveal" style="margin-top: 1.25rem;">
+    <h2>让这一次记录能和上一次对照</h2>
+    <ul class="check-list">
+          <li>同一部手机、同一个保护壳、同一种计权，以及同样的 Fast 或 Slow 时间计权。</li>
+          <li>麦克风离地面约 1.2–1.5 米，不要放在口袋里，也不要贴着墙。</li>
+          <li>写下门窗、其他声源，以及你知道的距离。没有时长的峰值很难和 LAeq 或 8 小时剂量比较。</li>
+          <li>如果读数会和某个限值并排放，先用校准器或你信任的声级计设定偏移，并把偏移留在导出文件里。</li>
+          <li>音频、CSV、PDF 和清单一起保存。哈希只覆盖你实际计算过的那些文件。</li>
+    </ul>
+    <p class="muted" style="margin-top: 12px;">拿一次记录去对照 WHO、OSHA 或当地规则之前，先看<a class="in-content-link" href="/zh/standards.html">标准页</a>里的限值说明，并按<a class="in-content-link" href="/zh/samples.html">报告样例</a>把原始文件留全。备注写好后再打开<a class="in-content-link" href="/soundtest.html?lang=zh">记录工具</a>。记录工具不判断是否达标。</p>
+  </div>
+</section>
+
+<footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
           <a class="brand brand-glow" href="/zh/" aria-label="SOUNDTEST.PRO home">

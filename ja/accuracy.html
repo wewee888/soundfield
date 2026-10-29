@@ -6,17 +6,17 @@
   <meta name="description" content="SOUNDTEST.PROの音響証拠記録精度規範：Web Audio API、JIS/IEC 61672準拠のA/C/Z特性フィルタ、MEMSマイクの校正と耐タンパー証拠仕様。">
 <meta name="keywords" content="スマホ騒音計 精度, スマホでデシベル測定 正確か, Web Audioマイク校正, IEC 61672規格, 裁判用騒音測定 証拠能力, 音響デジタル証拠 仕様">
   <title>音響測定精度規範と技術仕様 · SOUNDTEST.PRO</title>
-  <link rel="canonical" href="https://soundtest.pro/ja/accuracy/">
-  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy/"/>
-  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy/"/>
-  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy/"/>
-  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy/"/>
-  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy/"/>
-  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy/"/>
-  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy/"/>
-  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy/"/>
-  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy/"/>
-  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy/"/>
+  <link rel="canonical" href="https://soundtest.pro/ja/accuracy">
+  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy"/>
+  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy"/>
+  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy"/>
+  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy"/>
+  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy"/>
+  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy"/>
+  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy"/>
+  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy"/>
+  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy"/>
+  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy"/>
 
   <link rel="stylesheet" href="/assets/site.css?v=20261011b">
   <script src="/assets/lang-flags.js" defer></script>
@@ -28,7 +28,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SOUNDTEST.PRO">
-  <meta property="og:url" content="https://soundtest.pro/ja/accuracy/">
+  <meta property="og:url" content="https://soundtest.pro/ja/accuracy">
   <meta property="og:title" content="音響測定精度規範と技術仕様 · SOUNDTEST.PRO">
   <meta property="og:description" content="SOUNDTEST.PROの音響証拠記録精度規範：Web Audio API、JIS/IEC 61672準拠のA/C/Z特性フィルタ、MEMSマイクの校正と耐タンパー証拠仕様。">
   <meta property="og:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
@@ -40,7 +40,7 @@
   <meta name="twitter:description" content="SOUNDTEST.PROの音響証拠記録精度規範：Web Audio API、JIS/IEC 61672準拠のA/C/Z特性フィルタ、MEMSマイクの校正と耐タンパー証拠仕様。">
   <meta name="twitter:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
 
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://soundtest.pro/ja/"}, {"@type": "ListItem", "position": 2, "name": "音響測定精度規範と技術仕様", "item": "https://soundtest.pro/ja/accuracy/"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://soundtest.pro/ja/"}, {"@type": "ListItem", "position": 2, "name": "音響測定精度規範と技術仕様", "item": "https://soundtest.pro/ja/accuracy"}]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "url": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "name": "音響測定精度規範と技術仕様", "description": "SOUNDTEST.PROの音響証拠記録精度規範：Web Audio API、JIS/IEC 61672準拠のA/C/Z特性フィルタ、MEMSマイクの校正と耐タンパー証拠仕様。", "width": "1600", "height": "680", "author": {"@type": "Organization", "name": "SOUNDTEST.PRO"}, "copyrightHolder": {"@type": "Organization", "name": "SOUNDTEST.PRO"}}</script>
 </head>
 <body>
@@ -112,7 +112,44 @@
       <div class="notice reveal">暗号化検証：出力されるSHA-256暗号化ハッシュにより、生成された報告書やデータの改ざんがないことが数学的に証明され、民事調停や交渉における強力な客観的証拠（疎明資料）として活用できます。</div>
     </section>
 
-    <footer class="footer-deluxe" role="contentinfo">
+    <section class="section" id="measurement-method">
+  <div class="section-header" style="margin-bottom: 1.25rem;">
+    <span class="eyebrow">数値の意味</span>
+    <h2>ブラウザの騒音計がデシベルを推定する仕組みと、証明できないこと</h2>
+    <p class="muted">SOUNDTEST.PRO は Web Audio API でマイクを読み、IEC 61672-1 を模したデジタルの A/C/Z 特性をかけ、保存済みの端末オフセットを足します。結果は時系列のための現場推定値です。校正された騒音計の指示値ではありません。</p>
+  </div>
+  <div class="grid">
+      <div class="card reveal">
+        <h3>信号の通り道</h3>
+        <p>ブラウザは振動板の生の電圧を受け取りません。OS とブラウザは、制約を切らない限り、ゲイン、自動ゲイン、ノイズ抑制、エコーキャンセルをまだかけることがあります。ケース、指、風、画面を下にした置き方は、フィルタの前にレベルを変えます。同じ部屋の 2 台の電話は、ツールがどちらも設計どおり動いていても、画面の許容差より大きくずれることがあります。</p>
+      </div>
+      <div class="card reveal">
+        <h3>±1〜5 dB が当てはまる条件</h3>
+        <p>製品に入っている端末プロファイルは、一般的な電話で基準騒音計と 94 dB の音響校正器に合わせたものです。この幅は、音声帯域の音、塞がれていないマイク開口、その端末に合うプロファイルが前提です。壁越しの低音、音声帯域より上のサイレン、覆われたマイク、プロファイルのないノート PC は外に出ることがあります。差が大きいときは校正オフセットを保存する理由であり、2 台を平均して公式値と呼ぶ理由ではありません。</p>
+      </div>
+      <div class="card reveal">
+        <h3>SHA-256 の行が証明すること</h3>
+        <p>マニフェストのハッシュは、書き出したファイルのバイト列に対して計算します。CSV や PDF を書き換えるとハッシュは一致しません。マイクが正確だったこと、GPS が正しい建物を指したこと、メモが出来事を書いていることは証明しません。向きが悪くても改変されていない録音には、ハッシュが付いたままです。ファイルの完全性と音の事実は別の主張で、書き出しが支えるのは前者だけです。</p>
+      </div>
+      <div class="card reveal">
+        <h3>電話の記録とクラス 1 / クラス 2 の騒音計</h3>
+        <p>IEC 61672-1 のクラス 1 またはクラス 2 の騒音計は、機器全体として検査されます。1 kHz の基準点での許容区間は、クラス 1 で約 ±1.1 dB、クラス 2 で約 ±1.4 dB で、周波数、方向、温度が変わると広がります。ソフトで A 特性の曲線を写しても、電話はどちらのクラスにも入りません。電話の記録は、いつ、どこで、おおよそどれくらい大きかったかを、音声とメモ付きで示すために使います。罰金、契約上の違約、行政の記録がその数値そのものに依存するときは、規則が指定する方法で検定済みの騒音計を使います。</p>
+      </div>
+  </div>
+  <div class="card reveal" style="margin-top: 1.25rem;">
+    <h2>次の測定と比べられるようにする</h2>
+    <ul class="check-list">
+          <li>同じ電話、同じケース、同じ周波数重み付け、同じ Fast または Slow。</li>
+          <li>マイクは床から約 1.2〜1.5 m。ポケットの中や壁に付けない。</li>
+          <li>窓、ほかの音源、分かるなら距離を書く。時間の長さがないピークは LAeq や 8 時間暴露と比べにくい。</li>
+          <li>数値を限度値と並べるなら、校正器か信頼できる騒音計でオフセットを決め、書き出しに残す。</li>
+          <li>音声、CSV、PDF、マニフェストを一緒に保存する。ハッシュが覆うのは、実際にハッシュしたファイルだけです。</li>
+    </ul>
+    <p class="muted" style="margin-top: 12px;">WHO、OSHA、地域の規則と突き合わせる前に<a class="in-content-link" href="/ja/standards.html">基準のページ</a>の数値を読み、<a class="in-content-link" href="/ja/samples.html">報告書の見本</a>と同じように元ファイルを残してください。メモが揃ってから<a class="in-content-link" href="/soundtest.html?lang=ja">記録ツール</a>を開きます。記録ツールは適合を判断しません。</p>
+  </div>
+</section>
+
+<footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
           <a class="brand brand-glow" href="/ja/" aria-label="SOUNDTEST.PRO home">

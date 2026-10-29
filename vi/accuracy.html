@@ -6,17 +6,17 @@
   <meta name="description" content="Quy chuẩn độ chính xác thu thập chứng cứ: Web Audio API, bộ lọc A/C/Z chuẩn IEC 61672-1, hiệu chuẩn micro MEMS và chữ ký mã hóa chống can thiệp.">
 <meta name="keywords" content="độ chính xác máy đo decibel điện thoại, điện thoại đo decibel có chính xác không, hiệu chuẩn micro web audio, tiêu chuẩn IEC 61672, giá trị pháp lý bằng chứng âm thanh">
   <title>Độ Chính Xác và Quy Chuẩn Kỹ Thuật Âm Học · SOUNDTEST.PRO</title>
-  <link rel="canonical" href="https://soundtest.pro/vi/accuracy/">
-  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy/"/>
-  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy/"/>
-  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy/"/>
-  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy/"/>
-  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy/"/>
-  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy/"/>
-  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy/"/>
-  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy/"/>
-  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy/"/>
-  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy/"/>
+  <link rel="canonical" href="https://soundtest.pro/vi/accuracy">
+  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy"/>
+  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy"/>
+  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy"/>
+  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy"/>
+  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy"/>
+  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy"/>
+  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy"/>
+  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy"/>
+  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy"/>
+  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy"/>
 
   
   
@@ -51,7 +51,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SOUNDTEST.PRO">
-  <meta property="og:url" content="https://soundtest.pro/vi/accuracy/">
+  <meta property="og:url" content="https://soundtest.pro/vi/accuracy">
   <meta property="og:title" content="Accuracy and Measurement Limits · SOUNDTEST.PRO">
   <meta property="og:description" content="SOUNDTEST.PRO accuracy statement: browser microphone readings are field documentation estimates, not certified legal metrology.">
   <meta property="og:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
@@ -63,7 +63,7 @@
   <meta name="twitter:description" content="SOUNDTEST.PRO accuracy statement: browser microphone readings are field documentation estimates, not certified legal metrology.">
   <meta name="twitter:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
 
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://soundtest.pro/vi/"}, {"@type": "ListItem", "position": 2, "name": "Giới hạn độ chính xác và hiệu chuẩn micrô", "item": "https://soundtest.pro/vi/accuracy/"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://soundtest.pro/vi/"}, {"@type": "ListItem", "position": 2, "name": "Giới hạn độ chính xác và hiệu chuẩn micrô", "item": "https://soundtest.pro/vi/accuracy"}]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "url": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "name": "Giới hạn độ chính xác và hiệu chuẩn micrô", "description": "Accuracy and Measurement Limits", "width": "1600", "height": "680", "author": {"@type": "Organization", "name": "SOUNDTEST.PRO"}, "copyrightHolder": {"@type": "Organization", "name": "SOUNDTEST.PRO"}}</script>
 </head>
 <body>
@@ -123,7 +123,44 @@
       <div class="notice reveal">Formal measurements should be verified with a certified sound level meter and qualified procedures. Local hashes prove export consistency only; they are not authoritative timestamps.</div>
     </section>
 
-    <footer class="footer-deluxe" role="contentinfo">
+    <section class="section" id="measurement-method">
+  <div class="section-header" style="margin-bottom: 1.25rem;">
+    <span class="eyebrow">Con số có nghĩa gì</span>
+    <h2>Máy đo trên trình duyệt ước lượng decibel thế nào, và điều nó không chứng nhận được</h2>
+    <p class="muted">SOUNDTEST.PRO đọc micro qua Web Audio API, áp trọng số số A, C hoặc Z mô phỏng IEC 61672-1, rồi cộng độ lệch thiết bị đã lưu. Kết quả là ước lượng tại hiện trường cho một dòng thời gian. Đó không phải số đọc của máy đo mức âm đã hiệu chuẩn.</p>
+  </div>
+  <div class="grid">
+      <div class="card reveal">
+        <h3>Đường đi của tín hiệu</h3>
+        <p>Trình duyệt không nhận điện áp thô của màng micro. Hệ điều hành và trình duyệt vẫn có thể áp khuếch đại, tự động khuếch đại, khử ồn hoặc khử vọng, trừ khi các ràng buộc đó bị tắt. Ốp lưng, ngón tay, gió, hoặc điện thoại úp mặt xuống đổi mức trước khi bộ lọc chạy. Hai điện thoại trong cùng một phòng có thể lệch hơn dung sai trên màn hình dù cả hai bản công cụ đều chạy đúng thiết kế.</p>
+      </div>
+      <div class="card reveal">
+        <h3>±1 đến 5 dB áp dụng khi nào</h3>
+        <p>Hồ sơ thiết bị đi kèm sản phẩm được căn theo máy đo mức âm tham chiếu và bộ hiệu chuẩn âm 94 dB trên các điện thoại phổ biến. Dải này dành cho âm trong băng tiếng nói, lỗ micro không bị che, và hồ sơ khớp với máy. Tiếng trầm xuyên tường, còi trên băng tiếng nói, micro bị che, hoặc máy tính xách tay chưa có hồ sơ có thể nằm ngoài dải. Khoảng cách lớn hơn là lý do lưu độ lệch hiệu chuẩn, không phải lý do lấy trung bình hai điện thoại rồi gọi đó là số chính thức.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Dòng SHA-256 chứng minh điều gì</h3>
+        <p>Hàm băm của bản kê được tính trên byte của tệp đã xuất. Nếu ai đó sửa CSV hoặc PDF, hàm băm không còn khớp. Nó không chứng minh micro chính xác, GPS trúng đúng tòa nhà, hay ghi chú mô tả đúng sự việc. Bản ghi hướng xấu nhưng không bị sửa vẫn có hàm băm. Tính toàn vẹn của tệp và sự thật âm học là hai khẳng định khác nhau, và bản xuất chỉ chống đỡ khẳng định thứ nhất.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Bản ghi điện thoại và máy đo cấp 1 hoặc cấp 2</h3>
+        <p>Máy đo cấp 1 hoặc cấp 2 theo IEC 61672-1 được kiểm như cả một thiết bị. Ở điểm chuẩn 1 kHz, khoảng chấp nhận khoảng ±1,1 dB cho cấp 1 và ±1,4 dB cho cấp 2, và nới rộng theo tần số, hướng và nhiệt độ. Chép đường cong trọng số A trong phần mềm không đưa điện thoại vào cấp nào. Dùng bản ghi điện thoại để cho thấy sự việc xảy ra khi nào, ở đâu và lớn cỡ nào, kèm âm thanh và ghi chú. Dùng máy đo đã kiểm định, theo phương pháp mà quy định nêu tên, khi một khoản phạt, phạt hợp đồng hoặc hồ sơ cưỡng chế phụ thuộc vào chính con số đó.</p>
+      </div>
+  </div>
+  <div class="card reveal" style="margin-top: 1.25rem;">
+    <h2>Giữ một phiên đo so được với phiên sau</h2>
+    <ul class="check-list">
+          <li>Cùng một điện thoại, cùng ốp, cùng trọng số, cùng đáp ứng Fast hoặc Slow.</li>
+          <li>Micro cách sàn khoảng 1,2–1,5 m, không để trong túi và không áp vào tường.</li>
+          <li>Ghi cửa sổ, nguồn khác, và khoảng cách nếu biết. Một đỉnh không có thời lượng khó so với LAeq hoặc liều 8 giờ.</li>
+          <li>Nếu con số sẽ đặt cạnh một giới hạn, đặt độ lệch từ bộ hiệu chuẩn hoặc máy đo bạn tin, và giữ độ lệch trong bản xuất.</li>
+          <li>Lưu cùng nhau âm thanh, CSV, PDF và bản kê. Hàm băm chỉ bao các tệp bạn thực sự băm.</li>
+    </ul>
+    <p class="muted" style="margin-top: 12px;">Đọc các con số trên <a class="in-content-link" href="/vi/standards.html">trang quy chuẩn</a> trước khi so một lần đo với WHO, OSHA hoặc quy định địa phương, và giữ tệp gốc cùng <a class="in-content-link" href="/vi/samples.html">mẫu hồ sơ</a>. Mở <a class="in-content-link" href="/soundtest.html?lang=vi">bộ ghi</a> khi ghi chú đã sẵn. Bộ ghi không quyết định việc tuân thủ.</p>
+  </div>
+</section>
+
+<footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
           <a class="brand brand-glow" href="/vi/" aria-label="SOUNDTEST.PRO home">

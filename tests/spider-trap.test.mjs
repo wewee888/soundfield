@@ -76,6 +76,64 @@ test('Spider Trap Protection: functions/_middleware.js detects and blocks recurs
   }
 });
 
+test('Host canonicalization: www and plain http redirect once to https://soundtest.pro', async () => {
+  const mwModule = await import(`file://${path.join(rootDir, 'functions', '_middleware.js').replace(/\\/g, '/')}`);
+
+  const www = await mwModule.onRequest({
+    request: new Request('https://www.soundtest.pro/noise-levels/?q=1'),
+    next: () => {
+      throw new Error('www must not be rendered');
+    },
+  });
+  assert.equal(www.status, 301);
+  assert.equal(www.headers.get('Location'), 'https://soundtest.pro/noise-levels/?q=1');
+
+  const insecure = await mwModule.onRequest({
+    request: new Request('https://soundtest.pro/accuracy', {
+      headers: { 'CF-Visitor': '{"scheme":"http"}' },
+    }),
+    next: () => {
+      throw new Error('http must not be rendered');
+    },
+  });
+  assert.equal(insecure.status, 301);
+  assert.equal(insecure.headers.get('Location'), 'https://soundtest.pro/accuracy');
+
+  const post = await mwModule.onRequest({
+    request: new Request('https://www.soundtest.pro/api/membership/lookup', { method: 'POST' }),
+    next: () => {
+      throw new Error('www POST must not be rendered');
+    },
+  });
+  assert.equal(post.status, 308);
+  assert.equal(post.headers.get('Location'), 'https://soundtest.pro/api/membership/lookup');
+});
+
+test('Noindex header is attached to login, billing, changelog, refund, and camera responses', async () => {
+  const mwModule = await import(`file://${path.join(rootDir, 'functions', '_middleware.js').replace(/\\/g, '/')}`);
+  for (const url of [
+    'https://soundtest.pro/auth',
+    'https://soundtest.pro/zh/refund/',
+    'https://soundtest.pro/camera.html',
+    'https://soundtest.pro/launch-metrics',
+  ]) {
+    const response = await mwModule.onRequest({
+      request: new Request(url),
+      next: () => new Response('page', { headers: { 'Content-Type': 'text/html' } }),
+    });
+    assert.equal(response.status, 200, url);
+    assert.match(response.headers.get('X-Robots-Tag') || '', /noindex/i, url);
+    assert.equal(await response.text(), 'page');
+  }
+
+  const home = await mwModule.onRequest({
+    request: new Request('https://soundtest.pro/accuracy'),
+    next: () => new Response('guide'),
+  });
+  assert.equal(home.headers.get('X-Robots-Tag'), null);
+  assert.equal(await home.text(), 'guide');
+});
+
 test('Spider Trap Protection: Zero relative href attributes in all public HTML files', () => {
   const skipDirs = new Set(['.git', 'node_modules', '_temp', 'test-results']);
   const violations = [];

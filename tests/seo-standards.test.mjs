@@ -74,6 +74,42 @@ test('SEO Standard: sitemap.xml does not contain noindexed or redirected pages',
   assert.doesNotMatch(sitemap, /<loc>[^<]*\/stats\/<\/loc>/);
   assert.doesNotMatch(sitemap, /<loc>[^<]*\/compliance\/<\/loc>/);
   assert.doesNotMatch(sitemap, /<loc>[^<]*\/admin\.html<\/loc>/);
+  for (const leaf of ['auth', 'launch-metrics', 'monetization', 'refund', 'changelog', 'camera']) {
+    assert.doesNotMatch(sitemap, new RegExp(`<loc>[^<]*/${leaf}(?:\\.html)?/?</loc>`), `${leaf} must stay out of the sitemap`);
+  }
+  assert.match(sitemap, /<loc>https:\/\/soundtest\.pro\/noise-levels<\/loc>/);
+  assert.match(sitemap, /<loc>https:\/\/soundtest\.pro\/use-cases\/<\/loc>/);
+  assert.match(sitemap, /hreflang="zh" href="https:\/\/soundtest\.pro\/zh\/"/);
+  assert.doesNotMatch(sitemap, /<loc>https:\/\/soundtest\.pro\/noise-levels\/<\/loc>/);
+});
+
+test('SEO Standard: private and thin tool pages are noindex, public guides keep the final URL', () => {
+  for (const rel of ['auth.html', 'launch-metrics.html', 'monetization.html', 'refund.html', 'changelog.html', 'camera.html', 'zh/auth.html', 'de/refund.html']) {
+    const html = fs.readFileSync(path.join(rootDir, rel), 'utf8');
+    assert.match(html, /<meta\s+name=["']robots["']\s+content=["']noindex, follow["']/i, `${rel} must be noindex`);
+  }
+  const accuracy = fs.readFileSync(path.join(rootDir, 'accuracy.html'), 'utf8');
+  const standards = fs.readFileSync(path.join(rootDir, 'standards.html'), 'utf8');
+  assert.match(accuracy, /rel="canonical" href="https:\/\/soundtest\.pro\/accuracy"/);
+  assert.match(accuracy, /id="measurement-method"/);
+  assert.match(standards, /rel="canonical" href="https:\/\/soundtest\.pro\/standards"/);
+  assert.match(standards, /id="how-to-read-limits"/);
+  assert.match(standards, /GB 3096-2008/);
+  const zh = fs.readFileSync(path.join(rootDir, 'zh/standards.html'), 'utf8');
+  assert.match(zh, /id="how-to-read-limits"/);
+  assert.match(zh, /rel="canonical" href="https:\/\/soundtest\.pro\/zh\/standards"/);
+});
+
+test('SEO Standard: robots.txt allows search and AI answer crawlers and blocks training crawlers', () => {
+  const robots = fs.readFileSync(path.join(rootDir, 'robots.txt'), 'utf8');
+  assert.match(robots, /User-agent: OAI-SearchBot\nAllow: \//);
+  assert.match(robots, /User-agent: PerplexityBot\nAllow: \//);
+  assert.match(robots, /User-agent: Baiduspider\nAllow: \//);
+  assert.match(robots, /User-agent: Googlebot\nAllow: \//);
+  assert.match(robots, /User-agent: GPTBot\nDisallow: \//);
+  assert.match(robots, /User-agent: Google-Extended\nDisallow: \//);
+  assert.match(robots, /ai-input=yes/);
+  assert.match(robots, /ai-train=no/);
 });
 
 test('SEO & GEO Standard: llms.txt and llms-full.txt are compliant and configured', () => {

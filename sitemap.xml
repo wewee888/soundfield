@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://soundtest.pro/</loc>
-    <lastmod>2026-10-22</lastmod>
+    <lastmod>2026-10-28</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/"/>
@@ -16,223 +16,139 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/about/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/about/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/about/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/about/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/about/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/about/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/about/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/about/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/about/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/about/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/about/"/>
+    <loc>https://soundtest.pro/about</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/about"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/about"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/about"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/about"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/about"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/about"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/about"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/about"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/about"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/accuracy/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy/"/>
+    <loc>https://soundtest.pro/accuracy</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/auth/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/auth/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/auth/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/auth/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/auth/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/auth/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/auth/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/auth/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/auth/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/auth/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/auth/"/>
+    <loc>https://soundtest.pro/disclaimer</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/disclaimer"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/disclaimer"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/camera.html</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/camera.html"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/camera.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/camera.html"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/camera.html"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/camera.html"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/camera.html"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/camera.html"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/camera.html"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/camera.html"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/camera.html"/>
+    <loc>https://soundtest.pro/download</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/download"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/download"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/download"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/download"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/download"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/download"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/download"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/download"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/download"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/download"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/changelog/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/changelog/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/changelog/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/changelog/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/changelog/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/changelog/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/changelog/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/changelog/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/changelog/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/changelog/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/changelog/"/>
+    <loc>https://soundtest.pro/noise-levels</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/noise-levels"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/noise-levels"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/noise-levels"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/noise-levels"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/noise-levels"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/noise-levels"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/noise-levels"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/noise-levels"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/noise-levels"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/noise-levels"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/disclaimer/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/disclaimer/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/disclaimer/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/disclaimer/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/disclaimer/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/disclaimer/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/disclaimer/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/disclaimer/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/disclaimer/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/disclaimer/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/disclaimer/"/>
+    <loc>https://soundtest.pro/privacy</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/privacy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/privacy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/privacy"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/privacy"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/privacy"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/privacy"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/privacy"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/download/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/download/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/download/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/download/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/download/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/download/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/download/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/download/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/download/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/download/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/download/"/>
+    <loc>https://soundtest.pro/samples</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/samples"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/samples"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/samples"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/samples"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/samples"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/samples"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/samples"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/samples"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/samples"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/samples"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/launch-metrics/</loc>
-    <lastmod>2026-10-10</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/launch-metrics/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/launch-metrics/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/launch-metrics/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/launch-metrics/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/launch-metrics/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/launch-metrics/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/launch-metrics/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/launch-metrics/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/launch-metrics/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/launch-metrics/"/>
+    <loc>https://soundtest.pro/soundtest</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/soundtest"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/monetization/</loc>
-    <lastmod>2026-10-10</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/monetization/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/monetization/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/monetization/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/monetization/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/monetization/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/monetization/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/monetization/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/monetization/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/monetization/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/monetization/"/>
+    <loc>https://soundtest.pro/standards</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/standards"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/standards"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/standards"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/standards"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/standards"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/standards"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/standards"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/standards"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/standards"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/standards"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/noise-levels/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/noise-levels/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/noise-levels/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/noise-levels/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/noise-levels/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/noise-levels/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/noise-levels/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/noise-levels/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/noise-levels/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/noise-levels/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/noise-levels/"/>
-  </url>
-  <url>
-    <loc>https://soundtest.pro/privacy/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/privacy/"/>
-  </url>
-  <url>
-    <loc>https://soundtest.pro/refund/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/refund/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/refund/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/refund/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/refund/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/refund/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/refund/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/refund/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/refund/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/refund/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/refund/"/>
-  </url>
-  <url>
-    <loc>https://soundtest.pro/samples/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/samples/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/samples/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/samples/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/samples/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/samples/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/samples/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/samples/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/samples/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/samples/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/samples/"/>
-  </url>
-  <url>
-    <loc>https://soundtest.pro/soundtest/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/soundtest/"/>
-  </url>
-  <url>
-    <loc>https://soundtest.pro/standards/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/standards/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/standards/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/standards/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/standards/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/standards/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/standards/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/standards/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/standards/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/standards/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/standards/"/>
-  </url>
-  <url>
-    <loc>https://soundtest.pro/terms/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/terms/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/terms/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/terms/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/terms/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/terms/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/terms/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/terms/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/terms/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/terms/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/terms/"/>
+    <loc>https://soundtest.pro/terms</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/terms"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/th/terms"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/terms"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/terms"/>
   </url>
   <url>
     <loc>https://soundtest.pro/use-cases/</loc>
-    <lastmod>2026-10-22</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/"/>
@@ -245,87 +161,87 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/use-cases/bar-street-disturbance/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/bar-street-disturbance/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/bar-street-disturbance/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/bar-street-disturbance/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/bar-street-disturbance/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/bar-street-disturbance/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/bar-street-disturbance/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/bar-street-disturbance/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/bar-street-disturbance/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/bar-street-disturbance/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/bar-street-disturbance/"/>
+    <loc>https://soundtest.pro/use-cases/bar-street-disturbance</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/bar-street-disturbance"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/bar-street-disturbance"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/bar-street-disturbance"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/bar-street-disturbance"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/bar-street-disturbance"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/bar-street-disturbance"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/bar-street-disturbance"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/bar-street-disturbance"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/bar-street-disturbance"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/bar-street-disturbance"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/use-cases/construction-noise-monitoring/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/construction-noise-monitoring/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/construction-noise-monitoring/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/construction-noise-monitoring/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/construction-noise-monitoring/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/construction-noise-monitoring/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/construction-noise-monitoring/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/construction-noise-monitoring/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/construction-noise-monitoring/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/construction-noise-monitoring/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/construction-noise-monitoring/"/>
+    <loc>https://soundtest.pro/use-cases/construction-noise-monitoring</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/construction-noise-monitoring"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/construction-noise-monitoring"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/construction-noise-monitoring"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/construction-noise-monitoring"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/construction-noise-monitoring"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/construction-noise-monitoring"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/construction-noise-monitoring"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/construction-noise-monitoring"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/construction-noise-monitoring"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/construction-noise-monitoring"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/use-cases/neighbor-noise-evidence/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/neighbor-noise-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/neighbor-noise-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/neighbor-noise-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/neighbor-noise-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/neighbor-noise-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/neighbor-noise-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/neighbor-noise-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/neighbor-noise-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/neighbor-noise-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/neighbor-noise-evidence/"/>
+    <loc>https://soundtest.pro/use-cases/neighbor-noise-evidence</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/neighbor-noise-evidence"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/neighbor-noise-evidence"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/neighbor-noise-evidence"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/neighbor-noise-evidence"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/neighbor-noise-evidence"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/neighbor-noise-evidence"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/neighbor-noise-evidence"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/neighbor-noise-evidence"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/neighbor-noise-evidence"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/neighbor-noise-evidence"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/use-cases/property-noise-complaint-report/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/property-noise-complaint-report/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/property-noise-complaint-report/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/property-noise-complaint-report/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/property-noise-complaint-report/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/property-noise-complaint-report/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/property-noise-complaint-report/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/property-noise-complaint-report/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/property-noise-complaint-report/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/property-noise-complaint-report/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/property-noise-complaint-report/"/>
+    <loc>https://soundtest.pro/use-cases/property-noise-complaint-report</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/property-noise-complaint-report"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/property-noise-complaint-report"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/property-noise-complaint-report"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/property-noise-complaint-report"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/property-noise-complaint-report"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/property-noise-complaint-report"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/property-noise-complaint-report"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/property-noise-complaint-report"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/property-noise-complaint-report"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/property-noise-complaint-report"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/use-cases/rental-dispute-evidence/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/rental-dispute-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/rental-dispute-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/rental-dispute-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/rental-dispute-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/rental-dispute-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/rental-dispute-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/rental-dispute-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/rental-dispute-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/rental-dispute-evidence/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/rental-dispute-evidence/"/>
+    <loc>https://soundtest.pro/use-cases/rental-dispute-evidence</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/rental-dispute-evidence"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/rental-dispute-evidence"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/rental-dispute-evidence"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/rental-dispute-evidence"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/rental-dispute-evidence"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/rental-dispute-evidence"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/rental-dispute-evidence"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/rental-dispute-evidence"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/rental-dispute-evidence"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/rental-dispute-evidence"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/use-cases/workplace-noise-inspection/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/workplace-noise-inspection/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/workplace-noise-inspection/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/workplace-noise-inspection/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/workplace-noise-inspection/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/workplace-noise-inspection/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/workplace-noise-inspection/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/workplace-noise-inspection/"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/workplace-noise-inspection/"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/workplace-noise-inspection/"/>
-    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/workplace-noise-inspection/"/>
+    <loc>https://soundtest.pro/use-cases/workplace-noise-inspection</loc>
+    <lastmod>2026-10-29</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/workplace-noise-inspection"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/workplace-noise-inspection"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/workplace-noise-inspection"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://soundtest.pro/use-cases/es/workplace-noise-inspection"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://soundtest.pro/use-cases/fr/workplace-noise-inspection"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://soundtest.pro/use-cases/ja/workplace-noise-inspection"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://soundtest.pro/use-cases/ko/workplace-noise-inspection"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://soundtest.pro/use-cases/th/workplace-noise-inspection"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://soundtest.pro/use-cases/vi/workplace-noise-inspection"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/use-cases/zh/workplace-noise-inspection"/>
   </url>
 </urlset>

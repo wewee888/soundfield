@@ -12,8 +12,8 @@
 # Canonical entry is /soundtest.html. /app.html was a useless 5-second
 # meta-refresh splash page that just bounced here — replace it with a
 # direct 302 so users land in the recorder immediately.
-/app.html /soundtest.html 302
-/app /soundtest.html 302
+/app.html /soundtest 301
+/app /soundtest 301
 
 # --- Asset fallback for localized subpaths (prevent 404/HTML mime error) ---
 /zh/assets/* /assets/:splat 301

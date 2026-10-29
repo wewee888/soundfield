@@ -6,17 +6,17 @@
   <meta name="description" content="ข้อกำหนดความแม่นยำและการประมวลผลสัญญาณ: Web Audio API, ตัวกรอง A/C/Z ตามมาตรฐาน IEC 61672-1, การชดเชยไมโครโฟน MEMS และการป้องกันการปลอมแปลง.">
 <meta name="keywords" content="ความแม่นยำเครื่องวัดเสียงบนมือถือ, มือถือวัดเดซิเบลแม่นไหม, การคาลิเบรตไมโครโฟน Web Audio, มาตรฐาน IEC 61672, คุณค่าทางกฎหมายของหลักฐานเสียงดิจิทัล">
   <title>มาตรฐานความแม่นยำในการวัดเสียง · SOUNDTEST.PRO</title>
-  <link rel="canonical" href="https://soundtest.pro/th/accuracy/">
-  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy/"/>
-  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy/"/>
-  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy/"/>
-  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy/"/>
-  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy/"/>
-  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy/"/>
-  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy/"/>
-  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy/"/>
-  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy/"/>
-  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy/"/>
+  <link rel="canonical" href="https://soundtest.pro/th/accuracy">
+  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy"/>
+  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy"/>
+  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy"/>
+  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy"/>
+  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy"/>
+  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy"/>
+  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy"/>
+  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy"/>
+  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy"/>
+  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy"/>
 
   
   
@@ -51,7 +51,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SOUNDTEST.PRO">
-  <meta property="og:url" content="https://soundtest.pro/th/accuracy/">
+  <meta property="og:url" content="https://soundtest.pro/th/accuracy">
   <meta property="og:title" content="Accuracy and Measurement Limits · SOUNDTEST.PRO">
   <meta property="og:description" content="SOUNDTEST.PRO accuracy statement: browser microphone readings are field documentation estimates, not certified legal metrology.">
   <meta property="og:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
@@ -63,7 +63,7 @@
   <meta name="twitter:description" content="SOUNDTEST.PRO accuracy statement: browser microphone readings are field documentation estimates, not certified legal metrology.">
   <meta name="twitter:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
 
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "หน้าแรก", "item": "https://soundtest.pro/th/"}, {"@type": "ListItem", "position": 2, "name": "ขีดจำกัดความแม่นยำและการปรับเทียบไมโครโฟน", "item": "https://soundtest.pro/th/accuracy/"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "หน้าแรก", "item": "https://soundtest.pro/th/"}, {"@type": "ListItem", "position": 2, "name": "ขีดจำกัดความแม่นยำและการปรับเทียบไมโครโฟน", "item": "https://soundtest.pro/th/accuracy"}]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "url": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "name": "ขีดจำกัดความแม่นยำและการปรับเทียบไมโครโฟน", "description": "Accuracy and Measurement Limits", "width": "1600", "height": "680", "author": {"@type": "Organization", "name": "SOUNDTEST.PRO"}, "copyrightHolder": {"@type": "Organization", "name": "SOUNDTEST.PRO"}}</script>
 </head>
 <body>
@@ -123,7 +123,44 @@
       <div class="notice reveal">Formal measurements should be verified with a certified sound level meter and qualified procedures. Local hashes prove export consistency only; they are not authoritative timestamps.</div>
     </section>
 
-    <footer class="footer-deluxe" role="contentinfo">
+    <section class="section" id="measurement-method">
+  <div class="section-header" style="margin-bottom: 1.25rem;">
+    <span class="eyebrow">ตัวเลขนี้หมายถึงอะไร</span>
+    <h2>มิเตอร์บนเบราว์เซอร์ประมาณค่าเดซิเบลอย่างไร และสิ่งที่รับรองไม่ได้</h2>
+    <p class="muted">SOUNDTEST.PRO อ่านไมโครโฟนผ่าน Web Audio API ใช้ถ่วงน้ำหนักดิจิทัล A, C หรือ Z ที่จำลองตาม IEC 61672-1 แล้วบวกค่าชดเชยของอุปกรณ์ที่บันทึกไว้ ผลลัพธ์เป็นค่าประมาณภาคสนามสำหรับไทม์ไลน์ ไม่ใช่ค่าที่อ่านจากเครื่องวัดระดับเสียงที่สอบเทียบแล้ว</p>
+  </div>
+  <div class="grid">
+      <div class="card reveal">
+        <h3>เส้นทางของสัญญาณ</h3>
+        <p>เบราว์เซอร์ไม่ได้รับแรงดันดิบจากแคปซูล ระบบปฏิบัติการและเบราว์เซอร์ยังอาจใส่เกน เกนอัตโนมัติ การตัดเสียงรบกวน หรือการตัดเสียงสะท้อน ถ้าไม่ได้ปิดข้อจำกัดเหล่านั้น เคส นิ้ว ลม หรือโทรศัพท์คว่ำหน้า จะเปลี่ยนระดับก่อนที่ตัวกรองจะทำงาน โทรศัพท์สองเครื่องในห้องเดียวกันอาจต่างกันมากกว่าช่วงที่ยอมรับบนหน้าจอ แม้เครื่องมือทั้งสองชุดจะทำงานตามที่ออกแบบ</p>
+      </div>
+      <div class="card reveal">
+        <h3>±1 ถึง 5 dB ใช้เมื่อใด</h3>
+        <p>โปรไฟล์อุปกรณ์ที่มากับผลิตภัณฑ์ถูกจัดให้ตรงกับเครื่องวัดระดับเสียงอ้างอิงและเครื่องสอบเทียบเสียง 94 dB บนโทรศัพท์ทั่วไป ช่วงนี้สำหรับเสียงย่านพูด ช่องไมโครโฟนไม่ถูกบัง และโปรไฟล์ตรงกับเครื่องนั้น เบสทะลุผนัง ไซเรนเหนือย่านพูด ไมโครโฟนที่ถูกปิด หรือแล็ปท็อปที่ไม่มีโปรไฟล์ อาจอยู่นอกช่วง ช่องว่างที่กว้างขึ้นเป็นเหตุให้เก็บค่าชดเชยการสอบเทียบ ไม่ใช่เหตุให้เฉลี่ยโทรศัพท์สองเครื่องแล้วเรียกว่าค่าทางการ</p>
+      </div>
+      <div class="card reveal">
+        <h3>บรรทัด SHA-256 พิสูจน์อะไร</h3>
+        <p>แฮชในรายการคำนวณจากไบต์ของไฟล์ที่ส่งออก ถ้ามีคนแก้ CSV หรือ PDF แฮชจะไม่ตรงกัน มันไม่พิสูจน์ว่าไมโครโฟนแม่น GPS ชี้ถูกอาคาร หรือบันทึกอธิบายเหตุการณ์นั้น ไฟล์ที่หันผิดแต่ไม่ได้ถูกแก้ยังมีแฮช ความสมบูรณ์ของไฟล์กับความจริงทางเสียงเป็นคนละข้ออ้าง และการส่งออกรองรับเฉพาะข้อแรก</p>
+      </div>
+      <div class="card reveal">
+        <h3>บันทึกจากโทรศัพท์กับเครื่องวัดคลาส 1 หรือคลาส 2</h3>
+        <p>เครื่องวัดคลาส 1 หรือคลาส 2 ตาม IEC 61672-1 ถูกตรวจทั้งเครื่อง ที่จุดอ้างอิง 1 kHz ช่วงยอมรับอยู่ราว ±1.1 dB สำหรับคลาส 1 และ ±1.4 dB สำหรับคลาส 2 และจะกว้างขึ้นตามความถี่ ทิศทาง และอุณหภูมิ การคัดลอกเส้นถ่วงน้ำหนัก A ในซอฟต์แวร์ไม่ทำให้โทรศัพท์เข้าคลาสใดคลาสหนึ่ง ใช้บันทึกจากโทรศัพท์เพื่อแสดงว่าเหตุเกิดเมื่อใด ที่ใด และดังโดยประมาณเท่าใด พร้อมเสียงและบันทึก ใช้เครื่องวัดที่ผ่านการรับรองตามวิธีที่กฎระบุ เมื่อค่าปรับ เบี้ยปรับตามสัญญา หรือแฟ้มบังคับใช้ขึ้นกับตัวเลขนั้นเอง</p>
+      </div>
+  </div>
+  <div class="card reveal" style="margin-top: 1.25rem;">
+    <h2>ให้รอบนี้เทียบกับรอบถัดไปได้</h2>
+    <ul class="check-list">
+          <li>โทรศัพท์เครื่องเดิม เคสเดิม การถ่วงน้ำหนักเดิม และการตอบสนอง Fast หรือ Slow แบบเดิม</li>
+          <li>ไมโครโฟนสูงจากพื้นราว 1.2–1.5 ม. ไม่วางในกระเป๋าและไม่ชิดผนัง</li>
+          <li>จดหน้าต่าง แหล่งเสียงอื่น และระยะทางถ้าทราบ จุดสูงสุดที่ไม่มีระยะเวลาเทียบกับ LAeq หรือขนาดยา 8 ชั่วโมงได้ยาก</li>
+          <li>ถ้าจะวางตัวเลขข้างค่าจำกัด ให้ตั้งค่าชดเชยจากเครื่องสอบเทียบหรือเครื่องวัดที่เชื่อถือ และเก็บค่าชดเชยไว้ในไฟล์ส่งออก</li>
+          <li>เก็บเสียง CSV PDF และรายการไว้ด้วยกัน แฮชครอบเฉพาะไฟล์ที่คำนวณแฮชจริง</li>
+    </ul>
+    <p class="muted" style="margin-top: 12px;">อ่านตัวเลขใน<a class="in-content-link" href="/th/standards.html">หน้ามาตรฐาน</a>ก่อนเทียบรอบวัดกับ WHO, OSHA หรือกฎท้องถิ่น และเก็บไฟล์ดิบตาม<a class="in-content-link" href="/th/samples.html">ตัวอย่างรายงาน</a> เปิด<a class="in-content-link" href="/soundtest.html?lang=th">เครื่องบันทึก</a>เมื่อบันทึกพร้อม เครื่องบันทึกไม่ตัดสินว่าผ่านเกณฑ์หรือไม่</p>
+  </div>
+</section>
+
+<footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
           <a class="brand brand-glow" href="/th/" aria-label="SOUNDTEST.PRO home">

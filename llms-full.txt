@@ -1,6 +1,6 @@
 # SOUNDTEST.PRO — Full Technical Documentation & Knowledge Base
 
-> Comprehensive technical reference documentation for SOUNDTEST.PRO (https://soundtest.pro). Zero-installation, browser-based professional sound level meter and environmental acoustic evidence documentation platform.
+> Comprehensive technical reference documentation for SOUNDTEST.PRO (https://soundtest.pro/). Zero-installation, browser-based professional sound level meter and environmental acoustic evidence documentation platform.
 
 ---
 
@@ -113,7 +113,7 @@ SOUNDTEST.PRO delivers this through:
 ### 5.3 Early-Morning Construction & Heavy Machinery
 - **Problem**: Contractors starting diesel excavators, jackhammers, or cement deliveries prior to permitted morning construction hours (often 7:00 AM or 8:00 AM).
 - **Workflow in SOUNDTEST.PRO**:
-  1. Activate the **Watermark Camera** in SOUNDTEST.PRO (https://soundtest.pro/camera.html).
+  1. Activate the **Watermark Camera** in SOUNDTEST.PRO (https://soundtest.pro/camera).
   2. Capture photos or video clips with real-time decibel readouts, timestamps, and GPS coordinates hard-coded into the overlay.
   3. Submit the video alongside the SHA-256 evidence manifest to municipal environmental protection or code enforcement agencies.
 
@@ -130,17 +130,17 @@ SOUNDTEST.PRO delivers this through:
 ## 6. System Routes & International Architecture
 
 - `https://soundtest.pro/`: Primary web application and real-time acoustic measurement instrument.
-- `https://soundtest.pro/noise-levels/`: Decibel reference chart, human hearing thresholds, and environmental standards.
-- `https://soundtest.pro/samples/`: Downloadable sample evidence bundles (CSV, PDF, JSON manifest).
-- `https://soundtest.pro/accuracy/`: Detailed technical guide on microphone MEMS physics, sampling limits, and calibration.
-- `https://soundtest.pro/standards/`: Acoustic standards reference for IEC 61672-1 digital filters and ISO 266 1/3-octave bands.
-- `https://soundtest.pro/camera.html`: Dedicated forensic acoustic watermark camera.
-- `https://soundtest.pro/use-cases/neighbor-noise-evidence/`: Guide for upstairs neighbor noise.
-- `https://soundtest.pro/use-cases/bar-street-disturbance/`: Guide for commercial nightlife and street noise.
-- `https://soundtest.pro/use-cases/construction-noise-monitoring/`: Guide for construction site boundary monitoring.
-- `https://soundtest.pro/use-cases/property-noise-complaint-report/`: Guide for HOA and property management disputes.
-- `https://soundtest.pro/use-cases/rental-dispute-evidence/`: Guide for tenant lease break documentation.
-- `https://soundtest.pro/use-cases/workplace-noise-inspection/`: Guide for occupational and factory floor noise exposure.
+- `https://soundtest.pro/noise-levels`: Decibel reference chart, human hearing thresholds, and environmental standards.
+- `https://soundtest.pro/samples`: Downloadable sample evidence bundles (CSV, PDF, JSON manifest).
+- `https://soundtest.pro/accuracy`: Detailed technical guide on microphone MEMS physics, sampling limits, and calibration.
+- `https://soundtest.pro/standards`: Acoustic standards reference for IEC 61672-1 digital filters and ISO 266 1/3-octave bands.
+- `https://soundtest.pro/camera`: Dedicated forensic acoustic watermark camera.
+- `https://soundtest.pro/use-cases/neighbor-noise-evidence`: Guide for upstairs neighbor noise.
+- `https://soundtest.pro/use-cases/bar-street-disturbance`: Guide for commercial nightlife and street noise.
+- `https://soundtest.pro/use-cases/construction-noise-monitoring`: Guide for construction site boundary monitoring.
+- `https://soundtest.pro/use-cases/property-noise-complaint-report`: Guide for HOA and property management disputes.
+- `https://soundtest.pro/use-cases/rental-dispute-evidence`: Guide for tenant lease break documentation.
+- `https://soundtest.pro/use-cases/workplace-noise-inspection`: Guide for occupational and factory floor noise exposure.
 
 ### International Localized Portals (9 Languages):
 1. **English (Global Default)**: `https://soundtest.pro/en/` — Comprehensive international environmental noise documentation.
