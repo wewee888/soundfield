@@ -13,60 +13,33 @@ Rules:
 from __future__ import annotations
 
 import os
-import re
 import sys
 from pathlib import Path
 from datetime import datetime, timezone
 from xml.sax.saxutils import escape
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from public_urls import (  # noqa: E402
+    LANGS,
+    SKIP_DIRS,
+    logical_sitemap_key,
+    sibling_path,
+)
+
 ROOT = Path(__file__).resolve().parent.parent
 DOMAIN = "https://soundtest.pro"
 
-# 1. Languages that exist on disk (verified by scanning earlier)
-LANGS = ["en", "zh", "es", "fr", "de", "ja", "ko", "vi", "th"]
+# URL rules live in public_urls.py. Doc pages that Cloudflare Pages serves
+# from foo.html use a slash-free path (/accuracy). Directory indexes keep
+# the trailing slash (/ , /zh/ , /use-cases/). Login, billing, changelog,
+# refund, and the fullscreen camera are omitted from the sitemap.
 
-# 2. Subdirectories we never want in the sitemap
-SKIP_DIRS = {
-    "test-results",
-    "_temp",
-    "scripts",
-    "functions",
-    "assets",
-    "public",
-    "a",
-    "b",
-    "c",
-    ".git",
-    ".wrangler",
-    ".github",
-    ".claude",
-    "tests",
-}
-
-# 3. .html -> canonical URL map (mirrors _redirects)
-# Keys are the BARE filename (no slash), values are the clean canonical URL.
-# Pages that 302 to another page are NOT listed as separate sitemap entries.
-# index.html is handled specially in file_to_canonical() below.
-# Canonical forms carry NO trailing slash, matching the rel="canonical"
-# targets served by the pages themselves (e.g. https://soundtest.pro/about).
-HTML_TO_CANONICAL: dict[str, str] = {
-    "app.html": "/soundtest",
-    "soundtest.html": "/soundtest",
-    "samples.html": "/samples",
-    "accuracy.html": "/accuracy",
-    "about.html": "/about",
-    "terms.html": "/terms",
-    "download.html": "/download",
-    "standards.html": "/standards",
-    "disclaimer.html": "/disclaimer",
-    "privacy.html": "/privacy",
-    "noise-levels.html": "/noise-levels",
-}
 
 # Pages served with X-Robots-Tag: noindex by functions/_middleware.js.
 # A sitemap must not list noindex URLs, so these files are excluded for
 # every language variant. Keep in sync with NOINDEX_LEAVES in
-# functions/_middleware.js.
+# functions/_middleware.js. (public_urls.SITEMAP_EXCLUDE covers the same
+# files; this guard keeps the rule explicit at the generator entry point.)
 NOINDEX_FILES = {
     "auth.html",
     "launch-metrics.html",
@@ -76,7 +49,6 @@ NOINDEX_FILES = {
     "camera.html",
 }
 
-
 def is_skipped_dir(path: Path) -> bool:
     parts = set(path.relative_to(ROOT).parts)
     return bool(parts & SKIP_DIRS)
@@ -85,53 +57,14 @@ def is_skipped_dir(path: Path) -> bool:
 def file_to_canonical(rel_path: str) -> tuple[str | None, str | None]:
     """Convert 'en/samples.html' to (logical_key, lang).
 
-    Returns (logical_key, lang). logical_key is the language-agnostic path
-    like '/samples/' or '/use-cases/neighbor-noise-evidence/'.
+    logical_key is the language-agnostic path that returns HTTP 200,
+    like '/samples' or '/use-cases/neighbor-noise-evidence'. Directory
+    indexes keep their slash: '/' and '/use-cases/'.
     Returns (None, None) if the file should be skipped entirely.
     """
-    if not rel_path.endswith(".html"):
+    if rel_path.rsplit("/", 1)[-1] in NOINDEX_FILES:
         return None, None
-
-    parts = rel_path.split("/")
-    fname = parts[-1]
-
-    if fname in NOINDEX_FILES:
-        return None, None
-
-    # Detect language prefix
-    lang: str | None = None
-    subdirs = parts[:-1]  # everything before the filename
-    if subdirs and subdirs[0] in LANGS:
-        lang = subdirs[0]
-        subdirs = subdirs[1:]
-
-    # index.html: language homepages
-    if fname == "index.html":
-        # /en/index.html -> lang=en, key='/'
-        # /use-cases/en/index.html -> lang=en, key='/use-cases/'
-        # /index.html -> lang=None, key='/'
-        if subdirs and subdirs[0] == "use-cases":
-            if len(subdirs) > 1 and subdirs[1] in LANGS:
-                lang = subdirs[1]
-            return "/use-cases", lang
-        return "/", lang
-
-    # use-cases pages keep their .html (no _redirects rule for them)
-    if subdirs and subdirs[0] == "use-cases":
-        # /use-cases/<lang>/foo.html -> lang from <lang>; key=/use-cases/foo/
-        # /use-cases/foo.html -> no lang; key=/use-cases/foo/
-        tail = fname[:-len(".html")]  # strip .html
-        if lang is None and subdirs[1:]:
-            # /use-cases/<some-lang-as-subdir>/foo.html — treat <some-lang-as-subdir> as lang
-            if subdirs[1] in LANGS:
-                lang = subdirs[1]
-        return f"/use-cases/{tail}", lang
-
-    # Standard doc pages: must be in HTML_TO_CANONICAL
-    if fname not in HTML_TO_CANONICAL:
-        return None, None
-
-    return HTML_TO_CANONICAL[fname], lang
+    return logical_sitemap_key(rel_path)
 
 
 def gather_pages() -> dict[str, set[str]]:
@@ -166,22 +99,8 @@ def gather_pages() -> dict[str, set[str]]:
 
 
 def sibling_url(canonical_key: str, lang: str) -> str:
-    """Given logical key '/samples/' and lang='zh', return '/zh/samples/'.
-    Given logical key '/use-cases/foo/' and lang='zh', return '/use-cases/zh/foo/'.
-    For x-default, return the root-level key.
-    """
-    if lang == "x-default":
-        return f"{DOMAIN}{canonical_key}"
-    if canonical_key.startswith("/use-cases"):
-        if canonical_key == "/use-cases":
-            if lang == "en":
-                return f"{DOMAIN}/use-cases"
-            return f"{DOMAIN}/use-cases/{lang}"
-        tail = canonical_key[len("/use-cases/"):]
-        if lang == "en":
-            return f"{DOMAIN}/use-cases/{tail}"
-        return f"{DOMAIN}/use-cases/{lang}/{tail}"
-    return f"{DOMAIN}/{lang}{canonical_key}"
+    """Given logical key '/samples' and lang='zh', return the 200 URL."""
+    return f"{DOMAIN}{sibling_path(canonical_key, lang)}"
 
 
 def file_mtime_iso(abs_path: Path) -> str:
@@ -194,8 +113,9 @@ def pick_lastmod(logical_key: str) -> str:
 
     logical_key examples:
         "/"          -> root index.html
-        "/samples/"  -> <lang>/samples.html and /samples.html
-        "/use-cases/neighbor-noise-evidence/" -> use-cases/<lang>/foo.html and use-cases/foo.html
+        "/samples"   -> <lang>/samples.html and /samples.html
+        "/use-cases/" -> use-cases/<lang>/index.html and use-cases/index.html
+        "/use-cases/neighbor-noise-evidence" -> use-cases/<lang>/foo.html
     """
     candidates: list[Path] = []
 
@@ -208,9 +128,16 @@ def pick_lastmod(logical_key: str) -> str:
                 p = ROOT / "index.html"
             if p.exists():
                 candidates.append(p)
-    elif logical_key.startswith("/use-cases"):
-        # /use-cases/<name>
-        tail = logical_key[len("/use-cases/") :].rstrip("/")
+    elif logical_key.rstrip("/") == "/use-cases":
+        for lang in LANGS + [None]:
+            if lang:
+                p = ROOT / "use-cases" / lang / "index.html"
+            else:
+                p = ROOT / "use-cases" / "index.html"
+            if p.exists():
+                candidates.append(p)
+    elif logical_key.startswith("/use-cases/"):
+        tail = logical_key[len("/use-cases/") :].strip("/")
         for lang in LANGS + [None]:
             if lang:
                 p = ROOT / "use-cases" / lang / f"{tail}.html"

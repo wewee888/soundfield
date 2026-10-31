@@ -16,7 +16,6 @@ const SPIDER_TRAP_PATTERNS = [
   /\/([a-z0-9_-]{2,})\/\1(?:\/|$)/i,
 ];
 
-
 const LOCALE_SEGMENTS = new Set(['en', 'zh', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th']);
 const VARIANT_SEGMENTS = new Set(['a', 'b', 'c']);
 
@@ -70,6 +69,52 @@ function stackedLocaleRedirect(url) {
   });
 }
 
+const APEX_HOST = 'soundtest.pro';
+const WWW_HOST = 'www.soundtest.pro';
+const NOINDEX_LEAVES = new Set([
+  'auth',
+  'launch-metrics',
+  'monetization',
+  'refund',
+  'changelog',
+  'camera',
+]);
+const LANGS = new Set(['en', 'zh', 'es', 'fr', 'de', 'ja', 'ko', 'vi', 'th']);
+
+function hostCanonicalRedirect(request) {
+  const url = new URL(request.url);
+  const host = url.hostname.toLowerCase();
+  const visitor = request.headers.get('CF-Visitor') || '';
+  const clientHttp = /"scheme"\s*:\s*"http"/i.test(visitor);
+  const isWww = host === WWW_HOST;
+  const isApex = host === APEX_HOST;
+  if (!isWww && !(clientHttp && isApex)) return null;
+  url.hostname = APEX_HOST;
+  url.protocol = 'https:';
+  // request.url is already https at the worker when Cloudflare terminated TLS.
+  // A CF-Visitor scheme of http still needs a 301 so the browser leaves http.
+  const status = request.method === 'GET' || request.method === 'HEAD' ? 301 : 308;
+  return new Response(null, {
+    status,
+    headers: {
+      Location: url.toString(),
+      'Cache-Control': 'public, max-age=86400',
+    },
+  });
+}
+
+function isNoindexPath(pathname) {
+  let path = pathname.split('?')[0];
+  if (path.endsWith('.html')) path = path.slice(0, -5);
+  if (path.length > 1 && path.endsWith('/')) path = path.slice(0, -1);
+  const parts = path.split('/').filter(Boolean);
+  if (parts.length === 0 || parts.length > 2) return false;
+  const leaf = parts[parts.length - 1];
+  if (!NOINDEX_LEAVES.has(leaf)) return false;
+  if (parts.length === 2 && !LANGS.has(parts[0])) return false;
+  return true;
+}
+
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   const pathname = url.pathname;
@@ -77,6 +122,11 @@ export async function onRequest(context) {
   // 0. Redirect stacked-locale paths to their single-locale canonical form
   const localeRedirect = stackedLocaleRedirect(url);
   if (localeRedirect) return localeRedirect;
+
+  // 0b. One hop to https://soundtest.pro. Cloudflare "Always Use HTTPS" already
+  // 301s plain http at the edge; this covers www and a missing edge rule.
+  const hostRedirect = hostCanonicalRedirect(context.request);
+  if (hostRedirect) return hostRedirect;
 
   // 1. Check for spider trap / crawler loop patterns
   for (const pattern of SPIDER_TRAP_PATTERNS) {
@@ -108,5 +158,14 @@ export async function onRequest(context) {
     }
   }
 
-  return context.next();
+  const response = await context.next();
+  if (!isNoindexPath(pathname)) return response;
+
+  const headers = new Headers(response.headers);
+  headers.set('X-Robots-Tag', 'noindex, follow');
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
 }
