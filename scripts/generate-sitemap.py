@@ -47,24 +47,33 @@ SKIP_DIRS = {
 # Keys are the BARE filename (no slash), values are the clean canonical URL.
 # Pages that 302 to another page are NOT listed as separate sitemap entries.
 # index.html is handled specially in file_to_canonical() below.
+# Canonical forms carry NO trailing slash, matching the rel="canonical"
+# targets served by the pages themselves (e.g. https://soundtest.pro/about).
 HTML_TO_CANONICAL: dict[str, str] = {
-    "app.html": "/soundtest/",
-    "soundtest.html": "/soundtest/",
-    "samples.html": "/samples/",
-    "accuracy.html": "/accuracy/",
-    "auth.html": "/auth/",
-    "about.html": "/about/",
-    "terms.html": "/terms/",
-    "download.html": "/download/",
-    "launch-metrics.html": "/launch-metrics/",
-    "monetization.html": "/monetization/",
-    "standards.html": "/standards/",
-    "changelog.html": "/changelog/",
-    "disclaimer.html": "/disclaimer/",
-    "privacy.html": "/privacy/",
-    "refund.html": "/refund/",
-    "noise-levels.html": "/noise-levels/",
-    "camera.html": "/camera.html",
+    "app.html": "/soundtest",
+    "soundtest.html": "/soundtest",
+    "samples.html": "/samples",
+    "accuracy.html": "/accuracy",
+    "about.html": "/about",
+    "terms.html": "/terms",
+    "download.html": "/download",
+    "standards.html": "/standards",
+    "disclaimer.html": "/disclaimer",
+    "privacy.html": "/privacy",
+    "noise-levels.html": "/noise-levels",
+}
+
+# Pages served with X-Robots-Tag: noindex by functions/_middleware.js.
+# A sitemap must not list noindex URLs, so these files are excluded for
+# every language variant. Keep in sync with NOINDEX_LEAVES in
+# functions/_middleware.js.
+NOINDEX_FILES = {
+    "auth.html",
+    "launch-metrics.html",
+    "monetization.html",
+    "refund.html",
+    "changelog.html",
+    "camera.html",
 }
 
 
@@ -86,6 +95,9 @@ def file_to_canonical(rel_path: str) -> tuple[str | None, str | None]:
     parts = rel_path.split("/")
     fname = parts[-1]
 
+    if fname in NOINDEX_FILES:
+        return None, None
+
     # Detect language prefix
     lang: str | None = None
     subdirs = parts[:-1]  # everything before the filename
@@ -101,7 +113,7 @@ def file_to_canonical(rel_path: str) -> tuple[str | None, str | None]:
         if subdirs and subdirs[0] == "use-cases":
             if len(subdirs) > 1 and subdirs[1] in LANGS:
                 lang = subdirs[1]
-            return "/use-cases/", lang
+            return "/use-cases", lang
         return "/", lang
 
     # use-cases pages keep their .html (no _redirects rule for them)
@@ -113,7 +125,7 @@ def file_to_canonical(rel_path: str) -> tuple[str | None, str | None]:
             # /use-cases/<some-lang-as-subdir>/foo.html — treat <some-lang-as-subdir> as lang
             if subdirs[1] in LANGS:
                 lang = subdirs[1]
-        return f"/use-cases/{tail}/", lang
+        return f"/use-cases/{tail}", lang
 
     # Standard doc pages: must be in HTML_TO_CANONICAL
     if fname not in HTML_TO_CANONICAL:
@@ -160,11 +172,11 @@ def sibling_url(canonical_key: str, lang: str) -> str:
     """
     if lang == "x-default":
         return f"{DOMAIN}{canonical_key}"
-    if canonical_key.startswith("/use-cases/"):
-        if canonical_key == "/use-cases/":
+    if canonical_key.startswith("/use-cases"):
+        if canonical_key == "/use-cases":
             if lang == "en":
-                return f"{DOMAIN}/use-cases/"
-            return f"{DOMAIN}/use-cases/{lang}/"
+                return f"{DOMAIN}/use-cases"
+            return f"{DOMAIN}/use-cases/{lang}"
         tail = canonical_key[len("/use-cases/"):]
         if lang == "en":
             return f"{DOMAIN}/use-cases/{tail}"
@@ -196,8 +208,8 @@ def pick_lastmod(logical_key: str) -> str:
                 p = ROOT / "index.html"
             if p.exists():
                 candidates.append(p)
-    elif logical_key.startswith("/use-cases/"):
-        # /use-cases/<name>/
+    elif logical_key.startswith("/use-cases"):
+        # /use-cases/<name>
         tail = logical_key[len("/use-cases/") :].rstrip("/")
         for lang in LANGS + [None]:
             if lang:
