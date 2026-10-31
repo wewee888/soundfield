@@ -35,6 +35,20 @@ DOMAIN = "https://soundtest.pro"
 # refund, and the fullscreen camera are omitted from the sitemap.
 
 
+# Pages served with X-Robots-Tag: noindex by functions/_middleware.js.
+# A sitemap must not list noindex URLs, so these files are excluded for
+# every language variant. Keep in sync with NOINDEX_LEAVES in
+# functions/_middleware.js. (public_urls.SITEMAP_EXCLUDE covers the same
+# files; this guard keeps the rule explicit at the generator entry point.)
+NOINDEX_FILES = {
+    "auth.html",
+    "launch-metrics.html",
+    "monetization.html",
+    "refund.html",
+    "changelog.html",
+    "camera.html",
+}
+
 def is_skipped_dir(path: Path) -> bool:
     parts = set(path.relative_to(ROOT).parts)
     return bool(parts & SKIP_DIRS)
@@ -48,6 +62,8 @@ def file_to_canonical(rel_path: str) -> tuple[str | None, str | None]:
     indexes keep their slash: '/' and '/use-cases/'.
     Returns (None, None) if the file should be skipped entirely.
     """
+    if rel_path.rsplit("/", 1)[-1] in NOINDEX_FILES:
+        return None, None
     return logical_sitemap_key(rel_path)
 
 
