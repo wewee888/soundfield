@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://soundtest.pro/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/"/>
@@ -17,7 +17,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/about</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/about"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/about"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/about"/>
@@ -31,7 +31,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/accuracy</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy"/>
@@ -45,7 +45,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/disclaimer</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/disclaimer"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/disclaimer"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/disclaimer"/>
@@ -59,7 +59,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/download</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/download"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/download"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/download"/>
@@ -72,8 +72,59 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/download"/>
   </url>
   <url>
+    <loc>https://soundtest.pro/zh/gb-3096-2008</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/zh/gb-3096-2008"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/gb-3096-2008"/>
+  </url>
+  <url>
+    <loc>https://soundtest.pro/how-loud-is-100-db</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-100-db"/>
+  </url>
+  <url>
+    <loc>https://soundtest.pro/how-loud-is-110-db</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-110-db"/>
+  </url>
+  <url>
+    <loc>https://soundtest.pro/how-loud-is-30-db</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-30-db"/>
+  </url>
+  <url>
+    <loc>https://soundtest.pro/how-loud-is-40-db</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-40-db"/>
+  </url>
+  <url>
+    <loc>https://soundtest.pro/how-loud-is-50-db</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-50-db"/>
+  </url>
+  <url>
+    <loc>https://soundtest.pro/how-loud-is-60-db</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-60-db"/>
+  </url>
+  <url>
+    <loc>https://soundtest.pro/how-loud-is-70-db</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-70-db"/>
+  </url>
+  <url>
+    <loc>https://soundtest.pro/how-loud-is-80-db</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-80-db"/>
+  </url>
+  <url>
+    <loc>https://soundtest.pro/how-loud-is-90-db</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-90-db"/>
+  </url>
+  <url>
     <loc>https://soundtest.pro/noise-levels</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/noise-levels"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/noise-levels"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/noise-levels"/>
@@ -86,8 +137,13 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/noise-levels"/>
   </url>
   <url>
+    <loc>https://soundtest.pro/online-decibel-meter</loc>
+    <lastmod>2026-10-31</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/online-decibel-meter"/>
+  </url>
+  <url>
     <loc>https://soundtest.pro/privacy</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/privacy"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/privacy"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/privacy"/>
@@ -101,7 +157,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/samples</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/samples"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/samples"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/samples"/>
@@ -115,12 +171,12 @@
   </url>
   <url>
     <loc>https://soundtest.pro/soundtest</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/soundtest"/>
   </url>
   <url>
     <loc>https://soundtest.pro/standards</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/standards"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/standards"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/standards"/>
@@ -134,7 +190,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/terms</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/terms"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/de/terms"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/en/terms"/>
@@ -148,7 +204,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/use-cases/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/"/>
@@ -162,7 +218,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/use-cases/bar-street-disturbance</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/bar-street-disturbance"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/bar-street-disturbance"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/bar-street-disturbance"/>
@@ -176,7 +232,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/use-cases/construction-noise-monitoring</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/construction-noise-monitoring"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/construction-noise-monitoring"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/construction-noise-monitoring"/>
@@ -190,7 +246,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/use-cases/neighbor-noise-evidence</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/neighbor-noise-evidence"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/neighbor-noise-evidence"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/neighbor-noise-evidence"/>
@@ -204,7 +260,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/use-cases/property-noise-complaint-report</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/property-noise-complaint-report"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/property-noise-complaint-report"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/property-noise-complaint-report"/>
@@ -218,7 +274,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/use-cases/rental-dispute-evidence</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/rental-dispute-evidence"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/rental-dispute-evidence"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/rental-dispute-evidence"/>
@@ -232,7 +288,7 @@
   </url>
   <url>
     <loc>https://soundtest.pro/use-cases/workplace-noise-inspection</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-31</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/use-cases/workplace-noise-inspection"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://soundtest.pro/use-cases/de/workplace-noise-inspection"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://soundtest.pro/use-cases/workplace-noise-inspection"/>

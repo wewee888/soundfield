@@ -30,7 +30,6 @@ test('Spider Trap Protection: functions/_middleware.js detects and blocks recurs
     'https://soundtest.pro/use-cases/noise-levels/es/use-cases/de/fr/es/index.html',
     'https://soundtest.pro/use-cases/noise-levels/use-cases/noise-levels/th/es/use-cases/use-cases/bar-street-disturbance.html',
     'https://soundtest.pro/use-cases/use-cases/fr/noise-levels/noise-levels/es/en/use-cases/property-noise-complaint-report.html',
-    'https://soundtest.pro/es/de/fr/noise-levels.html',
     'https://soundtest.pro/use-cases/use-cases/index.html',
   ];
 
@@ -48,6 +47,16 @@ test('Spider Trap Protection: functions/_middleware.js detects and blocks recurs
     assert.equal(response.status, 410, `Crawler trap ${trapUrl} must return HTTP 410`);
     assert.match(response.headers.get('X-Robots-Tag') || '', /noindex/i, 'Response must have X-Robots-Tag: noindex');
   }
+
+  // A stack of locale prefixes collapses to the last locale instead of 410.
+  const stacked = await mwModule.onRequest({
+    request: new Request('https://soundtest.pro/es/de/fr/noise-levels.html'),
+    next: () => {
+      throw new Error('stacked locales must redirect');
+    },
+  });
+  assert.equal(stacked.status, 301);
+  assert.equal(new URL(stacked.headers.get('Location')).pathname, '/fr/noise-levels.html');
 
   // Legitimate routes must pass through
   const normalUrls = [
