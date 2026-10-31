@@ -106,7 +106,9 @@
     // 3. Use-cases: /use-cases/...
     if (segments.length > 0 && segments[0].toLowerCase() === 'use-cases') {
       let sub = segments.slice(1);
-      if (sub.length > 0 && supportedLocales.includes(normalizeLocale(sub[0]))) {
+      // Strip ALL stacked locale segments (e.g. /use-cases/en/es/en/...),
+      // not just the first, so switching never re-emits a stacked path.
+      while (sub.length > 0 && supportedLocales.includes(normalizeLocale(sub[0]))) {
         sub = sub.slice(1);
       }
       const slug = sub[0] || '';
@@ -135,7 +137,10 @@
 
     // 5. Standard pages & Homepage
     let fileSegments = [...segments];
-    if (fileSegments.length > 0 && supportedLocales.includes(normalizeLocale(fileSegments[0]))) {
+    // Strip ALL leading locale segments so the target is always built from
+    // the canonical unlocalized route, even when the current URL is an
+    // already-stacked legacy path like /th/zh/auth.html.
+    while (fileSegments.length > 0 && supportedLocales.includes(normalizeLocale(fileSegments[0]))) {
       fileSegments = fileSegments.slice(1);
     }
 
