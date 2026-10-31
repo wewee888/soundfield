@@ -21,6 +21,9 @@ SOUNDTEST.PRO operates entirely client-side in modern web browsers (mobile and d
 
 ## Reference Guides & Technical Documentation
 - [Decibel Reference Chart & Noise Standards](https://soundtest.pro/noise-levels): Ambient decibel thresholds across residential, commercial, and industrial zones according to WHO, EPA, and GB 3096 guidelines.
+- [Online Decibel Meter](https://soundtest.pro/online-decibel-meter): Browser sound level meter. A/C/Z weighting, LAeq, L10/L90. An estimate, not a certified meter.
+- [How loud is 30–110 dB?](https://soundtest.pro/how-loud-is-60-db): Approximate everyday comparisons from 30 dB to 110 dB.
+- [GB 3096-2008 limits (中文)](https://soundtest.pro/zh/gb-3096-2008): Day and night limits by functional zone. A phone reading does not satisfy the standard's instrument clause.
 - [Measurement Accuracy & Calibration](https://soundtest.pro/accuracy): Transparent breakdown of smartphone MEMS microphone acoustic physical limits, frequency curves, and calibration procedures.
 - [Sample Evidence Dossiers](https://soundtest.pro/samples): Downloadable sample bundles including CSV time-series logs, PDF reports, and SHA-256 JSON custody manifests.
 - [Standards & Compliance Reference](https://soundtest.pro/standards): IEC 61672-1 digital acoustic weighting algorithms and ISO 266 1/3-octave band specifications.
