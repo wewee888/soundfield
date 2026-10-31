@@ -39,25 +39,30 @@ SKIP_DIRS = {
     ".claude", "tests",
 }
 
-# doc pages → clean URL (matches _redirects). Use-cases pages keep their .html
-# at the URL level (no _redirects rule for them) but the canonical we emit
-# uses the clean /tail/ form to match the sitemap and CF Pages auto-strip.
+# doc pages → the URL Cloudflare Pages actually returns 200 for.
+# foo.html is served at /foo (no trailing slash). /foo/ 308s to /foo.
+# compliance.html redirects to the terms page, so its canonical is /terms.
+# Directory indexes are not in this map; they keep a trailing slash.
 HTML_TO_CANONICAL: dict[str, str] = {
-    "app.html": "/soundtest/",
-    "soundtest.html": "/soundtest/",
-    "samples.html": "/samples/",
-    "accuracy.html": "/accuracy/",
-    "auth.html": "/auth/",
-    "compliance.html": "/compliance/",
-    "download.html": "/download/",
-    "launch-metrics.html": "/launch-metrics/",
-    "monetization.html": "/monetization/",
-    "standards.html": "/standards/",
-    "changelog.html": "/changelog/",
-    "disclaimer.html": "/disclaimer/",
-    "privacy.html": "/privacy/",
-    "refund.html": "/refund/",
-    "stats.html": "/stats/",
+    "app.html": "/soundtest",
+    "soundtest.html": "/soundtest",
+    "samples.html": "/samples",
+    "accuracy.html": "/accuracy",
+    "auth.html": "/auth",
+    "about.html": "/about",
+    "terms.html": "/terms",
+    "compliance.html": "/terms",
+    "download.html": "/download",
+    "launch-metrics.html": "/launch-metrics",
+    "monetization.html": "/monetization",
+    "standards.html": "/standards",
+    "changelog.html": "/changelog",
+    "disclaimer.html": "/disclaimer",
+    "privacy.html": "/privacy",
+    "refund.html": "/refund",
+    "noise-levels.html": "/noise-levels",
+    "camera.html": "/camera",
+    "stats.html": "/stats",
 }
 
 CANONICAL_RE = re.compile(
@@ -78,9 +83,9 @@ def is_skipped_dir(path: Path) -> bool:
 def file_meta(rel_path: str) -> tuple[str, str | None, str] | None:
     """Parse rel_path into (logical_key, lang, doc).
 
-    logical_key is the language-agnostic path:
-        /accuracy/         <- for zh/accuracy.html, en/accuracy.html, etc.
-        /use-cases/foo/    <- for use-cases/zh/foo.html, use-cases/en/foo.html
+    logical_key is the language-agnostic path that returns HTTP 200:
+        /accuracy          <- for zh/accuracy.html, en/accuracy.html, etc.
+        /use-cases/foo     <- for use-cases/zh/foo.html, use-cases/en/foo.html
 
     Returns None if the file should be skipped.
     """
@@ -121,7 +126,7 @@ def file_meta(rel_path: str) -> tuple[str, str | None, str] | None:
     if len(subdirs) == 2 and subdirs[0] == "use-cases" and subdirs[1] in LANGS:
         lang = subdirs[1]
         tail = fname[:-len(".html")]
-        logical_key = f"/use-cases/{tail}/"
+        logical_key = f"/use-cases/{tail}"
         return logical_key, lang, fname
 
     # Pattern: use-cases/<lang>/index.html (we won't touch — handled like <lang>/index.html)

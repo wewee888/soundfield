@@ -249,8 +249,11 @@ test('Dedicated Camera standalone page, Pro showcase card, and SEO integration',
   assert.ok(soundtestHtml.includes('forensic_report_preview.webp'), 'soundtest.html displays forensic report preview image');
   assert.ok(soundtestHtml.includes('camera.html'), 'soundtest.html links to dedicated camera page');
 
-  // SEO & sitemap integration
-  assert.ok(sitemapXml.includes('https://soundtest.pro/camera.html'), 'sitemap.xml contains camera.html URL');
+  // The fullscreen camera stays linked in the product, but it is noindex and
+  // absent from the sitemap. Its canonical is the URL that returns 200.
+  assert.ok(!sitemapXml.includes('camera'), 'sitemap.xml omits the thin camera tool');
+  assert.match(cameraHtml, /rel="canonical" href="https:\/\/soundtest\.pro\/camera"/);
+  assert.match(cameraHtml, /name="robots" content="noindex, follow"/);
   assert.ok(indexHtml.includes('camera.html'), 'index.html footer links to camera');
   assert.ok(zhIndexHtml.includes('camera.html'), 'zh/index.html footer links to camera');
 });

@@ -4249,7 +4249,7 @@
         if (ord.currency === 'USD') {
           checkoutUrl = `https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c?email=${encodeURIComponent(ord.email || '')}&plan=${ord.plan}`;
         } else {
-          checkoutUrl = `https://soundtest.pro/auth.html?email=${encodeURIComponent(ord.email || '')}`;
+          checkoutUrl = `https://soundtest.pro/auth?email=${encodeURIComponent(ord.email || '')}`;
         }
       }
 
@@ -4294,7 +4294,7 @@
         if (isUsd) {
           checkoutUrl = `https://www.creem.io/payment/prod_18imyd506sx0xFOcMiqB2c?email=${encodeURIComponent(email)}&plan=${plan}`;
         } else {
-          checkoutUrl = `https://soundtest.pro/auth.html?email=${encodeURIComponent(email)}`;
+          checkoutUrl = `https://soundtest.pro/auth?email=${encodeURIComponent(email)}`;
         }
       }
 

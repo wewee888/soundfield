@@ -6,17 +6,17 @@
   <meta name="description" content="Technische Spezifikationen und Messgenauigkeit: Web Audio API, A/C/Z-Frequenzbewertung nach IEC 61672-1, MEMS-Sensoren und rechtssichere SHA-256 Signatur.">
 <meta name="keywords" content="genauigkeit schallpegelmessung smartphone, wie genau ist handy dezibelmessung, mikrofon kalibrierung web audio, IEC 61672 norm, beweiskraft lärmmessung gericht">
   <title>Messgenauigkeit & Mikrofon-Kalibrierung · SOUNDTEST.PRO</title>
-  <link rel="canonical" href="https://soundtest.pro/de/accuracy/">
-  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy/"/>
-  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy/"/>
-  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy/"/>
-  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy/"/>
-  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy/"/>
-  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy/"/>
-  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy/"/>
-  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy/"/>
-  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy/"/>
-  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy/"/>
+  <link rel="canonical" href="https://soundtest.pro/de/accuracy">
+  <link rel="alternate" hreflang="x-default" href="https://soundtest.pro/accuracy"/>
+  <link rel="alternate" hreflang="de" href="https://soundtest.pro/de/accuracy"/>
+  <link rel="alternate" hreflang="en" href="https://soundtest.pro/en/accuracy"/>
+  <link rel="alternate" hreflang="es" href="https://soundtest.pro/es/accuracy"/>
+  <link rel="alternate" hreflang="fr" href="https://soundtest.pro/fr/accuracy"/>
+  <link rel="alternate" hreflang="ja" href="https://soundtest.pro/ja/accuracy"/>
+  <link rel="alternate" hreflang="ko" href="https://soundtest.pro/ko/accuracy"/>
+  <link rel="alternate" hreflang="th" href="https://soundtest.pro/th/accuracy"/>
+  <link rel="alternate" hreflang="vi" href="https://soundtest.pro/vi/accuracy"/>
+  <link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy"/>
 
   
   
@@ -51,7 +51,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SOUNDTEST.PRO">
-  <meta property="og:url" content="https://soundtest.pro/de/accuracy/">
+  <meta property="og:url" content="https://soundtest.pro/de/accuracy">
   <meta property="og:title" content="Accuracy and Measurement Limits · SOUNDTEST.PRO">
   <meta property="og:description" content="SOUNDTEST.PRO accuracy statement: browser microphone readings are field documentation estimates, not certified legal metrology.">
   <meta property="og:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
@@ -63,7 +63,7 @@
   <meta name="twitter:description" content="SOUNDTEST.PRO accuracy statement: browser microphone readings are field documentation estimates, not certified legal metrology.">
   <meta name="twitter:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
 
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://soundtest.pro/de/"}, {"@type": "ListItem", "position": 2, "name": "Genauigkeitsgrenzen & Mikrofonkalibrierung", "item": "https://soundtest.pro/de/accuracy/"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://soundtest.pro/de/"}, {"@type": "ListItem", "position": 2, "name": "Genauigkeitsgrenzen & Mikrofonkalibrierung", "item": "https://soundtest.pro/de/accuracy"}]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "url": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "name": "Genauigkeitsgrenzen & Mikrofonkalibrierung", "description": "Accuracy and Measurement Limits", "width": "1600", "height": "680", "author": {"@type": "Organization", "name": "SOUNDTEST.PRO"}, "copyrightHolder": {"@type": "Organization", "name": "SOUNDTEST.PRO"}}</script>
 </head>
 <body>
@@ -123,7 +123,44 @@
       <div class="notice reveal">Formal measurements should be verified with a certified sound level meter and qualified procedures. Local hashes prove export consistency only; they are not authoritative timestamps.</div>
     </section>
 
-    <footer class="footer-deluxe" role="contentinfo">
+    <section class="section" id="measurement-method">
+  <div class="section-header" style="margin-bottom: 1.25rem;">
+    <span class="eyebrow">Was die Zahl bedeutet</span>
+    <h2>Wie ein Browser-Messgerät Dezibel schätzt und was es nicht bescheinigen kann</h2>
+    <p class="muted">SOUNDTEST.PRO liest das Mikrofon über die Web Audio API, wendet eine an IEC 61672-1 angelehnte digitale A-, C- oder Z-Bewertung an und addiert einen gespeicherten Geräteoffset. Das Ergebnis ist eine Feldschätzung für einen Zeitverlauf. Es ist kein kalibrierter Schallpegelmesser-Wert.</p>
+  </div>
+  <div class="grid">
+      <div class="card reveal">
+        <h3>Signalweg</h3>
+        <p>Der Browser erhält nicht die rohe Kapselspannung. Betriebssystem und Browser können weiterhin Verstärkung, automatische Verstärkungsregelung, Rauschunterdrückung oder Echounterdrückung anwenden, solange diese Vorgaben nicht ausgeschaltet sind. Hülle, Finger, Wind oder ein mit dem Display nach unten liegendes Telefon ändern den Pegel, bevor irgendein Filter läuft. Zwei Telefone im selben Raum können stärker voneinander abweichen als die angezeigte Toleranz, auch wenn beide Kopien des Werkzeugs wie vorgesehen arbeiten.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Wo ±1 bis 5 dB gilt</h3>
+        <p>Die mitgelieferten Geräteprofile wurden an einem Referenz-Schallpegelmesser und einem akustischen Kalibrator von 94 dB auf gängigen Telefonen ausgerichtet. Diese Spanne gilt für Schall im Sprachbereich, eine freie Mikrofonöffnung und ein Profil, das zum Gerät passt. Bass durch eine Wand, eine Sirene oberhalb des Sprachbandes, ein verdecktes Mikrofon oder ein unbekanntes Notebook können außerhalb liegen. Eine größere Lücke ist ein Grund, einen Kalibrieroffset zu speichern, kein Grund, zwei Telefone zu mitteln und das Ergebnis für amtlich zu erklären.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Was die SHA-256-Zeile belegt</h3>
+        <p>Der Manifest-Hash wird über die Bytes der exportierten Datei berechnet. Ändert jemand CSV oder PDF, passt der Hash nicht mehr. Er belegt nicht, dass das Mikrofon genau war, dass die GPS-Position das richtige Gebäude traf oder dass die Notiz das Ereignis beschreibt. Eine schlecht ausgerichtete, aber unbearbeitete Aufnahme hat weiterhin einen gültigen Hash. Dateiintegrität und akustische Wahrheit sind verschiedene Aussagen, und der Export stützt nur die erste.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Telefonprotokoll und Messgerät der Klasse 1 oder 2</h3>
+        <p>Ein Messgerät der Klasse 1 oder 2 nach IEC 61672-1 wird als ganzes Instrument geprüft. Am 1-kHz-Referenzpunkt liegt das Annahmeintervall bei etwa ±1,1 dB für Klasse 1 und ±1,4 dB für Klasse 2 und wird über Frequenz, Richtung und Temperatur breiter. Die A-Bewertungskurve in Software nachzubilden setzt ein Telefon in keine der beiden Klassen. Nutzen Sie das Telefonprotokoll, um zu zeigen, wann, wo und ungefähr wie laut ein Ereignis war, mit Audio und Notizen. Nutzen Sie ein geeichtes Messgerät nach dem Verfahren, das die Vorschrift nennt, wenn ein Bußgeld, eine Vertragsstrafe oder eine Vollzugsakte von der Zahl selbst abhängt.</p>
+      </div>
+  </div>
+  <div class="card reveal" style="margin-top: 1.25rem;">
+    <h2>Eine Sitzung mit der nächsten vergleichbar halten</h2>
+    <ul class="check-list">
+          <li>Dasselbe Telefon, dieselbe Hülle, dieselbe Bewertung und dieselbe Fast- oder Slow-Zeitbewertung.</li>
+          <li>Mikrofon etwa 1,2–1,5 m über dem Boden, nicht in der Tasche und nicht an der Wand.</li>
+          <li>Notieren Sie Fenster, andere Quellen und die Entfernung, wenn Sie sie kennen. Eine Spitze ohne Dauer lässt sich schlecht mit LAeq oder einer 8-Stunden-Dosis vergleichen.</li>
+          <li>Soll die Zahl neben einem Grenzwert stehen, setzen Sie den Offset mit einem Kalibrator oder einem Messgerät, dem Sie vertrauen, und behalten Sie den Offset im Export.</li>
+          <li>Speichern Sie Audio, CSV, PDF und Manifest zusammen. Der Hash deckt nur die Dateien ab, die Sie tatsächlich hashen.</li>
+    </ul>
+    <p class="muted" style="margin-top: 12px;">Lesen Sie die Grenzwerte auf der <a class="in-content-link" href="/de/standards.html">Normenseite</a>, bevor Sie eine Aufnahme mit WHO, OSHA oder einer örtlichen Regel vergleichen, und bewahren Sie die Rohdateien beim <a class="in-content-link" href="/de/samples.html">Musterdossier</a> auf. Öffnen Sie den <a class="in-content-link" href="/soundtest.html?lang=de">Recorder</a>, wenn die Notizen stehen. Der Recorder entscheidet nicht über Einhaltung.</p>
+  </div>
+</section>
+
+<footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">
         <div class="footer-col footer-brand">
           <a class="brand brand-glow" href="/de/" aria-label="SOUNDTEST.PRO home">
