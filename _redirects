@@ -49,3 +49,8 @@
 /about.html /about 301
 /noise-levels.html /noise-levels 301
 
+# --- Baidu site verification (2026-10-31) ---
+# Baidu's verifier requires the verification file URL itself to return 200
+# (it refuses Pages' automatic .html -> clean-URL redirect), so rewrite
+# this one path to serve the file content directly at the .html URL.
+/baidu_verify_codeva-bCm7f5y8tW.html /baidu_verify_codeva-bCm7f5y8tW 200
