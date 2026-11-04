@@ -63,6 +63,17 @@ HTML_TO_CANONICAL: dict[str, str] = {
     "noise-levels.html": "/noise-levels",
     "camera.html": "/camera",
     "stats.html": "/stats",
+    "online-decibel-meter.html": "/online-decibel-meter",
+    "how-loud-is-30-db.html": "/how-loud-is-30-db",
+    "how-loud-is-40-db.html": "/how-loud-is-40-db",
+    "how-loud-is-50-db.html": "/how-loud-is-50-db",
+    "how-loud-is-60-db.html": "/how-loud-is-60-db",
+    "how-loud-is-70-db.html": "/how-loud-is-70-db",
+    "how-loud-is-80-db.html": "/how-loud-is-80-db",
+    "how-loud-is-90-db.html": "/how-loud-is-90-db",
+    "how-loud-is-100-db.html": "/how-loud-is-100-db",
+    "how-loud-is-110-db.html": "/how-loud-is-110-db",
+    "gb-3096-2008.html": "/gb-3096-2008",
 }
 
 CANONICAL_RE = re.compile(

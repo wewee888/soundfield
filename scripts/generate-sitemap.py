@@ -163,12 +163,31 @@ def pick_lastmod(logical_key: str) -> str:
     return datetime.fromtimestamp(newest, tz=timezone.utc).strftime("%Y-%m-%d")
 
 
+def root_variant_exists(logical_key: str) -> bool:
+    """True when an unprefixed file exists, so the sitemap loc is a real 200 URL."""
+    if logical_key == "/":
+        return (ROOT / "index.html").exists()
+    if logical_key.rstrip("/") == "/use-cases":
+        return (ROOT / "use-cases" / "index.html").exists()
+    if logical_key.startswith("/use-cases/"):
+        tail = logical_key[len("/use-cases/") :].strip("/")
+        return (ROOT / "use-cases" / f"{tail}.html").exists()
+    doc = logical_key.strip("/")
+    return (ROOT / f"{doc}.html").exists()
+
+
 def build_url_node(canonical_key: str, langs: set[str]) -> str:
     """Build one <url> entry with hreflang xhtml:link alternates."""
     lastmod = pick_lastmod(canonical_key)
 
-    # x-default always points to root canonical (no /xx/ prefix)
-    default_loc = sibling_url(canonical_key, "x-default")
+    # x-default is the unprefixed URL when that file exists. A page that
+    # exists only under a language folder (for example the Chinese GB 3096
+    # guide) uses that language URL as both <loc> and x-default.
+    if root_variant_exists(canonical_key) or "x-default" in langs:
+        default_loc = sibling_url(canonical_key, "x-default")
+    else:
+        primary = sorted(langs)[0]
+        default_loc = sibling_url(canonical_key, primary)
 
     lines = ["  <url>"]
     lines.append(f"    <loc>{escape(default_loc)}</loc>")

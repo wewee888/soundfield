@@ -20,7 +20,7 @@ test('SEO Standard: All public HTML pages have valid title, meta description, an
         if (['node_modules', '.git', '_temp', 'test-results', 'scripts', 'functions', 'assets'].includes(ent.name)) continue;
         scanDir(fullPath);
       } else if (ent.isFile() && ent.name.endsWith('.html')) {
-        if (skipFiles.has(ent.name) || relPath.startsWith('a/') || relPath.startsWith('b/') || relPath.startsWith('c/')) continue;
+        if (skipFiles.has(ent.name) || ent.name.startsWith('baidu_verify_') || relPath.startsWith('a/') || relPath.startsWith('b/') || relPath.startsWith('c/')) continue;
         const html = fs.readFileSync(fullPath, 'utf8');
         assert.match(html, /<title>[^<]+<\/title>/i, `${relPath} is missing <title>`);
         assert.match(html, /<meta[^>]+name=["']description["'][^>]*>/i, `${relPath} is missing meta description`);
