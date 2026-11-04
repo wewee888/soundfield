@@ -31,6 +31,38 @@
   <meta name="twitter:image" content="https://soundtest.pro/assets/images/microphone_calibration_test.webp">
 
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://soundtest.pro/"}, {"@type": "ListItem", "position": 2, "name": "Accuracy Limits & Microphone Calibration", "item": "https://soundtest.pro/accuracy"}]}</script>
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How accurate is a phone or browser decibel meter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A browser or smartphone decibel meter provides an uncalibrated field estimate, not a certified metrology reading. The Web Audio API processes microphone signals through digital A-weighting filters, but hardware variations, phone cases, microphone positioning, and operating system audio processing mean readings serve as indicative documentation of noise trends rather than legal measurements."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between a phone meter and a professional sound level meter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A professional sound level meter is a dedicated hardware instrument calibrated to international standards across the full frequency spectrum, direction, and operating temperature range. A smartphone or browser meter operates through consumer MEMS capsules subject to automatic gain control, varying frequency response, and uncalibrated microphone openings. While the digital filtering replicates standard A-weighting curves, a consumer phone cannot substitute for a calibrated physical meter."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What scenarios is a browser noise reading suitable or not suitable for?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A browser decibel reading is suitable for documenting relative changes, tracking event timelines, recording timestamps and GPS locations, preserving audio logs, and screening noise issues before contacting a landlord or building management. It is not suitable for statutory enforcement, issuing legal fines, proving compliance in formal court proceedings, or certifying regulatory noise emissions, which require measurements conducted by a certified sound level meter according to statutory methodology."
+        }
+      }
+    ]
+  }
+  </script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "url": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "name": "Accuracy Limits & Microphone Calibration", "description": "Digital Acoustic Evidence Standards &amp; Accuracy Protocol", "width": "1600", "height": "680", "author": {"@type": "Organization", "name": "SOUNDTEST.PRO"}, "copyrightHolder": {"@type": "Organization", "name": "SOUNDTEST.PRO"}}</script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-81TT89GC8L"></script>
@@ -158,6 +190,29 @@
     <p class="muted" style="margin-top: 12px;">Read the limit figures on the <a class="in-content-link" href="/standards.html">standards page</a> before comparing a take with WHO, OSHA, or a local rule, and keep the raw files with the <a class="in-content-link" href="/samples.html">sample dossier layout</a>. Open the <a class="in-content-link" href="/soundtest.html">recorder</a> when the notes are ready. The recorder does not decide compliance.</p>
   </div>
 </section>
+
+
+    <section class="section" id="faq">
+      <div class="section-header reveal" style="margin-bottom: 1.25rem;">
+        <span class="eyebrow">FAQ</span>
+        <h2>Frequently asked questions about measurement accuracy &amp; limits</h2>
+        <p class="muted">Clear answers on smartphone microphone capabilities, differences from professional meters, and appropriate use cases.</p>
+      </div>
+      <div class="faq-grid">
+        <div class="card reveal">
+          <h3>How accurate is a phone or browser decibel meter?</h3>
+          <p>A browser or smartphone decibel meter provides an uncalibrated field estimate, not a certified metrology reading. The Web Audio API processes microphone signals through digital A-weighting filters, but hardware variations, phone cases, microphone positioning, and operating system audio processing mean readings serve as indicative documentation of noise trends rather than legal measurements.</p>
+        </div>
+        <div class="card reveal">
+          <h3>What is the difference between a phone meter and a professional sound level meter?</h3>
+          <p>A professional sound level meter is a dedicated hardware instrument calibrated to international standards across the full frequency spectrum, direction, and operating temperature range. A smartphone or browser meter operates through consumer MEMS capsules subject to automatic gain control, varying frequency response, and uncalibrated microphone openings. While the digital filtering replicates standard A-weighting curves, a consumer phone cannot substitute for a calibrated physical meter.</p>
+        </div>
+        <div class="card reveal">
+          <h3>What scenarios is a browser noise reading suitable or not suitable for?</h3>
+          <p>A browser decibel reading is suitable for documenting relative changes, tracking event timelines, recording timestamps and GPS locations, preserving audio logs, and screening noise issues before contacting a landlord or building management. It is not suitable for statutory enforcement, issuing legal fines, proving compliance in formal court proceedings, or certifying regulatory noise emissions, which require measurements conducted by a certified sound level meter according to statutory methodology.</p>
+        </div>
+      </div>
+    </section>
 
 <footer class="footer-deluxe" role="contentinfo">
       <div class="footer-grid">

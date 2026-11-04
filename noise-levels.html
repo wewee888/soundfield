@@ -33,50 +33,50 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What dB level is considered quiet?",
+        "name": "What are the WHO recommended decibel limits for residential areas and sleep?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Background levels around 30 dB or below are considered quiet. A quiet bedroom at night sits near 25 to 30 dB, a quiet library near 35 to 40 dB, and a soft whisper at 1 meter is about 20 to 30 dB."
+          "text": "The World Health Organization (WHO) Guidelines for Community Noise recommend an indoor continuous noise limit of 30 dB LAeq in bedrooms to prevent sleep disturbance, with individual peak noise events staying below 45 dB LAmax. For daytime outdoor living areas, WHO recommends maintaining levels below 50 to 55 dB LAeq to prevent moderate to serious annoyance. Under the WHO 2018 European Environmental Noise Guidelines, long-term road traffic exposure is recommended below 53 dB Lden and 45 dB Lnight."
         }
       },
       {
         "@type": "Question",
-        "name": "What dB level is safe for long-term exposure?",
+        "name": "How loud are 60 dB, 70 dB, and 80 dB in everyday life?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "WHO environmental noise guidance treats long-term ambient exposure above roughly 55 dB daytime and 40 dB nighttime as potential sleep and cardiovascular health risks. OSHA sets 85 dB TWA as the workplace action level for mandatory hearing conservation programs."
+          "text": "60 dB represents normal indoor conversation at 1 meter or a calm business office. 70 dB is roughly twice as loud as 60 dB to human hearing, typical of a running vacuum cleaner at 1 meter or a dishwasher. 80 dB represents heavy city traffic from inside a car or a loud alarm clock nearby, requiring people to raise their voices to be heard."
         }
       },
       {
         "@type": "Question",
-        "name": "How loud is 70 dB compared to everyday sounds?",
+        "name": "At what decibel level does noise cause hearing damage?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "70 dB is roughly the noise level of a vacuum cleaner at 1 meter, a passenger car cruising at 10 meters, or normal television audio. It is loud enough to make sustained conversation harder but does not cause immediate hearing damage."
+          "text": "Sustained exposure to noise at or above 85 dBA can cause progressive, permanent hearing damage over time. Under NIOSH criteria, 85 dBA is safe for up to 8 hours per day, while 88 dBA halves safe exposure to 4 hours, and 100 dBA reduces safe exposure to just 15 minutes without certified hearing protection. Sounds at or above 120 dB reach the human threshold of pain and can cause immediate acoustic trauma."
         }
       },
       {
         "@type": "Question",
-        "name": "What dB level can cause hearing damage?",
+        "name": "What decibel level is considered a disturbance for neighbor noise complaints?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sustained exposure above 85 dB over an 8-hour workday can cause gradual, permanent sensorineural hearing loss. Sound levels above 100 dB can cause damage in 15 minutes, while short-term impulse noise above 120-140 dB can cause immediate acoustic trauma."
+          "text": "Most municipal quiet hours and residential bylaws consider continuous noise above 45 to 50 dBA outdoors, or intrusive nighttime noise exceeding 30 to 35 dBA indoors, as unreasonable disturbance. While isolated phone recordings provide indicative documentation and event timelines, legal citations or tenant tribunal claims typically require evidence conforming to local statutory acoustic standards."
         }
       },
       {
         "@type": "Question",
-        "name": "How accurate is this dB reference chart?",
+        "name": "How accurate is a browser decibel meter when comparing against this chart?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The values shown are typical ranges compiled from WHO Environmental Noise Guidelines, NIOSH, OSHA, and published acoustic literature. Actual readings vary by distance, room acoustics, and microphone position. Use this chart to interpret browser dB readings, not as a substitute for certified Type 1 or Type 2 meters."
+          "text": "A browser decibel meter provides an uncalibrated field estimate, not a certified metrology reading. The Web Audio API processes microphone signals through digital A-weighting filters, but hardware variations, phone cases, and operating system automatic gain control mean readings serve as indicative documentation rather than legal measurements."
         }
       },
       {
         "@type": "Question",
-        "name": "Can I use these values to file a noise complaint?",
+        "name": "Can I use browser decibel readings in a legal dispute?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Reference values help establish context and corroborate your documentation, but statutory enforcement requires certified equipment and compliance with local municipal codes. SOUNDTEST.PRO provides civilian evidence records to support discussions with property managers or local authorities."
+          "text": "Browser decibel readings and exported timestamped reports are helpful for establishing chronological timelines, documenting recurring patterns, and supporting informal mediation with landlords, HOA boards, or building management. However, formal administrative penalties or court lawsuits require measurements taken by certified sound level meters following statutory protocols."
         }
       }
     ]
@@ -235,6 +235,15 @@
       </div>
 
       <!-- Controls: Category Filters + Real-time Search -->
+            <!-- S2-a: Key Takeaways Callout -->
+      <div class="card reveal" style="margin-bottom:1.25rem;border-left:4px solid var(--accent);background:rgba(42,255,212,0.03);">
+        <span class="eyebrow" style="color:var(--accent);">Key Takeaway · Typical Decibel Ranges at a Glance</span>
+        <p style="font-size:1.05rem;line-height:1.6;margin-top:6px;color:var(--text-bright);">
+          <strong>Typical sound levels across everyday life:</strong> Normal breathing and rustling leaves sit at <strong>10–20 dB</strong>; a quiet bedroom at night is about <strong>30 dB</strong> (WHO recommended sleep ceiling); a quiet library or calm residential room is <strong>40 dB</strong>; normal indoor conversation is <strong>50–60 dB</strong>; vacuum cleaners and heavy street traffic reach <strong>70–80 dB</strong>; power tools, lawn mowers, and food blenders reach <strong>85–90 dB</strong> (where OSHA requires hearing protection after 8 hours); personal stereos at maximum volume reach <strong>100–110 dB</strong>; and emergency sirens at close range hit <strong>120 dB</strong> (the human threshold of pain).
+        </p>
+        <p class="muted" style="font-size:0.85rem;margin-top:6px;">Sources: WHO Guidelines for Community Noise (1999) &amp; Environmental Noise Guidelines (2018), US OSHA 29 CFR 1910.95, US NIOSH Criteria for a Recommended Standard, and US EPA Levels Document.</p>
+      </div>
+
       <div class="table-filter-bar">
         <div class="table-filter-tabs" role="tablist">
           <button type="button" class="filter-tab-btn active" data-filter="all">All Levels (0–140 dB)</button>
@@ -504,6 +513,17 @@
           </tbody>
         </table>
       </div>
+      <!-- S2-a: Table Source Attribution Note -->
+      <div class="table-source-note card reveal" style="margin-top:1rem;font-size:0.85rem;color:var(--muted);">
+        <strong style="color:var(--text-bright);">Authoritative Standards &amp; Data Sources:</strong>
+        Exposure limits and acoustic guidelines cited in this matrix are derived from official public health and regulatory benchmarks:
+        <strong>WHO</strong> (1999 Guidelines for Community Noise: 30 dB LAeq bedroom sleep, 35 dB classroom, 50–55 dB outdoor living area; 2018 Environmental Noise Guidelines for European Region: 45–53 dB Lden / Lnight transport limits);
+        <strong>US OSHA</strong> (29 CFR 1910.95: 85 dBA Action Level, 90 dBA 8-hr Permissible Exposure Limit with 5 dB exchange rate);
+        <strong>US NIOSH</strong> (Recommended Exposure Limit: 85 dBA 8-hr TWA with 3 dB exchange rate);
+        <strong>US EPA</strong> (Levels of Environmental Noise Requisite to Protect Public Health and Welfare: 55 dB Ldn residential);
+        <strong>ISO 226:2003</strong> (Acoustics — Normal equal-loudness-level contours).
+      </div>
+
       <p class="muted" style="margin-top:0.85rem;">Values compiled from WHO Environmental Noise Guidelines (2018), NIOSH Recommended Exposure Limits (REL), OSHA 1910.95, and international acoustic standards. Distance and reflection alter real-world levels.</p>
     </section>
 
@@ -668,7 +688,7 @@
     <section class="section" id="how-loud-guides">
       <div class="section-heading reveal">
         <span class="eyebrow">Level by level</span>
-        <h2>How loud is 30 dB to 110 dB?</h2>
+        <h2>How loud is 30 dB to 120 dB?</h2>
         <p class="muted">Approximate everyday comparisons. They are not readings from this meter, and they are not a noise limit.</p>
       </div>
       <div class="topic-cluster-grid">
@@ -678,9 +698,11 @@
         <a class="topic-cluster-card" href="/how-loud-is-60-db.html"><h4>How loud is 60 dB?</h4><p>About normal conversation.</p></a>
         <a class="topic-cluster-card" href="/how-loud-is-70-db.html"><h4>How loud is 70 dB?</h4><p>About busy traffic or a loud voice.</p></a>
         <a class="topic-cluster-card" href="/how-loud-is-80-db.html"><h4>How loud is 80 dB?</h4><p>About heavy traffic or the low end of mower noise.</p></a>
+        <a class="topic-cluster-card" href="/how-loud-is-85-db.html"><h4>How loud is 85 dB?</h4><p>Occupational action level and hearing hazard limit.</p></a>
         <a class="topic-cluster-card" href="/how-loud-is-90-db.html"><h4>How loud is 90 dB?</h4><p>About some power tools. Time starts to matter.</p></a>
         <a class="topic-cluster-card" href="/how-loud-is-100-db.html"><h4>How loud is 100 dB?</h4><p>About a loud concert. The safe time is short.</p></a>
         <a class="topic-cluster-card" href="/how-loud-is-110-db.html"><h4>How loud is 110 dB?</h4><p>About a nearby siren. Move away.</p></a>
+        <a class="topic-cluster-card" href="/how-loud-is-120-db.html"><h4>How loud is 120 dB?</h4><p>Human threshold of pain and immediate hazard.</p></a>
       </div>
       <p class="muted" style="margin-top:16px;">Measure in the browser with the <a class="in-content-link" href="/online-decibel-meter.html">free online decibel meter</a>. The number is an estimate. See <a class="in-content-link" href="/accuracy.html">accuracy limits</a>.</p>
     </section>
@@ -721,6 +743,7 @@
           <h4>Resources</h4>
           <ul>
             <li><a href="/standards.html">Noise Standards</a></li>
+            <li><a href="/dba-vs-dbc.html">dBA vs dBC Guide</a></li>
             <li><a href="/noise-levels.html">Noise Levels Chart</a></li>
             <li><a href="/changelog.html">Updates &amp; Blog</a></li>
             <li><a href="/use-cases/neighbor-noise-evidence.html">Neighbor Noise Guide</a></li>

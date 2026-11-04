@@ -74,9 +74,12 @@ DOC_FINAL = {
     "how-loud-is-60-db.html": "/how-loud-is-60-db",
     "how-loud-is-70-db.html": "/how-loud-is-70-db",
     "how-loud-is-80-db.html": "/how-loud-is-80-db",
+    "how-loud-is-85-db.html": "/how-loud-is-85-db",
     "how-loud-is-90-db.html": "/how-loud-is-90-db",
     "how-loud-is-100-db.html": "/how-loud-is-100-db",
     "how-loud-is-110-db.html": "/how-loud-is-110-db",
+    "how-loud-is-120-db.html": "/how-loud-is-120-db",
+    "dba-vs-dbc.html": "/dba-vs-dbc",
     "gb-3096-2008.html": "/gb-3096-2008",
 }
 

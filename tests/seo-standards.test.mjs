@@ -60,7 +60,7 @@ test('SEO Standard: All <img> tags have non-empty, non-generic alt and explicit 
 });
 
 test('SEO Standard: robots.txt and admin.html isolate administrative surfaces from indexing', () => {
-  const robots = fs.readFileSync(path.join(rootDir, 'robots.txt'), 'utf8');
+  const robots = fs.readFileSync(path.join(rootDir, 'robots.txt'), 'utf8').replace(/\r\n/g, '\n');
   assert.match(robots, /Disallow: \/admin\.html/);
   assert.match(robots, /Disallow: \/admin\//);
   assert.match(robots, /Disallow: \/api\//);
@@ -101,7 +101,7 @@ test('SEO Standard: private and thin tool pages are noindex, public guides keep 
 });
 
 test('SEO Standard: robots.txt allows search and AI answer crawlers and blocks training crawlers', () => {
-  const robots = fs.readFileSync(path.join(rootDir, 'robots.txt'), 'utf8');
+  const robots = fs.readFileSync(path.join(rootDir, 'robots.txt'), 'utf8').replace(/\r\n/g, '\n');
   assert.match(robots, /User-agent: OAI-SearchBot\nAllow: \//);
   assert.match(robots, /User-agent: PerplexityBot\nAllow: \//);
   assert.match(robots, /User-agent: Baiduspider\nAllow: \//);
