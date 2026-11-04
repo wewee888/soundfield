@@ -69,13 +69,14 @@ test('S1-d: /soundtest tool page has h1 without disrupting layout', () => {
   assert.match(html, /<h1 class="app-brand-name"[^>]*>SOUNDTEST\.PRO<\/h1>/);
 });
 
-test('S2-a: /noise-levels 5 languages have conclusion block, source notes, and enhanced FAQPage JSON-LD', () => {
+test('S2-a & S2-补: /noise-levels 6 languages have 3-5 sentence conclusion block, source notes, and 3 tailored FAQPage JSON-LD', () => {
   const langs = [
-    { file: 'noise-levels.html', callout: 'Key Takeaway', questions: 6 },
-    { file: 'es/noise-levels.html', callout: 'Resumen Clave', questions: 6 },
-    { file: 'de/noise-levels.html', callout: 'Kernfazit', questions: 6 },
-    { file: 'fr/noise-levels.html', callout: 'Synthèse Clé', questions: 6 },
-    { file: 'zh/noise-levels.html', callout: '核心速查', questions: 6 },
+    { file: 'noise-levels.html', callout: 'Key Takeaways', questions: 3 },
+    { file: 'es/noise-levels.html', callout: 'Resumen Clave', questions: 3 },
+    { file: 'de/noise-levels.html', callout: 'Kernfazit', questions: 3 },
+    { file: 'fr/noise-levels.html', callout: 'Synthèse Clé', questions: 3 },
+    { file: 'zh/noise-levels.html', callout: '核心速查', questions: 3 },
+    { file: 'ja/noise-levels.html', callout: '要点総括', questions: 3 },
   ];
 
   for (const { file, callout, questions } of langs) {
