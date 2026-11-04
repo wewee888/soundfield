@@ -27,60 +27,36 @@
   <script>LA.init({id:"281wblDNvub2tk9f",ck:"281wblDNvub2tk9f"})</script>
 
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What dB level is considered quiet?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Background levels around 30 dB or below are considered quiet. A quiet bedroom at night sits near 25 to 30 dB, a quiet library near 35 to 40 dB, and a soft whisper at 1 meter is about 20 to 30 dB."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What dB level is safe for long-term exposure?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "WHO environmental noise guidance treats long-term ambient exposure above roughly 55 dB daytime and 40 dB nighttime as potential sleep and cardiovascular health risks. OSHA sets 85 dB TWA as the workplace action level for mandatory hearing conservation programs."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How loud is 70 dB compared to everyday sounds?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "70 dB is roughly the noise level of a vacuum cleaner at 1 meter, a passenger car cruising at 10 meters, or normal television audio. It is loud enough to make sustained conversation harder but does not cause immediate hearing damage."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What dB level can cause hearing damage?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Sustained exposure above 85 dB over an 8-hour workday can cause gradual, permanent sensorineural hearing loss. Sound levels above 100 dB can cause damage in 15 minutes, while short-term impulse noise above 120-140 dB can cause immediate acoustic trauma."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How accurate is this dB reference chart?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The values shown are typical ranges compiled from WHO Environmental Noise Guidelines, NIOSH, OSHA, and published acoustic literature. Actual readings vary by distance, room acoustics, and microphone position. Use this chart to interpret browser dB readings, not as a substitute for certified Type 1 or Type 2 meters."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I use these values to file a noise complaint?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Reference values help establish context and corroborate your documentation, but statutory enforcement requires certified equipment and compliance with local municipal codes. SOUNDTEST.PRO provides civilian evidence records to support discussions with property managers or local authorities."
-        }
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do you read and interpret a decibel chart?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A decibel (dB) chart uses a logarithmic scale where each 10 dB increase represents a tenfold increase in acoustic sound energy and sounds roughly twice as loud to the human ear. On the chart, 0 to 40 dB covers quiet environments (30 dB is a whisper, 40 dB a quiet library), 40 to 70 dB covers daily conversation and office work (60 dB is normal speech at 1 meter), 70 to 85 dB marks intrusive urban noise (70 dB vacuum cleaner, 80 dB heavy traffic), and 85 dB and above marks the occupational hearing damage risk zone."
       }
-    ]
-  }
+    },
+    {
+      "@type": "Question",
+      "name": "How loud does noise have to be to disturb sleep?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "According to the World Health Organization (WHO Night Noise Guidelines for Europe), adverse sleep effects begin at 40 dB(A) outside the bedroom (Lnight,outside), and chronic exposure above 45 dB significantly increases nighttime awakenings and sleep disturbance. Inside the bedroom, the WHO recommends maintaining background noise below 30 dB(A) for restful restorative sleep, with individual noise events staying below 45 dB LAmax."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a 10 dB increase mean twice as loud?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, psychoacoustically. While a 10 dB increase multiplies physical sound power by 10 times (1,000%), the human auditory system compresses loudness non-linearly. Experimental acoustic research standardized in ISO 226 demonstrates that listeners generally perceive a 10 dB rise as roughly a doubling of subjective loudness (for example, 70 dB sounds twice as loud as 60 dB, and 80 dB sounds four times as loud as 60 dB)."
+      }
+    }
+  ]
+}
   </script>
 
   <script type="application/ld+json">
@@ -229,6 +205,15 @@
       </div>
 
       <!-- Controls: Category Filters + Real-time Search -->
+                  <!-- S2-补: 3-5 句可引用结论段 + 来源标注 -->
+      <div class="card reveal" style="margin-bottom:1.25rem;border-left:4px solid var(--accent);background:rgba(42,255,212,0.03);">
+        <span class="eyebrow" style="color:var(--accent);">Key Takeaways · Decibel Scale Benchmarks at a Glance</span>
+        <p style="font-size:1.02rem;line-height:1.7;margin-top:6px;color:var(--text-bright);">
+          Sound energy on the decibel scale grows logarithmically, where every 10 dB increase sounds roughly twice as loud to human hearing. The 0 to 40 dB range represents quiet and restorative sleep, spanning the threshold of hearing (0 dB), a gentle whisper (30 dB), and a quiet library (40 dB). Normal living and office activities fall between 40 and 70 dB, anchored by face-to-face conversation at 1 meter (60 dB). Noise becomes intrusive from 70 to 80 dB (vacuum cleaner at 70 dB, heavy traffic at 80 dB), with 85 dB (lawn mower at 10 meters) marking the start of occupational hearing hazards. Peak levels reach the human threshold of pain at 120 dB (ambulance siren at 1 meter) and risk immediate acoustic trauma at 140 dB (jet aircraft takeoff at 30 meters).
+        </p>
+        <p class="muted" style="font-size:0.85rem;margin-top:6px;">Authoritative reference standards: World Health Organization (WHO Guidelines for Community Noise &amp; Night Noise Guidelines), OSHA 29 CFR 1910.95, NIOSH Recommended Exposure Limits, and ISO 226.</p>
+      </div>
+
       <div class="table-filter-bar">
         <div class="table-filter-tabs" role="tablist">
           <button type="button" class="filter-tab-btn active" data-filter="all">All Levels (0–140 dB)</button>
@@ -498,6 +483,17 @@
           </tbody>
         </table>
       </div>
+      <!-- S2-a: Table Source Attribution Note -->
+      <div class="table-source-note card reveal" style="margin-top:1rem;font-size:0.85rem;color:var(--muted);">
+        <strong style="color:var(--text-bright);">Authoritative Standards &amp; Data Sources:</strong>
+        Exposure limits and acoustic guidelines cited in this matrix are derived from official public health and regulatory benchmarks:
+        <strong>WHO</strong> (1999 Guidelines for Community Noise: 30 dB LAeq bedroom sleep, 35 dB classroom, 50–55 dB outdoor living area; 2018 Environmental Noise Guidelines for European Region: 45–53 dB Lden / Lnight transport limits);
+        <strong>US OSHA</strong> (29 CFR 1910.95: 85 dBA Action Level, 90 dBA 8-hr Permissible Exposure Limit with 5 dB exchange rate);
+        <strong>US NIOSH</strong> (Recommended Exposure Limit: 85 dBA 8-hr TWA with 3 dB exchange rate);
+        <strong>US EPA</strong> (Levels of Environmental Noise Requisite to Protect Public Health and Welfare: 55 dB Ldn residential);
+        <strong>ISO 226:2003</strong> (Acoustics — Normal equal-loudness-level contours).
+      </div>
+
       <p class="muted" style="margin-top:0.85rem;">Values compiled from WHO Environmental Noise Guidelines (2018), NIOSH Recommended Exposure Limits (REL), OSHA 1910.95, and international acoustic standards. Distance and reflection alter real-world levels.</p>
     </section>
 
@@ -543,31 +539,19 @@
       </div>
       <div class="faq-grid">
         <div class="card reveal">
-          <h3>What dB level is considered quiet?</h3>
-          <p>Background levels around 30 dB or below are considered quiet. A quiet bedroom at night sits near 25 to 30 dB, a quiet library near 35 to 40 dB, and a soft whisper at 1 meter is about 20 to 30 dB.</p>
+          <h3>How do you read and interpret a decibel chart?</h3>
+          <p>A decibel (dB) chart uses a logarithmic scale where each 10 dB increase represents a tenfold increase in acoustic sound energy and sounds roughly twice as loud to the human ear. On the chart, 0 to 40 dB covers quiet environments (30 dB is a whisper, 40 dB a quiet library), 40 to 70 dB covers daily conversation and office work (60 dB is normal speech at 1 meter), 70 to 85 dB marks intrusive urban noise (70 dB vacuum cleaner, 80 dB heavy traffic), and 85 dB and above marks the occupational hearing damage risk zone.</p>
         </div>
         <div class="card reveal">
-          <h3>What dB level is safe for long-term exposure?</h3>
-          <p>WHO environmental noise guidance treats long-term ambient exposure above roughly 55 dB daytime and 40 dB nighttime as potential sleep and cardiovascular health risks. OSHA sets 85 dB TWA as the workplace action level for mandatory hearing protection.</p>
+          <h3>How loud does noise have to be to disturb sleep?</h3>
+          <p>According to the World Health Organization (WHO Night Noise Guidelines for Europe), adverse sleep effects begin at 40 dB(A) outside the bedroom (Lnight,outside), and chronic exposure above 45 dB significantly increases nighttime awakenings and sleep disturbance. Inside the bedroom, the WHO recommends maintaining background noise below 30 dB(A) for restful restorative sleep, with individual noise events staying below 45 dB LAmax.</p>
         </div>
         <div class="card reveal">
-          <h3>How loud is 70 dB compared to everyday sounds?</h3>
-          <p>70 dB is roughly the noise level of a vacuum cleaner at 1 meter, a passenger car cruising at 10 meters, or normal television audio. It is loud enough to make sustained conversation harder but does not cause immediate hearing damage.</p>
-        </div>
-        <div class="card reveal">
-          <h3>What dB level can cause hearing damage?</h3>
-          <p>Sustained exposure above 85 dB over an 8-hour workday can cause gradual, permanent sensorineural hearing loss. Sound levels above 100 dB can cause damage in 15 minutes, while short-term impulse noise above 120–140 dB can cause immediate acoustic trauma.</p>
-        </div>
-        <div class="card reveal">
-          <h3>How accurate is this dB reference chart?</h3>
-          <p>The values shown are typical ranges compiled from WHO Environmental Noise Guidelines, NIOSH, OSHA, and published acoustic literature. Actual readings vary by distance, room acoustics, and microphone position. Use this chart to interpret browser dB readings, not as a substitute for certified Type 1 or Type 2 meters.</p>
-        </div>
-        <div class="card reveal">
-          <h3>Can I use these values to file a noise complaint?</h3>
-          <p>Reference values help establish context and corroborate your documentation, but statutory enforcement requires certified equipment and compliance with local municipal codes. SOUNDTEST.PRO provides civilian evidence records to support discussions with property managers or local authorities.</p>
+          <h3>Does a 10 dB increase mean twice as loud?</h3>
+          <p>Yes, psychoacoustically. While a 10 dB increase multiplies physical sound power by 10 times (1,000%), the human auditory system compresses loudness non-linearly. Experimental acoustic research standardized in ISO 226 demonstrates that listeners generally perceive a 10 dB rise as roughly a doubling of subjective loudness (for example, 70 dB sounds twice as loud as 60 dB, and 80 dB sounds four times as loud as 60 dB).</p>
         </div>
       </div>
-      <p class="muted" style="margin-top:1rem;">SOUNDTEST.PRO is a civilian acoustic evidence and documentation aid, not a certified Class 1/2 sound level meter. Verify formal legal or statutory claims with calibrated equipment.</p>
+      <p class="muted" style="margin-top:1rem;">SOUNDTEST.PRO provides indicative acoustic documentation, not certified Class 1 or Class 2 sound level meter measurements. For formal legal proceedings or regulatory enforcement, consult an accredited acoustic consultant.</p>
     </section>
 
     <!-- Try It / Reference CTA Section -->
