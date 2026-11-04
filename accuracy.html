@@ -32,36 +32,52 @@
 
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://soundtest.pro/"}, {"@type": "ListItem", "position": 2, "name": "Accuracy Limits & Microphone Calibration", "item": "https://soundtest.pro/accuracy"}]}</script>
     <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How accurate is a phone or browser decibel meter?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "A browser or smartphone decibel meter provides an uncalibrated field estimate, not a certified metrology reading. The Web Audio API processes microphone signals through digital A-weighting filters, but hardware variations, phone cases, microphone positioning, and operating system audio processing mean readings serve as indicative documentation of noise trends rather than legal measurements."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is the difference between a phone meter and a professional sound level meter?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "A professional sound level meter is a dedicated hardware instrument calibrated to international standards across the full frequency spectrum, direction, and operating temperature range. A smartphone or browser meter operates through consumer MEMS capsules subject to automatic gain control, varying frequency response, and uncalibrated microphone openings. While the digital filtering replicates standard A-weighting curves, a consumer phone cannot substitute for a calibrated physical meter."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What scenarios is a browser noise reading suitable or not suitable for?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "A browser decibel reading is suitable for documenting relative changes, tracking event timelines, recording timestamps and GPS locations, preserving audio logs, and screening noise issues before contacting a landlord or building management. It is not suitable for statutory enforcement, issuing legal fines, proving compliance in formal court proceedings, or certifying regulatory noise emissions, which require measurements conducted by a certified sound level meter according to statutory methodology."
-        }
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How accurate is a phone or browser decibel meter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A smartphone or browser decibel meter provides an indicative acoustic estimate, not a certified laboratory measurement. While the Web Audio API enables digital signal processing with IEC 61672-1 modeled frequency weighting, physical microphone hardware varies widely across phone manufacturers, cases can obstruct acoustic ports, and operating system automatic gain control (AGC) can alter signal levels. Uncalibrated mobile phones can deviate significantly from true sound pressure levels, especially in deep bass and high frequencies."
       }
-    ]
-  }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between a phone meter and a professional sound level meter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A professional sound level meter is a dedicated hardware instrument engineered to comply with strict international standards (such as IEC 61672-1 Class 1 or Class 2 specifications), featuring laboratory-grade pre-polarized condenser capsules, flat broadband frequency response, known acoustic tolerances, and routine field calibration with an acoustic calibrator. A smartphone uses a miniature MEMS microphone optimized for human speech communication rather than precision scientific metrology, and lacks certified acoustic housing and traceable calibration."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What scenarios is a browser noise reading suitable or not suitable for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A browser decibel reading is suitable for documenting relative changes, tracking event timelines, recording timestamps and GPS locations, preserving audio logs, and screening noise issues before contacting a landlord or building management. It is not suitable for statutory enforcement, issuing legal fines, proving compliance in formal court proceedings, or certifying regulatory noise emissions, which require measurements conducted by a certified sound level meter according to statutory methodology."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between dBA and dBC frequency weighting?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "dBA (A-weighting) models human auditory sensitivity at moderate sound levels by heavily filtering out low frequencies below 500 Hz (attenuating -16 dB at 125 Hz and -26 dB at 63 Hz), making it the standard metric for municipal noise bylaws and speech interference. dBC (C-weighting) provides an essentially flat response from 31.5 Hz to 8 kHz, capturing low-frequency bass, subwoofers, HVAC vibration, and engine rumble. When the difference between C-weighting and A-weighting (dBC minus dBA) is 10 to 15 dB or higher, the noise is dominated by low-frequency energy that standard dBA readings underestimate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the SHA-256 hash prove in exported evidence reports?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The cryptographic SHA-256 digest calculated on exported CSV data logs, audio files, and PDF dossiers proves digital chain-of-custody and tamper-evident integrity. It mathematically confirms that the recorded decibel readings, UTC timestamps, GPS coordinates, and device logs have remained unaltered since the session was sealed. It verifies that the record was not edited after the fact, but does not calibrate the physical microphone or convert consumer hardware into a certified sound level meter."
+      }
+    }
+  ]
+}
   </script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "url": "https://soundtest.pro/assets/images/microphone_calibration_test.webp", "name": "Accuracy Limits & Microphone Calibration", "description": "Digital Acoustic Evidence Standards &amp; Accuracy Protocol", "width": "1600", "height": "680", "author": {"@type": "Organization", "name": "SOUNDTEST.PRO"}, "copyrightHolder": {"@type": "Organization", "name": "SOUNDTEST.PRO"}}</script>
   <!-- Google tag (gtag.js) -->
@@ -192,24 +208,32 @@
 </section>
 
 
-    <section class="section" id="faq">
+        <section class="section" id="faq">
       <div class="section-header reveal" style="margin-bottom: 1.25rem;">
         <span class="eyebrow">FAQ</span>
-        <h2>Frequently asked questions about measurement accuracy &amp; limits</h2>
-        <p class="muted">Clear answers on smartphone microphone capabilities, differences from professional meters, and appropriate use cases.</p>
+        <h2>Frequently asked questions about measurement accuracy</h2>
+        <p class="muted">Acoustic limitations, weighting differences, and evidentiary integrity of smartphone noise documentation.</p>
       </div>
       <div class="faq-grid">
         <div class="card reveal">
           <h3>How accurate is a phone or browser decibel meter?</h3>
-          <p>A browser or smartphone decibel meter provides an uncalibrated field estimate, not a certified metrology reading. The Web Audio API processes microphone signals through digital A-weighting filters, but hardware variations, phone cases, microphone positioning, and operating system audio processing mean readings serve as indicative documentation of noise trends rather than legal measurements.</p>
+          <p>A smartphone or browser decibel meter provides an indicative acoustic estimate, not a certified laboratory measurement. While the Web Audio API enables digital signal processing with IEC 61672-1 modeled frequency weighting, physical microphone hardware varies widely across phone manufacturers, cases can obstruct acoustic ports, and operating system automatic gain control (AGC) can alter signal levels. Uncalibrated mobile phones can deviate significantly from true sound pressure levels, especially in deep bass and high frequencies.</p>
         </div>
         <div class="card reveal">
           <h3>What is the difference between a phone meter and a professional sound level meter?</h3>
-          <p>A professional sound level meter is a dedicated hardware instrument calibrated to international standards across the full frequency spectrum, direction, and operating temperature range. A smartphone or browser meter operates through consumer MEMS capsules subject to automatic gain control, varying frequency response, and uncalibrated microphone openings. While the digital filtering replicates standard A-weighting curves, a consumer phone cannot substitute for a calibrated physical meter.</p>
+          <p>A professional sound level meter is a dedicated hardware instrument engineered to comply with strict international standards (such as IEC 61672-1 Class 1 or Class 2 specifications), featuring laboratory-grade pre-polarized condenser capsules, flat broadband frequency response, known acoustic tolerances, and routine field calibration with an acoustic calibrator. A smartphone uses a miniature MEMS microphone optimized for human speech communication rather than precision scientific metrology, and lacks certified acoustic housing and traceable calibration.</p>
         </div>
         <div class="card reveal">
           <h3>What scenarios is a browser noise reading suitable or not suitable for?</h3>
           <p>A browser decibel reading is suitable for documenting relative changes, tracking event timelines, recording timestamps and GPS locations, preserving audio logs, and screening noise issues before contacting a landlord or building management. It is not suitable for statutory enforcement, issuing legal fines, proving compliance in formal court proceedings, or certifying regulatory noise emissions, which require measurements conducted by a certified sound level meter according to statutory methodology.</p>
+        </div>
+        <div class="card reveal">
+          <h3>What is the difference between dBA and dBC frequency weighting?</h3>
+          <p>dBA (A-weighting) models human auditory sensitivity at moderate sound levels by heavily filtering out low frequencies below 500 Hz (attenuating -16 dB at 125 Hz and -26 dB at 63 Hz), making it the standard metric for municipal noise bylaws and speech interference. dBC (C-weighting) provides an essentially flat response from 31.5 Hz to 8 kHz, capturing low-frequency bass, subwoofers, HVAC vibration, and engine rumble. When the difference between C-weighting and A-weighting (dBC minus dBA) is 10 to 15 dB or higher, the noise is dominated by low-frequency energy that standard dBA readings underestimate.</p>
+        </div>
+        <div class="card reveal">
+          <h3>What does the SHA-256 hash prove in exported evidence reports?</h3>
+          <p>The cryptographic SHA-256 digest calculated on exported CSV data logs, audio files, and PDF dossiers proves digital chain-of-custody and tamper-evident integrity. It mathematically confirms that the recorded decibel readings, UTC timestamps, GPS coordinates, and device logs have remained unaltered since the session was sealed. It verifies that the record was not edited after the fact, but does not calibrate the physical microphone or convert consumer hardware into a certified sound level meter.</p>
         </div>
       </div>
     </section>

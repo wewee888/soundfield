@@ -44,11 +44,6 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://soundtest.pro/zh/accuracy"/>
   </url>
   <url>
-    <loc>https://soundtest.pro/dba-vs-dbc</loc>
-    <lastmod>2026-11-04</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/dba-vs-dbc"/>
-  </url>
-  <url>
     <loc>https://soundtest.pro/disclaimer</loc>
     <lastmod>2026-11-04</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/disclaimer"/>
@@ -91,11 +86,6 @@
     <loc>https://soundtest.pro/how-loud-is-110-db</loc>
     <lastmod>2026-11-04</lastmod>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-110-db"/>
-  </url>
-  <url>
-    <loc>https://soundtest.pro/how-loud-is-120-db</loc>
-    <lastmod>2026-11-04</lastmod>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://soundtest.pro/how-loud-is-120-db"/>
   </url>
   <url>
     <loc>https://soundtest.pro/how-loud-is-30-db</loc>

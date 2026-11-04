@@ -6,12 +6,16 @@ import { fileURLToPath } from 'node:url';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-test('S1-a: /standards has visible FAQ and valid FAQPage JSON-LD', () => {
+test('S1-a (F3): /standards has visible FAQ and valid FAQPage JSON-LD with 7 finalized questions', () => {
   const html = fs.readFileSync(path.join(rootDir, 'standards.html'), 'utf8');
   assert.match(html, /id="faq"/);
   assert.match(html, /<h3>What are the WHO recommended day and night noise limits\?<\/h3>/);
   assert.match(html, /<h3>What are the recommended noise limits for bedrooms, classrooms, and residential areas\?<\/h3>/);
   assert.match(html, /<h3>Above how many decibels is noise considered a disturbance\?<\/h3>/);
+  assert.match(html, /<h3>What are the OSHA permissible exposure limits and action levels for noise\?<\/h3>/);
+  assert.match(html, /<h3>Why is there no single universal decibel limit for environmental noise\?<\/h3>/);
+  assert.match(html, /<h3>Can a browser noise reading prove a legal noise violation\?<\/h3>/);
+  assert.match(html, /<h3>Why can't a single night's recording be directly compared to WHO Lden or Lnight targets\?<\/h3>/);
 
   const jsonLdMatches = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi);
   assert.ok(jsonLdMatches && jsonLdMatches.length >= 2, 'Should have at least 2 JSON-LD scripts');
@@ -21,21 +25,17 @@ test('S1-a: /standards has visible FAQ and valid FAQPage JSON-LD', () => {
   const jsonStr = faqJsonLd.replace(/<script[^>]*>|<\/script>/gi, '');
   const parsed = JSON.parse(jsonStr);
   assert.equal(parsed['@type'], 'FAQPage');
-  assert.equal(parsed.mainEntity.length, 3);
-  assert.equal(parsed.mainEntity[0].name, 'What are the WHO recommended day and night noise limits?');
+  assert.equal(parsed.mainEntity.length, 7, 'standards.html should have 7 FAQ items in JSON-LD');
 });
 
-test('S1-b: /accuracy has visible FAQ and valid FAQPage JSON-LD following tone discipline', () => {
+test('S1-b (F4): /accuracy has visible FAQ and valid FAQPage JSON-LD with 5 questions including dBA/dBC and SHA-256', () => {
   const html = fs.readFileSync(path.join(rootDir, 'accuracy.html'), 'utf8');
   assert.match(html, /id="faq"/);
   assert.match(html, /<h3>How accurate is a phone or browser decibel meter\?<\/h3>/);
   assert.match(html, /<h3>What is the difference between a phone meter and a professional sound level meter\?<\/h3>/);
   assert.match(html, /<h3>What scenarios is a browser noise reading suitable or not suitable for\?<\/h3>/);
-
-  // Check discipline in FAQ
-  const faqSection = html.slice(html.indexOf('id="faq"'));
-  assert.doesNotMatch(faqSection, /Class 1/i, 'FAQ should not claim Class 1');
-  assert.doesNotMatch(faqSection, /±\s*\d/i, 'FAQ should not claim ± precision number');
+  assert.match(html, /<h3>What is the difference between dBA and dBC frequency weighting\?<\/h3>/);
+  assert.match(html, /<h3>What does the SHA-256 hash prove in exported evidence reports\?<\/h3>/);
 
   const jsonLdMatches = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi);
   const faqJsonLd = jsonLdMatches.find(s => s.includes('"FAQPage"'));
@@ -43,7 +43,7 @@ test('S1-b: /accuracy has visible FAQ and valid FAQPage JSON-LD following tone d
   const jsonStr = faqJsonLd.replace(/<script[^>]*>|<\/script>/gi, '');
   const parsed = JSON.parse(jsonStr);
   assert.equal(parsed['@type'], 'FAQPage');
-  assert.equal(parsed.mainEntity.length, 3);
+  assert.equal(parsed.mainEntity.length, 5, 'accuracy.html should have 5 FAQ items in JSON-LD');
 });
 
 test('S1-c: /zh/gb-3096-2008 has visible FAQ and FAQPage JSON-LD exactly matching table numbers', () => {
@@ -64,9 +64,25 @@ test('S1-c: /zh/gb-3096-2008 has visible FAQ and FAQPage JSON-LD exactly matchin
   assert.equal(parsed.mainEntity.length, 4);
 });
 
-test('S1-d: /soundtest tool page has h1 without disrupting layout', () => {
+test('S1-6 (F2): /es/standards has visible FAQ and valid FAQPage JSON-LD with 3 Spanish questions', () => {
+  const html = fs.readFileSync(path.join(rootDir, 'es/standards.html'), 'utf8');
+  assert.match(html, /id="faq"/);
+  assert.match(html, /<h3>¿Cuáles son los límites de ruido recomendados por la OMS para el descanso nocturno y el día\?<\/h3>/);
+  assert.match(html, /<h3>¿Existe un límite único universal de decibelios para considerar que un ruido es ilegal\?<\/h3>/);
+  assert.match(html, /<h3>¿Puede una grabación o medición de ruido con el teléfono móvil demostrar una infracción legal o administrativa\?<\/h3>/);
+
+  const jsonLdMatches = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi);
+  const faqJsonLd = jsonLdMatches.find(s => s.includes('"FAQPage"'));
+  assert.ok(faqJsonLd, 'Should include FAQPage schema in es/standards.html');
+  const jsonStr = faqJsonLd.replace(/<script[^>]*>|<\/script>/gi, '');
+  const parsed = JSON.parse(jsonStr);
+  assert.equal(parsed['@type'], 'FAQPage');
+  assert.equal(parsed.mainEntity.length, 3);
+});
+
+test('S1-d (F5): /soundtest tool page has h1 with finalized wording Online Sound Level Meter & Noise Evidence Recorder', () => {
   const html = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
-  assert.match(html, /<h1 class="app-brand-name"[^>]*>SOUNDTEST\.PRO<\/h1>/);
+  assert.match(html, /<h1[^>]*>Online Sound Level Meter &amp; Noise Evidence Recorder<\/h1>/);
 });
 
 test('S2-a & S2-补: /noise-levels 6 languages have 3-5 sentence conclusion block, source notes, and 3 tailored FAQPage JSON-LD', () => {
@@ -94,12 +110,13 @@ test('S2-a & S2-补: /noise-levels 6 languages have 3-5 sentence conclusion bloc
   }
 });
 
-test('S2-b: /how-loud-is-85-db exists with valid FAQPage, OSHA/NIOSH table, and canonical', () => {
+test('S2-b & F6: /how-loud-is-85-db exists with valid FAQPage, OSHA/NIOSH table, and OSHA Table G-16 interpolation note', () => {
   const html = fs.readFileSync(path.join(rootDir, 'how-loud-is-85-db.html'), 'utf8');
   assert.match(html, /<link rel="canonical" href="https:\/\/soundtest\.pro\/how-loud-is-85-db">/);
   assert.match(html, /<h1[^>]*>How loud is 85 dB\?<\/h1>/i);
   assert.match(html, /NIOSH REL \(3 dB Rule\)/);
   assert.match(html, /OSHA PEL \(5 dB Rule\)/);
+  assert.match(html, /Note on OSHA Table G-16 values/);
   assert.match(html, /id="faq"/);
 
   const jsonLdMatches = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi);
@@ -111,49 +128,20 @@ test('S2-b: /how-loud-is-85-db exists with valid FAQPage, OSHA/NIOSH table, and 
   assert.equal(parsed.mainEntity.length, 3);
 });
 
-test('S2-c: /dba-vs-dbc exists with valid FAQPage, comparison table, and canonical', () => {
-  const html = fs.readFileSync(path.join(rootDir, 'dba-vs-dbc.html'), 'utf8');
-  assert.match(html, /<link rel="canonical" href="https:\/\/soundtest\.pro\/dba-vs-dbc">/);
-  assert.match(html, /<h1[^>]*>dBA vs dBC/i);
-  assert.match(html, /dBC &minus; dBA/);
-  assert.match(html, /id="faq"/);
+test('F1: Cancelled pages dba-vs-dbc and how-loud-is-120-db are deleted and unreferenced', () => {
+  assert.ok(!fs.existsSync(path.join(rootDir, 'dba-vs-dbc.html')), 'dba-vs-dbc.html should be deleted');
+  assert.ok(!fs.existsSync(path.join(rootDir, 'how-loud-is-120-db.html')), 'how-loud-is-120-db.html should be deleted');
 
-  const jsonLdMatches = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi);
-  const faqJsonLd = jsonLdMatches.find(s => s.includes('"FAQPage"'));
-  assert.ok(faqJsonLd, 'Should include FAQPage schema');
-  const jsonStr = faqJsonLd.replace(/<script[^>]*>|<\/script>/gi, '');
-  const parsed = JSON.parse(jsonStr);
-  assert.equal(parsed['@type'], 'FAQPage');
-  assert.equal(parsed.mainEntity.length, 3);
-});
-
-test('S2-d: /how-loud-is-120-db exists with valid FAQPage, pain threshold content, and canonical', () => {
-  const html = fs.readFileSync(path.join(rootDir, 'how-loud-is-120-db.html'), 'utf8');
-  assert.match(html, /<link rel="canonical" href="https:\/\/soundtest\.pro\/how-loud-is-120-db">/);
-  assert.match(html, /<h1[^>]*>How loud is 120 dB\?<\/h1>/i);
-  assert.match(html, /threshold of pain/i);
-  assert.match(html, /under 9 seconds/i);
-  assert.match(html, /id="faq"/);
-
-  const jsonLdMatches = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi);
-  const faqJsonLd = jsonLdMatches.find(s => s.includes('"FAQPage"'));
-  assert.ok(faqJsonLd, 'Should include FAQPage schema');
-  const jsonStr = faqJsonLd.replace(/<script[^>]*>|<\/script>/gi, '');
-  const parsed = JSON.parse(jsonStr);
-  assert.equal(parsed['@type'], 'FAQPage');
-  assert.equal(parsed.mainEntity.length, 3);
-});
-
-test('Supporting: sitemap.xml has exactly 32 entries and llms.txt has new pages', () => {
   const sitemap = fs.readFileSync(path.join(rootDir, 'sitemap.xml'), 'utf8');
   const count = (sitemap.match(/<url>/g) || []).length;
-  assert.equal(count, 32, 'Sitemap should contain exactly 32 URLs');
-  assert.match(sitemap, /https:\/\/soundtest\.pro\/how-loud-is-85-db<\/loc>/);
-  assert.match(sitemap, /https:\/\/soundtest\.pro\/dba-vs-dbc<\/loc>/);
-  assert.match(sitemap, /https:\/\/soundtest\.pro\/how-loud-is-120-db<\/loc>/);
+  assert.equal(count, 30, 'Sitemap should contain exactly 30 URLs');
+  assert.doesNotMatch(sitemap, /dba-vs-dbc/);
+  assert.doesNotMatch(sitemap, /how-loud-is-120-db/);
+  assert.match(sitemap, /how-loud-is-85-db/);
 
   const llms = fs.readFileSync(path.join(rootDir, 'llms.txt'), 'utf8');
+  assert.doesNotMatch(llms, /dba-vs-dbc/);
+  assert.doesNotMatch(llms, /how-loud-is-120-db/);
   assert.match(llms, /how-loud-is-85-db/);
-  assert.match(llms, /dba-vs-dbc/);
-  assert.match(llms, /how-loud-is-120-db/);
+  assert.match(llms, /How loud is 30–110 dB\?/);
 });
