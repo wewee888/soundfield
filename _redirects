@@ -54,3 +54,5 @@
 # (it refuses Pages' automatic .html -> clean-URL redirect), so rewrite
 # this one path to serve the file content directly at the .html URL.
 /baidu_verify_codeva-bCm7f5y8tW.html /baidu_verify_codeva-bCm7f5y8tW 200
+# Apex-domain site added 2026-11-05 (site id 1433741002): same treatment.
+/baidu_verify_codeva-1AkHrFIrbp.html /baidu_verify_codeva-1AkHrFIrbp 200
