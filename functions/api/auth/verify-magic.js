@@ -212,9 +212,10 @@ export async function onRequestPost(context) {
         expirationTtl: SESSION_TTL,
       }).catch(err => console.error('Session KV write failed:', err));
 
-      // Update user login tracking in KV
+      // Update user login tracking in KV (auto-create user record if first-time passwordless login)
       try {
         const rawUser = await env.ab_test.get(`user:${verifiedEmail}`);
+        let isNewMagicUser = false;
         if (rawUser) {
           const u = JSON.parse(rawUser);
           if (!u.firstLoginAt) {
@@ -224,9 +225,37 @@ export async function onRequestPost(context) {
           u.lastLoginAt = now;
           u.loginCount = (u.loginCount || 0) + 1;
           u.lastLoginIp = clientIp;
+          u.lastLoginCountry = country;
           u.loginStatus = 'confirmed';
           u.updatedAt = now;
           await env.ab_test.put(`user:${verifiedEmail}`, JSON.stringify(u));
+        } else {
+          isNewMagicUser = true;
+          const acceptLang = request.headers.get('accept-language') || '';
+          const inferredLang = acceptLang.split(',')[0]?.trim() || 'zh-CN';
+          const newUser = {
+            name: verifiedEmail.split('@')[0],
+            email: verifiedEmail,
+            passwordHash: '',
+            authMethod: magicToken ? 'magic_link' : 'magic_code',
+            plan: membership.active ? (membership.plan || 'pro') : 'free',
+            country,
+            city: request.cf?.city || '',
+            ip: clientIp,
+            language: inferredLang,
+            userAgent: (request.headers.get('user-agent') || '').slice(0, 250),
+            sourcePage: redirectTo || '/auth.html',
+            createdAt: now,
+            updatedAt: now,
+            firstLoginAt: now,
+            lastLoginAt: now,
+            firstLoginConfirmed: true,
+            loginCount: 1,
+            lastLoginIp: clientIp,
+            lastLoginCountry: country,
+            loginStatus: 'confirmed',
+          };
+          await env.ab_test.put(`user:${verifiedEmail}`, JSON.stringify(newUser));
         }
 
         // Append to history
@@ -238,10 +267,10 @@ export async function onRequestPost(context) {
         if (!Array.isArray(history)) history = [];
         history.unshift({
           timestamp: now,
-          action: 'magic_login',
-          actionLabel: '免密魔法链接/验证码登录成功',
+          action: isNewMagicUser ? 'register' : 'magic_login',
+          actionLabel: isNewMagicUser ? '邮箱验证码快捷注册并首次登录' : '免密魔法链接/验证码登录成功',
           page: redirectTo || '/auth.html',
-          title: '快捷身份验证登录',
+          title: isNewMagicUser ? '免密快捷注册' : '快捷身份验证登录',
           ip: clientIp,
           country,
           userAgent: request.headers.get('user-agent') || '',

@@ -1270,8 +1270,9 @@
     </button>
 
     <!-- Secondary Links -->
-    <div class="pum-footer-links" style="justify-content:center;">
+    <div class="pum-footer-links" style="justify-content:center;gap:14px;flex-wrap:wrap;">
       <a href="javascript:void(0)" onclick="closeProUpgradeModal();openSettingsDrawerTab('subscription');" id="pumVerifyLink">🔑 Already a Member? Verify License</a>
+      <a href="/auth.html" id="pumSignInLink" onclick="this.href=getLocalizedAuthUrl()+'?redirect_to='+encodeURIComponent(window.location.pathname+window.location.search)">✨ Sign In / Register</a>
     </div>
 
     <div class="pum-security-note" id="pumSecurityNote">
@@ -1522,7 +1523,8 @@
       <div class="feedback-meta" id="membershipStatusHint" style="margin-bottom:10px">Membership Status: [FREE]</div>
       <div class="settings-drawer-row" style="flex-direction:column;align-items:stretch;gap:8px">
         <input class="setting-input" id="memberEmailInput" type="email" placeholder="Member email / License key" autocomplete="email" style="max-width:none;width:100%">
-        <div style="display:flex;gap:6px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <a class="btn b-amber" id="sdBtnLoginMember" href="/auth.html" style="text-decoration:none;display:inline-flex;align-items:center">✨ Sign In / Register</a>
           <button class="btn b-cyan" id="sdBtnVerifyMember" onclick="lookupMembership()">Verify License</button>
           <button class="btn" id="sdBtnLogoutMember" onclick="logoutMembership()">Sign Out</button>
         </div>
@@ -2685,6 +2687,7 @@
         <div class="feedback-meta" id="membershipStatusHint"><strong>Membership Status:</strong> Not logged in. Enter your purchase email to verify membership.</div>
         <div class="feedback-row">
           <input class="setting-input" id="memberEmailInput" type="email" placeholder="Billing email / Account email" autocomplete="email">
+          <a class="btn b-amber" id="membershipLoginBtn" href="/auth.html" style="text-decoration:none;display:inline-flex;align-items:center">✨ Sign In / Register</a>
           <button class="btn b-cyan" id="membershipLookupBtn" onclick="lookupMembership()">Verify Membership</button>
           <button class="btn" id="membershipLogoutBtn" onclick="logoutMembership()">Log Out</button>
         </div>
@@ -6057,12 +6060,29 @@ function renderMembershipPanel(){
 
   const checkedAt=membershipState.lastCheckedAt?` · ${new Date(membershipState.lastCheckedAt).toLocaleString(i18n().locale)}`:'';
   const authUrl=getLocalizedAuthUrl();
+  const redirectTarget=encodeURIComponent(window.location.pathname + window.location.search);
+  const authLinkWithRedirect=`${authUrl}?redirect_to=${redirectTarget}`;
+
+  const loginBtns=document.querySelectorAll('#membershipLoginBtn, #sdBtnLoginMember');
+  loginBtns.forEach(btn => {
+    if (!btn) return;
+    btn.href = membershipState.email ? authUrl : authLinkWithRedirect;
+    btn.textContent = membershipState.email
+      ? (isZh ? '👤 个人中心' : '👤 Account Center')
+      : (isZh ? '✨ 登录 / 注册账号' : '✨ Sign In / Register');
+  });
 
   hints.forEach(hint => {
     if(!membershipState.active){
-      hint.innerHTML=appLanguage!=='zh-CN'
-        ?`<strong>Membership:</strong> Not logged in · <a href="/soundtest.html?redirect_to=soundtest.html" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ Sign In / Cross-Device Sync</a>${checkedAt}`
-        :`<strong>会员状态：</strong>未登录 · <a href="/soundtest.html?redirect_to=soundtest.html" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ 登录账户 / 手机与电脑多端互通</a>${checkedAt}`;
+      if (membershipState.email) {
+        hint.innerHTML=appLanguage!=='zh-CN'
+          ?`<strong>Account:</strong> ${membershipState.email} (Free Tier) · <a href="${authUrl}" style="color:var(--accent);text-decoration:underline;font-weight:700">👤 Manage Account</a>${checkedAt}`
+          :`<strong>当前账号：</strong>${membershipState.email}（免费版） · <a href="${authUrl}" style="color:var(--accent);text-decoration:underline;font-weight:700">👤 个人中心</a>${checkedAt}`;
+      } else {
+        hint.innerHTML=appLanguage!=='zh-CN'
+          ?`<strong>Membership:</strong> Not logged in · <a href="${authLinkWithRedirect}" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ Sign In / Cross-Device Sync</a>${checkedAt}`
+          :`<strong>会员状态：</strong>未登录 · <a href="${authLinkWithRedirect}" style="color:var(--accent);text-decoration:underline;font-weight:700">✨ 登录账户 / 手机与电脑多端互通</a>${checkedAt}`;
+      }
     }else{
       const planName = membershipState.plan.toUpperCase();
       const isSuper = membershipState.email && membershipState.email.toLowerCase() === 'wewee1@gmail.com';
@@ -6266,6 +6286,15 @@ function updateProUpgradeModalPricing() {
     setText('pumTitle', dict.title || '');
     setText('pumDesc', dict.desc || '');
     setText('pumVerifyLink', dict.verifyLink || '');
+    const signInEl = document.getElementById('pumSignInLink');
+    if (signInEl) {
+      const authUrl = getLocalizedAuthUrl();
+      const redirectTarget = encodeURIComponent(window.location.pathname + window.location.search);
+      signInEl.href = membershipState?.email ? authUrl : `${authUrl}?redirect_to=${redirectTarget}`;
+      signInEl.textContent = langKey === 'zh'
+        ? (membershipState?.email ? '👤 个人中心' : '✨ 登录 / 注册账号')
+        : (membershipState?.email ? '👤 Account Center' : '✨ Sign In / Register');
+    }
     setText('pumSecurityNote', dict.securityNote || '');
 
     // Yearly
@@ -6368,13 +6397,28 @@ function executeProUpgradeCheckout() {
     return;
   }
   closeProUpgradeModal();
+  const buyerEmail = (document.getElementById('memberEmailInput')?.value || membershipState?.email || '').trim();
+  fetch(`${MEMBERSHIP_API_BASE}/create-checkout`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plan, email: buyerEmail, source: 'soundtest-pro-modal' }),
+    keepalive: true,
+  }).catch(() => {});
+  let finalUrl = url;
+  if (buyerEmail && buyerEmail.includes('@')) {
+    try {
+      const u = new URL(url);
+      u.searchParams.set('email', buyerEmail);
+      finalUrl = u.toString();
+    } catch (_) {}
+  }
   const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
   if (isMobile) {
-    window.location.href = url;
+    window.location.href = finalUrl;
   } else {
-    const newWin = window.open(url, '_blank', 'noopener');
+    const newWin = window.open(finalUrl, '_blank', 'noopener');
     if (!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
-      window.location.href = url;
+      window.location.href = finalUrl;
     }
   }
 }
@@ -6421,13 +6465,28 @@ async function beginCheckout(plan){
   const urls = window.CREEM_CHECKOUT_URLS || (typeof CREEM_CHECKOUT_URLS !== 'undefined' ? CREEM_CHECKOUT_URLS : null);
   const creemUrl = urls ? urls[creemKey] : null;
   if (creemUrl) {
+    const buyerEmail = (document.getElementById('memberEmailInput')?.value || membershipState?.email || '').trim();
+    fetch(`${MEMBERSHIP_API_BASE}/create-checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan, email: buyerEmail, source: 'soundtest-settings' }),
+      keepalive: true,
+    }).catch(() => {});
+    let finalUrl = creemUrl;
+    if (buyerEmail && buyerEmail.includes('@')) {
+      try {
+        const u = new URL(creemUrl);
+        u.searchParams.set('email', buyerEmail);
+        finalUrl = u.toString();
+      } catch (_) {}
+    }
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
     if (isMobile) {
-      window.location.href = creemUrl;
+      window.location.href = finalUrl;
     } else {
-      const newWin = window.open(creemUrl, '_blank', 'noopener');
+      const newWin = window.open(finalUrl, '_blank', 'noopener');
       if (!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
-        window.location.href = creemUrl;
+        window.location.href = finalUrl;
       }
     }
     return;

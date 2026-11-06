@@ -817,6 +817,14 @@
     const subformMagic = document.getElementById('magicLoginForm');
 
     if (tabPassword && tabMagic && subformPassword && subformMagic) {
+      if (tabMagic.classList.contains('active')) {
+        subformPassword.style.display = 'none';
+        subformMagic.style.display = 'block';
+      } else {
+        subformPassword.style.display = 'block';
+        subformMagic.style.display = 'none';
+      }
+
       tabPassword.addEventListener('click', () => {
         tabPassword.classList.add('active');
         tabPassword.style.background = 'rgba(44,240,193,0.14)';
