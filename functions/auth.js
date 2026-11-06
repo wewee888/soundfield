@@ -13,7 +13,7 @@ export async function onRequestGet(context) {
     url,
     countryHeader,
     cookieHeader,
-    acceptLangHeader,
+    acceptLanguageHeader: acceptLangHeader,
   });
 
   const search = url.search;

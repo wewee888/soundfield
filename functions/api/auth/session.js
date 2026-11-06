@@ -132,6 +132,32 @@ export async function onRequestPost(context) {
         u.lastLoginCountry = country;
         u.updatedAt = now;
         await env.ab_test.put(`user:${email}`, JSON.stringify(u));
+      } else if (email && email.includes('@')) {
+        const acceptLang = request.headers.get('accept-language') || '';
+        const inferredLang = acceptLang.split(',')[0]?.trim() || 'zh-CN';
+        const autoUser = {
+          name: email.split('@')[0],
+          email,
+          passwordHash: '',
+          authMethod: 'session_sync',
+          plan: membership.active ? (membership.plan || 'pro') : 'free',
+          country,
+          city,
+          ip: clientIp,
+          language: inferredLang,
+          userAgent: (request.headers.get('user-agent') || '').slice(0, 250),
+          sourcePage: String(body.page || '/auth.html'),
+          createdAt: created_at || now,
+          updatedAt: now,
+          firstLoginAt: now,
+          lastLoginAt: now,
+          firstLoginConfirmed: true,
+          loginCount: 1,
+          lastLoginIp: clientIp,
+          lastLoginCountry: country,
+          loginStatus: 'confirmed',
+        };
+        await env.ab_test.put(`user:${email}`, JSON.stringify(autoUser));
       }
     } catch (uErr) {
       console.error('Session user update failed:', uErr);
