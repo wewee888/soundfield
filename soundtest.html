@@ -40,13 +40,48 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-  <link rel="stylesheet" href="/assets/soundtest.css?v=20261029b">
+  <link rel="stylesheet" href="/assets/soundtest.css?v=20261106a">
 <link rel="stylesheet" href="/assets/legal-notice.css?v=20261011">
 <script src="/assets/legal-notice.js?v=20261011" defer></script>
 <style>
 /* Defensive ad suppression & critical layout overrides */
 .live-monitor-notice{display:none!important}
 .app-brand{display:flex;align-items:center;gap:10px;min-width:max-content;flex-shrink:0;text-decoration:none;color:inherit}
+.app-header-row{gap:6px!important;min-width:0!important;width:100%!important}
+.app-brand-mark{width:28px!important;height:28px!important;border-radius:8px!important}
+.app-brand-name{font-size:11.5px!important;letter-spacing:.06em!important}
+.app-brand-sub{font-size:7px!important;letter-spacing:.05em!important}
+.app-header-actions{gap:5px!important;min-width:0!important;flex-shrink:1!important}
+.lang-picker-btn{height:28px!important;padding:0 8px!important;gap:5px!important;font-size:11px!important}
+.lang-picker-flag{width:16px!important;height:12px!important}
+.app-pro-btn,.app-pro-btn.member-active-badge{height:28px!important;padding:0 9px!important;gap:4px!important;font-size:10.5px!important;letter-spacing:.01em!important;white-space:nowrap!important;flex-shrink:0!important}
+.rec-action-btn.sentry-active{
+  background:linear-gradient(135deg,rgba(139,92,246,.34),rgba(16,185,129,.26))!important;
+  border:1.5px solid rgba(167,139,250,.82)!important;
+  color:#F5F3FF!important;
+  box-shadow:0 8px 26px rgba(139,92,246,.32),0 0 16px rgba(42,255,212,.18),inset 0 1px 0 rgba(255,255,255,.28)!important;
+}
+.rec-action-btn.sentry-active .rec-pulse-dot{
+  background:#2AFFD4!important;
+  box-shadow:0 0 10px #2AFFD4,0 0 18px #A78BFA!important;
+}
+.mode-primary-btn.sentry-active{
+  background:linear-gradient(135deg,rgba(139,92,246,.28),rgba(16,185,129,.22))!important;
+  border-color:rgba(167,139,250,.72)!important;
+  color:#F5F3FF!important;
+  box-shadow:0 8px 26px rgba(139,92,246,.26)!important;
+}
+.stitch-kicker.sentry-armed{
+  color:#C4B5FD!important;
+  display:inline-flex!important;align-items:center;gap:5px;
+  padding:2px 8px;border-radius:999px;
+  background:rgba(139,92,246,.16);border:1px solid rgba(167,139,250,.38);
+  font-weight:700;letter-spacing:.04em;
+}
+.stitch-kicker-dot.sentry{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:#2AFFD4;box-shadow:0 0 8px #2AFFD4;
+}
 .action-bar-dual{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;gap:8px;}
 .cap-card.collapsed{
   display:none!important;
@@ -3342,6 +3377,13 @@ function setStartButtonText(){
       recActionBtn.className='rec-action-btn recording';
       recActionBtn.setAttribute('aria-label', t('ui.stopRecord','Stop & Save'));
       recActionBtn.innerHTML='<span class="rec-pulse-dot"></span><span class="btn-copy"><span class="btn-title">' + t('ui.stopRecord','Stop & Save') + '</span><span class="btn-sub">' + t('ui.recordingSub','Recording...') + '</span></span>';
+    } else if(evidenceMode === 'sentry' && isMon){
+      const sCopy = (typeof modeCopy === 'function') ? modeCopy('sentry') : {};
+      const title = '🌙 ' + (sCopy.activeLabel || (isZh ? '哨兵守护中' : 'Sentry Active'));
+      const sub = isZh ? '超标自动录 · 点击停止' : (sCopy.activeTagline || 'Auto-record · Tap to Stop');
+      recActionBtn.className='rec-action-btn sentry-active';
+      recActionBtn.setAttribute('aria-label', title);
+      recActionBtn.innerHTML='<span class="rec-pulse-dot sentry-dot"></span><span class="btn-copy"><span class="btn-title">' + title + '</span><span class="btn-sub">' + sub + '</span></span>';
     } else {
       recActionBtn.className='rec-action-btn idle';
       let title = t('ui.recordEvidence','Record Audio');
@@ -3361,7 +3403,7 @@ function setStartButtonText(){
     }
   }
 
-  // Hero Dial & Kicker: Visual Reassurance during active recording
+  // Hero Dial & Kicker: Visual Reassurance during active recording or Sentry guard
   const gaugeContainer = document.querySelector('.stitch-gauge-container');
   if(gaugeContainer){
     gaugeContainer.classList.toggle('recording-active', Boolean(isRec));
@@ -3371,9 +3413,25 @@ function setStartButtonText(){
     if(isRec){
       kicker.className = 'stitch-kicker notranslate recording';
       kicker.innerHTML = '<span class="stitch-kicker-dot"></span> ' + (isZh ? '存证录制中 · SHA-256' : 'REC ACTIVE · SHA-256');
+    } else if(isMon && (evidenceMode === 'sentry' || autoRecOnThreshold)){
+      kicker.className = 'stitch-kicker notranslate sentry-armed';
+      kicker.innerHTML = '<span class="stitch-kicker-dot sentry"></span> ' + (isZh ? '🌙 哨兵守护中 · 超标即录' : '🌙 SENTRY ARMED · AUTO-REC');
     } else {
       kicker.className = 'stitch-kicker notranslate';
       kicker.textContent = (typeof levelQuantityLabel==='function'?levelQuantityLabel():'LAF');
+    }
+  }
+  const stxtElTop = document.getElementById('stxt');
+  if(stxtElTop){
+    if(isRec){
+      stxtElTop.textContent = t('ui.recording', isZh ? '录制中' : 'Recording');
+    } else if(isMon && (evidenceMode === 'sentry' || autoRecOnThreshold)){
+      const sCopy = (typeof modeCopy === 'function') ? modeCopy('sentry') : {};
+      stxtElTop.textContent = '🌙 ' + (sCopy.activeLabel || (isZh ? '哨兵守护中' : 'Sentry Active'));
+    } else if(isMon){
+      stxtElTop.textContent = t('ui.monitoring', isZh ? '监测中' : 'Monitoring');
+    } else {
+      stxtElTop.textContent = t('ui.ready', isZh ? '待命' : 'Ready');
     }
   }
 
@@ -5086,7 +5144,7 @@ function syncEvidenceModeUi(){
     btn.classList.toggle('active',active);
     btn.setAttribute('aria-selected',active?'true':'false');
     if(mode==='sentry'){
-      if(active||autoRecOnThreshold){
+      if((active||autoRecOnThreshold)&&isMon){
         const activeLabel=copy.activeLabel||(isZh?'哨兵守护中':'Sentry Active');
         const activeTag=copy.activeTagline||(isZh?'超标自动录制中':'Auto-record armed');
         btn.innerHTML=`<strong>🌙 ${activeLabel}</strong><span>${activeTag}</span>`;
@@ -5150,12 +5208,16 @@ function syncEvidenceModeUi(){
       if(isRec){
         primary.textContent=copy.recordingPrimary||(isZh?'🔴 正在自动抓取超标证据（点击立即封存）':'🔴 Auto-Capturing Incident (Click to Stop & Seal)');
         primary.classList.add('recording');
+        primary.classList.remove('sentry-active');
       }else if(!isMon){
         primary.textContent=copy.primary||(isZh?'▶ 启动夜间哨兵守护（开始监听）':'▶ Start Sentry Surveillance');
-        primary.classList.remove('recording');
+        primary.classList.remove('recording','sentry-active');
       }else{
-        primary.textContent=copy.stop||(isZh?'⏹ 退出哨兵守护模式':'⏹ Stop Sentry Mode');
+        const activeLbl=copy.activeLabel||(isZh?'哨兵守护中':'Sentry Active');
+        const stopLbl=copy.stop||(isZh?'⏹ 退出哨兵守护模式':'⏹ Stop Sentry Mode');
+        primary.textContent=`🌙 ${activeLbl} · ${stopLbl}`;
         primary.classList.remove('recording');
+        primary.classList.add('sentry-active');
       }
     }else if(evidenceMode==='video'){
       const rawLang = String(appLanguage || '').toLowerCase();
@@ -5392,9 +5454,13 @@ function translateReportPreviewModal(){
 async function primaryEvidenceAction(){
   if(evidenceMode==='sentry'){
     if(!isMon){
-      await toggleMon();
+      const ok = await toggleMon();
       syncEvidenceModeUi();
-      toast(appLanguage==='zh-CN'?'🌙 哨兵已进入静默守护状态，实时监测突发噪音...':'🌙 Sentry is now standing by silently, monitoring for noise spikes...','info',4000);
+      setStartButtonText();
+      if(typeof updateSentrySurveillanceHud==='function') updateSentrySurveillanceHud(curDb||0, (curDb||0)>=alertTh&&(curDb||0)>0, Date.now());
+      if(ok !== false && isMon){
+        toast(appLanguage==='zh-CN'?'🌙 哨兵已进入静默守护状态，实时监测突发噪音...':'🌙 Sentry is now standing by silently, monitoring for noise spikes...','info',4000);
+      }
       return;
     }
     if(isRec){
@@ -5402,6 +5468,9 @@ async function primaryEvidenceAction(){
     }
     await toggleMon();
     syncEvidenceModeUi();
+    setStartButtonText();
+    if(typeof updateSentrySurveillanceHud==='function') updateSentrySurveillanceHud(0, false, Date.now());
+    toast(appLanguage==='zh-CN'?'🌙 哨兵守护模式已停止':'🌙 Sentry surveillance stopped','info',3000);
     return;
   }
   if(evidenceMode==='video'||evidenceMode==='photo'){
@@ -8317,6 +8386,7 @@ async function toggleMon(opts={}){
       const sdot=document.getElementById('sdot');if(sdot)sdot.className='sdot on';
       const rdot=document.getElementById('rdot');if(rdot)rdot.className='nav-dot on';
       const stxt=document.getElementById('stxt');if(stxt)stxt.textContent=t('ui.monitoring');
+      setStartButtonText();
       showCapTemporarily('info',t('ui.monitoring'),appLanguage!=='zh-CN'?'Live mic analysis is running on this device. Tap Record to save evidence.':'正在本机实时分析麦克风输入；点击录制可保存本次会话证据。','LIVE');
       try{trackEvent('monitor_start',{mode:evidenceMode,weighting,timeWeight});}catch(_){}
       updateWeightUi();
