@@ -69,7 +69,7 @@ function openLastEvidencePhoto(){
 function getEvidenceStats(){
   const valid=dbH.filter(v=>Number.isFinite(v)&&v>0);
   const avg=valid.length?valid.reduce((a,b)=>a+b,0)/valid.length:0;
-  const leq=leqTime>0?10*Math.log10(leqEnergy/leqTime):avg;
+  const leq=(typeof sessionLeqDb==='function'&&sessionLeqDb()>0)?sessionLeqDb():(leqTime>0?10*Math.log10(leqEnergy/leqTime):avg);
   const lnStats=calculateLnStats(valid);
   const durationSeconds=sessStart?Math.round((Date.now()-sessStart.getTime())/1000):0;
   return {
@@ -1353,7 +1353,7 @@ function exportSessionSummaryImage(){
   const valid=dbH.filter(v=>Number.isFinite(v)&&v>0);
   if(!valid.length)return;
   const avg=valid.reduce((a,b)=>a+b,0)/valid.length;
-  const leq=leqTime>0?10*Math.log10(leqEnergy/leqTime):avg;
+  const leq=(typeof sessionLeqDb==='function'&&sessionLeqDb()>0)?sessionLeqDb():(leqTime>0?10*Math.log10(leqEnergy/leqTime):avg);
   const rawLn=calculateLnStats(valid);
   const lnStats={
     L5: Number((rawLn.L5 ?? 55).toFixed(1)),

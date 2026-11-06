@@ -39,6 +39,8 @@ test('Sentry Surveillance Workstation & HUD Console integration in soundtest.htm
   assert.ok(html.includes('updateSentrySurveillanceHud(inst, isAbove, nowTs)'), 'tick calls updateSentrySurveillanceHud');
   assert.ok(html.includes('isSentry:!!(autoRecOnThreshold||evidenceMode===\'sentry\')'), 'saveRec tags isSentry');
   assert.ok(html.includes('!autoRecOnThreshold && evidenceMode !== \'sentry\''), 'saveRec suppresses intrusive report modal during overnight sentry mode');
+  assert.ok(html.includes("recActionBtn.className='rec-action-btn sentry-active'"), 'recActionBtn reflects active sentry state when monitoring');
+  assert.ok(html.includes("kicker.className = 'stitch-kicker notranslate sentry-armed'"), 'dial kicker reflects active sentry guard state');
 });
 
 test('Sentry mode CSS classes exist in assets/soundtest.css', () => {

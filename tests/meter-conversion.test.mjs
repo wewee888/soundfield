@@ -52,8 +52,8 @@ test('meter screen keeps one reading and parks the upsell until a moment of valu
   assert.doesNotMatch(i18n, /Lmax 最大/);
   assert.doesNotMatch(html, /i18n-data\.js\?v=20261003e/);
   assert.match(html, /i18n-data\.js\?v=20261029b/);
-  assert.match(html, /offset:-11\.0/);
-  assert.match(html, /offset:12\.0/);
+  assert.match(html, /offset:-8\.5/);
+  assert.match(html, /offset:14\.5/);
   assert.match(html, /meterPeakSettled\(\)/);
   assert.match(html, /resetMeasurementIntegrators\(\);\s*longMomentQueued=false;\s*isMon=true/);
 });

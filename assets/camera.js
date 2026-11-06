@@ -204,24 +204,58 @@
 
   // Calibration baseline reading & camera hardware compensation
   function getEffectiveCalibration() {
-    let calOffset = -8; // default Android preset
+    let presetId = 'android-browser';
+    let calOffset = -8.5; // default Android preset
+    let micGainDb = 2;
     const ua = navigator.userAgent;
     if (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
-      calOffset = -6; // iOS preset
+      presetId = 'ios-browser';
+      calOffset = 14.5; // iOS preset
+    } else if (/Android/i.test(ua) && !/Mobile/i.test(ua)) {
+      presetId = 'tablet-browser';
+      calOffset = 4.5; // Android tablet preset
     } else if (!/Mobi|Android/i.test(ua)) {
-      calOffset = -12; // desktop preset
+      presetId = 'desktop-browser';
+      calOffset = -18.5; // desktop preset
     }
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
         const s = parsed.settings || parsed;
+        if (typeof s.micGainDb === 'number') {
+          micGainDb = s.micGainDb;
+        }
         if (typeof s.calOffset === 'number') {
-          calOffset = s.calOffset;
+          const migrate = window.SoundfieldPro?.migrateSavedCalibration;
+          if (typeof migrate === 'function') {
+            const currentPresets = {
+              'desktop-browser': { offset: -18.5 },
+              'laptop-internal-mic': { offset: 38.0 },
+              'tablet-browser': { offset: 4.5 },
+              'android-browser': { offset: -8.5 },
+              'ios-browser': { offset: 14.5 }
+            };
+            const migrated = migrate(
+              {
+                calibrationBaseline: s.calibrationBaseline,
+                calibrationPresetKey: s.calibrationPresetKey || s.calibrationPreset || presetId,
+                calOffset: s.calOffset
+              },
+              currentPresets,
+              'device-preset-v13',
+              presetId
+            );
+            if (typeof migrated?.calOffset === 'number') {
+              calOffset = migrated.calOffset;
+            }
+          } else {
+            calOffset = s.calOffset;
+          }
         }
       }
     } catch (_) {}
-    return calOffset;
+    return calOffset + micGainDb;
   }
 
   let meterPrevDb = 0;
