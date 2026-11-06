@@ -2539,7 +2539,7 @@
             </div>
             <div class="sctrl">
               <select class="setting-select" id="calibrationPresetSelect" onchange="setCalibrationPreset(this.value)">
-                <option value="desktop-browser">PC Desktop Browser (-18.5 dB)</option>
+                <option value="desktop-browser">PC Desktop Browser (-15.5 dB)</option>
                 <option value="laptop-internal-mic">Laptop Built-in Mic (+38 dB)</option>
                 <option value="tablet-browser">Tablet Browser (+4.5 dB)</option>
                 <option value="android-browser">Android Browser (-8.5 dB)</option>
@@ -2897,11 +2897,11 @@ const MEDIA_STORE='clips';
 const PERMISSION_GUIDE_KEY='sf_permission_guide_v1';
 const CALIBRATION_PRESETS={
   'desktop-browser':{
-    offset:-18.5,
+    offset:-15.5,
     label:'PC / Desktop Browser (External Mic / USB)',
     zh:'PC 桌面浏览器（外置麦克风 / 独立声卡）',
-    reason:'Field baseline (-18.5 dB, raised +2.5 dB to align quiet-room ~30 dBA and mid-level speech with reference meters).',
-    zhReason:'现场校准基准（-18.5 dB，上调 +2.5 dB 以对齐安静室内约 30 dBA 与日常人声标准声级计读数）。',
+    reason:'Field baseline (-15.5 dB, raised +3.0 dB to align quiet-room ~33 dBA and mid-level speech with reference meters).',
+    zhReason:'现场校准基准（-15.5 dB，上调 +3.0 dB 以对齐安静室内约 33 dBA 与日常人声标准声级计读数）。',
   },
   'laptop-internal-mic':{
     offset:38,
@@ -2945,7 +2945,7 @@ function getPresetReason(preset){
 const DEFAULT_CALIBRATION_PRESET='android-browser';
 const DEFAULT_CAL_OFFSET_DB=CALIBRATION_PRESETS[DEFAULT_CALIBRATION_PRESET].offset;
 const DEFAULT_ALERT_THRESHOLD_DB=60;
-const CALIBRATION_BASELINE='device-preset-v13';
+const CALIBRATION_BASELINE='device-preset-v14';
 const LONG_RUN_POWER_SAVE_AFTER_MS=8*60*1000;
 const ACTIVE_ANALYSIS_INTERVAL_MS=80;
 const LONG_RUN_ANALYSIS_INTERVAL_MS=180;
@@ -10050,7 +10050,7 @@ function captureCurrentSessionSnapshot() {
       offsetDb: (typeof calOffset !== 'undefined' ? calOffset : 0),
       micGainDb: (typeof micGainDb !== 'undefined' ? micGainDb : 2),
       errorRange: (typeof calibrationErrorRange === 'function' ? calibrationErrorRange() : 1.2),
-      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v13')
+      preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v14')
     }
   };
 }

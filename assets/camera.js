@@ -216,7 +216,7 @@
       calOffset = 4.5; // Android tablet preset
     } else if (!/Mobi|Android/i.test(ua)) {
       presetId = 'desktop-browser';
-      calOffset = -18.5; // desktop preset
+      calOffset = -15.5; // desktop preset
     }
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -230,7 +230,7 @@
           const migrate = window.SoundfieldPro?.migrateSavedCalibration;
           if (typeof migrate === 'function') {
             const currentPresets = {
-              'desktop-browser': { offset: -18.5 },
+              'desktop-browser': { offset: -15.5 },
               'laptop-internal-mic': { offset: 38.0 },
               'tablet-browser': { offset: 4.5 },
               'android-browser': { offset: -8.5 },
@@ -243,7 +243,7 @@
                 calOffset: s.calOffset
               },
               currentPresets,
-              'device-preset-v13',
+              'device-preset-v14',
               presetId
             );
             if (typeof migrated?.calOffset === 'number') {
