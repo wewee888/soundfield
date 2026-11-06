@@ -40,21 +40,29 @@
   - UI merged (bottom drawer as primary mobile entrance, embedded panel as Hub)
   - Legacy -2 suffix handlers unified into singular functions
 -->
-  <link rel="stylesheet" href="/assets/soundtest.css?v=20261106a">
+  <link rel="stylesheet" href="/assets/soundtest.css?v=20261106b">
 <link rel="stylesheet" href="/assets/legal-notice.css?v=20261011">
 <script src="/assets/legal-notice.js?v=20261011" defer></script>
 <style>
 /* Defensive ad suppression & critical layout overrides */
 .live-monitor-notice{display:none!important}
 .app-brand{display:flex;align-items:center;gap:10px;min-width:max-content;flex-shrink:0;text-decoration:none;color:inherit}
-.app-header-row{gap:6px!important;min-width:0!important;width:100%!important}
-.app-brand-mark{width:28px!important;height:28px!important;border-radius:8px!important}
-.app-brand-name{font-size:11.5px!important;letter-spacing:.06em!important}
-.app-brand-sub{font-size:7px!important;letter-spacing:.05em!important}
-.app-header-actions{gap:5px!important;min-width:0!important;flex-shrink:1!important}
-.lang-picker-btn{height:28px!important;padding:0 8px!important;gap:5px!important;font-size:11px!important}
-.lang-picker-flag{width:16px!important;height:12px!important}
-.app-pro-btn,.app-pro-btn.member-active-badge{height:28px!important;padding:0 9px!important;gap:4px!important;font-size:10.5px!important;letter-spacing:.01em!important;white-space:nowrap!important;flex-shrink:0!important}
+.app-header-row{gap:8px!important;min-width:0!important;width:100%!important}
+.app-brand-mark{width:34px!important;height:34px!important;border-radius:10px!important}
+.app-brand-name{font-size:13.5px!important;letter-spacing:.09em!important}
+.app-brand-sub{font-size:9.5px!important;letter-spacing:.07em!important}
+.app-header-actions{gap:6px!important;min-width:0!important;flex-shrink:0!important}
+.lang-picker-btn{height:31px!important;padding:0 10px!important;gap:6px!important;font-size:11.5px!important}
+.lang-picker-flag{width:18px!important;height:13.5px!important}
+.app-pro-btn,.app-pro-btn.member-active-badge{height:31px!important;padding:0 10px!important;gap:5px!important;font-size:11px!important;letter-spacing:.02em!important;white-space:nowrap!important;flex-shrink:0!important}
+@media(max-width:390px){
+  .app-brand{gap:7px!important}
+  .app-brand-mark{width:30px!important;height:30px!important}
+  .app-brand-name{font-size:12px!important;letter-spacing:.06em!important}
+  .app-brand-sub{font-size:8.5px!important;letter-spacing:.04em!important}
+  .lang-picker-btn{height:29px!important;padding:0 8px!important;font-size:11px!important}
+  .app-pro-btn,.app-pro-btn.member-active-badge{height:29px!important;padding:0 8px!important;font-size:10.5px!important}
+}
 .rec-action-btn.sentry-active{
   background:linear-gradient(135deg,rgba(139,92,246,.34),rgba(16,185,129,.26))!important;
   border:1.5px solid rgba(167,139,250,.82)!important;
