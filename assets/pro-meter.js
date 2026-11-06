@@ -532,7 +532,7 @@
   // they were real factory baselines; leaving them out made a production
   // iPhone keep a pre-+12 default and read about 9 dB low in the same room.
   const CALIBRATION_STOCK_HISTORY = {
-    'desktop-browser': [-12, -22.5, -16.5, -21, -18.5],
+    'desktop-browser': [-12, -22.5, -16.5, -21, -18.5, -15.5],
     'android-browser': [-8, -6, -1, 1, 2, -11, -8.5],
     'ios-browser': [-6, 2, 6, 7, 12, 14.5, 15, 22.7],
     'tablet-browser': [-8, 2, 4.5],

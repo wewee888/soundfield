@@ -364,35 +364,35 @@ test('preset migration keeps a hand-entered calibration offset', () => {
   assert.equal(oldAndroid.presetKey, 'android-browser');
   assert.equal(oldAndroid.calOffset, -11);
 
-  const v13Presets = {
-    'desktop-browser': { offset: -18.5 },
+  const v14Presets = {
+    'desktop-browser': { offset: -15.5 },
     'android-browser': { offset: -8.5 },
     'ios-browser': { offset: 14.5 },
     'tablet-browser': { offset: 4.5 },
     'laptop-internal-mic': { offset: 38 },
   };
-  const v12ToV13Ios = meter.migrateSavedCalibration(
+  const v12ToV14Ios = meter.migrateSavedCalibration(
     { calibrationBaseline: 'device-preset-v12', calibrationPresetKey: 'ios-browser', calOffset: 12 },
-    v13Presets,
-    'device-preset-v13',
+    v14Presets,
+    'device-preset-v14',
     'ios-browser',
   );
-  assert.equal(v12ToV13Ios.calOffset, 14.5);
-  assert.equal(v12ToV13Ios.keepManual, false);
-  const v12ToV13Android = meter.migrateSavedCalibration(
+  assert.equal(v12ToV14Ios.calOffset, 14.5);
+  assert.equal(v12ToV14Ios.keepManual, false);
+  const v12ToV14Android = meter.migrateSavedCalibration(
     { calibrationBaseline: 'device-preset-v12', calibrationPresetKey: 'android-browser', calOffset: -11 },
-    v13Presets,
-    'device-preset-v13',
+    v14Presets,
+    'device-preset-v14',
     'android-browser',
   );
-  assert.equal(v12ToV13Android.calOffset, -8.5);
-  const v12ToV13Desktop = meter.migrateSavedCalibration(
-    { calibrationBaseline: 'device-preset-v12', calibrationPresetKey: 'desktop-browser', calOffset: -21 },
-    v13Presets,
-    'device-preset-v13',
+  assert.equal(v12ToV14Android.calOffset, -8.5);
+  const v13ToV14Desktop = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v13', calibrationPresetKey: 'desktop-browser', calOffset: -18.5 },
+    v14Presets,
+    'device-preset-v14',
     'desktop-browser',
   );
-  assert.equal(v12ToV13Desktop.calOffset, -18.5);
+  assert.equal(v13ToV14Desktop.calOffset, -15.5);
 });
 
 test('opening stats ignore the unmute and drop it if it was already counted', () => {
