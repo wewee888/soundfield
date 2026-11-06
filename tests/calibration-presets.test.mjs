@@ -10,27 +10,27 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   const adminHtml = await fs.readFile(path.join(projectRoot, 'admin.html'), 'utf-8');
   const reportCertJs = await fs.readFile(path.join(projectRoot, 'assets', 'report-cert-engine.js'), 'utf-8');
 
-  // 1. Verify CALIBRATION_PRESETS contains iOS calibrated offset 7.0 dB, Android +1.0 dB, Tablet +2.0 dB, PC -22.5 dB, laptop compensation 38 dB
+  // 1. Verify CALIBRATION_PRESETS contains iOS calibrated offset +14.5 dB, Android -8.5 dB, Tablet +4.5 dB, PC -18.5 dB, laptop compensation 38 dB
   assert.ok(soundtestHtml.includes("'ios-browser'"), 'ios-browser preset must exist');
-  assert.ok(soundtestHtml.includes('offset:12.0'), 'ios-browser offset must be the quiet-room field baseline +12.0 dB');
-  assert.ok(soundtestHtml.includes('offset:-11.0'), 'android-browser offset must be the quiet-room field baseline -11.0 dB');
-  assert.ok(soundtestHtml.includes('offset:2.0') || soundtestHtml.includes('offset:2'), 'tablet-browser offset must be calibrated to 2.0 dB');
-  assert.ok(soundtestHtml.includes('offset:-21.0'), 'desktop-browser offset must be the quiet-room field baseline -21.0 dB');
+  assert.ok(soundtestHtml.includes('offset:14.5'), 'ios-browser offset must be the quiet-room field baseline +14.5 dB');
+  assert.ok(soundtestHtml.includes('offset:-8.5'), 'android-browser offset must be the quiet-room field baseline -8.5 dB');
+  assert.ok(soundtestHtml.includes('offset:4.5'), 'tablet-browser offset must be calibrated to 4.5 dB');
+  assert.ok(soundtestHtml.includes('offset:-18.5'), 'desktop-browser offset must be the quiet-room field baseline -18.5 dB');
   assert.ok(soundtestHtml.includes("'laptop-internal-mic'"), 'laptop-internal-mic preset must exist');
   assert.ok(soundtestHtml.includes('offset:38'), 'laptop-internal-mic offset must provide +38 dB compensation');
 
-  // 2. Verify CALIBRATION_BASELINE is bumped to v9 to ensure auto-refresh on existing devices
-  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v12'"), 'CALIBRATION_BASELINE must be device-preset-v12');
-  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v12')"), 'Snapshot preset fallback must be device-preset-v12');
+  // 2. Verify CALIBRATION_BASELINE is bumped to v13 to ensure auto-refresh on existing devices
+  assert.ok(soundtestHtml.includes("const CALIBRATION_BASELINE='device-preset-v13'"), 'CALIBRATION_BASELINE must be device-preset-v13');
+  assert.ok(soundtestHtml.includes("preset: (typeof calibrationPresetKey !== 'undefined' ? calibrationPresetKey : 'device-preset-v13')"), 'Snapshot preset fallback must be device-preset-v13');
 
   // 3. Verify Slider ranges are expanded to accommodate offsets down to -35 dB and up to +45 dB, and Admin device matrix exists
   const calRMatches = soundtestHtml.match(/id="calR"[^>]*min="-35"/g) || soundtestHtml.match(/min="-35"[^>]*id="calR"/g);
   assert.ok(calRMatches && calRMatches.length >= 2, 'All calR sliders in drawer and settings view must allow min="-35"');
   assert.ok(adminHtml.includes('id="cfgCalOffset"') && adminHtml.includes('min="-35"'), 'admin.html cfgCalOffset slider must allow min="-35"');
-  assert.ok(adminHtml.includes('id="cfgIosCalOffset"'), 'admin.html must include cfgIosCalOffset for iOS baseline adjustment');
-  assert.ok(adminHtml.includes('id="cfgAndroidCalOffset"') && adminHtml.includes('value="-11.0"'), 'admin.html must include cfgAndroidCalOffset for Android baseline adjustment');
-  assert.ok(adminHtml.includes('id="cfgTabletCalOffset"') && adminHtml.includes('value="2.0"'), 'admin.html must include cfgTabletCalOffset for Tablet baseline adjustment');
-  assert.ok(adminHtml.includes('id="cfgDesktopCalOffset"') && adminHtml.includes('value="-21.0"'), 'admin.html must include cfgDesktopCalOffset defaulting to -21.0 dB');
+  assert.ok(adminHtml.includes('id="cfgIosCalOffset"') && adminHtml.includes('value="14.5"'), 'admin.html must include cfgIosCalOffset for iOS baseline adjustment');
+  assert.ok(adminHtml.includes('id="cfgAndroidCalOffset"') && adminHtml.includes('value="-8.5"'), 'admin.html must include cfgAndroidCalOffset for Android baseline adjustment');
+  assert.ok(adminHtml.includes('id="cfgTabletCalOffset"') && adminHtml.includes('value="4.5"'), 'admin.html must include cfgTabletCalOffset for Tablet baseline adjustment');
+  assert.ok(adminHtml.includes('id="cfgDesktopCalOffset"') && adminHtml.includes('value="-18.5"'), 'admin.html must include cfgDesktopCalOffset defaulting to -18.5 dB');
 
   // 4. Verify Mic Gain slider is expanded to max="36"
   const micRMatches = soundtestHtml.match(/id="micR"[^>]*max="36"/g) || soundtestHtml.match(/max="36"[^>]*id="micR"/g);
@@ -53,10 +53,10 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   assert.ok(soundtestHtml.includes('function applyAcousticResponseProfile'), 'soundtest.html must define applyAcousticResponseProfile');
   assert.ok(soundtestHtml.includes('function isIosCalibrationActive'), 'soundtest.html must define isIosCalibrationActive');
   assert.ok(soundtestHtml.includes('db=applyAcousticResponseProfile(db, isIosCalibrationActive());'), 'instantDb must apply acoustic response profile');
-  assert.ok(soundtestHtml.includes('<option value="ios-browser">iPhone / iPad (+12.0 dB)</option>'), 'Dropdown option must show +12.0 dB');
-  assert.ok(soundtestHtml.includes('<option value="desktop-browser">PC Desktop Browser (-21.0 dB)</option>'), 'Dropdown option must show -21.0 dB');
-  assert.ok(soundtestHtml.includes('<option value="android-browser">Android Browser (-11.0 dB)</option>'), 'Dropdown option must show -11.0 dB');
-  assert.ok(soundtestHtml.includes('<option value="tablet-browser">Tablet Browser (+2.0 dB)</option>'), 'Dropdown option must show +2.0 dB');
+  assert.ok(soundtestHtml.includes('<option value="ios-browser">iPhone / iPad (+14.5 dB)</option>'), 'Dropdown option must show +14.5 dB');
+  assert.ok(soundtestHtml.includes('<option value="desktop-browser">PC Desktop Browser (-18.5 dB)</option>'), 'Dropdown option must show -18.5 dB');
+  assert.ok(soundtestHtml.includes('<option value="android-browser">Android Browser (-8.5 dB)</option>'), 'Dropdown option must show -8.5 dB');
+  assert.ok(soundtestHtml.includes('<option value="tablet-browser">Tablet Browser (+4.5 dB)</option>'), 'Dropdown option must show +4.5 dB');
 
   // 9. Verify mathematical accuracy of dynamic acoustic profile
   const proMeterJs = await fs.readFile(path.join(projectRoot, 'assets', 'pro-meter.js'), 'utf-8');
@@ -116,4 +116,10 @@ test('Calibration presets, iOS baseline calibration, and laptop built-in mic opt
   assert.ok(soundtestHtml.includes('if(!Number.isFinite(prev)||prev<=0)'), 'applyMeterBallistics must self-heal when prev is NaN or non-positive');
   assert.ok(soundtestHtml.includes('validDb=(Number.isFinite(db)&&db>0)?db:0;'), 'updateGauge must sanitize db against NaN');
   assert.ok(soundtestHtml.includes('document.hidden) || (typeof sentryModeActive !== \'undefined\' && sentryModeActive)'), 'startBackgroundAudioKeepAlive must avoid audio routing glitch in foreground');
+
+  // 14. Verify display rounding, IEC LAeq unification, and wizard full range [-35, 45]
+  assert.ok(soundtestHtml.includes('const roundedTenths=Math.round(target*10);'), 'animateDbNumber must round to nearest tenth instead of Math.floor');
+  assert.ok(soundtestHtml.includes('admDef.calibrationBaseline === CALIBRATION_BASELINE'), 'getCalibrationPreset must guard against stale admin defaults');
+  assert.ok(soundtestHtml.includes('Math.max(-35, Math.min(45,'), 'Calibration wizard must support full [-35, 45] dB range');
+  assert.ok(reportCertJs.includes("typeof sessionLeqDb==='function'&&sessionLeqDb()>0"), 'report-cert-engine.js must prioritize sessionLeqDb() for IEC worklet LAeq');
 });

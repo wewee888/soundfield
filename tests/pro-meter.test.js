@@ -222,14 +222,16 @@ test('mic gain shifts the reading and does not amplify samples', () => {
   assert.equal(meter.applyMicGainDb(60, 0), 60);
 });
 
-test('worklet reports accumulate every render quantum into one Leq block', () => {
+test('worklet reports accumulate every render quantum into one Leq block and preserve peak Fast/Slow within the batch', () => {
   const engine = meter.iecCreateEngine(48000, 'Z');
-  const a = meter.iecProcessBlock(engine, new Float32Array(128).fill(0.2));
-  const b = meter.iecProcessBlock(engine, new Float32Array(128).fill(0.2));
+  const a = meter.iecProcessBlock(engine, new Float32Array(128).fill(0.4));
+  const b = meter.iecProcessBlock(engine, new Float32Array(128).fill(0.01));
   const acc = meter.iecAccumulateStats(meter.iecAccumulateStats(null, a), b);
   assert.equal(acc.blockSamples, 256);
   assert.ok(Math.abs(acc.blockSumSquares - (a.blockSumSquares + b.blockSumSquares)) < 1e-9);
   assert.equal(acc.clipCount, a.clipCount + b.clipCount);
+  assert.equal(acc.fastMs, Math.max(a.fastMs, b.fastMs));
+  assert.equal(acc.slowMs, Math.max(a.slowMs, b.slowMs));
 });
 
 test('microphone opens with processing off, including legacy Chrome flags', () => {
@@ -361,6 +363,36 @@ test('preset migration keeps a hand-entered calibration offset', () => {
   );
   assert.equal(oldAndroid.presetKey, 'android-browser');
   assert.equal(oldAndroid.calOffset, -11);
+
+  const v13Presets = {
+    'desktop-browser': { offset: -18.5 },
+    'android-browser': { offset: -8.5 },
+    'ios-browser': { offset: 14.5 },
+    'tablet-browser': { offset: 4.5 },
+    'laptop-internal-mic': { offset: 38 },
+  };
+  const v12ToV13Ios = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v12', calibrationPresetKey: 'ios-browser', calOffset: 12 },
+    v13Presets,
+    'device-preset-v13',
+    'ios-browser',
+  );
+  assert.equal(v12ToV13Ios.calOffset, 14.5);
+  assert.equal(v12ToV13Ios.keepManual, false);
+  const v12ToV13Android = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v12', calibrationPresetKey: 'android-browser', calOffset: -11 },
+    v13Presets,
+    'device-preset-v13',
+    'android-browser',
+  );
+  assert.equal(v12ToV13Android.calOffset, -8.5);
+  const v12ToV13Desktop = meter.migrateSavedCalibration(
+    { calibrationBaseline: 'device-preset-v12', calibrationPresetKey: 'desktop-browser', calOffset: -21 },
+    v13Presets,
+    'device-preset-v13',
+    'desktop-browser',
+  );
+  assert.equal(v12ToV13Desktop.calOffset, -18.5);
 });
 
 test('opening stats ignore the unmute and drop it if it was already counted', () => {
