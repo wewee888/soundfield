@@ -2,6 +2,8 @@
 // Returns comprehensive traffic statistics, user registration attribution, drop-off analysis,
 // and full-funnel conversion metrics (UV -> Registered -> Checkout -> Paid)
 
+import { verifyAdminRequest } from './_auth.js';
+
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -15,39 +17,9 @@ function json(data, status = 200) {
   });
 }
 
-const ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com', 'admin@soundtest.pro'];
-
 async function verifyAuth(request, env) {
-  const adminSecret = String(env.ADMIN_SECRET || 'soundtest_admin_2026');
-  const KNOWN_SECRETS = [
-    adminSecret,
-    'soundtest_admin_2026',
-    'SOUNDTEST.PRO@2026',
-    'soundtest.pro@2026',
-    'soundtest2026',
-    'soundtest_admin',
-  ];
-  const authHeader = request.headers.get('authorization') || '';
-  const token = authHeader.replace(/^Bearer\s+/i, '').trim() ||
-                request.headers.get('x-admin-token') ||
-                request.headers.get('x-session-token') ||
-                new URL(request.url).searchParams.get('token') || '';
-
-  if (token && (token === adminSecret || KNOWN_SECRETS.some(k => k.toLowerCase() === token.toLowerCase()))) return true;
-
-  if (env && env.ab_test && token.startsWith('sess_')) {
-    try {
-      const sessRaw = await env.ab_test.get(`sess:${token}`);
-      if (sessRaw) {
-        const sess = JSON.parse(sessRaw);
-        if ((sess.email && ADMIN_EMAILS.includes(sess.email.toLowerCase())) || sess.role === 'admin') {
-          return true;
-        }
-      }
-    } catch (_) {}
-  }
-
-  return false;
+  const auth = await verifyAdminRequest(request, env);
+  return auth.ok;
 }
 
 // Country code to Flag emoji mapping

@@ -2762,7 +2762,8 @@
       }
     }
 
-    function handleAdminLogout() {
+    async function handleAdminLogout() {
+      const currentToken = adminToken;
       sessionStorage.removeItem('soundtest_admin_token');
       localStorage.removeItem('soundtest_admin_token');
       adminToken = '';
@@ -2780,6 +2781,16 @@
       if (checkIcon) checkIcon.style.display = 'none';
       if (widget) { widget.style.borderColor = 'rgba(255,255,255,0.12)'; widget.style.background = 'rgba(255,255,255,0.04)'; }
       if (label) label.textContent = '点击进行人机身份安全验证';
+
+      if (currentToken) {
+        try {
+          await fetch('/api/admin/logout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentToken },
+            body: JSON.stringify({ token: currentToken }),
+          });
+        } catch (_) {}
+      }
     }
 
     // Tab Titles Mapping

@@ -1,6 +1,8 @@
 // Cloudflare Pages Function: /api/admin/grant
 // Grants, upgrades, or revokes membership for a user email via Cloudflare KV
 
+import { verifyAdminRequest } from './_auth.js';
+
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -12,27 +14,16 @@ function json(data, status = 200) {
   });
 }
 
-function verifyAuth(request, env) {
-  const adminSecret = String(env.ADMIN_SECRET || 'soundtest_admin_2026');
-  const KNOWN_SECRETS = [
-    adminSecret,
-    'soundtest_admin_2026',
-    'SOUNDTEST.PRO@2026',
-    'soundtest.pro@2026',
-    'soundtest2026',
-    'soundtest_admin',
-  ];
-  const authHeader = request.headers.get('authorization') || '';
-  const token = authHeader.replace(/^Bearer\s+/i, '').trim() ||
-                request.headers.get('x-admin-token') ||
-                new URL(request.url).searchParams.get('token') || '';
-  return token && (token === adminSecret || KNOWN_SECRETS.some(k => k.toLowerCase() === token.toLowerCase()));
+async function verifyAuth(request, env) {
+  const auth = await verifyAdminRequest(request, env);
+  return auth.ok;
 }
 
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  if (!verifyAuth(request, env)) {
+  const isAuthed = await verifyAuth(request, env);
+  if (!isAuthed) {
     return json({ ok: false, error: 'unauthorized', message: 'Admin authentication required' }, 401);
   }
 

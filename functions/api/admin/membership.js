@@ -1,6 +1,8 @@
 // Cloudflare Pages Function: /api/admin/membership
 // Allows Super Admin (e.g. wewee1@gmail.com) to query, configure, and grant memberships
 
+import { verifyAdminRequest, SUPER_ADMIN_EMAILS } from './_auth.js';
+
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -12,46 +14,11 @@ function json(data, status = 200) {
   });
 }
 
-const ADMIN_EMAILS = ['wewee1@gmail.com', 'wewee@163.com', 'admin@soundtest.pro'];
-
 async function verifyAdminCaller(request, env, body = {}) {
-  const url = new URL(request.url);
-  const adminSecret = String(env.ADMIN_SECRET || 'soundtest_admin_2026');
-  const KNOWN_SECRETS = [
-    adminSecret,
-    'soundtest_admin_2026',
-    'SOUNDTEST.PRO@2026',
-    'soundtest.pro@2026',
-    'soundtest2026',
-    'soundtest_admin',
-  ];
-  const authHeader = request.headers.get('authorization') || '';
-  const token = authHeader.replace(/^Bearer\s+/i, '').trim() ||
-                request.headers.get('x-admin-token') ||
-                request.headers.get('x-session-token') ||
-                body.admin_token ||
-                url.searchParams.get('token') ||
-                url.searchParams.get('admin_token') || '';
-  const adminEmail = (request.headers.get('x-admin-email') || body.admin_email || url.searchParams.get('admin_email') || '').toLowerCase().trim();
-
-  // 1. Direct match with master admin secret
-  if (token && (token === adminSecret || KNOWN_SECRETS.some(k => k.toLowerCase() === token.toLowerCase()))) {
-    return { ok: true, email: adminEmail || 'wewee1@gmail.com' };
+  const auth = await verifyAdminRequest(request, env);
+  if (auth.ok) {
+    return { ok: true, email: auth.email || 'wewee1@gmail.com' };
   }
-
-  // 2. Verified active session in KV
-  if (env && env.ab_test && token) {
-    try {
-      const sessRaw = await env.ab_test.get(`sess:${token}`);
-      if (sessRaw) {
-        const sess = JSON.parse(sessRaw);
-        if (ADMIN_EMAILS.includes((sess.email || '').toLowerCase()) || sess.role === 'admin') {
-          return { ok: true, email: (sess.email || '').toLowerCase() };
-        }
-      }
-    } catch (_) {}
-  }
-
   return { ok: false };
 }
 
@@ -127,7 +94,7 @@ export async function onRequestPost(context) {
       email: targetEmail,
       plan: plan === 'yearly' ? 'pro' : plan,
       plan_display: plan,
-      role: ADMIN_EMAILS.includes(targetEmail) ? 'admin' : role,
+      role: SUPER_ADMIN_EMAILS.includes(targetEmail) ? 'admin' : role,
       status: plan === 'free' ? 'inactive' : 'paid',
       granted_at: new Date().toISOString(),
       expires_at: plan === 'free' ? null : expiresAt,

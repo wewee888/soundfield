@@ -2,6 +2,8 @@
 // Clears all A/B test click counters. Used to wipe stale test data from KV edge cache.
 // Workers-side delete propagates correctly to all edges; wrangler CLI delete does not.
 
+import { verifyAdminRequest } from './admin/_auth.js';
+
 const VARIANTS = ['A', 'B', 'C'];
 const CTAS = [
   'start_monitoring',
@@ -16,10 +18,8 @@ const CTAS = [
 
 export async function onRequestPost(context) {
   const { request, env } = context;
-  const authHeader = request?.headers?.get('authorization') || '';
-  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
-  const adminSecret = String(env.ADMIN_SECRET || 'soundtest_admin_2026');
-  if (!token || token !== adminSecret) {
+  const auth = await verifyAdminRequest(request, env);
+  if (!auth.ok) {
     return new Response(JSON.stringify({ error: 'unauthorized', message: 'Admin authorization required to reset A/B test data.' }), {
       status: 401,
       headers: {
