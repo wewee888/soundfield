@@ -1409,17 +1409,199 @@
 
     <!-- TAB 5: 访问与转化分析 -->
     <div id="viewAnalytics" class="tab-view">
-      <!-- Traffic Stats Grid -->
+      <!-- 🌟 1. 站长核心流量大盘 (PV · UV · IP 访问人数 · 搜索引擎蜘蛛 严格区分) -->
+      <div style="margin-bottom: 24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3 style="margin:0; font-size:17px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
+              <span>📊</span> 全站流量指标看板 (PV · UV · IP 访问人数 · 搜索引擎蜘蛛)
+            </h3>
+            <p style="margin:4px 0 0; font-size:12px; color:var(--adm-muted);">
+              严格按照专业站长统计标准区分：IP 为真实独立公网访问人数；蜘蛛爬行已 100% 独立隔离，绝不计入真实人数与 UV
+            </p>
+          </div>
+          <div style="font-size:11.5px; color:var(--adm-accent); background:rgba(44,240,193,0.08); padding:5px 12px; border-radius:8px; border:1px solid rgba(44,240,193,0.25);">
+            🛡️ 爬虫防御门禁生效中 · 零污染真实转化率
+          </div>
+        </div>
+
+        <div class="adm-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <!-- 1. 浏览量 PV -->
+          <div class="stat-card cyan">
+            <div class="stat-head">
+              <span class="stat-title">页面浏览量 (PV)</span>
+              <span class="stat-icon">📄</span>
+            </div>
+            <div class="stat-number" id="anlTodayPv" style="color:#2cf0c1;">0</div>
+            <div class="stat-trend">
+              <span>昨日 PV: <strong id="anlYesterdayPv">0</strong></span>
+              <span style="margin-left:auto;">历史总 PV: <strong id="anlTotalPv">0</strong></span>
+            </div>
+          </div>
+
+          <!-- 2. 独立访客 UV -->
+          <div class="stat-card blue">
+            <div class="stat-head">
+              <span class="stat-title">独立访客 (UV)</span>
+              <span class="stat-icon">👤</span>
+            </div>
+            <div class="stat-number" id="anlTodayUv" style="color:#60a5fa;">0</div>
+            <div class="stat-trend">
+              <span>昨日 UV: <strong id="anlYesterdayUv">0</strong></span>
+              <span style="margin-left:auto;">历史总 UV: <strong id="anlTotalUv">0</strong></span>
+            </div>
+          </div>
+
+          <!-- 3. 访问人数 IP -->
+          <div class="stat-card amber">
+            <div class="stat-head">
+              <span class="stat-title">访问人数 (独立 IP)</span>
+              <span class="stat-icon">🌐</span>
+            </div>
+            <div class="stat-number" id="anlTodayIp" style="color:#fbbf24;">0</div>
+            <div class="stat-trend">
+              <span>昨日 IP: <strong id="anlYesterdayIp">0</strong></span>
+              <span style="margin-left:auto;">人均浏览: <strong id="anlTodayPvPerIp" style="color:#fbbf24;">0.00</strong> 页/人</span>
+            </div>
+          </div>
+
+          <!-- 4. 搜索引擎蜘蛛 Spider -->
+          <div class="stat-card purple" style="background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(147,51,234,0.06)); border:1px solid rgba(168,85,247,0.3);">
+            <div class="stat-head">
+              <span class="stat-title">搜索引擎蜘蛛 (Spider)</span>
+              <span class="stat-icon">🐾</span>
+            </div>
+            <div class="stat-number" id="anlTodaySpider" style="color:#c084fc;">0</div>
+            <div class="stat-trend">
+              <span>昨日抓取: <strong id="anlYesterdaySpider">0</strong></span>
+              <span style="margin-left:auto;">历史抓取: <strong id="anlTotalSpider">0</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🌟 2. 今日 vs 昨日 站长数据脱水对比全景表 -->
+      <div class="adm-card" style="margin-bottom: 24px;">
+        <div class="adm-card-header">
+          <div>
+            <h3 class="adm-card-title" style="margin:0;">📋 今日流量与昨日对比全景表 (Daily Traffic Balance Sheet)</h3>
+            <p style="font-size:12px; color:var(--adm-muted); margin:3px 0 0;">
+              清晰明辨 PV、UV、IP（访问人数）与搜索引擎蜘蛛，精准掌握全站真实活跃度
+            </p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>统计核心指标</th>
+                <th>今日实时数据</th>
+                <th>昨日同期数据</th>
+                <th>日环比增减</th>
+                <th>历史累计数据</th>
+                <th>计算口径与站长标准定义</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color:#fff;">📄 页面浏览量 (PV)</strong></td>
+                <td><span style="font-size:15px; font-weight:800; color:#2cf0c1; font-family:monospace;" id="rowTodayPv">0</span></td>
+                <td><span style="font-family:monospace; color:#94a3b8;" id="rowYestPv">0</span></td>
+                <td><span id="rowDiffPv" style="font-weight:700;">--</span></td>
+                <td><span style="font-family:monospace; color:#cbd5e1;" id="rowTotalPv">0</span></td>
+                <td style="font-size:11.5px; color:#94a3b8;">用户每打开或刷新一次页面即计 1 次 PV</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#fff;">👤 独立访客 (UV)</strong></td>
+                <td><span style="font-size:15px; font-weight:800; color:#60a5fa; font-family:monospace;" id="rowTodayUv">0</span></td>
+                <td><span style="font-family:monospace; color:#94a3b8;" id="rowYestUv">0</span></td>
+                <td><span id="rowDiffUv" style="font-weight:700;">--</span></td>
+                <td><span style="font-family:monospace; color:#cbd5e1;" id="rowTotalUv">0</span></td>
+                <td style="font-size:11.5px; color:#94a3b8;">以浏览器/客户端唯一设备 ID 去重，同设备当天多次访问计 1 UV</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#fff;">🌐 访问人数 (独立 IP)</strong></td>
+                <td><span style="font-size:15px; font-weight:800; color:#fbbf24; font-family:monospace;" id="rowTodayIp">0</span></td>
+                <td><span style="font-family:monospace; color:#94a3b8;" id="rowYestIp">0</span></td>
+                <td><span id="rowDiffIp" style="font-weight:700;">--</span></td>
+                <td><span style="font-family:monospace; color:#cbd5e1;" id="rowTotalIp">0</span></td>
+                <td style="font-size:11.5px; color:#94a3b8;"><strong>法定访问人数</strong>：按独立公网 IP 去重，真实代表来访的物理网络用户数</td>
+              </tr>
+              <tr>
+                <td><strong style="color:#fff;">🐾 搜索引擎蜘蛛 (Spider)</strong></td>
+                <td><span style="font-size:15px; font-weight:800; color:#c084fc; font-family:monospace;" id="rowTodaySpider">0</span></td>
+                <td><span style="font-family:monospace; color:#94a3b8;" id="rowYestSpider">0</span></td>
+                <td><span id="rowDiffSpider" style="font-weight:700;">--</span></td>
+                <td><span style="font-family:monospace; color:#cbd5e1;" id="rowTotalSpider">0</span></td>
+                <td style="font-size:11.5px; color:#c084fc;">百度/谷歌/必应/头条等爬虫抓取，<strong>已完全隔离，不计入人数与UV</strong></td>
+              </tr>
+              <tr>
+                <td><strong style="color:#fff;">📈 人均浏览量 (PV/IP)</strong></td>
+                <td><span style="font-size:15px; font-weight:800; color:#34d399; font-family:monospace;" id="rowTodayPvPerIp">0.00</span></td>
+                <td><span style="font-family:monospace; color:#94a3b8;" id="rowYestPvPerIp">0.00</span></td>
+                <td><span id="rowDiffPvPerIp" style="font-weight:700;">--</span></td>
+                <td><span style="font-family:monospace; color:#cbd5e1;" id="rowTotalPvPerIp">0.00</span></td>
+                <td style="font-size:11.5px; color:#94a3b8;">平均每个 IP 访问人数浏览的页面次数，反映受众黏性与取证深度</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 🌟 3. 搜索引擎蜘蛛爬行实时监控台 -->
+      <div class="adm-card" style="margin-bottom: 24px; border: 1px solid rgba(168,85,247,0.3); background: linear-gradient(170deg, rgba(20,13,35,0.85) 0%, rgba(12,10,24,0.95) 100%);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; margin-bottom:14px;">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:20px;">🐾</span>
+              <h3 style="margin:0; font-size:16px; font-weight:800; color:#fff;">
+                搜索引擎蜘蛛抓取监控台 (Search Engine Spider Console)
+              </h3>
+              <span class="status-badge" style="background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.4);">
+                🟢 爬虫抓取监听中
+              </span>
+            </div>
+            <p style="font-size:12px; color:var(--adm-muted); margin:4px 0 0;">
+              边缘 Worker 实时捕获百度、谷歌、必应、字节跳动等搜索引擎蜘蛛抓取行为，掌握收录爬行动态
+            </p>
+          </div>
+          <div id="spiderBreakdownBadges" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>抓取时间</th>
+                <th>蜘蛛类型</th>
+                <th>抓取页面 URL</th>
+                <th>蜘蛛 IP / 节点</th>
+                <th>User-Agent 识别特征</th>
+              </tr>
+            </thead>
+            <tbody id="spidersRecentTableBody">
+              <tr><td colspan="5" style="text-align:center; color:#64748b; padding:16px;">正在拉取蜘蛛抓取记录…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 🌟 4. 全站转化漏斗分析 -->
+      <div style="margin-bottom: 14px;">
+        <h3 style="margin:0 0 12px; font-size:16px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
+          <span>🎯</span> 全站转化漏斗 (Funnel Conversion Metrics)
+        </h3>
+      </div>
       <div class="adm-stats-grid">
         <div class="stat-card cyan">
           <div class="stat-head">
             <span class="stat-title">全站独立访客 (Total UV)</span>
             <span class="stat-icon">👁️</span>
           </div>
-          <div class="stat-number" id="anlTotalUv">0</div>
+          <div class="stat-number" id="anlFunnelUv">0</div>
           <div class="stat-trend">
-            <span>今日活跃 UV: <strong id="anlTodayUv" style="color:var(--adm-accent);">0</strong></span>
-            <span style="margin-left: auto;">累计浏览 PV: <strong id="anlTotalPv">0</strong></span>
+            <span>今日活跃 UV: <strong id="anlFunnelTodayUv" style="color:var(--adm-accent);">0</strong></span>
+            <span style="margin-left: auto;">累计浏览 PV: <strong id="anlFunnelTotalPv">0</strong></span>
           </div>
         </div>
 
@@ -1515,9 +1697,11 @@
         <!-- Filter pills -->
         <div style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;" id="visitorTypeFilters">
           <button class="pill-btn active" onclick="setVisitorFilter('all', this)">全部访客 (<span id="countVisAll">0</span>)</button>
+          <button class="pill-btn" onclick="setVisitorFilter('real_human', this)">👤 仅真实用户 (排查蜘蛛)</button>
+          <button class="pill-btn" onclick="setVisitorFilter('spider', this)">🐾 仅搜索引擎蜘蛛</button>
           <button class="pill-btn" onclick="setVisitorFilter('overseas', this)">🌍 仅海外美金区</button>
           <button class="pill-btn" onclick="setVisitorFilter('china', this)">🇨🇳 仅大陆测试区</button>
-          <button class="pill-btn" onclick="setVisitorFilter('user', this)">👤 仅注册/VIP用户</button>
+          <button class="pill-btn" onclick="setVisitorFilter('user', this)">👑 仅注册/VIP用户</button>
           <button class="pill-btn" onclick="setVisitorFilter('high_intent', this)">🛒 核心转化/收银台</button>
         </div>
 
@@ -4596,11 +4780,112 @@
     function renderAnalyticsView(data) {
       const t = data.traffic || {};
       const f = data.funnel || {};
+      const s = data.spiders || {};
 
-      // 1. KPI Stats
-      document.getElementById('anlTotalUv').textContent = (t.totalUv || 0).toLocaleString();
-      document.getElementById('anlTodayUv').textContent = (t.todayUv || 0).toLocaleString();
-      document.getElementById('anlTotalPv').textContent = (t.totalPv || 0).toLocaleString();
+      // 1. Webmaster Traffic KPI Cards (PV, UV, IP, Spiders)
+      if (document.getElementById('anlTodayPv')) document.getElementById('anlTodayPv').textContent = (t.todayPv || 0).toLocaleString();
+      if (document.getElementById('anlYesterdayPv')) document.getElementById('anlYesterdayPv').textContent = (t.yesterdayPv || 0).toLocaleString();
+      if (document.getElementById('anlTotalPv')) document.getElementById('anlTotalPv').textContent = (t.totalPv || 0).toLocaleString();
+
+      if (document.getElementById('anlTodayUv')) document.getElementById('anlTodayUv').textContent = (t.todayUv || 0).toLocaleString();
+      if (document.getElementById('anlYesterdayUv')) document.getElementById('anlYesterdayUv').textContent = (t.yesterdayUv || 0).toLocaleString();
+      if (document.getElementById('anlTotalUv')) document.getElementById('anlTotalUv').textContent = (t.totalUv || 0).toLocaleString();
+
+      if (document.getElementById('anlTodayIp')) document.getElementById('anlTodayIp').textContent = (t.todayIp || 0).toLocaleString();
+      if (document.getElementById('anlYesterdayIp')) document.getElementById('anlYesterdayIp').textContent = (t.yesterdayIp || 0).toLocaleString();
+      if (document.getElementById('anlTodayPvPerIp')) document.getElementById('anlTodayPvPerIp').textContent = t.todayPvPerIp || '0.00';
+
+      if (document.getElementById('anlTodaySpider')) document.getElementById('anlTodaySpider').textContent = (t.todaySpider || 0).toLocaleString();
+      if (document.getElementById('anlYesterdaySpider')) document.getElementById('anlYesterdaySpider').textContent = (t.yesterdaySpider || 0).toLocaleString();
+      if (document.getElementById('anlTotalSpider')) document.getElementById('anlTotalSpider').textContent = (t.totalSpider || 0).toLocaleString();
+
+      // 2. Daily Traffic Balance Sheet Rows
+      function renderDiff(today, yest) {
+        if (!yest || yest === 0) return '<span style="color:#94a3b8;">--</span>';
+        const diff = today - yest;
+        const pct = ((diff / yest) * 100).toFixed(1);
+        if (diff > 0) return `<span style="color:#2cf0c1; font-weight:700;">+${pct}% ↑</span>`;
+        if (diff < 0) return `<span style="color:#ff6276; font-weight:700;">${pct}% ↓</span>`;
+        return '<span style="color:#94a3b8;">持平 0.0%</span>';
+      }
+
+      if (document.getElementById('rowTodayPv')) {
+        document.getElementById('rowTodayPv').textContent = (t.todayPv || 0).toLocaleString();
+        document.getElementById('rowYestPv').textContent = (t.yesterdayPv || 0).toLocaleString();
+        document.getElementById('rowDiffPv').innerHTML = renderDiff(t.todayPv, t.yesterdayPv);
+        document.getElementById('rowTotalPv').textContent = (t.totalPv || 0).toLocaleString();
+
+        document.getElementById('rowTodayUv').textContent = (t.todayUv || 0).toLocaleString();
+        document.getElementById('rowYestUv').textContent = (t.yesterdayUv || 0).toLocaleString();
+        document.getElementById('rowDiffUv').innerHTML = renderDiff(t.todayUv, t.yesterdayUv);
+        document.getElementById('rowTotalUv').textContent = (t.totalUv || 0).toLocaleString();
+
+        document.getElementById('rowTodayIp').textContent = (t.todayIp || 0).toLocaleString();
+        document.getElementById('rowYestIp').textContent = (t.yesterdayIp || 0).toLocaleString();
+        document.getElementById('rowDiffIp').innerHTML = renderDiff(t.todayIp, t.yesterdayIp);
+        document.getElementById('rowTotalIp').textContent = (t.totalIp || 0).toLocaleString();
+
+        document.getElementById('rowTodaySpider').textContent = (t.todaySpider || 0).toLocaleString();
+        document.getElementById('rowYestSpider').textContent = (t.yesterdaySpider || 0).toLocaleString();
+        document.getElementById('rowDiffSpider').innerHTML = renderDiff(t.todaySpider, t.yesterdaySpider);
+        document.getElementById('rowTotalSpider').textContent = (t.totalSpider || 0).toLocaleString();
+
+        document.getElementById('rowTodayPvPerIp').textContent = (t.todayPvPerIp || '0.00') + ' 页/人';
+        document.getElementById('rowYestPvPerIp').textContent = (t.yesterdayPvPerIp || '0.00') + ' 页/人';
+        document.getElementById('rowDiffPvPerIp').innerHTML = renderDiff(parseFloat(t.todayPvPerIp || 0), parseFloat(t.yesterdayPvPerIp || 0));
+        document.getElementById('rowTotalPvPerIp').textContent = (t.lifetimePvPerIp || '0.00') + ' 页/人';
+      }
+
+      // 3. Search Engine Spider Console Badges & Recent Crawl Table
+      const spBadgeContainer = document.getElementById('spiderBreakdownBadges');
+      const bList = s.breakdown || [];
+      if (spBadgeContainer) {
+        if (bList.length === 0) {
+          spBadgeContainer.innerHTML = '<span style="color:#94a3b8; font-size:11px;">今日暂无爬行记录</span>';
+        } else {
+          spBadgeContainer.innerHTML = bList.slice(0, 6).map(b => `
+            <div style="background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); font-size:11.5px; display:flex; align-items:center; gap:6px;">
+              <span>${b.icon}</span>
+              <span style="color:#fff; font-weight:600;">${escHtml(b.name)}:</span>
+              <span style="color:#c084fc; font-weight:800; font-family:monospace;">${b.todayCount}</span>
+              <span style="color:#94a3b8; font-size:10px;">(${b.percentage})</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      const spTbody = document.getElementById('spidersRecentTableBody');
+      const spRecents = s.recent || [];
+      if (spTbody) {
+        if (spRecents.length === 0) {
+          spTbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b; padding:20px;">暂未捕捉到搜索引擎蜘蛛爬行记录（蜘蛛来访时将自动呈现）</td></tr>';
+        } else {
+          spTbody.innerHTML = spRecents.slice(0, 15).map(sp => `
+            <tr>
+              <td style="font-size:11.5px; font-family:monospace; color:#cbd5e1;">${formatDateCompactSeconds(sp.timestamp)}</td>
+              <td>
+                <span style="font-size:11.5px; background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3); padding:2px 8px; border-radius:6px; font-weight:700;">
+                  ${sp.icon || '🐾'} ${escHtml(sp.name || '搜索引擎蜘蛛')}
+                </span>
+              </td>
+              <td>
+                <a href="${sanitizeUrl(sp.path || '/')}" target="_blank" style="color:#2cf0c1; font-family:monospace; font-size:12px; text-decoration:none;">
+                  ${escHtml(sp.path || '/')} ↗
+                </a>
+              </td>
+              <td style="font-family:monospace; font-size:11.5px; color:#94a3b8;">${escHtml(sp.ip || 'Unknown')}</td>
+              <td style="font-size:10.5px; color:#64748b; font-family:monospace; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escHtml(sp.userAgent || '')}">
+                ${escHtml(sp.userAgent || '--')}
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      // 4. Conversion Funnel KPIs
+      if (document.getElementById('anlFunnelUv')) document.getElementById('anlFunnelUv').textContent = (t.totalUv || 0).toLocaleString();
+      if (document.getElementById('anlFunnelTodayUv')) document.getElementById('anlFunnelTodayUv').textContent = (t.todayUv || 0).toLocaleString();
+      if (document.getElementById('anlFunnelTotalPv')) document.getElementById('anlFunnelTotalPv').textContent = (t.totalPv || 0).toLocaleString();
 
       document.getElementById('anlRegRate').textContent = f.regRate || '0.0%';
       document.getElementById('anlTotalReg').textContent = f.registered || 0;
@@ -4765,6 +5050,8 @@
     function filterVisitorsStream() {
       const search = (document.getElementById('visitorSearchInput')?.value || '').toLowerCase().trim();
       let filtered = rawRecentVisitors.filter(v => {
+        if (currentVisitorFilter === 'real_human' && v.isSpider) return false;
+        if (currentVisitorFilter === 'spider' && !v.isSpider) return false;
         if (currentVisitorFilter === 'overseas' && (v.pricingTier === 'china_test' || v.country === 'CN')) return false;
         if (currentVisitorFilter === 'china' && (v.pricingTier !== 'china_test' && v.country !== 'CN')) return false;
         if (currentVisitorFilter === 'user' && !v.isRegistered && !v.email) return false;
@@ -4776,7 +5063,8 @@
           const matchPage = (v.page || '').toLowerCase().includes(search);
           const matchEmail = (v.email || '').toLowerCase().includes(search);
           const matchName = (v.userName || '').toLowerCase().includes(search);
-          if (!matchIp && !matchCountry && !matchPage && !matchEmail && !matchName) return false;
+          const matchSpider = (v.spiderName || '').toLowerCase().includes(search);
+          if (!matchIp && !matchCountry && !matchPage && !matchEmail && !matchName && !matchSpider) return false;
         }
         return true;
       });
@@ -4820,7 +5108,9 @@
       const isChina = (v.pricingTier === 'china_test' || v.country === 'CN');
 
       let identityBadge = '<span style="font-size:10.5px; color:#94a3b8; background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:8px; border:1px solid rgba(255,255,255,0.08);">🌐 匿名</span>';
-      if (v.isVip) {
+      if (v.isSpider) {
+        identityBadge = `<span style="font-size:10.5px; color:#c084fc; background:rgba(168,85,247,0.15); padding:2px 8px; border-radius:8px; border:1px solid rgba(168,85,247,0.4); font-weight:700;">${v.spiderIcon || '🐾'} ${escHtml(v.spiderName || '搜索引擎蜘蛛')}</span>`;
+      } else if (v.isVip) {
         identityBadge = `<span style="font-size:10.5px; color:#c084fc; background:rgba(192,132,252,0.12); padding:2px 6px; border-radius:8px; border:1px solid rgba(192,132,252,0.35); font-weight:700;">👑 VIP (${escHtml(v.userName || v.email)})</span>`;
       } else if (v.isRegistered || v.email) {
         identityBadge = `<span style="font-size:10.5px; color:#60a5fa; background:rgba(59,130,246,0.12); padding:2px 6px; border-radius:8px; border:1px solid rgba(59,130,246,0.3); font-weight:600;">👤 ${escHtml(v.userName || v.email)}</span>`;

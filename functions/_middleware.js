@@ -2,6 +2,9 @@
 // 1. Detect and terminate recursive crawler traps (Applebot, Googlebot, etc.)
 // 2. Intercept malformed nested paths and return HTTP 410 Gone with noindex headers
 // 3. Prevent infinite spider loops
+// 4. Isolate search engine spiders and track crawl intelligence without polluting human PV/UV/IP
+
+import { detectSpider } from './_spider.js';
 
 const SPIDER_TRAP_PATTERNS = [
   // Repeated /use-cases/ segments (e.g. /use-cases/.../use-cases/)
@@ -155,6 +158,66 @@ export async function onRequest(context) {
           'Cache-Control': 'public, max-age=86400, s-maxage=86400',
         },
       });
+    }
+  }
+
+  // 3. Search Engine Spider & Crawler Telemetry Capture
+  // 100% isolates spiders from human traffic metrics (PV, UV, IP) while recording crawl activity
+  const ua = context.request.headers.get('user-agent') || '';
+  const spider = detectSpider(ua);
+  if (spider && context.env && context.env.ab_test && (context.request.method === 'GET' || context.request.method === 'HEAD')) {
+    const isAsset = /\.(?:css|js|png|jpg|jpeg|webp|gif|svg|ico|woff2?|ttf|map|txt|xml|webmanifest)$/i.test(pathname);
+    if (!isAsset && !pathname.startsWith('/api/')) {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const clientIp = context.request.headers.get('cf-connecting-ip') ||
+                       context.request.headers.get('x-real-ip') ||
+                       context.request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+                       'Unknown';
+      const recordSpiderAsync = async () => {
+        try {
+          const env = context.env;
+          // 1. Increment Today Spider counter
+          const spiderKey = `analytics:spider:${todayStr}`;
+          const cur = parseInt(await env.ab_test.get(spiderKey).catch(() => '0') || '0', 10);
+          await env.ab_test.put(spiderKey, String(cur + 1), { expirationTtl: 86400 * 90 });
+
+          // 2. Increment Specific Spider Type counter
+          const typeKey = `analytics:spider:${spider.code}:${todayStr}`;
+          const curType = parseInt(await env.ab_test.get(typeKey).catch(() => '0') || '0', 10);
+          await env.ab_test.put(typeKey, String(curType + 1), { expirationTtl: 86400 * 90 });
+
+          // 3. Increment Lifetime Spider counter
+          const lifeKey = 'lifetime:spider';
+          const curLife = parseInt(await env.ab_test.get(lifeKey).catch(() => '0') || '0', 10);
+          await env.ab_test.put(lifeKey, String(curLife + 1));
+
+          // 4. Ingest into Spiders Recent Buffer (max 100 entries)
+          const rawRecent = await env.ab_test.get('spiders:recent');
+          let recents = [];
+          if (rawRecent) {
+            try { recents = JSON.parse(rawRecent); } catch (_) {}
+          }
+          if (!Array.isArray(recents)) recents = [];
+          recents.unshift({
+            id: `sp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+            name: spider.name,
+            icon: spider.icon,
+            code: spider.code,
+            ip: clientIp,
+            path: pathname,
+            timestamp: new Date().toISOString(),
+            userAgent: ua.slice(0, 150),
+          });
+          if (recents.length > 100) recents = recents.slice(0, 100);
+          await env.ab_test.put('spiders:recent', JSON.stringify(recents), { expirationTtl: 86400 * 30 });
+        } catch (_) {}
+      };
+
+      if (context.waitUntil) {
+        context.waitUntil(recordSpiderAsync());
+      } else {
+        recordSpiderAsync();
+      }
     }
   }
 

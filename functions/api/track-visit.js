@@ -1,6 +1,9 @@
 // Cloudflare Pages Function: /api/track-visit
 // Zero-auth Edge Visitor Telemetry & Real-Time Intelligence Collector
 // Automatically records anonymous visitors, pageviews, geo-location, referrers, and enforces IP-based pricing tier.
+// Strictly segregates human traffic (PV, UV, IP) from automated search engine spiders.
+
+import { detectSpider } from '../_spider.js';
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -74,6 +77,54 @@ export async function onRequestPost(context) {
 
     const now = new Date().toISOString();
     const todayStr = now.slice(0, 10);
+
+    // 🕷️ 搜索引擎蜘蛛与自动化爬虫严格隔离门禁 (Spider Isolation Gate)
+    // 若识别为搜索引擎爬虫 (Baidu, Google, Bing, Bytespider等)，计入专属蜘蛛爬行流水，严禁计入真实人类的“访问人数 (IP)”、“独立访客 (UV)”与“浏览量 (PV)”
+    const spider = detectSpider(userAgent);
+    if (spider) {
+      if (env && env.ab_test) {
+        try {
+          const spiderKey = `analytics:spider:${todayStr}`;
+          const cur = parseInt(await env.ab_test.get(spiderKey).catch(() => '0') || '0', 10);
+          await env.ab_test.put(spiderKey, String(cur + 1), { expirationTtl: 86400 * 90 });
+
+          const typeKey = `analytics:spider:${spider.code}:${todayStr}`;
+          const curType = parseInt(await env.ab_test.get(typeKey).catch(() => '0') || '0', 10);
+          await env.ab_test.put(typeKey, String(curType + 1), { expirationTtl: 86400 * 90 });
+
+          const lifeKey = 'lifetime:spider';
+          const curLife = parseInt(await env.ab_test.get(lifeKey).catch(() => '0') || '0', 10);
+          await env.ab_test.put(lifeKey, String(curLife + 1));
+
+          const rawRecent = await env.ab_test.get('spiders:recent');
+          let recents = [];
+          if (rawRecent) {
+            try { recents = JSON.parse(rawRecent); } catch (_) {}
+          }
+          if (!Array.isArray(recents)) recents = [];
+          recents.unshift({
+            id: `sp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+            name: spider.name,
+            icon: spider.icon,
+            code: spider.code,
+            ip: clientIp,
+            path: rawPage,
+            timestamp: now,
+            userAgent: userAgent.slice(0, 150),
+          });
+          if (recents.length > 100) recents = recents.slice(0, 100);
+          await env.ab_test.put('spiders:recent', JSON.stringify(recents), { expirationTtl: 86400 * 30 });
+        } catch (_) {}
+      }
+
+      return json({
+        ok: true,
+        isSpider: true,
+        spiderName: spider.name,
+        spiderIcon: spider.icon,
+        message: 'Spider crawl captured and isolated from human metrics',
+      });
+    }
 
     const visitorId = String(body.visitorId || `vid_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`).slice(0, 50);
     const token = String(body.sessionToken || '').trim();
@@ -176,22 +227,42 @@ export async function onRequestPost(context) {
           expirationTtl: 86400 * 30, // 30 days
         });
 
-        // 2. Increment Daily PV Counter
+        // 2. Increment Daily PV Counter (页面总浏览量)
         const pvKey = `analytics:pv:${todayStr}`;
         const curPv = parseInt(await env.ab_test.get(pvKey).catch(() => '0') || '0', 10);
         await env.ab_test.put(pvKey, String(curPv + 1), { expirationTtl: 86400 * 90 });
 
-        // 3. Mark Unique Visitor for today (deduplicated by visitorId:date)
+        // 3. Mark Unique Visitor for today (UV 独立访客：基于客户端设备凭证去重)
         const uvCheckKey = `uv:${todayStr}:${visitorId}`;
-        const alreadySeen = await env.ab_test.get(uvCheckKey);
-        if (!alreadySeen) {
+        const alreadySeenUv = await env.ab_test.get(uvCheckKey);
+        if (!alreadySeenUv) {
           await env.ab_test.put(uvCheckKey, '1', { expirationTtl: 86400 * 2 });
           const uvKey = `analytics:uv:${todayStr}`;
           const curUv = parseInt(await env.ab_test.get(uvKey).catch(() => '0') || '0', 10);
           await env.ab_test.put(uvKey, String(curUv + 1), { expirationTtl: 86400 * 90 });
+
+          const totalUvKey = 'lifetime:uv';
+          const curTotalUv = parseInt(await env.ab_test.get(totalUvKey).catch(() => '0') || '0', 10);
+          await env.ab_test.put(totalUvKey, String(curTotalUv + 1));
         }
 
-        // 4. Update Lifetime Total PV Counter
+        // 4. Mark Independent IP for today (访问人数：基于真实公网客户端 IP 地址去重)
+        if (clientIp && clientIp !== 'Unknown') {
+          const ipCheckKey = `ip:${todayStr}:${clientIp}`;
+          const alreadySeenIp = await env.ab_test.get(ipCheckKey);
+          if (!alreadySeenIp) {
+            await env.ab_test.put(ipCheckKey, '1', { expirationTtl: 86400 * 2 });
+            const ipKey = `analytics:ip:${todayStr}`;
+            const curIp = parseInt(await env.ab_test.get(ipKey).catch(() => '0') || '0', 10);
+            await env.ab_test.put(ipKey, String(curIp + 1), { expirationTtl: 86400 * 90 });
+
+            const totalIpKey = 'lifetime:ip';
+            const curTotalIp = parseInt(await env.ab_test.get(totalIpKey).catch(() => '0') || '0', 10);
+            await env.ab_test.put(totalIpKey, String(curTotalIp + 1));
+          }
+        }
+
+        // 5. Update Lifetime Total PV Counter (历史累计总浏览量)
         const totalKey = 'lifetime:total';
         const curTotal = parseInt(await env.ab_test.get(totalKey).catch(() => '0') || '0', 10);
         await env.ab_test.put(totalKey, String(curTotal + 1));
