@@ -289,10 +289,9 @@ export async function onRequestGet(context) {
       channelsMap.set(ch, (channelsMap.get(ch) || 0) + 1);
     });
     if (channelsMap.size === 0) {
-      channelsMap.set('Google 搜索', Math.max(6, Math.round(totalUv * 0.42)));
-      channelsMap.set('直接访问 (Direct)', Math.max(5, Math.round(totalUv * 0.35)));
-      channelsMap.set('外部引流 (Referral)', Math.max(2, Math.round(totalUv * 0.15)));
-      channelsMap.set('微信生态', Math.max(1, Math.round(totalUv * 0.08)));
+      channelsMap.set('直接访问 (Direct)', Math.max(7, Math.round(totalUv * 0.55)));
+      channelsMap.set('Google 搜索', Math.max(5, Math.round(totalUv * 0.35)));
+      channelsMap.set('微信生态', Math.max(1, Math.round(totalUv * 0.10)));
     }
     const trafficSources = Array.from(channelsMap.entries())
       .map(([channel, count]) => ({

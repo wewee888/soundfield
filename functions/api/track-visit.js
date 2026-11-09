@@ -36,20 +36,62 @@ function parseDevice(ua) {
   return '桌面浏览器';
 }
 
-function parseChannel(referrer) {
-  if (!referrer) return '直接访问 (Direct)';
-  const ref = referrer.toLowerCase();
-  if (ref.includes('google.')) return 'Google 搜索';
-  if (ref.includes('bing.')) return 'Bing 搜索';
-  if (ref.includes('baidu.')) return '百度搜索';
-  if (ref.includes('yahoo.')) return 'Yahoo 搜索';
-  if (ref.includes('duckduckgo.')) return 'DuckDuckGo';
-  if (ref.includes('twitter.com') || ref.includes('t.co') || ref.includes('x.com')) return 'X (Twitter)';
-  if (ref.includes('facebook.com') || ref.includes('fb.com')) return 'Facebook';
-  if (ref.includes('reddit.com')) return 'Reddit';
-  if (ref.includes('youtube.com')) return 'YouTube';
-  if (ref.includes('weixin') || ref.includes('qq.com')) return '微信生态';
-  return '外部引流 (Referral)';
+function parseChannel(referrer, currentHost = 'soundtest.pro') {
+  if (!referrer || typeof referrer !== 'string') return '直接访问 (Direct)';
+  const refTrimmed = referrer.trim();
+  if (
+    !refTrimmed ||
+    refTrimmed === 'null' ||
+    refTrimmed === 'undefined' ||
+    refTrimmed === '-' ||
+    refTrimmed.startsWith('about:') ||
+    refTrimmed.startsWith('javascript:')
+  ) {
+    return '直接访问 (Direct)';
+  }
+
+  let refUrl;
+  try {
+    refUrl = new URL(refTrimmed);
+  } catch (_) {
+    // 无具体有效网址的请求，一律归为直接访问
+    return '直接访问 (Direct)';
+  }
+
+  const hostname = refUrl.hostname.toLowerCase();
+  // 站内自身页面流转（如从首页点击进入工具页），一律归为直接访问，严禁误判为外部引流
+  if (
+    hostname === currentHost ||
+    hostname === 'soundtest.pro' ||
+    hostname === 'www.soundtest.pro' ||
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname.endsWith('.soundtest.pro')
+  ) {
+    return '直接访问 (Direct)';
+  }
+
+  // 1. 搜索引擎来源
+  if (hostname.includes('google.')) return 'Google 搜索';
+  if (hostname.includes('baidu.')) return '百度搜索';
+  if (hostname.includes('bing.')) return 'Bing 搜索';
+  if (hostname.includes('sogou.')) return '搜狗搜索';
+  if (hostname.includes('so.com') || hostname.includes('haosou.')) return '360 搜索';
+  if (hostname.includes('yahoo.')) return 'Yahoo 搜索';
+  if (hostname.includes('duckduckgo.')) return 'DuckDuckGo';
+
+  // 2. 社交与通讯渠道
+  if (hostname.includes('weixin') || hostname.includes('qq.com')) return '微信生态';
+  if (hostname.includes('twitter.com') || hostname.includes('t.co') || hostname.includes('x.com')) return 'X (Twitter)';
+  if (hostname.includes('facebook.com') || hostname.includes('fb.com')) return 'Facebook';
+  if (hostname.includes('reddit.com')) return 'Reddit';
+  if (hostname.includes('youtube.com')) return 'YouTube';
+  if (hostname.includes('zhihu.com')) return '知乎引流';
+  if (hostname.includes('weibo.com')) return '微博引流';
+  if (hostname.includes('douyin.com') || hostname.includes('tiktok.com')) return '抖音/TikTok';
+
+  // 3. 真实外部引流（必须具备真实第三方外部域名）
+  return `外部引流 (${hostname})`;
 }
 
 export async function onRequestPost(context) {
@@ -135,7 +177,8 @@ export async function onRequestPost(context) {
     const page = rawPage.slice(0, 200);
     const title = String(body.title || '').replace(/[<>"']/g, '').slice(0, 120);
     const referrer = String(body.referrer || request.headers.get('referer') || '').slice(0, 250);
-    const channel = parseChannel(referrer);
+    const reqHost = new URL(request.url).hostname.toLowerCase();
+    const channel = parseChannel(referrer, reqHost);
     const device = parseDevice(userAgent);
 
     let email = String(body.email || '').toLowerCase().trim();

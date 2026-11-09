@@ -27,13 +27,13 @@ test('WeChat Pay (Hupijiao) strict mobile vs PC parameter, loading skeleton, and
   assert.ok(soundtestHtml.includes('id="wxPayLoadingWrap"'), 'soundtest.html includes loading skeleton to eliminate broken image flash');
   assert.ok(soundtestHtml.includes('id="wxQrcodeWrap" style="display:none;"'), 'soundtest.html hides QR wrapper by default to prevent broken image placeholder');
   assert.ok(soundtestHtml.includes('id="wxCopyPayUrlBtn"'), 'soundtest.html includes copy payment URL button');
-  assert.ok(soundtestHtml.includes('/assets/membership-pricing.js?v=20261109_v17'), 'soundtest.html uses versioned cache-busting script tag');
+  assert.ok(soundtestHtml.includes('/assets/membership-pricing.js?v=20261109_v17') || soundtestHtml.includes('/assets/membership-pricing.js?v=20261109_v18'), 'soundtest.html uses versioned cache-busting script tag');
 
   // 3. Verify caching and Service Worker defense against stale mobile assets
   assert.ok(headers.includes('/assets/membership-pricing.js\n  Cache-Control: public, max-age=0, must-revalidate, no-transform') ||
             headers.includes('/assets/membership-pricing.js\r\n  Cache-Control: public, max-age=0, must-revalidate, no-transform'),
             '_headers specifies max-age=0, must-revalidate for membership-pricing.js');
-  assert.ok(swJs.includes('soundtest-pro-v17'), 'sw.js bumped cache version to soundtest-pro-v17');
+  assert.ok(swJs.includes('soundtest-pro-v17') || swJs.includes('soundtest-pro-v18'), 'sw.js bumped cache version');
   assert.ok(swJs.includes('/assets/membership-pricing.js'), 'sw.js includes membership-pricing.js in network-first paths');
 
   // 4. Verify return_url auto-enrichment and mobile sync return listener

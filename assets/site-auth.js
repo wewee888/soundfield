@@ -1837,16 +1837,11 @@
             if (mobileAction && mobileBtn && data.url) {
               mobileAction.style.display = 'block';
               mobileBtn.href = data.url;
-              mobileBtn.setAttribute('target', '_blank');
-              mobileBtn.setAttribute('rel', 'noopener noreferrer');
               mobileBtn.onclick = (e) => {
                 try {
-                  const win = window.open(data.url, '_blank', 'noopener,noreferrer');
-                  if (!win || win.closed || typeof win.closed === 'undefined') {
-                    window.location.href = data.url;
-                  }
-                } catch (_) {
                   window.location.href = data.url;
+                } catch (_) {
+                  window.open(data.url, '_blank', 'noopener');
                 }
               };
               const mobileBtnText = mobileBtn.querySelector('span');

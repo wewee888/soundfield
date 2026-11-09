@@ -519,14 +519,11 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
         h5Btn.setAttribute('target', '_blank');
         h5Btn.setAttribute('rel', 'noopener noreferrer');
         h5Btn.onclick = (e) => {
-          // 在安卓桌面快捷方式 (PWA/WebAPK) 及各类移动端浏览器中，兼顾原生外跳与 window.open
+          // 移动端遵循官方规范：直接跳转请求 url，系统自动判断微信端还是手机浏览器
           try {
-            const win = window.open(data.url, '_blank', 'noopener,noreferrer');
-            if (!win || win.closed || typeof win.closed === 'undefined') {
-              window.location.href = data.url;
-            }
-          } catch (_) {
             window.location.href = data.url;
+          } catch (_) {
+            window.open(data.url, '_blank', 'noopener');
           }
         };
       }

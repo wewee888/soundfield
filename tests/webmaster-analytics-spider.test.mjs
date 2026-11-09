@@ -168,3 +168,39 @@ test('Webmaster Analytics: Admin API and UI template deliver PV, UV, IP (访问�
   assert.ok(adminHtml.includes('搜索引擎蜘蛛抓取监控台'), 'admin.html contains Spider Console');
   assert.ok(adminHtml.includes('spidersRecentTableBody'), 'admin.html contains spidersRecentTableBody');
 });
+
+test('Webmaster Analytics: Referral source strict URL validation and Admin Submenu decoupling', () => {
+  const trackJs = fs.readFileSync(path.join(rootDir, 'functions/api/track-visit.js'), 'utf8');
+  const adminHtml = fs.readFileSync(path.join(rootDir, 'admin.html'), 'utf8');
+
+  // 1. Referral vs Direct invariant verification in track-visit.js
+  assert.ok(trackJs.includes("if (!referrer || typeof referrer !== 'string') return '直接访问 (Direct)';"), 'Empty referrer is Direct');
+  assert.ok(trackJs.includes("hostname === currentHost"), 'Self-host internal navigation is strictly Direct, never Referral');
+  assert.ok(trackJs.includes("return `外部引流 (${hostname})`;"), 'Only genuine third-party external domain is tagged as Referral');
+
+  // 2. Admin Sidebar Submenu Accordion verification
+  assert.ok(adminHtml.includes('id="navAccordionAnalytics"'), 'admin.html contains sidebar accordion container');
+  assert.ok(adminHtml.includes('id="submenuAnalytics"'), 'admin.html contains submenu container');
+  assert.ok(adminHtml.includes('data-subtab="anl-trend"'), 'admin.html contains trend analysis subtab');
+  assert.ok(adminHtml.includes('data-subtab="anl-visitors"'), 'admin.html contains live visitors stream subtab');
+  assert.ok(adminHtml.includes('data-subtab="anl-sources"'), 'admin.html contains sources & referrals subtab');
+  assert.ok(adminHtml.includes('data-subtab="anl-pages"'), 'admin.html contains content & pages subtab');
+  assert.ok(adminHtml.includes('data-subtab="anl-spiders"'), 'admin.html contains spider stats subtab');
+  assert.ok(adminHtml.includes('data-subtab="anl-funnel"'), 'admin.html contains funnel & audit subtab');
+
+  // 3. 6 Decoupled Subviews in viewAnalytics
+  assert.ok(adminHtml.includes('id="subview_anl_trend"'), 'admin.html contains subview_anl_trend');
+  assert.ok(adminHtml.includes('id="subview_anl_visitors"'), 'admin.html contains subview_anl_visitors');
+  assert.ok(adminHtml.includes('id="subview_anl_sources"'), 'admin.html contains subview_anl_sources');
+  assert.ok(adminHtml.includes('id="subview_anl_pages"'), 'admin.html contains subview_anl_pages');
+  assert.ok(adminHtml.includes('id="subview_anl_spiders"'), 'admin.html contains subview_anl_spiders');
+  assert.ok(adminHtml.includes('id="subview_anl_funnel"'), 'admin.html contains subview_anl_funnel');
+
+  // 4. V6 Native Style Overview Cards & Interactive Trend SVG Chart
+  assert.ok(adminHtml.includes('id="v6IpCount"'), 'admin.html contains V6 IP count card');
+  assert.ok(adminHtml.includes('id="v6PvCount"'), 'admin.html contains V6 PV count card');
+  assert.ok(adminHtml.includes('id="v6UvCount"'), 'admin.html contains V6 UV count card');
+  assert.ok(adminHtml.includes('id="v6TrendSvg"'), 'admin.html contains interactive trend SVG canvas');
+  assert.ok(adminHtml.includes('function renderTrendChart()'), 'admin.html implements renderTrendChart engine');
+  assert.ok(adminHtml.includes('function switchSubTab(subTabId)'), 'admin.html implements switchSubTab controller');
+});
