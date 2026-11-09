@@ -640,4 +640,28 @@ if (typeof window !== 'undefined') {
     window.PUM_I18N = window.SoundTestPayment.PUM_I18N;
     Object.assign(window, window.SoundTestPayment);
   }
+
+  // Automatically check order status if redirected back from mobile WeChat Pay (wx_return=1 & order_id=sf_...)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+    const isWxReturn = params.get('wx_return') === '1' || Boolean(orderId && orderId.startsWith('sf_'));
+    if (isWxReturn && orderId) {
+      setTimeout(async () => {
+        try {
+          const resp = await fetch(`/api/payment/hupijiao-check?order_id=${encodeURIComponent(orderId)}`);
+          const data = await resp.json().catch(() => ({}));
+          if (data && data.paid) {
+            if (typeof handleWeChatPaymentSuccess === 'function') {
+              handleWeChatPaymentSuccess(data.plan || 'pro', orderId);
+            }
+            const cleanUrl = new URL(window.location.href);
+            cleanUrl.searchParams.delete('wx_return');
+            cleanUrl.searchParams.delete('order_id');
+            window.history.replaceState({}, document.title, cleanUrl.toString());
+          }
+        } catch (_) {}
+      }, 500);
+    }
+  } catch (_) {}
 }

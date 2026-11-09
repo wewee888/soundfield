@@ -30,6 +30,12 @@ test('WeChat Pay (Hupijiao) strict mobile vs PC parameter and redirection segreg
   // 3. Verify soundtest.html mobile button does not have target="_blank"
   assert.ok(!soundtestHtml.includes('id="wxPayH5Btn" href="#" target="_blank"'), 'soundtest.html wxPayH5Btn does not have target="_blank"');
   assert.ok(soundtestHtml.includes('id="wxPayH5Btn" href="#" rel="noopener"'), 'soundtest.html wxPayH5Btn has rel="noopener" with default window target');
+
+  // 4. Verify return_url auto-enrichment and mobile sync return listener
+  const createJs = fs.readFileSync(path.join(rootDir, 'functions/api/payment/hupijiao-create.js'), 'utf8');
+  assert.ok(createJs.includes('u.searchParams.set(\'wx_return\', \'1\');'), 'hupijiao-create.js attaches wx_return to return_url');
+  assert.ok(createJs.includes('u.searchParams.set(\'order_id\', trade_order_id);'), 'hupijiao-create.js attaches trade_order_id to return_url');
+  assert.ok(pricingJs.includes('params.get(\'wx_return\') === \'1\''), 'membership-pricing.js listens for wx_return param to auto-unlock upon mobile return');
 });
 
 test('Zero 51.la rogue tracking scripts across entire project', () => {

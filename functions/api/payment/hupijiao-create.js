@@ -76,7 +76,13 @@ export async function onRequestPost(context) {
     const time = String(Math.floor(Date.now() / 1000));
     const nonce_str = `rnd_${Math.random().toString(36).slice(2, 10)}`;
     const notify_url = 'https://soundtest.pro/api/payment/hupijiao-notify';
-    const return_url = String(body.return_url || 'https://soundtest.pro/soundtest.html');
+    let return_url = String(body.return_url || 'https://soundtest.pro/soundtest.html');
+    try {
+      const u = new URL(return_url);
+      u.searchParams.set('wx_return', '1');
+      u.searchParams.set('order_id', trade_order_id);
+      return_url = u.toString();
+    } catch (_) {}
 
     const params = {
       version: '1.1',
