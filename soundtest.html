@@ -1093,27 +1093,40 @@
     </div>
 
     <div class="wx-pay-body">
-      <div class="wx-qrcode-wrap" id="wxQrcodeWrap">
-        <img class="wx-qrcode-img" id="wxPayQrcode" alt="WeChat Pay QR Code" src="">
+      <!-- ⏳ 1. 加载中骨架屏（避免任何空图片或二维码未就绪时出现浏览器裂图） -->
+      <div class="wx-loading-wrap" id="wxPayLoadingWrap" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px;min-height:190px;gap:12px;">
+        <span class="wx-spinner" style="width:36px;height:36px;border-width:3px;"></span>
+        <div style="font-size:13.5px;font-weight:600;color:var(--tx1);" id="wxPayLoadingText">正在安全连接微信支付收银台…</div>
+        <div style="font-size:11px;color:rgba(214,232,250,.55);">正在为您生成专属支付通道，请稍候</div>
+      </div>
+
+      <!-- 💻 2. PC 端专用二维码展示区域（默认隐藏，PC 端加载成功后展示） -->
+      <div class="wx-qrcode-wrap" id="wxQrcodeWrap" style="display:none;">
+        <img class="wx-qrcode-img" id="wxPayQrcode" alt="WeChat Pay QR Code" style="display:none;">
         <div class="wx-scan-tip">
           <span class="wx-scan-dot"></span>
-          <span>Please scan with WeChat to pay</span>
+          <span id="wxScanTipText">请使用手机微信扫码支付</span>
         </div>
       </div>
 
-      <div class="wx-mobile-wrap" id="wxMobileWrap" style="display:none">
-        <a class="wx-h5-btn" id="wxPayH5Btn" href="#" rel="noopener">
+      <!-- 📱 3. 手机/移动端专用支付区域（默认隐藏，手机端加载成功后展示） -->
+      <div class="wx-mobile-wrap" id="wxMobileWrap" style="display:none;">
+        <a class="wx-h5-btn" id="wxPayH5Btn" href="#" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8.5 2C4.36 2 1 4.91 1 8.5c0 1.99 1.01 3.77 2.61 4.96L2.8 16.2c-.08.24.15.45.38.35l3.22-1.38c.66.19 1.37.33 2.1.33.25 0 .5-.02.74-.04-.21-.63-.34-1.3-.34-2 0-3.87 3.8-7 8.5-7 .34 0 .67.02 1 .05C17.06 3.93 13.09 2 8.5 2zM6 6.5c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5.5 3c-4.14 0-7.5 2.69-7.5 6s3.36 6 7.5 6c.65 0 1.28-.08 1.87-.24l2.58 1.11c.21.09.43-.09.35-.31l-.64-2.18C22.02 18.77 23 17.25 23 15.5c0-3.31-3.36-6-7.5-6zm-2.5 3.5c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75zm4.5 0c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75z"/></svg>
           <span id="wxPayH5BtnText">👉 立即前往微信安全支付</span>
         </a>
-        <div id="wxMobileHint" style="font-size:12px;color:rgba(214,232,250,.7);text-align:center;margin-top:6px;line-height:1.5;">
-          若未自动唤起微信，请点击上方绿色按钮前往支付；支持截图微信识别二维码
+        <button type="button" class="wx-copy-btn" id="wxCopyPayUrlBtn" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;height:38px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:var(--tx1);font-size:12.5px;font-weight:600;cursor:pointer;margin-bottom:8px;transition:background .15s;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span id="wxCopyBtnText">📋 复制支付链接并在浏览器打开</span>
+        </button>
+        <div id="wxMobileHint" style="font-size:11.5px;color:rgba(214,232,250,.7);text-align:center;line-height:1.5;">
+          💡 若在桌面快捷方式中点击无反应，请点击上方【复制支付链接】到手机系统浏览器中打开完成支付；支持微信直接支付或截图识别
         </div>
       </div>
 
       <div class="wx-status-pill" id="wxPayStatus">
         <span class="wx-spinner"></span>
-        <span id="wxPayStatusText">Awaiting payment confirmation; will auto-unlock once completed…</span>
+        <span id="wxPayStatusText">正在连接微信安全收银台…</span>
       </div>
     </div>
 
@@ -2877,7 +2890,7 @@
 <script src="/assets/storage-utils.js?v=20260823b" data-cfasync="false"></script>
 <script src="/assets/report-cert-engine.js?v=20261009a" data-cfasync="false"></script>
 <script src="/assets/sentry-engine.js?v=20261008" data-cfasync="false"></script>
-<script src="/assets/membership-pricing.js?v=20261008b" data-cfasync="false"></script>
+<script src="/assets/membership-pricing.js?v=20261109_v17" data-cfasync="false"></script>
 <script src="/assets/geo-location.js?v=20261008" data-cfasync="false"></script>
 <script>
 /* ══ GLOBALS: define esc() before any other code to prevent ReferenceError ══ */
@@ -11558,7 +11571,7 @@ try {
 function initAppBookmarkSystem() {}
 function openAppBookmarkModal() {}
 
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(e=>console.log('SW reg failed',e)))}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').then(r=>r&&r.update&&r.update()).catch(e=>console.log('SW reg failed',e)))}
 </script>
 </body>
 </html>

@@ -1837,27 +1837,40 @@
             if (mobileAction && mobileBtn && data.url) {
               mobileAction.style.display = 'block';
               mobileBtn.href = data.url;
-              mobileBtn.removeAttribute('target'); // 必须去掉 target="_blank"，移动端同窗口跳转防拦截
+              mobileBtn.setAttribute('target', '_blank');
+              mobileBtn.setAttribute('rel', 'noopener noreferrer');
               mobileBtn.onclick = (e) => {
-                e.preventDefault();
-                window.location.href = data.url;
+                try {
+                  const win = window.open(data.url, '_blank', 'noopener,noreferrer');
+                  if (!win || win.closed || typeof win.closed === 'undefined') {
+                    window.location.href = data.url;
+                  }
+                } catch (_) {
+                  window.location.href = data.url;
+                }
               };
               const mobileBtnText = mobileBtn.querySelector('span');
               if (mobileBtnText) {
-                mobileBtnText.textContent = isZh ? '👉 立即前往微信安全支付 (点击唤起)' : 'Open WeChat to Pay';
+                mobileBtnText.textContent = isZh ? '👉 立即前往微信安全支付' : 'Open WeChat to Pay';
               }
             }
 
             if (statusText) {
               statusText.textContent = isZh 
-                ? '正在前往微信安全支付… 若未自动唤起请点击上方绿色按钮 (支持微信直接支付或截图识别)' 
+                ? '请点击上方按钮前往微信安全支付（支持微信直接支付或截图识别）' 
                 : 'Redirecting to WeChat Pay… If not redirected, tap button above';
             }
 
-            // 自动尝试跳转至手机端专用 url
+            // 自动尝试跳转至手机端专用 url（避免在 standalone PWA 中强行抢跳）
             if (data.url) {
               try {
-                window.location.href = data.url;
+                const isStandalone = (typeof window !== 'undefined') && (
+                  (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+                  window.navigator.standalone === true
+                );
+                if (!isStandalone) {
+                  window.location.href = data.url;
+                }
               } catch (_) {}
             }
           } else {

@@ -1,5 +1,7 @@
-const CACHE_NAME = 'soundtest-pro-v16';
+const CACHE_NAME = 'soundtest-pro-v17';
 const NETWORK_FIRST_PATHS = [
+  '/assets/membership-pricing.js',
+  '/assets/soundtest.css',
   '/assets/lang-flags.js',
   '/assets/i18n-data.js',
   '/assets/site.css',
@@ -10,6 +12,7 @@ const NETWORK_FIRST_PATHS = [
 const ASSETS_TO_CACHE = [
   '/',
   '/soundtest.html',
+  '/assets/membership-pricing.js',
   '/assets/soundtest.css',
   '/assets/layout-flow.css',
   '/camera.html',

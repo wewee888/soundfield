@@ -402,6 +402,17 @@ function closeWeChatPayModal() {
     clearInterval(weChatPollTimer);
     weChatPollTimer = null;
   }
+  const qrcodeImg = document.getElementById('wxPayQrcode');
+  if (qrcodeImg) {
+    qrcodeImg.src = '';
+    qrcodeImg.style.display = 'none';
+  }
+  const loadingWrap = document.getElementById('wxPayLoadingWrap');
+  if (loadingWrap) loadingWrap.style.display = 'flex';
+  const qrcodeWrap = document.getElementById('wxQrcodeWrap');
+  if (qrcodeWrap) qrcodeWrap.style.display = 'none';
+  const mobileWrap = document.getElementById('wxMobileWrap');
+  if (mobileWrap) mobileWrap.style.display = 'none';
 }
 
 function isMobileClient() {
@@ -442,7 +453,9 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
   const qrcodeImg = document.getElementById('wxPayQrcode');
   const qrcodeWrap = document.getElementById('wxQrcodeWrap');
   const mobileWrap = document.getElementById('wxMobileWrap');
+  const loadingWrap = document.getElementById('wxPayLoadingWrap');
   const h5Btn = document.getElementById('wxPayH5Btn');
+  const copyBtn = document.getElementById('wxCopyPayUrlBtn');
   const statusEl = document.getElementById('wxPayStatusText');
 
   const planInfo = {
@@ -458,6 +471,15 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
   if (origEl) origEl.textContent = planInfo.origFee;
   const badgeEl = document.getElementById('wxPayDiscountBadge');
   if (badgeEl) badgeEl.textContent = planInfo.badge;
+
+  // 立即呈现优雅加载骨架，隐藏空二维码与裂图占位
+  if (loadingWrap) loadingWrap.style.display = 'flex';
+  if (qrcodeWrap) qrcodeWrap.style.display = 'none';
+  if (mobileWrap) mobileWrap.style.display = 'none';
+  if (qrcodeImg) {
+    qrcodeImg.src = '';
+    qrcodeImg.style.display = 'none';
+  }
   if (statusEl) statusEl.textContent = '正在连接微信安全收银台…';
 
   modal.classList.add('show');
@@ -479,6 +501,8 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
       throw new Error(data.error || '创建订单失败');
     }
 
+    if (loadingWrap) loadingWrap.style.display = 'none';
+
     const isMobile = isMobileClient();
 
     if (isMobile) {
@@ -492,26 +516,64 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
 
       if (h5Btn && data.url) {
         h5Btn.href = data.url;
-        h5Btn.removeAttribute('target'); // 必须去掉 target="_blank"，移动端同窗口跳转防拦截
+        h5Btn.setAttribute('target', '_blank');
+        h5Btn.setAttribute('rel', 'noopener noreferrer');
         h5Btn.onclick = (e) => {
-          e.preventDefault();
-          window.location.href = data.url;
+          // 在安卓桌面快捷方式 (PWA/WebAPK) 及各类移动端浏览器中，兼顾原生外跳与 window.open
+          try {
+            const win = window.open(data.url, '_blank', 'noopener,noreferrer');
+            if (!win || win.closed || typeof win.closed === 'undefined') {
+              window.location.href = data.url;
+            }
+          } catch (_) {
+            window.location.href = data.url;
+          }
+        };
+      }
+
+      if (copyBtn && data.url) {
+        copyBtn.onclick = async () => {
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(data.url);
+            } else {
+              const ta = document.createElement('textarea');
+              ta.value = data.url;
+              ta.style.position = 'fixed';
+              ta.style.opacity = '0';
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand('copy');
+              document.body.removeChild(ta);
+            }
+            if (typeof toast === 'function') {
+              toast('✅ 支付链接已复制！请在手机浏览器中打开完成微信支付', 'ok', 4000);
+            }
+          } catch (_) {
+            prompt('请长按复制下方微信支付链接并在浏览器中打开：', data.url);
+          }
         };
       }
 
       const h5BtnText = document.getElementById('wxPayH5BtnText') || h5Btn?.querySelector('span');
       if (h5BtnText) {
-        h5BtnText.textContent = '👉 立即前往微信安全支付 (点击唤起)';
+        h5BtnText.textContent = '👉 立即前往微信安全支付';
       }
 
       if (statusEl) {
-        statusEl.textContent = '正在前往微信安全支付… 若未自动唤起请点击上方绿色按钮 (支持微信直接支付或截图识别)';
+        statusEl.textContent = '请点击上方按钮前往微信支付，或复制链接至浏览器打开';
       }
 
-      // 自动尝试跳转至手机端专用 url
+      // 移动端若处于标准浏览器环境，尝试辅助跳转
       if (data.url) {
         try {
-          window.location.href = data.url;
+          const isStandalone = (typeof window !== 'undefined') && (
+            (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+            window.navigator.standalone === true
+          );
+          if (!isStandalone) {
+            window.location.href = data.url;
+          }
         } catch (_) {}
       }
     } else {
@@ -520,8 +582,10 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
       if (qrcodeWrap) qrcodeWrap.style.display = 'inline-flex';
 
       if (qrcodeImg && (data.url_qrcode || data.url)) {
-        qrcodeImg.style.display = 'block';
         const fallbackUrl = data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '';
+        qrcodeImg.onload = () => {
+          qrcodeImg.style.display = 'block';
+        };
         qrcodeImg.onerror = () => {
           if (fallbackUrl && qrcodeImg.src !== fallbackUrl) {
             qrcodeImg.src = fallbackUrl;
@@ -537,7 +601,12 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
 
     startWeChatPaymentPolling(data.order_id, data.open_order_id, plan);
   } catch (err) {
-    if (statusEl) statusEl.textContent = '订单创建失败：' + (err.message || '网络异常');
+    if (loadingWrap) {
+      loadingWrap.style.display = 'flex';
+      loadingWrap.innerHTML = `<span style="color:#ff6276;padding:10px;text-align:center;">${err.message || '连接失败，请稍后重试'}</span><button type="button" class="btn-outline btn-sm" id="wxPayRetryBtn" style="margin-top:8px;padding:6px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:transparent;color:#fff;cursor:pointer;">重新连接</button>`;
+      loadingWrap.querySelector('#wxPayRetryBtn')?.addEventListener('click', () => openWeChatPayModal(plan, pendingRecs, isBatch));
+    }
+    if (statusEl) statusEl.textContent = '支付网关连接失败，请点击重试';
     toast('微信支付调起失败，请稍后重试', 'err', 5000);
   }
 }
