@@ -6413,7 +6413,8 @@ function executeProUpgradeCheckout() {
       finalUrl = u.toString();
     } catch (_) {}
   }
-  const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|MicroMessenger/i.test(navigator.userAgent || '')
+    || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 1 && window.innerWidth <= 820);
   if (isMobile) {
     window.location.href = finalUrl;
   } else {
@@ -6481,7 +6482,8 @@ async function beginCheckout(plan){
         finalUrl = u.toString();
       } catch (_) {}
     }
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|MicroMessenger/i.test(navigator.userAgent || '')
+    || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 1 && window.innerWidth <= 820);
     if (isMobile) {
       window.location.href = finalUrl;
     } else {
@@ -10938,7 +10940,8 @@ function openReportPreviewModal(recs, isBatch = false) {
     }
   } else {
     // Overseas IP: USD and Creem.io
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|MicroMessenger/i.test(navigator.userAgent || '')
+    || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 1 && window.innerWidth <= 820);
     if (singleBtn) {
       singleBtn.style.display = isPro ? 'none' : 'flex';
       if (singleBtnText) singleBtnText.textContent = isZh
@@ -11352,7 +11355,8 @@ function checkoutSentry(plan) {
     const urls = window.CREEM_CHECKOUT_URLS || (typeof CREEM_CHECKOUT_URLS !== 'undefined' ? CREEM_CHECKOUT_URLS : null);
     const url = urls ? urls[creemKey] : null;
     if (url) {
-      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|MicroMessenger/i.test(navigator.userAgent || '')
+    || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 1 && window.innerWidth <= 820);
       if (isMobile) {
         window.location.href = url;
       } else {

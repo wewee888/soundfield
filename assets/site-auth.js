@@ -1761,19 +1761,40 @@
 
           if (qrLoading) qrLoading.style.display = 'none';
 
-          if (creemAction && creemBtn) {
-            creemAction.style.display = 'flex';
-            creemBtn.href = data.checkoutUrl;
-          }
-
-          if (qrImg) {
-            // Render QR code for mobile scanning
-            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.checkoutUrl)}`;
-            qrImg.style.display = 'block';
-          }
-
-          if (statusText) {
-            statusText.textContent = isZh ? '请点击上方按钮前往 Creem 支付，或扫码付款…' : 'Click button above to pay via Creem, or scan QR…';
+          if (isMobile) {
+            // 📱 移动端：直接跳转收银台或点击同窗唤起（不在手机屏幕上渲染无法自扫的二维码）
+            if (qrWrapper) qrWrapper.style.display = 'none';
+            if (qrImg) qrImg.style.display = 'none';
+            if (creemAction && creemBtn) {
+              creemAction.style.display = 'flex';
+              creemBtn.href = data.checkoutUrl;
+              creemBtn.removeAttribute('target');
+              creemBtn.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = data.checkoutUrl;
+              };
+            }
+            if (statusText) {
+              statusText.textContent = isZh ? '正在前往 Creem 国际收银台… 若未自动跳转请点击上方按钮' : 'Redirecting to Creem checkout… If not redirected, tap button above';
+            }
+            try {
+              window.location.href = data.checkoutUrl;
+            } catch (_) {}
+          } else {
+            // 💻 电脑端：支持新标签页打开，并在屏幕上渲染二维码方便手机快捷支付 (Apple Pay / Google Pay)
+            if (creemAction && creemBtn) {
+              creemAction.style.display = 'flex';
+              creemBtn.href = data.checkoutUrl;
+              creemBtn.setAttribute('target', '_blank');
+            }
+            if (qrWrapper) qrWrapper.style.display = 'block';
+            if (qrImg) {
+              qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.checkoutUrl)}`;
+              qrImg.style.display = 'block';
+            }
+            if (statusText) {
+              statusText.textContent = isZh ? '请点击上方按钮前往 Creem 支付，或使用手机扫码付款…' : 'Click button above to pay via Creem, or scan QR with phone…';
+            }
           }
 
           // Poll membership endpoint for auto-activation
