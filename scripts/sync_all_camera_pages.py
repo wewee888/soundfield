@@ -277,8 +277,6 @@ def render_camera_page(locale_key, is_root=False):
     }}
   }}
   </script>
-  <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
-  <script>LA.init({{id:"281wblDNvub2tk9f",ck:"281wblDNvub2tk9f"}})</script>
 </head>
 <body>
   <!-- Fullscreen Camera Viewfinder Stage -->

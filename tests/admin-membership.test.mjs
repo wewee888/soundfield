@@ -158,12 +158,12 @@ test('Mobile anti-transcoding, interactive watermark camera, and multi-tier geo 
   const siteCss = fs.readFileSync(path.join(rootDir, 'assets/site.css'), 'utf8');
   const authCss = fs.readFileSync(path.join(rootDir, 'assets/auth.css'), 'utf8');
 
-  // Anti-transcoding & anti-ad injection while retaining 51.la analytics
+  // Anti-transcoding & anti-ad injection with rogue tracking scripts (51.la) completely purged
   assert.ok(headersFile.includes('Cache-Control: no-transform, no-siteapp'), '_headers prevents carrier transcoding');
   assert.ok(soundtestHtml.includes('meta http-equiv="Cache-Control" content="no-siteapp"'), 'soundtest.html has no-siteapp meta');
   assert.ok(soundtestHtml.includes('meta http-equiv="Cache-Control" content="no-transform"'), 'soundtest.html has no-transform meta');
-  assert.ok(soundtestHtml.includes('sdk.51.la'), 'soundtest.html retains 51.la tracking script');
-  assert.ok(soundtestHtml.includes('281wblDNvub2tk9f'), 'soundtest.html retains 51.la account id');
+  assert.ok(!soundtestHtml.includes('sdk.51.la'), 'soundtest.html does not contain 51.la tracking script');
+  assert.ok(!soundtestHtml.includes('281wblDNvub2tk9f'), 'soundtest.html does not contain 51.la account id');
   assert.ok(soundtestHtml.includes('[id*="baidu_transcode"]'), 'soundtest.html contains defensive ad suppression CSS');
 
   // Mobile 2-column footer layout (两排两列)
@@ -236,7 +236,7 @@ test('Dedicated Camera standalone page, Pro showcase card, and SEO integration',
   // camera.html standalone setup
   assert.ok(cameraHtml.includes('assets/camera.css'), 'camera.html loads camera.css');
   assert.ok(cameraHtml.includes('assets/camera.js'), 'camera.html loads camera.js');
-  assert.ok(cameraHtml.includes('LA.init({id:"281wblDNvub2tk9f"'), 'camera.html has 51.la analytics');
+  assert.ok(!cameraHtml.includes('281wblDNvub2tk9f'), 'camera.html does not contain 51.la tracking script');
   assert.ok(cameraHtml.includes('hudDb'), 'camera.html has real-time hudDb');
   assert.ok(cameraHtml.includes('shutterBtn'), 'camera.html has shutter button');
 
@@ -258,15 +258,15 @@ test('Dedicated Camera standalone page, Pro showcase card, and SEO integration',
   assert.ok(zhIndexHtml.includes('camera.html'), 'zh/index.html footer links to camera');
 });
 
-test('Runtime script safety: declarations, 51.la guarding, and permission modal stability', () => {
+test('Runtime script safety: declarations, rogue script purging, and permission modal stability', () => {
   const soundtestHtml = fs.readFileSync(path.join(rootDir, 'soundtest.html'), 'utf8');
 
   // Verify variable declarations prevent ReferenceErrors
   assert.ok(soundtestHtml.includes('let capHideTmr=null;'), 'capHideTmr is declared');
   assert.ok(soundtestHtml.includes('longMonitorNoiseEvents=noiseEvents'), 'longMonitorNoiseEvents is defined and aliased to noiseEvents');
 
-  // Verify 51.la script is guarded against network/adblock failure
-  assert.ok(soundtestHtml.includes('try{window.LA&&LA.init'), '51.la script is safely guarded with try and existence check');
+  // Verify 51.la rogue script is purged completely from core app
+  assert.ok(!soundtestHtml.includes('sdk.51.la'), '51.la script is purged completely to prevent mobile traffic hijacking');
 
   // Verify permission modal is hidden by default in markup to prevent blocking clicks
   assert.ok(soundtestHtml.includes('class="perm-modal hidden"'), 'permModal has hidden class in initial markup');

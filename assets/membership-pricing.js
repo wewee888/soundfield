@@ -404,6 +404,15 @@ function closeWeChatPayModal() {
   }
 }
 
+function isMobileClient() {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|MicroMessenger/i.test(ua);
+  const isTouchDevice = (navigator.maxTouchPoints > 1 || 'ontouchstart' in window);
+  const isNarrowScreen = typeof window !== 'undefined' && window.innerWidth <= 820;
+  return isMobileUA || (isTouchDevice && isNarrowScreen);
+}
+
 async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch = false) {
   if (!isChinaPricingUser()) {
     toast('WeChat Pay test pricing is only available for mainland China IP addresses. Redirecting to international checkout in USD...', 'warn', 5000);
@@ -411,7 +420,7 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
     const urls = window.CREEM_CHECKOUT_URLS || CREEM_CHECKOUT_URLS;
     const creemUrl = urls ? urls[creemKey] : null;
     if (creemUrl) {
-      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      const isMobile = isMobileClient();
       if (isMobile) {
         window.location.href = creemUrl;
       } else {
@@ -470,30 +479,60 @@ async function openWeChatPayModal(plan = 'single', pendingRecs = null, isBatch =
       throw new Error(data.error || '创建订单失败');
     }
 
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-
-    if (qrcodeImg && (data.url_qrcode || data.url)) {
-      const fallbackUrl = data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '';
-      qrcodeImg.onerror = () => {
-        if (fallbackUrl && qrcodeImg.src !== fallbackUrl) {
-          qrcodeImg.src = fallbackUrl;
-        }
-      };
-      qrcodeImg.src = data.url_qrcode || fallbackUrl;
-    }
-    if (h5Btn && data.url) {
-      h5Btn.href = data.url;
-    }
+    const isMobile = isMobileClient();
 
     if (isMobile) {
+      // 📱 手机端专用处理逻辑（严格遵守虎皮椒官方规范：仅使用 url 参数，严禁加载或请求 url_qrcode 二维码，只有 url 参数支持截图扫码）
       if (qrcodeWrap) qrcodeWrap.style.display = 'none';
+      if (qrcodeImg) {
+        qrcodeImg.src = '';
+        qrcodeImg.style.display = 'none';
+      }
       if (mobileWrap) mobileWrap.style.display = 'block';
-      if (statusEl) statusEl.textContent = '请点击上方按钮唤起微信，或在微信中完成支付…';
-      window.location.href = data.url;
+
+      if (h5Btn && data.url) {
+        h5Btn.href = data.url;
+        h5Btn.removeAttribute('target'); // 必须去掉 target="_blank"，移动端同窗口跳转防拦截
+        h5Btn.onclick = (e) => {
+          e.preventDefault();
+          window.location.href = data.url;
+        };
+      }
+
+      const h5BtnText = document.getElementById('wxPayH5BtnText') || h5Btn?.querySelector('span');
+      if (h5BtnText) {
+        h5BtnText.textContent = '👉 立即前往微信安全支付 (点击唤起)';
+      }
+
+      if (statusEl) {
+        statusEl.textContent = '正在前往微信安全支付… 若未自动唤起请点击上方绿色按钮 (支持微信直接支付或截图识别)';
+      }
+
+      // 自动尝试跳转至手机端专用 url
+      if (data.url) {
+        try {
+          window.location.href = data.url;
+        } catch (_) {}
+      }
     } else {
-      if (qrcodeWrap) qrcodeWrap.style.display = 'inline-flex';
+      // 💻 电脑/PC端专用处理逻辑（严格遵守虎皮椒官方规范：仅展示 url_qrcode 供手机扫码，不跳转 url 手机链接）
       if (mobileWrap) mobileWrap.style.display = 'none';
-      if (statusEl) statusEl.textContent = '请使用手机微信扫码，支付成功自动完成…';
+      if (qrcodeWrap) qrcodeWrap.style.display = 'inline-flex';
+
+      if (qrcodeImg && (data.url_qrcode || data.url)) {
+        qrcodeImg.style.display = 'block';
+        const fallbackUrl = data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '';
+        qrcodeImg.onerror = () => {
+          if (fallbackUrl && qrcodeImg.src !== fallbackUrl) {
+            qrcodeImg.src = fallbackUrl;
+          }
+        };
+        qrcodeImg.src = data.url_qrcode || fallbackUrl;
+      }
+
+      if (statusEl) {
+        statusEl.textContent = '请使用手机微信扫码上方二维码，支付成功自动完成…';
+      }
     }
 
     startWeChatPaymentPolling(data.order_id, data.open_order_id, plan);

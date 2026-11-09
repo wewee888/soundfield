@@ -455,8 +455,6 @@
 }
 </style>
   <link rel="canonical" href="https://soundtest.pro/soundtest"/>
-  <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js" onload="try{window.LA&&LA.init({id:'281wblDNvub2tk9f',ck:'281wblDNvub2tk9f'})}catch(_){}"></script>
-  <script>try{if(window.LA&&typeof LA.init==='function'){LA.init({id:'281wblDNvub2tk9f',ck:'281wblDNvub2tk9f'});}}catch(_){}</script>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SOUNDTEST.PRO">
   <meta property="og:url" content="https://soundtest.pro/soundtest">
@@ -1104,10 +1102,13 @@
       </div>
 
       <div class="wx-mobile-wrap" id="wxMobileWrap" style="display:none">
-        <a class="wx-h5-btn" id="wxPayH5Btn" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8.5 2C4.36 2 1 4.91 1 8.5c0 1.99 1.01 3.77 2.61 4.96L2.8 16.2c-.08.24.15.45.38.35l3.22-1.38c.66.19 1.37.33 2.1.33.25 0 .5-.02.74-.04-.21-.63-.34-1.3-.34-2 0-3.87 3.8-7 8.5-7 .34 0 .67.02 1 .05C17.06 3.93 13.09 2 8.5 2z"/></svg>
-          <span>Launch WeChat to Complete Payment</span>
+        <a class="wx-h5-btn" id="wxPayH5Btn" href="#" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8.5 2C4.36 2 1 4.91 1 8.5c0 1.99 1.01 3.77 2.61 4.96L2.8 16.2c-.08.24.15.45.38.35l3.22-1.38c.66.19 1.37.33 2.1.33.25 0 .5-.02.74-.04-.21-.63-.34-1.3-.34-2 0-3.87 3.8-7 8.5-7 .34 0 .67.02 1 .05C17.06 3.93 13.09 2 8.5 2zM6 6.5c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5.5 3c-4.14 0-7.5 2.69-7.5 6s3.36 6 7.5 6c.65 0 1.28-.08 1.87-.24l2.58 1.11c.21.09.43-.09.35-.31l-.64-2.18C22.02 18.77 23 17.25 23 15.5c0-3.31-3.36-6-7.5-6zm-2.5 3.5c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75zm4.5 0c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75z"/></svg>
+          <span id="wxPayH5BtnText">👉 立即前往微信安全支付</span>
         </a>
+        <div id="wxMobileHint" style="font-size:12px;color:rgba(214,232,250,.7);text-align:center;margin-top:6px;line-height:1.5;">
+          若未自动唤起微信，请点击上方绿色按钮前往支付；支持截图微信识别二维码
+        </div>
       </div>
 
       <div class="wx-status-pill" id="wxPayStatus">

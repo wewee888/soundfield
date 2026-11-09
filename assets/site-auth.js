@@ -1449,7 +1449,8 @@
 
     // isZh controls the UI translation language (text labels), but NEVER switches currency or prices!
     const isZh = (getNavAuthLang() === 'zh');
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|MicroMessenger/i.test(navigator.userAgent || '')
+      || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 1 && window.innerWidth <= 820);
 
     // IP-locked gateway: Overseas IP strictly locked to 'creem' (USD $), Mainland China IP to 'wechat' (CNY ¥)
     let activeGateway = isChinaUser ? 'wechat' : 'creem';
@@ -1641,10 +1642,13 @@
             </div>
 
             <div class="auth-pay-mobile-action" id="authPayMobileAction" style="display:none;">
-              <a class="auth-pay-mobile-btn" id="authPayMobileBtn" href="#" target="_blank" rel="noopener">
+              <a class="auth-pay-mobile-btn" id="authPayMobileBtn" href="#" rel="noopener">
                 <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M8.5 2C4.36 2 1 4.91 1 8.5c0 1.99 1.01 3.77 2.61 4.96L2.8 16.2c-.08.24.15.45.38.35l3.22-1.38c.66.19 1.37.33 2.1.33.25 0 .5-.02.74-.04-.21-.63-.34-1.3-.34-2 0-3.87 3.8-7 8.5-7 .34 0 .67.02 1 .05C17.06 3.93 13.09 2 8.5 2zM6 6.5c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5.5 3c-4.14 0-7.5 2.69-7.5 6s3.36 6 7.5 6c.65 0 1.28-.08 1.87-.24l2.58 1.11c.21.09.43-.09.35-.31l-.64-2.18C22.02 18.77 23 17.25 23 15.5c0-3.31-3.36-6-7.5-6zm-2.5 3.5c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75zm4.5 0c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75z"/></svg>
-                <span>${isZh ? '唤起微信完成支付' : 'Open WeChat to Pay'}</span>
+                <span>${isZh ? '👉 立即前往微信安全支付 (点击唤起)' : 'Open WeChat to Pay'}</span>
               </a>
+              <div style="font-size:12px;color:rgba(214,232,250,.7);text-align:center;margin-top:6px;line-height:1.5;">
+                ${isZh ? '若未自动唤起微信，请点击上方绿色按钮；支持截图微信识别二维码' : 'If not redirected automatically, tap button above to pay'}
+              </div>
             </div>
 
             <div class="auth-pay-status-pill" id="authPayStatusPill">
@@ -1714,6 +1718,7 @@
 
       const amountEl = overlay.querySelector('#authPayAmount');
       const origEl = overlay.querySelector('#authPayOrig');
+      const qrWrapper = overlay.querySelector('#authPayQrWrapper');
       const qrImg = overlay.querySelector('#authPayQrImg');
       const qrLoading = overlay.querySelector('#authPayQrLoading');
       const mobileAction = overlay.querySelector('#authPayMobileAction');
@@ -1799,36 +1804,70 @@
             throw new Error(data.error || (isZh ? '创建订单失败' : 'Failed to create order'));
           }
 
-          if (data.url && mobileAction && mobileBtn) {
-            mobileAction.style.display = isMobile ? 'block' : 'none';
-            mobileBtn.href = data.url;
-          }
-
-          const primaryQr = data.url_qrcode || (data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '');
-          const fallbackQr = data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '';
-
-          if (qrImg && (primaryQr || fallbackQr)) {
-            qrImg.onload = () => {
-              if (qrLoading) qrLoading.style.display = 'none';
-              qrImg.style.display = 'block';
-            };
-            qrImg.onerror = () => {
-              if (fallbackQr && qrImg.src !== fallbackQr) {
-                qrImg.src = fallbackQr;
-              } else if (qrLoading) {
-                qrLoading.style.display = 'flex';
-                qrLoading.innerHTML = `<span style="font-size:11.5px;color:#94a3b8;padding:8px;text-align:center;">${isZh ? '二维码加载受限，请点击下方按钮直接微信支付' : 'Tap the button below to complete payment in WeChat'}</span>`;
-              }
-            };
-            qrImg.src = primaryQr;
-          } else if (qrLoading) {
-            qrLoading.style.display = 'none';
-          }
-
           if (isMobile) {
-            if (statusText) statusText.textContent = isZh ? '请点击下方按钮唤起微信，或截图扫码支付…' : 'Tap button below to launch WeChat or scan QR…';
+            // 📱 手机端专用处理逻辑（严格遵守虎皮椒官方规范：仅使用 url 参数，严禁加载或请求 url_qrcode 二维码，只有 url 参数支持截图扫码）
+            if (qrWrapper) qrWrapper.style.display = 'none';
+            if (qrImg) {
+              qrImg.src = '';
+              qrImg.style.display = 'none';
+            }
+            if (qrLoading) qrLoading.style.display = 'none';
+
+            if (mobileAction && mobileBtn && data.url) {
+              mobileAction.style.display = 'block';
+              mobileBtn.href = data.url;
+              mobileBtn.removeAttribute('target'); // 必须去掉 target="_blank"，移动端同窗口跳转防拦截
+              mobileBtn.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = data.url;
+              };
+              const mobileBtnText = mobileBtn.querySelector('span');
+              if (mobileBtnText) {
+                mobileBtnText.textContent = isZh ? '👉 立即前往微信安全支付 (点击唤起)' : 'Open WeChat to Pay';
+              }
+            }
+
+            if (statusText) {
+              statusText.textContent = isZh 
+                ? '正在前往微信安全支付… 若未自动唤起请点击上方绿色按钮 (支持微信直接支付或截图识别)' 
+                : 'Redirecting to WeChat Pay… If not redirected, tap button above';
+            }
+
+            // 自动尝试跳转至手机端专用 url
+            if (data.url) {
+              try {
+                window.location.href = data.url;
+              } catch (_) {}
+            }
           } else {
-            if (statusText) statusText.textContent = isZh ? '请使用手机微信扫码支付，完成后自动激活…' : 'Please scan with WeChat, auto-activates when done…';
+            // 💻 电脑/PC端专用处理逻辑（严格遵守虎皮椒官方规范：仅展示 url_qrcode 供手机扫码，不跳转 url 手机链接）
+            if (mobileAction) mobileAction.style.display = 'none';
+            if (qrWrapper) qrWrapper.style.display = 'block';
+
+            const primaryQr = data.url_qrcode || (data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '');
+            const fallbackQr = data.url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(data.url)}` : '';
+
+            if (qrImg && (primaryQr || fallbackQr)) {
+              qrImg.onload = () => {
+                if (qrLoading) qrLoading.style.display = 'none';
+                qrImg.style.display = 'block';
+              };
+              qrImg.onerror = () => {
+                if (fallbackQr && qrImg.src !== fallbackQr) {
+                  qrImg.src = fallbackQr;
+                } else if (qrLoading) {
+                  qrLoading.style.display = 'flex';
+                  qrLoading.innerHTML = `<span style="font-size:11.5px;color:#94a3b8;padding:8px;text-align:center;">${isZh ? '二维码加载受限，请点击下方按钮直接微信支付' : 'Tap the button below to complete payment in WeChat'}</span>`;
+                }
+              };
+              qrImg.src = primaryQr;
+            } else if (qrLoading) {
+              qrLoading.style.display = 'none';
+            }
+
+            if (statusText) {
+              statusText.textContent = isZh ? '请使用手机微信扫码支付，完成后自动激活…' : 'Please scan with WeChat, auto-activates when done…';
+            }
           }
 
           // Start polling Hupijiao check
