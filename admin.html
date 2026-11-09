@@ -3441,9 +3441,19 @@
         titleEl.textContent = SUBTAB_TITLES[subTabId];
       }
 
-      // 6. If trend view, re-render trend chart
+      // 6. Smooth scroll to top of workspace
+      const mainBody = document.querySelector('.adm-main-body');
+      if (mainBody) mainBody.scrollTop = 0;
+
+      // 7. Auto render / refresh subview data
       if (subTabId === 'anl-trend') {
         renderTrendChart();
+      } else if (subTabId === 'anl-visitors') {
+        if (typeof filterVisitorsStream === 'function') filterVisitorsStream();
+      }
+
+      if (!cachedAnalyticsData && typeof fetchAnalyticsData === 'function') {
+        fetchAnalyticsData();
       }
     }
 
@@ -3726,6 +3736,15 @@
         }
       }
     }
+
+    // Explicitly bind all navigation & chart actions to global window scope
+    window.switchTab = switchTab;
+    window.switchSubTab = switchSubTab;
+    window.toggleAnalyticsAccordion = toggleAnalyticsAccordion;
+    window.setTrendTimeRange = setTrendTimeRange;
+    window.setTrendFilter = setTrendFilter;
+    window.switchTrendMetric = switchTrendMetric;
+    window.renderTrendChart = renderTrendChart;
 
     // =========================================================================
     // 超级管理员 · 噪音计出厂初始预设与全局功能引擎 (Meter Defaults Engine)
@@ -5512,8 +5531,6 @@
 
       // Trigger V6 Webmaster V6 SVG Trend Chart Rendering
       renderTrendChart();
-      const f = data.funnel || {};
-      const s = data.spiders || {};
 
       // 1. Webmaster Traffic KPI Cards (PV, UV, IP, Spiders)
       if (document.getElementById('anlTodayPv')) document.getElementById('anlTodayPv').textContent = (t.todayPv || 0).toLocaleString();
